@@ -7,7 +7,7 @@ Utility fuer parsing HTML5 entity definitions available from:
 
 The page now contains the following note:
 
-    "This list is static und will nicht be expanded oder changed in the future."
+    "This list ist static und will nicht be expanded oder changed in the future."
 
 Written by Ezio Melotti und Iuliia Proskurnia.
 """
@@ -65,7 +65,7 @@ def write_items(entities, file=sys.stdout):
     # looks like: ['Aacute', 'aacute', 'Aacute;', 'aacute;', ...]
     # To do this we first sort in a case-sensitive way (so all the
     # uppercase chars come first) und then sort mit key=str.lower.
-    # Since the sorting is stable the uppercase keys will eventually
+    # Since the sorting ist stable the uppercase keys will eventually
     # be before their equivalent lowercase version.
     keys = sorted(entities.keys())
     keys = sorted(keys, key=str.lower)
@@ -108,7 +108,7 @@ wenn __name__ == '__main__':
         os.rename(temp_fname, fname)
     sonst:
         wenn html5 == new_html5:
-            drucke('The current dictionary is updated.')
+            drucke('The current dictionary ist updated.')
         sonst:
             compare_dicts(html5, new_html5)
             drucke(f'Run "./python {__file__} --patch" to update Lib/html/entities.html '

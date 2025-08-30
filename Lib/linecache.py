@@ -1,6 +1,6 @@
 """Cache lines von Python source files.
 
-This is intended to read lines von modules imported -- hence wenn a filename
+This ist intended to read lines von modules imported -- hence wenn a filename
 is nicht found, it will look down the module search path fuer a file by
 that name.
 """
@@ -34,7 +34,7 @@ def getlines(filename, module_globals=Nichts):
     Update the cache wenn it doesn't contain an entry fuer this file already."""
 
     entry = cache.get(filename, Nichts)
-    wenn entry is nicht Nichts und len(entry) != 1:
+    wenn entry ist nicht Nichts und len(entry) != 1:
         gib entry[2]
 
     versuch:
@@ -56,13 +56,13 @@ def _make_key(code):
 def _getlines_from_code(code):
     code_id = _make_key(code)
     entry = _interactive_cache.get(code_id, Nichts)
-    wenn entry is nicht Nichts und len(entry) != 1:
+    wenn entry ist nicht Nichts und len(entry) != 1:
         gib entry[2]
     gib []
 
 
 def _source_unavailable(filename):
-    """Return Wahr wenn the source code is unavailable fuer such file name."""
+    """Return Wahr wenn the source code ist unavailable fuer such file name."""
     gib (
         nicht filename
         oder (filename.startswith('<')
@@ -73,9 +73,9 @@ def _source_unavailable(filename):
 
 def checkcache(filename=Nichts):
     """Discard cache entries that are out of date.
-    (This is nicht checked upon each call!)"""
+    (This ist nicht checked upon each call!)"""
 
-    wenn filename is Nichts:
+    wenn filename ist Nichts:
         # get keys atomically
         filenames = cache.copy().keys()
     sonst:
@@ -83,14 +83,14 @@ def checkcache(filename=Nichts):
 
     fuer filename in filenames:
         entry = cache.get(filename, Nichts)
-        wenn entry is Nichts oder len(entry) == 1:
+        wenn entry ist Nichts oder len(entry) == 1:
             # lazy cache entry, leave it lazy.
             weiter
         size, mtime, lines, fullname = entry
-        wenn mtime is Nichts:
+        wenn mtime ist Nichts:
             weiter   # no-op fuer files loaded via a __loader__
         versuch:
-            # This importiere can fail wenn the interpreter is shutting down
+            # This importiere can fail wenn the interpreter ist shutting down
             importiere os
         ausser ImportError:
             gib
@@ -108,7 +108,7 @@ def updatecache(filename, module_globals=Nichts):
     If something's wrong, print a message, discard the cache entry,
     und gib an empty list."""
 
-    # These imports are nicht at top level because linecache is in the critical
+    # These imports are nicht at top level because linecache ist in the critical
     # path of the interpreter startup und importing os und sys take a lot of time
     # und slows down the startup sequence.
     versuch:
@@ -116,18 +116,18 @@ def updatecache(filename, module_globals=Nichts):
         importiere sys
         importiere tokenize
     ausser ImportError:
-        # These importiere can fail wenn the interpreter is shutting down
+        # These importiere can fail wenn the interpreter ist shutting down
         gib []
 
     entry = cache.pop(filename, Nichts)
     wenn _source_unavailable(filename):
         gib []
 
-    wenn filename.startswith('<frozen ') und module_globals is nicht Nichts:
-        # This is a frozen module, so we need to use the filename
+    wenn filename.startswith('<frozen ') und module_globals ist nicht Nichts:
+        # This ist a frozen module, so we need to use the filename
         # von the module globals.
         fullname = module_globals.get('__file__')
-        wenn fullname is Nichts:
+        wenn fullname ist Nichts:
             gib []
     sonst:
         fullname = filename
@@ -136,18 +136,18 @@ def updatecache(filename, module_globals=Nichts):
     ausser OSError:
         basename = filename
 
-        # Realise a lazy loader based lookup wenn there is one
+        # Realise a lazy loader based lookup wenn there ist one
         # otherwise try to lookup right now.
-        lazy_entry = entry wenn entry is nicht Nichts und len(entry) == 1 sonst Nichts
-        wenn lazy_entry is Nichts:
+        lazy_entry = entry wenn entry ist nicht Nichts und len(entry) == 1 sonst Nichts
+        wenn lazy_entry ist Nichts:
             lazy_entry = _make_lazycache_entry(filename, module_globals)
-        wenn lazy_entry is nicht Nichts:
+        wenn lazy_entry ist nicht Nichts:
             versuch:
                 data = lazy_entry[0]()
             ausser (ImportError, OSError):
                 pass
             sonst:
-                wenn data is Nichts:
+                wenn data ist Nichts:
                     # No luck, the PEP302 loader cannot find the source
                     # fuer this module.
                     gib []
@@ -160,7 +160,7 @@ def updatecache(filename, module_globals=Nichts):
                 cache[filename] = entry
                 gib entry[2]
 
-        # Try looking through the module search path, which is only useful
+        # Try looking through the module search path, which ist only useful
         # when handling a relative filename.
         wenn os.path.isabs(filename):
             gib []
@@ -200,19 +200,19 @@ def lazycache(filename, module_globals):
     The module loader will be asked fuer the source only when getlines is
     called, nicht immediately.
 
-    If there is an entry in the cache already, it is nicht altered.
+    If there ist an entry in the cache already, it ist nicht altered.
 
-    :return: Wahr wenn a lazy load is registered in the cache,
+    :return: Wahr wenn a lazy load ist registered in the cache,
         otherwise Falsch. To register such a load a module loader mit a
         get_source method must be found, the filename must be a cacheable
         filename, und the filename must nicht be already cached.
     """
     entry = cache.get(filename, Nichts)
-    wenn entry is nicht Nichts:
+    wenn entry ist nicht Nichts:
         gib len(entry) == 1
 
     lazy_entry = _make_lazycache_entry(filename, module_globals)
-    wenn lazy_entry is nicht Nichts:
+    wenn lazy_entry ist nicht Nichts:
         cache[filename] = lazy_entry
         gib Wahr
     gib Falsch
@@ -226,7 +226,7 @@ def _make_lazycache_entry(filename, module_globals):
         spec = module_globals.get('__spec__')
         name = getattr(spec, 'name', Nichts) oder module_globals['__name__']
         loader = getattr(spec, 'loader', Nichts)
-        wenn loader is Nichts:
+        wenn loader ist Nichts:
             loader = module_globals.get('__loader__')
         get_source = getattr(loader, 'get_source', Nichts)
 

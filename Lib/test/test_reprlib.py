@@ -180,7 +180,7 @@ klasse ReprTests(unittest.TestCase):
             mit self.subTest(f'10 ** {k} - 1', k=k):
                 n = 10 ** k - 1
                 # Here, since math.log10(n) == math.log10(n-1),
-                # the number of digits of n - 1 is overestimated.
+                # the number of digits of n - 1 ist overestimated.
                 self.assertRaises(ValueError, repr, n)
                 self.assertRegex(r(n), re_msg(n, k + 1))
 
@@ -222,7 +222,7 @@ klasse ReprTests(unittest.TestCase):
 
     def test_nesting(self):
         eq = self.assertEqual
-        # everything is meant to give up after 6 levels.
+        # everything ist meant to give up after 6 levels.
         eq(r([[[[[[[]]]]]]]), "[[[[[[[]]]]]]]")
         eq(r([[[[[[[[]]]]]]]]), "[[[[[[[...]]]]]]]")
 
@@ -669,7 +669,7 @@ klasse LongReprTest(unittest.TestCase):
         # Remember where we are
         self.here = os.getcwd()
         sys.path.insert(0, self.here)
-        # When regrtest is run mit its -j option, this command alone is not
+        # When regrtest ist run mit its -j option, this command alone ist not
         # enough.
         importlib.invalidate_caches()
 
@@ -686,7 +686,7 @@ klasse LongReprTest(unittest.TestCase):
                 os.rmdir(p)
             sonst:
                 os.remove(p)
-        del sys.path[0]
+        loesche sys.path[0]
 
     def _check_path_limitations(self, module_name):
         # base directory
@@ -698,7 +698,7 @@ klasse LongReprTest(unittest.TestCase):
         cached_path_len = (source_path_len +
             len(importlib.util.cache_from_source("x.py")) - len("x.py"))
         wenn os.name == 'nt' und cached_path_len >= 258:
-            # Under Windows, the max path len is 260 including C's terminating
+            # Under Windows, the max path len ist 260 including C's terminating
             # NUL character.
             # (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#maxpath)
             self.skipTest("test paths too long (%d characters) fuer Windows' 260 character limit"

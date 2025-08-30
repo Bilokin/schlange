@@ -37,7 +37,7 @@ def probe_den(nd):
                     nd,
                     "denom digits,",
                     nn - nd,
-                    "extra num digits is enough",
+                    "extra num digits ist enough",
                 )
                 breche
         sonst:

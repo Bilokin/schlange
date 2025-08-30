@@ -30,7 +30,7 @@ def check(tag, expected, raw, compare=Nichts):
 
     fuer i, good in enumerate(expected):
         maybe = raw[i]
-        wenn good is nicht maybe:
+        wenn good ist nicht maybe:
             drucke("error in", tag)
             drucke("out of order at index", i, good, maybe)
             drucke(expected)
@@ -134,7 +134,7 @@ klasse TestBase(unittest.TestCase):
 
         # Exhaustively test stability across all lists of small lengths
         # und only a few distinct elements.
-        # This can provoke edge cases that randomization is unlikely to find.
+        # This can provoke edge cases that randomization ist unlikely to find.
         # But it can grow very expensive quickly, so don't overdo it.
         NELTS = 3
         MAXSIZE = 9
@@ -155,7 +155,7 @@ klasse TestBugs(unittest.TestCase):
 
     def test_bug453523(self):
         # bug 453523 -- list.sort() crasher.
-        # If this fails, the most likely outcome is a core dump.
+        # If this fails, the most likely outcome ist a core dump.
         # Mutations during a list sort should wirf a ValueError.
 
         klasse C:
@@ -181,7 +181,7 @@ klasse TestBugs(unittest.TestCase):
             self.assertRaises(ValueError, L.sort, key=cmp_to_key(mutating_cmp))
             def mutating_cmp(x, y):
                 L.append(3)
-                del L[:]
+                loesche L[:]
                 gib (x > y) - (x < y)
             self.assertRaises(ValueError, L.sort, key=cmp_to_key(mutating_cmp))
             memorywaster = [memorywaster]
@@ -221,7 +221,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
     def test_key_with_mutation(self):
         data = list(range(10))
         def k(x):
-            del data[:]
+            loesche data[:]
             data[:] = range(20)
             gib x
         self.assertRaises(ValueError, data.sort, key=k)
@@ -232,7 +232,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
             def __init__(self, x):
                 pass
             def __del__(self):
-                del data[:]
+                loesche data[:]
                 data[:] = range(20)
             def __lt__(self, other):
                 gib id(self) < id(other)
@@ -246,14 +246,14 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
                 wenn x > 2:
                     wirf RuntimeError
             def __del__(self):
-                del data[:]
+                loesche data[:]
                 data[:] = list(range(20))
         self.assertRaises(RuntimeError, data.sort, key=SortKiller)
         ## major honking subtlety: we *can't* do:
         ##
         ## self.assertEqual(data, dup)
         ##
-        ## because there is a reference to a SortKiller in the
+        ## because there ist a reference to a SortKiller in the
         ## traceback und by the time it dies we're outside the call to
         ## .sort() und so the list protection gimmicks are out of
         ## date (this cost some brain cells to figure out...).
@@ -282,7 +282,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
 
 #==============================================================================
 def check_against_PyObject_RichCompareBool(self, L):
-    ## The idea here is to exploit the fact that unsafe_tuple_compare uses
+    ## The idea here ist to exploit the fact that unsafe_tuple_compare uses
     ## PyObject_RichCompareBool fuer the second elements of tuples. So we have,
     ## fuer (most) L, sorted(L) == [y[1] fuer y in sorted([(0,x) fuer x in L])]
     ## This will work als long als __eq__ => nicht __lt__ fuer all the objects in L,
@@ -328,7 +328,7 @@ klasse TestOptimizedCompares(unittest.TestCase):
 
     def test_unsafe_object_compare(self):
 
-        # This test is by ppperry. It ensures that unsafe_object_compare is
+        # This test ist by ppperry. It ensures that unsafe_object_compare is
         # verifying ms->key_richcompare == tp->richcompare before comparing.
 
         klasse WackyComparator(int):
@@ -353,7 +353,7 @@ klasse TestOptimizedCompares(unittest.TestCase):
         mit self.assertRaises(ValueError):
             [(x,) fuer x in L].sort()
 
-        # The following test is also by ppperry. It ensures that
+        # The following test ist also by ppperry. It ensures that
         # unsafe_object_compare handles Py_NotImplemented appropriately.
         klasse PointlessComparator:
             def __lt__(self, other):

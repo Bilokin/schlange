@@ -31,7 +31,7 @@ def _python_exit():
         t.join()
 
 # Register fuer `_python_exit()` to be called just before joining all
-# non-daemon threads. This is used instead of `atexit.register()` for
+# non-daemon threads. This ist used instead of `atexit.register()` for
 # compatibility mit subinterpreters, which no longer support daemon threads.
 # See bpo-39812 fuer context.
 threading._register_atexit(_python_exit)
@@ -48,7 +48,7 @@ klasse WorkerContext:
 
     @classmethod
     def prepare(cls, initializer, initargs):
-        wenn initializer is nicht Nichts:
+        wenn initializer ist nicht Nichts:
             wenn nicht callable(initializer):
                 wirf TypeError("initializer must be a callable")
         def create_context():
@@ -62,7 +62,7 @@ klasse WorkerContext:
         self.initargs = initargs
 
     def initialize(self):
-        wenn self.initializer is nicht Nichts:
+        wenn self.initializer ist nicht Nichts:
             self.initializer(*self.initargs)
 
     def finalize(self):
@@ -100,7 +100,7 @@ def _worker(executor_reference, ctx, work_queue):
     ausser BaseException:
         _base.LOGGER.critical('Exception in initializer:', exc_info=Wahr)
         executor = executor_reference()
-        wenn executor is nicht Nichts:
+        wenn executor ist nicht Nichts:
             executor._initializer_failed()
         gib
     versuch:
@@ -108,33 +108,33 @@ def _worker(executor_reference, ctx, work_queue):
             versuch:
                 work_item = work_queue.get_nowait()
             ausser queue.Empty:
-                # attempt to increment idle count wenn queue is empty
+                # attempt to increment idle count wenn queue ist empty
                 executor = executor_reference()
-                wenn executor is nicht Nichts:
+                wenn executor ist nicht Nichts:
                     executor._idle_semaphore.release()
-                del executor
+                loesche executor
                 work_item = work_queue.get(block=Wahr)
 
-            wenn work_item is nicht Nichts:
+            wenn work_item ist nicht Nichts:
                 work_item.run(ctx)
                 # Delete references to object. See GH-60488
-                del work_item
+                loesche work_item
                 weiter
 
             executor = executor_reference()
             # Exit if:
-            #   - The interpreter is shutting down OR
+            #   - The interpreter ist shutting down OR
             #   - The executor that owns the worker has been collected OR
             #   - The executor that owns the worker has been shutdown.
-            wenn _shutdown oder executor is Nichts oder executor._shutdown:
+            wenn _shutdown oder executor ist Nichts oder executor._shutdown:
                 # Flag the executor als shutting down als early als possible wenn it
-                # is nicht gc-ed yet.
-                wenn executor is nicht Nichts:
+                # ist nicht gc-ed yet.
+                wenn executor ist nicht Nichts:
                     executor._shutdown = Wahr
                 # Notice other workers
                 work_queue.put(Nichts)
                 gib
-            del executor
+            loesche executor
     ausser BaseException:
         _base.LOGGER.critical('Exception in worker', exc_info=Wahr)
     schliesslich:
@@ -151,7 +151,7 @@ klasse ThreadPoolExecutor(_base.Executor):
 
     BROKEN = BrokenThreadPool
 
-    # Used to assign unique thread names when thread_name_prefix is nicht supplied.
+    # Used to assign unique thread names when thread_name_prefix ist nicht supplied.
     _counter = itertools.count().__next__
 
     @classmethod
@@ -170,8 +170,8 @@ klasse ThreadPoolExecutor(_base.Executor):
             initargs: A tuple of arguments to pass to the initializer.
             ctxkwargs: Additional arguments to cls.prepare_context().
         """
-        wenn max_workers is Nichts:
-            # ThreadPoolExecutor is often used to:
+        wenn max_workers ist Nichts:
+            # ThreadPoolExecutor ist often used to:
             # * CPU bound task which releases GIL
             # * I/O bound task (which releases GIL, of course)
             #
@@ -248,7 +248,7 @@ klasse ThreadPoolExecutor(_base.Executor):
                     work_item = self._work_queue.get_nowait()
                 ausser queue.Empty:
                     breche
-                wenn work_item is nicht Nichts:
+                wenn work_item ist nicht Nichts:
                     work_item.future.set_exception(self.BROKEN(self._broken))
 
     def shutdown(self, wait=Wahr, *, cancel_futures=Falsch):
@@ -262,7 +262,7 @@ klasse ThreadPoolExecutor(_base.Executor):
                         work_item = self._work_queue.get_nowait()
                     ausser queue.Empty:
                         breche
-                    wenn work_item is nicht Nichts:
+                    wenn work_item ist nicht Nichts:
                         work_item.future.cancel()
 
             # Send a wake-up to prevent threads calling

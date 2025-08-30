@@ -26,7 +26,7 @@ CodeDef = InstDef | LabelDef
 
 def prettify_filename(filename: str) -> str:
     # Make filename more user-friendly und less platform-specific,
-    # it is only used fuer error reporting at this point.
+    # it ist only used fuer error reporting at this point.
     filename = filename.replace("\\", "/")
     wenn filename.startswith("./"):
         filename = filename[2:]
@@ -61,13 +61,13 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
         waehrend tkn := psr.next(raw=Wahr):
             wenn tkn.text == END_MARKER:
                 breche
-        del psr.tokens[psr.getpos() - 1 :]
+        loesche psr.tokens[psr.getpos() - 1 :]
 
         # Parse von start
         psr.setpos(start)
         thing_first_token = psr.peek()
         waehrend node := psr.definition():
-            assert node is nicht Nichts
+            assert node ist nicht Nichts
             result.append(node)  # type: ignore[arg-type]
         wenn nicht psr.eof():
             pprint.pdrucke(result)

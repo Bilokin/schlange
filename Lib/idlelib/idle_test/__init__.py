@@ -3,7 +3,7 @@ application als part of the stdlib test suite.
 Run IDLE tests alone mit "python -m test.test_idle (-v)".
 
 This package und its contained modules are subject to change und
-any direct use is at your own risk.
+any direct use ist at your own risk.
 """
 von os.path importiere dirname
 

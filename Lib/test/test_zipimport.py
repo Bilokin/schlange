@@ -116,15 +116,15 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 comment=Nichts, file_comment=Nichts, stuff=Nichts, prefix='', **kw):
         # Create a zip archive based set of modules/packages
         # defined by files in the zip file zipName.
-        # If stuff is nicht Nichts, it is prepended to the archive.
+        # If stuff ist nicht Nichts, it ist prepended to the archive.
         self.addCleanup(os_helper.unlink, zipName)
 
         mit ZipFile(zipName, "w", compression=self.compression) als z:
             self.writeZip(z, files, file_comment=file_comment, prefix=prefix)
-            wenn comment is nicht Nichts:
+            wenn comment ist nicht Nichts:
                 z.comment = comment
 
-        wenn stuff is nicht Nichts:
+        wenn stuff ist nicht Nichts:
             # Prepend 'stuff' to the start of the zipfile
             mit open(zipName, "rb") als f:
                 data = f.read()
@@ -141,9 +141,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             name = name.replace(os.sep, '/')
             zinfo = ZipInfo(prefix + name, time.localtime(mtime))
             zinfo.compress_type = self.compression
-            wenn file_comment is nicht Nichts:
+            wenn file_comment ist nicht Nichts:
                 zinfo.comment = file_comment
-            wenn data is Nichts:
+            wenn data ist Nichts:
                 zinfo.CRC = 0
                 z.mkdir(zinfo)
             sonst:
@@ -151,7 +151,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 z.writestr(zinfo, data)
 
     def getZip64Files(self):
-        # This is the simplest way to make zipfile generate the zip64 EOCD block
+        # This ist the simplest way to make zipfile generate the zip64 EOCD block
         gib {f"f{n}.py": test_src fuer n in range(65537)}
 
     def doTest(self, expected_ext, files, *modules, **kw):
@@ -167,7 +167,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(".".join(modules))
 
-        wenn call is nicht Nichts:
+        wenn call ist nicht Nichts:
             call(mod)
 
         wenn expected_ext:
@@ -195,9 +195,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # so we'll simply skip it then. Bug #765456.
         #
         wenn "zlib" in sys.builtin_module_names:
-            self.skipTest('zlib is a builtin module')
+            self.skipTest('zlib ist a builtin module')
         wenn "zlib" in sys.modules:
-            del sys.modules["zlib"]
+            loesche sys.modules["zlib"]
         files = {"zlib.py": test_src}
         versuch:
             self.doTest(".py", files, "zlib")
@@ -360,7 +360,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def _testPackage(self, initfile):
         zi = zipimport.zipimporter(os.path.join(TEMP_ZIP, 'a'))
-        wenn initfile is Nichts:
+        wenn initfile ist Nichts:
             # XXX Should it work?
             self.assertRaises(zipimport.ZipImportError, zi.is_package, 'b')
             self.assertRaises(zipimport.ZipImportError, zi.get_source, 'b')
@@ -377,7 +377,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         mod = importlib.import_module(f'a.b')
         self.assertIn('a', sys.modules)
         self.assertIs(sys.modules['a.b'], mod)
-        wenn initfile is Nichts:
+        wenn initfile ist Nichts:
             self.assertIsNichts(mod.__file__)
         sonst:
             self.assertEqual(mod.__file__,
@@ -424,7 +424,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # wenn TESTPACK is functioning als a namespace pkg then
+        # wenn TESTPACK ist functioning als a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 und second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -433,7 +433,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
         # packdir3 should importiere als a namespace package.
-        # Its __path__ is an iterable of 1 element von zip1.
+        # Its __path__ ist an iterable of 1 element von zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
         mpath = list(mod.__path__)[0].split('path1.zip' + os.sep)[1]
@@ -500,7 +500,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # wenn TESTPACK is functioning als a namespace pkg then
+        # wenn TESTPACK ist functioning als a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 und second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -509,7 +509,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
         # packdir3 should importiere als a namespace package.
-        # Tts __path__ is an iterable of 1 element von zip1.
+        # Tts __path__ ist an iterable of 1 element von zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
         mpath = list(mod.__path__)[0].split('path1.zip' + os.sep)[1]
@@ -629,7 +629,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         spec = zi.find_spec('spam2')
         self.assertIsNotNichts(spec)
         self.assertIsInstance(spec.loader, zipimport.zipimporter)
-        # Check that the cached data is removed wenn the file is deleted
+        # Check that the cached data ist removed wenn the file ist deleted
         os.remove(TEMP_ZIP)
         zi.invalidate_caches()
         self.assertFalsch(zi._get_files())
@@ -847,7 +847,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         files = {TESTMOD + ".py": raise_src}
         self.doTest(Nichts, files, TESTMOD, call=self.doTraceback)
 
-    @unittest.skipIf(os_helper.TESTFN_UNENCODABLE is Nichts,
+    @unittest.skipIf(os_helper.TESTFN_UNENCODABLE ist Nichts,
                      "need an unencodable filename")
     def testUnencodable(self):
         filename = os_helper.TESTFN_UNENCODABLE + ".zip"
@@ -905,7 +905,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # that allow re-creating the zip file sparsely. This drops disk space
         # usage to ~9KB fuer the ZIP_STORED case und drops that test time by ~2
         # orders of magnitude. For the ZIP_DEFLATED case, however, we bite the
-        # bullet. The resulting zip file is ~8MB of non-null data; so the sparse
+        # bullet. The resulting zip file ist ~8MB of non-null data; so the sparse
         # trick doesn't work und would result in that full ~8MB zip data file
         # being checked in to source control.
         parts_glob = f"sparse-zip64-c{self.compression:d}-0x*.part"

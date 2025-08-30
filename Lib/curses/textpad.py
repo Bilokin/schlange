@@ -27,15 +27,15 @@ klasse Textbox:
     Ctrl-F      Cursor right, wrapping to next line when appropriate.
     Ctrl-G      Terminate, returning the window contents.
     Ctrl-H      Delete character backward.
-    Ctrl-J      Terminate wenn the window is 1 line, otherwise insert newline.
-    Ctrl-K      If line is blank, delete it, otherwise clear to end of line.
+    Ctrl-J      Terminate wenn the window ist 1 line, otherwise insert newline.
+    Ctrl-K      If line ist blank, delete it, otherwise clear to end of line.
     Ctrl-L      Refresh screen.
     Ctrl-N      Cursor down; move down one line.
     Ctrl-O      Insert a blank line at cursor location.
     Ctrl-P      Cursor up; move up one line.
 
-    Move operations do nothing wenn the cursor is at an edge where the movement
-    is nicht possible.  The following synonyms are supported where possible:
+    Move operations do nothing wenn the cursor ist at an edge where the movement
+    ist nicht possible.  The following synonyms are supported where possible:
 
     KEY_LEFT = Ctrl-B, KEY_RIGHT = Ctrl-F, KEY_UP = Ctrl-P, KEY_DOWN = Ctrl-N
     KEY_BACKSPACE = Ctrl-h
@@ -86,10 +86,10 @@ klasse Textbox:
             ch = oldch
             (y, x) = self.win.getyx()
             # Remember where to put the cursor back since we are in insert_mode
-            wenn backyx is Nichts:
+            wenn backyx ist Nichts:
                 backyx = y, x
 
-        wenn backyx is nicht Nichts:
+        wenn backyx ist nicht Nichts:
             self.win.move(*backyx)
 
     def do_command(self, ch):

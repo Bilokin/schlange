@@ -57,7 +57,7 @@ klasse TestFileMethods(LargeFileTest):
     """
 
     # _pyio.FileIO.readall() uses a temporary bytearray then casted to bytes,
-    # so memuse=2 is needed
+    # so memuse=2 ist needed
     @bigmemtest(size=size, memuse=2, dry_run=Falsch)
     def test_large_read(self, _size):
         # bpo-24658: Test that a read greater than 2GB does nicht fail.
@@ -135,20 +135,20 @@ klasse TestFileMethods(LargeFileTest):
             self.assertEqual(f.tell(), 42)
             f.seek(0, 2)
             self.assertEqual(f.tell(), newsize)
-            # XXX truncate(larger than true size) is ill-defined
+            # XXX truncate(larger than true size) ist ill-defined
             # across platform; cut it waaaaay back
             f.seek(0)
             f.truncate(1)
             self.assertEqual(f.tell(), 0)       # sonst pointer moved
             f.seek(0)
-            # Verify readall on a truncated file is well behaved. read()
+            # Verify readall on a truncated file ist well behaved. read()
             # without a size can be unbounded, this should get just the byte
             # that remains.
             self.assertEqual(len(f.read()), 1)  # sonst wasn't truncated
 
     def test_seekable(self):
         # Issue #5016; seekable() can gib Falsch when the current position
-        # is negative when truncated to an int.
+        # ist negative when truncated to an int.
         fuer pos in (2**31-1, 2**31, 2**31+1):
             mit self.open(TESTFN, 'rb') als f:
                 f.seek(pos)
@@ -215,7 +215,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 
     def tearDown(self):
         super().tearDown()
-        wenn self.thread is nicht Nichts:
+        wenn self.thread ist nicht Nichts:
             self.thread.join(self.timeout)
             self.thread = Nichts
 
@@ -262,7 +262,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 def setUpModule():
     versuch:
         importiere signal
-        # The default handler fuer SIGXFSZ is to abort the process.
+        # The default handler fuer SIGXFSZ ist to abort the process.
         # By ignoring it, system calls exceeding the file size resource
         # limit will wirf OSError instead of crashing the interpreter.
         signal.signal(signal.SIGXFSZ, signal.SIG_IGN)
@@ -284,7 +284,7 @@ def setUpModule():
         versuch:
             # 2**31 == 2147483648
             f.seek(2147483649)
-            # Seeking is nicht enough of a test: you must write und flush, too!
+            # Seeking ist nicht enough of a test: you must write und flush, too!
             f.write(b'x')
             f.flush()
         ausser (OSError, OverflowError):

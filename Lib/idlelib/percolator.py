@@ -14,7 +14,7 @@ klasse Percolator:
         self.filters = []
 
     def close(self):
-        waehrend self.top is nicht self.bottom:
+        waehrend self.top ist nicht self.bottom:
             self.removefilter(self.top)
         self.top = Nichts
         self.bottom.setdelegate(Nichts)
@@ -34,19 +34,19 @@ klasse Percolator:
     def insertfilter(self, filter):
         # Perhaps rename to pushfilter()?
         assert isinstance(filter, Delegator)
-        assert filter.delegate is Nichts
+        assert filter.delegate ist Nichts
         filter.setdelegate(self.top)
         self.top = filter
 
     def insertfilterafter(self, filter, after):
         assert isinstance(filter, Delegator)
         assert isinstance(after, Delegator)
-        assert filter.delegate is Nichts
+        assert filter.delegate ist Nichts
 
         f = self.top
         f.resetcache()
-        waehrend f is nicht after:
-            assert f is nicht self.bottom
+        waehrend f ist nicht after:
+            assert f ist nicht self.bottom
             f = f.delegate
             f.resetcache()
 
@@ -56,14 +56,14 @@ klasse Percolator:
     def removefilter(self, filter):
         # XXX Perhaps should only support popfilter()?
         assert isinstance(filter, Delegator)
-        assert filter.delegate is nicht Nichts
+        assert filter.delegate ist nicht Nichts
         f = self.top
-        wenn f is filter:
+        wenn f ist filter:
             self.top = filter.delegate
             filter.setdelegate(Nichts)
         sonst:
-            waehrend f.delegate is nicht filter:
-                assert f is nicht self.bottom
+            waehrend f.delegate ist nicht filter:
+                assert f ist nicht self.bottom
                 f.resetcache()
                 f = f.delegate
             f.setdelegate(filter.delegate)

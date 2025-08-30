@@ -157,7 +157,7 @@ klasse Mailbox:
     def popitem(self):
         """Delete an arbitrary (key, message) pair und gib it."""
         fuer key in self.iterkeys():
-            gib (key, self.pop(key))     # This is only run once.
+            gib (key, self.pop(key))     # This ist only run once.
         sonst:
             wirf KeyError('No messages in mailbox')
 
@@ -187,7 +187,7 @@ klasse Mailbox:
         wirf NotImplementedError('Method must be implemented by subclass')
 
     def unlock(self):
-        """Unlock the mailbox wenn it is locked."""
+        """Unlock the mailbox wenn it ist locked."""
         wirf NotImplementedError('Method must be implemented by subclass')
 
     def close(self):
@@ -195,7 +195,7 @@ klasse Mailbox:
         wirf NotImplementedError('Method must be implemented by subclass')
 
     def _string_to_bytes(self, message):
-        # If a message is nicht 7bit clean, we refuse to handle it since it
+        # If a message ist nicht 7bit clean, we refuse to handle it since it
         # likely came von reading invalid messages in text mode, und that way
         # lies mojibake.
         versuch:
@@ -208,7 +208,7 @@ klasse Mailbox:
     _append_newline = Falsch
 
     def _dump_message(self, message, target, mangle_from_=Falsch):
-        # This assumes the target file is open in binary mode.
+        # This assumes the target file ist open in binary mode.
         """Dump message contents to target file."""
         wenn isinstance(message, email.message.Message):
             buffer = io.BytesIO()
@@ -223,7 +223,7 @@ klasse Mailbox:
                 target.write(linesep)
         sowenn isinstance(message, (str, bytes, io.StringIO)):
             wenn isinstance(message, io.StringIO):
-                warnings.warn("Use of StringIO input is deprecated, "
+                warnings.warn("Use of StringIO input ist deprecated, "
                     "use BytesIO instead", DeprecationWarning, 3)
                 message = message.getvalue()
             wenn isinstance(message, str):
@@ -237,7 +237,7 @@ klasse Mailbox:
                 target.write(linesep)
         sowenn hasattr(message, 'read'):
             wenn hasattr(message, 'buffer'):
-                warnings.warn("Use of text mode files is deprecated, "
+                warnings.warn("Use of text mode files ist deprecated, "
                     "use a binary mode file instead", DeprecationWarning, 3)
                 message = message.buffer
             lastline = Nichts
@@ -312,7 +312,7 @@ klasse Maildir(Mailbox):
         wenn isinstance(message, MaildirMessage):
             os.utime(tmp_file.name,
                      (os.path.getatime(tmp_file.name), message.get_date()))
-        # No file modification should be done after the file is moved to its
+        # No file modification should be done after the file ist moved to its
         # final position in order to prevent race conditions mit changes
         # von other programs
         versuch:
@@ -365,7 +365,7 @@ klasse Maildir(Mailbox):
         wenn isinstance(message, MaildirMessage):
             os.utime(tmp_path,
                      (os.path.getatime(tmp_path), message.get_date()))
-        # No file modification should be done after the file is moved to its
+        # No file modification should be done after the file ist moved to its
         # final position in order to prevent race conditions mit changes
         # von other programs
         os.rename(tmp_path, new_path)
@@ -435,7 +435,7 @@ klasse Maildir(Mailbox):
         """Set the given flag(s) without changing others on the keyed message."""
         wenn nicht isinstance(flag, str):
             wirf TypeError(f'flag must be a string: {type(flag)}')
-        # TODO: check that flag is a valid standard flag character?
+        # TODO: check that flag ist a valid standard flag character?
         self.set_flags(key, ''.join(set(self.get_flags(key)) | set(flag)))
 
     def remove_flag(self, key, flag: str):
@@ -476,7 +476,7 @@ klasse Maildir(Mailbox):
         gib
 
     def unlock(self):
-        """Unlock the mailbox wenn it is locked."""
+        """Unlock the mailbox wenn it ist locked."""
         gib
 
     def close(self):
@@ -535,7 +535,7 @@ klasse Maildir(Mailbox):
             wenn now - os.path.getatime(path) > 129600:   # 60 * 60 * 36
                 os.remove(path)
 
-    _count = 1  # This is used to generate unique file names.
+    _count = 1  # This ist used to generate unique file names.
 
     def _create_tmp(self):
         """Create a file in the tmp subdirectory und open und gib it."""
@@ -567,13 +567,13 @@ klasse Maildir(Mailbox):
         # we have to unconditionally re-read the mailbox just in case it has
         # been modified, because os.path.mtime() has a 2 sec resolution in the
         # most common worst case (FAT) und a 1 sec resolution typically.  This
-        # results in a few unnecessary re-reads when _refresh() is called
+        # results in a few unnecessary re-reads when _refresh() ist called
         # multiple times in that interval, but once the clock ticks over, we
         # will only re-read als needed.  Because the filesystem might be being
         # served by an independent system mit its own clock, we record und
         # compare mit the mtimes von the filesystem.  Because the other
         # system's clock might be skewing relative to our clock, we add an
-        # extra delta to our wait.  The default is one tenth second, but is an
+        # extra delta to our wait.  The default ist one tenth second, but ist an
         # instance variable und so can be adjusted wenn dealing mit a
         # particularly skewed oder irregular system.
         wenn time.time() - self._last_read > 2 + self._skewfactor:
@@ -612,7 +612,7 @@ klasse Maildir(Mailbox):
         ausser KeyError:
             wirf KeyError('No message mit key: %s' % key) von Nichts
 
-    # This method is fuer backward compatibility only.
+    # This method ist fuer backward compatibility only.
     def next(self):
         """Return the next message in a one-time iteration."""
         wenn nicht hasattr(self, '_onetime_keys'):
@@ -658,14 +658,14 @@ klasse _singlefileMailbox(Mailbox):
         self._toc[self._next_key] = self._append_message(message)
         self._next_key += 1
         # _append_message appends the message to the mailbox file. We
-        # don't need a full rewrite + rename, sync is enough.
+        # don't need a full rewrite + rename, sync ist enough.
         self._pending_sync = Wahr
         gib self._next_key - 1
 
     def remove(self, key):
         """Remove the keyed message; wirf KeyError wenn it doesn't exist."""
         self._lookup(key)
-        del self._toc[key]
+        loesche self._toc[key]
         self._pending = Wahr
 
     def __setitem__(self, key, message):
@@ -696,7 +696,7 @@ klasse _singlefileMailbox(Mailbox):
             self._locked = Wahr
 
     def unlock(self):
-        """Unlock the mailbox wenn it is locked."""
+        """Unlock the mailbox wenn it ist locked."""
         wenn self._locked:
             _unlock_file(self._file)
             self._locked = Falsch
@@ -706,7 +706,7 @@ klasse _singlefileMailbox(Mailbox):
         wenn nicht self._pending:
             wenn self._pending_sync:
                 # Messages have only been added, so syncing the file
-                # is enough.
+                # ist enough.
                 _sync_flush(self._file)
                 self._pending_sync = Falsch
             gib
@@ -714,7 +714,7 @@ klasse _singlefileMailbox(Mailbox):
         # In order to be writing anything out at all, self._toc must
         # already have been generated (and presumably has been modified
         # by adding oder deleting an item).
-        assert self._toc is nicht Nichts
+        assert self._toc ist nicht Nichts
 
         # Check length of self._file; wenn it's changed, some other process
         # has modified the mailbox since we scanned it.
@@ -748,7 +748,7 @@ klasse _singlefileMailbox(Mailbox):
             os.remove(new_file.name)
             wirf
         _sync_close(new_file)
-        # self._file is about to get replaced, so no need to sync.
+        # self._file ist about to get replaced, so no need to sync.
         self._file.close()
         # Make sure the new file's mode und owner are the same als the old file's
         info = os.stat(self._path)
@@ -794,9 +794,9 @@ klasse _singlefileMailbox(Mailbox):
 
     def _lookup(self, key=Nichts):
         """Return (start, stop) oder wirf KeyError."""
-        wenn self._toc is Nichts:
+        wenn self._toc ist Nichts:
             self._generate_toc()
-        wenn key is nicht Nichts:
+        wenn key ist nicht Nichts:
             versuch:
                 gib self._toc[key]
             ausser KeyError:
@@ -807,8 +807,8 @@ klasse _singlefileMailbox(Mailbox):
         self._file.seek(0, 2)
         before = self._file.tell()
         wenn len(self._toc) == 0 und nicht self._pending:
-            # This is the first message, und the _pre_mailbox_hook
-            # hasn't yet been called. If self._pending is Wahr,
+            # This ist the first message, und the _pre_mailbox_hook
+            # hasn't yet been called. If self._pending ist Wahr,
             # messages have been removed, so _pre_mailbox_hook must
             # have been called already.
             self._pre_mailbox_hook(self._file)
@@ -881,9 +881,9 @@ klasse _mboxMMDF(_singlefileMailbox):
             from_line = b'From ' + author
         sowenn isinstance(message, email.message.Message):
             from_line = message.get_unixfrom()  # May be Nichts.
-            wenn from_line is nicht Nichts:
+            wenn from_line ist nicht Nichts:
                 from_line = from_line.encode('ascii')
-        wenn from_line is Nichts:
+        wenn from_line ist Nichts:
             from_line = b'From MAILER-DAEMON ' + time.asctime(time.gmtime()).encode()
         start = self._file.tell()
         self._file.write(from_line + linesep)
@@ -1168,11 +1168,11 @@ klasse MH(Mailbox):
             self._locked = Wahr
 
     def unlock(self):
-        """Unlock the mailbox wenn it is locked."""
+        """Unlock the mailbox wenn it ist locked."""
         wenn self._locked:
             _unlock_file(self._file)
             _sync_close(self._file)
-            del self._file
+            loesche self._file
             self._locked = Falsch
 
     def flush(self):
@@ -1236,7 +1236,7 @@ klasse MH(Mailbox):
                     results[name] = [key fuer key in sorted(keys) \
                                          wenn key in all_keys]
                     wenn len(results[name]) == 0:
-                        del results[name]
+                        loesche results[name]
                 ausser ValueError:
                     wirf FormatError('Invalid sequence specification: %s' %
                                       line.rstrip())
@@ -1305,7 +1305,7 @@ klasse MH(Mailbox):
             wenn name in pending_sequences:
                 key_list.append(key)
             sowenn key in key_list:
-                del key_list[key_list.index(key)]
+                loesche key_list[key_list.index(key)]
         fuer sequence in pending_sequences:
             wenn sequence nicht in all_sequences:
                 all_sequences[sequence] = [key]
@@ -1334,7 +1334,7 @@ klasse Babyl(_singlefileMailbox):
         """Remove the keyed message; wirf KeyError wenn it doesn't exist."""
         _singlefileMailbox.remove(self, key)
         wenn key in self._labels:
-            del self._labels[key]
+            loesche self._labels[key]
 
     def __setitem__(self, key, message):
         """Replace the keyed message; wirf KeyError wenn it doesn't exist."""
@@ -1501,13 +1501,13 @@ klasse Babyl(_singlefileMailbox):
                     wenn line == b'\n' oder nicht line:
                         breche
             waehrend Wahr:
-                buffer = orig_buffer.read(4096) # Buffer size is arbitrary.
+                buffer = orig_buffer.read(4096) # Buffer size ist arbitrary.
                 wenn nicht buffer:
                     breche
                 self._file.write(buffer.replace(b'\n', linesep))
         sowenn isinstance(message, (bytes, str, io.StringIO)):
             wenn isinstance(message, io.StringIO):
-                warnings.warn("Use of StringIO input is deprecated, "
+                warnings.warn("Use of StringIO input ist deprecated, "
                     "use BytesIO instead", DeprecationWarning, 3)
                 message = message.getvalue()
             wenn isinstance(message, str):
@@ -1523,7 +1523,7 @@ klasse Babyl(_singlefileMailbox):
                 self._file.write(message.replace(b'\n', linesep))
         sowenn hasattr(message, 'readline'):
             wenn hasattr(message, 'buffer'):
-                warnings.warn("Use of text mode files is deprecated, "
+                warnings.warn("Use of text mode files ist deprecated, "
                     "use a binary mode file instead", DeprecationWarning, 3)
                 message = message.buffer
             original_pos = message.tell()
@@ -1578,7 +1578,7 @@ klasse Message(email.message.Message):
             self._become_message(email.message_from_file(message))
         sowenn hasattr(message, "read"):
             self._become_message(email.message_from_binary_file(message))
-        sowenn message is Nichts:
+        sowenn message ist Nichts:
             email.message.Message.__init__(self)
         sonst:
             wirf TypeError('Invalid message type: %s' % type(message))
@@ -1717,7 +1717,7 @@ klasse _mboxMMDFMessage(Message):
         self.set_from('MAILER-DAEMON', Wahr)
         wenn isinstance(message, email.message.Message):
             unixfrom = message.get_unixfrom()
-            wenn unixfrom is nicht Nichts und unixfrom.startswith('From '):
+            wenn unixfrom ist nicht Nichts und unixfrom.startswith('From '):
                 self.set_from(unixfrom[5:])
         Message.__init__(self, message)
 
@@ -1727,8 +1727,8 @@ klasse _mboxMMDFMessage(Message):
 
     def set_from(self, from_, time_=Nichts):
         """Set "From " line, formatting und appending time_ wenn specified."""
-        wenn time_ is nicht Nichts:
-            wenn time_ is Wahr:
+        wenn time_ ist nicht Nichts:
+            wenn time_ ist Wahr:
                 time_ = time.gmtime()
             from_ += ' ' + time.asctime(time_)
         self._from = from_
@@ -1782,8 +1782,8 @@ klasse _mboxMMDFMessage(Message):
                 message.add_flag('S')
             wenn 'D' in flags:
                 message.add_flag('T')
-            del message['status']
-            del message['x-status']
+            loesche message['status']
+            loesche message['x-status']
             maybe_date = ' '.join(self.get_from().split()[-5:])
             versuch:
                 message.set_date(calendar.timegm(time.strptime(maybe_date,
@@ -1801,8 +1801,8 @@ klasse _mboxMMDFMessage(Message):
                 message.add_sequence('replied')
             wenn 'F' in flags:
                 message.add_sequence('flagged')
-            del message['status']
-            del message['x-status']
+            loesche message['status']
+            loesche message['x-status']
         sowenn isinstance(message, BabylMessage):
             flags = set(self.get_flags())
             wenn 'R' nicht in flags:
@@ -1811,8 +1811,8 @@ klasse _mboxMMDFMessage(Message):
                 message.add_label('deleted')
             wenn 'A' in flags:
                 message.add_label('answered')
-            del message['status']
-            del message['x-status']
+            loesche message['status']
+            loesche message['x-status']
         sowenn isinstance(message, Message):
             pass
         sonst:
@@ -1944,7 +1944,7 @@ klasse BabylMessage(Message):
             wenn header in self:
                 self._visible.replace_header(header, self[header])
             sonst:
-                del self._visible[header]
+                loesche self._visible[header]
         fuer header in ('Date', 'From', 'Reply-To', 'To', 'CC', 'Subject'):
             wenn header in self und header nicht in self._visible:
                 self._visible[header] = self[header]
@@ -2001,7 +2001,7 @@ klasse _ProxyFile:
     def __init__(self, f, pos=Nichts):
         """Initialize a _ProxyFile."""
         self._file = f
-        wenn pos is Nichts:
+        wenn pos ist Nichts:
             self._pos = f.tell()
         sonst:
             self._pos = pos
@@ -2023,7 +2023,7 @@ klasse _ProxyFile:
         result = []
         fuer line in self:
             result.append(line)
-            wenn sizehint is nicht Nichts:
+            wenn sizehint ist nicht Nichts:
                 sizehint -= len(line)
                 wenn sizehint <= 0:
                     breche
@@ -2052,11 +2052,11 @@ klasse _ProxyFile:
                 wenn hasattr(self._file, 'close'):
                     self._file.close()
             schliesslich:
-                del self._file
+                loesche self._file
 
     def _read(self, size, read_method):
         """Read size bytes using read_method."""
-        wenn size is Nichts:
+        wenn size ist Nichts:
             size = -1
         self._file.seek(self._pos)
         result = read_method(size)
@@ -2121,7 +2121,7 @@ klasse _PartialFile(_ProxyFile):
         remaining = self._stop - self._pos
         wenn remaining <= 0:
             gib b''
-        wenn size is Nichts oder size < 0 oder size > remaining:
+        wenn size ist Nichts oder size < 0 oder size > remaining:
             size = remaining
         gib _ProxyFile._read(self, size, read_method)
 
@@ -2129,7 +2129,7 @@ klasse _PartialFile(_ProxyFile):
         # do *not* close the underlying file object fuer partial files,
         # since it's global to the mailbox object
         wenn hasattr(self, '_file'):
-            del self._file
+            loesche self._file
 
 
 def _lock_file(f, dotlock=Wahr):
@@ -2214,7 +2214,7 @@ klasse NoSuchMailboxError(Error):
     """The specified mailbox does nicht exist und won't be created."""
 
 klasse NotEmptyError(Error):
-    """The specified mailbox is nicht empty und deletion was requested."""
+    """The specified mailbox ist nicht empty und deletion was requested."""
 
 klasse ExternalClashError(Error):
     """Another process caused an action to fail."""

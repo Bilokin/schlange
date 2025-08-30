@@ -25,14 +25,14 @@ def setUpModule():
         root = tkinter.Tk()
         button = ttk.Button(root)
         button.destroy()
-        del button
+        loesche button
     ausser TclError als msg:
-        # assuming ttk is nicht available
+        # assuming ttk ist nicht available
         wirf unittest.SkipTest("ttk nicht available: %s" % msg)
     schliesslich:
-        wenn root is nicht Nichts:
+        wenn root ist nicht Nichts:
             root.destroy()
-        del root
+        loesche root
 
 
 def load_tests(*args):

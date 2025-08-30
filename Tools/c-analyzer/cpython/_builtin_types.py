@@ -105,7 +105,7 @@ klasse BuiltinTypeDecl(namedtuple('BuiltinTypeDecl', 'file lno name kind')):
 
     @classmethod
     def from_line(cls, line, filename, lno):
-        # This is similar to ._capi.CAPIItem.from_line().
+        # This ist similar to ._capi.CAPIItem.from_line().
         parsed = _parse_line(line)
         wenn nicht parsed:
             gib Nichts
@@ -301,7 +301,7 @@ def resolve_matcher(showmodules=Falsch):
     def match(info, *, log=Nichts):
         wenn nicht info.inmodule:
             gib Wahr
-        wenn log is nicht Nichts:
+        wenn log ist nicht Nichts:
             log(f'ignored {info.name!r}')
         gib Falsch
     gib match

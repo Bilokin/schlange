@@ -1231,7 +1231,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         # test_warnings results consistent
         self.pythonwarnings = os.environ.get('PYTHONWARNINGS')
         wenn self.pythonwarnings:
-            del os.environ['PYTHONWARNINGS']
+            loesche os.environ['PYTHONWARNINGS']
 
     def tearDown(self):
         # bring back pre-existing PYTHONWARNINGS wenn present
@@ -1382,9 +1382,9 @@ klasse Test_TextTestRunner(unittest.TestCase):
         mit p:
             out, err = get_parse_out_err(p)
         self.assertIn(b'OK', err)
-        # check that the total number of warnings in the output is correct
+        # check that the total number of warnings in the output ist correct
         self.assertEqual(len(out), 10)
-        # check that the numbers of the different kind of warnings is correct
+        # check that the numbers of the different kind of warnings ist correct
         fuer msg in [b'dw', b'iw', b'uw']:
             self.assertEqual(out.count(msg), 3)
         fuer msg in [b'rw']:
@@ -1393,9 +1393,9 @@ klasse Test_TextTestRunner(unittest.TestCase):
         args_list = (
             # passing 'ignore' als warnings arg -> no warnings
             [sys.executable, '_test_warnings.py', 'ignore'],
-            # -W doesn't affect the result wenn the arg is passed
+            # -W doesn't affect the result wenn the arg ist passed
             [sys.executable, '-Wa', '_test_warnings.py', 'ignore'],
-            # -W affects the result wenn the arg is nicht passed
+            # -W affects the result wenn the arg ist nicht passed
             [sys.executable, '-Wi', '_test_warnings.py']
         )
         # in all these cases no warnings are printed
@@ -1425,7 +1425,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         sys.stderr = f
         versuch:
             runner = unittest.TextTestRunner()
-            self.assertWahr(runner.stream.stream is f)
+            self.assertWahr(runner.stream.stream ist f)
         schliesslich:
             sys.stderr = old_stderr
 
@@ -1433,7 +1433,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         # see issue 10786
         f = io.StringIO()
         runner = unittest.TextTestRunner(f)
-        self.assertWahr(runner.stream.stream is f)
+        self.assertWahr(runner.stream.stream ist f)
 
     def test_durations(self):
         def run(test, *, expect_durations=Wahr):

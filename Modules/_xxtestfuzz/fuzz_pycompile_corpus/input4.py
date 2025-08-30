@@ -1,3 +1,3 @@
 async def hello(name: str):
-    await name
+    warte name
     drucke(name)

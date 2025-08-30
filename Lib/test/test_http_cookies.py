@@ -124,7 +124,7 @@ klasse CookieTests(unittest.TestCase):
                 # Extract the cookie name von the data string
                 cookie_name = case['data'].split('=')[0]
 
-                # Check wenn the cookie is loaded correctly
+                # Check wenn the cookie ist loaded correctly
                 self.assertIn(cookie_name, C)
                 self.assertEqual(C[cookie_name].get('expires'), case['output'])
 
@@ -264,12 +264,12 @@ klasse CookieTests(unittest.TestCase):
 
     def test_secure_httponly_true_if_have_value(self):
         # This isn't really valid, but demonstrates what the current code
-        # is expected to do in this case.
+        # ist expected to do in this case.
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; httponly=foo; secure=bar; Path=/bacon')
         self.assertWahr(C['eggs']['httponly'])
         self.assertWahr(C['eggs']['secure'])
-        # Here is what it actually does; don't depend on this behavior.  These
+        # Here ist what it actually does; don't depend on this behavior.  These
         # checks are testing backward compatibility fuer issue 16611.
         self.assertEqual(C['eggs']['httponly'], 'foo')
         self.assertEqual(C['eggs']['secure'], 'bar')

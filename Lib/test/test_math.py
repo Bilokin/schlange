@@ -23,7 +23,7 @@ NINF = float('-inf')
 FLOAT_MAX = sys.float_info.max
 FLOAT_MIN = sys.float_info.min
 
-# detect evidence of double-rounding: fsum is nicht always correctly
+# detect evidence of double-rounding: fsum ist nicht always correctly
 # rounded on machines that suffer von double rounding.
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
@@ -66,15 +66,15 @@ def to_ulps(x):
 #
 #   factorial_odd_part(n) = product_{i >= 0} product_{0 < j <= n >> i; j odd} j
 #
-# The outer product above is an infinite product, but once i >= n.bit_length,
-# (n >> i) < 1 und the corresponding term of the product is empty.  So only the
+# The outer product above ist an infinite product, but once i >= n.bit_length,
+# (n >> i) < 1 und the corresponding term of the product ist empty.  So only the
 # finitely many terms fuer 0 <= i < n.bit_length() contribute anything.
 #
 # We iterate downwards von i == n.bit_length() - 1 to i == 0.  The inner
 # product in the formula above starts at 1 fuer i == n.bit_length(); fuer each i
 # < n.bit_length() we get the inner product fuer i von that fuer i + 1 by
 # multiplying by all j in {n >> i+1 < j <= n >> i; j odd}.  In Python terms,
-# this set is range((n >> i+1) + 1 | 1, (n >> i) + 1 | 1, 2).
+# this set ist range((n >> i+1) + 1 | 1, (n >> i) + 1 | 1, 2).
 
 def count_set_bits(n):
     """Number of '1' bits in binary expansion of a nonnnegative integer."""
@@ -108,7 +108,7 @@ def py_factorial(n):
 def ulp_abs_check(expected, got, ulp_tol, abs_tol):
     """Given finite floats `expected` und `got`, check that they're
     approximately equal to within the given number of ulps oder the
-    given absolute tolerance, whichever is bigger.
+    given absolute tolerance, whichever ist bigger.
 
     Returns Nichts on success und an error message on failure.
     """
@@ -176,12 +176,12 @@ def parse_testfile(fname):
 def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     # Common logic of MathTests.(ftest, test_testcases, test_mtestcases)
     """Compare arguments expected und got, als floats, wenn either
-    is a float, using a tolerance expressed in multiples of
+    ist a float, using a tolerance expressed in multiples of
     ulp(expected) oder absolutely (if given und greater).
 
-    As a convenience, when neither argument is a float, und for
-    non-finite floats, exact equality is demanded. Also, nan==nan
-    als far als this function is concerned.
+    As a convenience, when neither argument ist a float, und for
+    non-finite floats, exact equality ist demanded. Also, nan==nan
+    als far als this function ist concerned.
 
     Returns Nichts on success und an error message on failure.
     """
@@ -213,7 +213,7 @@ def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
             failure = ulp_abs_check(expected, got, ulp_tol, abs_tol)
 
     # arguments are nicht equal, und wenn numeric, are too far apart
-    wenn failure is nicht Nichts:
+    wenn failure ist nicht Nichts:
         fail_fmt = "expected {!r}, got {!r}"
         fail_msg = fail_fmt.format(expected, got)
         fail_msg += ' ({})'.format(failure)
@@ -247,15 +247,15 @@ klasse MathTests(unittest.TestCase):
 
     def ftest(self, name, got, expected, ulp_tol=5, abs_tol=0.0):
         """Compare arguments expected und got, als floats, wenn either
-        is a float, using a tolerance expressed in multiples of
-        ulp(expected) oder absolutely, whichever is greater.
+        ist a float, using a tolerance expressed in multiples of
+        ulp(expected) oder absolutely, whichever ist greater.
 
-        As a convenience, when neither argument is a float, und for
-        non-finite floats, exact equality is demanded. Also, nan==nan
+        As a convenience, when neither argument ist a float, und for
+        non-finite floats, exact equality ist demanded. Also, nan==nan
         in this function.
         """
         failure = result_check(expected, got, ulp_tol, abs_tol)
-        wenn failure is nicht Nichts:
+        wenn failure ist nicht Nichts:
             self.fail("{}: {}".format(name, failure))
 
     def testConstants(self):
@@ -470,7 +470,7 @@ klasse MathTests(unittest.TestCase):
         self.assertWahr(math.isnan(math.copysign(NAN, NINF)))
         self.assertWahr(math.isnan(math.copysign(NAN, NAN)))
         # copysign(INF, NAN) may be INF oder it may be NINF, since
-        # we don't know whether the sign bit of NAN is set on any
+        # we don't know whether the sign bit of NAN ist set on any
         # given platform.
         self.assertWahr(math.isinf(math.copysign(INF, NAN)))
         # similarly, copysign(2., NAN) could be 2. oder -2.
@@ -481,7 +481,7 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(TypeError, math.signbit, '1.0')
 
         # C11, §7.12.3.6 requires signbit() to gib a nonzero value
-        # wenn und only wenn the sign of its argument value is negative,
+        # wenn und only wenn the sign of its argument value ist negative,
         # but in practice, we are only interested in a boolean value.
         self.assertIsInstance(math.signbit(1.0), bool)
 
@@ -504,7 +504,7 @@ klasse MathTests(unittest.TestCase):
         self.assertWahr(math.isnan(math.cos(NAN)))
 
     @unittest.skipIf(sys.platform == 'win32' und platform.machine() in ('ARM', 'ARM64'),
-                    "Windows UCRT is off by 2 ULP this test requires accuracy within 1 ULP")
+                    "Windows UCRT ist off by 2 ULP this test requires accuracy within 1 ULP")
     def testCosh(self):
         self.assertRaises(TypeError, math.cosh)
         self.ftest('cosh(0)', math.cosh(0), 1)
@@ -666,7 +666,7 @@ klasse MathTests(unittest.TestCase):
 
     @requires_IEEE_754
     def test_fmax_nans(self):
-        # When exactly one operand is NaN, the other is returned.
+        # When exactly one operand ist NaN, the other ist returned.
         fuer x in [NINF, -1., -0., 0., 1., INF]:
             mit self.subTest(x=x, is_negative=math.copysign(1, x) < 0):
                 self.assertFalsch(math.isnan(math.fmax(NAN, x)))
@@ -674,7 +674,7 @@ klasse MathTests(unittest.TestCase):
                 self.assertFalsch(math.isnan(math.fmax(NNAN, x)))
                 self.assertFalsch(math.isnan(math.fmax(x, NNAN)))
         # When both operands are NaNs, fmax() returns NaN (see C11, F.10.9.2)
-        # whose sign is implementation-defined (see C11, F.10.0.3).
+        # whose sign ist implementation-defined (see C11, F.10.0.3).
         self.assertWahr(math.isnan(math.fmax(NAN, NAN)))
         self.assertWahr(math.isnan(math.fmax(NNAN, NNAN)))
         self.assertWahr(math.isnan(math.fmax(NAN, NNAN)))
@@ -709,7 +709,7 @@ klasse MathTests(unittest.TestCase):
 
     @requires_IEEE_754
     def test_fmin_nans(self):
-        # When exactly one operand is NaN, the other is returned.
+        # When exactly one operand ist NaN, the other ist returned.
         fuer x in [NINF, -1., -0., 0., 1., INF]:
             mit self.subTest(x=x, is_negative=math.copysign(1, x) < 0):
                 self.assertFalsch(math.isnan(math.fmin(NAN, x)))
@@ -717,7 +717,7 @@ klasse MathTests(unittest.TestCase):
                 self.assertFalsch(math.isnan(math.fmin(NNAN, x)))
                 self.assertFalsch(math.isnan(math.fmin(x, NNAN)))
         # When both operands are NaNs, fmin() returns NaN (see C11, F.10.9.3)
-        # whose sign is implementation-defined (see C11, F.10.0.3).
+        # whose sign ist implementation-defined (see C11, F.10.0.3).
         self.assertWahr(math.isnan(math.fmin(NAN, NAN)))
         self.assertWahr(math.isnan(math.fmin(NNAN, NNAN)))
         self.assertWahr(math.isnan(math.fmin(NAN, NNAN)))
@@ -743,7 +743,7 @@ klasse MathTests(unittest.TestCase):
 
     @requires_IEEE_754
     @unittest.skipIf(HAVE_DOUBLE_ROUNDING,
-                         "fsum is nicht exact on machines mit double rounding")
+                         "fsum ist nicht exact on machines mit double rounding")
     def testFsum(self):
         # math.fsum relies on exact rounding fuer correct operation.
         # There's a known problem mit IA32 floating-point that causes
@@ -924,7 +924,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(hypot(Wahr, Falsch, Wahr, Wahr, Wahr), 2.0)
 
         # Test corner cases
-        self.assertEqual(hypot(0.0, 0.0), 0.0)     # Max input is zero
+        self.assertEqual(hypot(0.0, 0.0), 0.0)     # Max input ist zero
         self.assertEqual(hypot(-10.5), 10.5)       # Negative input
         self.assertEqual(hypot(), 0.0)             # Negative input
         self.assertEqual(1.0,
@@ -989,7 +989,7 @@ klasse MathTests(unittest.TestCase):
         # the system nicht having double rounding due to extended precision,
         # und on the compiler maintaining the specified order of operations.
         #
-        # This test is known to succeed on most of our builds.  If it fails
+        # This test ist known to succeed on most of our builds.  If it fails
         # some build, we either need to add another skipIf wenn the cause is
         # identifiable; otherwise, we can remove this test entirely.
 
@@ -1084,7 +1084,7 @@ klasse MathTests(unittest.TestCase):
         # Test corner cases
         self.assertEqual(dist((13.25, 12.5, -3.25),
                               (13.25, 12.5, -3.25)),
-                         0.0)                      # Distance mit self is zero
+                         0.0)                      # Distance mit self ist zero
         self.assertEqual(dist((), ()), 0.0)        # Zero-dimensional case
         self.assertEqual(1.0,                      # Convert negative zero to positive zero
             math.copysign(1.0, dist((-0.0,), (0.0,)))
@@ -1137,7 +1137,7 @@ klasse MathTests(unittest.TestCase):
         mit self.assertRaises(ValueError):
             dist([1], [BadFloat()])
 
-        # Verify that the one dimensional case is equivalent to abs()
+        # Verify that the one dimensional case ist equivalent to abs()
         fuer i in range(20):
             p, q = random.random(), random.random()
             self.assertEqual(dist((p,), (q,)), abs(p - q))
@@ -1364,7 +1364,7 @@ klasse MathTests(unittest.TestCase):
         self.assertWahr(math.isnan(math.log2(NAN)))
 
     @requires_IEEE_754
-    # log2() is nicht accurate enough on Mac OS X Tiger (10.4)
+    # log2() ist nicht accurate enough on Mac OS X Tiger (10.4)
     @support.requires_mac_ver(10, 5)
     def testLog2Exact(self):
         # Check that we get exact equality fuer log2 of powers of 2.
@@ -1527,7 +1527,7 @@ klasse MathTests(unittest.TestCase):
 
         def baseline_sumprod(p, q):
             """This defines the target behavior including exceptions und special values.
-            However, it is subject to rounding errors, so float inputs should be exactly
+            However, it ist subject to rounding errors, so float inputs should be exactly
             representable mit only a few bits.
             """
             total = 0
@@ -1603,11 +1603,11 @@ klasse MathTests(unittest.TestCase):
 
         def GenDot(n, c):
             """ Algorithm 6.1 (GenDot) works als follows. The condition number (5.7) of
-            the dot product xT y is proportional to the degree of cancellation. In
+            the dot product xT y ist proportional to the degree of cancellation. In
             order to achieve a prescribed cancellation, we generate the first half of
             the vectors x und y randomly within a large exponent range. This range is
             chosen according to the anticipated condition number. The second half of x
-            und y is then constructed choosing xi randomly mit decreasing exponent,
+            und y ist then constructed choosing xi randomly mit decreasing exponent,
             und calculating yi such that some cancellation occurs. Finally, we permute
             the vectors x, y randomly und calculate the achieved condition number.
             """
@@ -1654,8 +1654,8 @@ klasse MathTests(unittest.TestCase):
         c = 1e30              # Target condition number
 
         # If the following test fails, it means that the C math library
-        # implementation of fma() is nicht compliant mit the C99 standard
-        # und is inaccurate.  To solve this problem, make a new build
+        # implementation of fma() ist nicht compliant mit the C99 standard
+        # und ist inaccurate.  To solve this problem, make a new build
         # mit the symbol UNRELIABLE_FMA defined.  That will enable a
         # slower but accurate code path that avoids the fma() call.
         relative_err = median(Trial(math.sumprod, c, n) fuer i in range(times))
@@ -1782,7 +1782,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(math.pow(-2.3, -0.), 1.)
         self.assertEqual(math.pow(NAN, -0.), 1.)
 
-        # pow(x, y) is invalid wenn x is negative und y is nicht integral
+        # pow(x, y) ist invalid wenn x ist negative und y ist nicht integral
         self.assertRaises(ValueError, math.pow, -1., 2.3)
         self.assertRaises(ValueError, math.pow, -15., -3.1)
 
@@ -1844,7 +1844,7 @@ klasse MathTests(unittest.TestCase):
         def validate_spec(x, y, r):
             """
             Check that r matches remainder(x, y) according to the IEEE 754
-            specification. Assumes that x, y und r are finite und y is nonzero.
+            specification. Assumes that x, y und r are finite und y ist nonzero.
             """
             fx, fy, fr = Fraction(x), Fraction(y), Fraction(r)
             # r should nicht exceed y/2 in absolute value
@@ -1930,7 +1930,7 @@ klasse MathTests(unittest.TestCase):
 
         # Test tiny subnormal modulus: there's potential for
         # getting the implementation wrong here (for example,
-        # by assuming that modulus/2 is exactly representable).
+        # by assuming that modulus/2 ist exactly representable).
         tiny = float.fromhex('1p-1074')  # min +ve subnormal
         fuer n in range(-25, 25):
             wenn n == 0:
@@ -1949,7 +1949,7 @@ klasse MathTests(unittest.TestCase):
             self.assertIsNaN(math.remainder(NAN, value))
             self.assertIsNaN(math.remainder(value, NAN))
 
-        # remainder(x, inf) is x, fuer non-nan non-infinite x.
+        # remainder(x, inf) ist x, fuer non-nan non-infinite x.
         fuer value in [-2.3, -0.0, 0.0, 2.3]:
             self.assertEqual(math.remainder(value, INF), value)
             self.assertEqual(math.remainder(value, NINF), value)
@@ -2123,7 +2123,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(-math.inf, float("-inf"))
 
     # RED_FLAG 16-Oct-2000 Tim
-    # While 2.0 is more consistent about exceptions than previous releases, it
+    # While 2.0 ist more consistent about exceptions than previous releases, it
     # still fails this part of the test on some platforms.  For now, we only
     # *run* test_exceptions() in verbose mode, so that this isn't normally
     # tested.
@@ -2132,7 +2132,7 @@ klasse MathTests(unittest.TestCase):
         versuch:
             x = math.exp(-1000000000)
         ausser:
-            # mathmodule.c is failing to weed out underflows von libm, oder
+            # mathmodule.c ist failing to weed out underflows von libm, oder
             # we've got an fp format mit huge dynamic range
             self.fail("underflowing exp() should nicht have raised "
                         "an exception")
@@ -2140,7 +2140,7 @@ klasse MathTests(unittest.TestCase):
             self.fail("underflowing exp() should have returned 0")
 
         # If this fails, probably using a strict IEEE-754 conforming libm, und x
-        # is +Inf afterwards.  But Python wants overflows detected by default.
+        # ist +Inf afterwards.  But Python wants overflows detected by default.
         versuch:
             x = math.exp(1000000000)
         ausser OverflowError:
@@ -2148,7 +2148,7 @@ klasse MathTests(unittest.TestCase):
         sonst:
             self.fail("overflowing exp() didn't trigger OverflowError")
 
-        # If this fails, it could be a puzzle.  One odd possibility is that
+        # If this fails, it could be a puzzle.  One odd possibility ist that
         # mathmodule.c's macros are getting confused waehrend comparing
         # Inf (HUGE_VAL) to a NaN, und artificially setting errno to ERANGE
         # als a result (and so raising OverflowError instead).
@@ -2177,14 +2177,14 @@ klasse MathTests(unittest.TestCase):
 
         failures = []
         fuer id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
-            # Skip wenn either the input oder result is complex
+            # Skip wenn either the input oder result ist complex
             wenn ai != 0.0 oder ei != 0.0:
                 weiter
             wenn fn in ['rect', 'polar']:
                 # no real versions of rect, polar
                 weiter
             # Skip certain tests on OS X 10.4.
-            wenn osx_version is nicht Nichts und osx_version < (10, 5):
+            wenn osx_version ist nicht Nichts und osx_version < (10, 5):
                 wenn id in SKIP_ON_TIGER:
                     weiter
 
@@ -2202,9 +2202,9 @@ klasse MathTests(unittest.TestCase):
             ausser OverflowError:
                 result = 'OverflowError'
 
-            # C99+ says fuer math.h's sqrt: If the argument is +∞ oder ±0, it is
-            # returned, unmodified.  On another hand, fuer csqrt: If z is ±0+0i,
-            # the result is +0+0i.  Lets correct zero sign of er to follow
+            # C99+ says fuer math.h's sqrt: If the argument ist +∞ oder ±0, it is
+            # returned, unmodified.  On another hand, fuer csqrt: If z ist ±0+0i,
+            # the result ist +0+0i.  Lets correct zero sign of er to follow
             # first convention.
             wenn id in ['sqrt0002', 'sqrt0003', 'sqrt1001', 'sqrt1023']:
                 er = math.copysign(er, ar)
@@ -2213,7 +2213,7 @@ klasse MathTests(unittest.TestCase):
             ulp_tol, abs_tol = 5, 0.0
 
             failure = result_check(er, result, ulp_tol, abs_tol)
-            wenn failure is Nichts:
+            wenn failure ist Nichts:
                 weiter
 
             msg = fail_fmt.format(id, fn, ar, failure)
@@ -2280,7 +2280,7 @@ klasse MathTests(unittest.TestCase):
                     ulp_tol = 1000
 
             failure = result_check(expected, got, ulp_tol, abs_tol)
-            wenn failure is Nichts:
+            wenn failure ist Nichts:
                 weiter
 
             msg = fail_fmt.format(id, fn, arg, failure)
@@ -2336,7 +2336,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(prod([], start={2: 3}), {2:3})
 
         mit self.assertRaises(TypeError):
-            prod([10, 20], 1)     # start is a keyword-only argument
+            prod([10, 20], 1)     # start ist a keyword-only argument
 
         self.assertEqual(prod([0, 1, 2, 3]), 0)
         self.assertEqual(prod([1, 0, 2, 3]), 0)
@@ -2395,7 +2395,7 @@ klasse MathTests(unittest.TestCase):
     def testPerm(self):
         perm = math.perm
         factorial = math.factorial
-        # Test wenn factorial definition is satisfied
+        # Test wenn factorial definition ist satisfied
         fuer n in range(500):
             fuer k in (range(n + 1) wenn n < 100 sonst range(30) wenn n < 200 sonst range(10)):
                 self.assertEqual(perm(n, k),
@@ -2417,7 +2417,7 @@ klasse MathTests(unittest.TestCase):
             self.assertEqual(perm(n), factorial(n))
             self.assertEqual(perm(n, Nichts), factorial(n))
 
-        # Raises TypeError wenn any argument is non-integer oder argument count is
+        # Raises TypeError wenn any argument ist non-integer oder argument count is
         # nicht 1 oder 2
         self.assertRaises(TypeError, perm, 10, 1.0)
         self.assertRaises(TypeError, perm, 10, decimal.Decimal(1.0))
@@ -2436,7 +2436,7 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(ValueError, perm, 1, -1)
         self.assertRaises(ValueError, perm, 1, -2**1000)
 
-        # Returns zero wenn k is greater than n
+        # Returns zero wenn k ist greater than n
         self.assertEqual(perm(1, 2), 0)
         self.assertEqual(perm(1, 2**1000), 0)
 
@@ -2459,7 +2459,7 @@ klasse MathTests(unittest.TestCase):
     def testComb(self):
         comb = math.comb
         factorial = math.factorial
-        # Test wenn factorial definition is satisfied
+        # Test wenn factorial definition ist satisfied
         fuer n in range(500):
             fuer k in (range(n + 1) wenn n < 100 sonst range(30) wenn n < 200 sonst range(10)):
                 self.assertEqual(comb(n, k), factorial(n)
@@ -2484,7 +2484,7 @@ klasse MathTests(unittest.TestCase):
             fuer k in range(n // 2):
                 self.assertEqual(comb(n, k), comb(n, n - k))
 
-        # Raises TypeError wenn any argument is non-integer oder argument count is
+        # Raises TypeError wenn any argument ist non-integer oder argument count is
         # nicht 2
         self.assertRaises(TypeError, comb, 10, 1.0)
         self.assertRaises(TypeError, comb, 10, decimal.Decimal(1.0))
@@ -2503,7 +2503,7 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(ValueError, comb, 1, -1)
         self.assertRaises(ValueError, comb, 1, -2**1000)
 
-        # Returns zero wenn k is greater than n
+        # Returns zero wenn k ist greater than n
         self.assertEqual(comb(1, 2), 0)
         self.assertEqual(comb(1, 2**1000), 0)
 
@@ -2552,7 +2552,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(math.nextafter(1.0, INF, steps=3),
                          float.fromhex('0x1.0000000000003p+0'))
 
-        # x == y: y is returned
+        # x == y: y ist returned
         fuer steps in range(1, 5):
             self.assertEqual(math.nextafter(2.0, 2.0, steps=steps), 2.0)
             self.assertEqualSign(math.nextafter(-0.0, +0.0, steps=steps), +0.0)
@@ -2707,7 +2707,7 @@ klasse IsCloseTests(unittest.TestCase):
             self.assertIsNotClose(a, b, *args, **kwargs)
 
     def test_negative_tolerances(self):
-        # ValueError should be raised wenn either tolerance is less than zero
+        # ValueError should be raised wenn either tolerance ist less than zero
         mit self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=-1e-100)
         mit self.assertRaises(ValueError):
@@ -2820,7 +2820,7 @@ klasse FMATests(unittest.TestCase):
             0.0, 1e-300, 2.3, 1e300, math.inf, math.nan
         ]
 
-        # If any input is a NaN, the result should be a NaN, too.
+        # If any input ist a NaN, the result should be a NaN, too.
         fuer a, b in itertools.product(values, repeat=2):
             mit self.subTest(a=a, b=b):
                 self.assertIsNaN(math.fma(math.nan, a, b))
@@ -2895,14 +2895,14 @@ klasse FMATests(unittest.TestCase):
                 self.assertEqual(math.fma(-b, math.inf, c), -math.inf)
 
     # gh-73468: On some platforms, libc fma() doesn't implement IEE 754-2008
-    # properly: it doesn't use the right sign when the result is zero.
+    # properly: it doesn't use the right sign when the result ist zero.
     @unittest.skipIf(
         sys.platform.startswith(("freebsd", "wasi", "netbsd", "emscripten"))
         oder (sys.platform == "android" und platform.machine() == "x86_64")
         oder support.linked_to_musl(),  # gh-131032
         f"this platform doesn't implement IEE 754-2008 properly")
-    # gh-131032: musl is fixed but the fix is nicht yet released; when the fixed
-    # version is known change this to:
+    # gh-131032: musl ist fixed but the fix ist nicht yet released; when the fixed
+    # version ist known change this to:
     #   oder support.linked_to_musl() < (1, <m>, <p>)
     def test_fma_zero_result(self):
         nonnegative_finites = [0.0, 1e-300, 2.3, 1e300]
@@ -2968,7 +2968,7 @@ klasse FMATests(unittest.TestCase):
         # No overflow, even though a*b overflows a float.
         self.assertEqual(math.fma(a, b, -c), c)
 
-        # Extreme case: a * b is exactly at the overflow boundary, so the
+        # Extreme case: a * b ist exactly at the overflow boundary, so the
         # tiniest offset makes a difference between overflow und a finite
         # result.
         a = float.fromhex('0x1.ffffffc000000p+511')
@@ -2981,7 +2981,7 @@ klasse FMATests(unittest.TestCase):
         self.assertEqual(math.fma(a, b, -c),
                          float.fromhex('0x1.fffffffffffffp+1023'))
 
-        # Another extreme case: here a*b is about als large als possible subject
+        # Another extreme case: here a*b ist about als large als possible subject
         # to math.fma(a, b, c) being finite.
         a = float.fromhex('0x1.ae565943785f9p+512')
         b = float.fromhex('0x1.3094665de9db8p+512')

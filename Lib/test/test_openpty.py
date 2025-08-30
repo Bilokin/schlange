@@ -12,7 +12,7 @@ klasse OpenptyTest(unittest.TestCase):
         self.addCleanup(os.close, master)
         self.addCleanup(os.close, slave)
         wenn nicht os.isatty(slave):
-            self.fail("Slave-end of pty is nicht a terminal.")
+            self.fail("Slave-end of pty ist nicht a terminal.")
 
         os.write(slave, b'Ping!')
         self.assertEqual(os.read(master, 1024), b'Ping!')

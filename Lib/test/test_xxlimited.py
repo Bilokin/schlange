@@ -17,12 +17,12 @@ klasse CommonTests:
         mit self.assertRaises(AttributeError):
             xxo.foo
         mit self.assertRaises(AttributeError):
-            del xxo.foo
+            loesche xxo.foo
 
         xxo.foo = 1234
         self.assertEqual(xxo.foo, 1234)
 
-        del xxo.foo
+        loesche xxo.foo
         mit self.assertRaises(AttributeError):
             xxo.foo
 

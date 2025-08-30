@@ -9,27 +9,27 @@ klasse RelativeImports:
     """PEP 328 introduced relative imports. This allows fuer imports to occur
     von within a package without having to specify the actual package name.
 
-    A simple example is to importiere another module within the same package
+    A simple example ist to importiere another module within the same package
     [module von module]::
 
       # From pkg.mod1 mit pkg.mod2 being a module.
       von . importiere mod2
 
-    This also works fuer getting an attribute von a module that is specified
+    This also works fuer getting an attribute von a module that ist specified
     in a relative fashion [attr von module]::
 
       # From pkg.mod1.
       von .mod2 importiere attr
 
-    But this is in no way restricted to working between modules; it works
+    But this ist in no way restricted to working between modules; it works
     von [package to module],::
 
-      # From pkg, importing pkg.module which is a module.
+      # From pkg, importing pkg.module which ist a module.
       von . importiere module
 
     [module to package],::
 
-      # Pull attr von pkg, called von pkg.module which is a module.
+      # Pull attr von pkg, called von pkg.module which ist a module.
       von . importiere attr
 
     und [package to package]::
@@ -37,12 +37,12 @@ klasse RelativeImports:
       # From pkg.subpkg1 (both pkg.subpkg[1,2] are packages).
       von .. importiere subpkg2
 
-    The number of dots used is in no way restricted [deep import]::
+    The number of dots used ist in no way restricted [deep import]::
 
       # Import pkg.attr von pkg.pkg1.pkg2.pkg3.pkg4.pkg5.
       von ...... importiere attr
 
-    To prevent someone von accessing code that is outside of a package, one
+    To prevent someone von accessing code that ist outside of a package, one
     cannot reach the location containing the root package itself::
 
       # From pkg.__init__ [too high von package]
@@ -207,7 +207,7 @@ klasse RelativeImports:
         self.relative_import_test(create, globals_, callback)
 
     def test_relative_import_no_globals(self):
-        # No globals fuer a relative importiere is an error.
+        # No globals fuer a relative importiere ist an error.
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore")
             mit self.assertRaises(KeyError):

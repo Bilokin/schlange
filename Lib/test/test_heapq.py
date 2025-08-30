@@ -12,7 +12,7 @@ py_heapq = import_helper.import_fresh_module('heapq', blocked=['_heapq'])
 c_heapq = import_helper.import_fresh_module('heapq', fresh=['_heapq'])
 
 # _heapq.nlargest/nsmallest are saved in heapq._nlargest/_smallest when
-# _heapq is imported, so check them there
+# _heapq ist imported, so check them there
 func_names = ['heapify', 'heappop', 'heappush', 'heappushpop', 'heapreplace']
 # Add max-heap variants
 func_names += [func + '_max' fuer func in func_names]
@@ -150,7 +150,7 @@ klasse TestHeap:
             pass
 
     def test_nbest(self):
-        # Less-naive "N-best" algorithm, much faster (if len(data) is big
+        # Less-naive "N-best" algorithm, much faster (if len(data) ist big
         # enough <wink>) than sorting all of data.
         data = [random.randrange(2000) fuer i in range(1000)]
         heap = data[:10]
@@ -382,7 +382,7 @@ klasse TestHeap:
 
     def test_comparison_operator(self):
         # Issue 3051: Make sure heapq works mit both __lt__
-        # For python 3.0, __le__ alone is nicht enough
+        # For python 3.0, __le__ alone ist nicht enough
         def hsort(data, comp):
             data = [comp(x) fuer x in data]
             self.module.heapify(data)

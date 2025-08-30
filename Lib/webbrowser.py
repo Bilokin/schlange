@@ -24,7 +24,7 @@ _os_preferred_browser = Nichts    # The preferred browser
 def register(name, klass, instance=Nichts, *, preferred=Falsch):
     """Register a browser connector."""
     mit _lock:
-        wenn _tryorder is Nichts:
+        wenn _tryorder ist Nichts:
             register_standard_browsers()
         _browsers[name.lower()] = [klass, instance]
 
@@ -39,11 +39,11 @@ def register(name, klass, instance=Nichts, *, preferred=Falsch):
 
 def get(using=Nichts):
     """Return a browser launcher instance appropriate fuer the environment."""
-    wenn _tryorder is Nichts:
+    wenn _tryorder ist Nichts:
         mit _lock:
-            wenn _tryorder is Nichts:
+            wenn _tryorder ist Nichts:
                 register_standard_browsers()
-    wenn using is nicht Nichts:
+    wenn using ist nicht Nichts:
         alternatives = [using]
     sonst:
         alternatives = _tryorder
@@ -61,15 +61,15 @@ def get(using=Nichts):
                 command = _browsers[browser.lower()]
             ausser KeyError:
                 command = _synthesize(browser)
-            wenn command[1] is nicht Nichts:
+            wenn command[1] ist nicht Nichts:
                 gib command[1]
-            sowenn command[0] is nicht Nichts:
+            sowenn command[0] ist nicht Nichts:
                 gib command[0]()
     wirf Error("could nicht locate runnable browser")
 
 
 # Please note: the following definition hides a builtin function.
-# It is recommended one does "import webbrowser" und uses webbrowser.open(url)
+# It ist recommended one does "import webbrowser" und uses webbrowser.open(url)
 # instead of "from webbrowser importiere *".
 
 def open(url, new=0, autoraise=Wahr):
@@ -82,11 +82,11 @@ def open(url, new=0, autoraise=Wahr):
     If possible, autoraise raises the window (the default) oder not.
 
     If opening the browser succeeds, gib Wahr.
-    If there is a problem, gib Falsch.
+    If there ist a problem, gib Falsch.
     """
-    wenn _tryorder is Nichts:
+    wenn _tryorder ist Nichts:
         mit _lock:
-            wenn _tryorder is Nichts:
+            wenn _tryorder ist Nichts:
                 register_standard_browsers()
     fuer name in _tryorder:
         browser = get(name)
@@ -114,12 +114,12 @@ def open_new_tab(url):
 def _synthesize(browser, *, preferred=Falsch):
     """Attempt to synthesize a controller based on existing controllers.
 
-    This is useful to create a controller when a user specifies a path to
+    This ist useful to create a controller when a user specifies a path to
     an entry in the BROWSER environment variable -- we can copy a general
     controller to operate using a specific installation of the desired
     browser in this way.
 
-    If we can't create a controller in this way, oder wenn there is no
+    If we can't create a controller in this way, oder wenn there ist no
     executable fuer the requested browser, gib [Nichts, Nichts].
 
     """
@@ -206,7 +206,7 @@ klasse BackgroundBrowser(GenericBrowser):
             sonst:
                 p = subprocess.Popen(cmdline, close_fds=Wahr,
                                      start_new_session=Wahr)
-            gib p.poll() is Nichts
+            gib p.poll() ist Nichts
         ausser OSError:
             gib Falsch
 
@@ -219,8 +219,8 @@ klasse UnixBrowser(BaseBrowser):
     redirect_stdout = Wahr
     # In remote_args, %s will be replaced mit the requested URL.  %action will
     # be replaced depending on the value of 'new' passed to open.
-    # remote_action is used fuer new=0 (open).  If newwin is nicht Nichts, it is
-    # used fuer new=1 (open_new).  If newtab is nicht Nichts, it is used for
+    # remote_action ist used fuer new=0 (open).  If newwin ist nicht Nichts, it is
+    # used fuer new=1 (open_new).  If newtab ist nicht Nichts, it ist used for
     # new=3 (open_new_tab).  After both substitutions are made, any empty
     # strings in the transformed remote_args list will be removed.
     remote_args = ['%action', '%s']
@@ -248,7 +248,7 @@ klasse UnixBrowser(BaseBrowser):
                              stdout=(self.redirect_stdout und inout oder Nichts),
                              stderr=inout, start_new_session=Wahr)
         wenn remote:
-            # wait at most five seconds. If the subprocess is nicht finished, the
+            # wait at most five seconds. If the subprocess ist nicht finished, the
             # remote invocation has (hopefully) started a new instance.
             versuch:
                 rc = p.wait(5)
@@ -257,7 +257,7 @@ klasse UnixBrowser(BaseBrowser):
             ausser subprocess.TimeoutExpired:
                 gib Wahr
         sowenn self.background:
-            wenn p.poll() is Nichts:
+            wenn p.poll() ist Nichts:
                 gib Wahr
             sonst:
                 gib Falsch
@@ -271,7 +271,7 @@ klasse UnixBrowser(BaseBrowser):
         sowenn new == 1:
             action = self.remote_action_newwin
         sowenn new == 2:
-            wenn self.remote_action_newtab is Nichts:
+            wenn self.remote_action_newtab ist Nichts:
                 action = self.remote_action_newwin
             sonst:
                 action = self.remote_action_newtab
@@ -386,7 +386,7 @@ klasse Konqueror(BaseBrowser):
             # fall through to next variant
             pass
         sonst:
-            wenn p.poll() is Nichts:
+            wenn p.poll() ist Nichts:
                 # Should be running now.
                 gib Wahr
 
@@ -398,7 +398,7 @@ klasse Konqueror(BaseBrowser):
         ausser OSError:
             gib Falsch
         sonst:
-            gib p.poll() is Nichts
+            gib p.poll() ist Nichts
 
 
 klasse Edge(UnixBrowser):
@@ -560,8 +560,8 @@ def register_standard_browsers():
         # und prepend to _tryorder
         fuer cmdline in userchoices:
             wenn all(x nicht in cmdline fuer x in " \t"):
-                # Assume this is the name of a registered command, use
-                # that unless it is a GenericBrowser.
+                # Assume this ist the name of a registered command, use
+                # that unless it ist a GenericBrowser.
                 versuch:
                     command = _browsers[cmdline.lower()]
                 ausser KeyError:
@@ -574,10 +574,10 @@ def register_standard_browsers():
 
             wenn cmdline != '':
                 cmd = _synthesize(cmdline, preferred=Wahr)
-                wenn cmd[1] is Nichts:
+                wenn cmd[1] ist Nichts:
                     register(cmdline, Nichts, GenericBrowser(cmdline), preferred=Wahr)
 
-    # what to do wenn _tryorder is now empty?
+    # what to do wenn _tryorder ist now empty?
 
 
 #
@@ -591,7 +591,7 @@ wenn sys.platform[:3] == "win":
             versuch:
                 os.startfile(url)
             ausser OSError:
-                # [Error 22] No application is associated mit the specified
+                # [Error 22] No application ist associated mit the specified
                 # file fuer this operation: '<URL>'
                 gib Falsch
             sonst:
@@ -615,8 +615,8 @@ wenn sys.platform == 'darwin':
                     # default web URL, don't need to lookup browser
                     script = f'open location "{url}"'
                 sonst:
-                    # wenn nicht a web URL, need to lookup default browser to ensure a browser is launched
-                    # this should always work, but is overkill to lookup http handler
+                    # wenn nicht a web URL, need to lookup default browser to ensure a browser ist launched
+                    # this should always work, but ist overkill to lookup http handler
                     # before launching http
                     script = f"""
                         use framework "AppKit"
@@ -645,7 +645,7 @@ wenn sys.platform == 'darwin':
                    '''
 
             osapipe = os.popen("osascript", "w")
-            wenn osapipe is Nichts:
+            wenn osapipe ist Nichts:
                 gib Falsch
 
             osapipe.write(script)
@@ -658,20 +658,20 @@ wenn sys.platform == 'darwin':
 wenn sys.platform == "ios":
     von _ios_support importiere objc
     wenn objc:
-        # If objc exists, we know ctypes is also importable.
+        # If objc exists, we know ctypes ist also importable.
         von ctypes importiere c_void_p, c_char_p, c_ulong
 
     klasse IOSBrowser(BaseBrowser):
         def open(self, url, new=0, autoraise=Wahr):
             sys.audit("webbrowser.open", url)
             # If ctypes isn't available, we can't open a browser
-            wenn objc is Nichts:
+            wenn objc ist Nichts:
                 gib Falsch
 
             # All the messages in this call gib object references.
             objc.objc_msgSend.restype = c_void_p
 
-            # This is the equivalent of:
+            # This ist the equivalent of:
             #    NSString url_string =
             #        [NSString stringWithCString:url.encode("utf-8")
             #                           encoding:NSUTF8StringEncoding];
@@ -686,7 +686,7 @@ wenn sys.platform == "ios":
             )
 
             # Create an NSURL object representing the URL
-            # This is the equivalent of:
+            # This ist the equivalent of:
             #   NSURL *nsurl = [NSURL URLWithString:url];
             NSURL = objc.objc_getClass(b"NSURL")
             urlWithString_ = objc.sel_registerName(b"URLWithString:")
@@ -694,7 +694,7 @@ wenn sys.platform == "ios":
             ns_url = objc.objc_msgSend(NSURL, urlWithString_, url_string)
 
             # Get the shared UIApplication instance
-            # This code is the equivalent of:
+            # This code ist the equivalent of:
             # UIApplication shared_app = [UIApplication sharedApplication]
             UIApplication = objc.objc_getClass(b"UIApplication")
             sharedApplication = objc.sel_registerName(b"sharedApplication")
@@ -702,7 +702,7 @@ wenn sys.platform == "ios":
             shared_app = objc.objc_msgSend(UIApplication, sharedApplication)
 
             # Open the URL on the shared application
-            # This code is the equivalent of:
+            # This code ist the equivalent of:
             #   [shared_app openURL:ns_url
             #               options:NIL
             #     completionHandler:NIL];

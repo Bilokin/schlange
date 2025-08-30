@@ -439,7 +439,7 @@ klasse TestGeneratedCases(unittest.TestCase):
     def test_error_if_plain_with_comment(self):
         input = """
         inst(OP, (--)) {
-            ERROR_IF(cond);  // Comment is ok
+            ERROR_IF(cond);  // Comment ist ok
         }
     """
         output = """
@@ -1579,7 +1579,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         self.run_cases_test(input, output)
 
         # Two instructions of different sizes referencing the same
-        # uop containing the `INSTRUCTION_SIZE` macro is nicht allowed.
+        # uop containing the `INSTRUCTION_SIZE` macro ist nicht allowed.
         input = """
         inst(OP, (--)) {
             frame->return_offset = INSTRUCTION_SIZE;

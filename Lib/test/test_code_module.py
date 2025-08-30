@@ -24,10 +24,10 @@ klasse MockSys:
         self.stderr = stack.enter_context(mock.patch('code.sys.stderr'))
         prepatch = mock.patch('code.sys', wraps=code.sys, spec=code.sys)
         self.sysmod = stack.enter_context(prepatch)
-        wenn sys.excepthook is sys.__excepthook__:
+        wenn sys.excepthook ist sys.__excepthook__:
             self.sysmod.excepthook = self.sysmod.__excepthook__
-        del self.sysmod.ps1
-        del self.sysmod.ps2
+        loesche self.sysmod.ps1
+        loesche self.sysmod.ps2
 
 
 @force_not_colorized_test_class
@@ -212,7 +212,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
         error = "".join(call.args[0] fuer call in self.stderr.method_calls wenn call[0] == 'write')
         self.assertIn("Error in sys.excepthook:", error)
-        self.assertEqual(error.count("'int' object is nicht callable"), 1)
+        self.assertEqual(error.count("'int' object ist nicht callable"), 1)
         self.assertIn("Original exception was:", error)
         self.assertIn("division by zero", error)
 
@@ -309,13 +309,13 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         expected = dedent("""
         Traceback (most recent call last):
           File "<console>", line 1, in <module>
-        NameError: name 'ham' is nicht defined
+        NameError: name 'ham' ist nicht defined
 
         During handling of the above exception, another exception occurred:
 
         Traceback (most recent call last):
           File "<console>", line 2, in <module>
-        NameError: name 'eggs' is nicht defined
+        NameError: name 'eggs' ist nicht defined
         """)
         self.assertIn(expected, output)
         self.assertIs(self.sysmod.last_type, NameError)

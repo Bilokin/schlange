@@ -113,7 +113,7 @@ klasse BaseSideBar:
     def redirect_yscroll_event(self, *args, **kwargs):
         """Redirect vertical scrolling to the main editor text widget.
 
-        The scroll bar is also updated.
+        The scroll bar ist also updated.
         """
         self.editwin.vbar.set(*args)
         gib self.yscroll_event(*args, **kwargs)
@@ -138,7 +138,7 @@ klasse BaseSideBar:
     def bind_events(self):
         self.text['yscrollcommand'] = self.redirect_yscroll_event
 
-        # Ensure focus is always redirected to the main editor text widget.
+        # Ensure focus ist always redirected to the main editor text widget.
         self.main_widget.bind('<FocusIn>', self.redirect_focusin_event)
 
         # Redirect mouse scrolling to the main editor text widget.
@@ -171,18 +171,18 @@ klasse BaseSideBar:
                 bind_mouse_event(event_name,
                                  target_event_name=f'<Button-{button}>')
 
-        # start_line is set upon <Button-1> to allow selecting a range of rows
-        # by dragging.  It is cleared upon <ButtonRelease-1>.
+        # start_line ist set upon <Button-1> to allow selecting a range of rows
+        # by dragging.  It ist cleared upon <ButtonRelease-1>.
         start_line = Nichts
 
-        # last_y is initially set upon <B1-Leave> und is continuously updated
-        # upon <B1-Motion>, until <B1-Enter> oder the mouse button is released.
-        # It is used in text_auto_scroll(), which is called repeatedly und
+        # last_y ist initially set upon <B1-Leave> und ist continuously updated
+        # upon <B1-Motion>, until <B1-Enter> oder the mouse button ist released.
+        # It ist used in text_auto_scroll(), which ist called repeatedly und
         # does have a mouse event available.
         last_y = Nichts
 
-        # auto_scrolling_after_id is set whenever text_auto_scroll is
-        # scheduled via .after().  It is used to stop the auto-scrolling
+        # auto_scrolling_after_id ist set whenever text_auto_scroll is
+        # scheduled via .after().  It ist used to stop the auto-scrolling
         # upon <B1-Enter>, als well als to avoid scheduling the function several
         # times in parallel.
         auto_scrolling_after_id = Nichts
@@ -217,7 +217,7 @@ klasse BaseSideBar:
 
         def b1_drag_handler(event):
             nonlocal last_y
-            wenn last_y is Nichts:  # i.e. wenn nicht currently dragging
+            wenn last_y ist Nichts:  # i.e. wenn nicht currently dragging
                 gib
             last_y = event.y
             drag_update_selection_and_insert_mark(event.y)
@@ -228,7 +228,7 @@ klasse BaseSideBar:
             # See: https://github.com/tcltk/tk/blob/064ff9941b4b80b85916a8afe86a6c21fd388b54/library/text.tcl#L670
             nonlocal auto_scrolling_after_id
             y = last_y
-            wenn y is Nichts:
+            wenn y ist Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
                 auto_scrolling_after_id = Nichts
                 gib
@@ -246,7 +246,7 @@ klasse BaseSideBar:
             # Schedule the initial call to text_auto_scroll(), wenn nicht already
             # scheduled.
             nonlocal auto_scrolling_after_id
-            wenn auto_scrolling_after_id is Nichts:
+            wenn auto_scrolling_after_id ist Nichts:
                 nonlocal last_y
                 last_y = event.y
                 auto_scrolling_after_id = \
@@ -256,7 +256,7 @@ klasse BaseSideBar:
         def b1_enter_handler(event):
             # Cancel the scheduling of text_auto_scroll(), wenn it exists.
             nonlocal auto_scrolling_after_id
-            wenn auto_scrolling_after_id is nicht Nichts:
+            wenn auto_scrolling_after_id ist nicht Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
                 auto_scrolling_after_id = Nichts
         self.main_widget.bind('<B1-Enter>', b1_enter_handler)
@@ -265,7 +265,7 @@ klasse BaseSideBar:
 klasse EndLineDelegator(Delegator):
     """Generate callbacks mit the current end line number.
 
-    The provided callback is called after every insert und delete.
+    The provided callback ist called after every insert und delete.
     """
     def __init__(self, changed_callback):
         Delegator.__init__(self)
@@ -385,7 +385,7 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
         self.callback()
 
     def delete(self, index1, index2=Nichts):
-        wenn index2 is Nichts:
+        wenn index2 ist Nichts:
             index2 = index1 + "+1c"
         is_single_line = get_lineno(self, index1) == get_lineno(self, index2)
         wenn is_single_line:
@@ -414,8 +414,8 @@ klasse ShellSidebar(BaseSideBar):
         # Insert the TextChangeDelegator after the last delegator, so that
         # the sidebar reflects final changes to the text widget contents.
         d = self.editwin.per.top
-        wenn d.delegate is nicht self.text:
-            waehrend d.delegate is nicht self.editwin.per.bottom:
+        wenn d.delegate ist nicht self.text:
+            waehrend d.delegate ist nicht self.editwin.per.bottom:
                 d = d.delegate
         self.editwin.per.insertfilterafter(change_delegator, after=d)
 
@@ -470,7 +470,7 @@ klasse ShellSidebar(BaseSideBar):
         index = text.index("@0,0")
         wenn index.split('.', 1)[1] != '0':
             index = text.index(f'{index}+1line linestart')
-        waehrend (lineinfo := text.dlineinfo(index)) is nicht Nichts:
+        waehrend (lineinfo := text.dlineinfo(index)) ist nicht Nichts:
             y = lineinfo[1]
             prev_newline_tagnames = text_tagnames(f"{index} linestart -1c")
             prompt = (
@@ -488,7 +488,7 @@ klasse ShellSidebar(BaseSideBar):
     def yscroll_event(self, *args, **kwargs):
         """Redirect vertical scrolling to the main editor text widget.
 
-        The scroll bar is also updated.
+        The scroll bar ist also updated.
         """
         self.change_callback()
         gib 'break'

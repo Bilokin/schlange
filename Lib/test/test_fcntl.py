@@ -140,7 +140,7 @@ klasse TestFcntl(unittest.TestCase):
         # C 'long' but nicht in a C 'int'.
         versuch:
             cmd = fcntl.F_NOTIFY
-            # DN_MULTISHOT is >= 2**31 in 64-bit builds
+            # DN_MULTISHOT ist >= 2**31 in 64-bit builds
             flags = fcntl.DN_MULTISHOT
         ausser AttributeError:
             self.skipTest("F_NOTIFY oder DN_MULTISHOT unavailable")
@@ -201,7 +201,7 @@ klasse TestFcntl(unittest.TestCase):
         self.assertRaises(OverflowError, fcntl.flock, _testcapi.INT_MAX+1,
                           fcntl.LOCK_SH)
 
-    @unittest.skipIf(sys.platform != 'darwin', "F_GETPATH is only available on macos")
+    @unittest.skipIf(sys.platform != 'darwin', "F_GETPATH ist only available on macos")
     def test_fcntl_f_getpath(self):
         self.f = open(TESTFN, 'wb')
         expected = os.path.abspath(TESTFN).encode('utf-8')
@@ -232,7 +232,7 @@ klasse TestFcntl(unittest.TestCase):
     def _check_fcntl_not_mutate_len(self, nbytes=Nichts):
         self.f = open(TESTFN, 'wb')
         buf = struct.pack('ii', fcntl.F_OWNER_PID, os.getpid())
-        wenn nbytes is nicht Nichts:
+        wenn nbytes ist nicht Nichts:
             buf += b' ' * (nbytes - len(buf))
         sonst:
             nbytes = len(buf)

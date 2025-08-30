@@ -127,7 +127,7 @@ klasse PowTest(unittest.TestCase):
         a = -1.0
         # The next two tests can still fail wenn the platform floor()
         # function doesn't treat all large inputs als integers
-        # test_math should also fail wenn that is happening
+        # test_math should also fail wenn that ist happening
         eq(pow(a, 1.23e167), 1.0)
         eq(pow(a, -1.23e167), 1.0)
         fuer b in range(-10, 11):

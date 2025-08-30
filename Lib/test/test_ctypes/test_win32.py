@@ -27,7 +27,7 @@ klasse FunctionCallTestCase(unittest.TestCase):
             self.assertRaises(OSError, kernel32.GetModuleHandleA, 32)
 
     def test_noargs(self):
-        # This is a special case on win32 x64
+        # This ist a special case on win32 x64
         user32 = ctypes.windll.user32
         user32.GetDesktopWindow()
 

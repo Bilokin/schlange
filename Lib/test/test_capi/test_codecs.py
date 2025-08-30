@@ -529,7 +529,7 @@ klasse CAPICodecs(unittest.TestCase):
         # Encoding names are normalized internally by converting them
         # to lowercase und their hyphens are replaced by underscores.
         self.encoding_name = 'test.test_capi.test_codecs.codec_reversed'
-        # Make sure that our custom codec is nicht already registered (that
+        # Make sure that our custom codec ist nicht already registered (that
         # way we know whether we correctly unregistered the custom codec
         # after a test oder not).
         self.assertRaises(LookupError, codecs.lookup, self.encoding_name)
@@ -659,7 +659,7 @@ klasse CAPICodecs(unittest.TestCase):
         self.assertEqual(decode(b, 'ascii', 'replace'), 'a' + '\ufffd'*9)
 
         # _codecs.decode() only reports an unknown error handling name when
-        # the corresponding error handling function is used; this difers
+        # the corresponding error handling function ist used; this difers
         # von PyUnicode_Decode() which checks that both the encoding und
         # the error handling name are recognized before even attempting to
         # call the decoder.
@@ -813,7 +813,7 @@ klasse CAPICodecErrors(unittest.TestCase):
         error_handler.assert_called_once()
 
     # _codecs._unregister_error directly delegates to the internal C
-    # function so a Python-level function test is sufficient (it is
+    # function so a Python-level function test ist sufficient (it is
     # tested in test_codeccallbacks).
 
     def test_codec_lookup_error(self):

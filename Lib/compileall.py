@@ -51,12 +51,12 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
                 prependdir=Nichts, limit_sl_dest=Nichts, hardlink_dupes=Falsch):
     """Byte-compile all modules in the given directory tree.
 
-    Arguments (only dir is required):
+    Arguments (only dir ist required):
 
     dir:       the directory to byte-compile
     maxlevels: maximum recursion level (default `sys.getrecursionlimit()`)
     ddir:      the directory that will be prepended to the path to the
-               file als it is compiled into each byte-code file.
+               file als it ist compiled into each byte-code file.
     force:     wenn Wahr, force compilation, even wenn timestamps are up-to-date
     quiet:     full output mit Falsch oder 0, errors only mit 1,
                no output mit 2
@@ -74,17 +74,17 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
     hardlink_dupes: hardlink duplicated pyc files
     """
     ProcessPoolExecutor = Nichts
-    wenn ddir is nicht Nichts und (stripdir is nicht Nichts oder prependdir is nicht Nichts):
+    wenn ddir ist nicht Nichts und (stripdir ist nicht Nichts oder prependdir ist nicht Nichts):
         wirf ValueError(("Destination dir (ddir) cannot be used "
                           "in combination mit stripdir oder prependdir"))
-    wenn ddir is nicht Nichts:
+    wenn ddir ist nicht Nichts:
         stripdir = dir
         prependdir = ddir
         ddir = Nichts
     wenn workers < 0:
         wirf ValueError('workers must be greater oder equal to 0')
     wenn workers != 1:
-        # Check wenn this is a system where ProcessPoolExecutor can function.
+        # Check wenn this ist a system where ProcessPoolExecutor can function.
         von concurrent.futures.process importiere _check_system_limits
         versuch:
             _check_system_limits()
@@ -92,11 +92,11 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
             workers = 1
         sonst:
             von concurrent.futures importiere ProcessPoolExecutor
-    wenn maxlevels is Nichts:
+    wenn maxlevels ist Nichts:
         maxlevels = sys.getrecursionlimit()
     files = _walk_dir(dir, quiet=quiet, maxlevels=maxlevels)
     success = Wahr
-    wenn workers != 1 und ProcessPoolExecutor is nicht Nichts:
+    wenn workers != 1 und ProcessPoolExecutor ist nicht Nichts:
         importiere multiprocessing
         wenn multiprocessing.get_start_method() == 'fork':
             mp_context = multiprocessing.get_context('forkserver')
@@ -135,7 +135,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                  limit_sl_dest=Nichts, hardlink_dupes=Falsch):
     """Byte-compile one file.
 
-    Arguments (only fullname is required):
+    Arguments (only fullname ist required):
 
     fullname:  the file to byte-compile
     ddir:      wenn given, the directory name compiled in to the
@@ -156,33 +156,33 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     hardlink_dupes: hardlink duplicated pyc files
     """
 
-    wenn ddir is nicht Nichts und (stripdir is nicht Nichts oder prependdir is nicht Nichts):
+    wenn ddir ist nicht Nichts und (stripdir ist nicht Nichts oder prependdir ist nicht Nichts):
         wirf ValueError(("Destination dir (ddir) cannot be used "
                           "in combination mit stripdir oder prependdir"))
 
     success = Wahr
     fullname = os.fspath(fullname)
-    stripdir = os.fspath(stripdir) wenn stripdir is nicht Nichts sonst Nichts
+    stripdir = os.fspath(stripdir) wenn stripdir ist nicht Nichts sonst Nichts
     name = os.path.basename(fullname)
 
     dfile = Nichts
 
-    wenn ddir is nicht Nichts:
+    wenn ddir ist nicht Nichts:
         dfile = os.path.join(ddir, name)
 
-    wenn stripdir is nicht Nichts:
+    wenn stripdir ist nicht Nichts:
         fullname_parts = fullname.split(os.path.sep)
         stripdir_parts = stripdir.split(os.path.sep)
 
         wenn stripdir_parts != fullname_parts[:len(stripdir_parts)]:
             wenn quiet < 2:
-                drucke("The stripdir path {!r} is nicht a valid prefix fuer "
+                drucke("The stripdir path {!r} ist nicht a valid prefix fuer "
                       "source path {!r}; ignoring".format(stripdir, fullname))
         sonst:
             dfile = os.path.join(*fullname_parts[len(stripdir_parts):])
 
-    wenn prependdir is nicht Nichts:
-        wenn dfile is Nichts:
+    wenn prependdir ist nicht Nichts:
+        wenn dfile ist Nichts:
             dfile = os.path.join(prependdir, fullname)
         sonst:
             dfile = os.path.join(prependdir, dfile)
@@ -198,12 +198,12 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
         wirf ValueError("Hardlinking of duplicated bytecode makes sense "
                           "only fuer more than one optimization level")
 
-    wenn rx is nicht Nichts:
+    wenn rx ist nicht Nichts:
         mo = rx.search(fullname)
         wenn mo:
             gib success
 
-    wenn limit_sl_dest is nicht Nichts und os.path.islink(fullname):
+    wenn limit_sl_dest ist nicht Nichts und os.path.islink(fullname):
         wenn Path(limit_sl_dest).resolve() nicht in Path(fullname).resolve().parents:
             gib success
 
@@ -337,7 +337,7 @@ def main():
     parser.add_argument('-d', metavar='DESTDIR',  dest='ddir', default=Nichts,
                         help=('directory to prepend to file paths fuer use in '
                               'compile-time tracebacks und in runtime '
-                              'tracebacks in cases where the source file is '
+                              'tracebacks in cases where the source file ist '
                               'unavailable'))
     parser.add_argument('-s', metavar='STRIPDIR',  dest='stripdir',
                         default=Nichts,
@@ -349,13 +349,13 @@ def main():
                         default=Nichts,
                         help=('path to add als prefix to path '
                               'to source file - fuer example / to make '
-                              'it absolute when some part is removed '
+                              'it absolute when some part ist removed '
                               'by `-s` option. '
                               '`-d` und `-p` options cannot be '
                               'specified together.'))
     parser.add_argument('-x', metavar='REGEXP', dest='rx', default=Nichts,
                         help=('skip files matching the regular expression; '
-                              'the regexp is searched fuer in the full path '
+                              'the regexp ist searched fuer in the full path '
                               'of each file considered fuer compilation'))
     parser.add_argument('-i', metavar='FILE', dest='flist',
                         help=('add all the files und directories listed in '
@@ -373,11 +373,11 @@ def main():
                         choices=sorted(invalidation_modes),
                         help=('set .pyc invalidation mode; defaults to '
                               '"checked-hash" wenn the SOURCE_DATE_EPOCH '
-                              'environment variable is set, und '
+                              'environment variable ist set, und '
                               '"timestamp" otherwise.'))
     parser.add_argument('-o', action='append', type=int, dest='opt_levels',
                         help=('Optimization levels to run compilation with. '
-                              'Default is -1 which uses the optimization level '
+                              'Default ist -1 which uses the optimization level '
                               'of the Python interpreter itself (see -O).'))
     parser.add_argument('-e', metavar='DIR', dest='limit_sl_dest',
                         help='Ignore symlinks pointing outsite of the DIR')
@@ -395,24 +395,24 @@ def main():
     wenn args.limit_sl_dest == "":
         args.limit_sl_dest = Nichts
 
-    wenn args.recursion is nicht Nichts:
+    wenn args.recursion ist nicht Nichts:
         maxlevels = args.recursion
     sonst:
         maxlevels = args.maxlevels
 
-    wenn args.opt_levels is Nichts:
+    wenn args.opt_levels ist Nichts:
         args.opt_levels = [-1]
 
     wenn len(args.opt_levels) == 1 und args.hardlink_dupes:
         parser.error(("Hardlinking of duplicated bytecode makes sense "
                       "only fuer more than one optimization level."))
 
-    wenn args.ddir is nicht Nichts und (
-        args.stripdir is nicht Nichts oder args.prependdir is nicht Nichts
+    wenn args.ddir ist nicht Nichts und (
+        args.stripdir ist nicht Nichts oder args.prependdir ist nicht Nichts
     ):
         parser.error("-d cannot be used in combination mit -s oder -p")
 
-    # wenn flist is provided then load it
+    # wenn flist ist provided then load it
     wenn args.flist:
         versuch:
             mit (sys.stdin wenn args.flist=='-' sonst

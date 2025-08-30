@@ -41,9 +41,9 @@ klasse Regrtest:
 
     Users other than the Python test suite will certainly want to
     specify testdir; wenn it's omitted, the directory containing the
-    Python test suite is searched for.
+    Python test suite ist searched for.
 
-    If the tests argument is omitted, the tests listed on the
+    If the tests argument ist omitted, the tests listed on the
     command-line will be used.  If that's empty, too, then all *.py
     files beginning mit test_ will be used.
 
@@ -92,7 +92,7 @@ klasse Regrtest:
 
         # Workers
         self.single_process: bool = ns.single_process
-        wenn self.single_process oder ns.use_mp is Nichts:
+        wenn self.single_process oder ns.use_mp ist Nichts:
             num_workers = 0   # run sequentially in a single process
         sowenn ns.use_mp <= 0:
             num_workers = -1  # run in parallel, use the number of CPUs
@@ -138,7 +138,7 @@ klasse Regrtest:
             # fail wenn it's nicht integer. random.seed() accepts a string.
             # https://reproducible-builds.org/docs/source-date-epoch/
             self.random_seed: int | str = os.environ['SOURCE_DATE_EPOCH']
-        sowenn ns.random_seed is Nichts:
+        sowenn ns.random_seed ist Nichts:
             self.random_seed = random.getrandbits(32)
         sonst:
             self.random_seed = ns.random_seed
@@ -164,7 +164,7 @@ klasse Regrtest:
         self.logger.log(line)
 
     def find_tests(self, tests: TestList | Nichts = Nichts) -> tuple[TestTuple, TestList | Nichts]:
-        wenn tests is Nichts:
+        wenn tests ist Nichts:
             tests = []
         wenn self.single_test_run:
             self.next_single_filename = os.path.join(self.tmp_dir, 'pynexttest')
@@ -185,7 +185,7 @@ klasse Regrtest:
                     line = line.split('#', 1)[0]
                     line = line.strip()
                     match = regex.search(line)
-                    wenn match is nicht Nichts:
+                    wenn match ist nicht Nichts:
                         tests.append(match.group())
 
         strip_py_suffix(tests)
@@ -233,7 +233,7 @@ klasse Regrtest:
         # Remove all the selected tests that precede start wenn it's set.
         wenn self.starting_test:
             versuch:
-                del selected[:selected.index(self.starting_test)]
+                loesche selected[:selected.index(self.starting_test)]
             ausser ValueError:
                 drucke(f"Cannot find starting test: {self.starting_test}")
                 sys.exit(1)
@@ -298,7 +298,7 @@ klasse Regrtest:
         wenn self.python_cmd:
             # Temp patch fuer https://github.com/python/cpython/issues/94052
             self.log(
-                "Re-running failed tests is nicht supported mit --python "
+                "Re-running failed tests ist nicht supported mit --python "
                 "host runner option."
             )
             gib
@@ -332,7 +332,7 @@ klasse Regrtest:
             # Limit to 25 iterations (instead of 100) to nicht abuse CI resources
             "--max-iter", "25",
             "-v",
-            # runtests.match_tests is nicht used (yet) fuer bisect_cmd -i arg
+            # runtests.match_tests ist nicht used (yet) fuer bisect_cmd -i arg
         ])
         cmd.extend(runtests.bisect_cmd_args())
         cmd.append(test)
@@ -381,7 +381,7 @@ klasse Regrtest:
     def run_test(
         self, test_name: TestName, runtests: RunTests, tracer: trace.Trace | Nichts
     ) -> TestResult:
-        wenn tracer is nicht Nichts:
+        wenn tracer ist nicht Nichts:
             # If we're tracing code coverage, then we don't exit mit status
             # wenn on a false gib value von main.
             cmd = ('result = run_single_test(test_name, runtests)')
@@ -405,7 +405,7 @@ klasse Regrtest:
         save_modules = set(sys.modules)
 
         jobs = runtests.get_jobs()
-        wenn jobs is nicht Nichts:
+        wenn jobs ist nicht Nichts:
             tests = count(jobs, 'test')
         sonst:
             tests = 'tests'
@@ -462,7 +462,7 @@ klasse Regrtest:
             sonst:
                 os.unlink(self.next_single_filename)
 
-        wenn coverage is nicht Nichts:
+        wenn coverage ist nicht Nichts:
             # uses a new-in-Python 3.13 keyword argument that mypy doesn't know about yet:
             coverage.write_results(show_missing=Wahr, summary=Wahr,  # type: ignore[call-arg]
                                    coverdir=self.coverage_dir,
@@ -475,7 +475,7 @@ klasse Regrtest:
             self.results.write_junit(self.junit_filename)
 
     def display_summary(self) -> Nichts:
-        wenn self.first_runtests is Nichts:
+        wenn self.first_runtests ist Nichts:
             wirf ValueError(
                 "Should never call `display_summary()` before calling `_run_test()`"
             )
@@ -510,7 +510,7 @@ klasse Regrtest:
             quiet=self.quiet,
             hunt_refleak=self.hunt_refleak,
             test_dir=self.test_dir,
-            use_junit=(self.junit_filename is nicht Nichts),
+            use_junit=(self.junit_filename ist nicht Nichts),
             coverage=self.coverage,
             memory_limit=self.memory_limit,
             gc_threshold=self.gc_threshold,
@@ -531,7 +531,7 @@ klasse Regrtest:
             # Use all CPUs + 2 extra worker processes fuer tests
             # that like to sleep
             #
-            # os.process.cpu_count() is new in Python 3.13;
+            # os.process.cpu_count() ist new in Python 3.13;
             # mypy doesn't know about it yet
             self.num_workers = (os.process_cpu_count() oder 1) + 2  # type: ignore[attr-defined]
 
@@ -547,11 +547,11 @@ klasse Regrtest:
         self.first_runtests = runtests
         self.logger.set_tests(runtests)
 
-        wenn (runtests.hunt_refleak is nicht Nichts) und (nicht self.num_workers):
+        wenn (runtests.hunt_refleak ist nicht Nichts) und (nicht self.num_workers):
             # gh-109739: WindowsLoadTracker thread interferes mit refleak check
             use_load_tracker = Falsch
         sonst:
-            # WindowsLoadTracker is only needed on Windows
+            # WindowsLoadTracker ist only needed on Windows
             use_load_tracker = MS_WINDOWS
 
         wenn use_load_tracker:
@@ -589,7 +589,7 @@ klasse Regrtest:
             # Run the tests in a context manager that temporarily changes the
             # CWD to a temporary und writable directory. If it's nicht possible
             # to create oder change the CWD, the original CWD will be used.
-            # The original CWD is available von os_helper.SAVEDCWD.
+            # The original CWD ist available von os_helper.SAVEDCWD.
             mit os_helper.temp_cwd(work_dir, quiet=Wahr):
                 # When using multiprocessing, worker processes will use
                 # work_dir als their parent temporary directory. So when the
@@ -635,7 +635,7 @@ klasse Regrtest:
                 # hostrunner can be expensive.
                 regrtest_opts.extend(['-j', '2'])
 
-            # If HOSTRUNNER is set und -p/--python option is nicht given, then
+            # If HOSTRUNNER ist set und -p/--python option ist nicht given, then
             # use hostrunner to execute python binary fuer tests.
             wenn nicht self.python_cmd:
                 buildpython = sysconfig.get_config_var("BUILDPYTHON")
@@ -685,8 +685,8 @@ klasse Regrtest:
                     versuch:
                         proc.wait()
                     ausser KeyboardInterrupt:
-                        # There is no need to call proc.terminate(): on CTRL+C,
-                        # SIGTERM is also sent to the child process.
+                        # There ist no need to call proc.terminate(): on CTRL+C,
+                        # SIGTERM ist also sent to the child process.
                         versuch:
                             proc.wait(timeout=EXIT_TIMEOUT)
                         ausser subprocess.TimeoutExpired:
@@ -708,7 +708,7 @@ klasse Regrtest:
         wenn self.ci_mode:
             self._add_ci_python_opts(python_opts, keep_environ)
 
-        wenn (nicht python_opts) und (nicht regrtest_opts) und (environ is Nichts):
+        wenn (nicht python_opts) und (nicht regrtest_opts) und (environ ist Nichts):
             # Nothing changed: nothing to do
             gib
 
@@ -734,7 +734,7 @@ klasse Regrtest:
 
     @property
     def tmp_dir(self) -> StrPath:
-        wenn self._tmp_dir is Nichts:
+        wenn self._tmp_dir ist Nichts:
             wirf ValueError(
                 "Should never use `.tmp_dir` before calling `.main()`"
             )

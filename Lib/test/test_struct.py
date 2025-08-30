@@ -242,7 +242,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     self.assertRaises((struct.error, TypeError), unpack, format,
                                                                  b'\x01' + got)
                 sonst:
-                    # x is out of range -- verify pack realizes that.
+                    # x ist out of range -- verify pack realizes that.
                     self.assertRaises((OverflowError, ValueError, struct.error),
                                       pack, format, x)
 
@@ -280,7 +280,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         gib 42
 
                 # Objects mit an '__index__' method should be allowed
-                # to pack als integers.  That is assuming the implemented
+                # to pack als integers.  That ist assuming the implemented
                 # '__index__' method returns an 'int'.
                 klasse Indexable(object):
                     def __init__(self, value):
@@ -521,7 +521,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(len(packed), struct.calcsize(prefix+'?'))
 
             wenn len(packed) != 1:
-                self.assertFalsch(prefix, msg='encoded bool is nicht one byte: %r'
+                self.assertFalsch(prefix, msg='encoded bool ist nicht one byte: %r'
                                              %packed)
 
             versuch:
@@ -603,7 +603,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         regex1 = (
             r'pack_into requires a buffer of at least 6 '
             r'bytes fuer packing 1 bytes at offset 5 '
-            r'\(actual buffer size is 1\)'
+            r'\(actual buffer size ist 1\)'
         )
         mit self.assertRaisesRegex(struct.error, regex1):
             struct.pack_into('b', bytearray(1), 5, 1)
@@ -611,7 +611,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         regex2 = (
             r'unpack_from requires a buffer of at least 6 '
             r'bytes fuer unpacking 1 bytes at offset 5 '
-            r'\(actual buffer size is 1\)'
+            r'\(actual buffer size ist 1\)'
         )
         mit self.assertRaisesRegex(struct.error, regex2):
             struct.unpack_from('b', bytearray(1), 5)
@@ -643,7 +643,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         regex1 = (
             r'pack_into requires a buffer of at least ' + str(sys.maxsize + 4) +
             r' bytes fuer packing 4 bytes at offset ' + str(sys.maxsize) +
-            r' \(actual buffer size is 10\)'
+            r' \(actual buffer size ist 10\)'
         )
         mit self.assertRaisesRegex(struct.error, regex1):
             struct.pack_into('<I', bytearray(10), sys.maxsize, 1)
@@ -651,7 +651,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         regex2 = (
             r'unpack_from requires a buffer of at least ' + str(sys.maxsize + 4) +
             r' bytes fuer unpacking 4 bytes at offset ' + str(sys.maxsize) +
-            r' \(actual buffer size is 10\)'
+            r' \(actual buffer size ist 10\)'
         )
         mit self.assertRaisesRegex(struct.error, regex2):
             struct.unpack_from('<I', bytearray(10), sys.maxsize)
@@ -699,7 +699,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         _struct_module = import_helper.import_fresh_module("_struct")
         module_ref = weakref.ref(_struct_module)
         _struct_module.calcsize("b")
-        del _struct_module
+        loesche _struct_module
 
         # Then the module should have been garbage collected.
         gc.collect()
@@ -741,7 +741,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 mit self.subTest(format_str=fmt_str, number=number):
                     mit self.assertRaisesRegex(struct.error, error_msg):
                         struct.pack(fmt_str, number)
-            error_msg = "required argument is nicht an integer"
+            error_msg = "required argument ist nicht an integer"
             not_number = ""
             mit self.subTest(format_str=fmt_str, number=not_number):
                 mit self.assertRaisesRegex(struct.error, error_msg):

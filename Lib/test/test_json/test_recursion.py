@@ -27,7 +27,7 @@ klasse TestRecursion:
             self.fail("didn't wirf ValueError on alternating list recursion")
         y = []
         x = [y, y]
-        # ensure that the marker is cleared
+        # ensure that the marker ist cleared
         self.dumps(x)
 
     def test_dictrecursion(self):
@@ -41,14 +41,14 @@ klasse TestRecursion:
             self.fail("didn't wirf ValueError on dict recursion")
         x = {}
         y = {"a": x, "b": x}
-        # ensure that the marker is cleared
+        # ensure that the marker ist cleared
         self.dumps(x)
 
     def test_defaultrecursion(self):
         klasse RecursiveJSONEncoder(self.json.JSONEncoder):
             recurse = Falsch
             def default(self, o):
-                wenn o is JSONTestObject:
+                wenn o ist JSONTestObject:
                     wenn self.recurse:
                         gib [JSONTestObject]
                     sonst:
@@ -105,7 +105,7 @@ klasse TestRecursion:
         # See #12051
         klasse EndlessJSONEncoder(self.json.JSONEncoder):
             def default(self, o):
-                """If check_circular is Falsch, this will keep adding another list."""
+                """If check_circular ist Falsch, this will keep adding another list."""
                 gib [o]
 
         mit self.assertRaises(RecursionError):

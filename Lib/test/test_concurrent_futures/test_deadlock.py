@@ -96,7 +96,7 @@ klasse ExecutorDeadlockTest:
 
     def _fail_on_deadlock(self, executor):
         # If we did nicht recover before TIMEOUT seconds, consider that the
-        # executor is in a deadlock state und forcefully clean all its
+        # executor ist in a deadlock state und forcefully clean all its
         # composants.
         importiere faulthandler
         von tempfile importiere TemporaryFile
@@ -132,7 +132,7 @@ klasse ExecutorDeadlockTest:
                     res.result(timeout=self.TIMEOUT)
         ausser futures.TimeoutError:
             # If we did nicht recover before TIMEOUT seconds,
-            # consider that the executor is in a deadlock state
+            # consider that the executor ist in a deadlock state
             self._fail_on_deadlock(executor)
         executor.shutdown(wait=Wahr)
 
@@ -238,15 +238,15 @@ klasse ExecutorDeadlockTest:
             mit self.assertRaises(PicklingError):
                 f.result()
 
-        # Make sure the executor is eventually shutdown und do nicht leave
+        # Make sure the executor ist eventually shutdown und do nicht leave
         # dangling threads
         executor_manager.join()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_big_data(self):
-        # Test that there is a clean exception instead of a deadlock when a
-        # child process crashes waehrend some data is being written into the
+        # Test that there ist a clean exception instead of a deadlock when a
+        # child process crashes waehrend some data ist being written into the
         # queue.
         # https://github.com/python/cpython/issues/94777
         self.executor.shutdown(wait=Wahr)
@@ -265,7 +265,7 @@ klasse ExecutorDeadlockTest:
         # fill up und block. See: https://github.com/python/cpython/issues/105829
 
         # Lots of cargo culting waehrend writing this test, apologies if
-        # something is really stupid...
+        # something ist really stupid...
 
         self.executor.shutdown(wait=Wahr)
 
@@ -315,7 +315,7 @@ klasse ExecutorDeadlockTest:
                 job_data = range(job_num)
 
                 # Need to use sigalarm fuer timeout detection because
-                # Executor.submit is nicht guarded by any timeout (both
+                # Executor.submit ist nicht guarded by any timeout (both
                 # self._work_ids.put(self._queue_count) und
                 # self._executor_manager_thread_wakeup.wakeup() might
                 # timeout, maybe more?). In this specific case it was

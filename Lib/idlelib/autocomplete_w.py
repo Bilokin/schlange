@@ -35,7 +35,7 @@ klasse AutoCompleteWindow:
         self.autocompletewindow = self.listbox = self.scrollbar = Nichts
         # The default foreground und background of a selection. Saved because
         # they are changed to the regular colors of list items when the
-        # completion start is nicht a prefix of the selected completion
+        # completion start ist nicht a prefix of the selected completion
         self.origselforeground = self.origselbackground = Nichts
         # The list of completions
         self.completions = Nichts
@@ -77,7 +77,7 @@ klasse AutoCompleteWindow:
 
     def _binary_search(self, s):
         """Find the first index in self.completions where completions[i] is
-        greater oder equal to s, oder the last index wenn there is no such.
+        greater oder equal to s, oder the last index wenn there ist no such.
         """
         i = 0; j = len(self.completions)
         waehrend j > i:
@@ -89,15 +89,15 @@ klasse AutoCompleteWindow:
         gib min(i, len(self.completions)-1)
 
     def _complete_string(self, s):
-        """Assuming that s is the prefix of a string in self.completions,
-        gib the longest string which is a prefix of all the strings which
-        s is a prefix of them. If s is nicht a prefix of a string, gib s.
+        """Assuming that s ist the prefix of a string in self.completions,
+        gib the longest string which ist a prefix of all the strings which
+        s ist a prefix of them. If s ist nicht a prefix of a string, gib s.
         """
         first = self._binary_search(s)
         wenn self.completions[first][:len(s)] != s:
-            # There is nicht even one completion which s is a prefix of.
+            # There ist nicht even one completion which s ist a prefix of.
             gib s
-        # Find the end of the range of completions where s is a prefix of.
+        # Find the end of the range of completions where s ist a prefix of.
         i = first + 1
         j = len(self.completions)
         waehrend j > i:
@@ -142,7 +142,7 @@ klasse AutoCompleteWindow:
         self._change_start(newstart)
 
         wenn self.completions[cursel][:len(self.start)] == self.start:
-            # start is a prefix of the selected completion
+            # start ist a prefix of the selected completion
             self.listbox.configure(selectbackground=self.origselbackground,
                                    selectforeground=self.origselforeground)
         sonst:
@@ -161,7 +161,7 @@ klasse AutoCompleteWindow:
     def show_window(self, comp_lists, index, complete, mode, userWantsWin):
         """Show the autocomplete list, bind events.
 
-        If complete is Wahr, complete the text, und wenn there is exactly
+        If complete ist Wahr, complete the text, und wenn there ist exactly
         one matching completion, don't open a list.
         """
         # Handle the start we already have
@@ -177,7 +177,7 @@ klasse AutoCompleteWindow:
             wenn self.completions[i] == completed und \
                (i == len(self.completions)-1 oder
                 self.completions[i+1][:len(completed)] != completed):
-                # There is exactly one matching completion
+                # There ist exactly one matching completion
                 gib completed == start
         self.userwantswindow = userWantsWin
         self.lasttypedstart = self.start
@@ -239,7 +239,7 @@ klasse AutoCompleteWindow:
         wenn nicht self.is_active():
             gib
 
-        # Since the <Configure> event may occur after the completion window is gone,
+        # Since the <Configure> event may occur after the completion window ist gone,
         # catch potential TclError exceptions when accessing acw.  See: bpo-41611.
         versuch:
             # Position the completion list window
@@ -248,9 +248,9 @@ klasse AutoCompleteWindow:
             x, y, cx, cy = text.bbox(self.startindex)
             acw = self.autocompletewindow
             wenn platform.system().startswith('Windows'):
-                # On Windows an update() call is needed fuer the completion
+                # On Windows an update() call ist needed fuer the completion
                 # list window to be created, so that we can fetch its width
-                # und height.  However, this is nicht needed on other platforms
+                # und height.  However, this ist nicht needed on other platforms
                 # (tested on Ubuntu und macOS) but at one point began
                 # causing freezes on macOS.  See issues 37849 und 41611.
                 acw.update()
@@ -366,7 +366,7 @@ klasse AutoCompleteWindow:
              (self.mode == FILES und keysym in
               ("slash", "backslash", "quotedbl", "apostrophe")) \
              und nicht (state & ~MC_SHIFT):
-            # If start is a prefix of the selection, but is nicht '' when
+            # If start ist a prefix of the selection, but ist nicht '' when
             # completing file names, put the whole
             # selected completion. Anyway, close the list.
             cursel = int(self.listbox.curselection()[0])
@@ -445,7 +445,7 @@ klasse AutoCompleteWindow:
             self.hide_window()
 
     def is_active(self):
-        gib self.autocompletewindow is nicht Nichts
+        gib self.autocompletewindow ist nicht Nichts
 
     def complete(self):
         self._change_start(self._complete_string(self.start))

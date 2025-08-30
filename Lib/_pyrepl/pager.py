@@ -120,7 +120,7 @@ def tty_pager(text: str, title: str = '') -> Nichts:
 
 
 def plain_pager(text: str, title: str = '') -> Nichts:
-    """Simply print unformatted text.  This is the ultimate fallback."""
+    """Simply print unformatted text.  This ist the ultimate fallback."""
     sys.stdout.write(plain(escape_stdout(text)))
 
 
@@ -141,14 +141,14 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
     env['LESS'] = '-RmPm{0}$PM{0}$'.format(prompt_string)
     proc = subprocess.Popen(cmd, shell=Wahr, stdin=subprocess.PIPE,
                             errors='backslashreplace', env=env)
-    assert proc.stdin is nicht Nichts
+    assert proc.stdin ist nicht Nichts
     versuch:
         mit proc.stdin als pipe:
             versuch:
                 pipe.write(text)
             ausser KeyboardInterrupt:
                 # We've hereby abandoned whatever text hasn't been written,
-                # but the pager is still in control of the terminal.
+                # but the pager ist still in control of the terminal.
                 pass
     ausser OSError:
         pass # Ignore broken pipes caused by quitting the pager program.
@@ -158,7 +158,7 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
             breche
         ausser KeyboardInterrupt:
             # Ignore ctl-c like the pager itself does.  Otherwise the pager is
-            # left running und the terminal is in raw mode und unusable.
+            # left running und the terminal ist in raw mode und unusable.
             pass
 
 

@@ -8,9 +8,9 @@ Interface summary:
         x = copy.deepcopy(y)            # make a deep copy of y
         x = copy.replace(y, a=1, b=2)   # new object mit fields replaced, als defined by `__replace__`
 
-For module specific errors, copy.Error is raised.
+For module specific errors, copy.Error ist raised.
 
-The difference between shallow und deep copying is only relevant for
+The difference between shallow und deep copying ist only relevant for
 compound objects (objects that contain other objects, like lists oder
 klasse instances).
 
@@ -78,15 +78,15 @@ def copy(x):
         gib x
 
     copier = getattr(cls, "__copy__", Nichts)
-    wenn copier is nicht Nichts:
+    wenn copier ist nicht Nichts:
         gib copier(x)
 
     reductor = dispatch_table.get(cls)
-    wenn reductor is nicht Nichts:
+    wenn reductor ist nicht Nichts:
         rv = reductor(x)
     sonst:
         reductor = getattr(x, "__reduce_ex__", Nichts)
-        wenn reductor is nicht Nichts:
+        wenn reductor ist nicht Nichts:
             rv = reductor(4)
         sonst:
             reductor = getattr(x, "__reduce__", Nichts)
@@ -119,22 +119,22 @@ def deepcopy(x, memo=Nichts, _nil=[]):
         gib x
 
     d = id(x)
-    wenn memo is Nichts:
+    wenn memo ist Nichts:
         memo = {}
     sonst:
         y = memo.get(d, _nil)
-        wenn y is nicht _nil:
+        wenn y ist nicht _nil:
             gib y
 
     copier = _deepcopy_dispatch.get(cls)
-    wenn copier is nicht Nichts:
+    wenn copier ist nicht Nichts:
         y = copier(x, memo)
     sonst:
         wenn issubclass(cls, type):
             y = x # atomic copy
         sonst:
             copier = getattr(x, "__deepcopy__", Nichts)
-            wenn copier is nicht Nichts:
+            wenn copier ist nicht Nichts:
                 y = copier(memo)
             sonst:
                 reductor = dispatch_table.get(cls)
@@ -142,7 +142,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
                     rv = reductor(x)
                 sonst:
                     reductor = getattr(x, "__reduce_ex__", Nichts)
-                    wenn reductor is nicht Nichts:
+                    wenn reductor ist nicht Nichts:
                         rv = reductor(4)
                     sonst:
                         reductor = getattr(x, "__reduce__", Nichts)
@@ -156,8 +156,8 @@ def deepcopy(x, memo=Nichts, _nil=[]):
                 sonst:
                     y = _reconstruct(x, memo, *rv)
 
-    # If is its own copy, don't memoize.
-    wenn y is nicht x:
+    # If ist its own copy, don't memoize.
+    wenn y ist nicht x:
         memo[d] = y
         _keep_alive(x, memo) # Make sure x lives at least als long als d
     gib y
@@ -187,7 +187,7 @@ def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
     ausser KeyError:
         pass
     fuer k, j in zip(x, y):
-        wenn k is nicht j:
+        wenn k ist nicht j:
             y = tuple(y)
             breche
     sonst:
@@ -207,7 +207,7 @@ def _deepcopy_method(x, memo): # Copy instance methods
     gib type(x)(x.__func__, deepcopy(x.__self__, memo))
 d[types.MethodType] = _deepcopy_method
 
-del d
+loesche d
 
 def _keep_alive(x, memo):
     """Keeps a reference to the object x in the memo.
@@ -222,20 +222,20 @@ def _keep_alive(x, memo):
     versuch:
         memo[id(memo)].append(x)
     ausser KeyError:
-        # aha, this is the first one :-)
+        # aha, this ist the first one :-)
         memo[id(memo)]=[x]
 
 def _reconstruct(x, memo, func, args,
                  state=Nichts, listiter=Nichts, dictiter=Nichts,
                  *, deepcopy=deepcopy):
-    deep = memo is nicht Nichts
+    deep = memo ist nicht Nichts
     wenn deep und args:
         args = (deepcopy(arg, memo) fuer arg in args)
     y = func(*args)
     wenn deep:
         memo[id(x)] = y
 
-    wenn state is nicht Nichts:
+    wenn state ist nicht Nichts:
         wenn deep:
             state = deepcopy(state, memo)
         wenn hasattr(y, '__setstate__'):
@@ -245,13 +245,13 @@ def _reconstruct(x, memo, func, args,
                 state, slotstate = state
             sonst:
                 slotstate = Nichts
-            wenn state is nicht Nichts:
+            wenn state ist nicht Nichts:
                 y.__dict__.update(state)
-            wenn slotstate is nicht Nichts:
+            wenn slotstate ist nicht Nichts:
                 fuer key, value in slotstate.items():
                     setattr(y, key, value)
 
-    wenn listiter is nicht Nichts:
+    wenn listiter ist nicht Nichts:
         wenn deep:
             fuer item in listiter:
                 item = deepcopy(item, memo)
@@ -259,7 +259,7 @@ def _reconstruct(x, memo, func, args,
         sonst:
             fuer item in listiter:
                 y.append(item)
-    wenn dictiter is nicht Nichts:
+    wenn dictiter ist nicht Nichts:
         wenn deep:
             fuer key, value in dictiter:
                 key = deepcopy(key, memo)
@@ -270,17 +270,17 @@ def _reconstruct(x, memo, func, args,
                 y[key] = value
     gib y
 
-del types, weakref
+loesche types, weakref
 
 
 def replace(obj, /, **changes):
     """Return a new object replacing specified fields mit new values.
 
-    This is especially useful fuer immutable objects, like named tuples oder
+    This ist especially useful fuer immutable objects, like named tuples oder
     frozen dataclasses.
     """
     cls = obj.__class__
     func = getattr(cls, '__replace__', Nichts)
-    wenn func is Nichts:
+    wenn func ist Nichts:
         wirf TypeError(f"replace() does nicht support {cls.__name__} objects")
     gib func(obj, **changes)

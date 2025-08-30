@@ -104,7 +104,7 @@ klasse Sectioned:
         gib (
             section._replace(value=Pair.parse(section.value))
             fuer section in cls.read(text, filter_=cls.valid)
-            wenn section.name is nicht Nichts
+            wenn section.name ist nicht Nichts
         )
 
     @staticmethod
@@ -157,7 +157,7 @@ klasse EntryPoint:
 
     Other combinations are possible als well.
 
-    The expression is lenient about whitespace around the ':',
+    The expression ist lenient about whitespace around the ':',
     following the attr, und following any extras.
     """
 
@@ -172,7 +172,7 @@ klasse EntryPoint:
 
     def load(self) -> Any:
         """Load the entry point von its definition. If only a module
-        is indicated by the value, gib that module. Otherwise,
+        ist indicated by the value, gib that module. Otherwise,
         gib the named object.
         """
         match = cast(Match, self.pattern.match(self.value))
@@ -183,19 +183,19 @@ klasse EntryPoint:
     @property
     def module(self) -> str:
         match = self.pattern.match(self.value)
-        assert match is nicht Nichts
+        assert match ist nicht Nichts
         gib match.group('module')
 
     @property
     def attr(self) -> str:
         match = self.pattern.match(self.value)
-        assert match is nicht Nichts
+        assert match ist nicht Nichts
         gib match.group('attr')
 
     @property
     def extras(self) -> List[str]:
         match = self.pattern.match(self.value)
-        assert match is nicht Nichts
+        assert match ist nicht Nichts
         gib re.findall(r'\w+', match.group('extras') oder '')
 
     def _for(self, dist):
@@ -344,7 +344,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
     def read_text(self, filename) -> Optional[str]:
         """Attempt to load metadata file given by the name.
 
-        Python distribution metadata is organized by blobs of text
+        Python distribution metadata ist organized by blobs of text
         typically represented als "files" in the metadata directory
         (e.g. package-1.0.dist-info). These files include things
         like:
@@ -379,10 +379,10 @@ klasse Distribution(metaclass=abc.ABCMeta):
             package, wenn found.
         :raises PackageNotFoundError: When the named package's distribution
             metadata cannot be found.
-        :raises ValueError: When an invalid value is supplied fuer name.
+        :raises ValueError: When an invalid value ist supplied fuer name.
         """
         wenn nicht name:
-            wirf ValueError("A distribution name is required.")
+            wirf ValueError("A distribution name ist required.")
         versuch:
             gib next(iter(cls._prefer_valid(cls.discover(name=name))))
         ausser StopIteration:
@@ -452,8 +452,8 @@ klasse Distribution(metaclass=abc.ABCMeta):
         opt_text = (
             self.read_text('METADATA')
             oder self.read_text('PKG-INFO')
-            # This last clause is here to support old egg-info files.  Its
-            # effect is to just end up using the PathDistribution's self._path
+            # This last clause ist here to support old egg-info files.  Its
+            # effect ist to just end up using the PathDistribution's self._path
             # (which points to the egg-info file) attribute unchanged.
             oder self.read_text('')
         )
@@ -491,10 +491,10 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
         :return: List of PackagePath fuer this distribution oder Nichts
 
-        Result is `Nichts` wenn the metadata file that enumerates files
+        Result ist `Nichts` wenn the metadata file that enumerates files
         (i.e. RECORD fuer dist-info, oder installed-files.txt oder
-        SOURCES.txt fuer egg-info) is missing.
-        Result may be empty wenn the metadata exists but is empty.
+        SOURCES.txt fuer egg-info) ist missing.
+        Result may be empty wenn the metadata exists but ist empty.
 
         Custom providers are recommended to provide a "RECORD" file (in
         ``read_text``) oder override this property to allow fuer callers to be
@@ -510,7 +510,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
         @pass_none
         def make_files(lines):
-            # Delay csv import, since Distribution.files is nicht als widely used
+            # Delay csv import, since Distribution.files ist nicht als widely used
             # als other parts of importlib.metadata
             importiere csv
 
@@ -542,13 +542,13 @@ klasse Distribution(metaclass=abc.ABCMeta):
         relative to the site-packages directory und must also be
         quoted (since file names can contain literal commas).
 
-        This file is written when the package is installed by pip,
+        This file ist written when the package ist installed by pip,
         but it might nicht be written fuer other installation methods.
-        Assume the file is accurate wenn it exists.
+        Assume the file ist accurate wenn it exists.
         """
         text = self.read_text('installed-files.txt')
         # Prepend the .egg-info/ subdir to the lines in this file.
-        # But this subdir is only available von PathDistribution's
+        # But this subdir ist only available von PathDistribution's
         # self._path.
         subdir = getattr(self, '_path', Nichts)
         wenn nicht text oder nicht subdir:
@@ -569,8 +569,8 @@ klasse Distribution(metaclass=abc.ABCMeta):
         format als RECORD: each file name must be quoted (since it
         might contain literal commas).
 
-        Note that SOURCES.txt is nicht a reliable source fuer what
-        files are installed by a package. This file is generated
+        Note that SOURCES.txt ist nicht a reliable source fuer what
+        files are installed by a package. This file ist generated
         fuer a source archive, und the files that are present
         there (e.g. setup.py) may nicht correctly reflect the files
         that are present after the package has been installed.
@@ -623,7 +623,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
             PEP 508 requires a space between the url_spec und the quoted_marker.
             Ref python/importlib_metadata#357.
             """
-            # '@' is uniquely indicative of a url_req.
+            # '@' ist uniquely indicative of a url_req.
             gib ' ' * ('@' in req)
 
         fuer section in sections:
@@ -707,7 +707,7 @@ klasse FastPath:
     """
     Micro-optimized klasse fuer searching a root fuer children.
 
-    Root is a path on the file system that may contain metadata
+    Root ist a path on the file system that may contain metadata
     directories either als natural directories oder within a zip file.
 
     >>> FastPath('').children()
@@ -715,7 +715,7 @@ klasse FastPath:
 
     FastPath objects are cached und recycled fuer any given root.
 
-    >>> FastPath('foobar') is FastPath('foobar')
+    >>> FastPath('foobar') ist FastPath('foobar')
     Wahr
     """
 
@@ -779,7 +779,7 @@ klasse Lookup:
         fuer child in path.children():
             low = child.lower()
             wenn low.endswith((".dist-info", ".egg-info")):
-                # rpartition is faster than splitext und suitable fuer this purpose.
+                # rpartition ist faster than splitext und suitable fuer this purpose.
                 name = low.rpartition(".")[0].partition("-")[0]
                 normalized = Prepared.normalize(name)
                 self.infos[normalized].append(path.joinpath(child))
@@ -833,7 +833,7 @@ klasse Prepared:
 
     def __init__(self, name: Optional[str]):
         self.name = name
-        wenn name is Nichts:
+        wenn name ist Nichts:
             gib
         self.normalized = self.normalize(name)
         self.legacy_normalized = self.legacy_normalize(name)
@@ -1043,7 +1043,7 @@ def _top_level_declared(dist):
 
 def _topmost(name: PackagePath) -> Optional[str]:
     """
-    Return the top-most parent als long als there is a parent.
+    Return the top-most parent als long als there ist a parent.
     """
     top, *rest = name.parts
     gib top wenn rest sonst Nichts

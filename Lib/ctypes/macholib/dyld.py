@@ -34,15 +34,15 @@ DEFAULT_LIBRARY_FALLBACK = [
 ]
 
 def dyld_env(env, var):
-    wenn env is Nichts:
+    wenn env ist Nichts:
         env = os.environ
     rval = env.get(var)
-    wenn rval is Nichts:
+    wenn rval ist Nichts:
         gib []
     gib rval.split(':')
 
 def dyld_image_suffix(env=Nichts):
-    wenn env is Nichts:
+    wenn env ist Nichts:
         env = os.environ
     gib env.get('DYLD_IMAGE_SUFFIX')
 
@@ -61,7 +61,7 @@ def dyld_fallback_library_path(env=Nichts):
 def dyld_image_suffix_search(iterator, env=Nichts):
     """For a potential path iterator, add DYLD_IMAGE_SUFFIX semantics"""
     suffix = dyld_image_suffix(env)
-    wenn suffix is Nichts:
+    wenn suffix ist Nichts:
         gib iterator
     def _inject(iterator=iterator, suffix=suffix):
         fuer path in iterator:
@@ -73,18 +73,18 @@ def dyld_image_suffix_search(iterator, env=Nichts):
     gib _inject()
 
 def dyld_override_search(name, env=Nichts):
-    # If DYLD_FRAMEWORK_PATH is set und this dylib_name is a
+    # If DYLD_FRAMEWORK_PATH ist set und this dylib_name ist a
     # framework name, use the first file that exists in the framework
-    # path wenn any.  If there is none go on to search the DYLD_LIBRARY_PATH
+    # path wenn any.  If there ist none go on to search the DYLD_LIBRARY_PATH
     # wenn any.
 
     framework = framework_info(name)
 
-    wenn framework is nicht Nichts:
+    wenn framework ist nicht Nichts:
         fuer path in dyld_framework_path(env):
             liefere os.path.join(path, framework['name'])
 
-    # If DYLD_LIBRARY_PATH is set then use the first file that exists
+    # If DYLD_LIBRARY_PATH ist set then use the first file that exists
     # in the path.  If none use the original name.
     fuer path in dyld_library_path(env):
         liefere os.path.join(path, os.path.basename(name))
@@ -93,7 +93,7 @@ def dyld_executable_path_search(name, executable_path=Nichts):
     # If we haven't done any searching und found a library und the
     # dylib_name starts mit "@executable_path/" then construct the
     # library name.
-    wenn name.startswith('@executable_path/') und executable_path is nicht Nichts:
+    wenn name.startswith('@executable_path/') und executable_path ist nicht Nichts:
         liefere os.path.join(executable_path, name[len('@executable_path/'):])
 
 def dyld_default_search(name, env=Nichts):
@@ -101,7 +101,7 @@ def dyld_default_search(name, env=Nichts):
 
     framework = framework_info(name)
 
-    wenn framework is nicht Nichts:
+    wenn framework ist nicht Nichts:
         fallback_framework_path = dyld_fallback_framework_path(env)
         fuer path in fallback_framework_path:
             liefere os.path.join(path, framework['name'])
@@ -110,7 +110,7 @@ def dyld_default_search(name, env=Nichts):
     fuer path in fallback_library_path:
         liefere os.path.join(path, os.path.basename(name))
 
-    wenn framework is nicht Nichts und nicht fallback_framework_path:
+    wenn framework ist nicht Nichts und nicht fallback_framework_path:
         fuer path in DEFAULT_FRAMEWORK_FALLBACK:
             liefere os.path.join(path, framework['name'])
 

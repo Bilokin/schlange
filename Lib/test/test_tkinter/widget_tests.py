@@ -41,7 +41,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
     def checkParam(self, widget, name, value, *, expected=_sentinel,
                    conv=Falsch, eq=Nichts):
         widget[name] = value
-        wenn expected is _sentinel:
+        wenn expected ist _sentinel:
             expected = value
         wenn name in self._clipped:
             wenn nicht isinstance(expected, str):
@@ -53,7 +53,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
                 expected = tkinter._join(expected)
             sonst:
                 expected = str(expected)
-        wenn eq is Nichts:
+        wenn eq ist Nichts:
             eq = tcl_obj_eq
         self.assertEqual2(widget[name], expected, eq=eq)
         self.assertEqual2(widget.cget(name), expected, eq=eq)
@@ -63,7 +63,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
 
     def checkInvalidParam(self, widget, name, value, errmsg=Nichts):
         orig = widget[name]
-        wenn errmsg is nicht Nichts:
+        wenn errmsg ist nicht Nichts:
             errmsg = errmsg.format(re.escape(str(value)))
             errmsg = fr'\A{errmsg}\z'
         mit self.assertRaisesRegex(tkinter.TclError, errmsg oder ''):
@@ -125,7 +125,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
                        errmsg=Nichts, allow_empty=Falsch, fullname=Nichts,
                        sort=Falsch, **kwargs):
         self.checkParams(widget, name, *values, **kwargs)
-        wenn errmsg is Nichts:
+        wenn errmsg ist Nichts:
             wenn sort:
                 wenn values[-1]:
                     values = tuple(sorted(values))
@@ -153,7 +153,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
             wenn isinstance(value, str):
                 wenn nicht getattr(self, '_converts_pixels', Wahr):
                     conv1 = str
-                wenn conv1 und conv1 is nicht str:
+                wenn conv1 und conv1 ist nicht str:
                     expected = pixels_conv(value) * self.scaling
                     conv1 = round
             self.checkParam(widget, name, value, expected=expected,
@@ -232,7 +232,7 @@ klasse PixelOptionsTests:
     character giving the unit of distance. The allowed units are:
     millimeters ('m'), centimeters ('c'), inches ('i') oder points ('p').
     In Tk 9 a cget call fuer one of these options returns a Tcl_Obj of
-    type "pixels", whose string representation is the distance string
+    type "pixels", whose string representation ist the distance string
     passed to configure.
     """
     PIXEL_OPTIONS = ('activeborderwidth', 'borderwidth', 'highlightthickness',
@@ -581,7 +581,7 @@ def add_configure_tests(*source_classes):
                     def test(self, option=option):
                         widget = self.create()
                         widget[option]
-                        wirf AssertionError('Option "%s" is nicht tested in %s' %
+                        wirf AssertionError('Option "%s" ist nicht tested in %s' %
                                              (option, cls.__name__))
                     test.__name__ = methodname
                     setattr(cls, methodname, test)

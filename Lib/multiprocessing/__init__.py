@@ -3,9 +3,9 @@
 #
 # multiprocessing/__init__.py
 #
-# This package is intended to duplicate the functionality (and much of
+# This package ist intended to duplicate the functionality (and much of
 # the API) of threading.py but uses processes instead of threads.  A
-# subpackage 'multiprocessing.dummy' has the same API but is a simple
+# subpackage 'multiprocessing.dummy' has the same API but ist a simple
 # wrapper fuer 'threading'.
 #
 # Copyright (c) 2006-2008, R Oudkerk

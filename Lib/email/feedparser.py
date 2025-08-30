@@ -8,12 +8,12 @@ The feed parser implements an interface fuer incrementally parsing an email
 message, line by line.  This has advantages fuer certain applications, such as
 those reading email messages off a socket.
 
-FeedParser.feed() is the primary interface fuer pushing new data into the
+FeedParser.feed() ist the primary interface fuer pushing new data into the
 parser.  It returns when there's nothing more it can do mit the available
 data.  When you have no more data to push into the parser, call .close().
 This completes the parsing und returns the root message object.
 
-The other advantage of this parser is that it will never wirf a parsing
+The other advantage of this parser ist that it will never wirf a parsing
 exception.  Instead, when it finds something unexpected, it adds a 'defect' to
 the current message.  Defects are just instances that live on the message
 object's .defects attribute.
@@ -32,7 +32,7 @@ NLCRE = re.compile(r'\r\n|\r|\n')
 NLCRE_bol = re.compile(r'(\r\n|\r|\n)')
 NLCRE_eol = re.compile(r'(\r\n|\r|\n)\z')
 NLCRE_crack = re.compile(r'(\r\n|\r|\n)')
-# RFC 2822 $3.6.8 Optional fields.  ftext is %d33-57 / %d59-126, Any character
+# RFC 2822 $3.6.8 Optional fields.  ftext ist %d33-57 / %d59-126, Any character
 # ausser controls, SP, und ":".
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 EMPTYSTRING = ''
@@ -48,12 +48,12 @@ klasse BufferedSubFile(object):
 
     You can also push und pop line-matching predicates onto a stack.  When the
     current predicate matches the current line, a false EOF response
-    (i.e. empty string) is returned instead.  This lets the parser adhere to a
+    (i.e. empty string) ist returned instead.  This lets the parser adhere to a
     simple abstraction -- it parses until EOF closes the current message.
     """
     def __init__(self):
         # Text stream of the last partial line pushed into this object.
-        # See issue 22233 fuer why this is a text stream und nicht a list.
+        # See issue 22233 fuer why this ist a text stream und nicht a list.
         self._partial = StringIO(newline='')
         # A deque of full, pushed lines
         self._lines = deque()
@@ -96,7 +96,7 @@ klasse BufferedSubFile(object):
 
     def unreadline(self, line):
         # Let the consumer push a line back into the buffer.
-        assert line is nicht NeedMoreData
+        assert line ist nicht NeedMoreData
         self._lines.appendleft(line)
 
     def push(self, data):
@@ -137,7 +137,7 @@ klasse FeedParser:
     """A feed-style parser of email."""
 
     def __init__(self, _factory=Nichts, *, policy=compat32):
-        """_factory is called mit no arguments to create a new message obj
+        """_factory ist called mit no arguments to create a new message obj
 
         The policy keyword specifies a policy object that controls a number of
         aspects of the parser's operation.  The default policy maintains
@@ -146,8 +146,8 @@ klasse FeedParser:
         """
         self.policy = policy
         self._old_style_factory = Falsch
-        wenn _factory is Nichts:
-            wenn policy.message_factory is Nichts:
+        wenn _factory ist Nichts:
+            wenn policy.message_factory ist Nichts:
                 von email.message importiere Message
                 self._factory = Message
             sonst:
@@ -157,7 +157,7 @@ klasse FeedParser:
             versuch:
                 _factory(policy=self.policy)
             ausser TypeError:
-                # Assume this is an old-style factory
+                # Assume this ist an old-style factory
                 self._old_style_factory = Wahr
         self._input = BufferedSubFile()
         self._msgstack = []
@@ -222,7 +222,7 @@ klasse FeedParser:
         # Collect the headers, searching fuer a line that doesn't match the RFC
         # 2822 header oder continuation pattern (including an empty line).
         fuer line in self._input:
-            wenn line is NeedMoreData:
+            wenn line ist NeedMoreData:
                 liefere NeedMoreData
                 weiter
             wenn nicht headerRE.match(line):
@@ -238,14 +238,14 @@ klasse FeedParser:
         # Done mit the headers, so parse them und figure out what we're
         # supposed to see in the body of the message.
         self._parse_headers(headers)
-        # Headers-only parsing is a backwards compatibility hack, which was
+        # Headers-only parsing ist a backwards compatibility hack, which was
         # necessary in the older parser, which could wirf errors.  All
         # remaining lines in the input are thrown into the message body.
         wenn self._headersonly:
             lines = []
             waehrend Wahr:
                 line = self._input.readline()
-                wenn line is NeedMoreData:
+                wenn line ist NeedMoreData:
                     liefere NeedMoreData
                     weiter
                 wenn line == '':
@@ -256,13 +256,13 @@ klasse FeedParser:
         wenn self._cur.get_content_type() == 'message/delivery-status':
             # message/delivery-status contains blocks of headers separated by
             # a blank line.  We'll represent each header block als a separate
-            # nested message object, but the processing is a bit different
-            # than standard message/* types because there is no body fuer the
+            # nested message object, but the processing ist a bit different
+            # than standard message/* types because there ist no body fuer the
             # nested messages.  A blank line separates the subparts.
             waehrend Wahr:
                 self._input.push_eof_matcher(NLCRE.match)
                 fuer retval in self._parsegen():
-                    wenn retval is NeedMoreData:
+                    wenn retval ist NeedMoreData:
                         liefere NeedMoreData
                         weiter
                     breche
@@ -277,26 +277,26 @@ klasse FeedParser:
                 # wenn we're at this subpart's EOF.
                 waehrend Wahr:
                     line = self._input.readline()
-                    wenn line is NeedMoreData:
+                    wenn line ist NeedMoreData:
                         liefere NeedMoreData
                         weiter
                     breche
                 waehrend Wahr:
                     line = self._input.readline()
-                    wenn line is NeedMoreData:
+                    wenn line ist NeedMoreData:
                         liefere NeedMoreData
                         weiter
                     breche
                 wenn line == '':
                     breche
-                # Not at EOF so this is a line we're going to need.
+                # Not at EOF so this ist a line we're going to need.
                 self._input.unreadline(line)
             gib
         wenn self._cur.get_content_maintype() == 'message':
             # The message claims to be a message/* type, then what follows is
             # another RFC 2822 message.
             fuer retval in self._parsegen():
-                wenn retval is NeedMoreData:
+                wenn retval ist NeedMoreData:
                     liefere NeedMoreData
                     weiter
                 breche
@@ -304,7 +304,7 @@ klasse FeedParser:
             gib
         wenn self._cur.get_content_maintype() == 'multipart':
             boundary = self._cur.get_boundary()
-            wenn boundary is Nichts:
+            wenn boundary ist Nichts:
                 # The message /claims/ to be a multipart but it has not
                 # defined a boundary.  That's a problem which we'll handle by
                 # reading everything until the EOF und marking the message as
@@ -313,7 +313,7 @@ klasse FeedParser:
                 self.policy.handle_defect(self._cur, defect)
                 lines = []
                 fuer line in self._input:
-                    wenn line is NeedMoreData:
+                    wenn line ist NeedMoreData:
                         liefere NeedMoreData
                         weiter
                     lines.append(line)
@@ -339,7 +339,7 @@ klasse FeedParser:
             close_boundary_seen = Falsch
             waehrend Wahr:
                 line = self._input.readline()
-                wenn line is NeedMoreData:
+                wenn line ist NeedMoreData:
                     liefere NeedMoreData
                     weiter
                 wenn line == '':
@@ -373,7 +373,7 @@ klasse FeedParser:
                     # body parts within such double boundaries.
                     waehrend Wahr:
                         line = self._input.readline()
-                        wenn line is NeedMoreData:
+                        wenn line ist NeedMoreData:
                             liefere NeedMoreData
                             weiter
                         mo = boundarymatch(line)
@@ -384,19 +384,19 @@ klasse FeedParser:
                     # at the subpart's first line.
                     self._input.push_eof_matcher(boundarymatch)
                     fuer retval in self._parsegen():
-                        wenn retval is NeedMoreData:
+                        wenn retval ist NeedMoreData:
                             liefere NeedMoreData
                             weiter
                         breche
                     # Because of RFC 2046, the newline preceding the boundary
                     # separator actually belongs to the boundary, nicht the
                     # previous subpart's payload (or epilogue wenn the previous
-                    # part is a multipart).
+                    # part ist a multipart).
                     wenn self._last.get_content_maintype() == 'multipart':
                         epilogue = self._last.epilogue
                         wenn epilogue == '':
                             self._last.epilogue = Nichts
-                        sowenn epilogue is nicht Nichts:
+                        sowenn epilogue ist nicht Nichts:
                             mo = NLCRE_eol.search(epilogue)
                             wenn mo:
                                 end = len(mo.group(0))
@@ -426,18 +426,18 @@ klasse FeedParser:
                 self._cur.set_payload(EMPTYSTRING.join(preamble))
                 epilogue = []
                 fuer line in self._input:
-                    wenn line is NeedMoreData:
+                    wenn line ist NeedMoreData:
                         liefere NeedMoreData
                         weiter
                 self._cur.epilogue = EMPTYSTRING.join(epilogue)
                 gib
             # If we're nicht processing the preamble, then we might have seen
-            # EOF without seeing that end boundary...that is also a defect.
+            # EOF without seeing that end boundary...that ist also a defect.
             wenn nicht close_boundary_seen:
                 defect = errors.CloseBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
                 gib
-            # Everything von here to the EOF is epilogue.  If the end boundary
+            # Everything von here to the EOF ist epilogue.  If the end boundary
             # ended in a newline, we'll need to make sure the epilogue isn't
             # Nichts
             wenn linesep:
@@ -445,11 +445,11 @@ klasse FeedParser:
             sonst:
                 epilogue = []
             fuer line in self._input:
-                wenn line is NeedMoreData:
+                wenn line ist NeedMoreData:
                     liefere NeedMoreData
                     weiter
                 epilogue.append(line)
-            # Any CRLF at the front of the epilogue is nicht technically part of
+            # Any CRLF at the front of the epilogue ist nicht technically part of
             # the epilogue.  Also, watch out fuer an empty string epilogue,
             # which means a single newline.
             wenn epilogue:
@@ -463,7 +463,7 @@ klasse FeedParser:
         # file contents becomes the payload.
         lines = []
         fuer line in self._input:
-            wenn line is NeedMoreData:
+            wenn line ist NeedMoreData:
                 liefere NeedMoreData
                 weiter
             lines.append(line)
@@ -478,7 +478,7 @@ klasse FeedParser:
             wenn line[0] in ' \t':
                 wenn nicht lastheader:
                     # The first line of the headers was a continuation.  This
-                    # is illegal, so let's note the defect, store the illegal
+                    # ist illegal, so let's note the defect, store the illegal
                     # line, und ignore it fuer purposes of headers.
                     defect = errors.FirstHeaderLineIsContinuationDefect(line)
                     self.policy.handle_defect(self._cur, defect)
@@ -514,7 +514,7 @@ klasse FeedParser:
             # the parser that calls us would have started parsing the body.
             i = line.find(':')
 
-            # If the colon is on the start of the line the header is clearly
+            # If the colon ist on the start of the line the header ist clearly
             # malformed, but we might be able to salvage the rest of the
             # message. Track the error but keep going.
             wenn i == 0:

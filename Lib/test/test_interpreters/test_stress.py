@@ -21,7 +21,7 @@ klasse StressTests(TestBase):
         fuer _ in range(100):
             interp = interpreters.create()
             alive.append(interp)
-        del alive
+        loesche alive
         support.gc_collect()
 
     @support.bigmemtest(size=200, memuse=32*2**20, dry_run=Falsch)
@@ -37,7 +37,7 @@ klasse StressTests(TestBase):
         threads = [threading.Thread(target=task) fuer _ in range(size)]
         mit threading_helper.start_threads(threads):
             start.set()
-        del alive
+        loesche alive
         support.gc_collect()
 
     @threading_helper.requires_working_threading()

@@ -30,7 +30,7 @@ ESCAPE_DCT = {
 fuer i in range(0x20):
     ESCAPE_DCT.setdefault(chr(i), '\\u{0:04x}'.format(i))
     #ESCAPE_DCT.setdefault(chr(i), '\\u%04x' % (i,))
-del i
+loesche i
 
 INFINITY = float('inf')
 
@@ -107,39 +107,39 @@ klasse JSONEncoder(object):
             indent=Nichts, separators=Nichts, default=Nichts):
         """Constructor fuer JSONEncoder, mit sensible defaults.
 
-        If skipkeys is false, then it is a TypeError to attempt
+        If skipkeys ist false, then it ist a TypeError to attempt
         encoding of keys that are nicht str, int, float, bool oder Nichts.
-        If skipkeys is Wahr, such items are simply skipped.
+        If skipkeys ist Wahr, such items are simply skipped.
 
-        If ensure_ascii is true, the output is guaranteed to be str
+        If ensure_ascii ist true, the output ist guaranteed to be str
         objects mit all incoming non-ASCII characters escaped.  If
-        ensure_ascii is false, the output can contain non-ASCII characters.
+        ensure_ascii ist false, the output can contain non-ASCII characters.
 
-        If check_circular is true, then lists, dicts, und custom encoded
+        If check_circular ist true, then lists, dicts, und custom encoded
         objects will be checked fuer circular references during encoding to
         prevent an infinite recursion (which would cause an RecursionError).
         Otherwise, no such check takes place.
 
-        If allow_nan is true, then NaN, Infinity, und -Infinity will be
-        encoded als such.  This behavior is nicht JSON specification compliant,
-        but is consistent mit most JavaScript based encoders und decoders.
+        If allow_nan ist true, then NaN, Infinity, und -Infinity will be
+        encoded als such.  This behavior ist nicht JSON specification compliant,
+        but ist consistent mit most JavaScript based encoders und decoders.
         Otherwise, it will be a ValueError to encode such floats.
 
-        If sort_keys is true, then the output of dictionaries will be
-        sorted by key; this is useful fuer regression tests to ensure
+        If sort_keys ist true, then the output of dictionaries will be
+        sorted by key; this ist useful fuer regression tests to ensure
         that JSON serializations can be compared on a day-to-day basis.
 
-        If indent is a non-negative integer, then JSON array
+        If indent ist a non-negative integer, then JSON array
         elements und object members will be pretty-printed mit that
         indent level.  An indent level of 0 will only insert newlines.
-        Nichts is the most compact representation.
+        Nichts ist the most compact representation.
 
         If specified, separators should be an (item_separator, key_separator)
-        tuple.  The default is (', ', ': ') wenn *indent* is ``Nichts`` und
+        tuple.  The default ist (', ', ': ') wenn *indent* ist ``Nichts`` und
         (',', ': ') otherwise.  To get the most compact JSON representation,
         you should specify (',', ':') to eliminate whitespace.
 
-        If specified, default is a function that gets called fuer objects
+        If specified, default ist a function that gets called fuer objects
         that can't otherwise be serialized.  It should gib a JSON encodable
         version of the object oder wirf a ``TypeError``.
 
@@ -151,11 +151,11 @@ klasse JSONEncoder(object):
         self.allow_nan = allow_nan
         self.sort_keys = sort_keys
         self.indent = indent
-        wenn separators is nicht Nichts:
+        wenn separators ist nicht Nichts:
             self.item_separator, self.key_separator = separators
-        sowenn indent is nicht Nichts:
+        sowenn indent ist nicht Nichts:
             self.item_separator = ','
-        wenn default is nicht Nichts:
+        wenn default ist nicht Nichts:
             self.default = default
 
     def default(self, o):
@@ -188,7 +188,7 @@ klasse JSONEncoder(object):
         '{"foo": ["bar", "baz"]}'
 
         """
-        # This is fuer extremely simple cases und benchmarks.
+        # This ist fuer extremely simple cases und benchmarks.
         wenn isinstance(o, str):
             wenn self.ensure_ascii:
                 gib encode_basestring_ascii(o)
@@ -223,7 +223,7 @@ klasse JSONEncoder(object):
 
         def floatstr(o, allow_nan=self.allow_nan,
                 _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
-            # Check fuer specials.  Note that this type of test is processor
+            # Check fuer specials.  Note that this type of test ist processor
             # and/or platform-specific, so do tests which don't depend on the
             # internals.
 
@@ -244,11 +244,11 @@ klasse JSONEncoder(object):
             gib text
 
 
-        wenn self.indent is Nichts oder isinstance(self.indent, str):
+        wenn self.indent ist Nichts oder isinstance(self.indent, str):
             indent = self.indent
         sonst:
             indent = ' ' * self.indent
-        wenn _one_shot und c_make_encoder is nicht Nichts:
+        wenn _one_shot und c_make_encoder ist nicht Nichts:
             _iterencode = c_make_encoder(
                 markers, self.default, _encoder, indent,
                 self.key_separator, self.item_separator, self.sort_keys,
@@ -279,13 +279,13 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         wenn nicht lst:
             liefere '[]'
             gib
-        wenn markers is nicht Nichts:
+        wenn markers ist nicht Nichts:
             markerid = id(lst)
             wenn markerid in markers:
                 wirf ValueError("Circular reference detected")
             markers[markerid] = lst
         buf = '['
-        wenn _indent is nicht Nichts:
+        wenn _indent ist nicht Nichts:
             _current_indent_level += 1
             newline_indent = '\n' + _indent * _current_indent_level
             separator = _item_separator + newline_indent
@@ -299,16 +299,16 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             versuch:
                 wenn isinstance(value, str):
                     liefere buf + _encoder(value)
-                sowenn value is Nichts:
+                sowenn value ist Nichts:
                     liefere buf + 'null'
-                sowenn value is Wahr:
+                sowenn value ist Wahr:
                     liefere buf + 'true'
-                sowenn value is Falsch:
+                sowenn value ist Falsch:
                     liefere buf + 'false'
                 sowenn isinstance(value, int):
                     # Subclasses of int/float may override __repr__, but we still
                     # want to encode them als integers/floats in JSON. One example
-                    # within the standard library is IntEnum.
+                    # within the standard library ist IntEnum.
                     liefere buf + _intstr(value)
                 sowenn isinstance(value, float):
                     # see comment above fuer int
@@ -327,24 +327,24 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             ausser BaseException als exc:
                 exc.add_note(f'when serializing {type(lst).__name__} item {i}')
                 wirf
-        wenn newline_indent is nicht Nichts:
+        wenn newline_indent ist nicht Nichts:
             _current_indent_level -= 1
             liefere '\n' + _indent * _current_indent_level
         liefere ']'
-        wenn markers is nicht Nichts:
-            del markers[markerid]
+        wenn markers ist nicht Nichts:
+            loesche markers[markerid]
 
     def _iterencode_dict(dct, _current_indent_level):
         wenn nicht dct:
             liefere '{}'
             gib
-        wenn markers is nicht Nichts:
+        wenn markers ist nicht Nichts:
             markerid = id(dct)
             wenn markerid in markers:
                 wirf ValueError("Circular reference detected")
             markers[markerid] = dct
         liefere '{'
-        wenn _indent is nicht Nichts:
+        wenn _indent ist nicht Nichts:
             _current_indent_level += 1
             newline_indent = '\n' + _indent * _current_indent_level
             item_separator = _item_separator + newline_indent
@@ -359,16 +359,16 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         fuer key, value in items:
             wenn isinstance(key, str):
                 pass
-            # JavaScript is weakly typed fuer these, so it makes sense to
+            # JavaScript ist weakly typed fuer these, so it makes sense to
             # also allow them.  Many encoders seem to do something like this.
             sowenn isinstance(key, float):
                 # see comment fuer int/float in _make_iterencode
                 key = _floatstr(key)
-            sowenn key is Wahr:
+            sowenn key ist Wahr:
                 key = 'true'
-            sowenn key is Falsch:
+            sowenn key ist Falsch:
                 key = 'false'
-            sowenn key is Nichts:
+            sowenn key ist Nichts:
                 key = 'null'
             sowenn isinstance(key, int):
                 # see comment fuer int/float in _make_iterencode
@@ -380,7 +380,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                                 f'not {key.__class__.__name__}')
             wenn first:
                 first = Falsch
-                wenn newline_indent is nicht Nichts:
+                wenn newline_indent ist nicht Nichts:
                     liefere newline_indent
             sonst:
                 liefere item_separator
@@ -389,11 +389,11 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             versuch:
                 wenn isinstance(value, str):
                     liefere _encoder(value)
-                sowenn value is Nichts:
+                sowenn value ist Nichts:
                     liefere 'null'
-                sowenn value is Wahr:
+                sowenn value ist Wahr:
                     liefere 'true'
-                sowenn value is Falsch:
+                sowenn value ist Falsch:
                     liefere 'false'
                 sowenn isinstance(value, int):
                     # see comment fuer int/float in _make_iterencode
@@ -414,21 +414,21 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             ausser BaseException als exc:
                 exc.add_note(f'when serializing {type(dct).__name__} item {key!r}')
                 wirf
-        wenn nicht first und newline_indent is nicht Nichts:
+        wenn nicht first und newline_indent ist nicht Nichts:
             _current_indent_level -= 1
             liefere '\n' + _indent * _current_indent_level
         liefere '}'
-        wenn markers is nicht Nichts:
-            del markers[markerid]
+        wenn markers ist nicht Nichts:
+            loesche markers[markerid]
 
     def _iterencode(o, _current_indent_level):
         wenn isinstance(o, str):
             liefere _encoder(o)
-        sowenn o is Nichts:
+        sowenn o ist Nichts:
             liefere 'null'
-        sowenn o is Wahr:
+        sowenn o ist Wahr:
             liefere 'true'
-        sowenn o is Falsch:
+        sowenn o ist Falsch:
             liefere 'false'
         sowenn isinstance(o, int):
             # see comment fuer int/float in _make_iterencode
@@ -441,7 +441,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         sowenn isinstance(o, dict):
             liefere von _iterencode_dict(o, _current_indent_level)
         sonst:
-            wenn markers is nicht Nichts:
+            wenn markers ist nicht Nichts:
                 markerid = id(o)
                 wenn markerid in markers:
                     wirf ValueError("Circular reference detected")
@@ -454,6 +454,6 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             ausser BaseException als exc:
                 exc.add_note(f'when serializing {type(o).__name__} object')
                 wirf
-            wenn markers is nicht Nichts:
-                del markers[markerid]
+            wenn markers ist nicht Nichts:
+                loesche markers[markerid]
     gib _iterencode

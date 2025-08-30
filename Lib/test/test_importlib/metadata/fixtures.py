@@ -207,7 +207,7 @@ klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
-            # SOURCES.txt is made von the source archive, und contains files
+            # SOURCES.txt ist made von the source archive, und contains files
             # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 egg_with_module.py
@@ -216,7 +216,7 @@ klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
                 egg_with_module_pkg.egg-info/SOURCES.txt
                 egg_with_module_pkg.egg-info/top_level.txt
             """,
-            # installed-files.txt is written by pip, und is a strictly more
+            # installed-files.txt ist written by pip, und ist a strictly more
             # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
@@ -238,7 +238,7 @@ klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
-            # SOURCES.txt is made von the source archive, und contains files
+            # SOURCES.txt ist made von the source archive, und contains files
             # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 egg_with_module.py
@@ -248,7 +248,7 @@ klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
                 egg_with_module_pkg.egg-info/SOURCES.txt
                 egg_with_module_pkg.egg-info/top_level.txt
             """,
-            # installed-files.txt is written by pip, und is a strictly more
+            # installed-files.txt ist written by pip, und ist a strictly more
             # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
@@ -272,7 +272,7 @@ klasse EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_no_modules_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_no_modules-pkg",
-            # SOURCES.txt is made von the source archive, und contains files
+            # SOURCES.txt ist made von the source archive, und contains files
             # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 setup.py
@@ -280,7 +280,7 @@ klasse EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
                 egg_with_no_modules_pkg.egg-info/SOURCES.txt
                 egg_with_no_modules_pkg.egg-info/top_level.txt
             """,
-            # installed-files.txt is written by pip, und is a strictly more
+            # installed-files.txt ist written by pip, und ist a strictly more
             # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
@@ -298,7 +298,7 @@ klasse EggInfoPkgSourcesFallback(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "sources_fallback_pkg.egg-info": {
             "PKG-INFO": "Name: sources_fallback-pkg",
-            # SOURCES.txt is made von the source archive, und contains files
+            # SOURCES.txt ist made von the source archive, und contains files
             # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 sources_fallback.py

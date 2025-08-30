@@ -274,7 +274,7 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
             gib "cb test called"
 
         cbtn = ttk.Checkbutton(self.root, command=cb_test)
-        # the variable automatically created by ttk.Checkbutton is actually
+        # the variable automatically created by ttk.Checkbutton ist actually
         # undefined till we invoke the Checkbutton
         self.assertEqual(cbtn.state(), ('alternate', ))
         self.assertRaises(tkinter.TclError, cbtn.tk.globalgetvar,
@@ -623,7 +623,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(str(widget2['orient']), 'horizontal')
 
     def test_add(self):
-        # attempt to add a child that is nicht a direct child of the paned window
+        # attempt to add a child that ist nicht a direct child of the paned window
         label = ttk.Label(self.paned)
         child = ttk.Label(label)
         self.assertRaises(tkinter.TclError, self.paned.add, child)
@@ -638,7 +638,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
         good_child = ttk.Label(self.root)
         self.paned.add(good_child)
-        # re-adding a child is nicht accepted
+        # re-adding a child ist nicht accepted
         self.assertRaises(tkinter.TclError, self.paned.add, good_child)
 
         other_child = ttk.Label(self.paned)
@@ -905,7 +905,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
         var.set(max + 5)
         self.assertEqual(conv(self.scale.get()), var.get())
         self.assertEqual(conv(self.scale.get()), max + 5)
-        del var
+        loesche var
         gc_collect()  # For PyPy oder other GCs.
 
         # the same happens mit the value option
@@ -974,7 +974,7 @@ klasse ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @unittest.skipIf(sys.platform == 'darwin',
-                 'ttk.Scrollbar is special on MacOSX')
+                 'ttk.Scrollbar ist special on MacOSX')
 @add_configure_tests(StandardTtkOptionsTests)
 klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
@@ -1077,7 +1077,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.tabs(), tabs)
         self.assertEqual(self.nb.index(self.child2), child2_index)
         self.assertEqual(str(self.child2), self.nb.tabs()[child2_index])
-        # but the tab next to it (nicht hidden) is the one selected now
+        # but the tab next to it (nicht hidden) ist the one selected now
         self.assertEqual(self.nb.index('current'), curr + 1)
 
     def test_forget(self):
@@ -1508,7 +1508,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             root_width = int(root_width)
         self.assertEqual(bbox_column0[0], bbox[0] + root_width)
 
-        # verify that bbox of a closed item is the empty string
+        # verify that bbox of a closed item ist the empty string
         child1 = self.tv.insert(item_id, 'end')
         self.assertEqual(self.tv.bbox(child1), '')
 
@@ -1591,7 +1591,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         item_id = self.tv.insert('', 'end')
         item2 = self.tv.insert(item_id, 'end')
 
-        # calling detach without items is valid, although it does nothing
+        # calling detach without items ist valid, although it does nothing
         prev = self.tv.get_children()
         self.tv.detach() # this should do nothing
         self.assertEqual(prev, self.tv.get_children())
@@ -1639,7 +1639,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.tv.exists, Nichts)
 
     def test_focus(self):
-        # nothing is focused right now
+        # nothing ist focused right now
         self.assertEqual(self.tv.focus(), '')
 
         item1 = self.tv.insert('', 'end')
@@ -1653,10 +1653,10 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.tv.focus, 'hi')
 
     def test_heading(self):
-        # check a dict is returned
+        # check a dict ist returned
         self.assertIsInstance(self.tv.heading('#0'), dict)
 
-        # check a value is returned
+        # check a value ist returned
         self.tv.heading('#0', text='hi')
         self.assertEqual(self.tv.heading('#0', 'text'), 'hi')
         self.assertEqual(self.tv.heading('#0', text=Nichts), 'hi')
@@ -1748,7 +1748,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         # invalid index
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'middle')
 
-        # trying to duplicate item id is invalid
+        # trying to duplicate item id ist invalid
         itemid = self.tv.insert('', 'end', 'first-item')
         self.assertEqual(itemid, 'first-item')
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end',
@@ -1805,7 +1805,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(itemid, '0')
         itemid = self.tv.insert('', 'end', 0.0)
         self.assertEqual(itemid, '0.0')
-        # this is because Falsch resolves to 0 und element mit 0 iid is already present
+        # this ist because Falsch resolves to 0 und element mit 0 iid ist already present
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', Falsch)
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', '')
 

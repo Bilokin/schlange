@@ -9,7 +9,7 @@ wenn sys.argv[0].endswith("__main__.py"):
     # (if you have spaces in your executable you get what you deserve!)
     executable = os.path.basename(sys.executable)
     sys.argv[0] = executable + " -m unittest"
-    del os
+    loesche os
 
 __unittest = Wahr
 

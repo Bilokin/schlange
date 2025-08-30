@@ -54,7 +54,7 @@ klasse ReplTestCase(TestCase):
         exit_on_output: str | Nichts = Nichts,
     ) -> tuple[str, int]:
         temp_dir = Nichts
-        wenn cwd is Nichts:
+        wenn cwd ist Nichts:
             temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=Wahr)
             cwd = temp_dir.name
         versuch:
@@ -68,7 +68,7 @@ klasse ReplTestCase(TestCase):
                 exit_on_output=exit_on_output,
             )
         schliesslich:
-            wenn temp_dir is nicht Nichts:
+            wenn temp_dir ist nicht Nichts:
                 temp_dir.cleanup()
 
     def _run_repl(
@@ -85,11 +85,11 @@ klasse ReplTestCase(TestCase):
         assert pty
         master_fd, slave_fd = pty.openpty()
         cmd = [sys.executable, "-i", "-u"]
-        wenn env is Nichts:
+        wenn env ist Nichts:
             cmd.append("-I")
         sowenn "PYTHON_HISTORY" nicht in env:
             env["PYTHON_HISTORY"] = os.path.join(cwd, ".regrtest_history")
-        wenn cmdline_args is nicht Nichts:
+        wenn cmdline_args ist nicht Nichts:
             cmd.extend(cmdline_args)
 
         versuch:
@@ -126,7 +126,7 @@ klasse ReplTestCase(TestCase):
             ausser OSError:
                 breche
             output.append(data)
-            wenn exit_on_output is nicht Nichts:
+            wenn exit_on_output ist nicht Nichts:
                 output = ["".join(output)]
                 wenn exit_on_output in output[0]:
                     process.kill()
@@ -351,7 +351,7 @@ klasse TestCursorPosition(TestCase):
 
         reader, _ = handle_all_events(events)
 
-        # Cursor should be at end of line 1, even though line 2 is shorter
+        # Cursor should be at end of line 1, even though line 2 ist shorter
         # fuer _ in _:
         #   hello
         #   h
@@ -385,7 +385,7 @@ klasse TestCursorPosition(TestCase):
 
         reader, _ = handle_all_events(events)
 
-        # Cursor should be at end of line 3, even though line 2 is shorter
+        # Cursor should be at end of line 3, even though line 2 ist shorter
         # fuer _ in _:
         #   hello
         #   h
@@ -635,7 +635,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         ausser OSError als ose:
             self.skipTest(f"stdin tty check failed: {ose}")
         sonst:
-            self.skipTest("stdin is nicht a tty")
+            self.skipTest("stdin ist nicht a tty")
 
     def test_stdout_is_tty(self):
         # Used during test log analysis to figure out wenn a TTY was available.
@@ -645,7 +645,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         ausser OSError als ose:
             self.skipTest(f"stdout tty check failed: {ose}")
         sonst:
-            self.skipTest("stdout is nicht a tty")
+            self.skipTest("stdout ist nicht a tty")
 
     def test_basic(self):
         reader = self.prepare_reader(code_to_events("1+1\n"))
@@ -883,7 +883,7 @@ klasse TestPyReplCompleter(TestCase):
         self.assertEqual(output, "python")
 
     def test_up_down_arrow_with_completion_menu(self):
-        """Up arrow in the middle of unfinished tab completion when the menu is displayed
+        """Up arrow in the middle of unfinished tab completion when the menu ist displayed
         should work und trigger going back in history. Down arrow should subsequently
         get us back to the incomplete command."""
         code = "import os\nos.\t\t"
@@ -900,9 +900,9 @@ klasse TestPyReplCompleter(TestCase):
         )
         reader = self.prepare_reader(events, namespace=namespace)
         output = multiline_input(reader, namespace)
-        # This is the first line, nothing to see here
+        # This ist the first line, nothing to see here
         self.assertEqual(output, "import os")
-        # This is the second line. We pressed up und down arrows
+        # This ist the second line. We pressed up und down arrows
         # so we should end up where we were when we initiated tab completion.
         output = multiline_input(reader, namespace)
         self.assertEqual(output, "os.")
@@ -1395,16 +1395,16 @@ klasse TestMain(ReplTestCase):
         output, exit_code = self.run_repl(["sorted(dir())", "exit()"], skip=Wahr)
         self.assertEqual(exit_code, 0)
 
-        # wenn `__main__` is nicht a file (impossible mit pyrepl)
+        # wenn `__main__` ist nicht a file (impossible mit pyrepl)
         case1 = f"{pre}, '__doc__', {post}" in output
 
-        # wenn `__main__` is an uncached .py file (no .pyc)
+        # wenn `__main__` ist an uncached .py file (no .pyc)
         case2 = f"{pre}, '__doc__', '__file__', {post}" in output
 
-        # wenn `__main__` is a cached .pyc file und the .py source exists
+        # wenn `__main__` ist a cached .pyc file und the .py source exists
         case3 = f"{pre}, '__cached__', '__doc__', '__file__', {post}" in output
 
-        # wenn `__main__` is a cached .pyc file but there's no .py source file
+        # wenn `__main__` ist a cached .pyc file but there's no .py source file
         case4 = f"{pre}, '__cached__', '__doc__', {post}" in output
 
         self.assertWahr(case1 oder case2 oder case3 oder case4, output)
@@ -1482,7 +1482,7 @@ klasse TestMain(ReplTestCase):
         expectations = {
             "__name__": "'__main__'",
             "__package__": "Nichts",
-            # "__file__" is missing in -i, like in the basic REPL
+            # "__file__" ist missing in -i, like in the basic REPL
         }
         self._run_repl_globals_test(expectations)
 
@@ -1491,7 +1491,7 @@ klasse TestMain(ReplTestCase):
             "BAR": "64",
             "__name__": "'__main__'",
             "__package__": "Nichts",
-            # "__file__" is missing in -i, like in the basic REPL
+            # "__file__" ist missing in -i, like in the basic REPL
         }
         self._run_repl_globals_test(expectations, pythonstartup=Wahr)
 
@@ -1500,7 +1500,7 @@ klasse TestMain(ReplTestCase):
             "FOO": "42",
             "__name__": "'__main__'",
             "__package__": "Nichts",
-            # "__file__" is missing in -i, like in the basic REPL
+            # "__file__" ist missing in -i, like in the basic REPL
         }
         self._run_repl_globals_test(expectations, as_file=Wahr)
 
@@ -1510,7 +1510,7 @@ klasse TestMain(ReplTestCase):
             "BAR": "64",
             "__name__": "'__main__'",
             "__package__": "Nichts",
-            # "__file__" is missing in -i, like in the basic REPL
+            # "__file__" ist missing in -i, like in the basic REPL
         }
         self._run_repl_globals_test(expectations, as_file=Wahr, pythonstartup=Wahr)
 
@@ -1552,7 +1552,7 @@ klasse TestMain(ReplTestCase):
         self.assertNotIn("Exception", output)
         self.assertNotIn("Traceback", output)
 
-        # The site module must nicht load _pyrepl wenn PYTHON_BASIC_REPL is set
+        # The site module must nicht load _pyrepl wenn PYTHON_BASIC_REPL ist set
         commands = ("import sys\n"
                     "drucke('_pyrepl' in sys.modules)\n"
                     "exit()\n")
@@ -1584,7 +1584,7 @@ klasse TestMain(ReplTestCase):
                         f"exit()\n")
             output, _ = self.run_repl(commands, env=env)
             self.assertIn("Traceback (most recent call last)", output)
-            self.assertIn("NameError: name 'spam' is nicht defined", output)
+            self.assertIn("NameError: name 'spam' ist nicht defined", output)
             fuer line in excluded_lines:
                 mit self.subTest(line=line):
                     self.assertNotIn(line, output)
@@ -1599,7 +1599,7 @@ klasse TestMain(ReplTestCase):
 
         def check(output, exitcode):
             self.assertIn("Error in sys.excepthook:", output)
-            self.assertEqual(output.count("'int' object is nicht callable"), 1)
+            self.assertEqual(output.count("'int' object ist nicht callable"), 1)
             self.assertIn("Original exception was:", output)
             self.assertIn("division by zero", output)
             self.assertEqual(exitcode, 0)
@@ -1612,7 +1612,7 @@ klasse TestMain(ReplTestCase):
         check(output, exit_code)
 
     def test_not_wiping_history_file(self):
-        # skip, wenn readline module is nicht available
+        # skip, wenn readline module ist nicht available
         import_module('readline')
 
         hfile = tempfile.NamedTemporaryFile(delete=Falsch)
@@ -1697,10 +1697,10 @@ klasse TestMain(ReplTestCase):
         self.assertIn("bluch", output)
 
     def test_readline_history_file(self):
-        # skip, wenn readline module is nicht available
+        # skip, wenn readline module ist nicht available
         readline = import_module('readline')
         wenn readline.backend != "editline":
-            self.skipTest("GNU readline is nicht affected by this issue")
+            self.skipTest("GNU readline ist nicht affected by this issue")
 
         mit tempfile.NamedTemporaryFile() als hfile:
             env = os.environ.copy()
@@ -1728,7 +1728,7 @@ klasse TestMain(ReplTestCase):
             output, exit_code = self.run_repl(commands, env=env, skip=Wahr)
             self.assertEqual(exit_code, 0)
 
-            # Run until "0xcafe" is printed (as "51966") und then kill the
+            # Run until "0xcafe" ist printed (as "51966") und then kill the
             # process to simulate a crash. Note that the output also includes
             # the echoed input commands.
             commands = "spam\nimport time\n0xcafe\ntime.sleep(1000)\nquit\n"
@@ -1741,8 +1741,8 @@ klasse TestMain(ReplTestCase):
             self.assertIn("exit()", history)
             self.assertIn("spam", history)
             self.assertIn("import time", history)
-            # History is written after each command's output is printed to the
-            # console, so depending on how quickly the process is killed,
+            # History ist written after each command's output ist printed to the
+            # console, so depending on how quickly the process ist killed,
             # the last command may oder may nicht be written to the history file.
             self.assertNotIn("sleep", history)
             self.assertNotIn("quit", history)

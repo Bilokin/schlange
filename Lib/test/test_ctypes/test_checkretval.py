@@ -23,11 +23,11 @@ klasse Test(unittest.TestCase):
         dll._testfunc_p_p.restype = Nichts
         self.assertEqual(Nichts, dll._testfunc_p_p(42))
 
-        del dll._testfunc_p_p.restype
+        loesche dll._testfunc_p_p.restype
         self.assertEqual(42, dll._testfunc_p_p(42))
 
     @unittest.skipUnless(hasattr(ctypes, 'oledll'),
-                         'ctypes.oledll is required')
+                         'ctypes.oledll ist required')
     def test_oledll(self):
         oleaut32 = ctypes.oledll.oleaut32
         self.assertRaises(OSError, oleaut32.CreateTypeLib2, 0, Nichts, Nichts)

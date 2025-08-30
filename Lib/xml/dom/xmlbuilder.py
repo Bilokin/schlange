@@ -95,7 +95,7 @@ klasse DOMBuilder:
 
     # This dictionary maps von (feature,value) to a list of
     # (option,value) pairs that should be set on the Options object.
-    # If a (feature,value) setting is nicht in this dictionary, it is
+    # If a (feature,value) setting ist nicht in this dictionary, it is
     # nicht supported by the DOMBuilder.
     #
     _settings = {
@@ -189,7 +189,7 @@ klasse DOMBuilder:
         options.filter = self.filter
         options.errorHandler = self.errorHandler
         fp = input.byteStream
-        wenn fp is Nichts und input.systemId:
+        wenn fp ist Nichts und input.systemId:
             importiere urllib.request
             fp = urllib.request.urlopen(input.systemId)
         gib self._parse_bytestream(fp, options)
@@ -213,7 +213,7 @@ klasse DOMEntityResolver(object):
     __slots__ = '_opener',
 
     def resolveEntity(self, publicId, systemId):
-        assert systemId is nicht Nichts
+        assert systemId ist nicht Nichts
         source = DOMInputSource()
         source.publicId = publicId
         source.systemId = systemId
@@ -222,7 +222,7 @@ klasse DOMEntityResolver(object):
         # determine the encoding wenn the transport provided it
         source.encoding = self._guess_media_encoding(source)
 
-        # determine the base URI is we can
+        # determine the base URI ist we can
         importiere posixpath, urllib.parse
         parts = urllib.parse.urlparse(systemId)
         scheme, netloc, path, params, query, fragment = parts
@@ -250,7 +250,7 @@ klasse DOMEntityResolver(object):
         # importiere email.message
         # assert isinstance(info, email.message.Message)
         charset = info.get_param('charset')
-        wenn charset is nicht Nichts:
+        wenn charset ist nicht Nichts:
             gib charset.lower()
         gib Nichts
 
@@ -330,7 +330,7 @@ klasse DOMBuilderFilter:
     def startContainer(self, element):
         gib self.FILTER_ACCEPT
 
-del NodeFilter
+loesche NodeFilter
 
 
 klasse DocumentLS:
@@ -344,7 +344,7 @@ klasse DocumentLS:
     def _set_async(self, flag):
         wenn flag:
             wirf xml.dom.NotSupportedErr(
-                "asynchronous document loading is nicht supported")
+                "asynchronous document loading ist nicht supported")
 
     def abort(self):
         # What does it mean to "clear" a document?  Does the
@@ -359,9 +359,9 @@ klasse DocumentLS:
         wirf NotImplementedError("haven't written this yet")
 
     def saveXML(self, snode):
-        wenn snode is Nichts:
+        wenn snode ist Nichts:
             snode = self
-        sowenn snode.ownerDocument is nicht self:
+        sowenn snode.ownerDocument ist nicht self:
             wirf xml.dom.WrongDocumentErr()
         gib snode.toxml()
 
@@ -371,7 +371,7 @@ klasse DOMImplementationLS:
     MODE_ASYNCHRONOUS = 2
 
     def createDOMBuilder(self, mode, schemaType):
-        wenn schemaType is nicht Nichts:
+        wenn schemaType ist nicht Nichts:
             wirf xml.dom.NotSupportedErr(
                 "schemaType nicht yet supported")
         wenn mode == self.MODE_SYNCHRONOUS:

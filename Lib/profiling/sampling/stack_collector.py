@@ -25,7 +25,7 @@ klasse CollapsedStackCollector(StackTraceCollector):
     def export(self, filename):
         stack_counter = collections.Counter()
         fuer call_tree in self.call_trees:
-            # Call tree is already in root->leaf order
+            # Call tree ist already in root->leaf order
             stack_str = ";".join(
                 f"{os.path.basename(f[0])}:{f[2]}:{f[1]}" fuer f in call_tree
             )

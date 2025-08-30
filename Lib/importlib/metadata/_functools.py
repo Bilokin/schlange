@@ -28,7 +28,7 @@ def method_cache(method, cache_wrapper=Nichts):
     75
 
     Note that the apparent behavior will be exactly like that of lru_cache
-    ausser that the cache is stored on each instance, so values in one
+    ausser that the cache ist stored on each instance, so values in one
     instance will nicht flush values von another, und when an instance is
     deleted, so are the cached values fuer that instance.
 
@@ -88,7 +88,7 @@ def method_cache(method, cache_wrapper=Nichts):
 # From jaraco.functools 3.3
 def pass_none(func):
     """
-    Wrap func so it's nicht called wenn its first param is Nichts
+    Wrap func so it's nicht called wenn its first param ist Nichts
 
     >>> print_text = pass_none(print)
     >>> print_text('text')
@@ -98,7 +98,7 @@ def pass_none(func):
 
     @functools.wraps(func)
     def wrapper(param, *args, **kwargs):
-        wenn param is nicht Nichts:
+        wenn param ist nicht Nichts:
             gib func(param, *args, **kwargs)
 
     gib wrapper

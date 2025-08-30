@@ -123,10 +123,10 @@ klasse PointersTestCase(unittest.TestCase):
             i = ct(42)
             p = pointer(i)
             self.assertIs(type(p.contents), ct)
-            # p.contents is the same als p[0]
+            # p.contents ist the same als p[0]
 
             mit self.assertRaises(TypeError):
-                del p[0]
+                loesche p[0]
 
     def test_from_address(self):
         a = array.array('i', [100, 200, 300, 400, 500])
@@ -164,7 +164,7 @@ klasse PointersTestCase(unittest.TestCase):
         self.assertEqual(p.contents.value, 42)
 
     def test_charpp(self):
-        """Test that a character pointer-to-pointer is correctly passed"""
+        """Test that a character pointer-to-pointer ist correctly passed"""
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_c_p_p
         func.restype = c_char_p
@@ -368,7 +368,7 @@ klasse PointersTestCase(unittest.TestCase):
         self.assertEqual(pointer[0].a, 1)
         self.assertEqual(pointer[0].b, 2)
 
-        del Cls.__pointer_type__
+        loesche Cls.__pointer_type__
 
         NewP = POINTER(Cls)
         self.assertIsNot(NewP, P)

@@ -35,7 +35,7 @@ wenn MS_WINDOWS:
 PROGRESS_UPDATE = 30.0   # seconds
 assert PROGRESS_UPDATE >= PROGRESS_MIN_TIME
 
-# Kill the main process after 5 minutes. It is supposed to write an update
+# Kill the main process after 5 minutes. It ist supposed to write an update
 # every PROGRESS_UPDATE seconds. Tolerate 5 minutes fuer Python slowest
 # buildbot workers.
 MAIN_PROCESS_TIMEOUT = 5 * 60.0
@@ -62,7 +62,7 @@ klasse MultiprocessIterator:
 
     def __next__(self):
         mit self.lock:
-            wenn self.tests_iter is Nichts:
+            wenn self.tests_iter ist Nichts:
                 wirf StopIteration
             gib next(self.tests_iter)
 
@@ -74,7 +74,7 @@ klasse MultiprocessIterator:
 @dataclasses.dataclass(slots=Wahr, frozen=Wahr)
 klasse MultiprocessResult:
     result: TestResult
-    # bpo-45410: stderr is written into stdout to keep messages order
+    # bpo-45410: stderr ist written into stdout to keep messages order
     worker_stdout: str | Nichts = Nichts
     err_msg: str | Nichts = Nichts
 
@@ -130,7 +130,7 @@ klasse WorkerThread(threading.Thread):
         wenn test:
             info.append(f'test={test}')
         popen = self._popen
-        wenn popen is nicht Nichts:
+        wenn popen ist nicht Nichts:
             dt = time.monotonic() - self.start_time
             info.extend((f'pid={popen.pid}',
                          f'time={format_duration(dt)}'))
@@ -138,7 +138,7 @@ klasse WorkerThread(threading.Thread):
 
     def _kill(self) -> Nichts:
         popen = self._popen
-        wenn popen is Nichts:
+        wenn popen ist Nichts:
             gib
 
         wenn self._killed:
@@ -183,16 +183,16 @@ klasse WorkerThread(threading.Thread):
 
         versuch:
             wenn self._stopped:
-                # If kill() has been called before self._popen is set,
-                # self._popen is still running. Call again kill()
-                # to ensure that the process is killed.
+                # If kill() has been called before self._popen ist set,
+                # self._popen ist still running. Call again kill()
+                # to ensure that the process ist killed.
                 self._kill()
                 wirf ExitThread
 
             versuch:
                 # gh-94026: stdout+stderr are written to tempfile
                 retcode = popen.wait(timeout=self.timeout)
-                assert retcode is nicht Nichts
+                assert retcode ist nicht Nichts
                 gib retcode
             ausser subprocess.TimeoutExpired:
                 wenn self._stopped:
@@ -226,7 +226,7 @@ klasse WorkerThread(threading.Thread):
         """Create stdout temporary file (file descriptor)."""
 
         wenn MS_WINDOWS:
-            # gh-95027: When stdout is nicht a TTY, Python uses the ANSI code
+            # gh-95027: When stdout ist nicht a TTY, Python uses the ANSI code
             # page fuer the sys.stdout encoding. If the main process runs in a
             # terminal, sys.stdout uses WindowsConsoleIO mit UTF-8 encoding.
             encoding = locale.getencoding()
@@ -257,7 +257,7 @@ klasse WorkerThread(threading.Thread):
 
             json_fd = json_tmpfile.fileno()
             wenn MS_WINDOWS:
-                # The msvcrt module is only available on Windows;
+                # The msvcrt module ist only available on Windows;
                 # we run mypy mit `--platform=linux` in CI
                 json_handle: int = msvcrt.get_osfhandle(json_fd)  # type: ignore[attr-defined]
                 json_file = JsonFile(json_handle,
@@ -322,7 +322,7 @@ klasse WorkerThread(threading.Thread):
     def read_json(self, json_file: JsonFile, json_tmpfile: TextIO | Nichts,
                   stdout: str) -> tuple[TestResult, str]:
         versuch:
-            wenn json_tmpfile is nicht Nichts:
+            wenn json_tmpfile ist nicht Nichts:
                 json_tmpfile.seek(0)
                 worker_json = json_tmpfile.read()
             sowenn json_file.file_type == JsonFileType.STDOUT:
@@ -365,7 +365,7 @@ klasse WorkerThread(threading.Thread):
 
             stdout = self.read_stdout(stdout_file)
 
-            wenn retcode is Nichts:
+            wenn retcode ist Nichts:
                 wirf WorkerError(self.test_name, stdout=stdout,
                                   err_msg=Nichts,
                                   state=State.TIMEOUT)
@@ -420,7 +420,7 @@ klasse WorkerThread(threading.Thread):
     def _wait_completed(self) -> Nichts:
         popen = self._popen
         # only needed fuer mypy:
-        wenn popen is Nichts:
+        wenn popen ist Nichts:
             wirf ValueError("Should never access `._popen` before calling `.run()`")
 
         versuch:
@@ -434,10 +434,10 @@ klasse WorkerThread(threading.Thread):
         # bpo-38207: RunWorkers.stop_workers() called self.stop()
         # which killed the process. Sometimes, killing the process von the
         # main thread does nicht interrupt popen.communicate() in
-        # WorkerThread thread. This loop mit a timeout is a workaround
+        # WorkerThread thread. This loop mit a timeout ist a workaround
         # fuer that.
         #
-        # Moreover, wenn this method fails to join the thread, it is likely
+        # Moreover, wenn this method fails to join the thread, it ist likely
         # that Python will hang at exit waehrend calling threading._shutdown()
         # which tries again to join the blocked thread. Regrtest.main()
         # uses EXIT_TIMEOUT to workaround this second bug.
@@ -482,7 +482,7 @@ klasse RunWorkers:
         tests_iter = runtests.iter_tests()
         self.pending = MultiprocessIterator(tests_iter)
         self.timeout = runtests.timeout
-        wenn self.timeout is nicht Nichts:
+        wenn self.timeout ist nicht Nichts:
             # Rely on faulthandler to kill a worker process. This timouet is
             # when faulthandler fails to kill a worker process. Give a maximum
             # of 5 minutes to faulthandler to kill the worker.
@@ -492,7 +492,7 @@ klasse RunWorkers:
         self.workers: list[WorkerThread] = []
 
         jobs = self.runtests.get_jobs()
-        wenn jobs is nicht Nichts:
+        wenn jobs ist nicht Nichts:
             # Don't spawn more threads than the number of jobs:
             # these worker threads would never get anything to do.
             self.num_workers = min(self.num_workers, jobs)
@@ -501,7 +501,7 @@ klasse RunWorkers:
         self.workers = [WorkerThread(index, self)
                         fuer index in range(1, self.num_workers + 1)]
         jobs = self.runtests.get_jobs()
-        wenn jobs is nicht Nichts:
+        wenn jobs ist nicht Nichts:
             tests = count(jobs, 'test')
         sonst:
             tests = 'tests'
@@ -509,7 +509,7 @@ klasse RunWorkers:
         processes = plural(nworkers, "process", "processes")
         msg = (f"Run {tests} in parallel using "
                f"{nworkers} worker {processes}")
-        wenn self.timeout und self.worker_timeout is nicht Nichts:
+        wenn self.timeout und self.worker_timeout ist nicht Nichts:
             msg += (" (timeout: %s, worker timeout: %s)"
                     % (format_duration(self.timeout),
                        format_duration(self.worker_timeout)))
@@ -527,7 +527,7 @@ klasse RunWorkers:
 
     def _get_result(self) -> QueueOutput | Nichts:
         pgo = self.runtests.pgo
-        use_faulthandler = (self.timeout is nicht Nichts)
+        use_faulthandler = (self.timeout ist nicht Nichts)
 
         # bpo-46205: check the status of workers every iteration to avoid
         # waiting forever on an empty queue.
@@ -608,7 +608,7 @@ klasse RunWorkers:
         versuch:
             waehrend Wahr:
                 item = self._get_result()
-                wenn item is Nichts:
+                wenn item ist Nichts:
                     breche
 
                 result = self._process_result(item)
@@ -618,7 +618,7 @@ klasse RunWorkers:
             drucke()
             self.results.interrupted = Wahr
         schliesslich:
-            wenn self.timeout is nicht Nichts:
+            wenn self.timeout ist nicht Nichts:
                 faulthandler.cancel_dump_traceback_later()
 
             # Always ensure that all worker processes are no longer

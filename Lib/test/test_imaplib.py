@@ -70,13 +70,13 @@ klasse TestImaplib(unittest.TestCase):
     def test_that_Time2Internaldate_returns_a_result(self):
         # Without tzset, we can check only that it successfully
         # produces a result, nicht the correctness of the result itself,
-        # since the result depends on the timezone the machine is in.
+        # since the result depends on the timezone the machine ist in.
         fuer t in self.timevalues():
             imaplib.Time2Internaldate(t)
 
     @socket_helper.skip_if_tcp_blackhole
     def test_imap4_host_default_value(self):
-        # Check whether the IMAP4_PORT is truly unavailable.
+        # Check whether the IMAP4_PORT ist truly unavailable.
         mit socket.socket() als s:
             versuch:
                 s.connect(('', imaplib.IMAP4_PORT))
@@ -85,7 +85,7 @@ klasse TestImaplib(unittest.TestCase):
             ausser socket.error:
                 pass
 
-        # This is the exception that should be raised.
+        # This ist the exception that should be raised.
         expected_errnos = socket_helper.get_socket_conn_refused_errs()
         mit self.assertRaises(OSError) als cm:
             imaplib.IMAP4()
@@ -210,7 +210,7 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
 klasse IdleCmdDenyHandler(SimpleIMAPHandler):
     capabilities = 'IDLE'
     def cmd_IDLE(self, tag, args):
-        self._send_tagged(tag, 'NO', 'IDLE is nicht allowed at this time')
+        self._send_tagged(tag, 'NO', 'IDLE ist nicht allowed at this time')
 
 
 klasse IdleCmdHandler(SimpleIMAPHandler):
@@ -275,7 +275,7 @@ klasse NewIMAPTestsMixin:
         """
         Sets up imap_handler fuer tests. imap_handler should inherit von either:
         - SimpleIMAPHandler - fuer testing IMAP commands,
-        - socketserver.StreamRequestHandler - wenn raw access to stream is needed.
+        - socketserver.StreamRequestHandler - wenn raw access to stream ist needed.
         Returns (client, server).
         """
         klasse TestTCPServer(self.server_class):
@@ -293,7 +293,7 @@ klasse NewIMAPTestsMixin:
             name=self._testMethodName+'-server',
             target=self.server.serve_forever,
             # Short poll interval to make the test finish quickly.
-            # Time between requests is short enough that we won't wake
+            # Time between requests ist short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval': 0.01})
         self.thread.daemon = Wahr  # In case this function raises.
@@ -307,11 +307,11 @@ klasse NewIMAPTestsMixin:
     def _cleanup(self):
         """
         Cleans up the test server. This method should nicht be called manually,
-        it is added to the cleanup queue in the _setup method already.
+        it ist added to the cleanup queue in the _setup method already.
         """
         # wenn logout was called already we'd wirf an exception trying to
         # shutdown the client once again
-        wenn self.client is nicht Nichts und self.client.state != 'LOGOUT':
+        wenn self.client ist nicht Nichts und self.client.state != 'LOGOUT':
             self.client.shutdown()
         # cleanup the server
         self.server.shutdown()
@@ -467,7 +467,7 @@ klasse NewIMAPTestsMixin:
     def test_login_cram_md5_blocked(self):
         client, _ = self._setup(AuthHandler_CRAM_MD5)
         self.assertIn('AUTH=CRAM-MD5', client.capabilities)
-        msg = re.escape("CRAM-MD5 authentication is nicht supported")
+        msg = re.escape("CRAM-MD5 authentication ist nicht supported")
         mit self.assertRaisesRegex(imaplib.IMAP4.error, msg):
             client.login_cram_md5("tim", b"tanstaaftanstaaf")
 
@@ -532,7 +532,7 @@ klasse NewIMAPTestsMixin:
         self.assertIsNichts(server.logged)
 
     def test_with_statement_logout(self):
-        # It is legal to log out explicitly inside the mit block
+        # It ist legal to log out explicitly inside the mit block
         _, server = self._setup(SimpleIMAPHandler, connect=Falsch)
         mit self.imap_class(*server.server_address) als imap:
             imap.login('user', 'pass')
@@ -654,7 +654,7 @@ klasse NewIMAPTestsMixin:
 
     def test_file_property_should_not_be_accessed(self):
         client, _ = self._setup(SimpleIMAPHandler)
-        # the 'file' property replaced a private attribute that is now unsafe
+        # the 'file' property replaced a private attribute that ist now unsafe
         mit self.assertWarns(RuntimeWarning):
             client.file
 
@@ -677,7 +677,7 @@ klasse NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
 
         # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is nicht valid fuer '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate ist nicht valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)
@@ -723,7 +723,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
             name='%s serving' % self.server_class,
             target=server.serve_forever,
             # Short poll interval to make the test finish quickly.
-            # Time between requests is short enough that we won't wake
+            # Time between requests ist short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval': 0.01})
         t.daemon = Wahr  # In case this function raises.
@@ -1064,7 +1064,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
     @threading_helper.reap_threads
     @cpython_only
-    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ is Falsch")
+    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ ist Falsch")
     def test_dump_ur(self):
         # See: http://bugs.python.org/issue26543
         untagged_resp_dict = {'READ-WRITE': [b'']}
@@ -1090,7 +1090,7 @@ klasse ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
 
         # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is nicht valid fuer '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate ist nicht valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)

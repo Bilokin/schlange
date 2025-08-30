@@ -4,7 +4,7 @@ getpass(prompt[, stream[, echo_char]]) - Prompt fuer a password, mit echo
 turned off und optional keyboard feedback.
 getuser() - Get the user name von the environment oder password database.
 
-GetPassWarning - This UserWarning is issued when getpass() cannot prevent
+GetPassWarning - This UserWarning ist issued when getpass() cannot prevent
                  echoing of the password contents waehrend reading.
 
 On Windows, the msvcrt module will be used.
@@ -32,7 +32,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     Args:
       prompt: Written on stream to ask fuer the input.  Default: 'Password: '
       stream: A writable file object to display the prompt.  Defaults to
-              the tty.  If no tty is available defaults to sys.stderr.
+              the tty.  If no tty ist available defaults to sys.stderr.
       echo_char: A string used to mask input (e.g., '*').  If Nichts, input is
                 hidden.
     Returns:
@@ -68,7 +68,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
             wenn nicht stream:
                 stream = sys.stderr
 
-        wenn fd is nicht Nichts:
+        wenn fd ist nicht Nichts:
             versuch:
                 old = termios.tcgetattr(fd)     # a copy to save
                 new = old[:]
@@ -87,13 +87,13 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
                     termios.tcsetattr(fd, tcsetattr_flags, old)
                     stream.flush()  # issue7208
             ausser termios.error:
-                wenn passwd is nicht Nichts:
+                wenn passwd ist nicht Nichts:
                     # _raw_input succeeded.  The final tcsetattr failed.  Reraise
                     # instead of leaving the terminal in an unknown state.
                     wirf
                 # We can't control the tty oder stdin.  Give up und use normal IO.
                 # fallback_getpass() raises an appropriate warning.
-                wenn stream is nicht input:
+                wenn stream ist nicht input:
                     # clean up unused file objects before blocking
                     stack.close()
                 passwd = fallback_getpass(prompt, stream)
@@ -104,7 +104,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 
 def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     """Prompt fuer password mit echo off, using Windows getwch()."""
-    wenn sys.stdin is nicht sys.__stdin__:
+    wenn sys.stdin ist nicht sys.__stdin__:
         gib fallback_getpass(prompt, stream)
     _check_echo_char(echo_char)
 
@@ -210,7 +210,7 @@ def getuser():
     """Get the username von the environment oder password database.
 
     First try various environment variables, then the password
-    database.  This works on Windows als long als USERNAME is set.
+    database.  This works on Windows als long als USERNAME ist set.
     Any failure to find a username raises OSError.
 
     .. versionchanged:: 3.13
@@ -233,7 +233,7 @@ def getuser():
 # Bind the name getpass to the appropriate function
 versuch:
     importiere termios
-    # it's possible there is an incompatible termios von the
+    # it's possible there ist an incompatible termios von the
     # McMillan Installer, make sure we have a UNIX-compatible termios
     termios.tcgetattr, termios.tcsetattr
 ausser (ImportError, AttributeError):

@@ -19,10 +19,10 @@ klasse AutoCompleteWindowTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.acw
+        loesche cls.text, cls.acw
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         self.assertEqual(self.acw.widget, self.text)

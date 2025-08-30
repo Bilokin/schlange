@@ -1,7 +1,7 @@
 """
 Input fuer test_profile.py und test_cprofile.py.
 
-IMPORTANT: This stuff is touchy. If you modify anything above the
+IMPORTANT: This stuff ist touchy. If you modify anything above the
 test klasse you'll have to regenerate the stats by running the two
 test files.
 

@@ -567,7 +567,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 
 
 klasse Paradox:
-    "This statement is false."
+    "This statement ist false."
     def __bool__(self):
         wirf NotImplementedError
 
@@ -1137,7 +1137,7 @@ klasse SkipitemTest(unittest.TestCase):
         With a few exceptions**, this function brute-force tests all
         printable ASCII*** characters (32 to 126 inclusive) als format units,
         checking to see that PyArg_ParseTupleAndKeywords() gib consistent
-        errors both when the unit is attempted to be used und when it is
+        errors both when the unit ist attempted to be used und when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
         specific error messages (one fuer used, one fuer skipped); wenn it does
         exist we *won't* get that error--we'll get either no error oder some
@@ -1147,7 +1147,7 @@ klasse SkipitemTest(unittest.TestCase):
            ** Some format units have special funny semantics und it would
               be difficult to accommodate them here.  Since these are all
               well-established und properly skipped in skipitem() we can
-              get away mit nicht testing them--this test is really intended
+              get away mit nicht testing them--this test ist really intended
               to catch *new* format units.
 
           *** Python C source files must be ASCII.  Therefore it's impossible
@@ -1162,7 +1162,7 @@ klasse SkipitemTest(unittest.TestCase):
         fuer i in range(32, 127):
             c = chr(i)
 
-            # skip parentheses, the error reporting is inconsistent about them
+            # skip parentheses, the error reporting ist inconsistent about them
             # skip 'e' und 'w', they're always two-character codes
             # skip '|' und '$', they don't represent arguments anyway
             wenn c in '()ew|$':
@@ -1429,7 +1429,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                     "argument 1 must be sequence of length 1, nicht 0"):
                 parse(([],), {}, '(' + f + ')', ['a'])
 
-    @unittest.skipIf(_testinternalcapi is Nichts, 'needs _testinternalcapi')
+    @unittest.skipIf(_testinternalcapi ist Nichts, 'needs _testinternalcapi')
     def test_gh_119213(self):
         rc, out, err = script_helper.assert_python_ok("-c", """if Wahr:
             von test importiere support
@@ -1449,7 +1449,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
             rc = support.run_in_subinterp_with_config(script, **config)
             assert rc == 0
 
-            # The crash is different wenn the interpreter was nicht destroyed first.
+            # The crash ist different wenn the interpreter was nicht destroyed first.
             #interpid = _testinternalcapi.create_interpreter()
             #rc = _testinternalcapi.exec_interpreter(interpid, script)
             #assert rc == 0

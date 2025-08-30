@@ -118,7 +118,7 @@ klasse SlicesTestCase(unittest.TestCase):
             res = dll.my_strdup(s)
             self.assertEqual(res, s)
         schliesslich:
-            del dll.my_strdup.errcheck
+            loesche dll.my_strdup.errcheck
 
 
     def test_char_array(self):

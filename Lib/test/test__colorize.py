@@ -82,7 +82,7 @@ klasse TestColorizeFunction(unittest.TestCase):
             vt_mock.return_value = Falsch
             self.assertEqual(_colorize.can_colorize(), Falsch)
             importiere nt
-            del nt._supports_virtual_terminal
+            loesche nt._supports_virtual_terminal
             self.assertEqual(_colorize.can_colorize(), Falsch)
 
     def test_colorized_detection_checks_for_std_streams(self):

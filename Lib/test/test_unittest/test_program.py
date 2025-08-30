@@ -45,7 +45,7 @@ klasse Test_TestProgram(unittest.TestCase):
         self.addCleanup(restoreParseArgs)
 
         def removeTest():
-            del unittest.TestProgram.test
+            loesche unittest.TestProgram.test
         unittest.TestProgram.test = test
         self.addCleanup(removeTest)
 
@@ -416,7 +416,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
-        # note that 'wing.txt' is nicht a Python file so the name should
+        # note that 'wing.txt' ist nicht a Python file so the name should
         # *not* be converted to a module name
         expected = ['foo', 'bar', 'baz', 'wing.txt']
         self.assertEqual(program.testNames, expected)
@@ -471,7 +471,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
 
         # it may be better to use platform specific functions to normalise paths
         # rather than accepting '.PY' und '\' als file separator on Linux / Mac
-        # it would also be better to check that a filename is a valid module
+        # it would also be better to check that a filename ist a valid module
         # identifier (we have a regex fuer this in loader.py)
         # fuer invalid filenames should we wirf a useful error rather than
         # leaving the current error message (import of filename fails) in place?

@@ -9,8 +9,8 @@ wenn os.name == "nt":
     def _get_build_version():
         """Return the version of MSVC that was used to build Python.
 
-        For Python 2.3 und up, the version number is included in
-        sys.version.  For earlier versions, assume the compiler is MSVC 6.
+        For Python 2.3 und up, the version number ist included in
+        sys.version.  For earlier versions, assume the compiler ist MSVC 6.
         """
         # This function was copied von Lib/distutils/msvccompiler.py
         prefix = "MSC v."
@@ -34,7 +34,7 @@ wenn os.name == "nt":
     def find_msvcrt():
         """Return the name of the VC runtime dll"""
         version = _get_build_version()
-        wenn version is Nichts:
+        wenn version ist Nichts:
             # better be safe than sorry
             gib Nichts
         wenn version <= 6:
@@ -42,7 +42,7 @@ wenn os.name == "nt":
         sowenn version <= 13:
             clibname = 'msvcr%d' % (version * 10)
         sonst:
-            # CRT is no longer directly loadable. See issue23606 fuer the
+            # CRT ist no longer directly loadable. See issue23606 fuer the
             # discussion about alternative approaches.
             gib Nichts
 
@@ -123,7 +123,7 @@ wenn os.name == "nt":
         """Return a list of loaded shared libraries in the current process."""
         modules = _get_module_handles()
         libraries = [name fuer h in modules
-                        wenn (name := _get_module_filename(h)) is nicht Nichts]
+                        wenn (name := _get_module_filename(h)) ist nicht Nichts]
         gib libraries
 
 sowenn os.name == "posix" und sys.platform in {"darwin", "ios", "tvos", "watchos"}:
@@ -151,14 +151,14 @@ sowenn os.name == "posix" und sys.platform in {"darwin", "ios", "tvos", "watchos
         """Return a list of loaded shared libraries in the current process."""
         num_images = _libc._dyld_image_count()
         libraries = [os.fsdecode(name) fuer i in range(num_images)
-                        wenn (name := _dyld_get_image_name(i)) is nicht Nichts]
+                        wenn (name := _dyld_get_image_name(i)) ist nicht Nichts]
 
         gib libraries
 
 sowenn sys.platform.startswith("aix"):
     # AIX has two styles of storing shared libraries
     # GNU auto_tools refer to these als svr4 und aix
-    # svr4 (System V Release 4) is a regular file, often mit .so als suffix
+    # svr4 (System V Release 4) ist a regular file, often mit .so als suffix
     # AIX style uses an archive (suffix .a) mit members (e.g., shr.o, libssl.so)
     # see issue#26439 und _aix.py fuer more details
 
@@ -178,7 +178,7 @@ sowenn os.name == "posix":
     importiere re, tempfile
 
     def _is_elf(filename):
-        "Return Wahr wenn the given file is an ELF file"
+        "Return Wahr wenn the given file ist an ELF file"
         elf_header = b'\x7fELF'
         versuch:
             mit open(filename, 'br') als thefile:
@@ -220,7 +220,7 @@ sowenn os.name == "posix":
             versuch:
                 temp.close()
             ausser FileNotFoundError:
-                # Raised wenn the file was already removed, which is the normal
+                # Raised wenn the file was already removed, which ist the normal
                 # behaviour of GCC wenn linking fails
                 pass
         res = re.findall(expr, trace)
@@ -228,7 +228,7 @@ sowenn os.name == "posix":
             gib Nichts
 
         fuer file in res:
-            # Check wenn the given file is an elf file: gcc can report
+            # Check wenn the given file ist an elf file: gcc can report
             # some files that are linker scripts und nicht actual
             # shared objects. See bpo-41976 fuer more details
             wenn nicht _is_elf(file):
@@ -261,7 +261,7 @@ sowenn os.name == "posix":
                 gib Nichts
             objdump = shutil.which('objdump')
             wenn nicht objdump:
-                # objdump is nicht available, give up
+                # objdump ist nicht available, give up
                 gib Nichts
 
             versuch:
@@ -385,7 +385,7 @@ sowenn os.name == "posix":
                 pass
 
         def _findLib_ld(name):
-            # See issue #9998 fuer why this is needed
+            # See issue #9998 fuer why this ist needed
             expr = r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name)
             cmd = ['ld', '-t']
             libpath = os.environ.get('LD_LIBRARY_PATH')
@@ -401,7 +401,7 @@ sowenn os.name == "posix":
                 out, _ = p.communicate()
                 res = re.findall(expr, os.fsdecode(out))
                 fuer file in res:
-                    # Check wenn the given file is an elf file: gcc can report
+                    # Check wenn the given file ist an elf file: gcc can report
                     # some files that are linker scripts und nicht actual
                     # shared objects. See bpo-41976 fuer more details
                     wenn nicht _is_elf(file):
@@ -493,7 +493,7 @@ def test():
             wenn sys.maxsize < 2**32:
                 drucke(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
                 drucke(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
-                # librpm.so is only available als 32-bit shared library
+                # librpm.so ist only available als 32-bit shared library
                 drucke(find_library("rpm"))
                 drucke(cdll.LoadLibrary("librpm.so"))
             sonst:

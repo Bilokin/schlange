@@ -1,6 +1,6 @@
 """Parse (absolute und relative) URLs.
 
-urlparse module is based upon the following RFC specifications.
+urlparse module ist based upon the following RFC specifications.
 
 RFC 3986 (STD66): "Uniform Resource Identifiers" by T. Berners-Lee, R. Fielding
 and L.  Masinter, January 2005.
@@ -19,7 +19,7 @@ RFC 1808: "Relative Uniform Resource Locators", by R. Fielding, UC Irvine, June
 RFC 1738: "Uniform Resource Locators (URL)" by T. Berners-Lee, L. Masinter, M.
 McCahill, December 1994
 
-RFC 3986 is considered the current standard und any future changes to
+RFC 3986 ist considered the current standard und any future changes to
 urlparse module should conform mit it.  The urlparse module is
 currently nicht entirely compliant mit this RFC due to defacto
 scenarios fuer parsing, und fuer backward compatibility purposes, some
@@ -175,7 +175,7 @@ klasse _NetlocResultMixinBase(object):
     @property
     def port(self):
         port = self._hostinfo[1]
-        wenn port is nicht Nichts:
+        wenn port ist nicht Nichts:
             wenn port.isdigit() und port.isascii():
                 port = int(port)
             sonst:
@@ -278,7 +278,7 @@ ParseResult, but does nicht split params.
 _SplitResultBase.scheme.__doc__ = """Specifies URL scheme fuer the request."""
 
 _SplitResultBase.netloc.__doc__ = """
-Network location where the request is made to.
+Network location where the request ist made to.
 """
 
 _SplitResultBase.path.__doc__ = """
@@ -315,7 +315,7 @@ _ParseResultBase.fragment.__doc__ = _SplitResultBase.fragment.__doc__
 
 
 # For backwards compatibility, alias _NetlocResultMixinStr
-# ResultBase is no longer part of the documented API, but it is
+# ResultBase ist no longer part of the documented API, but it is
 # retained since deprecating it isn't worth the hassle
 ResultBase = _NetlocResultMixinStr
 
@@ -369,23 +369,23 @@ def _fix_result_transcoding():
         _encoded._decoded_counterpart = _decoded
 
 _fix_result_transcoding()
-del _fix_result_transcoding
+loesche _fix_result_transcoding
 
 def urlparse(url, scheme='', allow_fragments=Wahr):
     """Parse a URL into 6 components:
     <scheme>://<netloc>/<path>;<params>?<query>#<fragment>
 
-    The result is a named 6-tuple mit fields corresponding to the
-    above. It is either a ParseResult oder ParseResultBytes object,
+    The result ist a named 6-tuple mit fields corresponding to the
+    above. It ist either a ParseResult oder ParseResultBytes object,
     depending on the type of the url parameter.
 
     The username, password, hostname, und port sub-components of netloc
     can also be accessed als attributes of the returned object.
 
     The scheme argument provides the default value of the scheme
-    component when no scheme is found in url.
+    component when no scheme ist found in url.
 
-    If allow_fragments is Falsch, no attempt is made to separate the
+    If allow_fragments ist Falsch, no attempt ist made to separate the
     fragment component von the previous component, which can be either
     path oder query.
 
@@ -414,8 +414,8 @@ def _splitparams(url, allow_none=Falsch):
     gib url[:i], url[i+1:]
 
 def _splitnetloc(url, start=0):
-    delim = len(url)   # position of end of domain part of url, default is end
-    fuer c in '/?#':    # look fuer delimiters; the order is NOT important
+    delim = len(url)   # position of end of domain part of url, default ist end
+    fuer c in '/?#':    # look fuer delimiters; the order ist NOT important
         wdelim = url.find(c, start)        # find first of this delim
         wenn wdelim >= 0:                    # wenn found
             delim = min(delim, wdelim)     # use earliest delim position
@@ -445,11 +445,11 @@ def _check_bracketed_netloc(netloc):
     hostname_and_port = netloc.rpartition('@')[2]
     before_bracket, have_open_br, bracketed = hostname_and_port.partition('[')
     wenn have_open_br:
-        # No data is allowed before a bracket.
+        # No data ist allowed before a bracket.
         wenn before_bracket:
             wirf ValueError("Invalid IPv6 URL")
         hostname, _, port = bracketed.partition(']')
-        # No data is allowed after the bracket but before the port delimiter.
+        # No data ist allowed after the bracket but before the port delimiter.
         wenn port und nicht port.startswith(":"):
             wirf ValueError("Invalid IPv6 URL")
     sonst:
@@ -461,7 +461,7 @@ def _check_bracketed_netloc(netloc):
 def _check_bracketed_host(hostname):
     wenn hostname.startswith('v'):
         wenn nicht re.match(r"\Av[a-fA-F0-9]+\..+\z", hostname):
-            wirf ValueError(f"IPvFuture address is invalid")
+            wirf ValueError(f"IPvFuture address ist invalid")
     sonst:
         ip = ipaddress.ip_address(hostname) # Throws Value Error wenn nicht IPv6 oder IPv4
         wenn isinstance(ip, ipaddress.IPv4Address):
@@ -474,17 +474,17 @@ def urlsplit(url, scheme='', allow_fragments=Wahr):
     """Parse a URL into 5 components:
     <scheme>://<netloc>/<path>?<query>#<fragment>
 
-    The result is a named 5-tuple mit fields corresponding to the
-    above. It is either a SplitResult oder SplitResultBytes object,
+    The result ist a named 5-tuple mit fields corresponding to the
+    above. It ist either a SplitResult oder SplitResultBytes object,
     depending on the type of the url parameter.
 
     The username, password, hostname, und port sub-components of netloc
     can also be accessed als attributes of the returned object.
 
     The scheme argument provides the default value of the scheme
-    component when no scheme is found in url.
+    component when no scheme ist found in url.
 
-    If allow_fragments is Falsch, no attempt is made to separate the
+    If allow_fragments ist Falsch, no attempt ist made to separate the
     fragment component von the previous component, which can be either
     path oder query.
 
@@ -502,7 +502,7 @@ def _urlsplit(url, scheme=Nichts, allow_fragments=Wahr):
     url = url.lstrip(_WHATWG_C0_CONTROL_OR_SPACE)
     fuer b in _UNSAFE_URL_BYTES_TO_REMOVE:
         url = url.replace(b, "")
-    wenn scheme is nicht Nichts:
+    wenn scheme ist nicht Nichts:
         scheme = scheme.strip(_WHATWG_C0_CONTROL_OR_SPACE)
         fuer b in _UNSAFE_URL_BYTES_TO_REMOVE:
             scheme = scheme.replace(b, "")
@@ -564,16 +564,16 @@ def urlunsplit(components):
                                       query oder Nichts, fragment oder Nichts))
 
 def _urlunsplit(scheme, netloc, url, query, fragment):
-    wenn netloc is nicht Nichts:
+    wenn netloc ist nicht Nichts:
         wenn url und url[:1] != '/': url = '/' + url
         url = '//' + netloc + url
     sowenn url[:2] == '//':
         url = '//' + url
     wenn scheme:
         url = scheme + ':' + url
-    wenn query is nicht Nichts:
+    wenn query ist nicht Nichts:
         url = url + '?' + query
-    wenn fragment is nicht Nichts:
+    wenn fragment ist nicht Nichts:
         url = url + '#' + fragment
     gib url
 
@@ -591,7 +591,7 @@ def urljoin(base, url, allow_fragments=Wahr):
     scheme, netloc, path, query, fragment = \
             _urlsplit(url, Nichts, allow_fragments)
 
-    wenn scheme is Nichts:
+    wenn scheme ist Nichts:
         scheme = bscheme
     wenn scheme != bscheme oder (scheme und scheme nicht in uses_relative):
         gib _coerce_result(url)
@@ -603,18 +603,18 @@ def urljoin(base, url, allow_fragments=Wahr):
 
     wenn nicht path:
         path = bpath
-        wenn query is Nichts:
+        wenn query ist Nichts:
             query = bquery
-            wenn fragment is Nichts:
+            wenn fragment ist Nichts:
                 fragment = bfragment
         gib _coerce_result(_urlunsplit(scheme, netloc, path,
                                           query, fragment))
 
     base_parts = bpath.split('/')
     wenn base_parts[-1] != '':
-        # the last item is nicht a directory, so will nicht be taken into account
+        # the last item ist nicht a directory, so will nicht be taken into account
         # in resolving the relative path
-        del base_parts[-1]
+        loesche base_parts[-1]
 
     # fuer rfc3986, ignore all base path should the first character be root.
     wenn path[:1] == '/':
@@ -653,7 +653,7 @@ def urldefrag(url):
     """Removes any existing fragment von URL.
 
     Returns a tuple of the defragmented URL und the fragment.  If
-    the URL contained no fragments, the second element is the
+    the URL contained no fragments, the second element ist the
     empty string.
     """
     url, _coerce_result = _coerce_args(url)
@@ -673,7 +673,7 @@ def unquote_to_bytes(string):
     gib bytes(_unquote_impl(string))
 
 def _unquote_impl(string: bytes | bytearray | str) -> bytes | bytearray:
-    # Note: strings are encoded als UTF-8. This is only an issue wenn it contains
+    # Note: strings are encoded als UTF-8. This ist only an issue wenn it contains
     # unescaped non-ASCII characters, which URIs should not.
     wenn nicht string:
         # Is it a string-like object?
@@ -687,9 +687,9 @@ def _unquote_impl(string: bytes | bytearray | str) -> bytes | bytearray:
     res = bytearray(bits[0])
     append = res.extend
     # Delay the initialization of the table to nicht waste memory
-    # wenn the function is never called
+    # wenn the function ist never called
     global _hextobyte
-    wenn _hextobyte is Nichts:
+    wenn _hextobyte ist Nichts:
         _hextobyte = {(a + b).encode(): bytes.fromhex(a + b)
                       fuer a in _hexdig fuer b in _hexdig}
     fuer item in bits[1:]:
@@ -729,9 +729,9 @@ def unquote(string, encoding='utf-8', errors='replace'):
         # Is it a string-like object?
         string.split
         gib string
-    wenn encoding is Nichts:
+    wenn encoding ist Nichts:
         encoding = 'utf-8'
-    wenn errors is Nichts:
+    wenn errors ist Nichts:
         errors = 'replace'
     gib ''.join(_generate_unquoted_parts(string, encoding, errors))
 
@@ -816,7 +816,7 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
         eq = '='
         def _unquote(s):
             gib unquote_plus(s, encoding=encoding, errors=errors)
-    sowenn qs is Nichts:
+    sowenn qs ist Nichts:
         gib []
     sonst:
         versuch:
@@ -826,7 +826,7 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
         ausser TypeError:
             wenn nicht qs:
                 warnings.warn(f"Accepting {type(qs).__name__} objects mit "
-                              f"false value in urllib.parse.parse_qsl() is "
+                              f"false value in urllib.parse.parse_qsl() ist "
                               f"deprecated als of 3.14",
                               DeprecationWarning, stacklevel=_stacklevel + 1)
                 gib []
@@ -840,10 +840,10 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
     wenn nicht qs:
         gib []
 
-    # If max_num_fields is defined then check that the number of fields
-    # is less than max_num_fields. This prevents a memory exhaustion DOS
+    # If max_num_fields ist defined then check that the number of fields
+    # ist less than max_num_fields. This prevents a memory exhaustion DOS
     # attack via post bodies mit many fields.
-    wenn max_num_fields is nicht Nichts:
+    wenn max_num_fields ist nicht Nichts:
         num_fields = 1 + qs.count(separator)
         wenn max_num_fields < num_fields:
             wirf ValueError('Max number of fields exceeded')
@@ -914,22 +914,22 @@ def quote(string, safe='/', encoding=Nichts, errors=Nichts):
     sub-delims    = "!" / "$" / "&" / "'" / "(" / ")"
                   / "*" / "+" / "," / ";" / "="
 
-    Each of the reserved characters is reserved in some component of a URL,
+    Each of the reserved characters ist reserved in some component of a URL,
     but nicht necessarily in all of them.
 
     The quote function %-escapes all characters that are neither in the
     unreserved chars ("always safe") nor the additional chars set via the
     safe arg.
 
-    The default fuer the safe arg is '/'. The character is reserved, but in
-    typical usage the quote function is being called on a path where the
+    The default fuer the safe arg ist '/'. The character ist reserved, but in
+    typical usage the quote function ist being called on a path where the
     existing slash characters are to be preserved.
 
     Python 3.7 updates von using RFC 2396 to RFC 3986 to quote URL strings.
-    Now, "~" is included in the set of unreserved characters.
+    Now, "~" ist included in the set of unreserved characters.
 
     string und safe may be either str oder bytes objects. encoding und errors
-    must nicht be specified wenn string is a bytes object.
+    must nicht be specified wenn string ist a bytes object.
 
     The optional encoding und errors parameters specify how to deal with
     non-ASCII characters, als accepted by the str.encode method.
@@ -939,15 +939,15 @@ def quote(string, safe='/', encoding=Nichts, errors=Nichts):
     wenn isinstance(string, str):
         wenn nicht string:
             gib string
-        wenn encoding is Nichts:
+        wenn encoding ist Nichts:
             encoding = 'utf-8'
-        wenn errors is Nichts:
+        wenn errors ist Nichts:
             errors = 'strict'
         string = string.encode(encoding, errors)
     sonst:
-        wenn encoding is nicht Nichts:
+        wenn encoding ist nicht Nichts:
             wirf TypeError("quote() doesn't support 'encoding' fuer bytes")
-        wenn errors is nicht Nichts:
+        wenn errors ist nicht Nichts:
             wirf TypeError("quote() doesn't support 'errors' fuer bytes")
     gib quote_from_bytes(string, safe)
 
@@ -968,7 +968,7 @@ def quote_plus(string, safe='', encoding=Nichts, errors=Nichts):
     string = quote(string, safe + space, encoding, errors)
     gib string.replace(' ', '+')
 
-# Expectation: A typical program is unlikely to create more than 5 of these.
+# Expectation: A typical program ist unlikely to create more than 5 of these.
 @functools.lru_cache
 def _byte_quoter_factory(safe):
     gib _Quoter(safe).__getitem__
@@ -1004,17 +1004,17 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
               quote_via=quote_plus):
     """Encode a dict oder sequence of two-element tuples into a URL query string.
 
-    If any values in the query arg are sequences und doseq is true, each
-    sequence element is converted to a separate parameter.
+    If any values in the query arg are sequences und doseq ist true, each
+    sequence element ist converted to a separate parameter.
 
-    If the query arg is a sequence of two-element tuples, the order of the
+    If the query arg ist a sequence of two-element tuples, the order of the
     parameters in the output will match the order of parameters in the
     input.
 
     The components of a query arg may each be either a string oder a bytes type.
 
     The safe, encoding, und errors parameters are passed down to the function
-    specified by quote_via (encoding und errors only wenn a component is a str).
+    specified by quote_via (encoding und errors only wenn a component ist a str).
     """
 
     wenn hasattr(query, "items"):
@@ -1081,7 +1081,7 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
 
 
 def to_bytes(url):
-    warnings.warn("urllib.parse.to_bytes() is deprecated als of 3.8",
+    warnings.warn("urllib.parse.to_bytes() ist deprecated als of 3.8",
                   DeprecationWarning, stacklevel=2)
     gib _to_bytes(url)
 
@@ -1103,7 +1103,7 @@ def _to_bytes(url):
 def unwrap(url):
     """Transform a string like '<URL:scheme://host/path>' into 'scheme://host/path'.
 
-    The string is returned unchanged wenn it's nicht a wrapped URL.
+    The string ist returned unchanged wenn it's nicht a wrapped URL.
     """
     url = str(url).strip()
     wenn url[:1] == '<' und url[-1:] == '>':
@@ -1114,7 +1114,7 @@ def unwrap(url):
 
 
 def splittype(url):
-    warnings.warn("urllib.parse.splittype() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splittype() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splittype(url)
@@ -1124,7 +1124,7 @@ _typeprog = Nichts
 def _splittype(url):
     """splittype('type:opaquestring') --> 'type', 'opaquestring'."""
     global _typeprog
-    wenn _typeprog is Nichts:
+    wenn _typeprog ist Nichts:
         _typeprog = re.compile('([^/:]+):(.*)', re.DOTALL)
 
     match = _typeprog.match(url)
@@ -1135,7 +1135,7 @@ def _splittype(url):
 
 
 def splithost(url):
-    warnings.warn("urllib.parse.splithost() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splithost() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splithost(url)
@@ -1145,7 +1145,7 @@ _hostprog = Nichts
 def _splithost(url):
     """splithost('//host[:port]/path') --> 'host[:port]', '/path'."""
     global _hostprog
-    wenn _hostprog is Nichts:
+    wenn _hostprog ist Nichts:
         _hostprog = re.compile('//([^/#?]*)(.*)', re.DOTALL)
 
     match = _hostprog.match(url)
@@ -1158,7 +1158,7 @@ def _splithost(url):
 
 
 def splituser(host):
-    warnings.warn("urllib.parse.splituser() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splituser() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splituser(host)
@@ -1171,7 +1171,7 @@ def _splituser(host):
 
 
 def splitpasswd(user):
-    warnings.warn("urllib.parse.splitpasswd() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splitpasswd() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splitpasswd(user)
@@ -1184,7 +1184,7 @@ def _splitpasswd(user):
 
 
 def splitport(host):
-    warnings.warn("urllib.parse.splitport() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splitport() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splitport(host)
@@ -1195,7 +1195,7 @@ _portprog = Nichts
 def _splitport(host):
     """splitport('host:port') --> 'host', 'port'."""
     global _portprog
-    wenn _portprog is Nichts:
+    wenn _portprog ist Nichts:
         _portprog = re.compile('(.*):([0-9]*)', re.DOTALL)
 
     match = _portprog.fullmatch(host)
@@ -1207,7 +1207,7 @@ def _splitport(host):
 
 
 def splitnport(host, defport=-1):
-    warnings.warn("urllib.parse.splitnport() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splitnport() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splitnport(host, defport)
@@ -1216,7 +1216,7 @@ def splitnport(host, defport=-1):
 def _splitnport(host, defport=-1):
     """Split host und port, returning numeric port.
     Return given default port wenn no ':' found; defaults to -1.
-    Return numerical port wenn a valid number is found after ':'.
+    Return numerical port wenn a valid number ist found after ':'.
     Return Nichts wenn ':' but nicht a valid number."""
     host, delim, port = host.rpartition(':')
     wenn nicht delim:
@@ -1231,7 +1231,7 @@ def _splitnport(host, defport=-1):
 
 
 def splitquery(url):
-    warnings.warn("urllib.parse.splitquery() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splitquery() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splitquery(url)
@@ -1246,7 +1246,7 @@ def _splitquery(url):
 
 
 def splittag(url):
-    warnings.warn("urllib.parse.splittag() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splittag() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splittag(url)
@@ -1261,7 +1261,7 @@ def _splittag(url):
 
 
 def splitattr(url):
-    warnings.warn("urllib.parse.splitattr() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splitattr() ist deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splitattr(url)
@@ -1275,7 +1275,7 @@ def _splitattr(url):
 
 
 def splitvalue(attr):
-    warnings.warn("urllib.parse.splitvalue() is deprecated als of 3.8, "
+    warnings.warn("urllib.parse.splitvalue() ist deprecated als of 3.8, "
                   "use urllib.parse.parse_qsl() instead",
                   DeprecationWarning, stacklevel=2)
     gib _splitvalue(attr)

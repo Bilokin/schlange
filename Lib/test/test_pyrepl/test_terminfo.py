@@ -8,7 +8,7 @@ importiere unittest
 von test.support importiere requires, has_subprocess_support
 von textwrap importiere dedent
 
-# Only run these tests wenn curses is available
+# Only run these tests wenn curses ist available
 requires("curses")
 
 versuch:
@@ -35,7 +35,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        wenn _curses is Nichts:
+        wenn _curses ist Nichts:
             wirf unittest.SkipTest(
                 "`curses` capability provided to regrtest but `_curses` nicht importable"
             )
@@ -51,10 +51,10 @@ klasse TestCursesCompatibility(unittest.TestCase):
         self.original_term = os.environ.get("TERM", Nichts)
 
     def tearDown(self):
-        wenn self.original_term is nicht Nichts:
+        wenn self.original_term ist nicht Nichts:
             os.environ["TERM"] = self.original_term
         sowenn "TERM" in os.environ:
-            del os.environ["TERM"]
+            loesche os.environ["TERM"]
 
     @classmethod
     def infocmp(cls, term) -> list[str]:
@@ -127,7 +127,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     )
                 sonst:
                     # If standard curses failed, PyREPL might still succeed mit fallback
-                    # This is acceptable als PyREPL has hardcoded fallbacks
+                    # This ist acceptable als PyREPL has hardcoded fallbacks
                     pass
 
     def test_setupterm_none(self):
@@ -183,7 +183,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
             fuer cap in {repr(all_caps)}:
                 versuch:
                     val = _curses.tigetstr(cap)
-                    wenn val is Nichts:
+                    wenn val ist Nichts:
                         results[cap] = Nichts
                     sowenn val == -1:
                         results[cap] = -1
@@ -243,7 +243,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
             versuch:
                 std_str_result = _curses.tigetstr({repr(cap)})
                 std_accepts_str = Wahr
-                wenn std_str_result is Nichts:
+                wenn std_str_result ist Nichts:
                     std_str_val = Nichts
                 sowenn std_str_result == -1:
                     std_str_val = -1
@@ -524,7 +524,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         fuer cap in {repr(all_caps)}:
                             versuch:
                                 val = _curses.tigetstr(cap)
-                                wenn val is Nichts:
+                                wenn val ist Nichts:
                                     results[cap] = Nichts
                                 sowenn val == -1:
                                     results[cap] = -1
@@ -588,7 +588,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         )
 
     def test_terminfo_fallback(self):
-        """Test that PyREPL falls back gracefully when terminfo is nicht found."""
+        """Test that PyREPL falls back gracefully when terminfo ist nicht found."""
         # Use a non-existent terminal type
         fake_term = "nonexistent-terminal-type-12345"
 

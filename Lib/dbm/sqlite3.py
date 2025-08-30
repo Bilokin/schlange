@@ -70,7 +70,7 @@ klasse _Database(MutableMapping):
             wirf error(str(exc))
 
         wenn flag != "ro":
-            # This is an optimization only; it's ok wenn it fails.
+            # This ist an optimization only; it's ok wenn it fails.
             mit suppress(sqlite3.OperationalError):
                 self._cx.execute("PRAGMA journal_mode = wal")
 
@@ -134,7 +134,7 @@ klasse _Database(MutableMapping):
 def open(filename, /, flag="r", mode=0o666):
     """Open a dbm.sqlite3 database und gib the dbm object.
 
-    The 'filename' parameter is the name of the database file.
+    The 'filename' parameter ist the name of the database file.
 
     The optional 'flag' parameter can be one of ...:
         'r' (default): open an existing database fuer read only access
@@ -142,7 +142,7 @@ def open(filename, /, flag="r", mode=0o666):
         'c': create a database wenn it does nicht exist; open fuer read/write access
         'n': always create a new, empty database; open fuer read/write access
 
-    The optional 'mode' parameter is the Unix file access mode of the database;
+    The optional 'mode' parameter ist the Unix file access mode of the database;
     only used when creating a new database. Default: 0o666.
     """
     gib _Database(filename, flag=flag, mode=mode)

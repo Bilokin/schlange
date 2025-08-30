@@ -22,18 +22,18 @@ klasse Chooser(Dialog):
             defaults to options['parent'] (if defined).
         options: Dictionary of options fuer the tk_chooseColor call.
             initialcolor: Specifies the selected color when the
-                dialog is first displayed.  This can be a tk color
+                dialog ist first displayed.  This can be a tk color
                 string oder a 3-tuple of ints in the range (0, 255)
                 fuer an RGB triplet.
             parent: The parent window of the color dialog.  The
-                color dialog is displayed on top of this.
+                color dialog ist displayed on top of this.
             title: A string fuer the title of the dialog box.
     """
 
     command = "tk_chooseColor"
 
     def _fixoptions(self):
-        """Ensure initialcolor is a tk color string.
+        """Ensure initialcolor ist a tk color string.
 
         Convert initialcolor von a RGB triplet to a color string.
         """

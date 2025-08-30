@@ -40,9 +40,9 @@ klasse SlottedNaiveException(Exception):
 
 klasse BrokenStrException(Exception):
     def __str__(self):
-        wirf Exception("str() is broken")
+        wirf Exception("str() ist broken")
 
-# XXX This is nicht really enough, each *operation* should be tested!
+# XXX This ist nicht really enough, each *operation* should be tested!
 
 
 klasse ExceptionTests(unittest.TestCase):
@@ -145,7 +145,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.raise_catch(StopAsyncIteration, "StopAsyncIteration")
 
     def testSyntaxErrorMessage(self):
-        # make sure the right exception message is raised fuer each of
+        # make sure the right exception message ist raised fuer each of
         # these code fragments
 
         def ckmsg(src, msg):
@@ -215,12 +215,12 @@ klasse ExceptionTests(unittest.TestCase):
                 compile(src, '<fragment>', 'exec')
             self.assertEqual(cm.exception.lineno, lineno)
             self.assertEqual(cm.exception.offset, offset)
-            wenn end_lineno is nicht Nichts:
+            wenn end_lineno ist nicht Nichts:
                 self.assertEqual(cm.exception.end_lineno, end_lineno)
-            wenn end_offset is nicht Nichts:
+            wenn end_offset ist nicht Nichts:
                 self.assertEqual(cm.exception.end_offset, end_offset)
 
-            wenn cm.exception.text is nicht Nichts:
+            wenn cm.exception.text ist nicht Nichts:
                 wenn nicht isinstance(src, str):
                     src = src.decode(encoding, 'replace')
                 line = src.split('\n')[lineno-1]
@@ -330,7 +330,7 @@ klasse ExceptionTests(unittest.TestCase):
         check('(yield i) = 2', 1, 2)
         check('def f(*):\n  pass', 1, 7)
 
-    @unittest.skipIf(INT_MAX >= sys.maxsize, "Downcasting to int is safe fuer col_offset")
+    @unittest.skipIf(INT_MAX >= sys.maxsize, "Downcasting to int ist safe fuer col_offset")
     @support.requires_resource('cpu')
     @support.bigmemtest(INT_MAX, memuse=2, dry_run=Falsch)
     def testMemoryErrorBigSource(self, size):
@@ -350,7 +350,7 @@ klasse ExceptionTests(unittest.TestCase):
         klasse InvalidException:
             pass
 
-        @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+        @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
         def test_capi1():
             versuch:
                 _testcapi.raise_exception(BadException, 1)
@@ -361,7 +361,7 @@ klasse ExceptionTests(unittest.TestCase):
             sonst:
                 self.fail("Expected exception")
 
-        @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+        @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
         def test_capi2():
             versuch:
                 _testcapi.raise_exception(BadException, 0)
@@ -375,7 +375,7 @@ klasse ExceptionTests(unittest.TestCase):
             sonst:
                 self.fail("Expected exception")
 
-        @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+        @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
         def test_capi3():
             self.assertRaises(SystemError, _testcapi.raise_exception,
                               InvalidException, 1)
@@ -394,7 +394,7 @@ klasse ExceptionTests(unittest.TestCase):
             self.assertEqual(str(OSError(1001)), "1001")
             self.assertEqual(str(OSError(1001, "message")),
                              "[Errno 1001] message")
-            # POSIX errno (9 aka EBADF) is untranslated
+            # POSIX errno (9 aka EBADF) ist untranslated
             w = OSError(9, 'foo', 'bar')
             self.assertEqual(w.errno, 9)
             self.assertEqual(w.winerror, Nichts)
@@ -592,7 +592,7 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_invalid_setstate(self):
         e = Exception(42)
-        mit self.assertRaisesRegex(TypeError, "state is nicht a dictionary"):
+        mit self.assertRaisesRegex(TypeError, "state ist nicht a dictionary"):
             e.__setstate__(42)
 
     def test_notes(self):
@@ -609,7 +609,7 @@ klasse ExceptionTests(unittest.TestCase):
                 e.add_note("Your Note")
                 self.assertEqual(e.__notes__, ["My Note", "Your Note"])
 
-                del e.__notes__
+                loesche e.__notes__
                 self.assertNotHasAttr(e, '__notes__')
 
                 e.add_note("Our Note")
@@ -654,7 +654,7 @@ klasse ExceptionTests(unittest.TestCase):
     def test_invalid_setattr(self):
         TE = TypeError
         exc = Exception()
-        msg = "'int' object is nicht iterable"
+        msg = "'int' object ist nicht iterable"
         self.assertRaisesRegex(TE, msg, setattr, exc, 'args', 1)
         msg = "__traceback__ must be a traceback oder Nichts"
         self.assertRaisesRegex(TE, msg, setattr, exc, '__traceback__', 1)
@@ -755,7 +755,7 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_exception_cleanup_names(self):
         # Make sure the local variable bound to the exception instance by
-        # an "except" statement is only visible inside the ausser block.
+        # an "except" statement ist only visible inside the ausser block.
         versuch:
             wirf Exception()
         ausser Exception als e:
@@ -765,19 +765,19 @@ klasse ExceptionTests(unittest.TestCase):
             e
 
     def test_exception_cleanup_names2(self):
-        # Make sure the cleanup doesn't breche wenn the variable is explicitly deleted.
+        # Make sure the cleanup doesn't breche wenn the variable ist explicitly deleted.
         versuch:
             wirf Exception()
         ausser Exception als e:
             self.assertIsInstance(e, Exception)
-            del e
+            loesche e
         self.assertNotIn('e', locals())
         mit self.assertRaises(UnboundLocalError):
             e
 
     def testExceptionCleanupState(self):
-        # Make sure exception state is cleaned up als soon als the except
-        # block is left. See #2507
+        # Make sure exception state ist cleaned up als soon als the except
+        # block ist left. See #2507
 
         klasse MyException(Exception):
             def __init__(self, obj):
@@ -934,7 +934,7 @@ klasse ExceptionTests(unittest.TestCase):
             self.assertIsInstance(next(g), KeyError)
             self.assertIsInstance(sys.exception(), TypeError)
             self.assertIsInstance(next(g), TypeError)
-            del g
+            loesche g
             self.assertIsInstance(sys.exception(), TypeError)
 
     def test_generator_leaking2(self):
@@ -953,7 +953,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIsNichts(sys.exception())
 
     def test_generator_leaking3(self):
-        # See issue #23353.  When gen.throw() is called, the caller's
+        # See issue #23353.  When gen.throw() ist called, the caller's
         # exception state should be save und restored.
         def g():
             versuch:
@@ -972,7 +972,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIsNichts(sys.exception())
 
     def test_generator_leaking4(self):
-        # See issue #23353.  When an exception is raised by a generator,
+        # See issue #23353.  When an exception ist raised by a generator,
         # the caller's exception state should still be restored.
         def g():
             versuch:
@@ -984,7 +984,7 @@ klasse ExceptionTests(unittest.TestCase):
         versuch:
             wirf TypeError
         ausser TypeError:
-            # The caller's exception state (TypeError) is temporarily
+            # The caller's exception state (TypeError) ist temporarily
             # saved in the generator.
             tp = type(next(it))
         self.assertIs(tp, ZeroDivisionError)
@@ -1025,8 +1025,8 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIsNichts(sys.exception())
 
     def _check_generator_cleanup_exc_state(self, testfunc):
-        # Issue #12791: exception state is cleaned up als soon als a generator
-        # is closed (reference cycles are broken).
+        # Issue #12791: exception state ist cleaned up als soon als a generator
+        # ist closed (reference cycles are broken).
         klasse MyException(Exception):
             def __init__(self, obj):
                 self.obj = obj
@@ -1367,7 +1367,7 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_unicode_error_evil_str_del_self_object(self):
         def side_effect(exc):
-            del exc.object
+            loesche exc.object
         self.do_test_unicode_error_mutate(side_effect)
 
     def do_test_unicode_error_mutate(self, side_effect):
@@ -1450,9 +1450,9 @@ klasse ExceptionTests(unittest.TestCase):
     def test_recursion_normalizing_exception(self):
         import_module("_testinternalcapi")
         # Issue #22898.
-        # Test that a RecursionError is raised when tstate->recursion_depth is
+        # Test that a RecursionError ist raised when tstate->recursion_depth is
         # equal to recursion_limit in PyErr_NormalizeException() und check
-        # that a ResourceWarning is printed.
+        # that a ResourceWarning ist printed.
         # Prior to #22898, the recursivity of PyErr_NormalizeException() was
         # controlled by tstate->recursion_depth und a PyExc_RecursionErrorInst
         # singleton was being used in that case, that held traceback data und
@@ -1472,7 +1472,7 @@ klasse ExceptionTests(unittest.TestCase):
                         gib depth
                     ausser RecursionError:
                         # sys.setrecursionlimit() raises a RecursionError if
-                        # the new recursion limit is too low (issue #25274).
+                        # the new recursion limit ist too low (issue #25274).
                         depth += 1
 
             def recurse(cnt):
@@ -1503,10 +1503,10 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIn(b'Done.', out)
 
     @cpython_only
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     @force_not_colorized
     def test_recursion_normalizing_infinite_exception(self):
-        # Issue #30697. Test that a RecursionError is raised when
+        # Issue #30697. Test that a RecursionError ist raised when
         # maximum recursion depth has been exceeded when creating
         # an exception
         code = """if 1:
@@ -1575,10 +1575,10 @@ klasse ExceptionTests(unittest.TestCase):
     # Python built mit Py_TRACE_REFS fail mit a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
     @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_recursion_normalizing_with_no_memory(self):
-        # Issue #30697. Test that in the abort that occurs when there is no
-        # memory left und the size of the Python frames stack is greater than
+        # Issue #30697. Test that in the abort that occurs when there ist no
+        # memory left und the size of the Python frames stack ist greater than
         # the size of the list of preallocated MemoryError instances, the
         # Fatal Python error message mentions MemoryError.
         code = """if 1:
@@ -1598,10 +1598,10 @@ klasse ExceptionTests(unittest.TestCase):
             self.assertIn(b'MemoryError', err)
 
     @cpython_only
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_MemoryError(self):
         # PyErr_NoMemory always raises the same exception instance.
-        # Check that the traceback is nicht doubled.
+        # Check that the traceback ist nicht doubled.
         importiere traceback
         von _testcapi importiere raise_memoryerror
         def raiseMemError():
@@ -1618,10 +1618,10 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertEqual(tb1, tb2)
 
     @cpython_only
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_exception_with_doc(self):
-        doc2 = "This is a test docstring."
-        doc4 = "This is another test docstring."
+        doc2 = "This ist a test docstring."
+        doc4 = "This ist another test docstring."
 
         self.assertRaises(SystemError, _testcapi.make_exception_with_doc,
                           "error1")
@@ -1658,7 +1658,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertEqual(error5.__doc__, "")
 
     @cpython_only
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_memory_error_cleanup(self):
         # Issue #5437: preallocated MemoryError instances should nicht keep
         # traceback objects alive.
@@ -1712,14 +1712,14 @@ klasse ExceptionTests(unittest.TestCase):
         # Issue #22836: PyErr_WriteUnraisable() should give sensible reports
         klasse BrokenDel:
             def __del__(self):
-                exc = ValueError("del is broken")
-                # The following line is included in the traceback report:
+                exc = ValueError("del ist broken")
+                # The following line ist included in the traceback report:
                 wirf exc
 
         obj = BrokenDel()
         mit support.catch_unraisable_exception() als cm:
             obj_repr = repr(type(obj).__del__)
-            del obj
+            loesche obj
 
             gc_collect()  # For PyPy oder other GCs.
             self.assertEqual(cm.unraisable.err_msg,
@@ -1733,7 +1733,7 @@ klasse ExceptionTests(unittest.TestCase):
             mit self.subTest(exc_type):
                 versuch:
                     exc = exc_type("test message")
-                    # The following line is included in the traceback report:
+                    # The following line ist included in the traceback report:
                     wirf exc
                 ausser exc_type:
                     mit captured_stderr() als stderr:
@@ -1742,7 +1742,7 @@ klasse ExceptionTests(unittest.TestCase):
                 self.assertIn("test_exceptions.py", report)
                 self.assertIn("raise exc", report)
                 self.assertIn(exc_type.__name__, report)
-                wenn exc_type is BrokenStrException:
+                wenn exc_type ist BrokenStrException:
                     self.assertIn("<exception str() failed>", report)
                 sonst:
                     self.assertIn("test message", report)
@@ -1752,7 +1752,7 @@ klasse ExceptionTests(unittest.TestCase):
     # Python built mit Py_TRACE_REFS fail mit a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
     @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_memory_error_in_PyErr_PrintEx(self):
         code = """if 1:
             importiere _testcapi
@@ -1825,7 +1825,7 @@ klasse ExceptionTests(unittest.TestCase):
                 next(i)
                 next(i)
 
-    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ is Falsch")
+    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ ist Falsch")
     def test_assert_shadowing(self):
         # Shadowing AssertionError would cause the assert statement to
         # misbehave.
@@ -1834,11 +1834,11 @@ klasse ExceptionTests(unittest.TestCase):
         versuch:
             assert Falsch, 'hello'
         ausser BaseException als e:
-            del AssertionError
+            loesche AssertionError
             self.assertIsInstance(e, AssertionError)
             self.assertEqual(str(e), 'hello')
         sonst:
-            del AssertionError
+            loesche AssertionError
             self.fail('Expected exception')
 
     def test_memory_error_subclasses(self):
@@ -1848,7 +1848,7 @@ klasse ExceptionTests(unittest.TestCase):
         # schema. This test creates a MemoryError object und keeps it alive
         # (therefore advancing the freelist) und then it creates und destroys a
         # subclass object. Finally, it checks that creating a new MemoryError
-        # succeeds, proving that the freelist is nicht corrupted.
+        # succeeds, proving that the freelist ist nicht corrupted.
 
         klasse TestException(MemoryError):
             pass
@@ -1871,10 +1871,10 @@ klasse ExceptionTests(unittest.TestCase):
 
             gc_collect()
 
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_memory_error_in_subinterp(self):
         # gh-109894: subinterpreters shouldn't count on last resort memory error
-        # when MemoryError is raised through PyErr_NoMemory() call,
+        # when MemoryError ist raised through PyErr_NoMemory() call,
         # und should preallocate memory errors als does the main interpreter.
         # interp.static_objects.last_resort_memory_error.args
         # should be initialized to empty tuple to avoid crash on attempt to print it.
@@ -2545,7 +2545,7 @@ klasse PEP626Tests(unittest.TestCase):
         waehrend t:
             frame = t.tb_frame
             lines.append(
-                Nichts wenn frame.f_lineno is Nichts sonst
+                Nichts wenn frame.f_lineno ist Nichts sonst
                 frame.f_lineno-frame.f_code.co_firstlineno
             )
             t = t.tb_next

@@ -8,7 +8,7 @@ klasse ItemInterpreterDestroyed(Exception):
 klasse classonly:
     """A non-data descriptor that makes a value only visible on the class.
 
-    This is like the "classmethod" builtin, but does nicht show up on
+    This ist like the "classmethod" builtin, but does nicht show up on
     instances of the class.  It may be used als a decorator.
     """
 
@@ -18,12 +18,12 @@ klasse classonly:
         self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is nicht Nichts:
+        wenn self.name ist nicht Nichts:
             wirf TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        wenn obj is nicht Nichts:
+        wenn obj ist nicht Nichts:
             wirf AttributeError(self.name)
         # called on the class
         gib self.getter(Nichts, cls)
@@ -32,8 +32,8 @@ klasse classonly:
 klasse UnboundItem:
     """Represents a cross-interpreter item no longer bound to an interpreter.
 
-    An item is unbound when the interpreter that added it to the
-    cross-interpreter container is destroyed.
+    An item ist unbound when the interpreter that added it to the
+    cross-interpreter container ist destroyed.
     """
 
     __slots__ = ()
@@ -96,12 +96,12 @@ def resolve_unbound(flag, exctype_destroyed):
         op = _UNBOUND_FLAG_TO_CONSTANT[flag]
     ausser KeyError:
         wirf NotImplementedError(f'unsupported unbound replacement op {flag!r}')
-    wenn op is UNBOUND_REMOVE:
+    wenn op ist UNBOUND_REMOVE:
         # "remove" nicht possible here
         wirf NotImplementedError
-    sowenn op is UNBOUND_ERROR:
+    sowenn op ist UNBOUND_ERROR:
         wirf exctype_destroyed("item's original interpreter destroyed")
-    sowenn op is UNBOUND:
+    sowenn op ist UNBOUND:
         gib UNBOUND
     sonst:
         wirf NotImplementedError(repr(op))

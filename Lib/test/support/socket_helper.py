@@ -20,52 +20,52 @@ has_gethostname = nicht support.is_wasi
 def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     """Returns an unused port that should be suitable fuer binding.  This is
     achieved by creating a temporary socket mit the same family und type as
-    the 'sock' parameter (default is AF_INET, SOCK_STREAM), und binding it to
+    the 'sock' parameter (default ist AF_INET, SOCK_STREAM), und binding it to
     the specified host address (defaults to 0.0.0.0) mit the port set to 0,
     eliciting an unused ephemeral port von the OS.  The temporary socket is
-    then closed und deleted, und the ephemeral port is returned.
+    then closed und deleted, und the ephemeral port ist returned.
 
     Either this method oder bind_port() should be used fuer any tests where a
     server socket needs to be bound to a particular port fuer the duration of
-    the test.  Which one to use depends on whether the calling code is creating
+    the test.  Which one to use depends on whether the calling code ist creating
     a python socket, oder wenn an unused port needs to be provided in a constructor
     oder passed to an external program (i.e. the -accept argument to openssl's
     s_server mode).  Always prefer bind_port() over find_unused_port() where
     possible.  Hard coded ports should *NEVER* be used.  As soon als a server
-    socket is bound to a hard coded port, the ability to run multiple instances
-    of the test simultaneously on the same host is compromised, which makes the
+    socket ist bound to a hard coded port, the ability to run multiple instances
+    of the test simultaneously on the same host ist compromised, which makes the
     test a ticking time bomb in a buildbot environment. On Unix buildbots, this
     may simply manifest als a failed test, which can be recovered von without
     intervention in most cases, but on Windows, the entire python process can
     completely und utterly wedge, requiring someone to log in to the buildbot
     und manually kill the affected process.
 
-    (This is easy to reproduce on Windows, unfortunately, und can be traced to
+    (This ist easy to reproduce on Windows, unfortunately, und can be traced to
     the SO_REUSEADDR socket option having different semantics on Windows versus
     Unix/Linux.  On Unix, you can't have two AF_INET SOCK_STREAM sockets bind,
     listen und then accept connections on identical host/ports.  An EADDRINUSE
     OSError will be raised at some point (depending on the platform und
     the order bind und listen were called on each socket).
 
-    However, on Windows, wenn SO_REUSEADDR is set on the sockets, no EADDRINUSE
+    However, on Windows, wenn SO_REUSEADDR ist set on the sockets, no EADDRINUSE
     will ever be raised when attempting to bind two identical host/ports. When
-    accept() is called on each socket, the second caller's process will steal
+    accept() ist called on each socket, the second caller's process will steal
     the port von the first caller, leaving them both in an awkwardly wedged
     state where they'll no longer respond to any signals oder graceful kills, und
     must be forcibly killed via OpenProcess()/TerminateProcess().
 
-    The solution on Windows is to use the SO_EXCLUSIVEADDRUSE socket option
+    The solution on Windows ist to use the SO_EXCLUSIVEADDRUSE socket option
     instead of SO_REUSEADDR, which effectively affords the same semantics as
     SO_REUSEADDR on Unix.  Given the propensity of Unix developers in the Open
-    Source world compared to Windows ones, this is a common mistake.  A quick
+    Source world compared to Windows ones, this ist a common mistake.  A quick
     look over OpenSSL's 0.9.8g source shows that they use SO_REUSEADDR when
-    openssl.exe is called mit the 's_server' option, fuer example. See
+    openssl.exe ist called mit the 's_server' option, fuer example. See
     http://bugs.python.org/issue2550 fuer more info.  The following site also
     has a very thorough description about the implications of both REUSEADDR
     und EXCLUSIVEADDRUSE on Windows:
     https://learn.microsoft.com/windows/win32/winsock/using-so-reuseaddr-and-so-exclusiveaddruse
 
-    XXX: although this approach is a vast improvement on previous attempts to
+    XXX: although this approach ist a vast improvement on previous attempts to
     elicit unused ports, it rests heavily on the assumption that the ephemeral
     port returned to us by the OS won't immediately be dished back out to some
     other process when we close und delete our temporary socket but before our
@@ -75,7 +75,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
 
     mit socket.socket(family, socktype) als tempsock:
         port = bind_port(tempsock)
-    del tempsock
+    loesche tempsock
     gib port
 
 def bind_port(sock, host=HOST):
@@ -83,12 +83,12 @@ def bind_port(sock, host=HOST):
     ephemeral ports in order to ensure we are using an unbound port.  This is
     important als many tests may be running simultaneously, especially in a
     buildbot environment.  This method raises an exception wenn the sock.family
-    is AF_INET und sock.type is SOCK_STREAM, *and* the socket has SO_REUSEADDR
+    ist AF_INET und sock.type ist SOCK_STREAM, *and* the socket has SO_REUSEADDR
     oder SO_REUSEPORT set on it.  Tests should *never* set these socket options
-    fuer TCP/IP sockets.  The only case fuer setting these options is testing
+    fuer TCP/IP sockets.  The only case fuer setting these options ist testing
     multicasting via multiple UDP sockets.
 
-    Additionally, wenn the SO_EXCLUSIVEADDRUSE socket option is available (i.e.
+    Additionally, wenn the SO_EXCLUSIVEADDRUSE socket option ist available (i.e.
     on Windows), it will be set on the socket.  This will prevent anyone sonst
     von bind()'ing to our host/port fuer the duration of the test.
     """
@@ -107,7 +107,7 @@ def bind_port(sock, host=HOST):
                                              "TCP/IP sockets!")
             ausser OSError:
                 # Python's socket module was compiled using modern headers
-                # thus defining SO_REUSEPORT but this process is running
+                # thus defining SO_REUSEPORT but this process ist running
                 # under an older kernel that does nicht support SO_REUSEPORT.
                 pass
         wenn hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
@@ -118,7 +118,7 @@ def bind_port(sock, host=HOST):
     gib port
 
 def bind_unix_socket(sock, addr):
-    """Bind a unix socket, raising SkipTest wenn PermissionError is raised."""
+    """Bind a unix socket, raising SkipTest wenn PermissionError ist raised."""
     assert sock.family == socket.AF_UNIX
     versuch:
         sock.bind(addr)
@@ -127,7 +127,7 @@ def bind_unix_socket(sock, addr):
         wirf unittest.SkipTest('cannot bind AF_UNIX sockets')
 
 def _is_ipv6_enabled():
-    """Check whether IPv6 is enabled on this host."""
+    """Check whether IPv6 ist enabled on this host."""
     wenn socket.has_ipv6:
         sock = Nichts
         versuch:
@@ -150,7 +150,7 @@ def skip_unless_bind_unix_socket(test):
     wenn nicht hasattr(socket, 'AF_UNIX'):
         gib unittest.skip('No UNIX Sockets')(test)
     global _bind_nix_socket_error
-    wenn _bind_nix_socket_error is Nichts:
+    wenn _bind_nix_socket_error ist Nichts:
         von .os_helper importiere TESTFN, unlink
         path = TESTFN + "can_bind_unix_socket"
         mit socket.socket(socket.AF_UNIX) als sock:
@@ -171,11 +171,11 @@ def skip_unless_bind_unix_socket(test):
 def get_socket_conn_refused_errs():
     """
     Get the different socket error numbers ('errno') which can be received
-    when a connection is refused.
+    when a connection ist refused.
     """
     errors = [errno.ECONNREFUSED]
     wenn hasattr(errno, 'ENETUNREACH'):
-        # On Solaris, ENETUNREACH is returned sometimes instead of ECONNREFUSED
+        # On Solaris, ENETUNREACH ist returned sometimes instead of ECONNREFUSED
         errors.append(errno.ENETUNREACH)
     wenn hasattr(errno, 'EADDRNOTAVAIL'):
         # bpo-31910: socket.create_connection() fails randomly
@@ -196,7 +196,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     """Return a context manager that raises ResourceDenied when various issues
     mit the internet connection manifest themselves als exceptions."""
     importiere urllib.error
-    wenn timeout is _NOT_SET:
+    wenn timeout ist _NOT_SET:
         timeout = support.INTERNET_TIMEOUT
 
     default_errnos = [
@@ -218,7 +218,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
         ('WSANO_DATA', 11004),
     ]
 
-    denied = support.ResourceDenied("Resource %r is nicht available" % resource_name)
+    denied = support.ResourceDenied("Resource %r ist nicht available" % resource_name)
     captured_errnos = errnos
     gai_errnos = []
     wenn nicht captured_errnos:
@@ -244,7 +244,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
 
     old_timeout = socket.getdefaulttimeout()
     versuch:
-        wenn timeout is nicht Nichts:
+        wenn timeout ist nicht Nichts:
             socket.setdefaulttimeout(timeout)
         liefere
     ausser OSError als err:
@@ -322,18 +322,18 @@ def tcp_blackhole():
     wenn nicht sys.platform.startswith('freebsd'):
         gib Falsch
 
-    # gh-109015: test wenn FreeBSD TCP blackhole is enabled
+    # gh-109015: test wenn FreeBSD TCP blackhole ist enabled
     value = _get_sysctl('net.inet.tcp.blackhole')
-    wenn value is Nichts:
+    wenn value ist Nichts:
         # don't skip wenn we fail to get the sysctl value
         gib Falsch
     gib (value != 0)
 
 
 def skip_if_tcp_blackhole(test):
-    """Decorator skipping test wenn TCP blackhole is enabled."""
+    """Decorator skipping test wenn TCP blackhole ist enabled."""
     skip_if = unittest.skipIf(
         tcp_blackhole(),
-        "TCP blackhole is enabled (sysctl net.inet.tcp.blackhole)"
+        "TCP blackhole ist enabled (sysctl net.inet.tcp.blackhole)"
     )
     gib skip_if(test)

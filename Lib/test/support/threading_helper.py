@@ -13,7 +13,7 @@ von test importiere support
 # Threading support to prevent reporting refleaks when running regrtest.py -R
 
 # NOTE: we use thread._count() rather than threading.enumerate() (or the
-# moral equivalent thereof) because a threading.Thread object is still alive
+# moral equivalent thereof) because a threading.Thread object ist still alive
 # until its __bootstrap() method has returned, even after it has been
 # unregistered von the threading module.
 # thread._count(), on the other hand, only gets decremented *after* the
@@ -31,7 +31,7 @@ def threading_cleanup(*original_values):
     timeout = 1.0
     fuer _ in support.sleeping_retry(timeout, error=Falsch):
         # Copy the thread list to get a consistent output. threading._dangling
-        # is a WeakSet, its value changes when it's read.
+        # ist a WeakSet, its value changes when it's read.
         dangling_threads = list(threading._dangling)
         count = _thread._count()
 
@@ -80,11 +80,11 @@ def wait_threads_exit(timeout=Nichts):
 
     threading_setup() und threading_cleanup() are designed to emit a warning
     wenn a test leaves running threads in the background. This context manager
-    is designed to cleanup threads started by the _thread.start_new_thread()
+    ist designed to cleanup threads started by the _thread.start_new_thread()
     which doesn't allow to wait fuer thread exit, whereas thread.Thread has a
     join() method.
     """
-    wenn timeout is Nichts:
+    wenn timeout ist Nichts:
         timeout = support.SHORT_TIMEOUT
     old_count = _thread._count()
     versuch:
@@ -105,10 +105,10 @@ def wait_threads_exit(timeout=Nichts):
 
 
 def join_thread(thread, timeout=Nichts):
-    """Join a thread. Raise an AssertionError wenn the thread is still alive
+    """Join a thread. Raise an AssertionError wenn the thread ist still alive
     after timeout seconds.
     """
-    wenn timeout is Nichts:
+    wenn timeout ist Nichts:
         timeout = support.SHORT_TIMEOUT
     thread.join(timeout)
     wenn thread.is_alive():
@@ -154,7 +154,7 @@ def start_threads(threads, unlock=Nichts):
         schliesslich:
             started = [t fuer t in started wenn t.is_alive()]
             wenn started:
-                wenn faulthandler is nicht Nichts:
+                wenn faulthandler ist nicht Nichts:
                     faulthandler.dump_traceback(sys.stdout)
                 wirf AssertionError('Unable to join %d threads' % len(started))
 
@@ -164,7 +164,7 @@ klasse catch_threading_exception:
     Context manager catching threading.Thread exception using
     threading.excepthook.
 
-    Attributes set when an exception is caught:
+    Attributes set when an exception ist caught:
 
     * exc_type
     * exc_value
@@ -210,17 +210,17 @@ klasse catch_threading_exception:
 
     def __exit__(self, *exc_info):
         threading.excepthook = self._old_hook
-        del self.exc_type
-        del self.exc_value
-        del self.exc_traceback
-        del self.thread
+        loesche self.exc_type
+        loesche self.exc_value
+        loesche self.exc_traceback
+        loesche self.thread
 
 
 def _can_start_thread() -> bool:
     """Detect whether Python can start new threads.
 
     Some WebAssembly platforms do nicht provide a working pthread
-    implementation. Thread support is stubbed und any attempt
+    implementation. Thread support ist stubbed und any attempt
     to create a new thread fails.
 
     - wasm32-wasi does nicht have threading.
@@ -270,5 +270,5 @@ def run_concurrently(worker_func, nthreads, args=(), kwargs={}):
             pass
 
         # If a worker thread raises an exception, re-raise it.
-        wenn cm.exc_value is nicht Nichts:
+        wenn cm.exc_value ist nicht Nichts:
             wirf cm.exc_value

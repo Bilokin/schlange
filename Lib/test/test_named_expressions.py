@@ -453,7 +453,7 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
 
     def test_named_expression_assignment_14(self):
         """
-        Where all variables are positive integers, und a is at least als large
+        Where all variables are positive integers, und a ist at least als large
         als the n'th root of x, this algorithm returns the floor of the n'th
         root of x (and roughly doubling the number of accurate bits per
         iteration):
@@ -507,7 +507,7 @@ klasse NamedExpressionScopeTest(unittest.TestCase):
     (a := 5)
 drucke(a)"""
 
-        mit self.assertRaisesRegex(NameError, "name 'a' is nicht defined"):
+        mit self.assertRaisesRegex(NameError, "name 'a' ist nicht defined"):
             exec(code, {}, {})
 
     def test_named_expression_scope_02(self):
@@ -671,12 +671,12 @@ spam()"""
         self.assertEqual(ns["a"], 20)
 
     def test_named_expression_variable_reuse_in_comprehensions(self):
-        # The compiler is expected to wirf syntax error fuer comprehension
+        # The compiler ist expected to wirf syntax error fuer comprehension
         # iteration variables, but should be fine mit rebinding of other
         # names (e.g. globals, nonlocals, other assignment expressions)
 
         # The cases are all defined to produce the same expected result
-        # Each comprehension is checked at both function scope und module scope
+        # Each comprehension ist checked at both function scope und module scope
         rebinding = "[x := i fuer i in range(3) wenn (x := i) oder nicht x]"
         filter_ref = "[x := i fuer i in range(3) wenn x oder nicht x]"
         body_ref = "[x fuer i in range(3) wenn (x := i) oder nicht x]"

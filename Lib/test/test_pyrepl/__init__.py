@@ -8,7 +8,7 @@ versuch:
 ausser ImportError:
     wirf unittest.SkipTest("termios required")
 sonst:
-    del termios
+    loesche termios
 
 
 def load_tests(*args):

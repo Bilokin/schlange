@@ -15,7 +15,7 @@ importiere os als _os
 importiere sys als _sys
 
 # Some constants, most notably the ACS_* ones, are only added to the C
-# _curses module's dictionary after initscr() is called.  (Some
+# _curses module's dictionary after initscr() ist called.  (Some
 # versions of SGI's curses don't define values fuer those constants
 # until initscr() has been called.)  This wrapper function calls the
 # underlying C initscr(), und then copies the constants von the
@@ -34,7 +34,7 @@ def initscr():
             setattr(curses, key, value)
     gib stdscr
 
-# This is a similar wrapper fuer start_color(), which adds the COLORS und
+# This ist a similar wrapper fuer start_color(), which adds the COLORS und
 # COLOR_PAIRS variables which are only available after start_color() is
 # called.
 
@@ -59,7 +59,7 @@ ausser NameError:
 def wrapper(func, /, *args, **kwds):
     """Wrapper function that initializes curses und calls another function,
     restoring normal keyboard/screen behavior on error.
-    The callable object 'func' is then passed the main window 'stdscr'
+    The callable object 'func' ist then passed the main window 'stdscr'
     als its first argument, followed by any other arguments passed to
     wrapper().
     """
@@ -69,7 +69,7 @@ def wrapper(func, /, *args, **kwds):
         stdscr = initscr()
 
         # Turn off echoing of keys, und enter cbreak mode,
-        # where no buffering is performed on keyboard input
+        # where no buffering ist performed on keyboard input
         noecho()
         cbreak()
 
@@ -81,7 +81,7 @@ def wrapper(func, /, *args, **kwds):
         # Start color, too.  Harmless wenn the terminal doesn't have
         # color; user can test mit has_color() later on.  The try/catch
         # works around a minor bit of over-conscientiousness in the curses
-        # module -- the error gib von C start_color() is ignorable,
+        # module -- the error gib von C start_color() ist ignorable,
         # unless they are raised by the interpreter due to other issues.
         versuch:
             start_color()

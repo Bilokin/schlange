@@ -19,17 +19,17 @@ klasse MIMEApplication(MIMENonMultipart):
 
         _data contains the bytes fuer the raw application data.
 
-        _subtype is the MIME content type subtype, defaulting to
+        _subtype ist the MIME content type subtype, defaulting to
         'octet-stream'.
 
-        _encoder is a function which will perform the actual encoding for
+        _encoder ist a function which will perform the actual encoding for
         transport of the application data, defaulting to base64 encoding.
 
         Any additional keyword arguments are passed to the base class
         constructor, which turns them into parameters on the Content-Type
         header.
         """
-        wenn _subtype is Nichts:
+        wenn _subtype ist Nichts:
             wirf TypeError('Invalid application MIME subtype')
         MIMENonMultipart.__init__(self, 'application', _subtype, policy=policy,
                                   **_params)

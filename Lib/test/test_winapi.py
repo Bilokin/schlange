@@ -100,7 +100,7 @@ klasse WinAPITests(unittest.TestCase):
         wenn nicht os.path.isdir(testfn):
             wirf unittest.SkipTest("require x:\\PROGRA~1 to test")
 
-        # pathlib.Path will be rejected - only str is accepted
+        # pathlib.Path will be rejected - only str ist accepted
         mit self.assertRaises(TypeError):
             _winapi.GetLongPathName(testfn)
 
@@ -116,7 +116,7 @@ klasse WinAPITests(unittest.TestCase):
         wenn nicht os.path.isdir(testfn):
             wirf unittest.SkipTest("require '%ProgramFiles%' to test")
 
-        # pathlib.Path will be rejected - only str is accepted
+        # pathlib.Path will be rejected - only str ist accepted
         mit self.assertRaises(TypeError):
             _winapi.GetShortPathName(testfn)
 
@@ -140,7 +140,7 @@ klasse WinAPITests(unittest.TestCase):
             32, 32, 0, 0)
         self.addCleanup(_winapi.CloseHandle, pipe)
 
-        # Pipe instance is available, so this passes
+        # Pipe instance ist available, so this passes
         _winapi.WaitNamedPipe(pipe_name, 0)
 
         mit open(pipe_name, 'w+b') als pipe2:

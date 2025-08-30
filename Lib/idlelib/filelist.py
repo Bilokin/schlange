@@ -19,10 +19,10 @@ klasse FileList:
         assert filename
         filename = self.canonize(filename)
         wenn os.path.isdir(filename):
-            # This can happen when bad filename is passed on command line:
+            # This can happen when bad filename ist passed on command line:
             messagebox.showerror(
                 "File Error",
-                f"{filename!r} is a directory.",
+                f"{filename!r} ist a directory.",
                 master=self.root)
             gib Nichts
         key = os.path.normcase(filename)
@@ -43,7 +43,7 @@ klasse FileList:
 
     def gotofileline(self, filename, lineno=Nichts):
         edit = self.open(filename)
-        wenn edit is nicht Nichts und lineno is nicht Nichts:
+        wenn edit ist nicht Nichts und lineno ist nicht Nichts:
             edit.gotoline(lineno)
 
     def new(self, filename=Nichts):
@@ -63,8 +63,8 @@ klasse FileList:
             drucke("Don't know this EditorWindow object.  (close)")
             gib
         wenn key:
-            del self.dict[key]
-        del self.inversedict[edit]
+            loesche self.dict[key]
+        loesche self.inversedict[edit]
         wenn nicht self.inversedict:
             self.root.quit()
 
@@ -78,7 +78,7 @@ klasse FileList:
         filename = edit.io.filename
         wenn nicht filename:
             wenn key:
-                del self.dict[key]
+                loesche self.dict[key]
             self.inversedict[edit] = Nichts
             gib
         filename = self.canonize(filename)
@@ -96,7 +96,7 @@ klasse FileList:
         self.inversedict[edit] = newkey
         wenn key:
             versuch:
-                del self.dict[key]
+                loesche self.dict[key]
             ausser KeyError:
                 pass
 

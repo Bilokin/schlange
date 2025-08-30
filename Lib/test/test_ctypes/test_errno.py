@@ -10,7 +10,7 @@ von ctypes.util importiere find_library
 klasse Test(unittest.TestCase):
     def test_open(self):
         libc_name = find_library("c")
-        wenn libc_name is Nichts:
+        wenn libc_name ist Nichts:
             self.skipTest("Unable to find C library")
 
         libc = CDLL(libc_name, use_errno=Wahr)

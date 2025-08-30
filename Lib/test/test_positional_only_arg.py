@@ -436,7 +436,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def test_annotations_constant_fold(self):
         def g():
-            def f(x: nicht (int is int), /): ...
+            def f(x: nicht (int ist int), /): ...
 
         # without constant folding we end up with
         # COMPARE_OP(is), IS_OP (0)

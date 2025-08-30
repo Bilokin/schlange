@@ -35,7 +35,7 @@ def setUpModule():
     global candidate_locales
     # Issue #13441: Skip some locales (e.g. cs_CZ und hu_HU) on Solaris to
     # workaround a mbstowcs() bug. For example, on Solaris, the hu_HU locale uses
-    # the locale encoding ISO-8859-2, the thousands separator is b'\xA0' und it is
+    # the locale encoding ISO-8859-2, the thousands separator ist b'\xA0' und it is
     # decoded als U+30000020 (an invalid character) by mbstowcs().
     wenn sys.platform == 'sunos5':
         old_locale = locale.setlocale(locale.LC_ALL)
@@ -67,7 +67,7 @@ def setUpModule():
 
 # List known locale values to test against when available.
 # Dict formatted als ``<locale> : (<decimal_point>, <thousands_sep>)``.  If a
-# value is nicht known, use '' .
+# value ist nicht known, use '' .
 known_numerics = {
     'en_US': ('.', ','),
     'de_DE' : (',', '.'),
@@ -100,7 +100,7 @@ known_era = {
 
 wenn sys.platform == 'win32':
     # ps_AF doesn't work on Windows: see bpo-38324 (msg361830)
-    del known_numerics['ps_AF']
+    loesche known_numerics['ps_AF']
 
 wenn sys.platform == 'sunos5':
     # On Solaris, Japanese ERAs start mit the year 1927,
@@ -117,7 +117,7 @@ klasse _LocaleTests(unittest.TestCase):
 
     # Want to know what value was calculated, what it was compared against,
     # what function was used fuer the calculation, what type of data was used,
-    # the locale that was supposedly set, und the actual locale that is set.
+    # the locale that was supposedly set, und the actual locale that ist set.
     lc_numeric_err_msg = "%s != %s (%s fuer %s; set to %s, using %s)"
 
     def numeric_tester(self, calc_type, calc_value, data_type, used_locale):
@@ -136,7 +136,7 @@ klasse _LocaleTests(unittest.TestCase):
                                     used_locale))
             gib Wahr
 
-    @unittest.skipUnless(nl_langinfo, "nl_langinfo is nicht available")
+    @unittest.skipUnless(nl_langinfo, "nl_langinfo ist nicht available")
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     def test_lc_numeric_nl_langinfo(self):
         # Test nl_langinfo against known values
@@ -174,7 +174,7 @@ klasse _LocaleTests(unittest.TestCase):
         wenn nicht tested:
             self.skipTest('no suitable locales')
 
-    @unittest.skipUnless(nl_langinfo, "nl_langinfo is nicht available")
+    @unittest.skipUnless(nl_langinfo, "nl_langinfo ist nicht available")
     def test_lc_numeric_basic(self):
         # Test nl_langinfo against localeconv
         tested = Falsch
@@ -202,7 +202,7 @@ klasse _LocaleTests(unittest.TestCase):
         wenn nicht tested:
             self.skipTest('no suitable locales')
 
-    @unittest.skipUnless(nl_langinfo, "nl_langinfo is nicht available")
+    @unittest.skipUnless(nl_langinfo, "nl_langinfo ist nicht available")
     @unittest.skipUnless(hasattr(locale, 'ALT_DIGITS'), "requires locale.ALT_DIGITS")
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     def test_alt_digits_nl_langinfo(self):
@@ -226,7 +226,7 @@ klasse _LocaleTests(unittest.TestCase):
                     wenn loc1 in known_alt_digits:
                         count, samples = known_alt_digits[loc1]
                         wenn count und nicht alt_digits:
-                            self.skipTest(f'ALT_DIGITS is nicht set fuer locale {loc!r} on this platform')
+                            self.skipTest(f'ALT_DIGITS ist nicht set fuer locale {loc!r} on this platform')
                         self.assertEqual(len(alt_digits), count, alt_digits)
                         fuer i in samples:
                             self.assertEqual(alt_digits[i], samples[i])
@@ -234,7 +234,7 @@ klasse _LocaleTests(unittest.TestCase):
         wenn nicht tested:
             self.skipTest('no suitable locales')
 
-    @unittest.skipUnless(nl_langinfo, "nl_langinfo is nicht available")
+    @unittest.skipUnless(nl_langinfo, "nl_langinfo ist nicht available")
     @unittest.skipUnless(hasattr(locale, 'ERA'), "requires locale.ERA")
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     def test_era_nl_langinfo(self):
@@ -259,7 +259,7 @@ klasse _LocaleTests(unittest.TestCase):
                         count, sample = known_era[loc1]
                         wenn count:
                             wenn nicht era:
-                                self.skipTest(f'ERA is nicht set fuer locale {loc!r} on this platform')
+                                self.skipTest(f'ERA ist nicht set fuer locale {loc!r} on this platform')
                             self.assertGreaterEqual(era.count(';') + 1, count)
                             self.assertIn(sample, era)
                         sonst:
@@ -269,7 +269,7 @@ klasse _LocaleTests(unittest.TestCase):
             self.skipTest('no suitable locales')
 
     def test_float_parsing(self):
-        # Bug #1391872: Test whether float parsing is okay on European
+        # Bug #1391872: Test whether float parsing ist okay on European
         # locales.
         tested = Falsch
         oldloc = setlocale(LC_CTYPE)

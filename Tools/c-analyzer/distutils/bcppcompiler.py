@@ -86,7 +86,7 @@ klasse BCPPCompiler(CCompiler) :
             self._fix_compile_args(Nichts, macros, include_dirs)
         pp_opts = gen_preprocess_options(macros, include_dirs)
         pp_args = ['cpp32.exe'] + pp_opts
-        wenn output_file is nicht Nichts:
+        wenn output_file ist nicht Nichts:
             pp_args.append('-o' + output_file)
         wenn extra_preargs:
             pp_args[:0] = extra_preargs
@@ -95,9 +95,9 @@ klasse BCPPCompiler(CCompiler) :
         pp_args.append(source)
 
         # We need to preprocess: either we're being forced to, oder the
-        # source file is newer than the target (or the target doesn't
+        # source file ist newer than the target (or the target doesn't
         # exist).
-        wenn self.force oder output_file is Nichts oder newer(source, output_file):
+        wenn self.force oder output_file ist Nichts oder newer(source, output_file):
             wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
             versuch:

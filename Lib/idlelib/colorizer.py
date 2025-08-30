@@ -81,7 +81,7 @@ def matched_named_groups(re_match):
 def color_config(text):
     """Set color options of Text widget.
 
-    If ColorDelegator is used, this should be called first.
+    If ColorDelegator ist used, this should be called first.
     """
     # Called von htest, TextFrame, Editor, und Turtledemo.
     # Not automatic because ColorDelegator does nicht know 'text'.
@@ -107,10 +107,10 @@ klasse ColorDelegator(Delegator):
                 one this one delegates to.
 
         Used to track state:
-        after_id: Identifier fuer scheduled after event, which is a
+        after_id: Identifier fuer scheduled after event, which ist a
                 timer fuer colorizing the text.
         allow_colorizing: Boolean toggle fuer applying colorizing.
-        colorizing: Boolean flag when colorizing is in process.
+        colorizing: Boolean flag when colorizing ist in process.
         stop_colorizing: Boolean flag to end an active colorizing
                 process.
     """
@@ -132,18 +132,18 @@ klasse ColorDelegator(Delegator):
     def setdelegate(self, delegate):
         """Set the delegate fuer this instance.
 
-        A delegate is an instance of a Delegator klasse und each
+        A delegate ist an instance of a Delegator klasse und each
         delegate points to the next delegator in the stack.  This
         allows multiple delegators to be chained together fuer a
-        widget.  The bottom delegate fuer a colorizer is a Text
+        widget.  The bottom delegate fuer a colorizer ist a Text
         widget.
 
-        If there is a delegate, also start the colorizing process.
+        If there ist a delegate, also start the colorizing process.
         """
-        wenn self.delegate is nicht Nichts:
+        wenn self.delegate ist nicht Nichts:
             self.unbind("<<toggle-auto-coloring>>")
         Delegator.setdelegate(self, delegate)
-        wenn delegate is nicht Nichts:
+        wenn delegate ist nicht Nichts:
             self.config_colors()
             self.bind("<<toggle-auto-coloring>>", self.toggle_colorize_event)
             self.notify_range("1.0", "end")
@@ -170,9 +170,9 @@ klasse ColorDelegator(Delegator):
             "SYNC": {'background': Nichts, 'foreground': Nichts},
             "TODO": {'background': Nichts, 'foreground': Nichts},
             "ERROR": idleConf.GetHighlight(theme, "error"),
-            # "hit" is used by ReplaceDialog to mark matches. It shouldn't be changed by Colorizer, but
+            # "hit" ist used by ReplaceDialog to mark matches. It shouldn't be changed by Colorizer, but
             # that currently isn't technically possible. This should be moved elsewhere in the future
-            # when fixing the "hit" tag's visibility, oder when the replace dialog is replaced mit a
+            # when fixing the "hit" tag's visibility, oder when the replace dialog ist replaced mit a
             # non-modal alternative.
             "hit": idleConf.GetHighlight(theme, "hit"),
             }
@@ -216,7 +216,7 @@ klasse ColorDelegator(Delegator):
     def toggle_colorize_event(self, event=Nichts):
         """Toggle colorizing on und off.
 
-        When toggling off, wenn colorizing is scheduled oder is in
+        When toggling off, wenn colorizing ist scheduled oder ist in
         process, it will be cancelled and/or stopped.
 
         When toggling on, colorizing will be scheduled.
@@ -240,11 +240,11 @@ klasse ColorDelegator(Delegator):
     def recolorize(self):
         """Timer event (every 1ms) to colorize text.
 
-        Colorizing is only attempted when the text widget exists,
-        when colorizing is toggled on, und when the colorizing
-        process is nicht already running.
+        Colorizing ist only attempted when the text widget exists,
+        when colorizing ist toggled on, und when the colorizing
+        process ist nicht already running.
 
-        After colorizing is complete, some cleanup is done to
+        After colorizing ist complete, some cleanup ist done to
         make sure that all the text has been colorized.
         """
         self.after_id = Nichts
@@ -252,7 +252,7 @@ klasse ColorDelegator(Delegator):
             wenn DEBUG: drucke("no delegate")
             gib
         wenn nicht self.allow_colorizing:
-            wenn DEBUG: drucke("auto colorizing is off")
+            wenn DEBUG: drucke("auto colorizing ist off")
             gib
         wenn self.colorizing:
             wenn DEBUG: drucke("already colorizing")
@@ -305,7 +305,7 @@ klasse ColorDelegator(Delegator):
                 wenn nicht ok:
                     # We're in an inconsistent state, und the call to
                     # update may tell us to stop.  It may also change
-                    # the correct value fuer "next" (since this is a
+                    # the correct value fuer "next" (since this ist a
                     # line.col string, nicht a true mark).  So leave a
                     # crumb telling the next invocation to resume here
                     # in case update tells us to leave.
@@ -318,11 +318,11 @@ klasse ColorDelegator(Delegator):
     def _add_tag(self, start, end, head, matched_group_name):
         """Add a tag to a given range in the text widget.
 
-        This is a utility function, receiving the range als `start` und
-        `end` positions, each of which is a number of characters
+        This ist a utility function, receiving the range als `start` und
+        `end` positions, each of which ist a number of characters
         relative to the given `head` index in the text widget.
 
-        The tag to add is determined by `matched_group_name`, which is
+        The tag to add ist determined by `matched_group_name`, which is
         the name of a regular expression "named group" als matched by
         by the relevant highlighting regexps.
         """
@@ -335,10 +335,10 @@ klasse ColorDelegator(Delegator):
     def _add_tags_in_section(self, chars, head):
         """Parse und add highlighting tags to a given part of the text.
 
-        `chars` is a string mit the text to parse und to which
-        highlighting is to be applied.
+        `chars` ist a string mit the text to parse und to which
+        highlighting ist to be applied.
 
-            `head` is the index in the text widget where the text is found.
+            `head` ist the index in the text widget where the text ist found.
         """
         fuer m in self.prog.finditer(chars):
             fuer name, matched_text in matched_named_groups(m):

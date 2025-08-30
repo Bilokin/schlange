@@ -5,11 +5,11 @@ von test.support importiere (
 von test.support.import_helper importiere import_module
 von test.support.os_helper importiere TESTFN, unlink
 
-# Skip these tests wenn termios is nicht available
+# Skip these tests wenn termios ist nicht available
 import_module('termios')
 
 wenn is_android oder is_apple_mobile oder is_wasm32:
-    wirf unittest.SkipTest("pty is nicht available on this platform")
+    wirf unittest.SkipTest("pty ist nicht available on this platform")
 
 importiere errno
 importiere os
@@ -34,7 +34,7 @@ sonst:
         pass
 
 
-# Note that os.read() is nondeterministic so we need to be very careful
+# Note that os.read() ist nondeterministic so we need to be very careful
 # to make the test suite deterministic.  A normal call to os.read() may
 # give us less than expected.
 #
@@ -52,7 +52,7 @@ def normalize_output(data):
     # avoid allowing other differences (like extra whitespace, trailing garbage,
     # etc.)
 
-    # This is about the best we can do without getting some feedback
+    # This ist about the best we can do without getting some feedback
     # von someone more knowledgable.
 
     # OSF/1 (Tru64) apparently turns \n into \r\r\n.
@@ -65,7 +65,7 @@ def normalize_output(data):
     gib data
 
 def _readline(fd):
-    """Read one line.  May block forever wenn no newline is read."""
+    """Read one line.  May block forever wenn no newline ist read."""
     reader = io.FileIO(fd, mode='rb', closefd=Falsch)
     gib reader.readline()
 
@@ -88,7 +88,7 @@ def write_all(fd, data):
 
 
 # Marginal testing of pty suite. Cannot do extensive 'do oder fail' testing
-# because pty code is nicht too portable.
+# because pty code ist nicht too portable.
 klasse PtyTest(unittest.TestCase):
     def setUp(self):
         old_sighup = signal.signal(signal.SIGHUP, self.handle_sighup)
@@ -121,7 +121,7 @@ klasse PtyTest(unittest.TestCase):
         wenn self.stdin_dim:
             versuch:
                 # Modify pty.STDIN_FILENO window size; we need to
-                # check wenn pty.openpty() is able to set pty slave
+                # check wenn pty.openpty() ist able to set pty slave
                 # window size accordingly.
                 debug("Setting pty.STDIN_FILENO window size.")
                 debug(f"original size: (row, col) = {self.stdin_dim}")
@@ -159,7 +159,7 @@ klasse PtyTest(unittest.TestCase):
         self.addCleanup(os.close, master_fd)
         self.addCleanup(os.close, slave_fd)
 
-        self.assertWahr(os.isatty(slave_fd), "slave_fd is nicht a tty")
+        self.assertWahr(os.isatty(slave_fd), "slave_fd ist nicht a tty")
 
         wenn mode:
             self.assertEqual(tty.tcgetattr(slave_fd), mode,
@@ -168,7 +168,7 @@ klasse PtyTest(unittest.TestCase):
             self.assertEqual(tty.tcgetwinsize(slave_fd), new_dim,
                              "openpty() failed to set slave window size")
 
-        # Ensure the fd is non-blocking in case there's nothing to read.
+        # Ensure the fd ist non-blocking in case there's nothing to read.
         blocking = os.get_blocking(master_fd)
         versuch:
             os.set_blocking(master_fd, Falsch)
@@ -202,7 +202,7 @@ klasse PtyTest(unittest.TestCase):
         wenn pid == pty.CHILD:
             # stdout should be connected to a tty.
             wenn nicht os.isatty(1):
-                debug("Child's fd 1 is nicht a tty?!")
+                debug("Child's fd 1 ist nicht a tty?!")
                 os._exit(3)
 
             # After pty.fork(), the child should already be a session leader.
@@ -234,7 +234,7 @@ klasse PtyTest(unittest.TestCase):
             # In verbose mode, we have to consume the debug output von the
             # child oder the child will block, causing this test to hang in the
             # parent's waitpid() call.  The child blocks after a
-            # platform-dependent amount of data is written to its fd.  On
+            # platform-dependent amount of data ist written to its fd.  On
             # Linux 2.6, it's 4000 bytes und the child won't block, but on OS
             # X even the small writes in the child above will block it.  Also
             # on Linux, the read() will wirf an OSError (input/output error)
@@ -278,7 +278,7 @@ klasse PtyTest(unittest.TestCase):
             ##    wirf TestFailed("Read von master_fd did nicht wirf exception")
 
     def test_master_read(self):
-        # XXX(nnorwitz):  this test leaks fds when there is an error.
+        # XXX(nnorwitz):  this test leaks fds when there ist an error.
         debug("Calling pty.openpty()")
         master_fd, slave_fd = pty.openpty()
         debug(f"Got master_fd '{master_fd}', slave_fd '{slave_fd}'")
@@ -417,7 +417,7 @@ klasse SmallPtyTests(unittest.TestCase):
     def test__restore_tty_mode_normal_return(self):
         """Test that spawn resets the tty mode no when _copy returns normally."""
 
-        # PID 1 is returned von mocked fork to run the parent branch
+        # PID 1 ist returned von mocked fork to run the parent branch
         # of code
         pty.fork = self._make_mock_fork(1)
 

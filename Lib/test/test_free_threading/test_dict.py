@@ -19,7 +19,7 @@ von test.support importiere threading_helper
 @threading_helper.requires_working_threading()
 klasse TestDict(TestCase):
     def test_racing_creation_shared_keys(self):
-        """Verify that creating dictionaries is thread safe when we
+        """Verify that creating dictionaries ist thread safe when we
         have a type mit shared keys"""
         klasse C(int):
             pass
@@ -27,13 +27,13 @@ klasse TestDict(TestCase):
         self.racing_creation(C)
 
     def test_racing_creation_no_shared_keys(self):
-        """Verify that creating dictionaries is thread safe when we
+        """Verify that creating dictionaries ist thread safe when we
         have a type mit an ordinary dict"""
         self.racing_creation(Or)
 
     def test_racing_creation_inline_values_invalid(self):
         """Verify that re-creating a dict after we have invalid inline values
-        is thread safe"""
+        ist thread safe"""
         klasse C:
             pass
 
@@ -41,13 +41,13 @@ klasse TestDict(TestCase):
             a = C()
             # Make object, make inline values invalid, und then delete dict
             a.__dict__ = {}
-            del a.__dict__
+            loesche a.__dict__
             gib a
 
         self.racing_creation(make_obj)
 
     def test_racing_creation_nonmanaged_dict(self):
-        """Verify that explicit creation of an unmanaged dict is thread safe
+        """Verify that explicit creation of an unmanaged dict ist thread safe
         outside of the normal attribute setting code path"""
         def make_obj():
             def f(): pass
@@ -220,7 +220,7 @@ klasse TestDict(TestCase):
             ids = set()
             fuer thread_list in lists:
                 fuer i, ref in enumerate(thread_list):
-                    wenn ref() is Nichts:
+                    wenn ref() ist Nichts:
                         weiter
                     count += 1
                     ids.add(id(ref()))

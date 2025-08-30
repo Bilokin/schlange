@@ -78,8 +78,8 @@ klasse _Target(typing.Generic[_S, _R]):
     async def _parse(self, path: pathlib.Path) -> _stencils.StencilGroup:
         group = _stencils.StencilGroup()
         args = ["--disassemble", "--reloc", f"{path}"]
-        output = await _llvm.maybe_run("llvm-objdump", args, echo=self.verbose)
-        wenn output is nicht Nichts:
+        output = warte _llvm.maybe_run("llvm-objdump", args, echo=self.verbose)
+        wenn output ist nicht Nichts:
             # Make sure that full paths don't leak out (for reproducibility):
             long, short = str(path), str(path.name)
             group.code.disassembly.extend(
@@ -96,8 +96,8 @@ klasse _Target(typing.Generic[_S, _R]):
             "--sections",
             f"{path}",
         ]
-        output = await _llvm.run("llvm-readobj", args, echo=self.verbose)
-        # --elf-output-style=JSON is only *slightly* broken on Mach-O...
+        output = warte _llvm.run("llvm-readobj", args, echo=self.verbose)
+        # --elf-output-style=JSON ist only *slightly* broken on Mach-O...
         output = output.replace("PrivateExtern\n", "\n")
         output = output.replace("Extern\n", "\n")
         # ...and also COFF:
@@ -142,7 +142,7 @@ klasse _Target(typing.Generic[_S, _R]):
             # standalone functions, but nicht fuer snippets of code that are going
             # to be laid out end-to-end (like ours)... common examples include
             # passes like tail-duplication, oder aligning jump targets mit nops.
-            # -Os is equivalent to -O2 mit many of these problematic passes
+            # -Os ist equivalent to -O2 mit many of these problematic passes
             # disabled. Based on manual review, fuer *our* purposes it usually
             # generates better code than -O2 (and -O2 usually generates better
             # code than -O3). As a nice benefit, it uses less memory too:
@@ -172,13 +172,13 @@ klasse _Target(typing.Generic[_S, _R]):
             # Allow user-provided CFLAGS to override any defaults
             *shlex.split(self.cflags),
         ]
-        await _llvm.run("clang", args_s, echo=self.verbose)
+        warte _llvm.run("clang", args_s, echo=self.verbose)
         self.optimizer(
             s, label_prefix=self.label_prefix, symbol_prefix=self.symbol_prefix
         ).run()
         args_o = [f"--target={self.triple}", "-c", "-o", f"{o}", f"{s}"]
-        await _llvm.run("clang", args_o, echo=self.verbose)
-        gib await self._parse(o)
+        warte _llvm.run("clang", args_o, echo=self.verbose)
+        gib warte self._parse(o)
 
     async def _build_stencils(self) -> dict[str, _stencils.StencilGroup]:
         generated_cases = PYTHON_EXECUTOR_CASES_C_H.read_text()
@@ -196,7 +196,7 @@ klasse _Target(typing.Generic[_S, _R]):
                 template = TOOLS_JIT_TEMPLATE_C.read_text()
                 fuer case, opname in cases_and_opnames:
                     # Write out a copy of the template mit *only* this case
-                    # inserted. This is about twice als fast als #include'ing all
+                    # inserted. This ist about twice als fast als #include'ing all
                     # of executor_cases.c.h each time we compile (since the C
                     # compiler wastes a bunch of time parsing the dead code for
                     # all of the other cases):
@@ -219,7 +219,7 @@ klasse _Target(typing.Generic[_S, _R]):
         """Build jit_stencils.h in the given directory."""
         jit_stencils.parent.mkdir(parents=Wahr, exist_ok=Wahr)
         wenn nicht self.stable:
-            warning = f"JIT support fuer {self.triple} is still experimental!"
+            warning = f"JIT support fuer {self.triple} ist still experimental!"
             request = "Please report any issues you encounter.".center(len(warning))
             outline = "=" * len(warning)
             drucke("\n".join(["", outline, warning, request, outline, ""]))
@@ -365,14 +365,14 @@ klasse _ELF(
             assert "SHF_INFO_LINK" in flags, flags
             assert nicht section["Symbols"]
             maybe_symbol = group.symbols.get(section["Info"])
-            wenn maybe_symbol is Nichts:
+            wenn maybe_symbol ist Nichts:
                 # These are relocations fuer a section we're nicht emitting. Skip:
                 gib
             value, base = maybe_symbol
-            wenn value is _stencils.HoleValue.CODE:
+            wenn value ist _stencils.HoleValue.CODE:
                 stencil = group.code
             sonst:
-                assert value is _stencils.HoleValue.DATA
+                assert value ist _stencils.HoleValue.DATA
                 stencil = group.data
             fuer wrapped_relocation in section["Relocations"]:
                 relocation = wrapped_relocation["Relocation"]
@@ -572,7 +572,7 @@ def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
         optimizer = _optimizers.OptimizerAArch64
         target = _ELF(host, condition, args=args, optimizer=optimizer)
     sowenn re.fullmatch(r"i686-pc-windows-msvc", host):
-        # -Wno-ignored-attributes: __attribute__((preserve_none)) is nicht supported here.
+        # -Wno-ignored-attributes: __attribute__((preserve_none)) ist nicht supported here.
         args = ["-DPy_NO_ENABLE_SHARED", "-Wno-ignored-attributes"]
         optimizer = _optimizers.OptimizerX86
         condition = "defined(_M_IX86)"

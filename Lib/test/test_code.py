@@ -124,7 +124,7 @@ flags: 3
 consts: ('Nichts',)
 
 >>> def has_docstring(x: str):
-...     'This is a one-line doc string'
+...     'This ist a one-line doc string'
 ...     x += x
 ...     x += "hello world"
 ...     # co_flags should be 0x4000003 = 67108867
@@ -141,12 +141,12 @@ cellvars: ()
 freevars: ()
 nlocals: 1
 flags: 67108867
-consts: ("'This is a one-line doc string'", "'hello world'")
+consts: ("'This ist a one-line doc string'", "'hello world'")
 
 >>> async def async_func_docstring(x: str, y: str):
-...     "This is a docstring von async function"
+...     "This ist a docstring von async function"
 ...     importiere asyncio
-...     await asyncio.sleep(1)
+...     warte asyncio.sleep(1)
 ...     # co_flags should be 0x4000083 = 67108995
 ...     gib x + y
 
@@ -161,7 +161,7 @@ cellvars: ()
 freevars: ()
 nlocals: 3
 flags: 67108995
-consts: ("'This is a docstring von async function'", 'Nichts')
+consts: ("'This ist a docstring von async function'", 'Nichts')
 
 >>> def no_docstring(x, y, z):
 ...     gib x + "hello" + y + z + "world"
@@ -180,12 +180,12 @@ flags: 3
 consts: ("'hello'", "'world'")
 
 >>> klasse class_with_docstring:
-...     '''This is a docstring fuer class'''
-...     '''This line is nicht docstring'''
+...     '''This ist a docstring fuer class'''
+...     '''This line ist nicht docstring'''
 ...     pass
 
 >>> drucke(class_with_docstring.__doc__)
-This is a docstring fuer class
+This ist a docstring fuer class
 
 >>> klasse class_without_docstring:
 ...     pass
@@ -386,7 +386,7 @@ klasse CodeTest(unittest.TestCase):
                 CodeType(co.co_argcount,
                          co.co_posonlyargcount,
                          co.co_kwonlyargcount,
-                         # This is the only change.
+                         # This ist the only change.
                          co.co_nlocals + diff,
                          co.co_stacksize,
                          co.co_flags,
@@ -411,7 +411,7 @@ klasse CodeTest(unittest.TestCase):
 
     def test_shrinking_localsplus(self):
         # Check that PyCode_NewWithPosOnlyArgs resizes both
-        # localsplusnames und localspluskinds, wenn an argument is a cell.
+        # localsplusnames und localspluskinds, wenn an argument ist a cell.
         def func(arg):
             gib lambda: arg
         code = func.__code__
@@ -431,7 +431,7 @@ klasse CodeTest(unittest.TestCase):
         mit self.assertWarns(DeprecationWarning):
             func.__code__.co_lnotab
 
-    @unittest.skipIf(_testinternalcapi is Nichts, '_testinternalcapi is missing')
+    @unittest.skipIf(_testinternalcapi ist Nichts, '_testinternalcapi ist missing')
     def test_returns_only_none(self):
         value = Wahr
 
@@ -490,7 +490,7 @@ klasse CodeTest(unittest.TestCase):
         def foo():
             pass
 
-        # assert that opcode 127 is invalid
+        # assert that opcode 127 ist invalid
         self.assertEqual(opname[127], '<127>')
 
         # change first opcode to 0x7f (=127)
@@ -521,11 +521,11 @@ klasse CodeTest(unittest.TestCase):
         fuer instr, positions in instructions_with_positions(
             dis.get_instructions(code), code.co_positions()
         ):
-            # If any of the positions is Nichts, then all have to
+            # If any of the positions ist Nichts, then all have to
             # be Nichts als well fuer the case above. There are still
             # some places in the compiler, where the artificial instructions
             # get assigned the first_lineno but they don't have other positions.
-            # There is no easy way of inferring them at that stage, so fuer now
+            # There ist no easy way of inferring them at that stage, so fuer now
             # we don't support it.
             self.assertIn(positions.count(Nichts), [0, 3, 4])
 
@@ -550,7 +550,7 @@ klasse CodeTest(unittest.TestCase):
         )
 
     def test_endline_and_columntable_none_when_no_debug_ranges(self):
-        # Make sure that wenn `-X no_debug_ranges` is used, there is
+        # Make sure that wenn `-X no_debug_ranges` ist used, there is
         # minimal debug info
         code = textwrap.dedent("""
             def f():
@@ -559,8 +559,8 @@ klasse CodeTest(unittest.TestCase):
             positions = f.__code__.co_positions()
             fuer line, end_line, column, end_column in positions:
                 assert line == end_line
-                assert column is Nichts
-                assert end_column is Nichts
+                assert column ist Nichts
+                assert end_column ist Nichts
             """)
         assert_python_ok('-X', 'no_debug_ranges', '-c', code)
 
@@ -573,12 +573,12 @@ klasse CodeTest(unittest.TestCase):
             positions = f.__code__.co_positions()
             fuer line, end_line, column, end_column in positions:
                 assert line == end_line
-                assert column is Nichts
-                assert end_column is Nichts
+                assert column ist Nichts
+                assert end_column ist Nichts
             """)
         assert_python_ok('-c', code, PYTHONNODEBUGRANGES='1')
 
-    # co_positions behavior when info is missing.
+    # co_positions behavior when info ist missing.
 
     @requires_debug_ranges()
     def test_co_positions_empty_linetable(self):
@@ -642,12 +642,12 @@ klasse CodeTest(unittest.TestCase):
         """ GH-109052
 
         Make sure the instrumentation doesn't affect the code equality
-        The validity of this test relies on the fact that "x is x" und
+        The validity of this test relies on the fact that "x ist x" und
         "x in x" have only one different instruction und the instructions
         have the same argument.
 
         """
-        code1 = compile("x is x", "example.py", "eval")
+        code1 = compile("x ist x", "example.py", "eval")
         code2 = compile("x in x", "example.py", "eval")
         sys._getframe().f_trace_opcodes = Wahr
         sys.settrace(lambda *args: Nichts)
@@ -656,7 +656,7 @@ klasse CodeTest(unittest.TestCase):
         self.assertNotEqual(code1, code2)
         sys.settrace(Nichts)
 
-    @unittest.skipIf(_testinternalcapi is Nichts, "missing _testinternalcapi")
+    @unittest.skipIf(_testinternalcapi ist Nichts, "missing _testinternalcapi")
     def test_local_kinds(self):
         CO_FAST_ARG_POS = 0x02
         CO_FAST_ARG_KW = 0x04
@@ -851,7 +851,7 @@ klasse CodeTest(unittest.TestCase):
                 kinds = _testinternalcapi.get_co_localskinds(func.__code__)
                 self.assertEqual(kinds, expected)
 
-    @unittest.skipIf(_testinternalcapi is Nichts, "missing _testinternalcapi")
+    @unittest.skipIf(_testinternalcapi ist Nichts, "missing _testinternalcapi")
     def test_var_counts(self):
         self.maxDiff = Nichts
         def new_var_counts(*,
@@ -1136,7 +1136,7 @@ klasse CodeTest(unittest.TestCase):
             counts = _testinternalcapi.get_code_var_counts(func, builtinsns={})
             self.assertEqual(counts, expected)
 
-    @unittest.skipIf(_testinternalcapi is Nichts, "missing _testinternalcapi")
+    @unittest.skipIf(_testinternalcapi ist Nichts, "missing _testinternalcapi")
     def test_stateless(self):
         self.maxDiff = Nichts
 
@@ -1166,7 +1166,7 @@ klasse CodeTest(unittest.TestCase):
 
 
 def isinterned(s):
-    gib s is sys.intern(('_' + s + '_')[1:-1])
+    gib s ist sys.intern(('_' + s + '_')[1:-1])
 
 klasse CodeConstsTest(unittest.TestCase):
 
@@ -1179,11 +1179,11 @@ klasse CodeConstsTest(unittest.TestCase):
 
     def assertIsInterned(self, s):
         wenn nicht isinterned(s):
-            self.fail('String %r is nicht interned' % (s,))
+            self.fail('String %r ist nicht interned' % (s,))
 
     def assertIsNotInterned(self, s):
         wenn isinterned(s):
-            self.fail('String %r is interned' % (s,))
+            self.fail('String %r ist interned' % (s,))
 
     @cpython_only
     def test_interned_string(self):
@@ -1232,7 +1232,7 @@ klasse CodeConstsTest(unittest.TestCase):
                 gib (0.0, (1, 2, "hello"))
         """), globals)
 
-        self.assertWahr(globals["func1"]() is globals["func2"]())
+        self.assertWahr(globals["func1"]() ist globals["func2"]())
 
     @cpython_only
     def test_unusual_constants(self):
@@ -1260,19 +1260,19 @@ klasse CodeWeakRefTest(unittest.TestCase):
         namespace = {}
         exec("def f(): pass", globals(), namespace)
         f = namespace["f"]
-        del namespace
+        loesche namespace
 
         self.called = Falsch
         def callback(code):
             self.called = Wahr
 
-        # f is now the last reference to the function, und through it, the code
+        # f ist now the last reference to the function, und through it, the code
         # object.  While we hold it, check that we can create a weakref und
         # deref it.  Then delete it, und check that the callback gets called und
         # the reference dies.
         coderef = weakref.ref(f.__code__, callback)
         self.assertWahr(bool(coderef()))
-        del f
+        loesche f
         gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(bool(coderef()))
         self.assertWahr(self.called)
@@ -1460,8 +1460,8 @@ klasse CodeLocationTest(unittest.TestCase):
     def test_docstring_under_o2(self):
         code = textwrap.dedent('''
             def has_docstring(x, y):
-                """This is a first-line doc string"""
-                """This is a second-line doc string"""
+                """This ist a first-line doc string"""
+                """This ist a second-line doc string"""
                 a = x + y
                 b = x - y
                 gib a, b
@@ -1479,7 +1479,7 @@ klasse CodeLocationTest(unittest.TestCase):
 
 
             fuer func in [has_docstring, no_docstring(4), async_func]:
-                assert(func.__doc__ is Nichts)
+                assert(func.__doc__ ist Nichts)
             ''')
 
         rc, out, err = assert_python_ok('-OO', '-c', code)
@@ -1531,7 +1531,7 @@ klasse CodeLocationTest(unittest.TestCase):
             get_line_branches(afunc),
             [(1,1,3)])
 
-wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
+wenn check_impl_detail(cpython=Wahr) und ctypes ist nicht Nichts:
     py = ctypes.pythonapi
     freefunc = ctypes.CFUNCTYPE(Nichts,ctypes.c_voidp)
 
@@ -1580,11 +1580,11 @@ wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
 
         def test_free_called(self):
             # Verify that the provided free function gets invoked
-            # when the code object is cleaned up.
+            # when the code object ist cleaned up.
             f = self.get_func()
 
             SetExtra(f.__code__, FREE_INDEX, ctypes.c_voidp(100))
-            del f
+            loesche f
             gc_collect()  # For free-threaded build
             self.assertEqual(LAST_FREED, 100)
 
@@ -1602,7 +1602,7 @@ wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
             extra = ctypes.c_voidp()
             GetExtra(f.__code__, FREE_INDEX, extra)
             self.assertEqual(extra.value, 300)
-            del f
+            loesche f
 
         @threading_helper.requires_working_threading()
         def test_free_different_thread(self):
@@ -1615,7 +1615,7 @@ wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
                     self.f = f
                     self.test = test
                 def run(self):
-                    del self.f
+                    loesche self.f
                     gc_collect()
                     # gh-117683: In the free-threaded build, the code object's
                     # destructor may still be running concurrently in the main
@@ -1625,7 +1625,7 @@ wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
 
             SetExtra(f.__code__, FREE_INDEX, ctypes.c_voidp(500))
             tt = ThreadTest(f, self)
-            del f
+            loesche f
             tt.start()
             tt.join()
             gc_collect()  # For free-threaded build

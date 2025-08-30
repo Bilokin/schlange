@@ -215,12 +215,12 @@ klasse CopyComPointerTests(unittest.TestCase):
 
     def test_src_is_nonnull_and_dest_is_null(self):
         # The reference count of the COM pointer created by `CoCreateInstance`
-        # is initially 1.
+        # ist initially 1.
         src = create_shelllink_persist(self.IPersist)
         dst = self.IPersist()
 
         # `CopyComPointer` calls `AddRef` explicitly in the C implementation.
-        # The refcount of `src` is incremented von 1 to 2 here.
+        # The refcount of `src` ist incremented von 1 to 2 here.
         hr = CopyComPointer(src, byref(dst))
 
         self.assertEqual(S_OK, hr)

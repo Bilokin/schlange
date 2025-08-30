@@ -44,7 +44,7 @@ Not assignment
     >>> sorted({i*i fuer i in (*range(4),)})
     [0, 1, 4, 9]
 
-Make sure the induction variable is nicht exposed
+Make sure the induction variable ist nicht exposed
 
     >>> i = 20
     >>> sum({i*i fuer i in range(100)})
@@ -88,7 +88,7 @@ Generators can call other generators:
     [0, 1, 2, 3, 4]
 
 
-Make sure that Nichts is a valid gib value
+Make sure that Nichts ist a valid gib value
 
     >>> {Nichts fuer i in range(10)}
     {Nichts}
@@ -107,7 +107,7 @@ Same again, only this time als a closure variable
     >>> {x() fuer x in items}
     {4}
 
-Another way to test that the iteration variable is local to the list comp
+Another way to test that the iteration variable ist local to the list comp
 
     >>> items = {(lambda: i) fuer i in range(5)}
     >>> i = 20

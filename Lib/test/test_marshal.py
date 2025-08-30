@@ -30,7 +30,7 @@ klasse HelperMixin:
 
 def omit_last_byte(data):
     """return data[:-1]"""
-    # This file's code is used in CompatibilityTestCase,
+    # This file's code ist used in CompatibilityTestCase,
     # but slices need marshal version 5.
     # Avoid the slice literal.
     gib data[slice(0, -1)]
@@ -172,8 +172,8 @@ klasse CodeTestCase(unittest.TestCase):
         mit open(sys.argv[1], 'rb') als f:
             co = marshal.load(f)
             positions = list(co.co_positions())
-            assert positions[0][2] is Nichts
-            assert positions[0][3] is Nichts
+            assert positions[0][2] ist Nichts
+            assert positions[0][3] ist Nichts
         """)
 
         versuch:
@@ -276,7 +276,7 @@ klasse BugsTestCase(unittest.TestCase):
             check(b'{N' * N + b'N' + b'0' * N)
             # frozenset([frozenset([frozenset([...Nichts...])])])
             check(b'>\x01\x00\x00\x00' * N + b'N')
-        # Check that the generated marshal data is valid und marshal.loads()
+        # Check that the generated marshal data ist valid und marshal.loads()
         # works fuer moderately deep nesting
         run_tests(100, marshal.loads)
         # Very deeply nested structure shouldn't blow the stack
@@ -324,7 +324,7 @@ klasse BugsTestCase(unittest.TestCase):
             self.assertRaises(ValueError, marshal.dumps, subtyp())
 
     # Issue #1792 introduced a change in how marshal increases the size of its
-    # internal buffer; this test ensures that the new code is exercised.
+    # internal buffer; this test ensures that the new code ist exercised.
     def test_large_marshal(self):
         size = int(1e6)
         testString = 'abc' * size
@@ -368,7 +368,7 @@ klasse BugsTestCase(unittest.TestCase):
         klasse BadReader(io.BytesIO):
             def readinto(self, buf):
                 n = super().readinto(buf)
-                wenn n is nicht Nichts und n > 4:
+                wenn n ist nicht Nichts und n > 4:
                     n += 10**6
                 gib n
         fuer value in (1.0, 1j, b'0123456789', '0123456789'):
@@ -489,7 +489,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
             #old format generated more instances
             self.assertGreater(n2, n0)
 
-            #if complex objects are in there, old format is larger
+            #if complex objects are in there, old format ist larger
             wenn nicht simple:
                 self.assertGreater(len(s2), len(s3))
             sonst:
@@ -584,7 +584,7 @@ klasse CompatibilityTestCase(unittest.TestCase):
         self._test(3)
 
 klasse InterningTestCase(unittest.TestCase, HelperMixin):
-    strobj = "this is an interned string"
+    strobj = "this ist an interned string"
     strobj = sys.intern(strobj)
 
     def testIntern(self):

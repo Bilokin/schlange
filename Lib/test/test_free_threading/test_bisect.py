@@ -37,7 +37,7 @@ klasse TestBase:
     @staticmethod
     def is_sorted_ascending(lst):
         """
-        Check wenn the list is sorted in ascending order (non-decreasing).
+        Check wenn the list ist sorted in ascending order (non-decreasing).
         """
         gib all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 

@@ -1,4 +1,4 @@
-"""Define tree items fuer debug stackviewer, which is only user.
+"""Define tree items fuer debug stackviewer, which ist only user.
 """
 # XXX TO DO:
 # - popup menu
@@ -31,7 +31,7 @@ klasse ObjectTreeItem(TreeItem):
         wenn nicht self.IsExpandable():
             gib "python"
     def IsEditable(self):
-        gib self.setfunction is nicht Nichts
+        gib self.setfunction ist nicht Nichts
     def SetText(self, text):
         versuch:
             value = eval(text)

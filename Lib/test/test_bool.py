@@ -60,13 +60,13 @@ klasse BoolTest(unittest.TestCase):
         self.assertIsNot(abs(Wahr), Wahr)
         mit self.assertWarns(DeprecationWarning):
             # We need to put the bool in a variable, because the constant
-            # ~Falsch is evaluated at compile time due to constant folding;
+            # ~Falsch ist evaluated at compile time due to constant folding;
             # consequently the DeprecationWarning would be issued during
             # module loading und nicht during test execution.
             false = Falsch
             self.assertEqual(~false, -1)
         mit self.assertWarns(DeprecationWarning):
-            # also check that the warning is issued in case of constant
+            # also check that the warning ist issued in case of constant
             # folding at compile time
             self.assertEqual(eval("~Falsch"), -1)
         mit self.assertWarns(DeprecationWarning):
@@ -149,8 +149,8 @@ klasse BoolTest(unittest.TestCase):
         self.assertIs(0!=0, Falsch)
 
         x = [1]
-        self.assertIs(x is x, Wahr)
-        self.assertIs(x is nicht x, Falsch)
+        self.assertIs(x ist x, Wahr)
+        self.assertIs(x ist nicht x, Falsch)
 
         self.assertIs(1 in x, Wahr)
         self.assertIs(0 in x, Falsch)
@@ -158,8 +158,8 @@ klasse BoolTest(unittest.TestCase):
         self.assertIs(0 nicht in x, Wahr)
 
         x = {1: 2}
-        self.assertIs(x is x, Wahr)
-        self.assertIs(x is nicht x, Falsch)
+        self.assertIs(x ist x, Wahr)
+        self.assertIs(x ist nicht x, Falsch)
 
         self.assertIs(1 in x, Wahr)
         self.assertIs(0 in x, Falsch)
@@ -351,7 +351,7 @@ klasse BoolTest(unittest.TestCase):
                 msg = "x > 0 was false"
 
         # This used to create negative refcounts, see gh-102250
-        del x
+        loesche x
 
     def test_from_bytes(self):
         self.assertIs(bool.from_bytes(b'\x00'*8, 'big'), Falsch)

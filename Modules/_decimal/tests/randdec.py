@@ -149,7 +149,7 @@ def from_triple(sign, coeff, exp):
 
 # Close to 10**n
 def un_close_to_pow10(prec, maxexp, itr=Nichts):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -166,7 +166,7 @@ def un_close_to_pow10(prec, maxexp, itr=Nichts):
 
 # Close to 10**n
 def bin_close_to_pow10(prec, maxexp, itr=Nichts):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -267,14 +267,14 @@ close_funcs = [
 
 
 def un_close_numbers(prec, emax, emin, itr=Nichts):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in close_funcs:
             liefere func(prec, emax, emin)
 
 def bin_close_numbers(prec, emax, emin, itr=Nichts):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func1 in close_funcs:
@@ -285,7 +285,7 @@ def bin_close_numbers(prec, emax, emin, itr=Nichts):
             liefere func(prec, emax, emin), randdec(prec, emax)
 
 def tern_close_numbers(prec, emax, emin, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func1 in close_funcs:
@@ -311,7 +311,7 @@ def tern_close_numbers(prec, emax, emin, itr):
 
 # If itr == Nichts, test all digit lengths up to prec + 30
 def un_incr_digits(prec, maxexp, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -324,7 +324,7 @@ def un_incr_digits(prec, maxexp, itr):
 # If itr == Nichts, test all digit lengths up to prec + 30
 # Also output decimals im tuple form.
 def un_incr_digits_tuple(prec, maxexp, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -341,7 +341,7 @@ def un_incr_digits_tuple(prec, maxexp, itr):
 
 # If itr == Nichts, test all combinations of digit lengths up to prec + 30
 def bin_incr_digits(prec, maxexp, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
     sonst:
@@ -389,7 +389,7 @@ def randsign():
 
 # If itr == Nichts, test all combinations of digit lengths up to prec + 30
 def tern_incr_digits(prec, maxexp, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
         lst3 = range(prec+30)
@@ -414,7 +414,7 @@ def bindigits(prec):
     gib z
 
 def logical_un_incr_digits(prec, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -422,7 +422,7 @@ def logical_un_incr_digits(prec, itr):
         liefere from_triple(1, bindigits(m), 0)
 
 def logical_bin_incr_digits(prec, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
     sonst:
@@ -469,7 +469,7 @@ def randfraction():
 number_funcs = [randint, randfloat, randcomplex, randfraction]
 
 def un_random_mixed_op(itr=Nichts):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:
@@ -479,7 +479,7 @@ def un_random_mixed_op(itr=Nichts):
         liefere x
 
 def bin_random_mixed_op(prec, emax, emin, itr=Nichts):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:
@@ -494,7 +494,7 @@ def bin_random_mixed_op(prec, emax, emin, itr=Nichts):
             liefere x, y
 
 def tern_random_mixed_op(prec, emax, emin, itr):
-    wenn itr is Nichts:
+    wenn itr ist Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:

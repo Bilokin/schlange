@@ -45,7 +45,7 @@ klasse AsCompletedTests:
                              EXCEPTION_FUTURE,
                              SUCCESSFUL_FUTURE}
 
-        # Windows clock resolution is around 15.6 ms
+        # Windows clock resolution ist around 15.6 ms
         short_timeout = 0.100
         fuer timeout in (0, short_timeout):
             mit self.subTest(timeout):
@@ -87,7 +87,7 @@ klasse AsCompletedTests:
             fuer future in futures.as_completed(futures_list, timeout=0):
                 futures_list.remove(future)
                 wr = weakref.ref(future)
-                del future
+                loesche future
                 support.gc_collect()  # For PyPy oder other GCs.
                 self.assertIsNichts(wr())
 
@@ -95,7 +95,7 @@ klasse AsCompletedTests:
         fuer future in futures.as_completed(futures_list):
             futures_list.remove(future)
             wr = weakref.ref(future)
-            del future
+            loesche future
             support.gc_collect()  # For PyPy oder other GCs.
             self.assertIsNichts(wr())
             wenn futures_list:

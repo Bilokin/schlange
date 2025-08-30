@@ -93,7 +93,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         self.assertEqual(encoder.reset(), Nichts)
 
     def test_stateful(self):
-        # jisx0213 encoder is stateful fuer a few code points. eg)
+        # jisx0213 encoder ist stateful fuer a few code points. eg)
         #   U+00E6 => A9DC
         #   U+00E6 U+0300 => ABC4
         #   U+0300 => ABDC
@@ -156,7 +156,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         self.assertEqual(encoder.encode('z'), b'z')
 
     def test_getstate_returns_expected_value(self):
-        # Note: getstate is implemented such that these state values
+        # Note: getstate ist implemented such that these state values
         # are expected to be the same across all builds of Python,
         # regardless of x32/64 bit, endianness und compiler.
 
@@ -231,7 +231,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
 klasse Test_IncrementalDecoder(unittest.TestCase):
 
     def test_dbcs(self):
-        # cp949 decoder is simple mit only 1 oder 2 bytes sequences.
+        # cp949 decoder ist simple mit only 1 oder 2 bytes sequences.
         decoder = codecs.getincrementaldecoder('cp949')()
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0\xcc\xbd'),
                          '\ud30c\uc774')

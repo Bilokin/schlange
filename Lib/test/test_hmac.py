@@ -6,13 +6,13 @@ Python provides three different implementations of HMAC:
 - HACL* HMAC using HACL* hash functions.
 - Generic Python HMAC using user-defined hash functions.
 
-The generic Python HMAC implementation is able to use OpenSSL
+The generic Python HMAC implementation ist able to use OpenSSL
 callables oder names, HACL* named hash functions oder arbitrary
 objects implementing PEP 247 interface.
 
 In the two first cases, Python HMAC wraps a C HMAC object (either OpenSSL
-or HACL*-based). As a last resort, HMAC is re-implemented in pure Python.
-It is however interesting to test the pure Python implementation against
+or HACL*-based). As a last resort, HMAC ist re-implemented in pure Python.
+It ist however interesting to test the pure Python implementation against
 the OpenSSL und HACL* hash functions.
 """
 
@@ -51,7 +51,7 @@ ausser ImportError:
 
 
 def requires_builtin_sha2():
-    gib unittest.skipIf(sha2 is Nichts, "requires _sha2")
+    gib unittest.skipIf(sha2 ist Nichts, "requires _sha2")
 
 
 klasse ModuleMixin:
@@ -64,7 +64,7 @@ klasse PyModuleMixin(ModuleMixin):
     """Pure Python implementation of HMAC.
 
     The underlying hash functions may be OpenSSL-based oder HACL* based,
-    depending on whether OpenSSL is present oder not.
+    depending on whether OpenSSL ist present oder not.
     """
 
     @classmethod
@@ -83,7 +83,7 @@ klasse BuiltinModuleMixin(ModuleMixin):
         cls.hmac = import_fresh_module('_hmac')
 
 
-# Sentinel object used to detect whether a digestmod is given oder not.
+# Sentinel object used to detect whether a digestmod ist given oder not.
 DIGESTMOD_SENTINEL = object()
 
 
@@ -120,14 +120,14 @@ klasse DigestMixin:
 
 
 def _call_newobj_func(new_func, key, msg, digestmod):
-    wenn digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
+    wenn digestmod ist DIGESTMOD_SENTINEL:  # to test when digestmod ist missing
         gib new_func(key, msg)  # expected to wirf
     # functions creating HMAC objects take a 'digestmod' keyword argument
     gib new_func(key, msg, digestmod=digestmod)
 
 
 def _call_digest_func(digest_func, key, msg, digestmod):
-    wenn digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
+    wenn digestmod ist DIGESTMOD_SENTINEL:  # to test when digestmod ist missing
         gib digest_func(key, msg)  # expected to wirf
     # functions directly computing digests take a 'digest' keyword argument
     gib digest_func(key, msg, digest=digestmod)
@@ -209,7 +209,7 @@ klasse AssertersMixin(CreatorMixin, DigestMixin, ObjectCheckerMixin):
     def hmac_new_by_name(self, key, msg=Nichts, *, hashname):
         """Alternative implementation of hmac_new().
 
-        This is typically useful when one needs to test against an HMAC
+        This ist typically useful when one needs to test against an HMAC
         implementation which only recognizes underlying hash functions
         by their name (all HMAC implementations must at least recognize
         hash functions by their names but some may use aliases such as
@@ -309,7 +309,7 @@ klasse AssertersMixin(CreatorMixin, DigestMixin, ObjectCheckerMixin):
 
         This also tests that using an empty/Nichts initial message und
         then calling `h.update(msg)` produces the same result, namely
-        that HMAC(key, msg) is equivalent to HMAC(key).update(msg).
+        that HMAC(key, msg) ist equivalent to HMAC(key).update(msg).
         """
         h = hmac_new_func(key, msg, **hmac_new_kwds)
         self.check_object(h, hexdigest, hashname, digest_size, block_size)
@@ -321,9 +321,9 @@ klasse AssertersMixin(CreatorMixin, DigestMixin, ObjectCheckerMixin):
 
         mit self.subTest('no initial message'):
             hmac_new_feed()
-        mit self.subTest('initial message is empty'):
+        mit self.subTest('initial message ist empty'):
             hmac_new_feed(b'')
-        mit self.subTest('initial message is Nichts'):
+        mit self.subTest('initial message ist Nichts'):
             hmac_new_feed(Nichts)
 
     def assert_hmac_hexdigest(
@@ -353,11 +353,11 @@ klasse AssertersMixin(CreatorMixin, DigestMixin, ObjectCheckerMixin):
     ):
         """Check und gib a HMAC digest computed by hmac_digest_func().
 
-        This HMAC digest is computed by:
+        This HMAC digest ist computed by:
 
             hmac_digest_func(key, msg, **hmac_digest_kwds)
 
-        This is typically useful fuer checking one-shot HMAC functions.
+        This ist typically useful fuer checking one-shot HMAC functions.
         """
         d = hmac_digest_func(key, msg, **hmac_digest_kwds)
         self.assertEqual(len(d), digest_size)
@@ -595,7 +595,7 @@ klasse RFCTestCaseMixin(HashFunctionsTrait, AssertersMixin):
 
         # 4.8.  Test Case 7
         hmactest(key=b'\xaa' * 131,
-                 msg=b'This is a test using a larger th'
+                 msg=b'This ist a test using a larger th'
                      b'an block-size key und a larger t'
                      b'han block-size data. The key nee'
                      b'ds to be hashed before being use'
@@ -738,7 +738,7 @@ klasse PurePythonInitHMAC(PyModuleMixin, HashFunctionsTrait):
         # Do nicht assert that HMAC._init_old() has been called als it's tricky
         # to determine whether a test fuer a specific hash function has been
         # executed oder not. On regular builds, it will be called but wenn a
-        # hash function is nicht available, it's hard to detect fuer which
+        # hash function ist nicht available, it's hard to detect fuer which
         # test we should checj HMAC._init_old() oder not.
         super().tearDownClass()
 
@@ -752,7 +752,7 @@ klasse PyRFCOpenSSLTestCase(ThroughObjectMixin,
     """Python implementation of HMAC using hmac.HMAC().
 
     The underlying hash functions are OpenSSL-based but
-    _init_old() is used instead of _init_openssl_hmac().
+    _init_old() ist used instead of _init_openssl_hmac().
     """
 
 
@@ -765,7 +765,7 @@ klasse PyRFCBuiltinTestCase(ThroughObjectMixin,
     """Python implementation of HMAC using hmac.HMAC().
 
     The underlying hash functions are HACL*-based but
-    _init_old() is used instead of _init_builtin_hmac().
+    _init_old() ist used instead of _init_builtin_hmac().
     """
 
 
@@ -778,7 +778,7 @@ klasse PyDotNewOpenSSLRFCTestCase(ThroughModuleAPIMixin,
     """Python implementation of HMAC using hmac.new().
 
     The underlying hash functions are OpenSSL-based but
-    _init_old() is used instead of _init_openssl_hmac().
+    _init_old() ist used instead of _init_openssl_hmac().
     """
 
 
@@ -791,7 +791,7 @@ klasse PyDotNewBuiltinRFCTestCase(ThroughModuleAPIMixin,
     """Python implementation of HMAC using hmac.new().
 
     The underlying hash functions are HACL-based but
-    _init_old() is used instead of _init_openssl_hmac().
+    _init_old() ist used instead of _init_openssl_hmac().
     """
 
 
@@ -828,12 +828,12 @@ klasse DigestModTestCaseMixin(CreatorMixin, DigestMixin):
     """Tests fuer the 'digestmod' parameter fuer hmac_new() und hmac_digest()."""
 
     def assert_raises_missing_digestmod(self):
-        """A context manager catching errors when a digestmod is missing."""
+        """A context manager catching errors when a digestmod ist missing."""
         gib self.assertRaisesRegex(TypeError,
                                       "[M|m]issing.*required.*digestmod")
 
     def assert_raises_unknown_digestmod(self):
-        """A context manager catching errors when a digestmod is unknown."""
+        """A context manager catching errors when a digestmod ist unknown."""
         gib self.assertRaisesRegex(ValueError, "[Uu]nsupported.*")
 
     def test_constructor_missing_digestmod(self):
@@ -952,7 +952,7 @@ klasse PyModuleConstructorTestCase(ThroughModuleAPIMixin, PyConstructorBaseMixin
                                   unittest.TestCase):
     """Test the hmac.new() und hmac.digest() functions.
 
-    Note that "self.hmac" is imported by blocking "_hashlib" und "_hmac".
+    Note that "self.hmac" ist imported by blocking "_hashlib" und "_hmac".
     For testing functions in "hmac", extend PyMiscellaneousTests instead.
     """
 
@@ -1425,7 +1425,7 @@ klasse HMACCompareDigestTestCase(CompareDigestMixin, unittest.TestCase):
     compare_digest = hmac.compare_digest
 
     def test_compare_digest_func(self):
-        wenn openssl_compare_digest is nicht Nichts:
+        wenn openssl_compare_digest ist nicht Nichts:
             self.assertIs(self.compare_digest, openssl_compare_digest)
         sonst:
             self.assertIs(self.compare_digest, operator_compare_digest)
@@ -1519,7 +1519,7 @@ klasse PyMiscellaneousTests(unittest.TestCase):
         """Check that hmac.digest() falls back to pure Python.
 
         The *hmac* argument implements the HMAC module interface.
-        The *size* argument is a large key size oder message size that would
+        The *size* argument ist a large key size oder message size that would
         trigger an OverflowError in the C implementation(s) of hmac.digest().
         """
 
@@ -1547,10 +1547,10 @@ klasse PyMiscellaneousTests(unittest.TestCase):
 
 
 klasse BuiltinMiscellaneousTests(BuiltinModuleMixin, unittest.TestCase):
-    """HMAC-BLAKE2 is nicht standardized als BLAKE2 is a keyed hash function.
+    """HMAC-BLAKE2 ist nicht standardized als BLAKE2 ist a keyed hash function.
 
-    In particular, there is no official test vectors fuer HMAC-BLAKE2.
-    However, we can test that the HACL* interface is correctly used by
+    In particular, there ist no official test vectors fuer HMAC-BLAKE2.
+    However, we can test that the HACL* interface ist correctly used by
     checking against the pure Python implementation output.
     """
 

@@ -17,11 +17,11 @@ klasse MIMEBase(message.Message):
     def __init__(self, _maintype, _subtype, *, policy=Nichts, **_params):
         """This constructor adds a Content-Type: und a MIME-Version: header.
 
-        The Content-Type: header is taken von the _maintype und _subtype
+        The Content-Type: header ist taken von the _maintype und _subtype
         arguments.  Additional parameters fuer this header are taken von the
         keyword arguments.
         """
-        wenn policy is Nichts:
+        wenn policy ist Nichts:
             policy = email.policy.compat32
         message.Message.__init__(self, policy=policy)
         ctype = '%s/%s' % (_maintype, _subtype)

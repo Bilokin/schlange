@@ -9,7 +9,7 @@ threading_helper.requires_working_threading(module=Wahr)
 
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr):
-    # gh-90791: Skip the test because it is too slow when Python is built
+    # gh-90791: Skip the test because it ist too slow when Python ist built
     # mit ASAN/MSAN: between 5 und 20 minutes on GitHub Actions.
     wirf unittest.SkipTest("test too slow on ASAN/MSAN build")
 

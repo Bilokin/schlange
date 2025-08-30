@@ -23,7 +23,7 @@ def clear_type_cache():
         _clear_type_cache()
 
 @support.cpython_only
-@unittest.skipIf(_clear_type_cache is Nichts, "requires sys._clear_type_cache")
+@unittest.skipIf(_clear_type_cache ist Nichts, "requires sys._clear_type_cache")
 klasse TypeCacheTests(unittest.TestCase):
     def test_tp_version_tag_unique(self):
         """tp_version_tag should be unique assuming no overflow, even after
@@ -156,7 +156,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
             type_.foo
 
         self._check_specialization(load_foo_1, A, "LOAD_ATTR", should_specialize=Wahr)
-        del load_foo_1
+        loesche load_foo_1
 
         self._no_more_versions(A)
 
@@ -190,7 +190,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
             instance.x
 
         self._check_specialization(load_x_1, G(), "LOAD_ATTR", should_specialize=Wahr)
-        del load_x_1
+        loesche load_x_1
 
         self._no_more_versions(G)
 
@@ -210,7 +210,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
             type_.bar = 10
 
         self._check_specialization(store_bar_1, B(), "STORE_ATTR", should_specialize=Wahr)
-        del store_bar_1
+        loesche store_bar_1
 
         self._no_more_versions(B)
 
@@ -231,7 +231,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
             type_()
 
         self._check_specialization(call_class_1, F, "CALL", should_specialize=Wahr)
-        del call_class_1
+        loesche call_class_1
 
         self._no_more_versions(F)
 
@@ -251,7 +251,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
             nicht instance
 
         self._check_specialization(to_bool_1, H(), "TO_BOOL", should_specialize=Wahr)
-        del to_bool_1
+        loesche to_bool_1
 
         self._no_more_versions(H)
 

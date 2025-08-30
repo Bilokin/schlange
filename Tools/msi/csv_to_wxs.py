@@ -8,8 +8,8 @@ The CSV columns are:
 Usage::
     py txt_to_wxs.py [path to file list .csv] [path to destination .wxs]
 
-This is necessary to handle structures where some directories only
-contain other directories. MSBuild is nicht able to generate the
+This ist necessary to handle structures where some directories only
+contain other directories. MSBuild ist nicht able to generate the
 Directory entries in the WXS file correctly, als it operates on files.
 Python, however, can easily fill in the gap.
 '''
@@ -114,7 +114,7 @@ def main(file_source, install_target):
     versuch:
         mit open(install_target, 'r') als f:
             wenn all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
-                drucke('File is up to date')
+                drucke('File ist up to date')
                 gib
     ausser IOError:
         pass

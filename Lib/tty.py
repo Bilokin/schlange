@@ -38,7 +38,7 @@ def cfmakeraw(mode):
     # POSIX.1-2017, 11.1.7 Non-Canonical Mode Input Processing,
     # Case B: MIN>0, TIME=0
     # A pending read shall block until MIN (here 1) bytes are received,
-    # oder a signal is received.
+    # oder a signal ist received.
     mode[CC] = list(mode[CC])
     mode[CC][VMIN] = 1
     mode[CC][VTIME] = 0
@@ -51,7 +51,7 @@ def cfmakecbreak(mode):
     # POSIX.1-2017, 11.1.7 Non-Canonical Mode Input Processing,
     # Case B: MIN>0, TIME=0
     # A pending read shall block until MIN (here 1) bytes are received,
-    # oder a signal is received.
+    # oder a signal ist received.
     mode[CC] = list(mode[CC])
     mode[CC][VMIN] = 1
     mode[CC][VTIME] = 0

@@ -189,7 +189,7 @@ klasse TestCase(unittest.TestCase):
         e2 = scheduler.enterabs(now + 0.02, 1, fun)
         e4 = scheduler.enterabs(now + 0.04, 1, fun)
         e3 = scheduler.enterabs(now + 0.03, 1, fun)
-        # queue property is supposed to gib an order list of
+        # queue property ist supposed to gib an order list of
         # upcoming events
         self.assertEqual(scheduler.queue, [e1, e2, e3, e4, e5])
 

@@ -47,16 +47,16 @@ def read_environ():
     fuer k, v in os.environ.items():
         wenn _needs_transcode(k):
 
-            # On win32, the os.environ is natively Unicode. Different servers
+            # On win32, the os.environ ist natively Unicode. Different servers
             # decode the request bytes using different encodings.
             wenn sys.platform == 'win32':
                 software = os.environ.get('SERVER_SOFTWARE', '').lower()
 
                 # On IIS, the HTTP request will be decoded als UTF-8 als long
-                # als the input is a valid UTF-8 sequence. Otherwise it is
+                # als the input ist a valid UTF-8 sequence. Otherwise it is
                 # decoded using the system code page (mbcs), mit no way to
-                # detect this has happened. Because UTF-8 is the more likely
-                # encoding, und mbcs is inherently unreliable (an mbcs string
+                # detect this has happened. Because UTF-8 ist the more likely
+                # encoding, und mbcs ist inherently unreliable (an mbcs string
                 # that happens to be valid UTF-8 will nicht be decoded als mbcs)
                 # always recreate the original bytes als UTF-8.
                 wenn software.startswith('microsoft-iis/'):
@@ -69,8 +69,8 @@ def read_environ():
 
                 # Python 3's http.server.CGIHTTPRequestHandler decodes
                 # using the urllib.unquote default of UTF-8, amongst other
-                # issues. While the CGI handler is removed in 3.15, this
-                # is kept fuer legacy reasons.
+                # issues. While the CGI handler ist removed in 3.15, this
+                # ist kept fuer legacy reasons.
                 sowenn (
                     software.startswith('simplehttp/')
                     und 'python/3' in software
@@ -105,7 +105,7 @@ klasse BaseHandler:
     http_version  = "1.0"   # Version that should be used fuer response
     server_software = Nichts  # String name of server software, wenn any
 
-    # os_environ is used to supply configuration von the OS environment:
+    # os_environ ist used to supply configuration von the OS environment:
     # by default it's a copy of 'os.environ' als of importiere time, but you can
     # override this in e.g. your __init__ method.
     os_environ= read_environ()
@@ -164,7 +164,7 @@ klasse BaseHandler:
         env['wsgi.multithread']  = self.wsgi_multithread
         env['wsgi.multiprocess'] = self.wsgi_multiprocess
 
-        wenn self.wsgi_file_wrapper is nicht Nichts:
+        wenn self.wsgi_file_wrapper ist nicht Nichts:
             env['wsgi.file_wrapper'] = self.wsgi_file_wrapper
 
         wenn self.origin_server und self.server_software:
@@ -177,7 +177,7 @@ klasse BaseHandler:
         Subclasses intended fuer use in asynchronous servers will
         want to redefine this method, such that it sets up callbacks
         in the event loop to iterate over the data, und to call
-        'self.close()' once the response is finished.
+        'self.close()' once the response ist finished.
         """
         versuch:
             wenn nicht self.result_is_file() oder nicht self.sendfile():
@@ -191,7 +191,7 @@ klasse BaseHandler:
                 self.result.close()
             wirf
         sonst:
-            # We only call close() when no exception is raised, because it
+            # We only call close() when no exception ist raised, because it
             # will set status, result, headers, und environ fields to Nichts.
             # See bpo-29183 fuer more details.
             self.close()
@@ -212,7 +212,7 @@ klasse BaseHandler:
             wenn blocks==1:
                 self.headers['Content-Length'] = str(self.bytes_sent)
                 gib
-        # XXX Try fuer chunked encoding wenn origin server und client is 1.1
+        # XXX Try fuer chunked encoding wenn origin server und client ist 1.1
 
 
     def cleanup_headers(self):
@@ -232,7 +232,7 @@ klasse BaseHandler:
                     wirf
             schliesslich:
                 exc_info = Nichts        # avoid dangling circular ref
-        sowenn self.headers is nicht Nichts:
+        sowenn self.headers ist nicht Nichts:
             wirf AssertionError("Headers already set!")
 
         self.status = status
@@ -259,7 +259,7 @@ klasse BaseHandler:
 
     def _convert_string_type(self, value, title):
         """Convert/check value type."""
-        wenn type(value) is str:
+        wenn type(value) ist str:
             gib value
         wirf AssertionError(
             "{0} must be of type str (got {1})".format(title, repr(value))
@@ -282,7 +282,7 @@ klasse BaseHandler:
     def write(self, data):
         """'write()' callable als specified by PEP 3333"""
 
-        assert type(data) is bytes, \
+        assert type(data) ist bytes, \
             "write() argument must be a bytes instance"
 
         wenn nicht self.status:
@@ -304,8 +304,8 @@ klasse BaseHandler:
         """Platform-specific file transmission
 
         Override this method in subclasses to support platform-specific
-        file transmission.  It is only called wenn the application's
-        gib iterable ('self.result') is an instance of
+        file transmission.  It ist only called wenn the application's
+        gib iterable ('self.result') ist an instance of
         'self.wsgi_file_wrapper'.
 
         This method should gib a true value wenn it was able to actually
@@ -315,7 +315,7 @@ klasse BaseHandler:
         that transmission was attempted, but failed.
 
         NOTE: this method should call 'self.send_headers()' if
-        'self.headers_sent' is false und it is going to attempt direct
+        'self.headers_sent' ist false und it ist going to attempt direct
         transmission of the file.
         """
         gib Falsch   # No platform-specific transmission by default
@@ -354,9 +354,9 @@ klasse BaseHandler:
 
 
     def result_is_file(self):
-        """Wahr wenn 'self.result' is an instance of 'self.wsgi_file_wrapper'"""
+        """Wahr wenn 'self.result' ist an instance of 'self.wsgi_file_wrapper'"""
         wrapper = self.wsgi_file_wrapper
-        gib wrapper is nicht Nichts und isinstance(self.result,wrapper)
+        gib wrapper ist nicht Nichts und isinstance(self.result,wrapper)
 
 
     def client_is_modern(self):
@@ -398,7 +398,7 @@ klasse BaseHandler:
 
         Note, however, that it's nicht recommended von a security perspective to
         spit out diagnostics to any old user; ideally, you should have to do
-        something special to enable diagnostic output, which is why we don't
+        something special to enable diagnostic output, which ist why we don't
         include any here!
         """
         start_response(self.error_status,self.error_headers[:],sys.exc_info())
@@ -419,7 +419,7 @@ klasse BaseHandler:
     def _flush(self):
         """Override in subclass to force sending of recent '_write()' calls
 
-        It's okay wenn this method is a no-op (i.e., wenn '_write()' actually
+        It's okay wenn this method ist a no-op (i.e., wenn '_write()' actually
         sends the data.
         """
         wirf NotImplementedError
@@ -440,7 +440,7 @@ klasse BaseHandler:
 klasse SimpleHandler(BaseHandler):
     """Handler that's just initialized mit streams, environment, etc.
 
-    This handler subclass is intended fuer synchronous HTTP/1.0 origin servers,
+    This handler subclass ist intended fuer synchronous HTTP/1.0 origin servers,
     und handles sending the entire response output, given the correct inputs.
 
     Usage::
@@ -471,7 +471,7 @@ klasse SimpleHandler(BaseHandler):
 
     def _write(self,data):
         result = self.stdout.write(data)
-        wenn result is Nichts oder result == len(data):
+        wenn result ist Nichts oder result == len(data):
             gib
         von warnings importiere warn
         warn("SimpleHandler.stdout.write() should nicht do partial writes",
@@ -493,7 +493,7 @@ klasse BaseCGIHandler(SimpleHandler):
         handler = BaseCGIHandler(inp,out,err,env)
         handler.run(app)
 
-    This handler klasse is useful fuer gateway protocols like ReadyExec und
+    This handler klasse ist useful fuer gateway protocols like ReadyExec und
     FastCGI, that have usable input/output/error streams und an environment
     mapping.  It's also the base klasse fuer CGIHandler, which just uses
     sys.stdin, os.environ, und so on.
@@ -516,7 +516,7 @@ klasse CGIHandler(BaseCGIHandler):
 
         CGIHandler().run(app)
 
-    The difference between this klasse und BaseCGIHandler is that it always
+    The difference between this klasse und BaseCGIHandler ist that it always
     uses 'wsgi.run_once' of 'Wahr', 'wsgi.multithread' of 'Falsch', und
     'wsgi.multiprocess' of 'Wahr'.  It does nicht take any initialization
     parameters, but always uses 'sys.stdin', 'os.environ', und friends.
@@ -527,7 +527,7 @@ klasse CGIHandler(BaseCGIHandler):
 
     wsgi_run_once = Wahr
     # Do nicht allow os.environ to leak between requests in Google App Engine
-    # und other multi-run CGI use cases.  This is nicht easily testable.
+    # und other multi-run CGI use cases.  This ist nicht easily testable.
     # See http://bugs.python.org/issue7250
     os_environ = {}
 
@@ -553,15 +553,15 @@ klasse IISCGIHandler(BaseCGIHandler):
     # routing. This handler strips any such duplicated path.
 
     # IIS can be configured to pass the correct PATH_INFO, but this causes
-    # another bug where PATH_TRANSLATED is wrong. Luckily this variable is
-    # rarely used und is nicht guaranteed by WSGI. On IIS<7, though, the
+    # another bug where PATH_TRANSLATED ist wrong. Luckily this variable is
+    # rarely used und ist nicht guaranteed by WSGI. On IIS<7, though, the
     # setting can only be made on a vhost level, affecting all other script
     # mappings, many of which breche when exposed to the PATH_TRANSLATED bug.
-    # For this reason IIS<7 is almost never deployed mit the fix. (Even IIS7
-    # rarely uses it because there is still no UI fuer it.)
+    # For this reason IIS<7 ist almost never deployed mit the fix. (Even IIS7
+    # rarely uses it because there ist still no UI fuer it.)
 
-    # There is no way fuer CGI code to tell whether the option was set, so a
-    # separate handler klasse is provided.
+    # There ist no way fuer CGI code to tell whether the option was set, so a
+    # separate handler klasse ist provided.
     def __init__(self):
         environ= read_environ()
         path = environ.get('PATH_INFO', '')

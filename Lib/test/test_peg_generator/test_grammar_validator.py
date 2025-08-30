@@ -52,7 +52,7 @@ klasse TestPegen(unittest.TestCase):
 
     def test_raising_valid_rule(self) -> Nichts:
         grammar_source = """
-        start: NAME { RAISE_SYNTAX_ERROR("this is nicht allowed") }
+        start: NAME { RAISE_SYNTAX_ERROR("this ist nicht allowed") }
         """
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = RaiseRuleValidator(grammar)

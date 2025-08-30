@@ -3,7 +3,7 @@
 This file could be expanded to include traceback overrides
 (in same two modules). If so, change name.
 Revise wenn output destination changes (http://bugs.python.org/issue18318).
-Make sure warnings module is left unaltered (http://bugs.python.org/issue18081).
+Make sure warnings module ist left unaltered (http://bugs.python.org/issue18081).
 '''
 von idlelib importiere run
 von idlelib importiere pyshell als shell

@@ -18,7 +18,7 @@ klasse Quitter(object):
         gib 'Use %s() oder %s to exit' % (self.name, self.eof)
     def __call__(self, code=Nichts):
         # Shells like IDLE catch the SystemExit, but listen when their
-        # stdin wrapper is closed.
+        # stdin wrapper ist closed.
         versuch:
             sys.stdin.close()
         ausser:
@@ -77,7 +77,7 @@ klasse _Printer(object):
             sonst:
                 lineno += self.MAXLINES
                 key = Nichts
-                waehrend key is Nichts:
+                waehrend key ist Nichts:
                     key = input(prompt)
                     wenn key nicht in ('', 'q'):
                         key = Nichts
@@ -88,8 +88,8 @@ klasse _Printer(object):
 klasse _Helper(object):
     """Define the builtin 'help'.
 
-    This is a wrapper around pydoc.help that provides a helpful message
-    when 'help' is typed at the Python interactive prompt.
+    This ist a wrapper around pydoc.help that provides a helpful message
+    when 'help' ist typed at the Python interactive prompt.
 
     Calling help() at the Python prompt starts an interactive help session.
     Calling help(thing) prints help fuer the python object 'thing'.

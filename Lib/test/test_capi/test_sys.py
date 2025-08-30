@@ -19,7 +19,7 @@ klasse CAPITest(unittest.TestCase):
 
     maxDiff = Nichts
 
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_sys_getattr(self):
         # Test PySys_GetAttr()
         sys_getattr = _testlimitedcapi.sys_getattr
@@ -36,7 +36,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(TypeError, sys_getattr, [])
         # CRASHES sys_getattr(NULL)
 
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_sys_getattrstring(self):
         # Test PySys_GetAttrString()
         getattrstring = _testlimitedcapi.sys_getattrstring
@@ -52,7 +52,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(UnicodeDecodeError, getattrstring, b'\xff')
         # CRASHES getattrstring(NULL)
 
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_sys_getoptionalattr(self):
         # Test PySys_GetOptionalAttr()
         getoptionalattr = _testlimitedcapi.sys_getoptionalattr
@@ -67,7 +67,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(TypeError, getoptionalattr, [])
         # CRASHES getoptionalattr(NULL)
 
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_sys_getoptionalattrstring(self):
         # Test PySys_GetOptionalAttrString()
         getoptionalattrstring = _testlimitedcapi.sys_getoptionalattrstring
@@ -82,7 +82,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES getoptionalattrstring(NULL)
 
     @support.cpython_only
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_sys_getobject(self):
         # Test PySys_GetObject()
         getobject = _testlimitedcapi.sys_getobject
@@ -100,7 +100,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES getobject(NULL)
 
     @support.cpython_only
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_sys_setobject(self):
         # Test PySys_SetObject()
         setobject = _testlimitedcapi.sys_setobject
@@ -117,7 +117,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(setobject(b'newattr', NULL), 0)
         schliesslich:
             mit contextlib.suppress(AttributeError):
-                del sys.newattr
+                loesche sys.newattr
         versuch:
             self.assertEqual(setobject('\U0001f40d'.encode(), value), 0)
             self.assertIs(getattr(sys, '\U0001f40d'), value)
@@ -132,7 +132,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES setobject(NULL, value)
 
     @support.cpython_only
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_sys_getxoptions(self):
         # Test PySys_GetXOptions()
         getxoptions = _testlimitedcapi.sys_getxoptions
@@ -145,7 +145,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(getxoptions(), {})
             self.assertIs(getxoptions(), sys._xoptions)
 
-            del sys._xoptions
+            loesche sys._xoptions
             self.assertEqual(getxoptions(), {})
             self.assertIs(getxoptions(), sys._xoptions)
         schliesslich:
@@ -168,7 +168,7 @@ klasse CAPITest(unittest.TestCase):
             func(b'Hello, %R!', py_object('world'))
         self.assertEqual(stream.getvalue(), "Hello, 'world'!")
 
-        # The total length is nicht limited.
+        # The total length ist nicht limited.
         mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'*200))
         self.assertEqual(stream.getvalue(), 'Hello, ' + 'world'*200 + '!')
@@ -192,7 +192,7 @@ klasse CAPITest(unittest.TestCase):
             func(b'Hello, %s!', c_char_p(b'world'))
         self.assertEqual(stream.getvalue(), 'Hello, world!')
 
-        # There is a limit on the total length.
+        # There ist a limit on the total length.
         mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'*100))
         self.assertEqual(stream.getvalue(), 'Hello, ' + 'world'*100 + '!')

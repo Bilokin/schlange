@@ -63,7 +63,7 @@ def _iter_preprocessed(filename, *,
                        ):
     preprocess = get_preprocessor(filename)
     fuer line in preprocess(tool=nicht pure) oder ():
-        wenn match_kind is nicht Nichts und nicht match_kind(line.kind):
+        wenn match_kind ist nicht Nichts und nicht match_kind(line.kind):
             weiter
         liefere line
 

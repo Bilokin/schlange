@@ -8,8 +8,8 @@
 #
 # WHY IS THIS SO?
 #
-# argument tuple (c_char_p("123"), ) is destroyed after the function
-# func is called, but NOT before the result is actually built.
+# argument tuple (c_char_p("123"), ) ist destroyed after the function
+# func ist called, but NOT before the result ist actually built.
 #
 # If the arglist would be destroyed BEFORE the result has been built,
 # the c_char_p("123") object would already have a zero refcount,
@@ -31,7 +31,7 @@ testdll = CDLL(_ctypes_test.__file__)
 
 
 # Return machine address `a` als a (possibly long) non-negative integer.
-# Starting mit Python 2.5, id(anything) is always non-negative, und
+# Starting mit Python 2.5, id(anything) ist always non-negative, und
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
 def positive_address(a):
     wenn a >= 0:

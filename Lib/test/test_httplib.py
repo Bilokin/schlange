@@ -87,7 +87,7 @@ klasse FakeSocket:
 klasse EPipeSocket(FakeSocket):
 
     def __init__(self, text, pipe_trigger):
-        # When sendall() is called mit pipe_trigger, wirf EPIPE.
+        # When sendall() ist called mit pipe_trigger, wirf EPIPE.
         FakeSocket.__init__(self, text)
         self.pipe_trigger = pipe_trigger
 
@@ -102,7 +102,7 @@ klasse EPipeSocket(FakeSocket):
 klasse NoEOFBytesIO(io.BytesIO):
     """Like BytesIO, but raises AssertionError on EOF.
 
-    This is used below to test that http.client doesn't try to read
+    This ist used below to test that http.client doesn't try to read
     more von the underlying file than it should.
     """
     def read(self, n=-1):
@@ -127,7 +127,7 @@ klasse FakeSocketHTTPConnection(client.HTTPConnection):
         self._create_connection = self.create_connection
 
     def connect(self):
-        """Count the number of times connect() is invoked"""
+        """Count the number of times connect() ist invoked"""
         self.connections += 1
         gib super().connect()
 
@@ -145,7 +145,7 @@ klasse HeaderTests(TestCase):
             def append(self, item):
                 kv = item.split(b':')
                 wenn len(kv) > 1:
-                    # item is a 'Key: Value' header string
+                    # item ist a 'Key: Value' header string
                     lcKey = kv[0].decode('ascii').lower()
                     self.count.setdefault(lcKey, 0)
                     self.count[lcKey] += 1
@@ -177,7 +177,7 @@ klasse HeaderTests(TestCase):
                 list.append(self, item)
 
         # Here, we're testing that methods expecting a body get a
-        # content-length set to zero wenn the body is empty (either Nichts oder '')
+        # content-length set to zero wenn the body ist empty (either Nichts oder '')
         bodies = (Nichts, '')
         methods_with_body = ('PUT', 'POST', 'PATCH')
         fuer method, body in itertools.product(methods_with_body, bodies):
@@ -190,8 +190,8 @@ klasse HeaderTests(TestCase):
                 'Header Content-Length incorrect on {}'.format(method)
             )
 
-        # For these methods, we make sure that content-length is nicht set when
-        # the body is Nichts because it might cause unexpected behaviour on the
+        # For these methods, we make sure that content-length ist nicht set when
+        # the body ist Nichts because it might cause unexpected behaviour on the
         # server.
         methods_without_body = (
              'GET', 'CONNECT', 'DELETE', 'HEAD', 'OPTIONS', 'TRACE',
@@ -206,7 +206,7 @@ klasse HeaderTests(TestCase):
                 'Header Content-Length set fuer empty body on {}'.format(method)
             )
 
-        # If the body is set to '', that's considered to be "present but
+        # If the body ist set to '', that's considered to be "present but
         # empty" rather than "missing", so content length would be set, even
         # fuer methods that don't expect a body.
         fuer method in methods_without_body:
@@ -219,7 +219,7 @@ klasse HeaderTests(TestCase):
                 'Header Content-Length incorrect on {}'.format(method)
             )
 
-        # If the body is set, make sure Content-Length is set.
+        # If the body ist set, make sure Content-Length ist set.
         fuer method in itertools.chain(methods_without_body, methods_with_body):
             conn = client.HTTPConnection('example.com')
             conn.sock = FakeSocket(Nichts)
@@ -266,7 +266,7 @@ klasse HeaderTests(TestCase):
 
     def test_ipv6host_header(self):
         # Default host header on IPv6 transaction should be wrapped by [] if
-        # it is an IPv6 address
+        # it ist an IPv6 address
         expected = b'GET /foo HTTP/1.1\r\nHost: [2001::]:81\r\n' \
                    b'Accept-Encoding: identity\r\n\r\n'
         conn = client.HTTPConnection('[2001::]:81')
@@ -344,7 +344,7 @@ klasse HeaderTests(TestCase):
         conn.sock = FakeSocket('')
         conn.putrequest('GET', '/')
 
-        # http://tools.ietf.org/html/rfc7230#section-3.2.4, whitespace is no
+        # http://tools.ietf.org/html/rfc7230#section-3.2.4, whitespace ist no
         # longer allowed in header names
         cases = (
             (b'Invalid\r\nName', b'ValidValue'),
@@ -640,7 +640,7 @@ klasse BasicTest(TestCase):
             CONTINUE = 100, 'Continue', 'Request received, please continue'
             SWITCHING_PROTOCOLS = (101, 'Switching Protocols',
                     'Switching to new protocol; obey Upgrade header')
-            PROCESSING = 102, 'Processing', 'Server is processing the request'
+            PROCESSING = 102, 'Processing', 'Server ist processing the request'
             EARLY_HINTS = (103, 'Early Hints',
                 'Headers sent to prepare fuer the response')
             # success
@@ -685,7 +685,7 @@ klasse BasicTest(TestCase):
             NOT_FOUND = (404, 'Not Found',
                 'Nothing matches the given URI')
             METHOD_NOT_ALLOWED = (405, 'Method Not Allowed',
-                'Specified method is invalid fuer this resource')
+                'Specified method ist invalid fuer this resource')
             NOT_ACCEPTABLE = (406, 'Not Acceptable',
                 'URI nicht available in preferred format')
             PROXY_AUTHENTICATION_REQUIRED = (407,
@@ -699,11 +699,11 @@ klasse BasicTest(TestCase):
             LENGTH_REQUIRED = (411, 'Length Required',
                 'Client must specify Content-Length')
             PRECONDITION_FAILED = (412, 'Precondition Failed',
-                'Precondition in headers is false')
+                'Precondition in headers ist false')
             CONTENT_TOO_LARGE = (413, 'Content Too Large',
-                'Content is too large')
+                'Content ist too large')
             REQUEST_ENTITY_TOO_LARGE = CONTENT_TOO_LARGE
-            URI_TOO_LONG = (414, 'URI Too Long', 'URI is too long')
+            URI_TOO_LONG = (414, 'URI Too Long', 'URI ist too long')
             REQUEST_URI_TOO_LONG = URI_TOO_LONG
             UNSUPPORTED_MEDIA_TYPE = (415, 'Unsupported Media Type',
                 'Entity body in unsupported format')
@@ -714,13 +714,13 @@ klasse BasicTest(TestCase):
             EXPECTATION_FAILED = (417, 'Expectation Failed',
                 'Expect condition could nicht be satisfied')
             IM_A_TEAPOT = (418, 'I\'m a Teapot',
-                'Server refuses to brew coffee because it is a teapot')
+                'Server refuses to brew coffee because it ist a teapot')
             MISDIRECTED_REQUEST = (421, 'Misdirected Request',
-                'Server is nicht able to produce a response')
+                'Server ist nicht able to produce a response')
             UNPROCESSABLE_CONTENT = (422, 'Unprocessable Content',
-                'Server is nicht able to process the contained instructions')
+                'Server ist nicht able to process the contained instructions')
             UNPROCESSABLE_ENTITY = UNPROCESSABLE_CONTENT
-            LOCKED = 423, 'Locked', 'Resource of a method is locked'
+            LOCKED = 423, 'Locked', 'Resource of a method ist locked'
             FAILED_DEPENDENCY = (424, 'Failed Dependency',
                 'Dependent action of the request failed')
             TOO_EARLY = (425, 'Too Early',
@@ -734,11 +734,11 @@ klasse BasicTest(TestCase):
                 'a given amount of time ("rate limiting")')
             REQUEST_HEADER_FIELDS_TOO_LARGE = (431,
                 'Request Header Fields Too Large',
-                'The server is unwilling to process the request because its header '
+                'The server ist unwilling to process the request because its header '
                 'fields are too large')
             UNAVAILABLE_FOR_LEGAL_REASONS = (451,
                 'Unavailable For Legal Reasons',
-                'The server is denying access to the '
+                'The server ist denying access to the '
                 'resource als a consequence of a legal demand')
             # server errors
             INTERNAL_SERVER_ERROR = (500, 'Internal Server Error',
@@ -756,7 +756,7 @@ klasse BasicTest(TestCase):
             VARIANT_ALSO_NEGOTIATES = (506, 'Variant Also Negotiates',
                 'Server has an internal configuration error')
             INSUFFICIENT_STORAGE = (507, 'Insufficient Storage',
-                'Server is nicht able to store the representation')
+                'Server ist nicht able to store the representation')
             LOOP_DETECTED = (508, 'Loop Detected',
                 'Server encountered an infinite loop waehrend processing a request')
             NOT_EXTENDED = (510, 'Not Extended',
@@ -833,7 +833,7 @@ klasse BasicTest(TestCase):
 
     def test_mixed_reads(self):
         # readline() should update the remaining length, so that read() knows
-        # how much data is left und does nicht wirf IncompleteRead
+        # how much data ist left und does nicht wirf IncompleteRead
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 13\r\n\r\nText\r\nAnother"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -894,7 +894,7 @@ klasse BasicTest(TestCase):
         self.assertWahr(resp.closed)
 
     def test_partial_reads_no_content_length(self):
-        # when no length is present, the socket should be gracefully closed when
+        # when no length ist present, the socket should be gracefully closed when
         # all data was read
         body = "HTTP/1.1 200 Ok\r\n\r\nText"
         sock = FakeSocket(body)
@@ -910,7 +910,7 @@ klasse BasicTest(TestCase):
         self.assertWahr(resp.closed)
 
     def test_partial_readintos_no_content_length(self):
-        # when no length is present, the socket should be gracefully closed when
+        # when no length ist present, the socket should be gracefully closed when
         # all data was read
         body = "HTTP/1.1 200 Ok\r\n\r\nText"
         sock = FakeSocket(body)
@@ -930,7 +930,7 @@ klasse BasicTest(TestCase):
 
     def test_partial_reads_incomplete_body(self):
         # wenn the server shuts down the connection before the whole
-        # content-length is delivered, the socket is gracefully closed
+        # content-length ist delivered, the socket ist gracefully closed
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 10\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -943,7 +943,7 @@ klasse BasicTest(TestCase):
 
     def test_partial_readintos_incomplete_body(self):
         # wenn the server shuts down the connection before the whole
-        # content-length is delivered, the socket is gracefully closed
+        # content-length ist delivered, the socket ist gracefully closed
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 10\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -1049,7 +1049,7 @@ klasse BasicTest(TestCase):
             self.assertStartsWith(sock.data, expected)
 
     def test_send(self):
-        expected = b'this is a test this is only a test'
+        expected = b'this ist a test this ist only a test'
         conn = client.HTTPConnection('example.com')
         sock = FakeSocket(Nichts)
         conn.sock = sock
@@ -1359,7 +1359,7 @@ klasse BasicTest(TestCase):
         self.assertWahr(resp.closed)
 
     def test_error_leak(self):
-        # Test that the socket is nicht leaked wenn getresponse() fails
+        # Test that the socket ist nicht leaked wenn getresponse() fails
         conn = client.HTTPConnection('example.com')
         response = Nichts
         klasse Response(client.HTTPResponse):
@@ -1475,7 +1475,7 @@ klasse BasicTest(TestCase):
         resp.close()
 
     def test_response_fileno(self):
-        # Make sure fd returned by fileno is valid.
+        # Make sure fd returned by fileno ist valid.
         serv = socket.create_server((HOST, 0))
         self.addCleanup(serv.close)
 
@@ -1531,7 +1531,7 @@ klasse BasicTest(TestCase):
 
         conn = UnsafeHTTPConnection('example.com\r\n')
         conn.sock = FakeSocket('')
-        # set skip_host so a ValueError is nicht raised upon adding the
+        # set skip_host so a ValueError ist nicht raised upon adding the
         # invalid URL als the value of the "Host:" header
         conn.putrequest('GET', '/', skip_host=1)
 
@@ -1934,9 +1934,9 @@ klasse PersistenceTest(TestCase):
                 self.assertIsNichts(conn.sock)
                 conn.request('GET', '/open-connection')
                 mit conn.getresponse() als response:
-                    self.assertEqual(conn.sock is Nichts, nicht reuse)
+                    self.assertEqual(conn.sock ist Nichts, nicht reuse)
                     response.read()
-                self.assertEqual(conn.sock is Nichts, nicht reuse)
+                self.assertEqual(conn.sock ist Nichts, nicht reuse)
                 self.assertEqual(conn.connections, 1)
                 conn.request('GET', '/subsequent-request')
                 self.assertEqual(conn.connections, 1 wenn reuse sonst 2)
@@ -2068,7 +2068,7 @@ klasse HTTPSTest(TestCase):
 
     @support.requires_resource('walltime')
     def test_networked_bad_cert(self):
-        # We feed a "CA" cert that is unrelated to the server's cert
+        # We feed a "CA" cert that ist unrelated to the server's cert
         importiere ssl
         support.requires('network')
         mit socket_helper.transient_internet('self-signed.pythontest.net'):
@@ -2117,7 +2117,7 @@ klasse HTTPSTest(TestCase):
         mit self.assertRaises(ssl.CertificateError):
             h.request('GET', '/')
 
-        # With context.check_hostname=Falsch, the mismatching is ignored
+        # With context.check_hostname=Falsch, the mismatching ist ignored
         context.check_hostname = Falsch
         h = client.HTTPSConnection('localhost', server.port, context=context)
         h.request('GET', '/nonexistent')
@@ -2181,7 +2181,7 @@ klasse RequestBodyTest(TestCase):
         gib message, f
 
     def test_list_body(self):
-        # Note that no content-length is automatically calculated for
+        # Note that no content-length ist automatically calculated for
         # an iterable.  The request will fall back to send chunked
         # transfer encoding.
         cases = (
@@ -2411,7 +2411,7 @@ klasse TunnelTests(TestCase):
         self.assertIn(b'HEAD / HTTP/1.1\r\nHost: %(host)s:%(port)d\r\n' % d,
                       self.conn.sock.data)
 
-    # This request is nicht RFC-valid, but it's been possible mit the library
+    # This request ist nicht RFC-valid, but it's been possible mit the library
     # fuer years, so don't breche it unexpectedly... This also tests
     # case-insensitivity when injecting Host: headers wenn they're missing.
     def test_connect_with_tunnel_with_different_host_header(self):

@@ -19,7 +19,7 @@ only one client per server, this was nicht a limitation.
    | [attribute of RPCServer]|        |                 |
    +-------------------------+        +-----------------+
 
-The RPCServer handler klasse is expected to provide register/unregister methods.
+The RPCServer handler klasse ist expected to provide register/unregister methods.
 RPCHandler inherits the mix-in klasse SocketIO, which provides these methods.
 
 See the Idle run.main() docstring fuer further information on how this was
@@ -73,7 +73,7 @@ LOCALHOST = '127.0.0.1'
 klasse RPCServer(socketserver.TCPServer):
 
     def __init__(self, addr, handlerclass=Nichts):
-        wenn handlerclass is Nichts:
+        wenn handlerclass ist Nichts:
             handlerclass = RPCHandler
         socketserver.TCPServer.__init__(self, addr, handlerclass)
 
@@ -84,7 +84,7 @@ klasse RPCServer(socketserver.TCPServer):
     def server_activate(self):
         """Override TCPServer method, connect() instead of listen()
 
-        Due to the reversed connection, self.server_address is actually the
+        Due to the reversed connection, self.server_address ist actually the
         address of the Idle Client to which we are connecting.
 
         """
@@ -131,10 +131,10 @@ klasse SocketIO:
 
     def __init__(self, sock, objtable=Nichts, debugging=Nichts):
         self.sockthread = threading.current_thread()
-        wenn debugging is nicht Nichts:
+        wenn debugging ist nicht Nichts:
             self.debugging = debugging
         self.sock = sock
-        wenn objtable is Nichts:
+        wenn objtable ist Nichts:
             objtable = objecttable
         self.objtable = objtable
         self.responses = {}
@@ -143,7 +143,7 @@ klasse SocketIO:
     def close(self):
         sock = self.sock
         self.sock = Nichts
-        wenn sock is nicht Nichts:
+        wenn sock ist nicht Nichts:
             sock.close()
 
     def exithook(self):
@@ -163,7 +163,7 @@ klasse SocketIO:
 
     def unregister(self, oid):
         versuch:
-            del self.objtable[oid]
+            loesche self.objtable[oid]
         ausser KeyError:
             pass
 
@@ -289,7 +289,7 @@ klasse SocketIO:
 
     def getresponse(self, myseq, wait):
         response = self._getresponse(myseq, wait)
-        wenn response is nicht Nichts:
+        wenn response ist nicht Nichts:
             how, what = response
             wenn how == "OK":
                 response = how, self._proxify(what)
@@ -305,11 +305,11 @@ klasse SocketIO:
 
     def _getresponse(self, myseq, wait):
         self.debug("_getresponse:myseq:", myseq)
-        wenn threading.current_thread() is self.sockthread:
+        wenn threading.current_thread() ist self.sockthread:
             # this thread does all reading of requests oder responses
             waehrend Wahr:
                 response = self.pollresponse(myseq, wait)
-                wenn response is nicht Nichts:
+                wenn response ist nicht Nichts:
                     gib response
         sonst:
             # wait fuer notification von socket handling thread
@@ -320,8 +320,8 @@ klasse SocketIO:
             response = self.responses[myseq]
             self.debug("_getresponse:%s: thread woke up: response: %s" %
                        (myseq, response))
-            del self.responses[myseq]
-            del self.cvars[myseq]
+            loesche self.responses[myseq]
+            loesche self.cvars[myseq]
             cvar.release()
             gib response
 
@@ -382,7 +382,7 @@ klasse SocketIO:
 
     def pollmessage(self, wait):
         packet = self.pollpacket(wait)
-        wenn packet is Nichts:
+        wenn packet ist Nichts:
             gib Nichts
         versuch:
             message = pickle.loads(packet)
@@ -401,7 +401,7 @@ klasse SocketIO:
         und some may be responses fuer other threads.
 
         'call' requests are passed to self.localcall() mit the expectation of
-        immediate execution, during which time the socket is nicht serviced.
+        immediate execution, during which time the socket ist nicht serviced.
 
         'queue' requests are used fuer tasks (which may block oder hang) to be
         processed in a different thread.  These requests are fed into
@@ -409,16 +409,16 @@ klasse SocketIO:
         taken von response_queue und sent across the link mit the associated
         sequence numbers.  Messages in the queues are (sequence_number,
         request/response) tuples und code using this module removing messages
-        von the request_queue is responsible fuer returning the correct
+        von the request_queue ist responsible fuer returning the correct
         sequence number in the response_queue.
 
         pollresponse() will loop until a response message mit the myseq
-        sequence number is received, und will save other responses in
+        sequence number ist received, und will save other responses in
         self.responses und notify the owning thread.
 
         """
         waehrend Wahr:
-            # send queued response wenn there is one available
+            # send queued response wenn there ist one available
             versuch:
                 qmsg = response_queue.get(0)
             ausser queue.Empty:
@@ -430,7 +430,7 @@ klasse SocketIO:
             # poll fuer message on link
             versuch:
                 message = self.pollmessage(wait)
-                wenn message is Nichts:  # socket nicht ready
+                wenn message ist Nichts:  # socket nicht ready
                     gib Nichts
             ausser EOFError:
                 self.handle_EOF()
@@ -458,9 +458,9 @@ klasse SocketIO:
             # must be a response fuer a different thread:
             sonst:
                 cv = self.cvars.get(seq, Nichts)
-                # response involving unknown sequence number is discarded,
+                # response involving unknown sequence number ist discarded,
                 # probably intended fuer prior incarnation of server
-                wenn cv is nicht Nichts:
+                wenn cv ist nicht Nichts:
                     cv.acquire()
                     self.responses[seq] = resq
                     cv.notify()
@@ -557,11 +557,11 @@ klasse RPCProxy:
         self.oid = oid
 
     def __getattr__(self, name):
-        wenn self.__methods is Nichts:
+        wenn self.__methods ist Nichts:
             self.__getmethods()
         wenn self.__methods.get(name):
             gib MethodProxy(self.sockio, self.oid, name)
-        wenn self.__attributes is Nichts:
+        wenn self.__attributes ist Nichts:
             self.__getattributes()
         wenn name in self.__attributes:
             value = self.sockio.remotecall(self.oid, '__getattribute__',
@@ -613,7 +613,7 @@ klasse MethodProxy:
 
 def displayhook(value):
     """Override standard display hook to use non-locale encoding"""
-    wenn value is Nichts:
+    wenn value ist Nichts:
         gib
     # Set '_' to Nichts to avoid recursion
     builtins._ = Nichts

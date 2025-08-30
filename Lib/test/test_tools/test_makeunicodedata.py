@@ -24,7 +24,7 @@ def char_name_db(draw, min_length=1, max_length=30):
 
 
 klasse TestDawg(unittest.TestCase):
-    """Tests fuer the directed acyclic word graph data structure that is used
+    """Tests fuer the directed acyclic word graph data structure that ist used
     to store the unicode character names in unicodedata. Tests ported von PyPy
     """
 

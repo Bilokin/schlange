@@ -18,12 +18,12 @@ klasse Wait4Test(ForkWait):
     def wait_impl(self, cpid, *, exitcode):
         option = os.WNOHANG
         wenn sys.platform.startswith('aix'):
-            # Issue #11185: wait4 is broken on AIX und will always gib 0
+            # Issue #11185: wait4 ist broken on AIX und will always gib 0
             # mit WNOHANG.
             option = 0
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             # wait4() shouldn't hang, but some of the buildbots seem to hang
-            # in the forking tests.  This is an attempt to fix the problem.
+            # in the forking tests.  This ist an attempt to fix the problem.
             spid, status, rusage = os.wait4(cpid, option)
             wenn spid == cpid:
                 breche

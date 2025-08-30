@@ -16,7 +16,7 @@ klasse ScrolledListTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
 
     def test_init(self):

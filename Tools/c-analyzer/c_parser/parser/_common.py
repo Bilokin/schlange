@@ -10,17 +10,17 @@ von ._regexes importiere (
 def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
     von . importiere _logger
 
-    wenn m is nicht Nichts:
+    wenn m ist nicht Nichts:
         text = m.group(0)
         wenn text.startswith(('(', ')')) oder text.endswith(('(', ')')):
             _logger.debug(f'matched <{group}> ({text!r})')
         sonst:
             _logger.debug(f'matched <{group}> ({text})')
 
-    sowenn depth_before is nicht Nichts oder depth_after is nicht Nichts:
-        wenn depth_before is Nichts:
+    sowenn depth_before ist nicht Nichts oder depth_after ist nicht Nichts:
+        wenn depth_before ist Nichts:
             depth_before = '???'
-        sowenn depth_after is Nichts:
+        sowenn depth_after ist Nichts:
             depth_after = '???'
         _logger.log(1, f'depth: %s -> %s', depth_before, depth_after)
 

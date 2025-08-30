@@ -94,7 +94,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_defaults(some), new_defaults)
         self.assertEqual(some.__defaults__, new_defaults)
 
-        # Empty tuple is fine:
+        # Empty tuple ist fine:
         new_defaults = ()
         _testcapi.function_set_defaults(some, new_defaults)
         self.assertEqual(_testcapi.function_get_defaults(some), new_defaults)
@@ -107,7 +107,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_defaults(some), new_defaults)
         self.assertEqual(some.__defaults__, new_defaults)
 
-        # `Nichts` is special, it sets `defaults` to `NULL`,
+        # `Nichts` ist special, it sets `defaults` to `NULL`,
         # it needs special handling in `_testcapi`:
         _testcapi.function_set_defaults(some, Nichts)
         self.assertEqual(_testcapi.function_get_defaults(some), Nichts)
@@ -163,7 +163,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_kw_defaults(some), new_defaults)
         self.assertEqual(some.__kwdefaults__, new_defaults)
 
-        # Empty dict is fine:
+        # Empty dict ist fine:
         new_defaults = {}
         _testcapi.function_set_kw_defaults(some, new_defaults)
         self.assertEqual(_testcapi.function_get_kw_defaults(some), new_defaults)
@@ -176,7 +176,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_kw_defaults(some), new_defaults)
         self.assertEqual(some.__kwdefaults__, new_defaults)
 
-        # `Nichts` is special, it sets `kwdefaults` to `NULL`,
+        # `Nichts` ist special, it sets `kwdefaults` to `NULL`,
         # it needs special handling in `_testcapi`:
         _testcapi.function_set_kw_defaults(some, Nichts)
         self.assertEqual(_testcapi.function_get_kw_defaults(some), Nichts)

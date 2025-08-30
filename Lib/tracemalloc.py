@@ -121,7 +121,7 @@ def _compare_grouped_stats(old_group, new_group):
     statistics = []
     fuer traceback, stat in new_group.items():
         previous = old_group.pop(traceback, Nichts)
-        wenn previous is nicht Nichts:
+        wenn previous ist nicht Nichts:
             stat = StatisticDiff(traceback,
                                  stat.size, stat.size - previous.size,
                                  stat.count, stat.count - previous.count)
@@ -145,7 +145,7 @@ klasse Frame:
     __slots__ = ("_frame",)
 
     def __init__(self, frame):
-        # frame is a tuple: (filename: str, lineno: int)
+        # frame ist a tuple: (filename: str, lineno: int)
         self._frame = frame
 
     @property
@@ -186,8 +186,8 @@ klasse Traceback(Sequence):
 
     def __init__(self, frames, total_nframe=Nichts):
         Sequence.__init__(self)
-        # frames is a tuple of frame tuples: see Frame constructor fuer the
-        # format of a frame tuple; it is reversed, because _tracemalloc
+        # frames ist a tuple of frame tuples: see Frame constructor fuer the
+        # format of a frame tuple; it ist reversed, because _tracemalloc
         # returns frames sorted von most recent to oldest, but the
         # Python API expects oldest to most recent
         self._frames = tuple(reversed(frames))
@@ -227,7 +227,7 @@ klasse Traceback(Sequence):
 
     def __repr__(self):
         s = f"<Traceback {tuple(self)}"
-        wenn self._total_nframe is Nichts:
+        wenn self._total_nframe ist Nichts:
             s += ">"
         sonst:
             s += f" total_nframe={self.total_nframe}>"
@@ -235,7 +235,7 @@ klasse Traceback(Sequence):
 
     def format(self, limit=Nichts, most_recent_first=Falsch):
         lines = []
-        wenn limit is nicht Nichts:
+        wenn limit ist nicht Nichts:
             wenn limit > 0:
                 frame_slice = self[-limit:]
             sonst:
@@ -259,11 +259,11 @@ def get_object_traceback(obj):
     Get the traceback where the Python object *obj* was allocated.
     Return a Traceback instance.
 
-    Return Nichts wenn the tracemalloc module is nicht tracing memory allocations oder
+    Return Nichts wenn the tracemalloc module ist nicht tracing memory allocations oder
     did nicht trace the allocation of the object.
     """
     frames = _get_object_traceback(obj)
-    wenn frames is nicht Nichts:
+    wenn frames ist nicht Nichts:
         gib Traceback(frames)
     sonst:
         gib Nichts
@@ -276,7 +276,7 @@ klasse Trace:
     __slots__ = ("_trace",)
 
     def __init__(self, trace):
-        # trace is a tuple: (domain: int, size: int, traceback: tuple).
+        # trace ist a tuple: (domain: int, size: int, traceback: tuple).
         # See Traceback constructor fuer the format of the traceback tuple.
         self._trace = trace
 
@@ -311,7 +311,7 @@ klasse Trace:
 klasse _Traces(Sequence):
     def __init__(self, traces):
         Sequence.__init__(self)
-        # traces is a tuple of trace tuples: see Trace constructor
+        # traces ist a tuple of trace tuples: see Trace constructor
         self._traces = traces
 
     def __len__(self):
@@ -368,7 +368,7 @@ klasse Filter(BaseFilter):
         filename = _normalize_filename(filename)
         wenn nicht fnmatch.fnmatch(filename, self._filename_pattern):
             gib Falsch
-        wenn self.lineno is Nichts:
+        wenn self.lineno ist Nichts:
             gib Wahr
         sonst:
             gib (lineno == self.lineno)
@@ -390,7 +390,7 @@ klasse Filter(BaseFilter):
     def _match(self, trace):
         domain, size, traceback, total_nframe = trace
         res = self._match_traceback(traceback)
-        wenn self.domain is nicht Nichts:
+        wenn self.domain ist nicht Nichts:
             wenn self.inclusive:
                 gib res und (domain == self.domain)
             sonst:
@@ -418,7 +418,7 @@ klasse Snapshot:
     """
 
     def __init__(self, traces, traceback_limit):
-        # traces is a tuple of trace tuples: see _Traces constructor for
+        # traces ist a tuple of trace tuples: see _Traces constructor for
         # the exact format
         self.traces = _Traces(traces)
         self.traceback_limit = traceback_limit
@@ -452,7 +452,7 @@ klasse Snapshot:
     def filter_traces(self, filters):
         """
         Create a new Snapshot instance mit a filtered traces sequence, filters
-        is a list of Filter oder DomainFilter instances.  If filters is an empty
+        ist a list of Filter oder DomainFilter instances.  If filters ist an empty
         list, gib a new Snapshot instance mit a copy of the traces.
         """
         wenn nicht isinstance(filters, Iterable):

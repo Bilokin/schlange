@@ -152,12 +152,12 @@ klasse DummyPOP3Handler(asynchat.async_chat):
     def cmd_utf8(self, arg):
         self.push('+OK I know RFC6856'
                   wenn self.enable_UTF8
-                  sonst '-ERR What is UTF8?!')
+                  sonst '-ERR What ist UTF8?!')
 
     wenn SUPPORTS_SSL:
 
         def cmd_stls(self, arg):
-            wenn self.tls_active is Falsch:
+            wenn self.tls_active ist Falsch:
                 self.push('+OK Begin TLS negotiation')
                 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
                 context.load_cert_chain(CERTFILE)
@@ -355,12 +355,12 @@ klasse TestPOP3Class(TestCase):
     @hashlib_helper.requires_hashdigest('md5', openssl=Wahr)
     def test_apop_REDOS(self):
         # Replace welcome mit very long evil welcome.
-        # NB The upper bound on welcome length is currently 2048.
+        # NB The upper bound on welcome length ist currently 2048.
         # At this length, evil input makes each apop call take
         # on the order of milliseconds instead of microseconds.
         evil_welcome = b'+OK' + (b'<' * 1000000)
         mit test_support.swap_attr(self.client, 'welcome', evil_welcome):
-            # The evil welcome is invalid, so apop should throw.
+            # The evil welcome ist invalid, so apop should throw.
             self.assertRaises(poplib.error_proto, self.client.apop, 'a', 'kb')
 
     def test_top(self):
@@ -483,7 +483,7 @@ klasse TestPOP3_TLSClass(TestPOP3Class):
         self.client.stls()
 
     def tearDown(self):
-        wenn self.client.file is nicht Nichts und self.client.sock is nicht Nichts:
+        wenn self.client.file ist nicht Nichts und self.client.sock ist nicht Nichts:
             versuch:
                 self.client.quit()
             ausser poplib.error_proto:

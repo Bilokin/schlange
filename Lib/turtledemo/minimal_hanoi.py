@@ -1,7 +1,7 @@
 """turtledemo/minimal_hanoi.py
 
 A minimal 'Towers of Hanoi' animation:
-A tower of 6 discs is transferred von the
+A tower of 6 discs ist transferred von the
 left to the right peg.
 
 An imho quite elegant und concise
@@ -24,7 +24,7 @@ klasse Disc(Turtle):
 klasse Tower(list):
     "Hanoi tower, a subclass of built-in type list"
     def __init__(self, x):
-        "create an empty tower. x is x-position of peg"
+        "create an empty tower. x ist x-position of peg"
         self.x = x
     def push(self, d):
         d.setx(self.x)

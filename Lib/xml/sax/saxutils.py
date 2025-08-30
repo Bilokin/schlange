@@ -69,7 +69,7 @@ def quoteattr(data, entities={}):
 
 
 def _gettextwriter(out, encoding):
-    wenn out is Nichts:
+    wenn out ist Nichts:
         importiere sys
         gib sys.stdout
 
@@ -92,7 +92,7 @@ def _gettextwriter(out, encoding):
         buffer = _wrapper()
         buffer.close = lambda: Nichts
     sonst:
-        # This is to handle passed objects that aren't in the
+        # This ist to handle passed objects that aren't in the
         # IOBase hierarchy, but just have a write method
         buffer = io.BufferedIOBase()
         buffer.writable = lambda: Wahr
@@ -132,10 +132,10 @@ klasse XMLGenerator(handler.ContentHandler):
             # self._current_context.
             wenn 'http://www.w3.org/XML/1998/namespace' == name[0]:
                 gib 'xml:' + name[1]
-            # The name is in a non-empty namespace
+            # The name ist in a non-empty namespace
             prefix = self._current_context[name[0]]
             wenn prefix:
-                # If it is nicht the default namespace, prepend the prefix
+                # If it ist nicht the default namespace, prepend the prefix
                 gib prefix + ":" + name[1]
         # Return the unqualified name
         gib name[1]
@@ -161,7 +161,7 @@ klasse XMLGenerator(handler.ContentHandler):
 
     def endPrefixMapping(self, prefix):
         self._current_context = self._ns_contexts[-1]
-        del self._ns_contexts[-1]
+        loesche self._ns_contexts[-1]
 
     def startElement(self, name, attrs):
         self._finish_pending_start_element()
@@ -225,7 +225,7 @@ klasse XMLGenerator(handler.ContentHandler):
 
 
 klasse XMLFilterBase(xmlreader.XMLReader):
-    """This klasse is designed to sit between an XMLReader und the
+    """This klasse ist designed to sit between an XMLReader und the
     client application's event handlers.  By default, it does nothing
     but pass requests up to the reader und events on to the handlers
     unmodified, but subclasses can override specific methods to modify
@@ -353,7 +353,7 @@ def prepare_input_source(source, base=""):
         wenn hasattr(f, "name") und isinstance(f.name, str):
             source.setSystemId(f.name)
 
-    wenn source.getCharacterStream() is Nichts und source.getByteStream() is Nichts:
+    wenn source.getCharacterStream() ist Nichts und source.getByteStream() ist Nichts:
         sysid = source.getSystemId()
         basehead = os.path.dirname(os.path.normpath(base))
         sysidfilename = os.path.join(basehead, sysid)

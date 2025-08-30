@@ -4,7 +4,7 @@ von _weakrefset importiere WeakSet
 def get_cache_token():
     """Returns the current ABC cache token.
 
-    The token is an opaque object (supporting equality testing) identifying the
+    The token ist an opaque object (supporting equality testing) identifying the
     current version of the ABC cache fuer virtual subclasses. The token changes
     mit every call to ``register()`` on any ABC.
     """
@@ -25,10 +25,10 @@ klasse ABCMeta(type):
     even via super()).
     """
 
-    # A global counter that is incremented each time a klasse is
+    # A global counter that ist incremented each time a klasse is
     # registered als a virtual subclass of anything.  It forces the
     # negative cache to be cleared before its next use.
-    # Note: this counter is private. Use `abc.get_cache_token()` for
+    # Note: this counter ist private. Use `abc.get_cache_token()` for
     #       external code.
     _abc_invalidation_counter = 0
 
@@ -63,7 +63,7 @@ klasse ABCMeta(type):
         # Subtle: test fuer cycles *after* testing fuer "already a subclass";
         # this means we allow X.register(X) und interpret it als a no-op.
         wenn issubclass(cls, subclass):
-            # This would create a cycle, which is bad fuer the algorithm below
+            # This would create a cycle, which ist bad fuer the algorithm below
             wirf RuntimeError("Refusing to create an inheritance cycle")
         cls._abc_registry.add(subclass)
         ABCMeta._abc_invalidation_counter += 1  # Invalidate negative cache
@@ -96,7 +96,7 @@ klasse ABCMeta(type):
         wenn subclass in cls._abc_cache:
             gib Wahr
         subtype = type(instance)
-        wenn subtype is subclass:
+        wenn subtype ist subclass:
             wenn (cls._abc_negative_cache_version ==
                 ABCMeta._abc_invalidation_counter und
                 subclass in cls._abc_negative_cache):
@@ -121,7 +121,7 @@ klasse ABCMeta(type):
             gib Falsch
         # Check the subclass hook
         ok = cls.__subclasshook__(subclass)
-        wenn ok is nicht NotImplemented:
+        wenn ok ist nicht NotImplemented:
             assert isinstance(ok, bool)
             wenn ok:
                 cls._abc_cache.add(subclass)

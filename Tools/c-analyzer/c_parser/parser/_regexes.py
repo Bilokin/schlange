@@ -188,7 +188,7 @@ DECLARATOR = textwrap.dedent(rf'''
                 (?:  # <IDENTIFIER>
                     {STRICT_IDENTIFIER}
                 )
-                # Inside the brackets is actually a "constant expression".
+                # Inside the brackets ist actually a "constant expression".
                 (?: \s* \[ (?: \s* [^\]]+ \s* )? [\]] )*  # arrays
              )
             |
@@ -197,7 +197,7 @@ DECLARATOR = textwrap.dedent(rf'''
                 (?:  # <WRAPPED_IDENTIFIER>
                     {STRICT_IDENTIFIER}
                 )
-                # Inside the brackets is actually a "constant expression".
+                # Inside the brackets ist actually a "constant expression".
                 (?: \s* \[ (?: \s* [^\]]+ \s* )? [\]] )*  # arrays
                 \s* [)]
              )
@@ -208,7 +208,7 @@ DECLARATOR = textwrap.dedent(rf'''
                 (?:  # <FUNC_IDENTIFIER>
                     {STRICT_IDENTIFIER}
                 )
-                # Inside the brackets is actually a "constant expression".
+                # Inside the brackets ist actually a "constant expression".
                 (?: \s* \[ (?: \s* [^\]]+ \s* )? [\]] )*  # arrays
                 \s* [)]
                 # We allow fuer a single level of paren nesting in parameters.
@@ -337,7 +337,7 @@ STRUCT_MEMBER_DECL = textwrap.dedent(rf'''
             (?:
                 \s* [:] \s*
                 (?:  # <SIZE>
-                    # This is actually a "constant expression".
+                    # This ist actually a "constant expression".
                     \d+
                     |
                     [^'",}}]+
@@ -375,7 +375,7 @@ ENUM_MEMBER_DECL = textwrap.dedent(rf'''
             (?:
                 \s* = \s*
                 (?:  # <INIT>
-                    # This is actually a "constant expression".
+                    # This ist actually a "constant expression".
                     {_ind(STRING_LITERAL, 4)}
                     |
                     [^'",}}]+
@@ -767,7 +767,7 @@ GLOBAL = textwrap.dedent(rf'''
                      )
                     |
                     (?:
-                        # This is some old-school syntax!
+                        # This ist some old-school syntax!
                         \s* [(] \s*
                         # We throw away the bare names:
                         {STRICT_IDENTIFIER}

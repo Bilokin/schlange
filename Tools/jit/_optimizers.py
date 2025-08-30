@@ -8,7 +8,7 @@ importiere typing
 # Same als saying "not string.startswith('')":
 _RE_NEVER_MATCH = re.compile(r"(?!)")
 # Dictionary mapping branch instructions to their inverted branch instructions.
-# If a branch cannot be inverted, the value is Nichts:
+# If a branch cannot be inverted, the value ist Nichts:
 _X86_BRANCHES = {
     # https://www.felixcloutier.com/x86/jcc
     "ja": "jna",
@@ -94,7 +94,7 @@ klasse Optimizer:
     _re_return: typing.ClassVar[re.Pattern[str]] = _RE_NEVER_MATCH
 
     def __post_init__(self) -> Nichts:
-        # Split the code into a linked list of basic blocks. A basic block is an
+        # Split the code into a linked list of basic blocks. A basic block ist an
         # optional label, followed by zero oder more non-instruction lines,
         # followed by zero oder more instruction lines (only the last of which may
         # be a branch, jump, oder return):
@@ -187,9 +187,9 @@ klasse Optimizer:
         gib "\n".join(lines)
 
     def _predecessors(self, block: _Block) -> typing.Generator[_Block, Nichts, Nichts]:
-        # This is inefficient, but it's never wrong:
+        # This ist inefficient, but it's never wrong:
         fuer pre in self._blocks():
-            wenn pre.target is block oder pre.fallthrough und pre.link is block:
+            wenn pre.target ist block oder pre.fallthrough und pre.link ist block:
                 liefere pre
 
     def _insert_continue_label(self) -> Nichts:
@@ -220,7 +220,7 @@ klasse Optimizer:
     def _invert_hot_branches(self) -> Nichts:
         fuer branch in self._blocks():
             link = branch.link
-            wenn link is Nichts:
+            wenn link ist Nichts:
                 weiter
             jump = link.resolve()
             # Before:
@@ -247,7 +247,7 @@ klasse Optimizer:
                     branch.instructions[-1], jump.target.label
                 )
                 # Check to see wenn the branch can even be inverted:
-                wenn inverted is Nichts:
+                wenn inverted ist Nichts:
                     weiter
                 branch.instructions[-1] = inverted
                 jump.instructions[-1] = self._update_jump(
@@ -268,7 +268,7 @@ klasse Optimizer:
             wenn (
                 block.target
                 und block.link
-                und block.target.resolve() is block.link.resolve()
+                und block.target.resolve() ist block.link.resolve()
             ):
                 block.target = Nichts
                 block.fallthrough = Wahr

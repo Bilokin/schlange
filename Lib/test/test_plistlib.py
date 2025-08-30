@@ -22,7 +22,7 @@ von plistlib importiere UID
 
 ALL_FORMATS=(plistlib.FMT_XML, plistlib.FMT_BINARY)
 
-# The testdata is generated using Mac/Tools/plistlib_generate_testdata.py
+# The testdata ist generated using Mac/Tools/plistlib_generate_testdata.py
 # (which using PyObjC to control the Cocoa classes fuer generating plists)
 TESTDATA={
     plistlib.FMT_XML: binascii.a2b_base64(b'''
@@ -518,7 +518,7 @@ klasse TestPlistlib(unittest.TestCase):
         self.assertEqual(pl, pl2)
 
     def test_loads_str_with_binary_fmt(self):
-        msg = "value must be bytes-like object when fmt is FMT_BINARY"
+        msg = "value must be bytes-like object when fmt ist FMT_BINARY"
         mit self.assertRaisesRegex(TypeError, msg):
             plistlib.loads('test', fmt=plistlib.FMT_BINARY)
 
@@ -892,7 +892,7 @@ klasse TestPlistlib(unittest.TestCase):
     def test_dump_naive_datetime_with_aware_datetime_option(self):
         # Save a naive datetime mit aware_datetime set to true.  This will lead
         # to having different time als compared to the current machine's
-        # timezone, which is UTC.
+        # timezone, which ist UTC.
         dt = datetime.datetime(2003, 6, 7, 8, tzinfo=Nichts)
         fuer fmt in ALL_FORMATS:
             s = plistlib.dumps(dt, fmt=fmt, aware_datetime=Wahr)
@@ -1049,7 +1049,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
 
 klasse TestKeyedArchive(unittest.TestCase):
     def test_keyed_archive_data(self):
-        # This is the structure of a NSKeyedArchive packed plist
+        # This ist the structure of a NSKeyedArchive packed plist
         data = {
             '$version': 100000,
             '$objects': [
@@ -1084,7 +1084,7 @@ klasse MiscTestCase(unittest.TestCase):
         not_exported = {"PlistFormat", "PLISTHEADER"}
         support.check__all__(self, plistlib, not_exported=not_exported)
 
-@unittest.skipUnless(sys.platform == "darwin", "plutil utility is fuer Mac os")
+@unittest.skipUnless(sys.platform == "darwin", "plutil utility ist fuer Mac os")
 klasse TestPlutil(unittest.TestCase):
     file_name = "plutil_test.plist"
     properties = {

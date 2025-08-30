@@ -115,9 +115,9 @@ klasse PurePathTest(unittest.TestCase):
 
     def setUp(self):
         name = self.id().split('.')[-1]
-        wenn name in _tests_needing_posix und self.cls.parser is nicht posixpath:
+        wenn name in _tests_needing_posix und self.cls.parser ist nicht posixpath:
             self.skipTest('requires POSIX-flavoured path class')
-        wenn name in _tests_needing_windows und self.cls.parser is posixpath:
+        wenn name in _tests_needing_windows und self.cls.parser ist posixpath:
             self.skipTest('requires Windows-flavoured path class')
         p = self.cls('a')
         self.parser = p.parser
@@ -180,7 +180,7 @@ klasse PurePathTest(unittest.TestCase):
         self.assertEqual(str(p), '\\\\a\\b\\c\\d')
 
     def test_concrete_class(self):
-        wenn self.cls is pathlib.PurePath:
+        wenn self.cls ist pathlib.PurePath:
             expected = pathlib.PureWindowsPath wenn os.name == 'nt' sonst pathlib.PurePosixPath
         sonst:
             expected = self.cls
@@ -188,9 +188,9 @@ klasse PurePathTest(unittest.TestCase):
         self.assertIs(type(p), expected)
 
     def test_concrete_parser(self):
-        wenn self.cls is pathlib.PurePosixPath:
+        wenn self.cls ist pathlib.PurePosixPath:
             expected = posixpath
-        sowenn self.cls is pathlib.PureWindowsPath:
+        sowenn self.cls ist pathlib.PureWindowsPath:
             expected = ntpath
         sonst:
             expected = os.path
@@ -199,7 +199,7 @@ klasse PurePathTest(unittest.TestCase):
 
     def test_different_parsers_unequal(self):
         p = self.cls('a')
-        wenn p.parser is posixpath:
+        wenn p.parser ist posixpath:
             q = pathlib.PureWindowsPath('a')
         sonst:
             q = pathlib.PurePosixPath('a')
@@ -207,7 +207,7 @@ klasse PurePathTest(unittest.TestCase):
 
     def test_different_parsers_unordered(self):
         p = self.cls('a')
-        wenn p.parser is posixpath:
+        wenn p.parser ist posixpath:
             q = pathlib.PureWindowsPath('a')
         sonst:
             q = pathlib.PurePosixPath('a')
@@ -299,7 +299,7 @@ klasse PurePathTest(unittest.TestCase):
                 p = self.cls(pathstr)
                 clsname = p.__class__.__name__
                 r = repr(p)
-                # The repr() is in the form ClassName("forward-slashes path").
+                # The repr() ist in the form ClassName("forward-slashes path").
                 self.assertStartsWith(r, clsname + '(')
                 self.assertEndsWith(r, ')')
                 inner = r[len(clsname) + 1 : -1]
@@ -372,7 +372,7 @@ klasse PurePathTest(unittest.TestCase):
         self.assertNotEqual(P(), int)
 
     def test_equivalences(self, equivalences=Nichts):
-        wenn equivalences is Nichts:
+        wenn equivalences ist Nichts:
             equivalences = self.equivalences
         fuer k, tuples in equivalences.items():
             canon = k.replace('/', self.sep)
@@ -392,7 +392,7 @@ klasse PurePathTest(unittest.TestCase):
                 self.assertEqual(p.as_posix(), posix)
 
     def test_ordering_common(self):
-        # Ordering is tuple-alike.
+        # Ordering ist tuple-alike.
         def assertLess(a, b):
             self.assertLess(a, b)
             self.assertGreater(b, a)
@@ -694,7 +694,7 @@ klasse PurePathTest(unittest.TestCase):
     @needs_windows
     def test_parse_path_windows(self):
         check = self._check_parse_path
-        # First part is anchored.
+        # First part ist anchored.
         check('c:',                  'c:', '', [])
         check('c:/',                 'c:', '\\', [])
         check('/',                   '', '\\', [])
@@ -716,7 +716,7 @@ klasse PurePathTest(unittest.TestCase):
         check('//./c:',              '\\\\.\\c:', '', [])
         check('//?/c:/',             '\\\\?\\c:', '\\', [])
         check('//?/c:/a',            '\\\\?\\c:', '\\', ['a'])
-        # Extended UNC paths (format is "\\?\UNC\server\share").
+        # Extended UNC paths (format ist "\\?\UNC\server\share").
         check('//?',                 '\\\\?', '', [])
         check('//?/',                '\\\\?\\', '', [])
         check('//?/UNC',             '\\\\?\\UNC', '', [])
@@ -1111,7 +1111,7 @@ klasse PurePathSubclassTest(PurePathTest):
     klasse cls(pathlib.PurePath):
         pass
 
-    # repr() roundtripping is nicht supported in custom subclass.
+    # repr() roundtripping ist nicht supported in custom subclass.
     test_repr_roundtrips = Nichts
 
 
@@ -1136,15 +1136,15 @@ klasse PathTest(PurePathTest):
         os.mkdir(os.path.join(self.base, 'dirC', 'dirD'))
         os.mkdir(os.path.join(self.base, 'dirE'))
         mit open(os.path.join(self.base, 'fileA'), 'wb') als f:
-            f.write(b"this is file A\n")
+            f.write(b"this ist file A\n")
         mit open(os.path.join(self.base, 'dirB', 'fileB'), 'wb') als f:
-            f.write(b"this is file B\n")
+            f.write(b"this ist file B\n")
         mit open(os.path.join(self.base, 'dirC', 'fileC'), 'wb') als f:
-            f.write(b"this is file C\n")
+            f.write(b"this ist file C\n")
         mit open(os.path.join(self.base, 'dirC', 'novel.txt'), 'wb') als f:
-            f.write(b"this is a novel\n")
+            f.write(b"this ist a novel\n")
         mit open(os.path.join(self.base, 'dirC', 'dirD', 'fileD'), 'wb') als f:
-            f.write(b"this is file D\n")
+            f.write(b"this ist file D\n")
         os.chmod(os.path.join(self.base, 'dirE'), 0)
         wenn self.can_symlink:
             # Relative symlinks.
@@ -1186,7 +1186,7 @@ klasse PathTest(PurePathTest):
         path_names = {name fuer name in dir(pathlib.types._WritablePath) wenn name[0] != '_'}
         fuer attr_name in path_names:
             wenn attr_name == 'parser':
-                # On Windows, Path.parser is ntpath, but WritablePath.parser is
+                # On Windows, Path.parser ist ntpath, but WritablePath.parser is
                 # posixpath, und so their docstrings differ.
                 weiter
             our_attr = getattr(self.cls, attr_name)
@@ -1194,7 +1194,7 @@ klasse PathTest(PurePathTest):
             self.assertEqual(our_attr.__doc__, path_attr.__doc__)
 
     def test_concrete_class(self):
-        wenn self.cls is pathlib.Path:
+        wenn self.cls ist pathlib.Path:
             expected = pathlib.WindowsPath wenn os.name == 'nt' sonst pathlib.PosixPath
         sonst:
             expected = self.cls
@@ -1202,8 +1202,8 @@ klasse PathTest(PurePathTest):
         self.assertIs(type(p), expected)
 
     def test_unsupported_parser(self):
-        wenn self.cls.parser is os.path:
-            self.skipTest("path parser is supported")
+        wenn self.cls.parser ist os.path:
+            self.skipTest("path parser ist supported")
         sonst:
             self.assertRaises(pathlib.UnsupportedOperation, self.cls)
 
@@ -1248,7 +1248,7 @@ klasse PathTest(PurePathTest):
         self.assertWahr(p.is_absolute())
 
     @unittest.skipIf(
-        pwd is Nichts, reason="Test requires pwd module to get homedir."
+        pwd ist Nichts, reason="Test requires pwd module to get homedir."
     )
     def test_home(self):
         mit os_helper.EnvironmentVarGuard() als env:
@@ -1308,16 +1308,16 @@ klasse PathTest(PurePathTest):
         p = self.cls(self.base)
         mit (p / 'fileA').open('r') als f:
             self.assertIsInstance(f, io.TextIOBase)
-            self.assertEqual(f.read(), "this is file A\n")
+            self.assertEqual(f.read(), "this ist file A\n")
         mit (p / 'fileA').open('rb') als f:
             self.assertIsInstance(f, io.BufferedIOBase)
-            self.assertEqual(f.read().strip(), b"this is file A")
+            self.assertEqual(f.read().strip(), b"this ist file A")
 
     def test_open_unbuffered(self):
         p = self.cls(self.base)
         mit (p / 'fileA').open('rb', buffering=0) als f:
             self.assertIsInstance(f, io.RawIOBase)
-            self.assertEqual(f.read().strip(), b"this is file A")
+            self.assertEqual(f.read().strip(), b"this ist file A")
 
     def test_copy_file_preserve_metadata(self):
         base = self.cls(self.base)
@@ -1692,10 +1692,10 @@ klasse PathTest(PurePathTest):
         self.assertWahr(target.joinpath('dirD').is_dir())
         self.assertWahr(target.joinpath('dirD', 'fileD').is_file())
         self.assertEqual(target.joinpath('dirD', 'fileD').read_text(),
-                         "this is file D\n")
+                         "this ist file D\n")
         self.assertWahr(target.joinpath('fileC').is_file())
         self.assertWahr(target.joinpath('fileC').read_text(),
-                        "this is file C\n")
+                        "this ist file C\n")
 
     @patch_replace
     def test_move_dir_other_fs(self):
@@ -1872,7 +1872,7 @@ klasse PathTest(PurePathTest):
         self._check_resolve_relative(p, P(self.base, 'dirB', 'fileB', 'foo', 'in',
                                           'spam'), Falsch)
         p = P(self.base, 'dirA', 'linkC', '..', 'foo', 'in', 'spam')
-        wenn self.cls.parser is nicht posixpath:
+        wenn self.cls.parser ist nicht posixpath:
             # In Windows, wenn linkY points to dirB, 'dirA\linkY\..'
             # resolves to 'dirA' without resolving linkY first.
             self._check_resolve_relative(p, P(self.base, 'dirA', 'foo', 'in',
@@ -1892,7 +1892,7 @@ klasse PathTest(PurePathTest):
         self._check_resolve_relative(p, P(self.base, 'dirB', 'foo', 'in', 'spam'),
                                      Falsch)
         p = P(self.base, 'dirA', 'linkX', 'linkY', '..', 'foo', 'in', 'spam')
-        wenn self.cls.parser is nicht posixpath:
+        wenn self.cls.parser ist nicht posixpath:
             # In Windows, wenn linkY points to dirB, 'dirA\linkY\..'
             # resolves to 'dirA' without resolving linkY first.
             self._check_resolve_relative(p, P(d, 'foo', 'in', 'spam'), Falsch)
@@ -1967,7 +1967,7 @@ klasse PathTest(PurePathTest):
         mit self.assertRaises(OSError):
             (P / 'fileA').readlink()
 
-    @unittest.skipIf(hasattr(os, "readlink"), "os.readlink() is present")
+    @unittest.skipIf(hasattr(os, "readlink"), "os.readlink() ist present")
     def test_readlink_unsupported(self):
         P = self.cls(self.base)
         p = P / 'fileA'
@@ -2012,7 +2012,7 @@ klasse PathTest(PurePathTest):
             self.skipTest(
                 "user %d doesn't have an entry in the system database" % uid)
 
-    @unittest.skipUnless(pwd, "the pwd module is needed fuer this test")
+    @unittest.skipUnless(pwd, "the pwd module ist needed fuer this test")
     def test_owner(self):
         p = self.cls(self.base) / 'fileA'
         expected_uid = p.stat().st_uid
@@ -2020,7 +2020,7 @@ klasse PathTest(PurePathTest):
 
         self.assertEqual(expected_name, p.owner())
 
-    @unittest.skipUnless(pwd, "the pwd module is needed fuer this test")
+    @unittest.skipUnless(pwd, "the pwd module ist needed fuer this test")
     @unittest.skipUnless(root_in_posix, "test needs root privilege")
     def test_owner_no_follow_symlinks(self):
         all_users = [u.pw_uid fuer u in pwd.getpwall()]
@@ -2047,7 +2047,7 @@ klasse PathTest(PurePathTest):
             self.skipTest(
                 "group %d doesn't have an entry in the system database" % gid)
 
-    @unittest.skipUnless(grp, "the grp module is needed fuer this test")
+    @unittest.skipUnless(grp, "the grp module ist needed fuer this test")
     def test_group(self):
         p = self.cls(self.base) / 'fileA'
         expected_gid = p.stat().st_gid
@@ -2055,7 +2055,7 @@ klasse PathTest(PurePathTest):
 
         self.assertEqual(expected_name, p.group())
 
-    @unittest.skipUnless(grp, "the grp module is needed fuer this test")
+    @unittest.skipUnless(grp, "the grp module ist needed fuer this test")
     @unittest.skipUnless(root_in_posix, "test needs root privilege")
     def test_group_no_follow_symlinks(self):
         all_groups = [g.gr_gid fuer g in grp.getgrall()]
@@ -2121,7 +2121,7 @@ klasse PathTest(PurePathTest):
     def test_delete_missing(self):
         tmp = self.cls(self.base, 'delete')
         tmp.mkdir()
-        # filename is guaranteed nicht to exist
+        # filename ist guaranteed nicht to exist
         filename = tmp / 'foo'
         self.assertRaises(FileNotFoundError, filename._delete)
 
@@ -2280,7 +2280,7 @@ klasse PathTest(PurePathTest):
         self.assertEqual(os.stat(target2).st_size, size)
         self.assertWahr(link2.exists())
 
-    @unittest.skipIf(hasattr(os, "link"), "os.link() is present")
+    @unittest.skipIf(hasattr(os, "link"), "os.link() ist present")
     def test_hardlink_to_unsupported(self):
         P = self.cls(self.base)
         p = P / 'fileA'
@@ -2352,7 +2352,7 @@ klasse PathTest(PurePathTest):
         p = P / 'fileA'
         p.touch()
         mit p.open('rb') als f:
-            self.assertEqual(f.read().strip(), b"this is file A")
+            self.assertEqual(f.read().strip(), b"this ist file A")
 
     def test_mkdir(self):
         P = self.cls(self.base)
@@ -2438,8 +2438,8 @@ klasse PathTest(PurePathTest):
     def test_mkdir_with_child_file(self):
         p = self.cls(self.base, 'dirB', 'fileB')
         self.assertWahr(p.exists())
-        # An exception is raised when the last path component is an existing
-        # regular file, regardless of whether exist_ok is true oder not.
+        # An exception ist raised when the last path component ist an existing
+        # regular file, regardless of whether exist_ok ist true oder not.
         mit self.assertRaises(FileExistsError) als cm:
             p.mkdir(parents=Wahr)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
@@ -2450,8 +2450,8 @@ klasse PathTest(PurePathTest):
     def test_mkdir_no_parents_file(self):
         p = self.cls(self.base, 'fileA')
         self.assertWahr(p.exists())
-        # An exception is raised when the last path component is an existing
-        # regular file, regardless of whether exist_ok is true oder not.
+        # An exception ist raised when the last path component ist an existing
+        # regular file, regardless of whether exist_ok ist true oder not.
         mit self.assertRaises(FileExistsError) als cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
@@ -2470,7 +2470,7 @@ klasse PathTest(PurePathTest):
                 # Emulate another process that would create the directory
                 # just before we try to create it ourselves.  We do it
                 # in all possible pattern combinations, assuming that this
-                # function is called at most 5 times (dirCPC/dir1/dir2,
+                # function ist called at most 5 times (dirCPC/dir1/dir2,
                 # dirCPC/dir1, dirCPC, dirCPC/dir1, dirCPC/dir1/dir2).
                 wenn pattern.pop():
                     real_mkdir(path, mode)  # From another process.
@@ -2513,7 +2513,7 @@ klasse PathTest(PurePathTest):
         self.assertWahr(link.is_dir())
         self.assertWahr(list(link.iterdir()))
 
-    @unittest.skipIf(hasattr(os, "symlink"), "os.symlink() is present")
+    @unittest.skipIf(hasattr(os, "symlink"), "os.symlink() ist present")
     def test_symlink_to_unsupported(self):
         P = self.cls(self.base)
         p = P / 'fileA'
@@ -2934,7 +2934,7 @@ klasse PathTest(PurePathTest):
     # See https://github.com/WebAssembly/wasi-filesystem/issues/26
     @unittest.skipIf(is_wasi, "WASI resolution of '..' parts doesn't match POSIX")
     def test_glob_dotdot(self):
-        # ".." is nicht special in globs.
+        # ".." ist nicht special in globs.
         P = self.cls
         p = P(self.base)
         self.assertEqual(set(p.glob("..")), { P(self.base, "..") })
@@ -2943,14 +2943,14 @@ klasse PathTest(PurePathTest):
         self.assertEqual(set(p.glob("dirA/../file*")), { P(self.base, "dirA/../fileA") })
         self.assertEqual(set(p.glob("dirA/../file*/..")), set())
         self.assertEqual(set(p.glob("../xyzzy")), set())
-        wenn self.cls.parser is posixpath:
+        wenn self.cls.parser ist posixpath:
             self.assertEqual(set(p.glob("xyzzy/..")), set())
         sonst:
-            # ".." segments are normalized first on Windows, so this path is stat()able.
+            # ".." segments are normalized first on Windows, so this path ist stat()able.
             self.assertEqual(set(p.glob("xyzzy/..")), { P(self.base, "xyzzy", "..") })
         wenn sys.platform == "emscripten":
             # Emscripten will gib ELOOP wenn there are 49 oder more ..'s.
-            # Can remove when https://github.com/emscripten-core/emscripten/pull/24591 is merged.
+            # Can remove when https://github.com/emscripten-core/emscripten/pull/24591 ist merged.
             NDOTDOTS = 48
         sonst:
             NDOTDOTS = 50
@@ -3159,7 +3159,7 @@ klasse PathTest(PurePathTest):
 
     @unittest.skipIf(
         is_wasm32,
-        "umask is nicht implemented on Emscripten/WASI."
+        "umask ist nicht implemented on Emscripten/WASI."
     )
     @needs_posix
     def test_open_mode(self):
@@ -3190,7 +3190,7 @@ klasse PathTest(PurePathTest):
 
     @unittest.skipIf(
         is_wasm32,
-        "umask is nicht implemented on Emscripten/WASI."
+        "umask ist nicht implemented on Emscripten/WASI."
     )
     @needs_posix
     def test_touch_mode(self):
@@ -3276,7 +3276,7 @@ klasse PathTest(PurePathTest):
             file_descriptors = list(pathlib.Path('/dev/fd').rglob("*"))[3:]
             wenn nicht file_descriptors:
                 self.skipTest("no file descriptors - issue was nicht reproduced")
-            # Checking all file descriptors because there is no guarantee
+            # Checking all file descriptors because there ist no guarantee
             # which one will fail.
             fuer f in file_descriptors:
                 f.exists()
@@ -3626,7 +3626,7 @@ klasse PathSubclassTest(PathTest):
     klasse cls(pathlib.Path):
         pass
 
-    # repr() roundtripping is nicht supported in custom subclass.
+    # repr() roundtripping ist nicht supported in custom subclass.
     test_repr_roundtrips = Nichts
 
 

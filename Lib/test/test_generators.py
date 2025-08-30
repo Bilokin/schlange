@@ -18,9 +18,9 @@ ausser ImportError:
 
 
 # This tests to make sure that wenn a SIGINT arrives just before we send into a
-# liefere von chain, the KeyboardInterrupt is raised in the innermost
+# liefere von chain, the KeyboardInterrupt ist raised in the innermost
 # generator (see bpo-30039).
-@unittest.skipUnless(_testcapi is nicht Nichts und
+@unittest.skipUnless(_testcapi ist nicht Nichts und
                      hasattr(_testcapi, "raise_SIGINT_then_send_Nichts"),
                      "needs _testcapi.raise_SIGINT_then_send_Nichts")
 klasse SignalAndYieldFromTest(unittest.TestCase):
@@ -61,11 +61,11 @@ klasse FinalizationTest(unittest.TestCase):
         g = gen()
         wr = weakref.ref(g)
         next(g)
-        del g
+        loesche g
         support.gc_collect()
         self.assertIs(wr(), Nichts)
         self.assertWahr(frame)
-        del frame
+        loesche frame
         support.gc_collect()
 
     def test_refcycle(self):
@@ -85,7 +85,7 @@ klasse FinalizationTest(unittest.TestCase):
         g.send(g)
         self.assertGreaterEqual(sys.getrefcount(g), 2)
         self.assertFalsch(finalized)
-        del g
+        loesche g
         support.gc_collect()
         self.assertWahr(finalized)
         self.assertEqual(gc.garbage, old_garbage)
@@ -227,7 +227,7 @@ klasse GeneratorTest(unittest.TestCase):
 
         gc.set_threshold(1, 0, 0)
         versuch:
-            del sneaky
+            loesche sneaky
             gen()
         schliesslich:
             gc.set_threshold(*thresholds)
@@ -260,7 +260,7 @@ klasse GeneratorTest(unittest.TestCase):
         def loop():
             versuch:
                 fuer _ in gen_raises():
-                    wenn Wahr is Falsch:
+                    wenn Wahr ist Falsch:
                         gib
             ausser ValueError:
                 pass
@@ -328,7 +328,7 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
             mit self.subTest(g_iter=g_iter, obj=obj):
                 self.assertListEqual(list(g_iter), list(obj))
 
-        err_regex = "'.*' object is nicht iterable"
+        err_regex = "'.*' object ist nicht iterable"
         fuer obj in self.non_iterables:
             g_obj = get_generator(obj)
             mit self.subTest(g_obj=g_obj):
@@ -365,7 +365,7 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
 
 klasse ExceptionTest(unittest.TestCase):
     # Tests fuer the issue #23353: check that the currently handled exception
-    # is correctly saved/restored in PyEval_EvalFrameEx().
+    # ist correctly saved/restored in PyEval_EvalFrameEx().
 
     def test_except_throw(self):
         def store_raise_exc_generator():
@@ -378,7 +378,7 @@ klasse ExceptionTest(unittest.TestCase):
                 self.assertIsNichts(exc.__context__)
                 liefere
 
-                # ensure that the exception is nicht lost
+                # ensure that the exception ist nicht lost
                 self.assertIsInstance(sys.exception(), ValueError)
                 liefere
 
@@ -586,7 +586,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
         def f():
             versuch:
                 liefere
-                # close() raises GeneratorExit here, which is caught
+                # close() raises GeneratorExit here, which ist caught
             ausser GeneratorExit:
                 gib 0
 
@@ -668,7 +668,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
         g = genfn()
         next(g)
-        del f
+        loesche f
         g.close()
         support.gc_collect()
         self.assertIsNichts(f_wr())
@@ -774,7 +774,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
         self.assertEqual((type(context), context.args), (KeyError, ('a',)))
 
     def test_exception_context_with_yield_inside_generator(self):
-        # Check that the context is also available von inside the generator
+        # Check that the context ist also available von inside the generator
         # mit yield, als opposed to outside.
         def f():
             versuch:
@@ -828,7 +828,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 versuch:
                     liefere von f()
                 ausser Exception als exc:
-                    has_cycle = (exc is exc.__context__)
+                    has_cycle = (exc ist exc.__context__)
             liefere
 
         exc = KeyError('a')
@@ -1078,7 +1078,7 @@ pep_tests = """
 
 Specification:  Yield
 
-    Restriction:  A generator cannot be resumed waehrend it is actively
+    Restriction:  A generator cannot be resumed waehrend it ist actively
     running:
 
     >>> def g():
@@ -1115,7 +1115,7 @@ Specification: Return
         >>> drucke(list(f2()))
         [42]
 
-    because StopIteration is captured by a bare "except", als is any
+    because StopIteration ist captured by a bare "except", als ist any
     exception.
 
 Specification: Generators und Exception Propagation
@@ -1276,7 +1276,7 @@ Next one was posted to c.l.py.
 ...     sonst:
 ...         first, rest = x[0], x[1:]
 ...         # A combination does oder doesn't contain first.
-...         # If it does, the remainder is a k-1 comb of rest.
+...         # If it does, the remainder ist a k-1 comb of rest.
 ...         fuer c in gcomb(rest, k-1):
 ...             c.insert(0, first)
 ...             liefere c
@@ -1327,7 +1327,7 @@ From the Iterators list, about the types of these things.
 >>> von test.support importiere HAVE_DOCSTRINGS
 >>> drucke(i.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
 Implement next(self).
->>> iter(i) is i
+>>> iter(i) ist i
 Wahr
 >>> importiere types
 >>> isinstance(i, types.GeneratorType)
@@ -1342,7 +1342,7 @@ And more, added later.
 >>> i.gi_running = 42
 Traceback (most recent call last):
   ...
-AttributeError: attribute 'gi_running' of 'generator' objects is nicht writable
+AttributeError: attribute 'gi_running' of 'generator' objects ist nicht writable
 >>> def g():
 ...     liefere me.gi_running
 >>> me = g()
@@ -1492,10 +1492,10 @@ Try writing it without generators, und correctly, und without generating
 ...             ng = next(g)
 ...             nh = next(h)
 
-The following works, but is doing a whale of a lot of redundant work --
+The following works, but ist doing a whale of a lot of redundant work --
 it's nicht clear how to get the internal uses of m235 to share a single
 generator.  Note that me_times2 (etc) each need to see every element in the
-result sequence.  So this is an example where lazy lists are more natural
+result sequence.  So this ist an example where lazy lists are more natural
 (you can look at the head of a lazy list any number of times).
 
 >>> def m235():
@@ -1508,7 +1508,7 @@ result sequence.  So this is an example where lazy lists are more natural
 ...                    me_times5):
 ...         liefere i
 
-Don't print "too many" of these -- the implementation above is extremely
+Don't print "too many" of these -- the implementation above ist extremely
 inefficient:  each call of m235() leads to 3 recursive calls, und in
 turn each of those 3 more, und so on, und so on, until we've descended
 enough levels to satisfy the print stmts.  Very odd:  when I printed 5
@@ -1524,9 +1524,9 @@ address space, und it *looked* like a very slow leak.
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
 
 Heh.  Here's one way to get a shared list, complete mit an excruciating
-namespace renaming trick.  The *pretty* part is that the times() und merge()
+namespace renaming trick.  The *pretty* part ist that the times() und merge()
 functions can be reused as-is, because they only assume their stream
-arguments are iterable -- a LazyList is the same als a generator to times().
+arguments are iterable -- a LazyList ist the same als a generator to times().
 
 >>> klasse LazyList:
 ...     def __init__(self, g):
@@ -1550,7 +1550,7 @@ arguments are iterable -- a LazyList is the same als a generator to times().
 ...                    me_times5):
 ...         liefere i
 
-Print als many of these als you like -- *this* implementation is memory-
+Print als many of these als you like -- *this* implementation ist memory-
 efficient.
 
 >>> m235 = LazyList(m235())
@@ -1599,17 +1599,17 @@ For these algorithms to work, they must:
 - produce their elements in a lazy manner
 
 To work efficiently, the beginning of the list must nicht be recomputed over
-and over again. This is ensured in most FP languages als a built-in feature.
+and over again. This ist ensured in most FP languages als a built-in feature.
 In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
-This is what had been attempted above mit the LazyList class. One problem
-with that klasse is that it keeps a list of all of the generated results und
+This ist what had been attempted above mit the LazyList class. One problem
+with that klasse ist that it keeps a list of all of the generated results und
 therefore continually grows. This partially defeats the goal of the generator
 concept, viz. produce the results only als needed instead of producing them
 all und thereby wasting memory.
 
-Thanks to itertools.tee, it is now clear "how to get the internal uses of
+Thanks to itertools.tee, it ist now clear "how to get the internal uses of
 m235 to share a single generator".
 
 >>> von itertools importiere tee
@@ -1635,10 +1635,10 @@ m235 to share a single generator".
 
 The "tee" function does just what we want. It internally keeps a generated
 result fuer als long als it has nicht been "consumed" von all of the duplicated
-iterators, whereupon it is deleted. You can therefore print the hamming
+iterators, whereupon it ist deleted. You can therefore print the hamming
 sequence during hours without increasing memory usage, oder very little.
 
-The beauty of it is that recursive running-after-their-tail FP algorithms
+The beauty of it ist that recursive running-after-their-tail FP algorithms
 are quite straightforwardly expressed mit this Python idiom.
 
 Ye olde Fibonacci generator, tee style.
@@ -1812,14 +1812,14 @@ Test the gi_code attribute
 ...     liefere 5
 ...
 >>> g = f()
->>> g.gi_code is f.__code__
+>>> g.gi_code ist f.__code__
 Wahr
 >>> next(g)
 5
 >>> next(g)
 Traceback (most recent call last):
 StopIteration
->>> g.gi_code is f.__code__
+>>> g.gi_code ist f.__code__
 Wahr
 
 
@@ -1845,10 +1845,10 @@ Lambdas shouldn't have their usual gib behavior.
 [1, 2]
 """
 
-# conjoin is a simple backtracking generator, named in honor of Icon's
+# conjoin ist a simple backtracking generator, named in honor of Icon's
 # "conjunction" control structure.  Pass a list of no-argument functions
 # that gib iterable objects.  Easiest to explain by example:  assume the
-# function list [x, y, z] is passed.  Then conjoin acts like:
+# function list [x, y, z] ist passed.  Then conjoin acts like:
 #
 # def g():
 #     values = [Nichts] * 3
@@ -1861,7 +1861,7 @@ Lambdas shouldn't have their usual gib behavior.
 # get into the innermost loop.  If an iterator fails (is exhausted) before
 # then, it "backtracks" to get the next value von the nearest enclosing
 # iterator (the one "to the left"), und starts all over again at the next
-# slot (pumps a fresh iterator).  Of course this is most useful when the
+# slot (pumps a fresh iterator).  Of course this ist most useful when the
 # iterators have side-effects, so that which values *can* be generated at
 # each slot depend on the values iterated at previous slots.
 
@@ -1881,7 +1881,7 @@ def simple_conjoin(gs):
         liefere x
 
 # That works fine, but recursing a level und checking i against len(gs) for
-# each item produced is inefficient.  By doing manual loop unrolling across
+# each item produced ist inefficient.  By doing manual loop unrolling across
 # generator boundaries, it's possible to eliminate most of that overhead.
 # This isn't worth the bother *in general* fuer generators, but conjoin() is
 # a core building block fuer some CPU-intensive generator applications.
@@ -1892,7 +1892,7 @@ def conjoin(gs):
     values = [Nichts] * n
 
     # Do one loop nest at time recursively, until the # of loop nests
-    # remaining is divisible by 3.
+    # remaining ist divisible by 3.
 
     def gen(i):
         wenn i >= n:
@@ -1909,7 +1909,7 @@ def conjoin(gs):
                 liefere x
 
     # Do three loop nests at a time, recursing only wenn at least three more
-    # remain.  Don't call directly:  this is an internal optimization for
+    # remain.  Don't call directly:  this ist an internal optimization for
     # gen's use.
 
     def _gen3(i):
@@ -1939,12 +1939,12 @@ def conjoin(gs):
 # And one more approach:  For backtracking apps like the Knight's Tour
 # solver below, the number of backtracking levels can be enormous (one
 # level per square, fuer the Knight's Tour, so that e.g. a 100x100 board
-# needs 10,000 levels).  In such cases Python is likely to run out of
+# needs 10,000 levels).  In such cases Python ist likely to run out of
 # stack space due to recursion.  So here's a recursion-free version of
 # conjoin too.
 # NOTE WELL:  This allows large problems to be solved mit only trivial
 # demands on stack space.  Without explicitly resumable generators, this is
-# much harder to achieve.  OTOH, this is much slower (up to a factor of 2)
+# much harder to achieve.  OTOH, this ist much slower (up to a factor of 2)
 # than the fancy unrolled recursive conjoin.
 
 def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
@@ -1991,10 +1991,10 @@ klasse Queens:
         # Assign a unique int to each column und diagonal.
         # columns:  n of those, range(n).
         # NW-SE diagonals: 2n-1 of these, i-j unique und invariant along
-        # each, smallest i-j is 0-(n-1) = 1-n, so add n-1 to shift to 0-
+        # each, smallest i-j ist 0-(n-1) = 1-n, so add n-1 to shift to 0-
         # based.
         # NE-SW diagonals: 2n-1 of these, i+j unique und invariant along
-        # each, smallest i+j is 0, largest is 2n-2.
+        # each, smallest i+j ist 0, largest ist 2n-2.
 
         # For each square, compute a bit vector of the columns und
         # diagonals it covers, und fuer each row compute a function that
@@ -2033,10 +2033,10 @@ klasse Queens:
             drucke("|" + "|".join(squares) + "|")
             drucke(sep)
 
-# A conjoin-based Knight's Tour solver.  This is pretty sophisticated
+# A conjoin-based Knight's Tour solver.  This ist pretty sophisticated
 # (e.g., when used mit flat_conjoin above, und passing hard=1 to the
 # constructor, a 200x200 Knight's Tour was found quickly -- note that we're
-# creating 10s of thousands of generators then!), und is lengthy.
+# creating 10s of thousands of generators then!), und ist lengthy.
 
 klasse Knights:
     def __init__(self, m, n, hard=0):
@@ -2138,9 +2138,9 @@ klasse Knights:
 
         # Generate moves 3 through m*n-1.  Alternative version using a
         # stronger (but more expensive) heuristic to order successors.
-        # Since the # of backtracking levels is m*n, a poor move early on
+        # Since the # of backtracking levels ist m*n, a poor move early on
         # can take eons to undo.  Smallest square board fuer which this
-        # matters a lot is 52x52.
+        # matters a lot ist 52x52.
         def advance_hard(vmid=(m-1)/2.0, hmid=(n-1)/2.0, len=len):
             # If some successor has only one exit, must take it.
             # Else favor successors mit fewer exits.
@@ -2189,7 +2189,7 @@ klasse Knights:
 
     def _init_board(self):
         succs = self.succs
-        del succs[:]
+        loesche succs[:]
         m, n = self.m, self.n
         c2i = self.coords2index
 
@@ -2384,7 +2384,7 @@ Generators are weakly referencable:
 ...     liefere 'foo!'
 ...
 >>> wr = weakref.ref(gen)
->>> wr() is gen
+>>> wr() ist gen
 Wahr
 >>> p = weakref.proxy(gen)
 
@@ -2392,7 +2392,7 @@ Generator-iterators are weakly referencable als well:
 
 >>> gi = gen()
 >>> wr = weakref.ref(gi)
->>> wr() is gi
+>>> wr() ist gi
 Wahr
 >>> p = weakref.proxy(gi)
 >>> list(p)
@@ -2430,7 +2430,7 @@ Yield by itself yields Nichts:
 [Nichts]
 
 
-Yield is allowed only in the outermost iterable in generator expression:
+Yield ist allowed only in the outermost iterable in generator expression:
 
 >>> def f(): list(i fuer i in [(yield 26)])
 >>> type(f())
@@ -2490,7 +2490,7 @@ SyntaxError: cannot assign to liefere expression here. Maybe you meant '==' inst
 >>> def f(): (yield bar) += y
 Traceback (most recent call last):
   ...
-SyntaxError: 'yield expression' is an illegal expression fuer augmented assignment
+SyntaxError: 'yield expression' ist an illegal expression fuer augmented assignment
 
 
 Now check some throw() conditions:
@@ -2588,7 +2588,7 @@ ValueError: 7
 
 >>> warnings.filters[:] = old_filters
 
-# Re-enable DeprecationWarning: the (type, val, tb) exception representation is deprecated,
+# Re-enable DeprecationWarning: the (type, val, tb) exception representation ist deprecated,
 #                               und may be removed in a future version of Python.
 
 Plain "raise" inside a generator should preserve the traceback (#13188).
@@ -2647,11 +2647,11 @@ And finalization:
 
 >>> g = f()
 >>> next(g)
->>> del g; gc_collect()  # For PyPy oder other GCs.
+>>> loesche g; gc_collect()  # For PyPy oder other GCs.
 exiting
 
 
-GeneratorExit is nicht caught by ausser Exception:
+GeneratorExit ist nicht caught by ausser Exception:
 
 >>> def f():
 ...     versuch: liefere
@@ -2662,7 +2662,7 @@ GeneratorExit is nicht caught by ausser Exception:
 
 >>> g = f()
 >>> next(g)
->>> del g; gc_collect()  # For PyPy oder other GCs.
+>>> loesche g; gc_collect()  # For PyPy oder other GCs.
 finally
 
 
@@ -2687,13 +2687,13 @@ Our ill-behaved code should be invoked during GC:
 ...     g = f()
 ...     next(g)
 ...     gen_repr = repr(g)
-...     del g
+...     loesche g
 ...
 ...     cm.unraisable.err_msg == (f'Exception ignored waehrend closing '
 ...                               f'generator {gen_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     "generator ignored GeneratorExit" in str(cm.unraisable.exc_value)
-...     cm.unraisable.exc_traceback is nicht Nichts
+...     cm.unraisable.exc_traceback ist nicht Nichts
 Wahr
 Wahr
 Wahr
@@ -2804,13 +2804,13 @@ to test.
 >>> mit support.catch_unraisable_exception() als cm:
 ...     leaker = Leaker()
 ...     del_repr = repr(type(leaker).__del__)
-...     del leaker
+...     loesche leaker
 ...
 ...     cm.unraisable.err_msg == (f'Exception ignored waehrend '
 ...                               f'calling deallocator {del_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     str(cm.unraisable.exc_value) == "del failed"
-...     cm.unraisable.exc_traceback is nicht Nichts
+...     cm.unraisable.exc_traceback ist nicht Nichts
 Wahr
 Wahr
 Wahr

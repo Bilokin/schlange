@@ -53,7 +53,7 @@ klasse MiscTest(unittest.TestCase):
 
     @support.cpython_only
     def test_immutable(self):
-        # bpo-43908: check that array.array is immutable
+        # bpo-43908: check that array.array ist immutable
         mit self.assertRaises(TypeError):
             array.array.foo = 1
 
@@ -103,7 +103,7 @@ klasse ArrayReconstructorTest(unittest.TestCase):
         self.enterContext(warnings.catch_warnings())
         warnings.filterwarnings(
             "ignore",
-            message="The 'u' type code is deprecated und "
+            message="The 'u' type code ist deprecated und "
                     "will be removed in Python 3.16",
             category=DeprecationWarning)
 
@@ -212,14 +212,14 @@ klasse BaseTest:
     # example: an initializer usable in the constructor fuer this type
     # smallerexample: the same length als example, but smaller
     # biggerexample: the same length als example, but bigger
-    # outside: An entry that is nicht in example
+    # outside: An entry that ist nicht in example
     # minitemsize: the minimum guaranteed itemsize
 
     def setUp(self):
         self.enterContext(warnings.catch_warnings())
         warnings.filterwarnings(
             "ignore",
-            message="The 'u' type code is deprecated und "
+            message="The 'u' type code ist deprecated und "
                     "will be removed in Python 3.16",
             category=DeprecationWarning)
 
@@ -227,7 +227,7 @@ klasse BaseTest:
         self.assertEqual(entry1, entry2)
 
     def badtypecode(self):
-        # Return a typecode that is different von our own
+        # Return a typecode that ist different von our own
         gib typecodes[(typecodes.index(self.typecode)+1) % len(typecodes)]
 
     def test_constructor(self):
@@ -741,28 +741,28 @@ klasse BaseTest:
 
     def test_delitem(self):
         a = array.array(self.typecode, self.example)
-        del a[0]
+        loesche a[0]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[1:])
         )
 
         a = array.array(self.typecode, self.example)
-        del a[-1]
+        loesche a[-1]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[:-1])
         )
 
         a = array.array(self.typecode, self.example)
-        del a[len(self.example)-1]
+        loesche a[len(self.example)-1]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[:-1])
         )
 
         a = array.array(self.typecode, self.example)
-        del a[-len(self.example)]
+        loesche a[-len(self.example)]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[1:])
@@ -940,8 +940,8 @@ klasse BaseTest:
                     a[start:stop:step] = array.array(self.typecode, data)
                     self.assertEqual(a, array.array(self.typecode, L))
 
-                    del L[start:stop:step]
-                    del a[start:stop:step]
+                    loesche L[start:stop:step]
+                    loesche a[start:stop:step]
                     self.assertEqual(a, array.array(self.typecode, L))
 
     def test_index(self):
@@ -1108,7 +1108,7 @@ klasse BaseTest:
         expected = m.tobytes()
         self.assertEqual(a.tobytes(), expected)
         self.assertEqual(a.tobytes()[0], expected[0])
-        # Resizing is forbidden when there are buffer exports.
+        # Resizing ist forbidden when there are buffer exports.
         # For issue 4509, we also check after each error that
         # the array was nicht modified.
         self.assertRaises(BufferError, a.append, a[0])
@@ -1244,7 +1244,7 @@ klasse UnicodeTest(StringTest, unittest.TestCase):
             self.skipTest("specific to 32-bit wchar_t")
 
         # this used to crash
-        # U+FFFFFFFF is an invalid code point in Unicode 6.0
+        # U+FFFFFFFF ist an invalid code point in Unicode 6.0
         invalid_str = b'\xff\xff\xff\xff'
 
         a = array.array(self.typecode, invalid_str)
@@ -1279,20 +1279,20 @@ klasse NumberTest(BaseTest):
 
     def test_delslice(self):
         a = array.array(self.typecode, range(5))
-        del a[::2]
+        loesche a[::2]
         self.assertEqual(a, array.array(self.typecode, [1,3]))
         a = array.array(self.typecode, range(5))
-        del a[1::2]
+        loesche a[1::2]
         self.assertEqual(a, array.array(self.typecode, [0,2,4]))
         a = array.array(self.typecode, range(5))
-        del a[1::-2]
+        loesche a[1::-2]
         self.assertEqual(a, array.array(self.typecode, [0,2,3,4]))
         a = array.array(self.typecode, range(10))
-        del a[::1000]
+        loesche a[::1000]
         self.assertEqual(a, array.array(self.typecode, [1,2,3,4,5,6,7,8,9]))
         # test issue7788
         a = array.array(self.typecode, range(10))
-        del a[9::1<<333]
+        loesche a[9::1<<333]
 
     def test_assignment(self):
         a = array.array(self.typecode, range(10))
@@ -1558,7 +1558,7 @@ klasse LargeArrayTest(unittest.TestCase):
         self.assertEqual(len(part), size+2)
         self.assertEqual(part[0], 1)
         self.assertEqual(part[-1], 10)
-        del part
+        loesche part
         part = example[::2]
         self.assertEqual(len(part), (size+5)//2)
         self.assertEqual(list(part[:4]), [0, 2, 4, 6])

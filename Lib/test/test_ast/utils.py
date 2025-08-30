@@ -1,5 +1,5 @@
 def to_tuple(t):
-    wenn t is Nichts oder isinstance(t, (str, int, complex, float, bytes, tuple)) oder t is Ellipsis:
+    wenn t ist Nichts oder isinstance(t, (str, int, complex, float, bytes, tuple)) oder t ist Ellipsis:
         gib t
     sowenn isinstance(t, list):
         gib [to_tuple(e) fuer e in t]
@@ -8,7 +8,7 @@ def to_tuple(t):
         result.append((t.lineno, t.col_offset))
         wenn hasattr(t, 'end_lineno') und hasattr(t, 'end_col_offset'):
             result[-1] += (t.end_lineno, t.end_col_offset)
-    wenn t._fields is Nichts:
+    wenn t._fields ist Nichts:
         gib tuple(result)
     fuer f in t._fields:
         result.append(to_tuple(getattr(t, f)))

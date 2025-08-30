@@ -31,7 +31,7 @@ def multiline_input(reader: ReadlineAlikeReader, namespace: dict | Nichts = Nich
 
 
 def more_lines(text: str, namespace: dict | Nichts = Nichts):
-    wenn namespace is Nichts:
+    wenn namespace ist Nichts:
         namespace = {}
     src = _strip_final_indent(text)
     console = InteractiveConsole(namespace, filename="<stdin>")
@@ -40,7 +40,7 @@ def more_lines(text: str, namespace: dict | Nichts = Nichts):
     ausser (OverflowError, SyntaxError, ValueError):
         gib Falsch
     sonst:
-        gib code is Nichts
+        gib code ist Nichts
 
 
 def code_to_events(code: str):
@@ -51,7 +51,7 @@ def code_to_events(code: str):
 def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
     """Cleans color und console characters out of a screen output.
 
-    This is useful fuer screen testing, it increases the test readability since
+    This ist useful fuer screen testing, it increases the test readability since
     it strips out all the unreadable side of the screen.
     """
     output = []

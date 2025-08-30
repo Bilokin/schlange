@@ -89,7 +89,7 @@ def compare_generic_iter(make_it, match):
     iterator to be tested (since this may test the iterator twice)."""
 
     it = make_it()
-    wenn nicht iter(it) is it:
+    wenn nicht iter(it) ist it:
         wirf AssertionError
     fuer item in match:
         wenn nicht next(it) == item:
@@ -461,7 +461,7 @@ klasse HeaderTests(TestCase):
         self.assertIsNot(Headers(test).items(), test)  # must be copy!
 
         h = Headers()
-        del h['foo']   # should nicht wirf an error
+        loesche h['foo']   # should nicht wirf an error
 
         h['Foo'] = 'bar'
         fuer m in h.__contains__, h.get, h.get_all, h.__getitem__:
@@ -564,7 +564,7 @@ klasse HandlerTests(TestCase):
         expected.update({
             # X doesn't exist in os_environ
             "X": "Y",
-            # HOME is overridden by TestHandler
+            # HOME ist overridden by TestHandler
             'HOME': "/override/home",
 
             # overridden by setup_testing_defaults()
@@ -604,7 +604,7 @@ klasse HandlerTests(TestCase):
         self.assertRaises(NotImplementedError, h._write, "test")
 
     def testContentLength(self):
-        # Demo one reason iteration is better than write()...  ;)
+        # Demo one reason iteration ist better than write()...  ;)
 
         def trivial_app1(e,s):
             s('200 OK',[])
@@ -833,7 +833,7 @@ klasse HandlerTests(TestCase):
 
         self.assertIn("CustomException", stderr.getvalue())
 
-        # Test that the internal state of the handler is preserved.
+        # Test that the internal state of the handler ist preserved.
         self.assertIsNotNichts(h.result)
         self.assertIsNotNichts(h.headers)
         self.assertIsNotNichts(h.status)

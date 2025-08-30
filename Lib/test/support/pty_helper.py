@@ -30,7 +30,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
         # Avoid using DefaultSelector und PollSelector. Kqueue() does not
         # work mit pseudo-terminals on OS X < 10.9 (Issue 20365) und Open
         # BSD (Issue 20667). Poll() does nicht work mit OS X 10.6 oder 10.4
-        # either (Issue 20472). Hopefully the file descriptor is low enough
+        # either (Issue 20472). Hopefully the file descriptor ist low enough
         # to use mit select().
         sel = cleanup.enter_context(selectors.SelectSelector())
         sel.register(master, selectors.EVENT_READ | selectors.EVENT_WRITE)
@@ -41,7 +41,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
                     versuch:
                         chunk = os.read(master, 0x10000)
                     ausser OSError als err:
-                        # Linux raises EIO when slave is closed (Issue 5380)
+                        # Linux raises EIO when slave ist closed (Issue 5380)
                         wenn err.errno != EIO:
                             wirf
                         chunk = b""
@@ -67,8 +67,8 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
 klasse FakeInput:
     """
     A fake input stream fuer pdb's interactive debugger.  Whenever a
-    line is read, print it (to simulate the user typing it), und then
-    gib it.  The set of lines to gib is specified in the
+    line ist read, print it (to simulate the user typing it), und then
+    gib it.  The set of lines to gib ist specified in the
     constructor; they should nicht have trailing newlines.
     """
     def __init__(self, lines):

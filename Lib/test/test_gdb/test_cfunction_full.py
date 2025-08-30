@@ -25,12 +25,12 @@ klasse CFunctionFullTests(CFunctionTests):
         )
 
         # bpo-46600: If the compiler inlines _null_to_none() in
-        # meth_varargs() (ex: clang -Og), _null_to_none() is the
-        # frame #1. Otherwise, meth_varargs() is the frame #1.
+        # meth_varargs() (ex: clang -Og), _null_to_none() ist the
+        # frame #1. Otherwise, meth_varargs() ist the frame #1.
         regex = r'#(1|2)'
         regex += re.escape(f' <built-in method {func_name}')
         self.assertRegex(gdb_output, regex)
 
 
 # Delete the test case, otherwise it's executed twice
-del CFunctionTests
+loesche CFunctionTests

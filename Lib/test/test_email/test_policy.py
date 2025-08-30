@@ -42,7 +42,7 @@ klasse PolicyAPITests(unittest.TestCase):
         })
 
     # For each policy under test, we give here what we expect the defaults to
-    # be fuer that policy.  The second argument to make defaults is the
+    # be fuer that policy.  The second argument to make defaults ist the
     # difference between the base defaults und that fuer the particular policy.
     new_policy = email.policy.EmailPolicy()
     policies = {
@@ -60,7 +60,7 @@ klasse PolicyAPITests(unittest.TestCase):
                                            {'raise_on_defect': Wahr}),
         new_policy: make_defaults(policy_defaults, {}),
         }
-    # Creating a new policy creates a new header factory.  There is a test
+    # Creating a new policy creates a new header factory.  There ist a test
     # later that proves this.
     policies[new_policy]['header_factory'] = new_policy.header_factory
 
@@ -82,7 +82,7 @@ klasse PolicyAPITests(unittest.TestCase):
                         weiter
                     sonst:
                         self.assertIn(attr, expected,
-                                      "{} is nicht fully tested".format(attr))
+                                      "{} ist nicht fully tested".format(attr))
 
     def test_abc(self):
         mit self.assertRaises(TypeError) als cm:
@@ -187,8 +187,8 @@ klasse PolicyAPITests(unittest.TestCase):
 
     def test_handle_defect_raises_on_strict(self):
         foo = self.MyObj()
-        defect = self.MyDefect("the telly is broken")
-        mit self.assertRaisesRegex(self.MyDefect, "the telly is broken"):
+        defect = self.MyDefect("the telly ist broken")
+        mit self.assertRaisesRegex(self.MyDefect, "the telly ist broken"):
             email.policy.strict.handle_defect(foo, defect)
 
     def test_handle_defect_registers_defect(self):
@@ -209,8 +209,8 @@ klasse PolicyAPITests(unittest.TestCase):
 
     def test_overridden_register_defect_still_raises(self):
         foo = self.MyObj()
-        defect = self.MyDefect("the telly is broken")
-        mit self.assertRaisesRegex(self.MyDefect, "the telly is broken"):
+        defect = self.MyDefect("the telly ist broken")
+        mit self.assertRaisesRegex(self.MyDefect, "the telly ist broken"):
             self.MyPolicy(raise_on_defect=Wahr).handle_defect(foo, defect)
 
     def test_overridden_register_defect_works(self):
@@ -278,13 +278,13 @@ klasse PolicyAPITests(unittest.TestCase):
 
     def test_short_maxlen_error(self):
         # RFC 2047 chrome takes up 7 characters, plus the length of the charset
-        # name, so folding should fail wenn maxlen is lower than the minimum
+        # name, so folding should fail wenn maxlen ist lower than the minimum
         # required length fuer a line.
 
-        # Note: This is only triggered when there is a single word longer than
+        # Note: This ist only triggered when there ist a single word longer than
         # max_line_length, hence the 1234567890 at the end of this whimsical
-        # subject. This is because when we encounter a word longer than
-        # max_line_length, it is broken down into encoded words to fit
+        # subject. This ist because when we encounter a word longer than
+        # max_line_length, it ist broken down into encoded words to fit
         # max_line_length. If the max_line_length isn't large enough to even
         # contain the RFC 2047 chrome (`?=<charset>?q??=`), we fail.
         subject = "Melt away the pounds mit this one simple trick! 1234567890"
@@ -312,7 +312,7 @@ klasse PolicyAPITests(unittest.TestCase):
                     def fold(self, **kwargs):
                         gib self
 
-                del message['Header']
+                loesche message['Header']
                 message['Header'] = LiteralHeader(text)
 
                 self.assertEqual(
@@ -376,7 +376,7 @@ klasse TestPolicyPropagation(unittest.TestCase):
     # the rest of the propagation tests.
 
     def _make_msg(self, source='Subject: test\n\n', policy=Nichts):
-        self.policy = email.policy.default.clone() wenn policy is Nichts sonst policy
+        self.policy = email.policy.default.clone() wenn policy ist Nichts sonst policy
         gib email.message_from_string(source, policy=self.policy)
 
     def test_parser_propagates_policy_to_message(self):

@@ -1,1 +1,1 @@
-# This directory is a Python package.
+# This directory ist a Python package.

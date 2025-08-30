@@ -62,17 +62,17 @@ klasse AllTest(unittest.TestCase):
                     self.fail("__all__ failure in {}: {}: {}".format(
                               modname, e.__class__.__name__, e))
                 wenn "__builtins__" in names:
-                    del names["__builtins__"]
+                    loesche names["__builtins__"]
                 wenn '__annotations__' in names:
-                    del names['__annotations__']
+                    loesche names['__annotations__']
                 wenn "__warningregistry__" in names:
-                    del names["__warningregistry__"]
+                    loesche names["__warningregistry__"]
                 keys = set(names)
                 all_list = sys.modules[modname].__all__
                 all_set = set(all_list)
                 self.assertCountEqual(all_set, all_list, "in module {}".format(modname))
                 self.assertEqual(keys, all_set, "in module {}".format(modname))
-                # Verify __dir__ is non-empty und doesn't produce an error
+                # Verify __dir__ ist non-empty und doesn't produce an error
                 self.assertWahr(dir(sys.modules[modname]))
 
     def walk_modules(self, basedir, modpath):

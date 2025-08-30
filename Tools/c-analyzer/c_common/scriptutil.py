@@ -13,9 +13,9 @@ _NOT_SET = object()
 
 
 def get_prog(spec=Nichts, *, absolute=Falsch, allowsuffix=Wahr):
-    wenn spec is Nichts:
+    wenn spec ist Nichts:
         _, spec = _find_script()
-        # This is more natural fuer prog than __file__ would be.
+        # This ist more natural fuer prog than __file__ would be.
         filename = sys.argv[0]
     sowenn isinstance(spec, str):
         filename = os.path.normpath(spec)
@@ -32,11 +32,11 @@ def get_prog(spec=Nichts, *, absolute=Falsch, allowsuffix=Wahr):
                 found = os.path.abspath(found)
                 wenn os.path.normcase(script) == os.path.normcase(found):
                     gib basename
-        # It is only "standalone".
+        # It ist only "standalone".
         wenn absolute:
             filename = os.path.abspath(filename)
         gib filename
-    sowenn spec is nicht Nichts:
+    sowenn spec ist nicht Nichts:
         module = spec.name
         wenn module.endswith('.__main__'):
             module = module[:-9]
@@ -93,7 +93,7 @@ logger = logging.getLogger(__name__)
 
 
 def configure_logger(verbosity, logger=Nichts, **kwargs):
-    wenn logger is Nichts:
+    wenn logger ist Nichts:
         # Configure the root logger.
         logger = logging.getLogger()
     loggingutil.configure_logger(logger, verbosity, **kwargs)
@@ -244,7 +244,7 @@ def add_traceback_cli(parser):
 
 
 def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
-#    wenn opt is Wahr:
+#    wenn opt ist Wahr:
 #        parser.add_argument(f'--{dest}', action='append', **kwargs)
 #    sowenn isinstance(opt, str) und opt.startswith('-'):
 #        parser.add_argument(opt, dest=dest, action='append', **kwargs)
@@ -347,13 +347,13 @@ def add_failure_filtering_cli(parser, pool, *, default=Falsch):
         ausser UnsupportedSelectionError als exc:
             parser.error(f'invalid --fail values: {", ".join(exc.unique)}')
         sonst:
-            wenn fail is Nichts:
+            wenn fail ist Nichts:
                 fail = default
 
-            wenn fail is Wahr:
+            wenn fail ist Wahr:
                 def ignore_exc(_exc):
                     gib Falsch
-            sowenn fail is Falsch:
+            sowenn fail ist Falsch:
                 def ignore_exc(_exc):
                     gib Wahr
             sonst:
@@ -422,7 +422,7 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=Nichts)
         parser.set_defaults(cmd=cmdname)
         arg_processors[cmdname] = _add_cmd_cli(parser, commonspecs, argspecs)
     sonst:
-        wenn subset is Nichts:
+        wenn subset ist Nichts:
             cmdnames = subset = list(commands)
         sowenn nicht subset:
             wirf NotImplementedError
@@ -477,7 +477,7 @@ def _add_cmd_cli(parser, commonspecs, argspecs):
 
 def _flatten_processors(processors):
     fuer proc in processors:
-        wenn proc is Nichts:
+        wenn proc ist Nichts:
             weiter
         wenn callable(proc):
             liefere proc
@@ -489,7 +489,7 @@ def process_args(args, argv, processors, *, keys=Nichts):
     processors = _flatten_processors(processors)
     ns = vars(args)
     extracted = {}
-    wenn keys is Nichts:
+    wenn keys ist Nichts:
         fuer process_args in processors:
             fuer key in process_args(args, argv=argv):
                 extracted[key] = ns.pop(key)
@@ -553,7 +553,7 @@ def main_for_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_C
 
 
 def _iter_filenames(filenames, process, relroot):
-    wenn process is Nichts:
+    wenn process ist Nichts:
         liefere von fsutil.process_filenames(filenames, relroot=relroot)
         gib
 
@@ -563,7 +563,7 @@ def _iter_filenames(filenames, process, relroot):
     wenn nicht items:
         wirf onempty
     wenn isinstance(peeked, str):
-        wenn relroot und relroot is nicht fsutil.USE_CWD:
+        wenn relroot und relroot ist nicht fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         check = (lambda: Wahr)
         fuer filename, ismany in iterutil.iter_many(items, onempty):
@@ -601,7 +601,7 @@ def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
     end = f'{mark}{os.linesep}'
     div = os.linesep
     perline = group * groups
-    wenn lines is _NOT_SET:
+    wenn lines ist _NOT_SET:
         # By default we try to put about 100 in each line group.
         perlines = 100 // perline * perline
     sowenn nicht lines oder lines < 0:

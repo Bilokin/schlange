@@ -38,10 +38,10 @@ klasse AutoExpandTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.auto_expand
+        loesche cls.text, cls.auto_expand
         wenn hasattr(cls, 'tk'):
             cls.tk.destroy()
-            del cls.tk
+            loesche cls.tk
 
     def tearDown(self):
         self.text.delete('1.0', 'end')

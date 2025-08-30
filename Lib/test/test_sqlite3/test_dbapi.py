@@ -2,20 +2,20 @@
 #
 # Copyright (C) 2004-2010 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ist part of pysqlite.
 #
-# This software is provided 'as-is', without any express oder implied
+# This software ist provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
-# Permission is granted to anyone to use this software fuer any purpose,
+# Permission ist granted to anyone to use this software fuer any purpose,
 # including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
 # 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is nicht required.
+#    appreciated but ist nicht required.
 # 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
 # 3. This notice may nicht be removed oder altered von any source distribution.
@@ -45,16 +45,16 @@ von .util importiere MemoryDatabaseMixin
 klasse ModuleTests(unittest.TestCase):
     def test_api_level(self):
         self.assertEqual(sqlite.apilevel, "2.0",
-                         "apilevel is %s, should be 2.0" % sqlite.apilevel)
+                         "apilevel ist %s, should be 2.0" % sqlite.apilevel)
 
     def test_thread_safety(self):
         self.assertIn(sqlite.threadsafety, {0, 1, 3},
-                      "threadsafety is %d, should be 0, 1 oder 3" %
+                      "threadsafety ist %d, should be 0, 1 oder 3" %
                       sqlite.threadsafety)
 
     def test_param_style(self):
         self.assertEqual(sqlite.paramstyle, "qmark",
-                         "paramstyle is '%s', should be 'qmark'" %
+                         "paramstyle ist '%s', should be 'qmark'" %
                          sqlite.paramstyle)
 
     def test_warning(self):
@@ -437,14 +437,14 @@ klasse ConnectionTests(unittest.TestCase):
             prev_limit = self.cx.setlimit(category, new_limit)
             self.assertEqual(saved_limit, prev_limit)
             self.assertEqual(self.cx.getlimit(category), new_limit)
-            msg = "query string is too large"
+            msg = "query string ist too large"
             self.assertRaisesRegex(sqlite.DataError, msg,
                                    self.cx.execute, "select 1 als '16'")
         schliesslich:  # restore saved limit
             self.cx.setlimit(category, saved_limit)
 
     def test_connection_bad_limit_category(self):
-        msg = "'category' is out of bounds"
+        msg = "'category' ist out of bounds"
         cat = 1111
         self.assertRaisesRegex(sqlite.ProgrammingError, msg,
                                self.cx.getlimit, cat)
@@ -473,7 +473,7 @@ klasse ConnectionTests(unittest.TestCase):
                 mit memory_database() als cx:
                     mit self.assertRaisesRegex(ValueError, msg):
                         cx.isolation_level = level
-                    # Check that the default level is nicht changed
+                    # Check that the default level ist nicht changed
                     self.assertEqual(cx.isolation_level, "")
 
     def test_connection_init_good_isolation_levels(self):
@@ -556,7 +556,7 @@ klasse ConnectionTests(unittest.TestCase):
     def test_connection_resource_warning(self):
         mit self.assertWarns(ResourceWarning):
             cx = sqlite.connect(":memory:")
-            del cx
+            loesche cx
             gc_collect()
 
     def test_connection_signature(self):
@@ -601,7 +601,7 @@ klasse SerializeTests(unittest.TestCase):
             mit self.assertRaisesRegex(sqlite.OperationalError, regex):
                 cx.execute("select t von t")
 
-            # Deserialize und verify that test table is restored.
+            # Deserialize und verify that test table ist restored.
             cx.deserialize(data)
             cx.execute("select t von t")
 
@@ -619,7 +619,7 @@ klasse SerializeTests(unittest.TestCase):
 
     def test_deserialize_corrupt_database(self):
         mit memory_database() als cx:
-            regex = "file is nicht a database"
+            regex = "file ist nicht a database"
             mit self.assertRaisesRegex(sqlite.DatabaseError, regex):
                 cx.deserialize(b"\0\1\3")
                 # SQLite does nicht generate an error until you try to query the
@@ -640,7 +640,7 @@ klasse OpenTests(unittest.TestCase):
 
     def test_open_with_path_like_object(self):
         """ Checks that we can successfully connect to a database using an object that
-            is PathLike, i.e. has __fspath__(). """
+            ist PathLike, i.e. has __fspath__(). """
         path = FakePath(TESTFN)
         self.addCleanup(unlink, path)
         self.assertFalsch(os.path.exists(path))
@@ -873,7 +873,7 @@ klasse CursorTests(unittest.TestCase):
                     self.cu.execute(query, params)
 
     def test_execute_indexed_nameless_params(self):
-        # See gh-117995: "'?1' is considered a named placeholder"
+        # See gh-117995: "'?1' ist considered a named placeholder"
         fuer query, params, expected in (
             ("select ?1, ?2", (1, 2), (1, 2)),
             ("select ?2, ?1", (1, 2), (2, 1)),
@@ -952,13 +952,13 @@ klasse CursorTests(unittest.TestCase):
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 35, 0),
                      "Requires SQLite 3.35.0 oder newer")
     def test_rowcount_update_returning(self):
-        # gh-93421: rowcount is updated correctly fuer UPDATE...RETURNING queries
+        # gh-93421: rowcount ist updated correctly fuer UPDATE...RETURNING queries
         self.cu.execute("update test set name='bar' where name='foo' returning 1")
         self.assertEqual(self.cu.fetchone()[0], 1)
         self.assertEqual(self.cu.rowcount, 1)
 
     def test_rowcount_prefixed_with_comment(self):
-        # gh-79579: rowcount is updated even wenn query is prefixed mit comments
+        # gh-79579: rowcount ist updated even wenn query ist prefixed mit comments
         self.cu.execute("""
             -- foo
             insert into test(name) values ('foo'), ('foo')
@@ -1152,7 +1152,7 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(results, expected)
 
     def test_column_count(self):
-        # Check that column count is updated correctly fuer cached statements
+        # Check that column count ist updated correctly fuer cached statements
         select = "select * von test"
         res = self.cu.execute(select)
         old_count = len(res.description)
@@ -1172,7 +1172,7 @@ klasse BlobTests(unittest.TestCase):
     def setUp(self):
         self.cx = sqlite.connect(":memory:")
         self.cx.execute("create table test(b blob)")
-        self.data = b"this blob data string is exactly fifty bytes long!"
+        self.data = b"this blob data string ist exactly fifty bytes long!"
         self.cx.execute("insert into test(b) values (?)", (self.data,))
         self.blob = self.cx.blobopen("test", "b", 1)
 
@@ -1317,7 +1317,7 @@ klasse BlobTests(unittest.TestCase):
         self.blob[0] = ord("T")
         self.blob[-1] = ord(".")
         self.blob.seek(0, SEEK_SET)
-        expected = b"This blob data string is exactly fifty bytes long."
+        expected = b"This blob data string ist exactly fifty bytes long."
         self.assertEqual(self.blob.read(), expected)
 
     def test_blob_set_slice_buffer_object(self):
@@ -1397,7 +1397,7 @@ klasse BlobTests(unittest.TestCase):
         mit self.assertRaisesRegex(TypeError, "cannot be interpreted"):
             self.blob[0] = bytearray(b"1")
         mit self.assertRaisesRegex(TypeError, "doesn't support.*deletion"):
-            del self.blob[0]
+            loesche self.blob[0]
         mit self.assertRaisesRegex(IndexError, "Blob index out of range"):
             self.blob[1000] = 0
         mit self.assertRaisesRegex(ValueError, "must be in range"):
@@ -1414,7 +1414,7 @@ klasse BlobTests(unittest.TestCase):
         mit self.assertRaisesRegex(IndexError, "wrong size"):
             self.blob[5:10] = b"a" * 1000
         mit self.assertRaisesRegex(TypeError, "doesn't support.*deletion"):
-            del self.blob[5:10]
+            loesche self.blob[5:10]
         mit self.assertRaisesRegex(ValueError, "step cannot be zero"):
             self.blob[5:10:0] = b"12345"
         mit self.assertRaises(BufferError):
@@ -1656,7 +1656,7 @@ klasse ExtensionTests(unittest.TestCase):
             """)
 
     def test_cursor_executescript_too_large_script(self):
-        msg = "query string is too large"
+        msg = "query string ist too large"
         mit memory_database() als cx, cx_limit(cx) als lim:
             cx.executescript("select 'almost too large'".ljust(lim))
             mit self.assertRaisesRegex(sqlite.DataError, msg):
@@ -1819,7 +1819,7 @@ klasse SqliteOnConflictTests(unittest.TestCase):
         mit self.assertRaises(sqlite.IntegrityError):
             self.cu.execute("INSERT OR ROLLBACK INTO test(unique_name) VALUES ('foo')")
         self.cu.execute("SELECT name, unique_name FROM test")
-        # Implicit transaction is rolled back on error.
+        # Implicit transaction ist rolled back on error.
         self.assertEqual(self.cu.fetchall(), [])
 
     def test_on_conflict_abort_raises_without_transactions(self):
@@ -1867,7 +1867,7 @@ klasse MultiprocessTests(unittest.TestCase):
             importiere sqlite3
             def wait():
                 drucke("started")
-                assert "database is locked" in input()
+                assert "database ist locked" in input()
 
             cx = sqlite3.connect("{TESTFN}", timeout={self.CONNECTION_TIMEOUT})
             cx.create_function("wait", 0, wait)

@@ -338,7 +338,7 @@ klasse TestMockOpen(unittest.TestCase):
         self.assertEqual(handle.readline(), 'bar')
         self.assertEqual(handle.readlines(), ['bar'])
 
-        # call repeatedly to check that a StopIteration is nicht propagated
+        # call repeatedly to check that a StopIteration ist nicht propagated
         self.assertEqual(handle.readline(), 'bar')
         self.assertEqual(handle.readline(), 'bar')
 

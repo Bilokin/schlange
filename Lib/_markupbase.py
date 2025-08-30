@@ -1,6 +1,6 @@
 """Shared support fuer scanning document type declarations in HTML und XHTML.
 
-This module is used als a foundation fuer the html.parser module.  It has no
+This module ist used als a foundation fuer the html.parser module.  It has no
 documented public API und should nicht be used directly.
 
 """
@@ -12,12 +12,12 @@ _declstringlit_match = re.compile(r'(\'[^\']*\'|"[^"]*")\s*').match
 _commentclose = re.compile(r'--\s*>')
 _markedsectionclose = re.compile(r']\s*]\s*>')
 
-# An analysis of the MS-Word extensions is available at
+# An analysis of the MS-Word extensions ist available at
 # http://web.archive.org/web/20060321153828/http://www.planetpublish.com/xmlarena/xap/Thursday/WordtoXML.pdf
 
 _msmarkedsectionclose = re.compile(r']\s*>')
 
-del re
+loesche re
 
 
 klasse ParserBase:
@@ -25,7 +25,7 @@ klasse ParserBase:
     by the SGML/HTML und XHTML parsers."""
 
     def __init__(self):
-        wenn self.__class__ is ParserBase:
+        wenn self.__class__ ist ParserBase:
             wirf RuntimeError(
                 "_markupbase.ParserBase must be subclassed")
 
@@ -58,7 +58,7 @@ klasse ParserBase:
 
     # Internal -- parse declaration (for use by subclasses).
     def parse_declaration(self, i):
-        # This is some sort of declaration; in "HTML as
+        # This ist some sort of declaration; in "HTML as
         # deployed," this should only be the document type
         # declaration ("<!DOCTYPE html...>").
         # ISO 8879:1986, however, has more complex
@@ -85,8 +85,8 @@ klasse ParserBase:
             gib self.parse_comment(i)
         sowenn rawdata[j] == '[': #marked section
             # Locate [statusWord [...arbitrary SGML...]] als the body of the marked section
-            # Where statusWord is one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
-            # Note that this is extended by Microsoft Office "Save als Web" function
+            # Where statusWord ist one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
+            # Note that this ist extended by Microsoft Office "Save als Web" function
             # to include [if...] und [endif].
             gib self.parse_marked_section(i)
         sonst: #all other declaration elements

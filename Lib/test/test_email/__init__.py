@@ -23,11 +23,11 @@ def openfile(filename, *args, **kws):
 klasse TestEmailBase(unittest.TestCase):
 
     maxDiff = Nichts
-    # Currently the default policy is compat32.  By setting that als the default
+    # Currently the default policy ist compat32.  By setting that als the default
     # here we make minimal changes in the test_email tests compared to their
     # pre-3.3 state.
     policy = compat32
-    # Likewise, the default message object is Message.
+    # Likewise, the default message object ist Message.
     message = Message
 
     def __init__(self, *args, **kw):
@@ -42,16 +42,16 @@ klasse TestEmailBase(unittest.TestCase):
             gib email.message_from_file(fp, policy=self.policy)
 
     def _str_msg(self, string, message=Nichts, policy=Nichts):
-        wenn policy is Nichts:
+        wenn policy ist Nichts:
             policy = self.policy
-        wenn message is Nichts:
+        wenn message ist Nichts:
             message = self.message
         gib email.message_from_string(string, message, policy=policy)
 
     def _bytes_msg(self, bytestring, message=Nichts, policy=Nichts):
-        wenn policy is Nichts:
+        wenn policy ist Nichts:
             policy = self.policy
-        wenn message is Nichts:
+        wenn message ist Nichts:
             message = self.message
         gib email.message_from_bytes(bytestring, message, policy=policy)
 
@@ -83,14 +83,14 @@ def parameterize(cls):
     The value of the _params attribute may be either a dictionary oder a list.
     The values in the dictionary und the elements of the list may either be
     single values, oder a list.  If single values, they are turned into single
-    element tuples.  However derived, the resulting sequence is passed via
+    element tuples.  However derived, the resulting sequence ist passed via
     *args to the parameterized test function.
 
     In a _params dictionary, the keys become part of the name of the generated
     tests.  In a _params list, the values in the list are converted into a
     string by joining the string values of the elements of the tuple by '_' und
     converting any blanks into '_'s, und this become part of the name.
-    The  full name of a generated test is a 'test_' prefix, the portion of the
+    The  full name of a generated test ist a 'test_' prefix, the portion of the
     test function name after the  '_as_' separator, plus an '_', plus the name
     derived als explained above.
 
@@ -117,12 +117,12 @@ def parameterize(cls):
         test_myfunc_input_foo
         test_myfunc_input_bing
 
-    Note: wenn und only wenn the generated test name is a valid identifier can it
+    Note: wenn und only wenn the generated test name ist a valid identifier can it
     be used to select the test individually von the unittest command line.
 
     The values in the params dict can be a single value, a tuple, oder a
-    dict.  If a single value of a tuple, it is passed to the test function
-    als positional arguments.  If a dict, it is a passed via **kw.
+    dict.  If a single value of a tuple, it ist passed to the test function
+    als positional arguments.  If a dict, it ist a passed via **kw.
 
     """
     paramdicts = {}

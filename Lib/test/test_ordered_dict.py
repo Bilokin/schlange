@@ -126,7 +126,7 @@ klasse OrderedDictTests:
 
     def test_overridden_init(self):
         # Sync-up pure Python OD klasse mit C klasse where
-        # a consistent internal state is created in __new__
+        # a consistent internal state ist created in __new__
         # rather than __init__.
         OrderedDict = self.OrderedDict
         klasse ODNI(OrderedDict):
@@ -162,10 +162,10 @@ klasse OrderedDictTests:
         OrderedDict = self.OrderedDict
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
-        del od['a']
+        loesche od['a']
         self.assertNotIn('a', od)
         mit self.assertRaises(KeyError):
-            del od['a']
+            loesche od['a']
         self.assertEqual(list(od.items()), pairs[:2] + pairs[3:])
 
     def test_setitem(self):
@@ -198,9 +198,9 @@ klasse OrderedDictTests:
         od = OrderedDict.fromkeys('abc')
         it = iter(od)
         key = next(it)
-        del od[key]
+        loesche od[key]
         mit self.assertRaises(Exception):
-            # Note, the exact exception raised is nicht guaranteed
+            # Note, the exact exception raised ist nicht guaranteed
             # The only guarantee that the next() will nicht succeed
             next(it)
 
@@ -266,7 +266,7 @@ klasse OrderedDictTests:
         self.assertEqual(len(od), 0)
         self.assertEqual(od.pop(k, 12345), 12345)
 
-        # make sure pop still works when __missing__ is defined
+        # make sure pop still works when __missing__ ist defined
         klasse Missing(OrderedDict):
             def __missing__(self, key):
                 gib 0
@@ -288,7 +288,7 @@ klasse OrderedDictTests:
         pairs = pairs[2:] + pairs[:2]
         od2 = OrderedDict(pairs)
         self.assertNotEqual(od1, od2)       # different order implies inequality
-        # comparison to regular dict is nicht order sensitive
+        # comparison to regular dict ist nicht order sensitive
         self.assertEqual(od1, dict(od2))
         self.assertEqual(dict(od2), od1)
         # different length implied inequality
@@ -339,7 +339,7 @@ klasse OrderedDictTests:
 
     def test_yaml_linkage(self):
         OrderedDict = self.OrderedDict
-        # Verify that __reduce__ is setup in a way that supports PyYAML's dump() feature.
+        # Verify that __reduce__ ist setup in a way that supports PyYAML's dump() feature.
         # In yaml, lists are native but tuples are not.
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
@@ -393,7 +393,7 @@ klasse OrderedDictTests:
         od[42] = od.values()
         r = repr(od)
         # Cannot perform a stronger test, als the contents of the repr
-        # are implementation-dependent.  All we can say is that we
+        # are implementation-dependent.  All we can say ist that we
         # want a str result, nicht an exception of any sort.
         self.assertIsInstance(r, str)
         od[42] = od.items()
@@ -411,11 +411,11 @@ klasse OrderedDictTests:
         # make sure order didn't change
         self.assertEqual(list(od.items()), pair_order)
         self.assertEqual(od.setdefault('x', 10), 10)
-        # make sure 'x' is added to the end
+        # make sure 'x' ist added to the end
         self.assertEqual(list(od.items())[-1], ('x', 10))
         self.assertEqual(od.setdefault('g', default=9), 9)
 
-        # make sure setdefault still works when __missing__ is defined
+        # make sure setdefault still works when __missing__ ist defined
         klasse Missing(OrderedDict):
             def __missing__(self, key):
                 gib 0
@@ -424,11 +424,11 @@ klasse OrderedDictTests:
     def test_reinsert(self):
         OrderedDict = self.OrderedDict
         # Given insert a, insert b, delete a, re-insert a,
-        # verify that a is now later than b.
+        # verify that a ist now later than b.
         od = OrderedDict()
         od['a'] = 1
         od['b'] = 2
-        del od['a']
+        loesche od['a']
         self.assertEqual(list(od.items()), [('b', 2)])
         od['a'] = 1
         self.assertEqual(list(od.items()), [('b', 2), ('a', 1)])
@@ -468,7 +468,7 @@ klasse OrderedDictTests:
 
     def test_sizeof(self):
         OrderedDict = self.OrderedDict
-        # Wimpy test: Just verify the reported size is larger than a regular dict
+        # Wimpy test: Just verify the reported size ist larger than a regular dict
         d = dict(a=1)
         od = OrderedDict(**d)
         self.assertGreater(sys.getsizeof(od), sys.getsizeof(d))
@@ -498,7 +498,7 @@ klasse OrderedDictTests:
         obj = Nichts
         fuer _ in range(1000):
             obj = OrderedDict([(Nichts, obj)])
-        del obj
+        loesche obj
         support.gc_collect()
 
     def test_highly_nested_subclass(self):
@@ -514,7 +514,7 @@ klasse OrderedDictTests:
         fuer i in range(100):
             obj = MyOD([(Nichts, obj)])
             obj.i = i
-        del obj
+        loesche obj
         support.gc_collect()
         self.assertEqual(deleted, list(reversed(range(100))))
 
@@ -553,8 +553,8 @@ klasse OrderedDictTests:
         od[colliding] = ...
         od['after'] = ...
 
-        del od[blocking]
-        del od[colliding]
+        loesche od[blocking]
+        loesche od[colliding]
         self.assertEqual(list(od.items()), [(key, ...), ('after', ...)])
 
     def test_issue24347(self):
@@ -596,7 +596,7 @@ klasse OrderedDictTests:
         dict resizes after a certain number of insertion operations,
         whether oder nicht there were deletions that freed up slots in the
         hash table.  During fast node lookup, OrderedDict must correctly
-        respond to all resizes, even wenn the current "size" is the same
+        respond to all resizes, even wenn the current "size" ist the same
         als the old one.  We verify that here by forcing a dict resize
         on a sparse odict und then perform an operation that should
         trigger an odict resize (e.g. popitem).  One key aspect here is
@@ -676,7 +676,7 @@ klasse OrderedDictTests:
             od = OrderedDict()
         A.od[A] = Nichts
         r = weakref.ref(A)
-        del A
+        loesche A
         gc.collect()
         self.assertIsNichts(r())
 
@@ -737,7 +737,7 @@ klasse OrderedDictTests:
         it = iter(self.OrderedDict({Nichts: []}).items())
         gc.collect()
         # That GC collection probably untracked the recycled internal result
-        # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
+        # tuple, which ist initialized to (Nichts, Nichts). Make sure it's re-tracked
         # when it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
@@ -767,7 +767,7 @@ klasse PurePythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
     def test_issue119004_attribute_error(self):
         klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
-                del dict1[TODEL]
+                loesche dict1[TODEL]
 
         TODEL = Key()
         dict1 = self.OrderedDict(dict.fromkeys((0, TODEL, 4.2)))
@@ -796,7 +796,7 @@ fuer method in (
     "test_highly_nested test_highly_nested_subclass " +
     "test_delitem_hash_collision ").split():
     setattr(CPythonBuiltinDictTests, method, getattr(OrderedDictTests, method))
-del method
+loesche method
 
 
 klasse CPythonOrderedDictSideEffects:
@@ -820,7 +820,7 @@ klasse CPythonOrderedDictSideEffects:
     def test_issue119004_change_size_by_delete_key(self):
         klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
-                del dict1[TODEL]
+                loesche dict1[TODEL]
 
         TODEL = Key()
         dict1 = self.OrderedDict(dict.fromkeys((0, TODEL, 4.2)))
@@ -846,7 +846,7 @@ klasse CPythonOrderedDictSideEffects:
     def test_issue119004_change_linked_list_by_delete_key(self):
         klasse Key(_TriggerSideEffectOnEqual):
             def side_effect(self):
-                del dict1[TODEL]
+                loesche dict1[TODEL]
                 dict1['a'] = 'c'
 
         TODEL = Key()
@@ -861,13 +861,13 @@ klasse CPythonOrderedDictSideEffects:
         klasse Key(_TriggerSideEffectOnEqual):
             trigger = 0
             def side_effect(self):
-                del dict1[TODEL]
+                loesche dict1[TODEL]
 
         TODEL = Key()
         dict1 = self.OrderedDict(dict.fromkeys((0, TODEL, 4.2)))
         dict2 = self.OrderedDict(dict.fromkeys((0, Key(), 4.2)))
         self.assertEqual(Key.count, 0)
-        # the side effect is in dict.__eq__ und modifies the length
+        # the side effect ist in dict.__eq__ und modifies the length
         self.assertNotEqual(dict1, dict2)
         self.assertEqual(Key.count, 2)
         self.assertDictEqual(dict1, dict.fromkeys((0, 4.2)))
@@ -930,7 +930,7 @@ klasse CPythonOrderedDictTests(OrderedDictTests,
                 od['f'] = Nichts
         mit self.assertRaises(RuntimeError):
             fuer k in od:
-                del od['c']
+                loesche od['c']
         self.assertEqual(list(od), list('bdeaf'))
 
     def test_iterators_pickling(self):
@@ -952,7 +952,7 @@ klasse CPythonOrderedDictTests(OrderedDictTests,
 
     @support.cpython_only
     def test_weakref_list_is_not_traversed(self):
-        # Check that the weakref list is nicht traversed when collecting
+        # Check that the weakref list ist nicht traversed when collecting
         # OrderedDict objects. See bpo-39778 fuer more information.
 
         gc.collect()
@@ -966,7 +966,7 @@ klasse CPythonOrderedDictTests(OrderedDictTests,
         x_ref = weakref.ref(x)
         cycle.append(x_ref)
 
-        del x, cycle, x_ref
+        loesche x, cycle, x_ref
 
         gc.collect()
 

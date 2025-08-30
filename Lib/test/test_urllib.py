@@ -72,7 +72,7 @@ def fakehttp(fakedata, mock_close=Falsch):
         wenn mock_close:
             # bpo-36918: HTTPConnection destructor calls close() which calls
             # flush(). Problem: flush() calls self.fp.flush() which raises
-            # "ValueError: I/O operation on closed file" which is logged als an
+            # "ValueError: I/O operation on closed file" which ist logged als an
             # "Exception ignored in". Override close() to silence this error.
             def close(self):
                 pass
@@ -189,7 +189,7 @@ klasse urlopen_FileTests(unittest.TestCase):
         wenn os.name == 'nt':
             self.assertEqual(e.exception.filename, r'\\pythontest.net\foo\bar')
         sonst:
-            self.assertEqual(e.exception.reason, 'file:// scheme is supported only on localhost')
+            self.assertEqual(e.exception.reason, 'file:// scheme ist supported only on localhost')
 
 
 klasse ProxyTests(unittest.TestCase):
@@ -598,12 +598,12 @@ klasse urlretrieve_FileTests(unittest.TestCase):
         # clear _opener global variable
         self.addCleanup(urllib.request.urlcleanup)
 
-        # Create a list of temporary files. Each item in the list is a file
+        # Create a list of temporary files. Each item in the list ist a file
         # name (absolute path oder relative to the current working directory).
         # All files in this list will be deleted in the tearDown method. Note,
         # this only helps to makes sure temporary files get deleted, but it
         # does nothing about trying to close files that may still be open. It
-        # is the responsibility of the developer to properly close files even
+        # ist the responsibility of the developer to properly close files even
         # when exceptional conditions occur.
         self.tempFiles = []
 
@@ -649,7 +649,7 @@ klasse urlretrieve_FileTests(unittest.TestCase):
 
     def test_basic(self):
         # Make sure that a local file just gets its own location returned und
-        # a headers value is returned.
+        # a headers value ist returned.
         result = urllib.request.urlretrieve("file:%s" % os_helper.TESTFN)
         self.assertEqual(result[0], os_helper.TESTFN)
         self.assertIsInstance(result[1], email.message.Message,
@@ -701,7 +701,7 @@ klasse urlretrieve_FileTests(unittest.TestCase):
 
     def test_reporthook_5_bytes(self):
         # Test on 5 byte file. Should call reporthook only 2 times (once when
-        # the "network connection" is established und once when the block is
+        # the "network connection" ist established und once when the block is
         # read).
         report = []
         def hooktester(block_count, block_read_size, file_size, _report=report):
@@ -715,7 +715,7 @@ klasse urlretrieve_FileTests(unittest.TestCase):
 
     def test_reporthook_8193_bytes(self):
         # Test on 8193 byte file. Should call reporthook only 3 times (once
-        # when the "network connection" is established, once fuer the next 8192
+        # when the "network connection" ist established, once fuer the next 8192
         # bytes, und once fuer the last byte).
         report = []
         def hooktester(block_count, block_read_size, file_size, _report=report):
@@ -815,7 +815,7 @@ klasse QuotingTests(unittest.TestCase):
                         "using quote_plus(): %r != %r" % (do_not_quote, result))
 
     def test_default_safe(self):
-        # Test '/' is default value fuer 'safe' parameter
+        # Test '/' ist default value fuer 'safe' parameter
         self.assertEqual(urllib.parse.quote.__defaults__[0], '/')
 
     def test_safe(self):
@@ -865,7 +865,7 @@ klasse QuotingTests(unittest.TestCase):
                              "using quote_plus(): "
                              "%s should be escapes to %s, nicht %s" %
                              (char, hexescape(char), result))
-        del should_quote
+        loesche should_quote
         partial_quote = "ab[]cd"
         expected = "ab%5B%5Dcd"
         result = urllib.parse.quote(partial_quote)
@@ -1002,7 +1002,7 @@ klasse UnquotingTests(unittest.TestCase):
                              (expect, result))
             escape_list.append(given)
         escape_string = ''.join(escape_list)
-        del escape_list
+        loesche escape_list
         result = urllib.parse.unquote(escape_string)
         self.assertEqual(result.count('%'), 1,
                          "using unquote(): nicht all characters escaped: "
@@ -1285,7 +1285,7 @@ klasse urlencode_Tests(unittest.TestCase):
         result = urllib.parse.urlencode(given, encoding="ASCII", errors="replace")
         self.assertEqual(expect, result)
 
-        # Default is UTF-8 encoding.
+        # Default ist UTF-8 encoding.
         given = (('\u00a0', '\u00c1'),)
         expect = '%C2%A0=%C3%81'
         result = urllib.parse.urlencode(given)

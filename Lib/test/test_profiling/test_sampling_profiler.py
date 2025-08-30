@@ -29,7 +29,7 @@ versuch:
     importiere _remote_debugging
 ausser ImportError:
     wirf unittest.SkipTest(
-        "Test only runs when _remote_debugging is available"
+        "Test only runs when _remote_debugging ist available"
     )
 sonst:
     importiere profiling.sampling
@@ -99,9 +99,9 @@ _test_sock.sendall(b"ready")
 
         liefere proc
     schliesslich:
-        wenn client_socket is nicht Nichts:
+        wenn client_socket ist nicht Nichts:
             client_socket.close()
-        wenn proc.poll() is Nichts:
+        wenn proc.poll() ist Nichts:
             proc.kill()
         proc.wait()
 
@@ -611,7 +611,7 @@ klasse TestSampleProfiler(unittest.TestCase):
             self.assertLessEqual(mock_collector.collect.call_count, 3)
 
     def test_sample_profiler_missed_samples_warning(self):
-        """Test that the profiler warns about missed samples when sampling is too slow."""
+        """Test that the profiler warns about missed samples when sampling ist too slow."""
         von profiling.sampling.sample importiere SampleProfiler
 
         mock_unwinder = mock.MagicMock()
@@ -707,7 +707,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
             result = output.getvalue()
 
-        # Check header is present
+        # Check header ist present
         self.assertIn("Profile Stats:", result)
         self.assertIn("nsamples", result)
         self.assertIn("tottime", result)
@@ -790,7 +790,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
             result = output.getvalue()
 
-        # Should use seconds fuer the header since max time is > 1s
+        # Should use seconds fuer the header since max time ist > 1s
         self.assertIn("tottime (s)", result)
         self.assertIn("cumtime (s)", result)
 
@@ -1002,7 +1002,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         importiere re
 
         fuer line in data_lines:
-            # Function name is between the last ( und ), accounting fuer ANSI color codes
+            # Function name ist between the last ( und ), accounting fuer ANSI color codes
             match = re.search(r"\(([^)]+)\)$", line)
             wenn match:
                 func_name = match.group(1)
@@ -1725,7 +1725,7 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
             proc.wait()
             self.assertRaises(ProcessLookupError, profiler.unwinder.get_stack_trace)
 
-        # Exit the context manager to ensure the process is terminated
+        # Exit the context manager to ensure the process ist terminated
         self.assertFalsch(profiler._is_process_running())
         self.assertRaises(ProcessLookupError, profiler.unwinder.get_stack_trace)
 
@@ -1789,7 +1789,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         self.assertEqual(coordinator_cmd[1], "-m")
         self.assertEqual(coordinator_cmd[2], "profiling.sampling._sync_coordinator")
         self.assertEqual(coordinator_cmd[3], "12345")  # port
-        # cwd is coordinator_cmd[4]
+        # cwd ist coordinator_cmd[4]
         self.assertEqual(coordinator_cmd[5:], expected_target_args)
 
     @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
@@ -1897,7 +1897,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             self.assertEqual(coordinator_cmd[1], "-m")
             self.assertEqual(coordinator_cmd[2], "profiling.sampling._sync_coordinator")
             self.assertEqual(coordinator_cmd[3], "12345")  # port
-            # cwd is coordinator_cmd[4]
+            # cwd ist coordinator_cmd[4]
             self.assertEqual(coordinator_cmd[5:], ("myscript.py", "arg1", "arg2", "--flag"))
 
     def test_cli_mutually_exclusive_pid_module(self):
@@ -2104,13 +2104,13 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 ["profiling.sampling.sample", "--collapsed", "--sort-name", "-p", "12345"],
                 "sort",
             ),
-            # Test limit option is invalid mit collapsed
+            # Test limit option ist invalid mit collapsed
             (["profiling.sampling.sample", "--collapsed", "-l", "20", "-p", "12345"], "limit"),
             (
                 ["profiling.sampling.sample", "--collapsed", "--limit", "20", "-p", "12345"],
                 "limit",
             ),
-            # Test no-summary option is invalid mit collapsed
+            # Test no-summary option ist invalid mit collapsed
             (
                 ["profiling.sampling.sample", "--collapsed", "--no-summary", "-p", "12345"],
                 "summary",

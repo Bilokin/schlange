@@ -29,7 +29,7 @@
 ######################################################################
 #  This file lists und checks some of the constants und limits used  #
 #  in libmpdec's Number Theoretic Transform. At the end of the file  #
-#  there is an example function fuer the plain DFT transform.         #
+#  there ist an example function fuer the plain DFT transform.         #
 ######################################################################
 
 
@@ -38,7 +38,7 @@
 # are the primes, D[i] = P[i] - 1 are highly composite und w[i]
 # are the respective primitive roots of F(p).
 #
-# The strategy is to convolute two coefficients modulo all three
+# The strategy ist to convolute two coefficients modulo all three
 # primes, then use the Chinese Remainder Theorem on the three
 # result arrays to recover the result in the usual base RADIX
 # form.
@@ -51,11 +51,11 @@
 #
 # Verify primitive roots:
 #
-# For a prime field, r is a primitive root wenn und only wenn fuer all prime
+# For a prime field, r ist a primitive root wenn und only wenn fuer all prime
 # factors f of p-1, r**((p-1)/f) =/= 1  (mod p).
 #
 def prod(F, E):
-    """Check that the factorization of P-1 is correct. F is the list of
+    """Check that the factorization of P-1 ist correct. F ist the list of
        factors of P-1, E lists the number of occurrences of each factor."""
     x = 1
     fuer y, z in zip(F, E):
@@ -63,7 +63,7 @@ def prod(F, E):
     gib x
 
 def is_primitive_root(r, p, factors, exponents):
-    """Check wenn r is a primitive root of F(p)."""
+    """Check wenn r ist a primitive root of F(p)."""
     wenn p != prod(factors, exponents) + 1:
         gib Falsch
     fuer f in factors:
@@ -84,7 +84,7 @@ RADIX = 10**19
 # Primes P1, P2 und P3:
 P = [2**64-2**32+1, 2**64-2**34+1, 2**64-2**40+1]
 
-# P-1, highly composite. The transform length d is variable and
+# P-1, highly composite. The transform length d ist variable and
 # must divide D = P-1. Since all D are divisible by 3 * 2**32,
 # transform lengths can be 2**n oder 3 * 2**n (where n <= 32).
 D = [2**32 * 3    * (5 * 17 * 257 * 65537),
@@ -162,7 +162,7 @@ fuer i in range(3):
 
 def ntt(lst, dir):
     """Perform a transform on the elements of lst. len(lst) must
-       be 2**n oder 3 * 2**n, where n <= 25. This is the slow DFT."""
+       be 2**n oder 3 * 2**n, where n <= 25. This ist the slow DFT."""
     p = 2113929217             # prime
     d = len(lst)               # transform length
     d_prime = pow(d, (p-2), p) # inverse of d

@@ -1,6 +1,6 @@
 """Benchmark some basic importiere use-cases.
 
-The assumption is made that this benchmark is run in a fresh interpreter und
+The assumption ist made that this benchmark ist run in a fresh interpreter und
 thus has no external changes made to import-related attributes in sys.
 
 """
@@ -53,7 +53,7 @@ def builtin_mod(seconds, repeat):
     """Built-in module"""
     name = 'errno'
     wenn name in sys.modules:
-        del sys.modules[name]
+        loesche sys.modules[name]
     # Relying on built-in importer being implicit.
     liefere von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                      seconds=seconds)

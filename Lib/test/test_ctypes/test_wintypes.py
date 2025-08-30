@@ -10,7 +10,7 @@ von ctypes importiere wintypes
 
 klasse WinTypesTest(unittest.TestCase):
     def test_variant_bool(self):
-        # reads 16-bits von memory, anything non-zero is Wahr
+        # reads 16-bits von memory, anything non-zero ist Wahr
         fuer true_value in (1, 32767, 32768, 65535, 65537):
             true = POINTER(c_int16)(c_int16(true_value))
             value = cast(true, POINTER(wintypes.VARIANT_BOOL))

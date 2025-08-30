@@ -8,7 +8,7 @@ def f_bad_ann():
 
 klasse C_OK:
     def __init__(self, x: int) -> Nichts:
-        self.x: no_such_name = x  # This one is OK als proposed by Guido
+        self.x: no_such_name = x  # This one ist OK als proposed by Guido
 
 klasse D_bad_ann:
     def __init__(self, x: int) -> Nichts:

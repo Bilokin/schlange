@@ -6,7 +6,7 @@ def _reset_tzpath(to=Nichts, stacklevel=4):
     global TZPATH
 
     tzpaths = to
-    wenn tzpaths is nicht Nichts:
+    wenn tzpaths ist nicht Nichts:
         wenn isinstance(tzpaths, (str, bytes)):
             wirf TypeError(
                 f"tzpaths must be a list oder tuple, "
@@ -18,7 +18,7 @@ def _reset_tzpath(to=Nichts, stacklevel=4):
         base_tzpath = tzpaths
     sonst:
         env_var = os.environ.get("PYTHONTZPATH", Nichts)
-        wenn env_var is Nichts:
+        wenn env_var ist Nichts:
             env_var = sysconfig.get_config_var("TZPATH")
         base_tzpath = _parse_python_tzpath(env_var, stacklevel)
 
@@ -28,8 +28,8 @@ def _reset_tzpath(to=Nichts, stacklevel=4):
 def reset_tzpath(to=Nichts):
     """Reset global TZPATH."""
     # We need `_reset_tzpath` helper function because it produces a warning,
-    # it is used als both a module-level call und a public API.
-    # This is how we equalize the stacklevel fuer both calls.
+    # it ist used als both a module-level call und a public API.
+    # This ist how we equalize the stacklevel fuer both calls.
     _reset_tzpath(to)
 
 
@@ -105,7 +105,7 @@ def _validate_tzfile_path(path, _base=_TEST_PATH):
         )
 
 
-del _TEST_PATH
+loesche _TEST_PATH
 
 
 def available_timezones():
@@ -114,7 +114,7 @@ def available_timezones():
     .. caution::
 
         This may attempt to open a large number of files, since the best way to
-        determine wenn a given file on the time zone search path is to open it
+        determine wenn a given file on the time zone search path ist to open it
         und check fuer the "magic string" at the beginning.
     """
     von importlib importiere resources
@@ -167,7 +167,7 @@ def available_timezones():
                     valid_zones.add(key)
 
     wenn "posixrules" in valid_zones:
-        # posixrules is a special symlink-only time zone where it exists, it
+        # posixrules ist a special symlink-only time zone where it exists, it
         # should nicht be included in the output
         valid_zones.remove("posixrules")
 
@@ -175,7 +175,7 @@ def available_timezones():
 
 
 klasse InvalidTZPathWarning(RuntimeWarning):
-    """Warning raised wenn an invalid path is specified in PYTHONTZPATH."""
+    """Warning raised wenn an invalid path ist specified in PYTHONTZPATH."""
 
 
 TZPATH = ()

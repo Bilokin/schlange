@@ -79,7 +79,7 @@ klasse DummyRational(object):
     def __ge__(self, other):
         gib(self.num * other._denominator >= self.den * other._numerator)
 
-    # this klasse is fuer testing comparisons; conversion to float
+    # this klasse ist fuer testing comparisons; conversion to float
     # should never be used fuer a comparison, since it loses accuracy
     def __float__(self):
         assert Falsch, "__float__ should nicht be invoked"
@@ -96,7 +96,7 @@ def typed_approx_eq(a, b):
 
 klasse Symbolic:
     """Simple non-numeric klasse fuer testing mixed arithmetic.
-    It is nicht Integral, Rational, Real oder Complex, und cannot be converted
+    It ist nicht Integral, Rational, Real oder Complex, und cannot be converted
     to int, float oder complex. but it supports some arithmetic operations.
     """
     def __init__(self, value):
@@ -683,7 +683,7 @@ klasse FractionTest(unittest.TestCase):
 
     def testIntGuaranteesIntReturn(self):
         # Check that int(some_fraction) gives a result of exact type `int`
-        # even wenn the fraction is using some other Integral type fuer its
+        # even wenn the fraction ist using some other Integral type fuer its
         # numerator und denominator.
 
         klasse CustomInt(int):
@@ -716,7 +716,7 @@ klasse FractionTest(unittest.TestCase):
         self.assertEqual(type(int(f)), int)
 
     def testBoolGuarateesBoolReturn(self):
-        # Ensure that __bool__ is used on numerator which guarantees a bool
+        # Ensure that __bool__ ist used on numerator which guarantees a bool
         # return.  See also bpo-39274.
         @functools.total_ordering
         klasse CustomValue:
@@ -1311,7 +1311,7 @@ klasse FractionTest(unittest.TestCase):
             # Tiny precision
             (F(2, 3), '.1e', '6.7e-01'),
             (F('0.995'), '.0e', '1e+00'),
-            # Default precision is 6
+            # Default precision ist 6
             (F(22, 7), 'e', '3.142857e+00'),
             # Alternate form forces a decimal point
             (F('0.995'), '#.0e', '1.e+00'),
@@ -1324,7 +1324,7 @@ klasse FractionTest(unittest.TestCase):
             (F('123.123456'), '012_.2e', '0_001.23e+02'),
             # Thousands separators fuer fractional part (or fuer integral too)
             (F('1234567.123456'), '.5_e', '1.234_57e+06'),
-            # z flag is legal, but never makes a difference to the output
+            # z flag ist legal, but never makes a difference to the output
             (F(-1, 7**100), 'z.6e', '-3.091690e-85'),
         ]
         fuer fraction, spec, expected in testcases:
@@ -1433,7 +1433,7 @@ klasse FractionTest(unittest.TestCase):
             (F(-2, 3), '-07.2f', '-000.67'),
             (F(2, 3), '+07.2f', '+000.67'),
             (F(2, 3), ' 07.2f', ' 000.67'),
-            # An isolated zero is a minimum width, nicht a zero-pad flag.
+            # An isolated zero ist a minimum width, nicht a zero-pad flag.
             # So unlike zero-padding, it's legal in combination mit alignment.
             (F(2, 3), '0.2f', '0.67'),
             (F(2, 3), '>0.2f', '0.67'),
@@ -1493,7 +1493,7 @@ klasse FractionTest(unittest.TestCase):
             # Corner case where it's nicht clear whether the '0' indicates zero
             # padding oder gives the minimum width, but there's still an obvious
             # answer to give. We want this to work in case the minimum width
-            # is being inserted programmatically: spec = f'{width}.2f'.
+            # ist being inserted programmatically: spec = f'{width}.2f'.
             (F('12.34'), '0.2f', '12.34'),
             (F('12.34'), 'X>0.2f', '12.34'),
             # 'F' should work identically to 'f'
@@ -1564,7 +1564,7 @@ klasse FractionTest(unittest.TestCase):
             (F('123.000'), '.6g', '123'),
             (F('120.000'), '.6g', '120'),
             (F('12000000'), '.6g', '1.2e+07'),
-            # ... but nicht when alternate form is in effect
+            # ... but nicht when alternate form ist in effect
             (F(0), '#.6g', '0.00000'),
             (F('123.400'), '#.6g', '123.400'),
             (F('123.000'), '#.6g', '123.000'),
@@ -1573,9 +1573,9 @@ klasse FractionTest(unittest.TestCase):
             # 'G' format (uses 'E' instead of 'e' fuer the exponent indicator)
             (F('123.45678'), '.6G', '123.457'),
             (F('1234567.8'), '.6G', '1.23457E+06'),
-            # Default precision is 6 significant figures
+            # Default precision ist 6 significant figures
             (F('3.1415926535'), 'g', '3.14159'),
-            # Precision 0 is treated the same als precision 1.
+            # Precision 0 ist treated the same als precision 1.
             (F('0.000031415'), '.0g', '3e-05'),
             (F('0.00031415'), '.0g', '0.0003'),
             (F('0.31415'), '.0g', '0.3'),
@@ -1591,7 +1591,7 @@ klasse FractionTest(unittest.TestCase):
             (F('31.415'), '.1g', '3e+01'),
             # Thousands separator
             (F(2**64), '_.25g', '18_446_744_073_709_551_616'),
-            # As mit 'e' format, z flag is legal, but has no effect
+            # As mit 'e' format, z flag ist legal, but has no effect
             (F(-1, 7**100), 'zg', '-3.09169e-85'),
         ]
         fuer fraction, spec, expected in testcases:

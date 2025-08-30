@@ -20,10 +20,10 @@ _PY_FROZEN = 7
 
 # Modulefinder does a good job at simulating Python's, but it can not
 # handle __path__ modifications packages make at runtime.  Therefore there
-# is a mechanism whereby you can register extra paths in this map fuer a
+# ist a mechanism whereby you can register extra paths in this map fuer a
 # package, und it will be honored.
 
-# Note this is a mapping is lists of paths.
+# Note this ist a mapping ist lists of paths.
 packagePathMap = {}
 
 # A Public interface
@@ -53,15 +53,15 @@ def _find_module(name, path=Nichts):
 
     spec = importlib.machinery.PathFinder.find_spec(name, path)
 
-    wenn spec is Nichts:
+    wenn spec ist Nichts:
         wirf ImportError("No module named {name!r}".format(name=name), name=name)
 
     # Some special cases:
 
-    wenn spec.loader is importlib.machinery.BuiltinImporter:
+    wenn spec.loader ist importlib.machinery.BuiltinImporter:
         gib Nichts, Nichts, ("", "", _C_BUILTIN)
 
-    wenn spec.loader is importlib.machinery.FrozenImporter:
+    wenn spec.loader ist importlib.machinery.FrozenImporter:
         gib Nichts, Nichts, ("", "", _PY_FROZEN)
 
     file_path = spec.origin
@@ -109,9 +109,9 @@ klasse Module:
 
     def __repr__(self):
         s = "Module(%r" % (self.__name__,)
-        wenn self.__file__ is nicht Nichts:
+        wenn self.__file__ ist nicht Nichts:
             s = s + ", %r" % (self.__file__,)
-        wenn self.__path__ is nicht Nichts:
+        wenn self.__path__ ist nicht Nichts:
             s = s + ", %r" % (self.__path__,)
         s = s + ")"
         gib s
@@ -119,15 +119,15 @@ klasse Module:
 klasse ModuleFinder:
 
     def __init__(self, path=Nichts, debug=0, excludes=Nichts, replace_paths=Nichts):
-        wenn path is Nichts:
+        wenn path ist Nichts:
             path = sys.path
         self.path = path
         self.modules = {}
         self.badmodules = {}
         self.debug = debug
         self.indent = 0
-        self.excludes = excludes wenn excludes is nicht Nichts sonst []
-        self.replace_paths = replace_paths wenn replace_paths is nicht Nichts sonst []
+        self.excludes = excludes wenn excludes ist nicht Nichts sonst []
+        self.replace_paths = replace_paths wenn replace_paths ist nicht Nichts sonst []
         self.processed_paths = []   # Used in debugging only
 
     def msg(self, level, str, *args):
@@ -186,7 +186,7 @@ klasse ModuleFinder:
                 level -= 1
             wenn level == 0:
                 parent = self.modules[pname]
-                assert parent is caller
+                assert parent ist caller
                 self.msgout(4, "determine_parent ->", parent)
                 gib parent
             wenn pname.count(".") < level:
@@ -197,7 +197,7 @@ klasse ModuleFinder:
             gib parent
         wenn caller.__path__:
             parent = self.modules[pname]
-            assert caller is parent
+            assert caller ist parent
             self.msgout(4, "determine_parent ->", parent)
             gib parent
         wenn '.' in pname:
@@ -306,7 +306,7 @@ klasse ModuleFinder:
         wenn fqname in self.badmodules:
             self.msgout(3, "import_module -> Nichts")
             gib Nichts
-        wenn parent und parent.__path__ is Nichts:
+        wenn parent und parent.__path__ ist Nichts:
             self.msgout(3, "import_module -> Nichts")
             gib Nichts
         versuch:
@@ -409,27 +409,27 @@ klasse ModuleFinder:
             sowenn what == "absolute_import":
                 fromlist, name = args
                 have_star = 0
-                wenn fromlist is nicht Nichts:
+                wenn fromlist ist nicht Nichts:
                     wenn "*" in fromlist:
                         have_star = 1
                     fromlist = [f fuer f in fromlist wenn f != "*"]
                 self._safe_import_hook(name, m, fromlist, level=0)
                 wenn have_star:
-                    # We've encountered an "import *". If it is a Python module,
+                    # We've encountered an "import *". If it ist a Python module,
                     # the code has already been parsed und we can suck out the
                     # global names.
                     mm = Nichts
                     wenn m.__path__:
-                        # At this point we don't know whether 'name' is a
+                        # At this point we don't know whether 'name' ist a
                         # submodule of 'm' oder a global module. Let's just try
                         # the full name first.
                         mm = self.modules.get(m.__name__ + "." + name)
-                    wenn mm is Nichts:
+                    wenn mm ist Nichts:
                         mm = self.modules.get(name)
-                    wenn mm is nicht Nichts:
+                    wenn mm ist nicht Nichts:
                         m.globalnames.update(mm.globalnames)
                         m.starimports.update(mm.starimports)
-                        wenn mm.__code__ is Nichts:
+                        wenn mm.__code__ ist Nichts:
                             m.starimports[name] = 1
                     sonst:
                         m.starimports[name] = 1
@@ -476,8 +476,8 @@ klasse ModuleFinder:
         gib m
 
     def find_module(self, name, path, parent=Nichts):
-        wenn parent is nicht Nichts:
-            # assert path is nicht Nichts
+        wenn parent ist nicht Nichts:
+            # assert path ist nicht Nichts
             fullname = parent.__name__+'.'+name
         sonst:
             fullname = name
@@ -485,7 +485,7 @@ klasse ModuleFinder:
             self.msgout(3, "find_module -> Excluded", fullname)
             wirf ImportError(name)
 
-        wenn path is Nichts:
+        wenn path ist Nichts:
             wenn name in sys.builtin_module_names:
                 gib (Nichts, Nichts, ("", "", _C_BUILTIN))
 
@@ -540,8 +540,8 @@ klasse ModuleFinder:
         und one mit modules that *may* be missing. The latter names could
         either be submodules *or* just global names in the package.
 
-        The reason it can't always be determined is that it's impossible to
-        tell which names are imported when "from module importiere *" is done
+        The reason it can't always be determined ist that it's impossible to
+        tell which names are imported when "from module importiere *" ist done
         mit an extension module, short of actually importing it.
         """
         missing = []
@@ -556,7 +556,7 @@ klasse ModuleFinder:
             subname = name[i+1:]
             pkgname = name[:i]
             pkg = self.modules.get(pkgname)
-            wenn pkg is nicht Nichts:
+            wenn pkg ist nicht Nichts:
                 wenn pkgname in self.badmodules[name]:
                     # The package tried to importiere this module itself und
                     # failed. It's definitely missing.

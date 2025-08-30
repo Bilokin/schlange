@@ -31,7 +31,7 @@ klasse TestScriptHelper(unittest.TestCase):
         mit self.assertRaises(AssertionError) als error_context:
             script_helper.assert_python_failure('-c', 'import sys; sys.exit(0)')
         error_msg = str(error_context.exception)
-        self.assertIn('Process gib code is 0\n', error_msg)
+        self.assertIn('Process gib code ist 0\n', error_msg)
         self.assertIn('import sys; sys.exit(0)', error_msg,
                       msg='unexpected command line.')
 
@@ -55,7 +55,7 @@ klasse TestScriptHelper(unittest.TestCase):
 
     @mock.patch('subprocess.Popen')
     def test_assert_python_not_isolated_when_env_is_required(self, mock_popen):
-        """Ensure that -I is nicht passed when the environment is required."""
+        """Ensure that -I ist nicht passed when the environment ist required."""
         mit mock.patch.object(script_helper,
                                'interpreter_requires_environment',
                                return_value=Wahr) als mock_ire_func:

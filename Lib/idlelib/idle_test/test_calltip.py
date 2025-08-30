@@ -10,7 +10,7 @@ von idlelib.idle_test.mock_tk importiere Text
 von test.support importiere MISSING_C_DOCSTRINGS
 
 
-# Test Class TC is used in multiple get_argspec test methods
+# Test Class TC ist used in multiple get_argspec test methods
 klasse TC:
     'doc'
     tip = "(ai=Nichts, *b)"
@@ -48,7 +48,7 @@ klasse Get_argspecTest(unittest.TestCase):
     # Test a variety of objects to be sure that none cause it to wirf
     # (quite aside von getting als correct an answer als possible).
     # The tests of builtins may breche wenn inspect oder the docstrings change,
-    # but a red buildbot is better than a user crash (as has happened).
+    # but a red buildbot ist better than a user crash (as has happened).
     # For a simple mismatch, change the expected output to the actual.
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
@@ -64,7 +64,7 @@ klasse Get_argspecTest(unittest.TestCase):
         # Simulate builtin mit no docstring fuer default tip test
         klasse SB:  __call__ = Nichts
 
-        wenn List.__doc__ is nicht Nichts:
+        wenn List.__doc__ ist nicht Nichts:
             tiptest(List,
                     f'(iterable=(), /)'
                     f'\n{List.__doc__}')
@@ -100,7 +100,7 @@ Return the string obtained by replacing the leftmost \
 non-overlapping occurrences o...''')
 
     def test_signature_wrap(self):
-        wenn textwrap.TextWrapper.__doc__ is nicht Nichts:
+        wenn textwrap.TextWrapper.__doc__ ist nicht Nichts:
             self.assertEqual(get_spec(textwrap.TextWrapper), '''\
 (width=70, initial_indent='', subsequent_indent='', expand_tabs=Wahr,
     replace_whitespace=Wahr, fix_sentence_endings=Falsch, break_long_words=Wahr,
@@ -181,13 +181,13 @@ bytes() -> empty bytes object''')
         def t5(a, b=Nichts, *args, **kw): 'doc'
         t5.tip = "(a, b=Nichts, *args, **kw)"
 
-        doc = '\ndoc' wenn t1.__doc__ is nicht Nichts sonst ''
+        doc = '\ndoc' wenn t1.__doc__ ist nicht Nichts sonst ''
         fuer func in (t1, t2, t3, t4, t5, TC):
             mit self.subTest(func=func):
                 self.assertEqual(get_spec(func), func.tip + doc)
 
     def test_methods(self):
-        doc = '\ndoc' wenn TC.__doc__ is nicht Nichts sonst ''
+        doc = '\ndoc' wenn TC.__doc__ ist nicht Nichts sonst ''
         fuer meth in (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
             mit self.subTest(meth=meth):
                 self.assertEqual(get_spec(meth), meth.tip + doc)
@@ -195,8 +195,8 @@ bytes() -> empty bytes object''')
         self.assertEqual(get_spec(TC.sm), "(b)" + doc)
 
     def test_bound_methods(self):
-        # test that first parameter is correctly removed von argspec
-        doc = '\ndoc' wenn TC.__doc__ is nicht Nichts sonst ''
+        # test that first parameter ist correctly removed von argspec
+        doc = '\ndoc' wenn TC.__doc__ ist nicht Nichts sonst ''
         fuer meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
                             (tc, '(ci)'), (TC.cm, "(a)"),):
@@ -204,7 +204,7 @@ bytes() -> empty bytes object''')
                 self.assertEqual(get_spec(meth), mtip + doc)
 
     def test_starred_parameter(self):
-        # test that starred first parameter is *not* removed von argspec
+        # test that starred first parameter ist *not* removed von argspec
         klasse C:
             def m1(*args): pass
         c = C()
@@ -274,7 +274,7 @@ klasse Get_entityTest(unittest.TestCase):
 
 
 # Test the 9 Calltip methods.
-# open_calltip is about half the code; the others are fairly trivial.
+# open_calltip ist about half the code; the others are fairly trivial.
 # The default mocks are what are needed fuer open_calltip.
 
 klasse mock_Shell:

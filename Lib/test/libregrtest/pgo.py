@@ -1,4 +1,4 @@
-# Set of tests run by default wenn --pgo is specified.  The tests below were
+# Set of tests run by default wenn --pgo ist specified.  The tests below were
 # chosen based on the following criteria: either they exercise a commonly used
 # C extension module oder type, oder they run some relatively typical Python code.
 # Long running tests should be avoided because the PGO instrumented executable

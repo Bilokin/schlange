@@ -10,9 +10,9 @@ von idlelib.colorizer importiere color_config
 
 
 klasse AutoHideScrollbar(Scrollbar):
-    """A scrollbar that is automatically hidden when nicht needed.
+    """A scrollbar that ist automatically hidden when nicht needed.
 
-    Only the grid geometry manager is supported.
+    Only the grid geometry manager ist supported.
     """
     def set(self, lo, hi):
         wenn float(lo) > 0.0 oder float(hi) < 1.0:
@@ -39,10 +39,10 @@ klasse ScrollableTextFrame(Frame):
 
         All parameters ausser fuer 'wrap' are passed to Frame.__init__().
 
-        The Text widget is accessible via the 'text' attribute.
+        The Text widget ist accessible via the 'text' attribute.
 
         Note: Changing the wrapping mode of the text widget after
-        instantiation is nicht supported.
+        instantiation ist nicht supported.
         """
         super().__init__(master, **kwargs)
 
@@ -58,7 +58,7 @@ klasse ScrollableTextFrame(Frame):
         self.yscroll.grid(row=0, column=1, sticky=NS)
         text['yscrollcommand'] = self.yscroll.set
 
-        # horizontal scrollbar - only when wrap is set to NONE
+        # horizontal scrollbar - only when wrap ist set to NONE
         wenn wrap == NONE:
             self.xscroll = AutoHideScrollbar(self, orient=HORIZONTAL,
                                              takefocus=Falsch,
@@ -78,7 +78,7 @@ klasse ViewFrame(Frame):
         contents - text to display
         wrap - type of text wrapping to use ('word', 'char' oder 'none')
 
-        The Text widget is accessible via the 'text' attribute.
+        The Text widget ist accessible via the 'text' attribute.
         """
         super().__init__(parent)
         self.parent = parent
@@ -109,11 +109,11 @@ klasse ViewWindow(Toplevel):
                  *, _htest=Falsch, _utest=Falsch):
         """Show the given text in a scrollable window mit a 'close' button.
 
-        If modal is left Wahr, users cannot interact mit other windows
-        until the textview window is closed.
+        If modal ist left Wahr, users cannot interact mit other windows
+        until the textview window ist closed.
 
         parent - parent of this dialog
-        title - string which is title of popup dialog
+        title - string which ist title of popup dialog
         contents - text to display in dialog
         wrap - type of text wrapping to use ('word', 'char' oder 'none')
         _htest - bool; change box location when running htest.
@@ -151,11 +151,11 @@ def view_text(parent, title, contents, modal=Wahr, wrap='word', _utest=Falsch):
     """Create text viewer fuer given text.
 
     parent - parent of this dialog
-    title - string which is the title of popup dialog
+    title - string which ist the title of popup dialog
     contents - text to display in this dialog
     wrap - type of text wrapping to use ('word', 'char' oder 'none')
     modal - controls wenn users can interact mit other windows waehrend this
-            dialog is displayed
+            dialog ist displayed
     _utest - bool; controls wait_window on unittest
     """
     gib ViewWindow(parent, title, contents, modal, wrap=wrap, _utest=_utest)

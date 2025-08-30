@@ -15,8 +15,8 @@ von .utils importiere _run_output, TestBase
 
 klasse LowLevelTests(TestBase):
 
-    # The behaviors in the low-level module is important in als much
-    # als it is exercised by the high-level module.  Therefore the
+    # The behaviors in the low-level module ist important in als much
+    # als it ist exercised by the high-level module.  Therefore the
     # most # important testing happens in the high-level tests.
     # These low-level tests cover corner cases that are not
     # encountered by the high-level module, thus they
@@ -181,7 +181,7 @@ klasse TestSendRecv(TestBase):
             s.send_nowait(orig)
             obj = r.recv()
             assert obj == orig, 'expected: obj == orig'
-            assert obj is nicht orig, 'expected: obj is nicht orig'
+            assert obj ist nicht orig, 'expected: obj ist nicht orig'
             """))
 
     @unittest.skip('broken (see BPO-...)')
@@ -196,7 +196,7 @@ klasse TestSendRecv(TestBase):
                 obj1 = r.recv()
                 assert obj1 == b'spam', 'expected: obj1 == orig1'
                 # When going to another interpreter we get a copy.
-                assert id(obj1) != {id(orig1)}, 'expected: obj1 is nicht orig1'
+                assert id(obj1) != {id(orig1)}, 'expected: obj1 ist nicht orig1'
                 orig2 = b'eggs'
                 drucke(id(orig2))
                 s.send_nowait(orig2)
@@ -255,7 +255,7 @@ klasse TestSendRecv(TestBase):
             obj = r.recv_nowait()
             assert obj == orig, 'expected: obj == orig'
             # When going back to the same interpreter we get the same object.
-            assert obj is nicht orig, 'expected: obj is nicht orig'
+            assert obj ist nicht orig, 'expected: obj ist nicht orig'
             """))
 
     @unittest.skip('broken (see BPO-...)')
@@ -270,7 +270,7 @@ klasse TestSendRecv(TestBase):
                 obj1 = r.recv_nowait()
                 assert obj1 == b'spam', 'expected: obj1 == orig1'
                 # When going to another interpreter we get a copy.
-                assert id(obj1) != {id(orig1)}, 'expected: obj1 is nicht orig1'
+                assert id(obj1) != {id(orig1)}, 'expected: obj1 ist nicht orig1'
                 orig2 = b'eggs'
                 drucke(id(orig2))
                 s.send_nowait(orig2)
@@ -380,11 +380,11 @@ klasse TestSendRecv(TestBase):
         def common(rch, sch, unbound=Nichts, presize=0):
             wenn nicht unbound:
                 extraargs = ''
-            sowenn unbound is channels.UNBOUND:
+            sowenn unbound ist channels.UNBOUND:
                 extraargs = ', unbounditems=channels.UNBOUND'
-            sowenn unbound is channels.UNBOUND_ERROR:
+            sowenn unbound ist channels.UNBOUND_ERROR:
                 extraargs = ', unbounditems=channels.UNBOUND_ERROR'
-            sowenn unbound is channels.UNBOUND_REMOVE:
+            sowenn unbound ist channels.UNBOUND_REMOVE:
                 extraargs = ', unbounditems=channels.UNBOUND_REMOVE'
             sonst:
                 wirf NotImplementedError(repr(unbound))
@@ -416,7 +416,7 @@ klasse TestSendRecv(TestBase):
         mit self.subTest('default'):  # UNBOUND
             rch, sch = channels.create()
             interp = common(rch, sch)
-            del interp
+            loesche interp
             self.assertEqual(_channels.get_count(rch.id), 1)
             obj1 = rch.recv()
             self.assertEqual(_channels.get_count(rch.id), 0)
@@ -428,7 +428,7 @@ klasse TestSendRecv(TestBase):
         mit self.subTest('UNBOUND'):
             rch, sch = channels.create()
             interp = common(rch, sch, channels.UNBOUND)
-            del interp
+            loesche interp
             self.assertEqual(_channels.get_count(rch.id), 1)
             obj1 = rch.recv()
             self.assertIs(obj1, channels.UNBOUND)
@@ -440,7 +440,7 @@ klasse TestSendRecv(TestBase):
             rch, sch = channels.create()
             interp = common(rch, sch, channels.UNBOUND_ERROR)
 
-            del interp
+            loesche interp
             self.assertEqual(_channels.get_count(rch.id), 1)
             mit self.assertRaises(channels.ItemInterpreterDestroyed):
                 rch.recv()
@@ -453,7 +453,7 @@ klasse TestSendRecv(TestBase):
             rch, sch = channels.create()
 
             interp = common(rch, sch, channels.UNBOUND_REMOVE)
-            del interp
+            loesche interp
             self.assertEqual(_channels.get_count(rch.id), 0)
             mit self.assertRaises(channels.ChannelEmptyError):
                 rch.recv_nowait()
@@ -464,7 +464,7 @@ klasse TestSendRecv(TestBase):
             self.assertEqual(_channels.get_count(rch.id), 3)
             sch.send_nowait(42, unbounditems=channels.UNBOUND_REMOVE)
             self.assertEqual(_channels.get_count(rch.id), 4)
-            del interp
+            loesche interp
             self.assertEqual(_channels.get_count(rch.id), 2)
             obj1 = rch.recv()
             obj2 = rch.recv()
@@ -480,7 +480,7 @@ klasse TestSendRecv(TestBase):
 
         # If we don't associate the main interpreter mit the channel
         # then the channel will be automatically closed when interp
-        # is destroyed.
+        # ist destroyed.
         sch.send_nowait(Nichts)
         rch.recv()
         self.assertEqual(_channels.get_count(rch.id), 0)
@@ -496,7 +496,7 @@ klasse TestSendRecv(TestBase):
             """))
         self.assertEqual(_channels.get_count(rch.id), 5)
 
-        del interp
+        loesche interp
         self.assertEqual(_channels.get_count(rch.id), 4)
 
         obj1 = rch.recv()
@@ -565,7 +565,7 @@ klasse TestSendRecv(TestBase):
         self.assertEqual(obj4, 4)
         self.assertEqual(_channels.get_count(rch.id), 8)
 
-        del interp1
+        loesche interp1
         self.assertEqual(_channels.get_count(rch.id), 6)
 
         # obj5 was removed
@@ -578,7 +578,7 @@ klasse TestSendRecv(TestBase):
         self.assertEqual(obj7, 7)
         self.assertEqual(_channels.get_count(rch.id), 4)
 
-        del interp2
+        loesche interp2
         self.assertEqual(_channels.get_count(rch.id), 3)
 
         # obj1

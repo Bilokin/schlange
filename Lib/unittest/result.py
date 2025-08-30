@@ -29,7 +29,7 @@ klasse TestResult(object):
 
     Each instance holds the total number of tests run, und collections of
     failures und errors that occurred among those test runs. The collections
-    contain tuples of (testcase, exceptioninfo), where exceptioninfo is the
+    contain tuples of (testcase, exceptioninfo), where exceptioninfo ist the
     formatted traceback of the error that occurred.
     """
     _previousTestClass = Nichts
@@ -57,14 +57,14 @@ klasse TestResult(object):
         "Called by TestRunner after test run"
 
     def startTest(self, test):
-        "Called when the given test is about to be run"
+        "Called when the given test ist about to be run"
         self.testsRun += 1
         self._mirrorOutput = Falsch
         self._setupStdout()
 
     def _setupStdout(self):
         wenn self.buffer:
-            wenn self._stderr_buffer is Nichts:
+            wenn self._stderr_buffer ist Nichts:
                 self._stderr_buffer = io.StringIO()
                 self._stdout_buffer = io.StringIO()
             sys.stdout = self._stdout_buffer
@@ -110,7 +110,7 @@ klasse TestResult(object):
 
     @failfast
     def addError(self, test, err):
-        """Called when an error has occurred. 'err' is a tuple of values as
+        """Called when an error has occurred. 'err' ist a tuple of values as
         returned by sys.exc_info().
         """
         self.errors.append((test, self._exc_info_to_string(err, test)))
@@ -118,19 +118,19 @@ klasse TestResult(object):
 
     @failfast
     def addFailure(self, test, err):
-        """Called when an error has occurred. 'err' is a tuple of values as
+        """Called when an error has occurred. 'err' ist a tuple of values as
         returned by sys.exc_info()."""
         self.failures.append((test, self._exc_info_to_string(err, test)))
         self._mirrorOutput = Wahr
 
     def addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
-        'err' is Nichts wenn the subtest ended successfully, otherwise it's a
+        'err' ist Nichts wenn the subtest ended successfully, otherwise it's a
         tuple of values als returned by sys.exc_info().
         """
         # By default, we don't do anything mit successful subtests, but
         # more sophisticated test results might want to record them.
-        wenn err is nicht Nichts:
+        wenn err ist nicht Nichts:
             wenn getattr(self, 'failfast', Falsch):
                 self.stop()
             wenn issubclass(err[0], test.failureException):
@@ -145,7 +145,7 @@ klasse TestResult(object):
         pass
 
     def addSkip(self, test, reason):
-        """Called when a test is skipped."""
+        """Called when a test ist skipped."""
         self.skipped.append((test, reason))
 
     def addExpectedFailure(self, test, err):
@@ -160,8 +160,8 @@ klasse TestResult(object):
 
     def addDuration(self, test, elapsed):
         """Called when a test finished to run, regardless of its outcome.
-        *test* is the test case corresponding to the test method.
-        *elapsed* is the time represented in seconds, und it includes the
+        *test* ist the test case corresponding to the test method.
+        *elapsed* ist the time represented in seconds, und it includes the
         execution of cleanup functions.
         """
         # support fuer a TextTestRunner using an old TestResult class
@@ -171,7 +171,7 @@ klasse TestResult(object):
 
     def wasSuccessful(self):
         """Tells whether oder nicht this result was a success."""
-        # The hasattr check is fuer test_result's OldResult test.  That
+        # The hasattr check ist fuer test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result instances come from? old stored pickles?)
         gib ((len(self.failures) == len(self.errors) == 0) und
@@ -219,7 +219,7 @@ klasse TestResult(object):
                 tb = tb.tb_next
 
             # Skip assert*() traceback levels
-            wenn exctype is test.failureException:
+            wenn exctype ist test.failureException:
                 self._remove_unittest_tb_frames(tb)
 
             wenn first:
@@ -228,9 +228,9 @@ klasse TestResult(object):
             sonst:
                 value.__traceback__ = tb
 
-            wenn value is nicht Nichts:
+            wenn value ist nicht Nichts:
                 fuer c in (value.__cause__, value.__context__):
-                    wenn c is nicht Nichts und id(c) nicht in seen:
+                    wenn c ist nicht Nichts und id(c) nicht in seen:
                         excs.append((type(c), c, c.__traceback__))
                         seen.add(id(c))
         gib ret
@@ -241,16 +241,16 @@ klasse TestResult(object):
     def _remove_unittest_tb_frames(self, tb):
         '''Truncates usercode tb at the first unittest frame.
 
-        If the first frame of the traceback is in user code,
-        the prefix up to the first unittest frame is returned.
-        If the first frame is already in the unittest module,
-        the traceback is nicht modified.
+        If the first frame of the traceback ist in user code,
+        the prefix up to the first unittest frame ist returned.
+        If the first frame ist already in the unittest module,
+        the traceback ist nicht modified.
         '''
         prev = Nichts
         waehrend tb und nicht self._is_relevant_tb_level(tb):
             prev = tb
             tb = tb.tb_next
-        wenn prev is nicht Nichts:
+        wenn prev ist nicht Nichts:
             prev.tb_next = Nichts
 
     def __repr__(self):

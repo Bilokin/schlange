@@ -31,7 +31,7 @@ klasse MySendfileProto(asyncio.Protocol):
         self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is nicht Nichts:
+        wenn loop ist nicht Nichts:
             self.connected = loop.create_future()
             self.done = loop.create_future()
         self.data = bytearray()
@@ -88,7 +88,7 @@ klasse MyProto(asyncio.Protocol):
         self.fut.set_result(Nichts)
 
     async def wait_closed(self):
-        await self.fut
+        warte self.fut
 
 
 klasse SendfileBase:
@@ -162,11 +162,11 @@ klasse SockSendfileMixin(SendfileBase):
     def reduce_send_buffer_size(self, sock, transport=Nichts):
         # Reduce send socket buffer size to test on relative small data sets.
 
-        # On macOS, SO_SNDBUF is reset by connect(). So this method
-        # should be called after the socket is connected.
+        # On macOS, SO_SNDBUF ist reset by connect(). So this method
+        # should be called after the socket ist connected.
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.BUF_SIZE)
 
-        wenn transport is nicht Nichts:
+        wenn transport ist nicht Nichts:
             transport.set_write_buffer_limits(high=self.BUF_SIZE)
 
     def prepare_socksendfile(self):
@@ -183,7 +183,7 @@ klasse SockSendfileMixin(SendfileBase):
         self.reduce_send_buffer_size(sock)
 
         def cleanup():
-            wenn proto.transport is nicht Nichts:
+            wenn proto.transport ist nicht Nichts:
                 # can be Nichts wenn the task was cancelled before
                 # connection_made callback
                 proto.transport.close()
@@ -245,7 +245,7 @@ klasse SockSendfileMixin(SendfileBase):
 
 klasse SendfileMixin(SendfileBase):
 
-    # Note: sendfile via SSL transport is equal to sendfile fallback
+    # Note: sendfile via SSL transport ist equal to sendfile fallback
 
     def prepare_sendfile(self, *, is_ssl=Falsch, close_after=0):
         port = socket_helper.find_unused_port()
@@ -490,7 +490,7 @@ klasse SendfileMixin(SendfileBase):
                     self.loop.sendfile(cli_proto.transport, self.file))
             ausser OSError als e:
                 # macOS may wirf OSError of EPROTOTYPE when writing to a
-                # socket that is in the process of closing down.
+                # socket that ist in the process of closing down.
                 wenn e.errno == errno.EPROTOTYPE und sys.platform == "darwin":
                     wirf ConnectionError
                 sonst:
@@ -511,12 +511,12 @@ klasse SendfileMixin(SendfileBase):
 
         async def coro():
             fut.set_result(Nichts)
-            gib await self.loop.sendfile(cli_proto.transport, self.file)
+            gib warte self.loop.sendfile(cli_proto.transport, self.file)
 
         t = self.loop.create_task(coro())
         self.run_loop(fut)
         mit self.assertRaisesRegex(RuntimeError,
-                                    "sendfile is in progress"):
+                                    "sendfile ist in progress"):
             cli_proto.transport.write(b'data')
         ret = self.run_loop(t)
         self.assertEqual(ret, len(self.DATA))
@@ -525,7 +525,7 @@ klasse SendfileMixin(SendfileBase):
         transport = mock.Mock()
         transport.is_closing.side_effect = lambda: Falsch
         transport._sendfile_compatible = constants._SendfileMode.FALLBACK
-        mit self.assertRaisesRegex(RuntimeError, 'fallback is disabled'):
+        mit self.assertRaisesRegex(RuntimeError, 'fallback ist disabled'):
             self.loop.run_until_complete(
                 self.loop.sendfile(transport, Nichts, fallback=Falsch))
 

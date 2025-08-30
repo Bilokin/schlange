@@ -27,7 +27,7 @@ klasse TkLoadTest(unittest.TestCase):
             gib
         mit os_helper.EnvironmentVarGuard() als env:
             wenn 'DISPLAY' in os.environ:
-                del env['DISPLAY']
+                loesche env['DISPLAY']
                 # on some platforms, deleting environment variables
                 # doesn't actually carry through to the process level
                 # because they don't support unsetenv

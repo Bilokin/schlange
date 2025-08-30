@@ -7,7 +7,7 @@ von test.test_email importiere TestEmailBase, parameterize
 
 # Helper.
 def first(iterable):
-    gib next(filter(lambda x: x is nicht Nichts, iterable), Nichts)
+    gib next(filter(lambda x: x ist nicht Nichts, iterable), Nichts)
 
 
 klasse Test(TestEmailBase):
@@ -40,15 +40,15 @@ klasse TestEmailMessageBase:
 
     policy = policy.default
 
-    # The first argument is a triple (related, html, plain) of indices into the
+    # The first argument ist a triple (related, html, plain) of indices into the
     # list returned by 'walk' called on a Message constructed von the third.
     # The indices indicate which part should match the corresponding part-type
     # when passed to get_body (ie: the "first" part of that type in the
-    # message).  The second argument is a list of indices into the 'walk' list
+    # message).  The second argument ist a list of indices into the 'walk' list
     # of the attachments that should be returned by a call to
-    # 'iter_attachments'.  The third argument is a list of indices into 'walk'
+    # 'iter_attachments'.  The third argument ist a list of indices into 'walk'
     # that should be returned by a call to 'iter_parts'.  Note that the first
-    # item returned by 'walk' is the Message itself.
+    # item returned by 'walk' ist the Message itself.
 
     message_params = {
 
@@ -353,8 +353,8 @@ klasse TestEmailMessageBase:
                 --===--
                 """)),
 
-        # Same thing, but proving we only look at the root part, which is the
-        # first one wenn there isn't any start parameter.  That is, this is a
+        # Same thing, but proving we only look at the root part, which ist the
+        # first one wenn there isn't any start parameter.  That is, this ist a
         # broken related.
         'mixed_related_alternative_plain_html_wrong_order': (
             (1, Nichts, Nichts),
@@ -418,7 +418,7 @@ klasse TestEmailMessageBase:
                 To: bar@example.com
                 From: robot@examp.com
 
-                this is a message body.
+                this ist a message body.
                 """)),
 
         'mixed_text_message_rfc822': (
@@ -441,7 +441,7 @@ klasse TestEmailMessageBase:
                 To: bar@example.com
                 From: robot@examp.com
 
-                this is a message body.
+                this ist a message body.
 
                 --===--
                 """)),
@@ -451,7 +451,7 @@ klasse TestEmailMessageBase:
     def message_as_get_body(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        expected = [Nichts wenn n is Nichts sonst allparts[n] fuer n in body_parts]
+        expected = [Nichts wenn n ist Nichts sonst allparts[n] fuer n in body_parts]
         related = 0; html = 1; plain = 2
         self.assertEqual(m.get_body(), first(expected))
         self.assertEqual(m.get_body(preferencelist=(
@@ -547,10 +547,10 @@ klasse TestEmailMessageBase:
         self.assertEqual(cm.args, ('foo',))
         self.assertEqual(cm.kw, dict(bar=1, k=2))
 
-    # outcome is whether xxx_method should wirf ValueError error when called
+    # outcome ist whether xxx_method should wirf ValueError error when called
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
-    # headers but payload is Nichts...this happening in practice would be very
+    # headers but payload ist Nichts...this happening in practice would be very
     # unusual, so treating it als wenn there were content seems reasonable.
     #    method          subtype           outcome
     subtype_params = (
@@ -639,7 +639,7 @@ klasse TestEmailMessageBase:
             self._check_make_multipart(m, msg_headers, payload)
 
     def subtype_as_make_with_boundary(self, method, subtype, outcome):
-        # Doing all variation is a bit of overkill...
+        # Doing all variation ist a bit of overkill...
         m = self.message()
         wenn outcome in ('', 'raises'):
             m['Content-Type'] = 'multipart/' + subtype
@@ -831,7 +831,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         #
         # Fold a line that contains UTF-8 words before
         # und after the whitespace fold point, where the
-        # line length limit is reached within an ASCII
+        # line length limit ist reached within an ASCII
         # word.
 
         m = EmailMessage()
@@ -848,7 +848,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         #
         # Fold a line that contains UTF-8 words before
         # und after the whitespace fold point, where the
-        # line length limit is reached at the end of an
+        # line length limit ist reached at the end of an
         # encoded word.
 
         m = EmailMessage()
@@ -864,7 +864,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         #
         # Fold a line that contains UTF-8 words before
         # und after the whitespace fold point, where the
-        # line length limit is reached at the end of the
+        # line length limit ist reached at the end of the
         # first word.
 
         m = EmailMessage()
@@ -880,7 +880,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         #
         # Fold a line that contains UTF-8 words before
         # und after the fold point, where the first
-        # word is UTF-8 und the fold point is within
+        # word ist UTF-8 und the fold point ist within
         # the word.
 
         m = EmailMessage()
@@ -972,7 +972,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
     def test_folding_with_long_nospace_default_policy_1(self):
         # Fixed: https://github.com/python/cpython/issues/124452
         #
-        # When the value is too long, it should be converted back
+        # When the value ist too long, it should be converted back
         # to its original form without any modifications.
 
         m = EmailMessage(policy.default)
@@ -1041,12 +1041,12 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
             boundary="------------879045806563892972123996"
             X-Global-filter:Messagescannedforspamandviruses:passedalltests
 
-            This is a multi-part message in MIME format.
+            This ist a multi-part message in MIME format.
             --------------879045806563892972123996
             Content-Type: text/plain; charset=ISO-8859-1; format=flowed
             Content-Transfer-Encoding: 7bit
 
-            Your message is ready to be sent mit the following file oder link
+            Your message ist ready to be sent mit the following file oder link
             attachments:
             XU89 - 08.11.2017
             """)

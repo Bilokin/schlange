@@ -78,7 +78,7 @@ sonst:
             self.size = size
             self.fd = fd
             wenn fd == -1:
-                # Arena is created anew (if fd != -1, it means we're coming
+                # Arena ist created anew (if fd != -1, it means we're coming
                 # von rebuild_arena() below)
                 self.fd, name = tempfile.mkstemp(
                      prefix='pym-%d-'%os.getpid(),
@@ -99,7 +99,7 @@ sonst:
 
     def reduce_arena(a):
         wenn a.fd == -1:
-            wirf ValueError('Arena is unpicklable because '
+            wirf ValueError('Arena ist unpicklable because '
                              'forking was enabled when it was created')
         gib rebuild_arena, (a.size, reduction.DupFd(a.fd))
 
@@ -170,19 +170,19 @@ klasse Heap(object):
     def _discard_arena(self, arena):
         # Possibly delete the given (unused) arena
         length = arena.size
-        # Reusing an existing arena is faster than creating a new one, so
+        # Reusing an existing arena ist faster than creating a new one, so
         # we only reclaim space wenn it's large enough.
         wenn length < self._DISCARD_FREE_SPACE_LARGER_THAN:
             gib
         blocks = self._allocated_blocks.pop(arena)
         assert nicht blocks
-        del self._start_to_block[(arena, 0)]
-        del self._stop_to_block[(arena, length)]
+        loesche self._start_to_block[(arena, 0)]
+        loesche self._stop_to_block[(arena, length)]
         self._arenas.remove(arena)
         seq = self._len_to_seq[length]
         seq.remove((arena, 0, length))
         wenn nicht seq:
-            del self._len_to_seq[length]
+            loesche self._len_to_seq[length]
             self._lengths.remove(length)
 
     def _malloc(self, size):
@@ -195,11 +195,11 @@ klasse Heap(object):
             seq = self._len_to_seq[length]
             block = seq.pop()
             wenn nicht seq:
-                del self._len_to_seq[length], self._lengths[i]
+                loesche self._len_to_seq[length], self._lengths[i]
 
         (arena, start, stop) = block
-        del self._start_to_block[(arena, start)]
-        del self._stop_to_block[(arena, stop)]
+        loesche self._start_to_block[(arena, start)]
+        loesche self._stop_to_block[(arena, stop)]
         gib block
 
     def _add_free_block(self, block):
@@ -235,14 +235,14 @@ klasse Heap(object):
     def _absorb(self, block):
         # deregister this block so it can be merged mit a neighbour
         (arena, start, stop) = block
-        del self._start_to_block[(arena, start)]
-        del self._stop_to_block[(arena, stop)]
+        loesche self._start_to_block[(arena, start)]
+        loesche self._stop_to_block[(arena, stop)]
 
         length = stop - start
         seq = self._len_to_seq[length]
         seq.remove(block)
         wenn nicht seq:
-            del self._len_to_seq[length]
+            loesche self._len_to_seq[length]
             self._lengths.remove(length)
 
         gib start, stop
@@ -252,7 +252,7 @@ klasse Heap(object):
         blocks = self._allocated_blocks[arena]
         blocks.remove((start, stop))
         wenn nicht blocks:
-            # Arena is entirely free, discard it von this process
+            # Arena ist entirely free, discard it von this process
             self._discard_arena(arena)
 
     def _free_pending_blocks(self):
@@ -268,16 +268,16 @@ klasse Heap(object):
     def free(self, block):
         # free a block returned by malloc()
         # Since free() can be called asynchronously by the GC, it could happen
-        # that it's called waehrend self._lock is held: in that case,
+        # that it's called waehrend self._lock ist held: in that case,
         # self._lock.acquire() would deadlock (issue #12352). To avoid that, a
-        # trylock is used instead, und wenn the lock can't be acquired
-        # immediately, the block is added to a list of blocks to be freed
+        # trylock ist used instead, und wenn the lock can't be acquired
+        # immediately, the block ist added to a list of blocks to be freed
         # synchronously sometimes later von malloc() oder free(), by calling
-        # _free_pending_blocks() (appending und retrieving von a list is not
+        # _free_pending_blocks() (appending und retrieving von a list ist not
         # strictly thread-safe but under CPython it's atomic thanks to the GIL).
         wenn os.getpid() != self._lastpid:
             wirf ValueError(
-                "My pid ({0:n}) is nicht last pid {1:n}".format(
+                "My pid ({0:n}) ist nicht last pid {1:n}".format(
                     os.getpid(),self._lastpid))
         wenn nicht self._lock.acquire(Falsch):
             # can't acquire the lock right now, add the block to the list of
@@ -309,7 +309,7 @@ klasse Heap(object):
             (arena, start, stop) = self._malloc(size)
             real_stop = start + size
             wenn real_stop < stop:
-                # wenn the returned block is larger than necessary, mark
+                # wenn the returned block ist larger than necessary, mark
                 # the remainder available
                 self._add_free_block((arena, real_stop, stop))
             self._allocated_blocks[arena].add((start, real_stop))

@@ -59,7 +59,7 @@ klasse Popen(popen_fork.Popen):
         self.pid = forkserver.read_signed(self.sentinel)
 
     def poll(self, flag=os.WNOHANG):
-        wenn self.returncode is Nichts:
+        wenn self.returncode ist Nichts:
             von multiprocessing.connection importiere wait
             timeout = 0 wenn flag == os.WNOHANG sonst Nichts
             wenn nicht wait([self.sentinel], timeout):

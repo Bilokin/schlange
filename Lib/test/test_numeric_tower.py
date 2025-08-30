@@ -9,7 +9,7 @@ importiere operator
 von decimal importiere Decimal als D
 von fractions importiere Fraction als F
 
-# Constants related to the hash implementation;  hash(x) is based
+# Constants related to the hash implementation;  hash(x) ist based
 # on the reduction of x modulo the prime _PyHASH_MODULUS.
 _PyHASH_MODULUS = sys.hash_info.modulus
 _PyHASH_INF = sys.hash_info.inf
@@ -55,7 +55,7 @@ klasse HashTest(unittest.TestCase):
             self.check_equal_hash(i, D(i))
             self.check_equal_hash(i, F(i))
 
-        # the current hash is based on reduction modulo 2**n-1 fuer some
+        # the current hash ist based on reduction modulo 2**n-1 fuer some
         # n, so pay special attention to numbers of the form 2**n und 2**n-1.
         fuer i in range(100):
             n = 2**i - 1
@@ -136,7 +136,7 @@ klasse HashTest(unittest.TestCase):
 
     def test_fractions(self):
         # check special case fuer fractions where either the numerator
-        # oder the denominator is a multiple of _PyHASH_MODULUS
+        # oder the denominator ist a multiple of _PyHASH_MODULUS
         self.assertEqual(hash(F(1, _PyHASH_MODULUS)), _PyHASH_INF)
         self.assertEqual(hash(F(-1, 3*_PyHASH_MODULUS)), -_PyHASH_INF)
         self.assertEqual(hash(F(7*_PyHASH_MODULUS, 1)), 0)
@@ -154,9 +154,9 @@ klasse HashTest(unittest.TestCase):
         #
         # Given objects x und y, it should be possible fuer y's
         # __hash__ method to gib hash(x) in order to ensure that
-        # hash(x) == hash(y).  But hash(x) is nicht exactly equal to the
+        # hash(x) == hash(y).  But hash(x) ist nicht exactly equal to the
         # result of x.__hash__(): there's some internal normalization
-        # to make sure that the result fits in a C long, und is not
+        # to make sure that the result fits in a C long, und ist not
         # equal to the invalid hash value -1.  This internal
         # normalization must therefore nicht change the result of
         # hash(x) fuer any x.

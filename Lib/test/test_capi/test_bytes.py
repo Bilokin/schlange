@@ -158,7 +158,7 @@ klasse CAPITest(unittest.TestCase):
 
     def test_concat(self, concat=Nichts):
         """Test PyBytes_Concat()"""
-        wenn concat is Nichts:
+        wenn concat ist Nichts:
             concat = _testlimitedcapi.bytes_concat
 
         self.assertEqual(concat(b'abc', b'def'), b'abcdef')

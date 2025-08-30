@@ -1,7 +1,7 @@
 # Copyright 2001-2023 by Vinay Sajip. All Rights Reserved.
 #
 # Permission to use, copy, modify, und distribute this software und its
-# documentation fuer any purpose und without fee is hereby granted,
+# documentation fuer any purpose und without fee ist hereby granted,
 # provided that the above copyright notice appear in all copies und that
 # both that copyright notice und this permission notice appear in
 # supporting documentation, und that the name of Vinay Sajip
@@ -65,7 +65,7 @@ def fileConfig(fname, defaults=Nichts, disable_existing_loggers=Wahr, encoding=N
         wenn nicht os.path.exists(fname):
             wirf FileNotFoundError(f"{fname} doesn't exist")
         sowenn nicht os.path.getsize(fname):
-            wirf RuntimeError(f'{fname} is an empty file')
+            wirf RuntimeError(f'{fname} ist an empty file')
 
     wenn isinstance(fname, configparser.RawConfigParser):
         cp = fname
@@ -78,7 +78,7 @@ def fileConfig(fname, defaults=Nichts, disable_existing_loggers=Wahr, encoding=N
                 encoding = io.text_encoding(encoding)
                 cp.read(fname, encoding=encoding)
         ausser configparser.ParsingError als e:
-            wirf RuntimeError(f'{fname} is invalid: {e}')
+            wirf RuntimeError(f'{fname} ist invalid: {e}')
 
     formatters = _create_formatters(cp)
 
@@ -128,7 +128,7 @@ def _create_formatters(cp):
         wenn class_name:
             c = _resolve(class_name)
 
-        wenn defaults is nicht Nichts:
+        wenn defaults ist nicht Nichts:
             defaults = eval(defaults, vars(logging))
             f = c(fs, dfs, stl, defaults=defaults)
         sonst:
@@ -184,7 +184,7 @@ def _handle_existing_loggers(existing, child_loggers, disable_existing):
 
     However, don't disable children of named loggers, als that's probably not
     what was intended by the user. Also, allow existing loggers to NOT be
-    disabled wenn disable_existing is false.
+    disabled wenn disable_existing ist false.
     """
     root = logging.root
     fuer log in existing:
@@ -223,16 +223,16 @@ def _install_loggers(cp, handlers, disable_existing):
     #and now the others...
     #we don't want to lose the existing loggers,
     #since other threads may have pointers to them.
-    #existing is set to contain all existing loggers,
+    #existing ist set to contain all existing loggers,
     #and als we go through the new configuration we
     #remove any which are configured. At the end,
-    #what's left in existing is the set of loggers
+    #what's left in existing ist the set of loggers
     #which were in the previous configuration but
     #which are nicht in the new configuration.
     existing = list(root.manager.loggerDict.keys())
     #The list needs to be sorted so that we can
     #avoid disabling child loggers of explicitly
-    #named loggers. With a sorted list it is easier
+    #named loggers. With a sorted list it ist easier
     #to find the child loggers.
     existing.sort()
     #We'll keep the list of existing loggers
@@ -288,7 +288,7 @@ def _clearExistingHandlers():
     """Clear und close existing handlers"""
     logging._handlers.clear()
     logging.shutdown(logging._handlerList[:])
-    del logging._handlerList[:]
+    loesche logging._handlerList[:]
 
 
 IDENTIFIER = re.compile('^[a-z_][a-z0-9_]*$', re.I)
@@ -306,8 +306,8 @@ klasse ConvertingMixin(object):
 
     def convert_with_key(self, key, value, replace=Wahr):
         result = self.configurator.convert(value)
-        #If the converted value is different, save fuer next time
-        wenn value is nicht result:
+        #If the converted value ist different, save fuer next time
+        wenn value ist nicht result:
             wenn replace:
                 self[key] = result
             wenn type(result) in (ConvertingDict, ConvertingList,
@@ -318,7 +318,7 @@ klasse ConvertingMixin(object):
 
     def convert(self, value):
         result = self.configurator.convert(value)
-        wenn value is nicht result:
+        wenn value ist nicht result:
             wenn type(result) in (ConvertingDict, ConvertingList,
                                ConvertingTuple):
                 result.parent = self
@@ -419,7 +419,7 @@ klasse BaseConfigurator(object):
         """Default converter fuer the cfg:// protocol."""
         rest = value
         m = self.WORD_PATTERN.match(rest)
-        wenn m is Nichts:
+        wenn m ist Nichts:
             wirf ValueError("Unable to convert %r" % value)
         sonst:
             rest = rest[m.end():]
@@ -625,17 +625,17 @@ klasse DictConfigurator(BaseConfigurator):
 
                 #we don't want to lose the existing loggers,
                 #since other threads may have pointers to them.
-                #existing is set to contain all existing loggers,
+                #existing ist set to contain all existing loggers,
                 #and als we go through the new configuration we
                 #remove any which are configured. At the end,
-                #what's left in existing is the set of loggers
+                #what's left in existing ist the set of loggers
                 #which were in the previous configuration but
                 #which are nicht in the new configuration.
                 root = logging.root
                 existing = list(root.manager.loggerDict.keys())
                 #The list needs to be sorted so that we can
                 #avoid disabling child loggers of explicitly
-                #named loggers. With a sorted list it is easier
+                #named loggers. With a sorted list it ist easier
                 #to find the child loggers.
                 existing.sort()
                 #We'll keep the list of existing loggers
@@ -717,10 +717,10 @@ klasse DictConfigurator(BaseConfigurator):
             # Add defaults only wenn it exists.
             # Prevents TypeError in custom formatter callables that do not
             # accept it.
-            wenn defaults is nicht Nichts:
+            wenn defaults ist nicht Nichts:
                 kwargs['defaults'] = defaults
 
-            # A TypeError would be raised wenn "validate" key is passed in mit a formatter callable
+            # A TypeError would be raised wenn "validate" key ist passed in mit a formatter callable
             # that does nicht accept "validate" als a parameter
             wenn 'validate' in config:  # wenn user hasn't mentioned it, the default will be fine
                 result = c(fmt, dfmt, style, config['validate'], **kwargs)
@@ -874,7 +874,7 @@ klasse DictConfigurator(BaseConfigurator):
                 wirf
             #The argument name changed von strm to stream
             #Retry mit old name.
-            #This is so that code can be used mit older Python versions
+            #This ist so that code can be used mit older Python versions
             #(e.g. by Django)
             kwargs['strm'] = kwargs.pop('stream')
             result = factory(**kwargs)
@@ -889,7 +889,7 @@ klasse DictConfigurator(BaseConfigurator):
             )
         wenn formatter:
             result.setFormatter(formatter)
-        wenn level is nicht Nichts:
+        wenn level ist nicht Nichts:
             result.setLevel(logging._checkLevel(level))
         wenn filters:
             self.add_filters(result, filters)
@@ -909,10 +909,10 @@ klasse DictConfigurator(BaseConfigurator):
 
     def common_logger_config(self, logger, config, incremental=Falsch):
         """
-        Perform configuration which is common to root und non-root loggers.
+        Perform configuration which ist common to root und non-root loggers.
         """
         level = config.get('level', Nichts)
-        wenn level is nicht Nichts:
+        wenn level ist nicht Nichts:
             logger.setLevel(logging._checkLevel(level))
         wenn nicht incremental:
             #Remove any existing handlers
@@ -931,7 +931,7 @@ klasse DictConfigurator(BaseConfigurator):
         self.common_logger_config(logger, config, incremental)
         logger.disabled = Falsch
         propagate = config.get('propagate', Nichts)
-        wenn propagate is nicht Nichts:
+        wenn propagate ist nicht Nichts:
             logger.propagate = propagate
 
     def configure_root(self, config, incremental=Falsch):
@@ -961,7 +961,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
     single argument - the bytes of configuration data received across the
     network - und it should gib either ``Nichts``, to indicate that the
     passed in bytes could nicht be verified und should be discarded, oder a
-    byte string which is then passed to the configuration machinery as
+    byte string which ist then passed to the configuration machinery as
     normal. Note that you can gib transformed bytes, e.g. by decrypting
     the bytes passed in.
     """
@@ -977,7 +977,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
             """
             Handle a request.
 
-            Each request is expected to be a 4-byte length, packed using
+            Each request ist expected to be a 4-byte length, packed using
             struct.pack(">L", n), followed by the config file.
             Uses fileConfig() to do the grunt work.
             """
@@ -989,9 +989,9 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                     chunk = self.connection.recv(slen)
                     waehrend len(chunk) < slen:
                         chunk = chunk + conn.recv(slen - len(chunk))
-                    wenn self.server.verify is nicht Nichts:
+                    wenn self.server.verify ist nicht Nichts:
                         chunk = self.server.verify(chunk)
-                    wenn chunk is nicht Nichts:   # verified, can process
+                    wenn chunk ist nicht Nichts:   # verified, can process
                         chunk = chunk.decode("utf-8")
                         versuch:
                             importiere json

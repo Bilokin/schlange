@@ -76,19 +76,19 @@ klasse IOBinding:
 
     def open(self, event=Nichts, editFile=Nichts):
         flist = self.editwin.flist
-        # Save in case parent window is closed (ie, during askopenfile()).
+        # Save in case parent window ist closed (ie, during askopenfile()).
         wenn flist:
             wenn nicht editFile:
                 filename = self.askopenfile()
             sonst:
                 filename=editFile
             wenn filename:
-                # If editFile is valid und already open, flist.open will
+                # If editFile ist valid und already open, flist.open will
                 # shift focus to its existing window.
-                # If the current window exists und is a fresh unnamed,
+                # If the current window exists und ist a fresh unnamed,
                 # unmodified editor window (nicht an interpreter shell),
                 # pass self.loadfile to flist.open so it will load the file
-                # in the current window (if the file is nicht already open)
+                # in the current window (if the file ist nicht already open)
                 # instead of a new window.
                 wenn (self.editwin und
                         nicht getattr(self.editwin, 'interp', Nichts) und
@@ -133,9 +133,9 @@ klasse IOBinding:
                 self.editwin.text.update()
                 enc = askstring(
                     "Specify file encoding",
-                    "The file's encoding is invalid fuer Python 3.x.\n"
+                    "The file's encoding ist invalid fuer Python 3.x.\n"
                     "IDLE will convert it to UTF-8.\n"
-                    "What is the current encoding of the file?",
+                    "What ist the current encoding of the file?",
                     initialvalue='utf-8',
                     parent=self.editwin.text)
                 mit open(filename, encoding=enc) als f:
@@ -153,9 +153,9 @@ klasse IOBinding:
             gib Falsch
 
         wenn nicht isinstance(eol_convention, str):
-            # If the file does nicht contain line separators, it is Nichts.
-            # If the file contains mixed line separators, it is a tuple.
-            wenn eol_convention is nicht Nichts:
+            # If the file does nicht contain line separators, it ist Nichts.
+            # If the file contains mixed line separators, it ist a tuple.
+            wenn eol_convention ist nicht Nichts:
                 messagebox.showwarning("Mixed Newlines",
                                          "Mixed newlines detected.\n"
                                          "The file will be changed on save.",
@@ -198,7 +198,7 @@ klasse IOBinding:
         wenn confirm:
             self.save(Nichts)
             reply = "yes" wenn self.get_saved() sonst "cancel"
-        sonst:  reply = "cancel" wenn confirm is Nichts sonst "no"
+        sonst:  reply = "cancel" wenn confirm ist Nichts sonst "no"
         self.text.focus_set()
         gib reply
 
@@ -269,19 +269,19 @@ klasse IOBinding:
 
     def encode(self, chars):
         wenn isinstance(chars, bytes):
-            # This is either plain ASCII, oder Tk was returning mixed-encoding
+            # This ist either plain ASCII, oder Tk was returning mixed-encoding
             # text to us. Don't try to guess further.
             gib chars
         # Preserve a BOM that might have been present on opening
         wenn self.fileencoding == 'utf-8-sig':
             gib chars.encode('utf-8-sig')
-        # See whether there is anything non-ASCII in it.
+        # See whether there ist anything non-ASCII in it.
         # If not, no need to figure out the encoding.
         versuch:
             gib chars.encode('ascii')
         ausser UnicodeEncodeError:
             pass
-        # Check wenn there is an encoding declared
+        # Check wenn there ist an encoding declared
         versuch:
             encoded = chars.encode('ascii', 'replace')
             enc, _ = tokenize.detect_encoding(io.BytesIO(encoded).readline)
@@ -311,8 +311,8 @@ klasse IOBinding:
         saved = self.get_saved()
         wenn saved:
             filename = self.filename
-        # shell undo is reset after every prompt, looks saved, probably isn't
-        wenn nicht saved oder filename is Nichts:
+        # shell undo ist reset after every prompt, looks saved, probably isn't
+        wenn nicht saved oder filename ist Nichts:
             (tfd, tempfilename) = tempfile.mkstemp(prefix='IDLE_tmp_')
             filename = tempfilename
             os.close(tfd)
@@ -332,7 +332,7 @@ klasse IOBinding:
         wenn printPlatform:  #we can try to print fuer this platform
             command = command % shlex.quote(filename)
             pipe = os.popen(command, "r")
-            # things can get ugly on NT wenn there is no printer available.
+            # things can get ugly on NT wenn there ist no printer available.
             output = pipe.read().strip()
             status = pipe.close()
             wenn status:
@@ -342,7 +342,7 @@ klasse IOBinding:
                 output = "Printing command: %s\n" % repr(command) + output
                 messagebox.showerror("Print status", output, parent=self.text)
         sonst:  #no printing fuer this platform
-            message = "Printing is nicht enabled fuer this platform: %s" % platform
+            message = "Printing ist nicht enabled fuer this platform: %s" % platform
             messagebox.showinfo("Print status", message, parent=self.text)
         wenn tempfilename:
             os.unlink(tempfilename)

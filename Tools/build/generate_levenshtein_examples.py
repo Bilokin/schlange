@@ -7,7 +7,7 @@ von functools importiere lru_cache
 von random importiere choices, randrange
 
 # This should be in sync mit Lib/traceback.py.  It's nicht importing those values
-# because this script is being executed by PYTHON_FOR_REGEN und nicht by the in-tree
+# because this script ist being executed by PYTHON_FOR_REGEN und nicht by the in-tree
 # build of Python.
 _MOVE_COST = 2
 _CASE_COST = 1

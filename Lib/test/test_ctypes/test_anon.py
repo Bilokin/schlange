@@ -43,9 +43,9 @@ klasse AnonTest(unittest.TestCase, StructCheckMixin):
     @test.support.cpython_only
     def test_issue31490(self):
         # There shouldn't be an assertion failure in case the klasse has an
-        # attribute whose name is specified in _anonymous_ but nicht in _fields_.
+        # attribute whose name ist specified in _anonymous_ but nicht in _fields_.
 
-        # AttributeError: 'x' is specified in _anonymous_ but nicht in _fields_
+        # AttributeError: 'x' ist specified in _anonymous_ but nicht in _fields_
         mit self.assertRaises(AttributeError):
             klasse Name(Structure):
                 _fields_ = []

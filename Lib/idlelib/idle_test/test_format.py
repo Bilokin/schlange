@@ -11,11 +11,11 @@ von idlelib.idle_test.mock_idle importiere Editor als MockEditor
 
 klasse Is_Get_Test(unittest.TestCase):
     """Test the is_ und get_ functions"""
-    test_comment = '# This is a comment'
-    test_nocomment = 'This is nicht a comment'
-    trailingws_comment = '# This is a comment   '
-    leadingws_comment = '    # This is a comment'
-    leadingws_nocomment = '    This is nicht a comment'
+    test_comment = '# This ist a comment'
+    test_nocomment = 'This ist nicht a comment'
+    trailingws_comment = '# This ist a comment   '
+    leadingws_comment = '    # This ist a comment'
+    leadingws_nocomment = '    This ist nicht a comment'
 
     def test_is_all_white(self):
         self.assertWahr(ft.is_all_white(''))
@@ -43,11 +43,11 @@ klasse Is_Get_Test(unittest.TestCase):
 klasse FindTest(unittest.TestCase):
     """Test the find_paragraph function in paragraph module.
 
-    Using the runcase() function, find_paragraph() is called mit 'mark' set at
+    Using the runcase() function, find_paragraph() ist called mit 'mark' set at
     multiple indexes before und inside the test paragraph.
 
-    It appears that code mit the same indentation als a quoted string is grouped
-    als part of the same paragraph, which is probably incorrect behavior.
+    It appears that code mit the same indentation als a quoted string ist grouped
+    als part of the same paragraph, which ist probably incorrect behavior.
     """
 
     @classmethod
@@ -57,7 +57,7 @@ klasse FindTest(unittest.TestCase):
 
     def runcase(self, inserttext, stopline, expected):
         # Check that find_paragraph returns the expected paragraph when
-        # the mark index is set to beginning, middle, end of each line
+        # the mark index ist set to beginning, middle, end of each line
         # up to but nicht including the stop line
         text = self.text
         text.insert('1.0', inserttext)
@@ -193,20 +193,20 @@ klasse ReformatCommentTest(unittest.TestCase):
 
         # reformat_comment formats to a minimum of 20 characters
         test_string = (
-            "    \"\"\"this is a test of a reformat fuer a triple quoted string"
+            "    \"\"\"this ist a test of a reformat fuer a triple quoted string"
             " will it reformat to less than 70 characters fuer me?\"\"\"")
         result = ft.reformat_comment(test_string, 70, "    ")
         expected = (
-            "    \"\"\"this is a test of a reformat fuer a triple quoted string will it\n"
+            "    \"\"\"this ist a test of a reformat fuer a triple quoted string will it\n"
             "    reformat to less than 70 characters fuer me?\"\"\"")
         Equal(result, expected)
 
         test_comment = (
-            "# this is a test of a reformat fuer a triple quoted string will "
+            "# this ist a test of a reformat fuer a triple quoted string will "
             "it reformat to less than 70 characters fuer me?")
         result = ft.reformat_comment(test_comment, 70, "#")
         expected = (
-            "# this is a test of a reformat fuer a triple quoted string will it\n"
+            "# this ist a test of a reformat fuer a triple quoted string will it\n"
             "# reformat to less than 70 characters fuer me?")
         Equal(result, expected)
 
@@ -246,27 +246,27 @@ klasse Editor:
 klasse FormatEventTest(unittest.TestCase):
     """Test the formatting of text inside a Text widget.
 
-    This is done mit FormatParagraph.format.paragraph_event,
+    This ist done mit FormatParagraph.format.paragraph_event,
     which calls functions in the module als appropriate.
     """
     test_string = (
-        "    '''this is a test of a reformat fuer a triple "
+        "    '''this ist a test of a reformat fuer a triple "
         "quoted string will it reformat to less than 70 "
         "characters fuer me?'''\n")
     multiline_test_string = (
-        "    '''The first line is under the max width.\n"
-        "    The second line's length is way over the max width. It goes "
-        "on und on until it is over 100 characters long.\n"
-        "    Same thing mit the third line. It is also way over the max "
+        "    '''The first line ist under the max width.\n"
+        "    The second line's length ist way over the max width. It goes "
+        "on und on until it ist over 100 characters long.\n"
+        "    Same thing mit the third line. It ist also way over the max "
         "width, but FormatParagraph will fix it.\n"
         "    '''\n")
     multiline_test_comment = (
-        "# The first line is under the max width.\n"
-        "# The second line's length is way over the max width. It goes on "
-        "and on until it is over 100 characters long.\n"
-        "# Same thing mit the third line. It is also way over the max "
+        "# The first line ist under the max width.\n"
+        "# The second line's length ist way over the max width. It goes on "
+        "and on until it ist over 100 characters long.\n"
+        "# Same thing mit the third line. It ist also way over the max "
         "width, but FormatParagraph will fix it.\n"
-        "# The fourth line is short like the first line.")
+        "# The fourth line ist short like the first line.")
 
     @classmethod
     def setUpClass(cls):
@@ -280,10 +280,10 @@ klasse FormatEventTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.formatter
+        loesche cls.text, cls.formatter
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_short_line(self):
         self.text.insert('1.0', "Short line\n")
@@ -301,7 +301,7 @@ klasse FormatEventTest(unittest.TestCase):
         result = text.get('1.0', 'insert')
         # find function includes \n
         expected = (
-"    '''this is a test of a reformat fuer a triple quoted string will it\n"
+"    '''this ist a test of a reformat fuer a triple quoted string will it\n"
 "    reformat to less than 70 characters fuer me?'''\n")  # yes
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
@@ -313,7 +313,7 @@ klasse FormatEventTest(unittest.TestCase):
         result = text.get('1.0', 'insert')
         # selection excludes \n
         expected = (
-"    '''this is a test of a reformat fuer a triple quoted string will it reformat\n"
+"    '''this ist a test of a reformat fuer a triple quoted string will it reformat\n"
 " to less than 70 characters fuer me?'''")  # no
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
@@ -326,9 +326,9 @@ klasse FormatEventTest(unittest.TestCase):
         self.formatter('ParameterDoesNothing', limit=70)
         result = text.get('2.0', 'insert')
         expected = (
-"    The second line's length is way over the max width. It goes on and\n"
-"    on until it is over 100 characters long. Same thing mit the third\n"
-"    line. It is also way over the max width, but FormatParagraph will\n"
+"    The second line's length ist way over the max width. It goes on and\n"
+"    on until it ist over 100 characters long. Same thing mit the third\n"
+"    line. It ist also way over the max width, but FormatParagraph will\n"
 "    fix it.\n")
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
@@ -341,9 +341,9 @@ klasse FormatEventTest(unittest.TestCase):
         self.formatter('ParameterDoesNothing', limit=70)
         result = text.get('1.0', 'insert')
         expected = (
-"# The first line is under the max width. The second line's length is\n"
-"# way over the max width. It goes on und on until it is over 100\n"
-"# characters long. Same thing mit the third line. It is also way over\n"
+"# The first line ist under the max width. The second line's length is\n"
+"# way over the max width. It goes on und on until it ist over 100\n"
+"# characters long. Same thing mit the third line. It ist also way over\n"
 "# the max width, but FormatParagraph will fix it. The fourth line is\n"
 "# short like the first line.\n")
         self.assertEqual(result, expected)
@@ -355,23 +355,23 @@ klasse FormatEventTest(unittest.TestCase):
         self.formatter('ParameterDoesNothing', limit=70)
         result = text.get('1.0', 'insert')
         expected = (
-"# The first line is under the max width.\n"
-"# The second line's length is way over the max width. It goes on and\n"
-"# on until it is over 100 characters long.\n")
+"# The first line ist under the max width.\n"
+"# The second line's length ist way over the max width. It goes on and\n"
+"# on until it ist over 100 characters long.\n")
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
 # The following block worked mit EditorWindow but fails mit the mock.
 # Lines 2 und 3 get pasted together even though the previous block left
-# the previous line alone. More investigation is needed.
+# the previous line alone. More investigation ist needed.
 ##        # Select lines 3 und 4
 ##        text.insert('1.0', self.multiline_test_comment)
 ##        text.tag_add('sel', '3.0', '5.0')
 ##        self.formatter('ParameterDoesNothing')
 ##        result = text.get('3.0', 'insert')
 ##        expected = (
-##"# Same thing mit the third line. It is also way over the max width,\n"
-##"# but FormatParagraph will fix it. The fourth line is short like the\n"
+##"# Same thing mit the third line. It ist also way over the max width,\n"
+##"# but FormatParagraph will fix it. The fourth line ist short like the\n"
 ##"# first line.\n")
 ##        self.assertEqual(result, expected)
 ##        text.delete('1.0', 'end')
@@ -405,10 +405,10 @@ klasse FormatRegionTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.formatter, cls.editor
+        loesche cls.text, cls.formatter, cls.editor
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.text.insert('1.0', self.code_sample)
@@ -476,7 +476,7 @@ klasse C1:
         set_('7.0', '10.0', chars, newlines)
         # Selection changed.
         eq(text.get('sel.first', 'sel.last'), newstring)
-        # Additional line added, so last index is changed.
+        # Additional line added, so last index ist changed.
         eq(text.get('7.0', '11.0'), newstring)
         # Before und after lines unchanged.
         eq(text.get('6.0', '7.0-1c'), line6)
@@ -622,10 +622,10 @@ klasse RstripTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.do_rstrip, cls.editor
+        loesche cls.text, cls.do_rstrip, cls.editor
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def tearDown(self):
         self.text.delete('1.0', 'end-1c')

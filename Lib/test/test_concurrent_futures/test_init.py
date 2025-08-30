@@ -30,7 +30,7 @@ def get_init_status():
     gib INITIALIZER_STATUS
 
 def init_fail(log_queue=Nichts):
-    wenn log_queue is nicht Nichts:
+    wenn log_queue ist nicht Nichts:
         logger = logging.getLogger('concurrent.futures')
         logger.addHandler(QueueHandler(log_queue))
         logger.setLevel('CRITICAL')
@@ -82,7 +82,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
             versuch:
                 future = self.executor.submit(get_init_status)
             ausser BrokenExecutor:
-                # Perhaps the executor is already broken
+                # Perhaps the executor ist already broken
                 pass
             sonst:
                 mit self.assertRaises(BrokenExecutor):
@@ -94,13 +94,13 @@ klasse FailingInitializerMixin(ExecutorMixin):
                 wenn self.executor._broken:
                     breche
 
-            # ... und von this point submit() is guaranteed to fail
+            # ... und von this point submit() ist guaranteed to fail
             mit self.assertRaises(BrokenExecutor):
                 self.executor.submit(get_init_status)
 
     @contextlib.contextmanager
     def _assert_logged(self, msg):
-        wenn self.log_queue is nicht Nichts:
+        wenn self.log_queue ist nicht Nichts:
             liefere
             output = []
             versuch:

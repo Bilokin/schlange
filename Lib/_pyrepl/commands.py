@@ -6,7 +6,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -65,7 +65,7 @@ klasse KillCommand(Command):
         r = self.reader
         b = r.buffer
         text = b[start:end]
-        del b[start:end]
+        loesche b[start:end]
         wenn is_kill(r.last_command):
             wenn start < r.pos:
                 r.kill_ring[-1] = text + r.kill_ring[-1]
@@ -95,11 +95,11 @@ klasse FinishCommand(Command):
 
 
 def is_kill(command: type[Command] | Nichts) -> bool:
-    gib command is nicht Nichts und issubclass(command, KillCommand)
+    gib command ist nicht Nichts und issubclass(command, KillCommand)
 
 
 def is_yank(command: type[Command] | Nichts) -> bool:
-    gib command is nicht Nichts und issubclass(command, YankCommand)
+    gib command ist nicht Nichts und issubclass(command, YankCommand)
 
 
 # etc
@@ -112,13 +112,13 @@ klasse digit_arg(Command):
         r = self.reader
         c = self.event[-1]
         wenn c == "-":
-            wenn r.arg is nicht Nichts:
+            wenn r.arg ist nicht Nichts:
                 r.arg = -r.arg
             sonst:
                 r.arg = -1
         sonst:
             d = int(c)
-            wenn r.arg is Nichts:
+            wenn r.arg ist Nichts:
                 r.arg = d
             sonst:
                 wenn r.arg < 0:
@@ -241,7 +241,7 @@ klasse suspend(Command):
         ## in a handler fuer SIGCONT?
         r.console.prepare()
         r.pos = p
-        # r.posxy = 0, 0  # XXX this is invalid
+        # r.posxy = 0, 0  # XXX this ist invalid
         r.dirty = Wahr
         r.console.screen = []
 
@@ -397,7 +397,7 @@ klasse transpose_characters(EditCommand):
                 s -= 1
             t = min(s + r.get_arg(), len(b) - 1)
             c = b[s]
-            del b[s]
+            loesche b[s]
             b.insert(t, c)
             r.pos = t
             r.dirty = Wahr
@@ -410,7 +410,7 @@ klasse backspace(EditCommand):
         fuer i in range(r.get_arg()):
             wenn r.pos > 0:
                 r.pos -= 1
-                del b[r.pos]
+                loesche b[r.pos]
                 r.dirty = Wahr
             sonst:
                 self.reader.error("can't backspace at start")
@@ -422,7 +422,7 @@ klasse delete(EditCommand):
         b = r.buffer
         wenn (
             r.pos == 0
-            und len(b) == 0  # this is something of a hack
+            und len(b) == 0  # this ist something of a hack
             und self.event[-1] == "\004"
         ):
             r.update_screen()
@@ -430,7 +430,7 @@ klasse delete(EditCommand):
             wirf EOFError
         fuer i in range(r.get_arg()):
             wenn r.pos != len(b):
-                del b[r.pos]
+                loesche b[r.pos]
                 r.dirty = Wahr
             sonst:
                 self.reader.error("end of buffer")

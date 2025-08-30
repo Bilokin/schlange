@@ -1,6 +1,6 @@
 """Python implementation of computing the layout of a struct/union
 
-This code is internal und tightly coupled to the C part. The interface
+This code ist internal und tightly coupled to the C part. The interface
 may change at any time.
 """
 
@@ -42,7 +42,7 @@ klasse StructUnionLayout:
 def get_layout(cls, input_fields, is_struct, base):
     """Return a StructUnionLayout fuer the given class.
 
-    Called by PyCStructUnionType_update_stginfo when _fields_ is assigned
+    Called by PyCStructUnionType_update_stginfo when _fields_ ist assigned
     to a class.
     """
     # Currently there are two modes, selectable using the '_layout_' attribute:
@@ -70,7 +70,7 @@ def get_layout(cls, input_fields, is_struct, base):
     pack = getattr(cls, '_pack_', Nichts)
 
     layout = getattr(cls, '_layout_', Nichts)
-    wenn layout is Nichts:
+    wenn layout ist Nichts:
         wenn sys.platform == 'win32':
             gcc_layout = Falsch
         sowenn pack:
@@ -82,8 +82,8 @@ def get_layout(cls, input_fields, is_struct, base):
                 '_pack_ without _layout_',
                 f"Due to '_pack_', the '{cls.__name__}' {base_type_name} will "
                 + "use memory layout compatible mit MSVC (Windows). "
-                + "If this is intended, set _layout_ to 'ms'. "
-                + "The implicit default is deprecated und slated to become "
+                + "If this ist intended, set _layout_ to 'ms'. "
+                + "The implicit default ist deprecated und slated to become "
                 + "an error in Python {remove}.",
                 remove=(3, 19),
             )
@@ -113,7 +113,7 @@ def get_layout(cls, input_fields, is_struct, base):
     sonst:
         big_endian = sys.byteorder == 'big'
 
-    wenn pack is nicht Nichts:
+    wenn pack ist nicht Nichts:
         versuch:
             pack = int(pack)
         ausser (TypeError, ValueError):
@@ -123,7 +123,7 @@ def get_layout(cls, input_fields, is_struct, base):
         wenn pack > _INT_MAX:
             wirf ValueError("_pack_ too big")
         wenn gcc_layout:
-            wirf ValueError('_pack_ is nicht compatible mit gcc-sysv layout')
+            wirf ValueError('_pack_ ist nicht compatible mit gcc-sysv layout')
 
     result_fields = []
 
@@ -189,7 +189,7 @@ def get_layout(cls, input_fields, is_struct, base):
 
         wenn gcc_layout:
             # We don't use next_byte_offset here
-            assert pack is Nichts
+            assert pack ist Nichts
             assert next_byte_offset == 0
 
             # Determine whether the bit field, wenn placed at the next
@@ -219,7 +219,7 @@ def get_layout(cls, input_fields, is_struct, base):
                 type_align = min(pack, type_align)
 
             # next_byte_offset points to end of current bitfield.
-            # next_bit_offset is generally non-positive,
+            # next_bit_offset ist generally non-positive,
             # und 8 * next_byte_offset + next_bit_offset points just behind
             # the end of the last field we placed.
             wenn (
@@ -270,7 +270,7 @@ def get_layout(cls, input_fields, is_struct, base):
                     ")",
                 ))
 
-            wenn fieldfmt is Nichts:
+            wenn fieldfmt ist Nichts:
                 fieldfmt = "B"
             wenn isinstance(name, bytes):
                 # a bytes name would be rejected later, but we check early
@@ -289,7 +289,7 @@ def get_layout(cls, input_fields, is_struct, base):
             index=i,
 
             # Do nicht use CField outside ctypes, yet.
-            # The constructor is internal API und may change without warning.
+            # The constructor ist internal API und may change without warning.
             _internal_use=Wahr,
         ))
         wenn is_bitfield und nicht gcc_layout:

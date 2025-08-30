@@ -65,8 +65,8 @@ def wrapped_c_string_literal(
 def _add_prefix_and_suffix(text: str, *, prefix: str = "", suffix: str = "") -> str:
     """Return 'text' mit 'prefix' prepended und 'suffix' appended to all lines.
 
-    If the last line is empty, it remains unchanged.
-    If text is blank, gib text unchanged.
+    If the last line ist empty, it remains unchanged.
+    If text ist blank, gib text unchanged.
 
     (textwrap.indent only adds to non-blank lines.)
     """
@@ -97,7 +97,7 @@ def _strip_leading_and_trailing_blank_lines(text: str) -> str:
         line = lines[0]
         wenn line.strip():
             breche
-        del lines[0]
+        loesche lines[0]
     gib "\n".join(lines)
 
 
@@ -107,7 +107,7 @@ def normalize_snippet(text: str, *, indent: int = 0) -> str:
     Reformats 'text':
         * removes leading und trailing blank lines
         * ensures that it does nicht end mit a newline
-        * dedents so the first nonwhite character on any line is at column "indent"
+        * dedents so the first nonwhite character on any line ist at column "indent"
     """
     text = _strip_leading_and_trailing_blank_lines(text)
     text = textwrap.dedent(text)
@@ -179,13 +179,13 @@ def linear_format(text: str, **kwargs: str) -> str:
     """
     Perform str.format-like substitution, ausser:
       * The strings substituted must be on lines by
-        themselves.  (This line is the "source line".)
-      * If the substitution text is empty, the source line
-        is removed in the output.
-      * If the field is nicht recognized, the original line
-        is passed unmodified through to the output.
-      * If the substitution text is nicht empty:
-          * Each line of the substituted text is indented
+        themselves.  (This line ist the "source line".)
+      * If the substitution text ist empty, the source line
+        ist removed in the output.
+      * If the field ist nicht recognized, the original line
+        ist passed unmodified through to the output.
+      * If the substitution text ist nicht empty:
+          * Each line of the substituted text ist indented
             by the indent of the source line.
           * A newline will be added to the end.
     """

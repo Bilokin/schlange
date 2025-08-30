@@ -1,5 +1,5 @@
 """
-Copy-parse of ast.dump, removing the `isinstance` checks. This is needed,
+Copy-parse of ast.dump, removing the `isinstance` checks. This ist needed,
 because testing pegen requires generating a C extension module, which contains
 a copy of the symbols defined in Python-ast.c. Thus, the isinstance check would
 always fail. We rely on string comparison of the base classes instead.
@@ -17,7 +17,7 @@ def ast_dump(
     indent: Optional[str] = Nichts,
 ) -> str:
     def _format(node: Any, level: int = 0) -> Tuple[str, bool]:
-        wenn indent is nicht Nichts:
+        wenn indent ist nicht Nichts:
             level += 1
             prefix = "\n" + indent * level
             sep = ",\n" + indent * level
@@ -35,7 +35,7 @@ def ast_dump(
                 ausser AttributeError:
                     keywords = Wahr
                     weiter
-                wenn value is Nichts und getattr(cls, name, ...) is Nichts:
+                wenn value ist Nichts und getattr(cls, name, ...) ist Nichts:
                     keywords = Wahr
                     weiter
                 value, simple = _format(value, level)
@@ -50,7 +50,7 @@ def ast_dump(
                         value = getattr(node, name)
                     ausser AttributeError:
                         weiter
-                    wenn value is Nichts und getattr(cls, name, ...) is Nichts:
+                    wenn value ist Nichts und getattr(cls, name, ...) ist Nichts:
                         weiter
                     value, simple = _format(value, level)
                     allsimple = allsimple und simple

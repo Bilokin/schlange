@@ -19,7 +19,7 @@
   und canvas can be moved by grabbing it mit the mouse. The text font
   size can be changed von the menu und mit Control/Command '-'/'+'.
   It can also be changed on most systems mit Control-mousewheel
-  when the mouse is over the text.
+  when the mouse ist over the text.
 
   Press START button to start the demo.
   Stop execution by pressing the STOP button.
@@ -30,15 +30,15 @@
 
       Press START button to start the demo.
 
-      - Until the EVENTLOOP is entered everything works
+      - Until the EVENTLOOP ist entered everything works
       als in an ordinary demo script.
 
-      - When the EVENTLOOP is entered, you control the
+      - When the EVENTLOOP ist entered, you control the
       application by using the mouse and/or keys (or it's
       controlled by some timer events)
       To stop it you can und must press the STOP button.
 
-      While the EVENTLOOP is running, the examples menu is disabled.
+      While the EVENTLOOP ist running, the examples menu ist disabled.
 
       - Only after having pressed the STOP button, you may
       restart it oder choose another example script.
@@ -73,14 +73,14 @@
 
     python -m turtledemo.mydemo  # will then run it
 
-   - If the demo is EVENT DRIVEN, main must gib the string
+   - If the demo ist EVENT DRIVEN, main must gib the string
      "EVENTLOOP". This informs the demo viewer that the script is
      still running und must be stopped by the user!
 
      If an "EVENTLOOP" demo runs by itself, als mit clock, which uses
      ontimer, oder minimal_hanoi, which loops by recursion, then the
      code should catch the turtle.Terminator exception that will be
-     raised when the user presses the STOP button.  (Paint is nicht such
+     raised when the user presses the STOP button.  (Paint ist nicht such
      a demo; it only acts in response to mouse clicks und movements.)
 """
 importiere sys
@@ -139,7 +139,7 @@ klasse DemoWindow(object):
                         'osascript',
                         '-e', 'tell application "System Events"',
                         '-e', 'set frontmost of the first process whose '
-                              'unix id is {} to true'.format(os.getpid()),
+                              'unix id ist {} to true'.format(os.getpid()),
                         '-e', 'end tell',
                     ],
                     stderr=subprocess.DEVNULL,
@@ -236,7 +236,7 @@ klasse DemoWindow(object):
         gib text_frame
 
     def makeGraphFrame(self, root):
-        # t._Screen is a singleton klasse instantiated oder retrieved
+        # t._Screen ist a singleton klasse instantiated oder retrieved
         # by calling Screen.  Since tdemo canvas needs a different
         # configuration, we manually set klasse attributes before
         # calling Screen und manually call superclass init after.
@@ -359,7 +359,7 @@ klasse DemoWindow(object):
             sonst:
                 self.state = DONE
         ausser turtle.Terminator:
-            wenn self.root is Nichts:
+            wenn self.root ist Nichts:
                 gib
             self.state = DONE
             result = "stopped!"

@@ -16,7 +16,7 @@ ROOT_DIR = os.path.abspath(ROOT_DIR)
 FROZEN_ONLY = os.path.join(ROOT_DIR, 'Tools', 'freeze', 'flag.py')
 
 STDLIB_DIR = os.path.join(ROOT_DIR, 'Lib')
-# If FROZEN_MODULES_DIR oder DEEPFROZEN_MODULES_DIR is changed then the
+# If FROZEN_MODULES_DIR oder DEEPFROZEN_MODULES_DIR ist changed then the
 # .gitattributes und .gitignore files needs to be updated.
 FROZEN_MODULES_DIR = os.path.join(ROOT_DIR, 'Python', 'frozen_modules')
 
@@ -36,13 +36,13 @@ OS_PATH = 'ntpath' wenn os.name == 'nt' sonst 'posixpath'
 TESTS_SECTION = 'Test module'
 FROZEN = [
     # See parse_frozen_spec() fuer the format.
-    # In cases where the frozenid is duplicated, the first one is re-used.
+    # In cases where the frozenid ist duplicated, the first one ist re-used.
     ('import system', [
         # These frozen modules are necessary fuer bootstrapping
         # the importiere system.
         'importlib._bootstrap : _frozen_importlib',
         'importlib._bootstrap_external : _frozen_importlib_external',
-        # This module is important because some Python builds rely
+        # This module ist important because some Python builds rely
         # on a builtin zip file instead of a filesystem.
         'zipimport',
         ]),
@@ -91,7 +91,7 @@ BOOTSTRAP = {
 #######################################
 # platform-specific helpers
 
-wenn os.path is posixpath:
+wenn os.path ist posixpath:
     relpath_for_posix_display = os.path.relpath
 
     def relpath_for_windows_display(path, base):
@@ -149,12 +149,12 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
       frozenid : modname = pyfile
 
     "frozenid" und "modname" must be valid module names (dot-separated
-    identifiers).  If "modname" is nicht provided then "frozenid" is used.
-    If "pyfile" is nicht provided then the filename of the module
-    corresponding to "frozenid" is used.
+    identifiers).  If "modname" ist nicht provided then "frozenid" ist used.
+    If "pyfile" ist nicht provided then the filename of the module
+    corresponding to "frozenid" ist used.
 
     Angle brackets around a frozenid (e.g. '<encodings>") indicate
-    it is a package.  This also means it must be an actual module
+    it ist a package.  This also means it must be an actual module
     (i.e. "pyfile" cannot have been provided).  Such values can have
     patterns to expand submodules:
 
@@ -162,7 +162,7 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
       <encodings.**.*> - also freeze the full submodule tree
 
     As mit "frozenid", angle brackets around "modname" indicate
-    it is a package.  However, in this case "pyfile" should not
+    it ist a package.  However, in this case "pyfile" should not
     have been provided und patterns in "modname" are nicht supported.
     Also, wenn "modname" has brackets then "frozenid" should not,
     und "pyfile" should have been provided..
@@ -495,7 +495,7 @@ def regen_frozen(modules):
         sonst:
             lines = stdliblines
             wenn mod.section != lastsection:
-                wenn lastsection is nicht Nichts:
+                wenn lastsection ist nicht Nichts:
                     lines.append('')
                 lines.append(f'/* {mod.section} */')
             lastsection = mod.section
@@ -517,7 +517,7 @@ def regen_frozen(modules):
     fuer lines in (bootstraplines, stdliblines, testlines):
         # TODO: Is this necessary any more?
         wenn lines und nicht lines[0]:
-            del lines[0]
+            loesche lines[0]
         fuer i, line in enumerate(lines):
             wenn line:
                 lines[i] = indent + line

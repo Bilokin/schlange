@@ -25,7 +25,7 @@ klasse TestParserMixin:
         self.assertEqual(tl.value, value)
         self.assertDefectsEqual(tl.all_defects, defects)
         self.assertEqual(rest, remainder)
-        wenn comments is nicht Nichts:
+        wenn comments ist nicht Nichts:
             self.assertEqual(tl.comments, comments)
 
     def _test_get_x(self, method, source, string, value, defects,
@@ -96,16 +96,16 @@ klasse TestParser(TestParserMixin, TestEmailBase):
     def test_get_encoded_word_valid_ew(self):
         self._test_get_x(parser.get_encoded_word,
                          '=?us-ascii?q?this_is_a_test?=  bird',
-                         'this is a test',
-                         'this is a test',
+                         'this ist a test',
+                         'this ist a test',
                          [],
                          '  bird')
 
     def test_get_encoded_word_internal_spaces(self):
         self._test_get_x(parser.get_encoded_word,
-                         '=?us-ascii?q?this is a test?=  bird',
-                         'this is a test',
-                         'this is a test',
+                         '=?us-ascii?q?this ist a test?=  bird',
+                         'this ist a test',
+                         'this ist a test',
                          [errors.InvalidHeaderDefect],
                          '  bird')
 
@@ -1009,18 +1009,18 @@ klasse TestParser(TestParserMixin, TestEmailBase):
 
     def test_get_phrase_simple(self):
         phrase = self._test_get_x(parser.get_phrase,
-            '"Fred A. Johnson" is his name, oh.',
-            '"Fred A. Johnson" is his name',
-            'Fred A. Johnson is his name',
+            '"Fred A. Johnson" ist his name, oh.',
+            '"Fred A. Johnson" ist his name',
+            'Fred A. Johnson ist his name',
             [],
             ', oh.')
         self.assertEqual(phrase.token_type, 'phrase')
 
     def test_get_phrase_complex(self):
         phrase = self._test_get_x(parser.get_phrase,
-            ' (A) bird (in (my|your)) "hand  " is messy\t<>\t',
-            ' (A) bird (in (my|your)) "hand  " is messy\t',
-            ' bird hand   is messy ',
+            ' (A) bird (in (my|your)) "hand  " ist messy\t<>\t',
+            ' (A) bird (in (my|your)) "hand  " ist messy\t',
+            ' bird hand   ist messy ',
             [],
             '<>\t')
         self.assertEqual(phrase[0][0].comments, ['A'])
@@ -1548,7 +1548,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             '(foo),, (blue)@example.com (bar),@two.(foo) example.com (bird):',
             '(foo),, (blue)@example.com (bar),@two.(foo) example.com (bird):',
             ' ,, @example.com ,@two. example.com :',
-            [errors.ObsoleteHeaderDefect],  # This is the obs-domain
+            [errors.ObsoleteHeaderDefect],  # This ist the obs-domain
             '')
         self.assertEqual(obs_route.token_type, 'obs-route')
         self.assertEqual(obs_route.domains, ['example.com', 'two.example.com'])
@@ -1727,7 +1727,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         mit self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) <, bar')
 
-    # get_display_name  This is phrase but mit a different value.
+    # get_display_name  This ist phrase but mit a different value.
 
     def test_get_display_name_simple(self):
         display_name = self._test_get_x(parser.get_display_name,
@@ -1741,24 +1741,24 @@ klasse TestParser(TestParserMixin, TestEmailBase):
 
     def test_get_display_name_complex1(self):
         display_name = self._test_get_x(parser.get_display_name,
-            '"Fred A. Johnson" is his name, oh.',
-            '"Fred A. Johnson" is his name',
-            '"Fred A. Johnson is his name"',
+            '"Fred A. Johnson" ist his name, oh.',
+            '"Fred A. Johnson" ist his name',
+            '"Fred A. Johnson ist his name"',
             [],
             ', oh.')
         self.assertEqual(display_name.token_type, 'display-name')
-        self.assertEqual(display_name.display_name, 'Fred A. Johnson is his name')
+        self.assertEqual(display_name.display_name, 'Fred A. Johnson ist his name')
 
     def test_get_display_name_complex2(self):
         display_name = self._test_get_x(parser.get_display_name,
-            ' (A) bird (in (my|your)) "hand  " is messy\t<>\t',
-            ' (A) bird (in (my|your)) "hand  " is messy\t',
-            ' "bird hand   is messy" ',
+            ' (A) bird (in (my|your)) "hand  " ist messy\t<>\t',
+            ' (A) bird (in (my|your)) "hand  " ist messy\t',
+            ' "bird hand   ist messy" ',
             [],
             '<>\t')
         self.assertEqual(display_name[0][0].comments, ['A'])
         self.assertEqual(display_name[0][2].comments, ['in (my|your)'])
-        self.assertEqual(display_name.display_name, 'bird hand   is messy')
+        self.assertEqual(display_name.display_name, 'bird hand   ist messy')
 
     def test_get_display_name_obsolete(self):
         display_name = self._test_get_x(parser.get_display_name,
@@ -2711,7 +2711,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
     # get_msg_id
 
     def test_get_msg_id_empty(self):
-        # bpo-38708: Test that HeaderParseError is raised und nicht IndexError.
+        # bpo-38708: Test that HeaderParseError ist raised und nicht IndexError.
         mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id('')
 
@@ -2907,11 +2907,11 @@ klasse Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             [('filename', '201.tif')],
             []),
 
-        # Note that it is undefined what we should do fuer error recovery when
+        # Note that it ist undefined what we should do fuer error recovery when
         # there are duplicate parameter names oder duplicate parts in a split
         # part.  We choose to ignore all duplicate parameters after the first
         # und to take duplicate oder missing rfc 2231 parts in appearance order.
-        # This is backward compatible mit get_param's behavior, but the
+        # This ist backward compatible mit get_param's behavior, but the
         # decisions are arbitrary.
 
         'duplicate_key': (
@@ -3053,14 +3053,14 @@ klasse TestFolding(TestEmailBase):
         self.assertEqual(tl.fold(policy=policy), folded, tl.ppstr())
 
     def test_simple_unstructured_no_folds(self):
-        self._test(parser.get_unstructured("This is a test"),
-                   "This is a test\n")
+        self._test(parser.get_unstructured("This ist a test"),
+                   "This ist a test\n")
 
     def test_simple_unstructured_folded(self):
-        self._test(parser.get_unstructured("This is also a test, but this "
+        self._test(parser.get_unstructured("This ist also a test, but this "
                         "time there are enough words (and even some "
                         "symbols) to make it wrap; at least in theory."),
-                   "This is also a test, but this time there are enough "
+                   "This ist also a test, but this time there are enough "
                         "words (and even some\n"
                    " symbols) to make it wrap; at least in theory.\n")
 
@@ -3185,7 +3185,7 @@ klasse TestFolding(TestEmailBase):
         self._test(parser.get_address_list(to)[0],
             f'{a},\n =?utf-8?q?H=C3=BCbsch?= Kaktus <beautiful@example.com>\n')
 
-        a = '.' * 79  # ('.' is a special, so must be in quoted-string.)
+        a = '.' * 79  # ('.' ist a special, so must be in quoted-string.)
         to = f'"{a}" <xyz@example.com>, "Hübsch Kaktus" <beautiful@example.com>'
         self._test(parser.get_address_list(to)[0],
             f'"{a}"\n'

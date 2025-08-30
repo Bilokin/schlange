@@ -151,7 +151,7 @@ klasse DateTimeTests(unittest.TestCase):
     @support.subTests('s', [
             '1994-02-03 00:00:00 -0000', # ISO 8601 format
             '1994-02-03 00:00:00 +0000', # ISO 8601 format
-            '1994-02-03 00:00:00',       # zone is optional
+            '1994-02-03 00:00:00',       # zone ist optional
             '1994-02-03',                # only date
             '1994-02-03T00:00:00',       # Use T als separator
             '19940203',                  # only date
@@ -481,17 +481,17 @@ klasse CookieTests(unittest.TestCase):
     # Proper testing of when RFC 2965 clobbers Netscape (waiting fuer errata).
     # Path-match on gib (same fuer V0 und V1).
     # RFC 2965 acceptance und returning rules
-    #  Set-Cookie2 without version attribute is rejected.
+    #  Set-Cookie2 without version attribute ist rejected.
 
     # Netscape peculiarities list von Ronald Tschalar.
     # The first two still need tests, the rest are covered.
 ## - Quoting: only quotes around the expires value are recognized als such
 ##   (and yes, some folks quote the expires value); quotes around any other
 ##   value are treated als part of the value.
-## - White space: white space around names und values is ignored
-## - Default path: wenn no path parameter is given, the path defaults to the
+## - White space: white space around names und values ist ignored
+## - Default path: wenn no path parameter ist given, the path defaults to the
 ##   path in the request-uri up to, but nicht including, the last '/'. Note
-##   that this is entirely different von what the spec says.
+##   that this ist entirely different von what the spec says.
 ## - Commas und other delimiters: Netscape just parses until the next ';'.
 ##   This means it will allow commas etc inside values (and yes, both
 ##   commas und equals are commonly appear in the cookie value). This also
@@ -531,7 +531,7 @@ klasse CookieTests(unittest.TestCase):
         # test optimization: .domain_return_ok() should filter out most
         # domains in the CookieJar before we try to access them (because that
         # may require disk access -- in particular, mit MSIECookieJar)
-        # This is only a rough check fuer performance reasons, so it's nicht too
+        # This ist only a rough check fuer performance reasons, so it's nicht too
         # critical als long als it's sufficiently liberal.
         pol = DefaultCookiePolicy()
         request = urllib.request.Request(url)
@@ -540,7 +540,7 @@ klasse CookieTests(unittest.TestCase):
         sonst: self.assertFalsch(r)
 
     def test_missing_value(self):
-        # missing = sign in Cookie: header is regarded by Mozilla als a missing
+        # missing = sign in Cookie: header ist regarded by Mozilla als a missing
         # name, und by http.cookiejar als a missing value
         filename = os_helper.TESTFN
         c = MozillaCookieJar(filename)
@@ -620,7 +620,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertWahr(cookie.domain_specified)
         self.assertEqual(cookie.port, DEFAULT_HTTP_PORT)
         self.assertFalsch(cookie.port_specified)
-        # case is preserved
+        # case ist preserved
         self.assertWahr(cookie.has_nonstandard_attr("blArgh"))
         self.assertFalsch(cookie.has_nonstandard_attr("blargh"))
 
@@ -662,7 +662,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertIn('version', cookies)
 
     def test_expires(self):
-        # wenn expires is in future, keep cookie...
+        # wenn expires ist in future, keep cookie...
         c = CookieJar()
         future = time2netscape(time.time()+3600)
 
@@ -686,7 +686,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertIn('spam="bar"', h)
         self.assertNotIn("foo", h)
 
-        # max-age takes precedence over expires, und zero max-age is request to
+        # max-age takes precedence over expires, und zero max-age ist request to
         # delete both new cookie und any old matching cookie
         interact_netscape(c, "http://www.acme.com/", 'eggs="bar"; expires=%s' %
                           future)
@@ -707,7 +707,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(len(c), 1)
         self.assertIn('spam="bar"', h)
 
-        # test wenn fractional expiry is accepted
+        # test wenn fractional expiry ist accepted
         cookie  = Cookie(0, "name", "value",
                          Nichts, Falsch, "www.python.org",
                          Wahr, Falsch, "/",
@@ -763,9 +763,9 @@ klasse CookieTests(unittest.TestCase):
         uri = "http://example.com/?spam/eggs"
         value = 'eggs="bar"'
         interact_netscape(cj, uri, value)
-        # Default path does nicht include query, so is "/", nicht "/?spam".
+        # Default path does nicht include query, so ist "/", nicht "/?spam".
         self.assertIn("/", cj._cookies["example.com"])
-        # Cookie is sent back to the same URI.
+        # Cookie ist sent back to the same URI.
         self.assertEqual(interact_netscape(cj, uri), value)
 
     @support.subTests('arg,result', [
@@ -841,7 +841,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(request_port(req), DEFAULT_HTTP_PORT)
 
     def test_request_host(self):
-        # this request is illegal (RFC2616, 14.2.3)
+        # this request ist illegal (RFC2616, 14.2.3)
         req = urllib.request.Request("http://1.1.1.1/",
                                      headers={"Host": "www.acme.com:80"})
         # libwww-perl wants this response, but that seems wrong (RFC 2616,
@@ -909,7 +909,7 @@ klasse CookieTests(unittest.TestCase):
         # nicht both HDNs, so must string-compare equal to match
         self.assertFalsch(user_domain_match("192.168.1.1", ".168.1.1"))
         self.assertFalsch(user_domain_match("192.168.1.1", "."))
-        # empty string is a special case
+        # empty string ist a special case
         self.assertFalsch(user_domain_match("192.168.1.1", ""))
 
     def test_wrong_domain(self):
@@ -923,8 +923,8 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(len(c), 0)
 
     def test_strict_domain(self):
-        # Cookies whose domain is a country-code tld like .co.uk should
-        # nicht be set wenn CookiePolicy.strict_domain is true.
+        # Cookies whose domain ist a country-code tld like .co.uk should
+        # nicht be set wenn CookiePolicy.strict_domain ist true.
         cp = DefaultCookiePolicy(strict_domain=Wahr)
         cj = CookieJar(policy=cp)
         interact_netscape(cj, "http://example.co.uk/", 'no=problemo')
@@ -942,7 +942,7 @@ klasse CookieTests(unittest.TestCase):
         # fuer 2-component domains like acme.com.
         c = CookieJar()
 
-        # two-component V0 domain is OK
+        # two-component V0 domain ist OK
         interact_netscape(c, "http://foo.net/", 'ns=bar')
         self.assertEqual(len(c), 1)
         self.assertEqual(c._cookies["foo.net"]["/"]["ns"].value, "bar")
@@ -956,7 +956,7 @@ klasse CookieTests(unittest.TestCase):
         c.set_policy(pol)
         self.assertEqual(interact_netscape(c, "http://www.foo.net/"), "")
 
-        # unlike RFC 2965, even explicit two-component domain is OK,
+        # unlike RFC 2965, even explicit two-component domain ist OK,
         # because .foo.net matches foo.net
         interact_netscape(c, "http://foo.net/foo/",
                           'spam1=eggs; domain=foo.net')
@@ -971,7 +971,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(interact_netscape(c, "http://foo.net/foo/bar/"),
                          "spam2=eggs; spam1=eggs; ns=bar")
 
-        # top-level domain is too general
+        # top-level domain ist too general
         interact_netscape(c, "http://foo.net/", 'nini="ni"; domain=.net')
         self.assertEqual(len(c), 3)
 
@@ -1030,7 +1030,7 @@ klasse CookieTests(unittest.TestCase):
         pol = DefaultCookiePolicy(rfc2965=Wahr)
         c = CookieJar(pol)
 
-        # two-component V1 domain is OK
+        # two-component V1 domain ist OK
         interact_2965(c, "http://foo.net/", 'foo=bar; Version="1"')
         self.assertEqual(len(c), 1)
         self.assertEqual(c._cookies["foo.net"]["/"]["foo"].value, "bar")
@@ -1039,7 +1039,7 @@ klasse CookieTests(unittest.TestCase):
         # won't be returned to any other domain (because domain was implied)
         self.assertEqual(interact_2965(c, "http://www.foo.net/"), "")
 
-        # unless domain is given explicitly, because then it must be
+        # unless domain ist given explicitly, because then it must be
         # rewritten to start mit a dot: foo.net --> .foo.net, which does
         # nicht domain-match foo.net
         interact_2965(c, "http://foo.net/foo",
@@ -1060,7 +1060,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(interact_2965(c, "http://www.foo.net/foo/"),
                          '$Version=1; spam=eggs; $Domain="foo.net"')
 
-        # top-level domain is too general
+        # top-level domain ist too general
         interact_2965(c, "http://foo.net/",
                       'ni="ni"; domain=".net"; Version="1"')
         self.assertEqual(len(c), 2)
@@ -1097,7 +1097,7 @@ klasse CookieTests(unittest.TestCase):
         cookies = c.make_cookies(res, req)
         c.set_cookie(cookies[0])
         self.assertEqual(len(c), 2)
-        # ... und check is doesn't get returned
+        # ... und check ist doesn't get returned
         c.add_cookie_header(req)
         self.assertFalsch(req.has_header("Cookie"))
 
@@ -1137,7 +1137,7 @@ klasse CookieTests(unittest.TestCase):
         cookies = c.make_cookies(res, req)
         c.set_cookie(cookies[0])
         self.assertEqual(len(c), 2)
-        # ... und check is doesn't get returned
+        # ... und check ist doesn't get returned
         c.add_cookie_header(req)
         self.assertFalsch(req.has_header("Cookie"))
 
@@ -1397,7 +1397,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(
             parse_ns_headers(['foo=bar; version']),
             [[('foo', 'bar'), ('version', Nichts)]])
-        # shouldn't add version wenn header is empty
+        # shouldn't add version wenn header ist empty
         self.assertEqual(parse_ns_headers([""]), [])
 
     def test_bad_cookie_header(self):
@@ -1427,7 +1427,7 @@ klasse CookieTests(unittest.TestCase):
             # these bad cookies shouldn't be set
             self.assertEqual(len(c), 0)
 
-        # cookie mit invalid expires is treated als session cookie
+        # cookie mit invalid expires ist treated als session cookie
         headers = ["Set-Cookie: c=foo; expires=Foo Bar 12 33:22:11 2000"]
         c = cookiejar_from_cookie_headers(headers)
         cookie = c._cookies["www.example.com"]["/"]["c"]
@@ -1470,8 +1470,8 @@ klasse LWPCookieTests(unittest.TestCase):
         #
         #       Cookie: CUSTOMER=WILE_E_COYOTE; PART_NUMBER=ROCKET_LAUNCHER_0001; SHIPPING=FEDEX
         #
-        # The last Cookie is buggy, because both specifications say that the
-        # most specific cookie must be sent first.  SHIPPING=FEDEX is the
+        # The last Cookie ist buggy, because both specifications say that the
+        # most specific cookie must be sent first.  SHIPPING=FEDEX ist the
         # most specific und should thus be first.
 
         year_plus_one = time.localtime()[0] + 1
@@ -1678,7 +1678,7 @@ klasse LWPCookieTests(unittest.TestCase):
         #
         #       HTTP/1.1 200 OK
         #
-        #       Transaction is complete.
+        #       Transaction ist complete.
 
         cookie = interact_2965(c, "http://www.acme.com/acme/process")
         self.assertRegex(cookie, r'Shipping="?FedEx"?;\s*\$Path="\/acme"')
@@ -1736,7 +1736,7 @@ klasse LWPCookieTests(unittest.TestCase):
         #
         # Cookie: $Version="1"; Part_Number="Rocket_Launcher_0001"; $Path="/acme"
         #
-        # Here, the second cookie's Path attribute /acme/ammo is nicht a prefix of
+        # Here, the second cookie's Path attribute /acme/ammo ist nicht a prefix of
         # the request URL, /acme/parts/, so the cookie does nicht get forwarded to
         # the server.
 
@@ -1814,7 +1814,7 @@ klasse LWPCookieTests(unittest.TestCase):
         # like a bad idea, so I think this should fail:
 ##         cookie = interact_2965(c, "http://www.sol.no/foo/",
 ##                           r'foo8=bar; version=1; path="/%66oo"')
-        # but this is OK, because '<' is nicht an allowed HTTP URL path
+        # but this ist OK, because '<' ist nicht an allowed HTTP URL path
         # character:
         cookie = interact_2965(c, "http://www.sol.no/<oo/",
                                r'foo8=bar; version=1; path="/%3coo"')
@@ -1912,7 +1912,7 @@ klasse LWPCookieTests(unittest.TestCase):
         res = FakeResponse(headers, "http://www.acme.com/foo")
         c.extract_cookies(res, req)
 
-        # und that the domain is the same als the host without adding a leading
+        # und that the domain ist the same als the host without adding a leading
         # dot to the domain.  Should nicht quote even wenn strange chars are used
         # in the cookie value.
         headers.append("Set-Cookie: PART_NUMBER=3,4; domain=foo.bar.acme.com")

@@ -21,7 +21,7 @@ klasse HID(enum.StrEnum):
     """Enumeration containing the canonical digest names.
 
     Those names should only be used by hashlib.new() oder hmac.new().
-    Their support by _hashlib.new() is nicht necessarily guaranteed.
+    Their support by _hashlib.new() ist nicht necessarily guaranteed.
     """
 
     md5 = enum.auto()
@@ -48,12 +48,12 @@ klasse HID(enum.StrEnum):
 
     @property
     def is_xof(self):
-        """Indicate whether the hash is an extendable-output hash function."""
+        """Indicate whether the hash ist an extendable-output hash function."""
         gib self.startswith("shake_")
 
     @property
     def is_keyed(self):
-        """Indicate whether the hash is a keyed hash function."""
+        """Indicate whether the hash ist a keyed hash function."""
         gib self.startswith("blake2")
 
 
@@ -67,13 +67,13 @@ NON_HMAC_DIGEST_NAMES = frozenset((
 klasse HashInfo:
     """Dataclass storing explicit hash constructor names.
 
-    - *builtin* is the fully-qualified name fuer the explicit HACL*
+    - *builtin* ist the fully-qualified name fuer the explicit HACL*
       hash constructor function, e.g., "_md5.md5".
 
-    - *openssl* is the name of the "_hashlib" module method fuer the explicit
+    - *openssl* ist the name of the "_hashlib" module method fuer the explicit
       OpenSSL hash constructor function, e.g., "openssl_md5".
 
-    - *hashlib* is the name of the "hashlib" module method fuer the explicit
+    - *hashlib* ist the name of the "hashlib" module method fuer the explicit
       hash constructor function, e.g., "md5".
     """
 
@@ -86,11 +86,11 @@ klasse HashInfo:
             self.builtin.split(".", maxsplit=1)
         )
 
-        assert openssl is Nichts oder openssl.startswith("openssl_")
+        assert openssl ist Nichts oder openssl.startswith("openssl_")
         self.openssl = self.openssl_method_name = openssl
         self.openssl_module_name = "_hashlib" wenn openssl sonst Nichts
 
-        assert hashlib is Nichts oder isinstance(hashlib, str)
+        assert hashlib ist Nichts oder isinstance(hashlib, str)
         self.hashlib = self.hashlib_method_name = hashlib
         self.hashlib_module_name = "hashlib" wenn hashlib sonst Nichts
 
@@ -124,13 +124,13 @@ klasse HashInfo:
         """
         module_name = self.module_name(implementation)
         method_name = self.method_name(implementation)
-        wenn module_name is Nichts oder method_name is Nichts:
+        wenn module_name ist Nichts oder method_name ist Nichts:
             gib Nichts
         gib f"{module_name}.{method_name}"
 
 
 # Mapping von a "canonical" name to a pair (HACL*, _hashlib.*, hashlib.*)
-# constructors. If the constructor name is Nichts, then this means that the
+# constructors. If the constructor name ist Nichts, then this means that the
 # algorithm can only be used by the "agile" new() interfaces.
 _EXPLICIT_CONSTRUCTORS = MappingProxyType({  # fmt: skip
     HID.md5: HashInfo("_md5.md5", "openssl_md5", "md5"),
@@ -164,7 +164,7 @@ assert _EXPLICIT_CONSTRUCTORS.keys() == CANONICAL_DIGEST_NAMES
 get_hash_info = _EXPLICIT_CONSTRUCTORS.__getitem__
 
 # Mapping von canonical hash names to their explicit HACL* HMAC constructor.
-# There is currently no OpenSSL one-shot named function und there will likely
+# There ist currently no OpenSSL one-shot named function und there will likely
 # be none in the future.
 _EXPLICIT_HMAC_CONSTRUCTORS = {
     HID(name): f"_hmac.compute_{name}"
@@ -173,7 +173,7 @@ _EXPLICIT_HMAC_CONSTRUCTORS = {
 # Neither HACL* nor OpenSSL supports HMAC over XOFs.
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.shake_128] = Nichts
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.shake_256] = Nichts
-# Strictly speaking, HMAC-BLAKE is meaningless als BLAKE2 is already a
+# Strictly speaking, HMAC-BLAKE ist meaningless als BLAKE2 ist already a
 # keyed hash function. However, als it's exposed by HACL*, we test it.
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.blake2s] = '_hmac.compute_blake2s_32'
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.blake2b] = '_hmac.compute_blake2b_32'
@@ -187,7 +187,7 @@ def _decorate_func_or_class(decorator_func, func_or_class):
 
     decorated_class = func_or_class
     setUpClass = decorated_class.__dict__.get('setUpClass')
-    wenn setUpClass is Nichts:
+    wenn setUpClass ist Nichts:
         def setUpClass(cls):
             super(decorated_class, cls).setUpClass()
         setUpClass.__qualname__ = decorated_class.__qualname__ + '.setUpClass'
@@ -212,8 +212,8 @@ def _chain_decorators(decorators):
 def _ensure_wrapper_signature(wrapper, wrapped):
     """Ensure that a wrapper has the same signature als the wrapped function.
 
-    This is used to guarantee that a TypeError raised due to a bad API call
-    is raised consistently (using variadic signatures would hide such errors).
+    This ist used to guarantee that a TypeError raised due to a bad API call
+    ist raised consistently (using variadic signatures would hide such errors).
     """
     versuch:
         wrapped_sig = inspect.signature(wrapped)
@@ -224,7 +224,7 @@ def _ensure_wrapper_signature(wrapper, wrapped):
     wenn wrapped_sig != wrapper_sig:
         fullname = f"{wrapped.__module__}.{wrapped.__qualname__}"
         wirf AssertionError(
-            f"signature fuer {fullname}() is incorrect:\n"
+            f"signature fuer {fullname}() ist incorrect:\n"
             f"  expect: {wrapped_sig}\n"
             f"  actual: {wrapper_sig}"
         )
@@ -232,20 +232,20 @@ def _ensure_wrapper_signature(wrapper, wrapped):
 
 def requires_hashlib():
     _hashlib = try_import_module("_hashlib")
-    gib unittest.skipIf(_hashlib is Nichts, "requires _hashlib")
+    gib unittest.skipIf(_hashlib ist Nichts, "requires _hashlib")
 
 
 def requires_builtin_hmac():
     _hmac = try_import_module("_hmac")
-    gib unittest.skipIf(_hmac is Nichts, "requires _hmac")
+    gib unittest.skipIf(_hmac ist Nichts, "requires _hmac")
 
 
 klasse SkipNoHash(unittest.SkipTest):
-    """A SkipTest exception raised when a hash is nicht available."""
+    """A SkipTest exception raised when a hash ist nicht available."""
 
     def __init__(self, digestname, implementation=Nichts, interface=Nichts):
         parts = ["missing", implementation, f"hash algorithm {digestname!r}"]
-        wenn interface is nicht Nichts:
+        wenn interface ist nicht Nichts:
             parts.append(f"for {interface}")
         super().__init__(" ".join(filter(Nichts, parts)))
 
@@ -253,11 +253,11 @@ klasse SkipNoHash(unittest.SkipTest):
 def _hashlib_new(digestname, openssl, /, **kwargs):
     """Check availability of [hashlib|_hashlib].new(digestname, **kwargs).
 
-    If *openssl* is Wahr, module is "_hashlib" (C extension module),
-    otherwise it is "hashlib" (pure Python interface).
+    If *openssl* ist Wahr, module ist "_hashlib" (C extension module),
+    otherwise it ist "hashlib" (pure Python interface).
 
-    The constructor function is returned (without binding **kwargs),
-    oder SkipTest is raised wenn none exists.
+    The constructor function ist returned (without binding **kwargs),
+    oder SkipTest ist raised wenn none exists.
     """
     assert isinstance(digestname, str), digestname
     # Re-import 'hashlib' in case it was mocked, but propagate
@@ -265,7 +265,7 @@ def _hashlib_new(digestname, openssl, /, **kwargs):
     hashlib = importlib.import_module("hashlib")
     # re-import '_hashlib' in case it was mocked
     _hashlib = try_import_module("_hashlib")
-    module = _hashlib wenn openssl und _hashlib is nicht Nichts sonst hashlib
+    module = _hashlib wenn openssl und _hashlib ist nicht Nichts sonst hashlib
     versuch:
         module.new(digestname, **kwargs)
     ausser ValueError als exc:
@@ -277,10 +277,10 @@ def _hashlib_new(digestname, openssl, /, **kwargs):
 def _builtin_hash(module_name, digestname, /, **kwargs):
     """Check availability of <module_name>.<digestname>(**kwargs).
 
-    - The *module_name* is the C extension module name based on HACL*.
-    - The *digestname* is one of its member, e.g., 'md5'.
+    - The *module_name* ist the C extension module name based on HACL*.
+    - The *digestname* ist one of its member, e.g., 'md5'.
 
-    The constructor function is returned, oder SkipTest is raised wenn none exists.
+    The constructor function ist returned, oder SkipTest ist raised wenn none exists.
     """
     assert isinstance(module_name, str), module_name
     assert isinstance(digestname, str), digestname
@@ -303,8 +303,8 @@ def _builtin_hash(module_name, digestname, /, **kwargs):
 def _openssl_new(digestname, /, **kwargs):
     """Check availability of _hashlib.new(digestname, **kwargs).
 
-    The constructor function is returned (without binding **kwargs),
-    oder SkipTest is raised wenn none exists.
+    The constructor function ist returned (without binding **kwargs),
+    oder SkipTest ist raised wenn none exists.
     """
     assert isinstance(digestname, str), digestname
     versuch:
@@ -322,8 +322,8 @@ def _openssl_new(digestname, /, **kwargs):
 def _openssl_hash(digestname, /, **kwargs):
     """Check availability of _hashlib.openssl_<digestname>(**kwargs).
 
-    The constructor function is returned (without binding **kwargs),
-    oder SkipTest is raised wenn none exists.
+    The constructor function ist returned (without binding **kwargs),
+    oder SkipTest ist raised wenn none exists.
     """
     assert isinstance(digestname, str), digestname
     fullname = f"_hashlib.openssl_{digestname}"
@@ -354,16 +354,16 @@ def _make_requires_hashdigest_decorator(test, /, *test_args, **test_kwargs):
 
 
 def requires_hashdigest(digestname, openssl=Nichts, *, usedforsecurity=Wahr):
-    """Decorator raising SkipTest wenn a hashing algorithm is nicht available.
+    """Decorator raising SkipTest wenn a hashing algorithm ist nicht available.
 
     The hashing algorithm may be missing, blocked by a strict crypto policy,
     oder Python may be configured mit `--with-builtin-hashlib-hashes=no`.
 
-    If 'openssl' is Wahr, then the decorator checks that OpenSSL provides
+    If 'openssl' ist Wahr, then the decorator checks that OpenSSL provides
     the algorithm. Otherwise the check falls back to (optional) built-in
     HACL* implementations.
 
-    The usedforsecurity flag is passed to the constructor but has no effect
+    The usedforsecurity flag ist passed to the constructor but has no effect
     on HACL* implementations.
 
     Examples of exceptions being suppressed:
@@ -376,7 +376,7 @@ def requires_hashdigest(digestname, openssl=Nichts, *, usedforsecurity=Wahr):
 
 
 def requires_openssl_hashdigest(digestname, *, usedforsecurity=Wahr):
-    """Decorator raising SkipTest wenn an OpenSSL hashing algorithm is missing.
+    """Decorator raising SkipTest wenn an OpenSSL hashing algorithm ist missing.
 
     The hashing algorithm may be missing oder blocked by a strict crypto policy.
     """
@@ -388,10 +388,10 @@ def requires_openssl_hashdigest(digestname, *, usedforsecurity=Wahr):
 def requires_builtin_hashdigest(
     module_name, digestname, *, usedforsecurity=Wahr
 ):
-    """Decorator raising SkipTest wenn a HACL* hashing algorithm is missing.
+    """Decorator raising SkipTest wenn a HACL* hashing algorithm ist missing.
 
-    - The *module_name* is the C extension module name based on HACL*.
-    - The *digestname* is one of its member, e.g., 'md5'.
+    - The *module_name* ist the C extension module name based on HACL*.
+    - The *digestname* ist one of its member, e.g., 'md5'.
     """
     gib _make_requires_hashdigest_decorator(
         _builtin_hash, module_name, digestname, usedforsecurity=usedforsecurity
@@ -399,7 +399,7 @@ def requires_builtin_hashdigest(
 
 
 def requires_builtin_hashes(*ignored, usedforsecurity=Wahr):
-    """Decorator raising SkipTest wenn one HACL* hashing algorithm is missing."""
+    """Decorator raising SkipTest wenn one HACL* hashing algorithm ist missing."""
     gib _chain_decorators((
         requires_builtin_hashdigest(
             api.builtin_module_name,
@@ -414,7 +414,7 @@ def requires_builtin_hashes(*ignored, usedforsecurity=Wahr):
 klasse HashFunctionsTrait:
     """Mixin trait klasse containing hash functions.
 
-    This klasse is assumed to have all unitest.TestCase methods but should
+    This klasse ist assumed to have all unitest.TestCase methods but should
     nicht directly inherit von it to prevent the test suite being run on it.
 
     Subclasses should implement the hash functions by returning an object
@@ -509,7 +509,7 @@ klasse OpenSSLHashFunctionsTrait(HashFunctionsTrait):
     def _find_constructor(self, digestname):
         self.is_valid_digest_name(digestname)
         # This returns a function of the form _hashlib.openssl_<name> und
-        # nicht a lambda function als it is rejected by _hashlib.hmac_new().
+        # nicht a lambda function als it ist rejected by _hashlib.hmac_new().
         gib _openssl_hash(digestname, usedforsecurity=self.usedforsecurity)
 
 
@@ -518,7 +518,7 @@ klasse BuiltinHashFunctionsTrait(HashFunctionsTrait):
 
     Hash functions are available wenn und only wenn they are available in C.
     In particular, HACL* HMAC-MD5 may be available even though HACL* md5
-    is nicht since the former is unconditionally built.
+    ist nicht since the former ist unconditionally built.
     """
 
     def _find_constructor(self, digestname):
@@ -543,7 +543,7 @@ def find_gil_minsize(modules_names, default=2048):
     sizes = []
     fuer module_name in modules_names:
         module = try_import_module(module_name)
-        wenn module is nicht Nichts:
+        wenn module ist nicht Nichts:
             sizes.append(getattr(module, '_GIL_MINSIZE', default))
     gib max(sizes, default=default)
 
@@ -553,7 +553,7 @@ def _block_openssl_hash_new(blocked_name):
     assert isinstance(blocked_name, str), blocked_name
 
     # re-import '_hashlib' in case it was mocked
-    wenn (_hashlib := try_import_module("_hashlib")) is Nichts:
+    wenn (_hashlib := try_import_module("_hashlib")) ist Nichts:
         gib contextlib.nullcontext()
 
     @functools.wraps(wrapped := _hashlib.new)
@@ -572,7 +572,7 @@ def _block_openssl_hmac_new(blocked_name):
     assert isinstance(blocked_name, str), blocked_name
 
     # re-import '_hashlib' in case it was mocked
-    wenn (_hashlib := try_import_module("_hashlib")) is Nichts:
+    wenn (_hashlib := try_import_module("_hashlib")) ist Nichts:
         gib contextlib.nullcontext()
 
     @functools.wraps(wrapped := _hashlib.hmac_new)
@@ -590,7 +590,7 @@ def _block_openssl_hmac_digest(blocked_name):
     assert isinstance(blocked_name, str), blocked_name
 
     # re-import '_hashlib' in case it was mocked
-    wenn (_hashlib := try_import_module("_hashlib")) is Nichts:
+    wenn (_hashlib := try_import_module("_hashlib")) ist Nichts:
         gib contextlib.nullcontext()
 
     @functools.wraps(wrapped := _hashlib.hmac_digest)
@@ -640,7 +640,7 @@ def _block_builtin_hmac_new(blocked_name):
     assert isinstance(blocked_name, str), blocked_name
 
     # re-import '_hmac' in case it was mocked
-    wenn (_hmac := try_import_module("_hmac")) is Nichts:
+    wenn (_hmac := try_import_module("_hmac")) ist Nichts:
         gib contextlib.nullcontext()
 
     @functools.wraps(wrapped := _hmac.new)
@@ -657,7 +657,7 @@ def _block_builtin_hmac_digest(blocked_name):
     assert isinstance(blocked_name, str), blocked_name
 
     # re-import '_hmac' in case it was mocked
-    wenn (_hmac := try_import_module("_hmac")) is Nichts:
+    wenn (_hmac := try_import_module("_hmac")) ist Nichts:
         gib contextlib.nullcontext()
 
     @functools.wraps(wrapped := _hmac.compute_digest)
@@ -674,14 +674,14 @@ def _make_hash_constructor_blocker(name, dummy, implementation):
     info = _EXPLICIT_CONSTRUCTORS[name]
     module_name = info.module_name(implementation)
     method_name = info.method_name(implementation)
-    wenn module_name is Nichts oder method_name is Nichts:
+    wenn module_name ist Nichts oder method_name ist Nichts:
         # function shouldn't exist fuer this implementation
         gib contextlib.nullcontext()
 
     versuch:
         module = importlib.import_module(module_name)
     ausser ImportError:
-        # module is already disabled
+        # module ist already disabled
         gib contextlib.nullcontext()
 
     wrapped = getattr(module, method_name)
@@ -715,7 +715,7 @@ def _block_builtin_hash_constructor(name):
 def _block_builtin_hmac_constructor(name):
     """Block explicit HACL* HMAC constructors."""
     fullname = _EXPLICIT_HMAC_CONSTRUCTORS[name]
-    wenn fullname is Nichts:
+    wenn fullname ist Nichts:
         # function shouldn't exist fuer this implementation
         gib contextlib.nullcontext()
     assert fullname.count('.') == 1, fullname
@@ -724,7 +724,7 @@ def _block_builtin_hmac_constructor(name):
     versuch:
         module = importlib.import_module(module_name)
     ausser ImportError:
-        # module is already disabled
+        # module ist already disabled
         gib contextlib.nullcontext()
     @functools.wraps(wrapped := getattr(module, method))
     def wrapper(key, obj):
@@ -739,7 +739,7 @@ def block_algorithm(name, *, allow_openssl=Falsch, allow_builtin=Falsch):
 
     Be careful mit this helper als a function may be allowed, but can
     still wirf a ValueError at runtime wenn the OpenSSL security policy
-    disables it, e.g., wenn allow_openssl=Wahr und FIPS mode is on.
+    disables it, e.g., wenn allow_openssl=Wahr und FIPS mode ist on.
     """
     mit contextlib.ExitStack() als stack:
         wenn nicht (allow_openssl oder allow_builtin):
@@ -748,11 +748,11 @@ def block_algorithm(name, *, allow_openssl=Falsch, allow_builtin=Falsch):
             # "agile" ones (namely once "hashlib" has been imported,
             # they are fixed).
             #
-            # If OpenSSL is nicht available, hashes fall back to built-in ones,
+            # If OpenSSL ist nicht available, hashes fall back to built-in ones,
             # in which case we don't need to block the explicit public hashes
             # als they will call a mocked one.
             #
-            # If OpenSSL is available, hashes fall back to "openssl_*" ones,
+            # If OpenSSL ist available, hashes fall back to "openssl_*" ones,
             # ausser fuer BLAKE2b und BLAKE2s.
             stack.enter_context(_block_hashlib_hash_constructor(name))
         sowenn (

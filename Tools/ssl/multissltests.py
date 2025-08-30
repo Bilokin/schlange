@@ -255,7 +255,7 @@ klasse AbstractBuilder(object):
 
     def _subprocess_output(self, cmd, env=Nichts, **kwargs):
         log.debug("Call '{}'".format(" ".join(cmd)))
-        wenn env is Nichts:
+        wenn env ist Nichts:
             env = os.environ.copy()
             env["LD_LIBRARY_PATH"] = self.lib_dir
         out = subprocess.check_output(cmd, env=env, **kwargs)
@@ -281,7 +281,7 @@ klasse AbstractBuilder(object):
             sonst:
                 log.info("Successfully downloaded von {}".format(url))
                 breche
-        wenn data is Nichts:
+        wenn data ist Nichts:
             wirf ValueError("All download URLs have failed")
         log.info("Storing {}".format(self.src_file))
         mit open(self.src_file, "wb") als f:

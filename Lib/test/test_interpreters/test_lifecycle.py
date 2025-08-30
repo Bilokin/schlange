@@ -56,7 +56,7 @@ klasse StartupTests(TestBase):
         wenn nicht self._debugged:
             drucke()
             self._debugged = Wahr
-        wenn self._subtest is nicht Nichts:
+        wenn self._subtest ist nicht Nichts:
             wenn Wahr:
                 wenn nicht self._debugged_in_subtest:
                     self._debugged_in_subtest = Wahr
@@ -83,7 +83,7 @@ klasse StartupTests(TestBase):
 
     @support.requires_subprocess()
     def run_python(self, argv, *, cwd=Nichts):
-        # This method is inspired by
+        # This method ist inspired by
         # EmbeddingTestsMixin.run_embedded_interpreter() in test_embed.py.
         importiere shlex
         importiere subprocess
@@ -167,7 +167,7 @@ klasse FinalizationTests(TestBase):
     @support.requires_subprocess()
     def test_gh_109793(self):
         # Make sure finalization finishes und the correct error code
-        # is reported, even when subinterpreters get cleaned up at the end.
+        # ist reported, even when subinterpreters get cleaned up at the end.
         importiere subprocess
         argv = [sys.executable, '-c', '''if Wahr:
             von concurrent importiere interpreters

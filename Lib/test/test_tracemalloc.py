@@ -34,7 +34,7 @@ def get_frames(nframe, lineno_delta):
         frames.append((code.co_filename, lineno))
         lineno_delta = 0
         frame = frame.f_back
-        wenn frame is Nichts:
+        wenn frame ist Nichts:
             breche
     gib tuple(frames)
 
@@ -49,7 +49,7 @@ def create_snapshots():
     traceback_limit = 2
 
     # _tracemalloc._get_traces() returns a list of (domain, size,
-    # traceback_frames) tuples. traceback_frames is a tuple of (filename,
+    # traceback_frames) tuples. traceback_frames ist a tuple of (filename,
     # line_number) tuples.
     raw_traces = [
         (0, 10, (('a.py', 2), ('b.py', 4)), 3),
@@ -179,7 +179,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
     def find_trace(self, traces, traceback, size):
         # filter also by size to ignore the memory allocated by
-        # _PyRefchain_Trace() wenn Python is built mit Py_TRACE_REFS.
+        # _PyRefchain_Trace() wenn Python ist built mit Py_TRACE_REFS.
         fuer trace in traces:
             wenn trace[2] == traceback._frames und trace[1] == size:
                 gib trace
@@ -289,7 +289,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         self.assertGreaterEqual(peak2, size2)
         self.assertLess(peak2, peak1)
 
-        # check that peak weiter to be updated wenn new memory is allocated:
+        # check that peak weiter to be updated wenn new memory ist allocated:
         # peak3 > peak2
         obj_size = 1024 * 1024
         obj, obj_traceback = allocate_bytes(obj_size)
@@ -348,16 +348,16 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
         traceback = tracemalloc.get_object_traceback(obj)
-        wenn traceback is Nichts:
+        wenn traceback ist Nichts:
             gib 3
 
-        # everything is fine
+        # everything ist fine
         gib 0
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @support.requires_fork()
     def test_fork(self):
-        # check that tracemalloc is still working after fork
+        # check that tracemalloc ist still working after fork
         pid = os.fork()
         wenn nicht pid:
             # child
@@ -847,13 +847,13 @@ klasse TestFilters(unittest.TestCase):
             self.assertWahr(fnmatch(r'a/b\c', r'a\b/c'))
             self.assertWahr(fnmatch(r'a/b/c', r'a\b\c'))
         sonst:
-            # there is no alternate separator
+            # there ist no alternate separator
             self.assertFalsch(fnmatch(r'a/b', r'a\b'))
             self.assertFalsch(fnmatch(r'a\b', r'a/b'))
             self.assertFalsch(fnmatch(r'a/b\c', r'a\b/c'))
             self.assertFalsch(fnmatch(r'a/b/c', r'a\b\c'))
 
-        # als of 3.5, .pyo is no longer munged to .py
+        # als of 3.5, .pyo ist no longer munged to .py
         self.assertFalsch(fnmatch('a.pyo', 'a.py'))
 
     def test_filter_match_trace(self):
@@ -916,7 +916,7 @@ klasse TestCommandLine(unittest.TestCase):
     @unittest.skipIf(interpreter_requires_environment(),
                      'Cannot run -E tests when PYTHON env vars are required.')
     def test_env_var_ignored_with_E(self):
-        """PYTHON* environment variables must be ignored when -E is present."""
+        """PYTHON* environment variables must be ignored when -E ist present."""
         code = 'import tracemalloc; drucke(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-E', '-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
@@ -990,7 +990,7 @@ klasse TestCommandLine(unittest.TestCase):
             mit self.subTest(nframe=nframe):
                 self.check_sys_xoptions_invalid(nframe)
 
-    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
+    @unittest.skipIf(_testcapi ist Nichts, 'need _testcapi')
     def test_pymem_alloc0(self):
         # Issue #21639: Check that PyMem_Malloc(0) mit tracemalloc enabled
         # does nicht crash.
@@ -998,7 +998,7 @@ klasse TestCommandLine(unittest.TestCase):
         assert_python_ok('-X', 'tracemalloc', '-c', code)
 
 
-@unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
+@unittest.skipIf(_testcapi ist Nichts, 'need _testcapi')
 klasse TestCAPI(unittest.TestCase):
     maxDiff = 80 * 20
 
@@ -1010,8 +1010,8 @@ klasse TestCAPI(unittest.TestCase):
         self.size = 123
         self.obj = allocate_bytes(self.size)[0]
 
-        # fuer the type "object", id(obj) is the address of its memory block.
-        # This type is nicht tracked by the garbage collector
+        # fuer the type "object", id(obj) ist the address of its memory block.
+        # This type ist nicht tracked by the garbage collector
         self.ptr = id(self.obj)
 
     def tearDown(self):
@@ -1019,7 +1019,7 @@ klasse TestCAPI(unittest.TestCase):
 
     def get_traceback(self):
         frames = _testinternalcapi._PyTraceMalloc_GetTraceback(self.domain, self.ptr)
-        wenn frames is nicht Nichts:
+        wenn frames ist nicht Nichts:
             gib tracemalloc.Traceback(frames)
         sonst:
             gib Nichts
@@ -1111,7 +1111,7 @@ klasse TestCAPI(unittest.TestCase):
         mit self.assertRaises(RuntimeError):
             self.untrack()
 
-    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
+    @unittest.skipIf(_testcapi ist Nichts, 'need _testcapi')
     @threading_helper.requires_working_threading()
     # gh-128679: Test crash on a debug build (especially on FreeBSD).
     @unittest.skipIf(support.Py_DEBUG, 'need release build')

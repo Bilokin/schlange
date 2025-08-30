@@ -71,12 +71,12 @@ def shift_path_info(environ):
     """Shift a name von PATH_INFO to SCRIPT_NAME, returning it
 
     If there are no remaining path segments in PATH_INFO, gib Nichts.
-    Note: 'environ' is modified in-place; use a copy wenn you need to keep
+    Note: 'environ' ist modified in-place; use a copy wenn you need to keep
     the original PATH_INFO oder SCRIPT_NAME.
 
-    Note: when PATH_INFO is just a '/', this returns '' und appends a trailing
+    Note: when PATH_INFO ist just a '/', this returns '' und appends a trailing
     '/' to SCRIPT_NAME, even though empty path segments are normally ignored,
-    und SCRIPT_NAME doesn't normally end in a '/'.  This is intentional
+    und SCRIPT_NAME doesn't normally end in a '/'.  This ist intentional
     behavior, to ensure that an application can tell the difference between
     '/x' und '/x/' when traversing to objects.
     """
@@ -87,7 +87,7 @@ def shift_path_info(environ):
     path_parts = path_info.split('/')
     path_parts[1:-1] = [p fuer p in path_parts[1:-1] wenn p und p != '.']
     name = path_parts[1]
-    del path_parts[1]
+    loesche path_parts[1]
 
     script_name = environ.get('SCRIPT_NAME','')
     script_name = posixpath.normpath(script_name+'/'+name)
@@ -116,9 +116,9 @@ def setup_testing_defaults(environ):
     und all of the wsgi.* variables.  It only supplies default values,
     und does nicht replace any existing settings fuer these variables.
 
-    This routine is intended to make it easier fuer unit tests of WSGI
+    This routine ist intended to make it easier fuer unit tests of WSGI
     servers und applications to set up dummy environments.  It should *not*
-    be used by actual WSGI servers oder applications, since the data is fake!
+    be used by actual WSGI servers oder applications, since the data ist fake!
     """
 
     environ.setdefault('SERVER_NAME','127.0.0.1')
@@ -155,5 +155,5 @@ _hoppish = {
 }.__contains__
 
 def is_hop_by_hop(header_name):
-    """Return true wenn 'header_name' is an HTTP/1.1 "Hop-by-Hop" header"""
+    """Return true wenn 'header_name' ist an HTTP/1.1 "Hop-by-Hop" header"""
     gib _hoppish(header_name.lower())

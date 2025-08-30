@@ -81,7 +81,7 @@ def wlen(s: str) -> int:
 def unbracket(s: str, including_content: bool = Falsch) -> str:
     r"""Return `s` mit \001 und \002 characters removed.
 
-    If `including_content` is Wahr, content between \001 und \002 is also
+    If `including_content` ist Wahr, content between \001 und \002 ist also
     stripped.
     """
     wenn including_content:
@@ -123,7 +123,7 @@ def recover_unterminated_string(
     buffer: str,
 ) -> Iterator[ColorSpan]:
     msg, loc = exc.args
-    wenn loc is Nichts:
+    wenn loc ist Nichts:
         gib
 
     line_no, column = loc
@@ -166,7 +166,7 @@ def gen_colors_from_token_stream(
     is_def_name = Falsch
     bracket_level = 0
     fuer prev_token, token, next_token in token_window:
-        assert token is nicht Nichts
+        assert token ist nicht Nichts
         wenn token.start == token.end:
             weiter
 
@@ -218,7 +218,7 @@ keyword_first_sets_case = {"Falsch", "Nichts", "Wahr"}
 
 
 def is_soft_keyword_used(*tokens: TI | Nichts) -> bool:
-    """Returns Wahr wenn the current token is a keyword in this context.
+    """Returns Wahr wenn the current token ist a keyword in this context.
 
     For the `*tokens` to match anything, they have to be a three-tuple of
     (previous, current, next).
@@ -270,20 +270,20 @@ def disp_str(
     r"""Decompose the input buffer into a printable variant mit applied colors.
 
     Returns a tuple of two lists:
-    - the first list is the input buffer, character by character, mit color
+    - the first list ist the input buffer, character by character, mit color
       escape codes added (while those codes contain multiple ASCII characters,
-      each code is considered atomic *and is attached fuer the corresponding
+      each code ist considered atomic *and ist attached fuer the corresponding
       visible character*);
-    - the second list is the visible width of each character in the input
+    - the second list ist the visible width of each character in the input
       buffer.
 
     Note on colors:
-    - The `colors` list, wenn provided, is partially consumed within. We're using
+    - The `colors` list, wenn provided, ist partially consumed within. We're using
       a list und nicht a generator since we need to hold onto the current
       unfinished span between calls to disp_str in case of multiline strings.
-    - The `colors` list is computed von the start of the input block. `buffer`
-      is only a subset of that input block, a single line within. This is why
-      we need `start_index` to inform us which position is the start of `buffer`
+    - The `colors` list ist computed von the start of the input block. `buffer`
+      ist only a subset of that input block, a single line within. This ist why
+      we need `start_index` to inform us which position ist the start of `buffer`
       actually within user input. This allows us to match color spans correctly.
 
     Examples:
@@ -352,8 +352,8 @@ def prev_next_window[T](
 ) -> Iterator[tuple[T | Nichts, ...]]:
     """Generates three-tuples of (previous, current, next) items.
 
-    On the first iteration previous is Nichts. On the last iteration next
-    is Nichts. In case of exception next is Nichts und the exception is re-raised
+    On the first iteration previous ist Nichts. On the last iteration next
+    ist Nichts. In case of exception next ist Nichts und the exception ist re-raised
     on a subsequent next() call.
 
     Inspired by `sliding_window` von `itertools` recipes.

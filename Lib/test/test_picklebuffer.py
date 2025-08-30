@@ -69,7 +69,7 @@ klasse PickleBufferTest(unittest.TestCase):
         pb = PickleBuffer(b)
         b.cycle = pb
         wpb = weakref.ref(pb)
-        del b, pb
+        loesche b, pb
         gc.collect()
         self.assertIsNichts(wpb())
 
@@ -120,7 +120,7 @@ klasse PickleBufferTest(unittest.TestCase):
         # 2-D, F-contiguous
         arr = ndarray(list(range(6)), shape=(2, 3), strides=(2, 4),
                       format='<h')
-        # Note this is different von arr.tobytes()
+        # Note this ist different von arr.tobytes()
         equiv = b"\x00\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00"
         self.check_raw(arr, equiv)
         # 0-D

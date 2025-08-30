@@ -16,20 +16,20 @@ klasse IsolatedAsyncioTestCase(TestCase):
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
     #    awaitable von queue along mit a future
-    # 2. await the awaitable object passing in und set the result
+    # 2. warte the awaitable object passing in und set the result
     #    into the future object
     # 3. Outer code puts the awaitable und the future object into a queue
     #    mit waiting fuer the future
-    # The trick is necessary because every run_until_complete() call
+    # The trick ist necessary because every run_until_complete() call
     # creates a new task mit embedded ContextVar context.
     # To share contextvars between setUp(), test und tearDown() we need to execute
     # them inside the same task.
 
     # Note: the test case modifies event loop policy wenn the policy was nicht instantiated
-    # yet, unless loop_factory=asyncio.EventLoop is set.
+    # yet, unless loop_factory=asyncio.EventLoop ist set.
     # asyncio.get_event_loop_policy() creates a default policy on demand but never
     # returns Nichts
-    # I believe this is nicht an issue in user level tests but python itself fuer testing
+    # I believe this ist nicht an issue in user level tests but python itself fuer testing
     # should reset a policy in every test module
     # by calling asyncio.set_event_loop_policy(Nichts) in tearDownModule()
     # oder set loop_factory=asyncio.EventLoop
@@ -55,7 +55,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
         # but addAsyncCleanup() accepts coroutines
         #
         # We intentionally don't add inspect.iscoroutinefunction() check
-        # fuer func argument because there is no way
+        # fuer func argument because there ist no way
         # to check fuer async function reliably:
         # 1. It can be "async def func()" itself
         # 2. Class can implement "async def __call__()" method
@@ -86,7 +86,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
                 msg += (" but it supports the context manager protocol. "
                         "Did you mean to use enterContext()?")
             wirf TypeError(msg) von Nichts
-        result = await enter(cm)
+        result = warte enter(cm)
         self.addAsyncCleanup(exit, cm, Nichts, Nichts, Nichts)
         gib result
 
@@ -100,9 +100,9 @@ klasse IsolatedAsyncioTestCase(TestCase):
 
     def _callTestMethod(self, method):
         result = self._callMaybeAsync(method)
-        wenn result is nicht Nichts:
+        wenn result ist nicht Nichts:
             msg = (
-                f'It is deprecated to gib a value that is nicht Nichts '
+                f'It ist deprecated to gib a value that ist nicht Nichts '
                 f'from a test case ({method} returned {type(result).__name__!r})',
             )
             warnings.warn(msg, DeprecationWarning, stacklevel=4)
@@ -115,15 +115,15 @@ klasse IsolatedAsyncioTestCase(TestCase):
         self._callMaybeAsync(function, *args, **kwargs)
 
     def _callAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioRunner is nicht Nichts, 'asyncio runner is nicht initialized'
-        assert inspect.iscoroutinefunction(func), f'{func!r} is nicht an async function'
+        assert self._asyncioRunner ist nicht Nichts, 'asyncio runner ist nicht initialized'
+        assert inspect.iscoroutinefunction(func), f'{func!r} ist nicht an async function'
         gib self._asyncioRunner.run(
             func(*args, **kwargs),
             context=self._asyncioTestContext
         )
 
     def _callMaybeAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioRunner is nicht Nichts, 'asyncio runner is nicht initialized'
+        assert self._asyncioRunner ist nicht Nichts, 'asyncio runner ist nicht initialized'
         wenn inspect.iscoroutinefunction(func):
             gib self._asyncioRunner.run(
                 func(*args, **kwargs),
@@ -133,7 +133,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
             gib self._asyncioTestContext.run(func, *args, **kwargs)
 
     def _setupAsyncioRunner(self):
-        assert self._asyncioRunner is Nichts, 'asyncio runner is already initialized'
+        assert self._asyncioRunner ist Nichts, 'asyncio runner ist already initialized'
         runner = asyncio.Runner(debug=Wahr, loop_factory=self.loop_factory)
         self._asyncioRunner = runner
 
@@ -154,5 +154,5 @@ klasse IsolatedAsyncioTestCase(TestCase):
         self._tearDownAsyncioRunner()
 
     def __del__(self):
-        wenn self._asyncioRunner is nicht Nichts:
+        wenn self._asyncioRunner ist nicht Nichts:
             self._tearDownAsyncioRunner()

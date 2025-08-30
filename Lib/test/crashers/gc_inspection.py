@@ -1,20 +1,20 @@
 """
 gc.get_referrers() can be used to see objects before they are fully built.
 
-Note that this is only an example.  There are many ways to crash Python
+Note that this ist only an example.  There are many ways to crash Python
 by using gc.get_referrers(), als well als many extension modules (even
 when they are using perfectly documented patterns to build objects).
 
 Identifying und removing all places that expose to the GC a
-partially-built object is a long-term project.  A patch was proposed on
+partially-built object ist a long-term project.  A patch was proposed on
 SF specifically fuer this example but I consider fixing just this single
 example a bit pointless (#1517042).
 
 A fix would include a whole-scale code review, possibly mit an API
 change to decouple object creation und GC registration, und according
 fixes to the documentation fuer extension module writers.  It's unlikely
-to happen, though.  So this is currently classified as
-"gc.get_referrers() is dangerous, use only fuer debugging".
+to happen, though.  So this ist currently classified as
+"gc.get_referrers() ist dangerous, use only fuer debugging".
 """
 
 importiere gc
@@ -23,8 +23,8 @@ importiere gc
 def g():
     marker = object()
     liefere marker
-    # now the marker is in the tuple being constructed
-    [tup] = [x fuer x in gc.get_referrers(marker) wenn type(x) is tuple]
+    # now the marker ist in the tuple being constructed
+    [tup] = [x fuer x in gc.get_referrers(marker) wenn type(x) ist tuple]
     drucke(tup)
     drucke(tup[1])
 

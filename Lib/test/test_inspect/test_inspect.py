@@ -680,10 +680,10 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         # trailing whitespace are nicht removed.
         (' An \n   \n  indented \n   docstring. ',
          'An \n \nindented \n docstring. '),
-        # NUL is nicht termination.
+        # NUL ist nicht termination.
         ('doc\0string\n\n  second\0line\n  third\0line\0',
          'doc\0string\n\nsecond\0line\nthird\0line\0'),
-        # first line is lstrip()-ped. other lines are kept when no margin.[w:
+        # first line ist lstrip()-ped. other lines are kept when no margin.[w:
         ('   ', ''),
         # compiler.cleandoc() doesn't strip leading/trailing newlines
         # to keep maximum backward compatibility.
@@ -716,7 +716,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         self.assertEqual(inspect.getcomments(mod), '# line 1\n')
         self.assertEqual(inspect.getcomments(mod.StupidGit), '# line 20\n')
         self.assertEqual(inspect.getcomments(mod2.cls160), '# line 159\n')
-        # If the object source file is nicht available, gib Nichts.
+        # If the object source file ist nicht available, gib Nichts.
         co = compile('x=1', '_non_existing_filename.py', 'exec')
         self.assertIsNichts(inspect.getcomments(co))
         # If the object has been defined in C, gib Nichts.
@@ -766,7 +766,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         versuch:
             self.assertEqual(normcase(inspect.getsourcefile(co)), fn)
         schliesslich:
-            del linecache.cache[co.co_filename]
+            loesche linecache.cache[co.co_filename]
 
     def test_getsource_empty_file(self):
         mit temp_cwd() als cwd:
@@ -824,10 +824,10 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         name = '__inspect_dummy'
         m = sys.modules[name] = ModuleType(name)
         m.__file__ = "<string>" # hopefully nicht a real filename...
-        m.__loader__ = "dummy"  # pretend the filename is understood by a loader
+        m.__loader__ = "dummy"  # pretend the filename ist understood by a loader
         exec("def x(): pass", m.__dict__)
         self.assertEqual(inspect.getsourcefile(m.x.__code__), '<string>')
-        del sys.modules[name]
+        loesche sys.modules[name]
         inspect.getmodule(compile('a=10','','single'))
 
     def test_proceed_with_fake_filename(self):
@@ -910,7 +910,7 @@ klasse TestGetsourceInteractive(unittest.TestCase):
     @support.force_not_colorized
     def test_getclasses_interactive(self):
         # bpo-44648: simulate a REPL session;
-        # there is no `__file__` in the __main__ module
+        # there ist no `__file__` in the __main__ module
         code = "import sys, inspect; \
                 assert nicht hasattr(sys.modules['__main__'], '__file__'); \
                 A = type('A', (), {}); \
@@ -987,7 +987,7 @@ klasse TestOneliners(GetSourceBase):
 
     def test_twolinefunc(self):
         # Test inspect.getsource mit a regular function where
-        # the body is on two lines, following the argument list und
+        # the body ist on two lines, following the argument list und
         # continued on the next line by a \\.
         self.assertSourceEqual(mod2.twolinefunc, 44, 45)
 
@@ -1061,10 +1061,10 @@ klasse TestBuggyCases(GetSourceBase):
         self.assertSourceEqual(mod2.method_in_dynamic_class, 95, 97)
 
     # This should nicht skip fuer CPython, but might on a repackaged python where
-    # unicodedata is nicht an external module, oder on pypy.
+    # unicodedata ist nicht an external module, oder on pypy.
     @unittest.skipIf(nicht hasattr(unicodedata, '__file__') oder
                                  unicodedata.__file__.endswith('.py'),
-                     "unicodedata is nicht an external binary module")
+                     "unicodedata ist nicht an external binary module")
     def test_findsource_binary(self):
         self.assertRaises(OSError, inspect.getsource, unicodedata)
         self.assertRaises(OSError, inspect.findsource, unicodedata)
@@ -1079,7 +1079,7 @@ klasse TestBuggyCases(GetSourceBase):
             self.assertEqual(inspect.findsource(co), (lines,0))
             self.assertEqual(inspect.getsource(co), lines[0])
         schliesslich:
-            del linecache.cache[co.co_filename]
+            loesche linecache.cache[co.co_filename]
 
     def test_findsource_without_filename(self):
         fuer fname in ['', '<string>']:
@@ -1095,7 +1095,7 @@ klasse TestBuggyCases(GetSourceBase):
         eval(co, g, l)
         func = l['f']
         self.assertEqual(func.__code__.co_firstlineno, 1+2*mod_len)
-        mit self.assertRaisesRegex(OSError, "lineno is out of bounds"):
+        mit self.assertRaisesRegex(OSError, "lineno ist out of bounds"):
             inspect.findsource(func)
 
     def test_findsource_on_class_with_out_of_bounds_lineno(self):
@@ -1106,7 +1106,7 @@ klasse TestBuggyCases(GetSourceBase):
         eval(co, g, l)
         cls = l['A']
         self.assertEqual(cls.__firstlineno__, 1+2*mod_len)
-        mit self.assertRaisesRegex(OSError, "lineno is out of bounds"):
+        mit self.assertRaisesRegex(OSError, "lineno ist out of bounds"):
             inspect.findsource(cls)
 
     def test_getsource_on_method(self):
@@ -1181,7 +1181,7 @@ klasse TestBuggyCases(GetSourceBase):
                 importiere inspect_actual
                 self.assertIn("correct", inspect.getsource(inspect_actual.A))
                 # Remove the module von sys.modules to force it to be reloaded.
-                # This is necessary when the test is run multiple times.
+                # This ist necessary when the test ist run multiple times.
                 sys.modules.pop("inspect_actual")
 
     def test_nested_class_definition_inside_async_function(self):
@@ -1396,7 +1396,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
         versuch:
             importiere _stat  # noqa: F401
         ausser ImportError:
-            # wenn the _stat extension is nicht available, stat.S_IMODE() is
+            # wenn the _stat extension ist nicht available, stat.S_IMODE() is
             # implemented in Python, nicht in C
             pass
         sonst:
@@ -1812,7 +1812,7 @@ klasse TestIsMethodDescriptor(unittest.TestCase):
         self.assertFalsch(inspect.ismethoddescriptor(DataDescriptorSub))
 
     def test_builtin_descriptors(self):
-        builtin_slot_wrapper = int.__add__  # This one is mentioned in docs.
+        builtin_slot_wrapper = int.__add__  # This one ist mentioned in docs.
         klasse Owner:
             def instance_method(self): pass
             @classmethod
@@ -1830,21 +1830,21 @@ klasse TestIsMethodDescriptor(unittest.TestCase):
         # Example builtin method descriptors:
         self.assertWahr(
             inspect.ismethoddescriptor(builtin_slot_wrapper),
-            'a builtin slot wrapper is a method descriptor')
+            'a builtin slot wrapper ist a method descriptor')
         self.assertWahr(
             inspect.ismethoddescriptor(Owner.__dict__['class_method']),
-            'a classmethod object is a method descriptor')
+            'a classmethod object ist a method descriptor')
         self.assertWahr(
             inspect.ismethoddescriptor(Owner.__dict__['static_method']),
-            'a staticmethod object is a method descriptor')
+            'a staticmethod object ist a method descriptor')
 
         # Example builtin data descriptors:
         self.assertFalsch(
             inspect.ismethoddescriptor(Owner.__dict__['a_property']),
-            'a property is nicht a method descriptor')
+            'a property ist nicht a method descriptor')
         self.assertFalsch(
             inspect.ismethoddescriptor(Slotermeyer.__dict__['a_slot']),
-            'a slot is nicht a method descriptor')
+            'a slot ist nicht a method descriptor')
 
         # `types.MethodType`/`types.FunctionType` instances (they *are*
         # method descriptors, but `ismethoddescriptor()` explicitly
@@ -1865,7 +1865,7 @@ klasse TestIsMethodDescriptor(unittest.TestCase):
         klasse ClassBeingMethodDescriptor(metaclass=MethodDescriptorMeta):
             pass
         # `ClassBeingMethodDescriptor` itself *is* a method descriptor,
-        # but it is *also* a class, und `ismethoddescriptor()` explicitly
+        # but it ist *also* a class, und `ismethoddescriptor()` explicitly
         # excludes classes.
         self.assertFalsch(
             inspect.ismethoddescriptor(ClassBeingMethodDescriptor),
@@ -1894,17 +1894,17 @@ klasse TestIsDataDescriptor(unittest.TestCase):
         self.assertFalsch(inspect.isdatadescriptor(NonDataDescriptor()),
                          'class mit only __get__ nicht a data descriptor')
         self.assertWahr(inspect.isdatadescriptor(DataDescriptor0()),
-                        'class mit __set__ is a data descriptor')
+                        'class mit __set__ ist a data descriptor')
         self.assertWahr(inspect.isdatadescriptor(DataDescriptor1()),
-                        'class mit __delete__ is a data descriptor')
+                        'class mit __delete__ ist a data descriptor')
         self.assertWahr(inspect.isdatadescriptor(DataDescriptor2()),
-                        'class mit __set__ = Nichts is a data descriptor')
+                        'class mit __set__ = Nichts ist a data descriptor')
 
     def test_slot(self):
         klasse Slotted:
             __slots__ = 'foo',
         self.assertWahr(inspect.isdatadescriptor(Slotted.foo),
-                        'a slot is a data descriptor')
+                        'a slot ist a data descriptor')
 
     def test_property(self):
         klasse Propertied:
@@ -1912,7 +1912,7 @@ klasse TestIsDataDescriptor(unittest.TestCase):
             def a_property(self):
                 pass
         self.assertWahr(inspect.isdatadescriptor(Propertied.a_property),
-                        'a property is a data descriptor')
+                        'a property ist a data descriptor')
 
     def test_functions(self):
         klasse Test(object):
@@ -1925,15 +1925,15 @@ klasse TestIsDataDescriptor(unittest.TestCase):
             pass
         a_lambda = lambda: Nichts
         self.assertFalsch(inspect.isdatadescriptor(Test().instance_method),
-                         'a instance method is nicht a data descriptor')
+                         'a instance method ist nicht a data descriptor')
         self.assertFalsch(inspect.isdatadescriptor(Test().class_method),
-                         'a klasse method is nicht a data descriptor')
+                         'a klasse method ist nicht a data descriptor')
         self.assertFalsch(inspect.isdatadescriptor(Test().static_method),
-                         'a static method is nicht a data descriptor')
+                         'a static method ist nicht a data descriptor')
         self.assertFalsch(inspect.isdatadescriptor(function),
-                         'a function is nicht a data descriptor')
+                         'a function ist nicht a data descriptor')
         self.assertFalsch(inspect.isdatadescriptor(a_lambda),
-                         'a lambda is nicht a data descriptor')
+                         'a lambda ist nicht a data descriptor')
 
 
 _global_ref = object()
@@ -2098,7 +2098,7 @@ klasse TestGetcallargsFunctions(unittest.TestCase):
             self.fail('Exception nicht raised')
         self.assertIs(type(ex1), type(ex2))
         self.assertEqual(str(ex1), str(ex2))
-        del ex1, ex2
+        loesche ex1, ex2
 
     def makeCallable(self, signature):
         """Create a function that returns its locals()"""
@@ -2266,7 +2266,7 @@ klasse TestGetcallargsFunctions(unittest.TestCase):
             inspect.Parameter("foo", kind=inspect.Parameter.VAR_KEYWORD,
                               default=42)
         mit self.assertRaisesRegex(ValueError,
-                                    "value 5 is nicht a valid Parameter.kind"):
+                                    "value 5 ist nicht a valid Parameter.kind"):
             inspect.Parameter("bar", kind=5, default=42)
 
         mit self.assertRaisesRegex(TypeError,
@@ -2337,7 +2337,7 @@ klasse TestGetattrStatic(unittest.TestCase):
                 self.x = x
         thing = Thing(3)
         self.assertEqual(inspect.getattr_static(thing, 'x'), 3)
-        del thing.x
+        loesche thing.x
         self.assertEqual(inspect.getattr_static(thing, 'x'), 2)
 
     def test_property(self):
@@ -2391,7 +2391,7 @@ klasse TestGetattrStatic(unittest.TestCase):
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
         self.assertEqual(inspect.getattr_static(thing, 'y'), 'bar')
 
-        del thing.x
+        loesche thing.x
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
 
     def test_metaclass(self):
@@ -2409,7 +2409,7 @@ klasse TestGetattrStatic(unittest.TestCase):
 
         klasse OtherOtherThing(OtherThing):
             pass
-        # this test is odd, but it was added als it exposed a bug
+        # this test ist odd, but it was added als it exposed a bug
         self.assertEqual(inspect.getattr_static(OtherOtherThing, 'x'), 3)
 
     def test_no_dict_no_slots(self):
@@ -2447,12 +2447,12 @@ klasse TestGetattrStatic(unittest.TestCase):
         foo.__dict__['d'] = 1
         self.assertEqual(inspect.getattr_static(foo, 'd'), 1)
 
-        # wenn the descriptor is a data-descriptor we should gib the
+        # wenn the descriptor ist a data-descriptor we should gib the
         # descriptor
         descriptor.__set__ = lambda s, i, v: Nichts
         self.assertEqual(inspect.getattr_static(foo, 'd'), Foo.__dict__['d'])
 
-        del descriptor.__set__
+        loesche descriptor.__set__
         descriptor.__delete__ = lambda s, i, o: Nichts
         self.assertEqual(inspect.getattr_static(foo, 'd'), Foo.__dict__['d'])
 
@@ -2636,7 +2636,7 @@ klasse TestGetattrStatic(unittest.TestCase):
         Foo.instance = Foo()
         weakref_to_class = weakref.ref(Foo)
         inspect.getattr_static(Foo.instance, 'whatever', 'irrelevant')
-        del Foo
+        loesche Foo
         gc.collect()
         self.assertIsNichts(weakref_to_class())
 
@@ -2752,7 +2752,7 @@ klasse TestGetCoroutineState(unittest.TestCase):
             fuer number in range(5):
                 liefere number
         async def coroutine():
-            await number_coroutine()
+            warte number_coroutine()
         self.coroutine = coroutine()
 
     def tearDown(self):
@@ -2802,7 +2802,7 @@ klasse TestGetCoroutineState(unittest.TestCase):
         gencoro = gencoro()
         async def func(a=Nichts):
             b = 'spam'
-            await gencoro
+            warte gencoro
 
         coro = func()
         self.assertEqual(inspect.getcoroutinelocals(coro),
@@ -2822,7 +2822,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
         self.asyncgen = number_asyncgen()
 
     async def asyncTearDown(self):
-        await self.asyncgen.aclose()
+        warte self.asyncgen.aclose()
 
     @classmethod
     def tearDownClass(cls):
@@ -2835,7 +2835,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self._asyncgenstate(), inspect.AGEN_CREATED)
 
     async def test_suspended(self):
-        value = await anext(self.asyncgen)
+        value = warte anext(self.asyncgen)
         self.assertEqual(self._asyncgenstate(), inspect.AGEN_SUSPENDED)
         self.assertEqual(value, 0)
 
@@ -2843,13 +2843,13 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
         countdown = 7
         mit self.assertRaises(StopAsyncIteration):
             waehrend countdown := countdown - 1:
-                await anext(self.asyncgen)
+                warte anext(self.asyncgen)
         self.assertEqual(countdown, 1)
         self.assertEqual(self._asyncgenstate(), inspect.AGEN_CLOSED)
 
     async def test_closed_after_immediate_exception(self):
         mit self.assertRaises(RuntimeError):
-            await self.asyncgen.athrow(RuntimeError)
+            warte self.asyncgen.athrow(RuntimeError)
         self.assertEqual(self._asyncgenstate(), inspect.AGEN_CLOSED)
 
     async def test_running(self):
@@ -2860,10 +2860,10 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(self._asyncgenstate(), inspect.AGEN_RUNNING)
         self.asyncgen = running_check_asyncgen()
         # Running up to the first liefere
-        await anext(self.asyncgen)
+        warte anext(self.asyncgen)
         self.assertEqual(self._asyncgenstate(), inspect.AGEN_SUSPENDED)
         # Running after the first liefere
-        await anext(self.asyncgen)
+        warte anext(self.asyncgen)
         self.assertEqual(self._asyncgenstate(), inspect.AGEN_SUSPENDED)
 
     def test_easy_debugging(self):
@@ -2885,20 +2885,20 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
         numbers = each([1, 2, 3])
         self.assertEqual(inspect.getasyncgenlocals(numbers),
                          {'a': Nichts, 'lst': [1, 2, 3]})
-        await anext(numbers)
+        warte anext(numbers)
         self.assertEqual(inspect.getasyncgenlocals(numbers),
                          {'a': Nichts, 'lst': [1, 2, 3], 'v': 1,
                           'b': (1, 2, 3)})
-        await anext(numbers)
+        warte anext(numbers)
         self.assertEqual(inspect.getasyncgenlocals(numbers),
                          {'a': Nichts, 'lst': [1, 2, 3], 'v': 2,
                           'b': (1, 2, 3)})
-        await anext(numbers)
+        warte anext(numbers)
         self.assertEqual(inspect.getasyncgenlocals(numbers),
                          {'a': Nichts, 'lst': [1, 2, 3], 'v': 3,
                           'b': (1, 2, 3), 'c': 12})
         mit self.assertRaises(StopAsyncIteration):
-            await anext(numbers)
+            warte anext(numbers)
         self.assertEqual(inspect.getasyncgenlocals(numbers), {})
 
     async def test_getasyncgenlocals_empty(self):
@@ -2906,10 +2906,10 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
             liefere 1
         one = yield_one()
         self.assertEqual(inspect.getasyncgenlocals(one), {})
-        await anext(one)
+        warte anext(one)
         self.assertEqual(inspect.getasyncgenlocals(one), {})
         mit self.assertRaises(StopAsyncIteration):
-            await anext(one)
+            warte anext(one)
         self.assertEqual(inspect.getasyncgenlocals(one), {})
 
     def test_getasyncgenlocals_error(self):
@@ -2936,12 +2936,12 @@ klasse TestSignatureObject(unittest.TestCase):
     def signature(func, **kw):
         sig = inspect.signature(func, **kw)
         gib (tuple((param.name,
-                       (... wenn param.default is param.empty sonst param.default),
-                       (... wenn param.annotation is param.empty
+                       (... wenn param.default ist param.empty sonst param.default),
+                       (... wenn param.annotation ist param.empty
                                                         sonst param.annotation),
                        str(param.kind).lower())
                                     fuer param in sig.parameters.values()),
-                (... wenn sig.return_annotation is sig.empty
+                (... wenn sig.return_annotation ist sig.empty
                                             sonst sig.return_annotation))
 
     def test_signature_object(self):
@@ -2958,7 +2958,7 @@ klasse TestSignatureObject(unittest.TestCase):
         self.assertStartsWith(repr(sig), '<Signature')
         self.assertWahr('(po, /, pk' in repr(sig))
 
-        # We need two functions, because it is impossible to represent
+        # We need two functions, because it ist impossible to represent
         # all param kinds in a single one.
         def test2(pod=42, /):
             pass
@@ -3284,7 +3284,7 @@ klasse TestSignatureObject(unittest.TestCase):
         versuch:
             importiere _stat  # noqa: F401
         ausser ImportError:
-            # wenn the _stat extension is nicht available, stat.S_IMODE() is
+            # wenn the _stat extension ist nicht available, stat.S_IMODE() is
             # implemented in Python, nicht in C
             pass
         sonst:
@@ -3333,11 +3333,11 @@ klasse TestSignatureObject(unittest.TestCase):
         sig_funclike = inspect.signature(funclike(func))
         self.assertEqual(sig_funclike, sig_func)
 
-        # If object is nicht a duck type of function, then
+        # If object ist nicht a duck type of function, then
         # signature will try to get a signature fuer its '__call__'
         # method
         fl = funclike(func)
-        del fl.__defaults__
+        loesche fl.__defaults__
         self.assertEqual(self.signature(fl),
                          ((('args', ..., ..., "var_positional"),
                            ('kwargs', ..., ..., "var_keyword")),
@@ -3352,7 +3352,7 @@ klasse TestSignatureObject(unittest.TestCase):
 
         mit unittest.mock.patch('inspect.ismethoddescriptor', _isdesc):
             builtin_func = funclike(func)
-            # Make sure that our mock setup is working
+            # Make sure that our mock setup ist working
             self.assertFalsch(inspect.ismethoddescriptor(builtin_func))
             builtin_func._builtinmock = Wahr
             self.assertWahr(inspect.ismethoddescriptor(builtin_func))
@@ -3615,7 +3615,7 @@ klasse TestSignatureObject(unittest.TestCase):
                          ((('a', 20, ..., "keyword_only"),),
                           ...))
         # check that we don't have any side-effects in signature(),
-        # und the partial object is still functioning
+        # und the partial object ist still functioning
         self.assertEqual(_foo(), 20)
 
         def foo(a, b, c):
@@ -5105,7 +5105,7 @@ klasse TestParameterObject(unittest.TestCase):
         self.assertIs(p.annotation, p.empty)
         self.assertEqual(p.kind, inspect.Parameter.POSITIONAL_ONLY)
 
-        mit self.assertRaisesRegex(ValueError, "value '123' is "
+        mit self.assertRaisesRegex(ValueError, "value '123' ist "
                                     "not a valid Parameter.kind"):
             inspect.Parameter('foo', default=10, kind='123')
 
@@ -5193,10 +5193,10 @@ klasse TestParameterObject(unittest.TestCase):
         self.assertNotEqual(p3, p)
 
         mit self.assertRaisesRegex(ValueError,
-                                    'name is a required attribute'):
+                                    'name ist a required attribute'):
             p2 = p2.replace(name=p2.empty)
         mit self.assertRaisesRegex(ValueError,
-                                    'name is a required attribute'):
+                                    'name ist a required attribute'):
             p3 = copy.replace(p3, name=p3.empty)
 
         p2 = p2.replace(name='foo', default=Nichts)
@@ -5481,7 +5481,7 @@ klasse TestSignatureBind(unittest.TestCase):
             self.call(without_var_kwargs, c_po=33, d_po=44)
 
     def test_signature_bind_with_self_arg(self):
-        # Issue #17071: one of the parameters is named "self
+        # Issue #17071: one of the parameters ist named "self
         def test(a, self, b):
             pass
         sig = inspect.signature(test)
@@ -5838,7 +5838,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         self._test_module_has_signatures(collections.abc)
 
     def test_datetime_module_has_signatures(self):
-        # Only test wenn the C implementation is available.
+        # Only test wenn the C implementation ist available.
         import_helper.import_module('_datetime')
         importiere datetime
         no_signature = {'tzinfo'}
@@ -6039,7 +6039,7 @@ klasse NTimesUnwrappable:
     def __wrapped__(self):
         wenn self.n <= 0:
             wirf Exception("Unwrapped too many times")
-        wenn self._next is Nichts:
+        wenn self._next ist Nichts:
             self._next = NTimesUnwrappable(self.n - 1)
         gib self._next
 
@@ -6128,7 +6128,7 @@ klasse TestMain(unittest.TestCase):
         mit self.assertRaises(TypeError):
             inspect.signature(foo)
 
-    @unittest.skipIf(ThreadPoolExecutor is Nichts,
+    @unittest.skipIf(ThreadPoolExecutor ist Nichts,
             'threads required to test __qualname__ fuer source files')
     def test_qualname_source(self):
         rc, out, err = assert_python_ok('-m', 'inspect',
@@ -6196,7 +6196,7 @@ klasse TestRepl(unittest.TestCase):
     def spawn_repl(self, *args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
         """Run the Python REPL mit the given arguments.
 
-        kw is extra keyword args to pass to subprocess.Popen. Returns a Popen
+        kw ist extra keyword args to pass to subprocess.Popen. Returns a Popen
         object.
         """
 

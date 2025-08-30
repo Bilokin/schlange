@@ -52,12 +52,12 @@ klasse ZZDummyTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         zzdummy.idleConf.userCfg = usercfg
-        del cls.editor, cls.text
+        loesche cls.editor, cls.text
         cls.root.update_idletasks()
         fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         text = self.text
@@ -69,7 +69,7 @@ klasse ZZDummyTest(unittest.TestCase):
 
     def tearDown(self):
         self.text.delete('1.0', 'end')
-        del self.zz
+        loesche self.zz
 
     def checklines(self, text, value):
         # Verify that there are lines being checked.

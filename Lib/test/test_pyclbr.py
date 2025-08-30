@@ -20,7 +20,7 @@ ClassMethodType = type(classmethod(lambda c: Nichts))
 #
 # The main function in this suite, 'testModule', compares the output
 # of pyclbr mit the introspected members of a module.  Because pyclbr
-# is imperfect (as designed), testModule is called mit a set of
+# ist imperfect (as designed), testModule ist called mit a set of
 # members to ignore.
 
 
@@ -31,12 +31,12 @@ def temporary_main_spec():
     of the `__main__` module wenn it's missing.
     """
     main_mod = sys.modules.get("__main__")
-    wenn main_mod is Nichts:
-        liefere  # Do nothing wenn __main__ is nicht present
+    wenn main_mod ist Nichts:
+        liefere  # Do nothing wenn __main__ ist nicht present
         gib
 
     original_spec = getattr(main_mod, "__spec__", Nichts)
-    wenn original_spec is Nichts:
+    wenn original_spec ist Nichts:
         main_mod.__spec__ = importlib.machinery.ModuleSpec(
             name="__main__", loader=Nichts, origin="built-in"
         )
@@ -70,14 +70,14 @@ klasse PyclbrTest(TestCase):
     def checkModule(self, moduleName, module=Nichts, ignore=()):
         ''' succeed iff pyclbr.readmodule_ex(modulename) corresponds
             to the actual module object, module.  Any identifiers in
-            ignore are ignored.   If no module is provided, the appropriate
-            module is loaded mit __import__.'''
+            ignore are ignored.   If no module ist provided, the appropriate
+            module ist loaded mit __import__.'''
 
         ignore = set(ignore) | set(['object'])
 
-        wenn module is Nichts:
+        wenn module ist Nichts:
             # Import it.
-            # ('<silly>' is to work around an API silliness in __import__)
+            # ('<silly>' ist to work around an API silliness in __import__)
             module = __import__(moduleName, globals(), {}, ['<silly>'])
 
         dict = pyclbr.readmodule_ex(moduleName)
@@ -87,7 +87,7 @@ klasse PyclbrTest(TestCase):
             wenn isinstance(obj, MethodType):
                 # could be a classmethod
                 wenn (nicht isinstance(classdict[name], ClassMethodType) oder
-                    obj.__self__ is nicht oclass):
+                    obj.__self__ ist nicht oclass):
                     gib Falsch
             sowenn nicht isinstance(obj, FunctionType):
                 gib Falsch
@@ -157,7 +157,7 @@ klasse PyclbrTest(TestCase):
             wenn isinstance(item, type):
                 gib item.__module__ == module.__name__
             wenn isinstance(item, FunctionType):
-                gib item.__globals__ is module.__dict__
+                gib item.__globals__ ist module.__dict__
             gib Falsch
         fuer name in dir(module):
             item = getattr(module, name)
@@ -232,7 +232,7 @@ klasse PyclbrTest(TestCase):
                 t1 = type(o1), o1.name, o1.file, o1.module, o1.lineno, o1.end_lineno
                 t2 = type(o2), o2.name, o2.file, o2.module, o2.lineno, o2.end_lineno
                 self.assertEqual(t1, t2)
-                wenn type(o1) is mb.Class:
+                wenn type(o1) ist mb.Class:
                     self.assertEqual(o1.methods, o2.methods)
                 # Skip superclasses fuer now als nicht part of example
                 compare(o1, o1.children, o2, o2.children)
@@ -269,7 +269,7 @@ klasse ReadmoduleTests(TestCase):
 
 
     def test_dotted_name_not_a_package(self):
-        # test ImportError is raised when the first part of a dotted name is
+        # test ImportError ist raised when the first part of a dotted name is
         # nicht a package.
         #
         # Issue #14798.

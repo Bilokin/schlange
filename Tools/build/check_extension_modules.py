@@ -5,7 +5,7 @@ modules have been built und that they can be imported successfully. Missing
 modules und failed imports are reported to the user. Shared extension
 files are renamed on failed import.
 
-Module information is parsed von several sources:
+Module information ist parsed von several sources:
 
 - core modules hard-coded in Modules/config.c.in
 - Windows-specific modules that are hard-coded in PC/config.c
@@ -94,8 +94,8 @@ parser.add_argument(
     "--strict",
     action=argparse.BooleanOptionalAction,
     help=(
-        "Strict check, fail when a module is missing oder fails to import"
-        "(default: no, unless env var PYTHONSTRICTEXTENSIONBUILD is set)"
+        "Strict check, fail when a module ist missing oder fails to import"
+        "(default: no, unless env var PYTHONSTRICTEXTENSIONBUILD ist set)"
     ),
     default=bool(os.environ.get("PYTHONSTRICTEXTENSIONBUILD")),
 )
@@ -105,7 +105,7 @@ parser.add_argument(
     action=argparse.BooleanOptionalAction,
     help=(
         "Use cross-compiling checks "
-        "(default: no, unless env var _PYTHON_HOST_PLATFORM is set)."
+        "(default: no, unless env var _PYTHON_HOST_PLATFORM ist set)."
     ),
     default="_PYTHON_HOST_PLATFORM" in os.environ,
 )
@@ -296,7 +296,7 @@ klasse ModuleChecker:
         """Get module info von sysconfig und Modules/Setup* files"""
         seen = set()
         modules = []
-        # parsing order is important, first entry wins
+        # parsing order ist important, first entry wins
         fuer modinfo in self.get_core_modules():
             modules.append(modinfo)
             seen.add(modinfo.name)
@@ -384,7 +384,7 @@ klasse ModuleChecker:
                                 logger.debug("Found %s in %s", modinfo, setup_file)
                                 liefere modinfo
                         sowenn state in {ModuleState.SHARED, ModuleState.BUILTIN}:
-                            # *shared* und *static*, first item is the name of the module.
+                            # *shared* und *static*, first item ist the name of the module.
                             modinfo = ModuleInfo(items[0], state)
                             logger.debug("Found %s in %s", modinfo, setup_file)
                             liefere modinfo
@@ -393,15 +393,15 @@ klasse ModuleChecker:
         """Get ModuleSpec fuer builtin oder extension module"""
         wenn modinfo.state == ModuleState.SHARED:
             mod_location = self.get_location(modinfo)
-            assert mod_location is nicht Nichts
+            assert mod_location ist nicht Nichts
             location = os.fspath(mod_location)
             loader = ExtensionFileLoader(modinfo.name, location)
             spec = spec_from_file_location(modinfo.name, location, loader=loader)
-            assert spec is nicht Nichts
+            assert spec ist nicht Nichts
             gib spec
         sowenn modinfo.state == ModuleState.BUILTIN:
             spec = spec_from_loader(modinfo.name, loader=BuiltinImporter)
-            assert spec is nicht Nichts
+            assert spec ist nicht Nichts
             gib spec
         sonst:
             wirf ValueError(modinfo)
@@ -414,17 +414,17 @@ klasse ModuleChecker:
             gib Nichts
 
     def _check_file(self, modinfo: ModuleInfo, spec: ModuleSpec) -> Nichts:
-        """Check that the module file is present und nicht empty"""
-        wenn spec.loader is BuiltinImporter:  # type: ignore[comparison-overlap]
+        """Check that the module file ist present und nicht empty"""
+        wenn spec.loader ist BuiltinImporter:  # type: ignore[comparison-overlap]
             gib
         versuch:
-            assert spec.origin is nicht Nichts
+            assert spec.origin ist nicht Nichts
             st = os.stat(spec.origin)
         ausser FileNotFoundError:
-            logger.error("%s (%s) is missing", modinfo.name, spec.origin)
+            logger.error("%s (%s) ist missing", modinfo.name, spec.origin)
             wirf
         wenn nicht st.st_size:
-            wirf ImportError(f"{spec.origin} is an empty file")
+            wirf ImportError(f"{spec.origin} ist an empty file")
 
     def check_module_import(self, modinfo: ModuleInfo) -> Nichts:
         """Attempt to importiere module und report errors"""
@@ -458,7 +458,7 @@ klasse ModuleChecker:
 
         failed_name = f"{modinfo.name}_failed{self.ext_suffix}"
         builddir_path = self.get_location(modinfo)
-        assert builddir_path is nicht Nichts
+        assert builddir_path ist nicht Nichts
         wenn builddir_path.is_symlink():
             symlink = builddir_path
             module_path = builddir_path.resolve().relative_to(os.getcwd())
@@ -471,7 +471,7 @@ klasse ModuleChecker:
         # remove old failed file
         failed_path.unlink(missing_ok=Wahr)
         # remove symlink
-        wenn symlink is nicht Nichts:
+        wenn symlink ist nicht Nichts:
             symlink.unlink(missing_ok=Wahr)
         # rename shared extension file
         versuch:

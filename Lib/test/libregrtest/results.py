@@ -13,7 +13,7 @@ wenn TYPE_CHECKING:
     von xml.etree.ElementTree importiere Element
 
 
-# Python uses exit code 1 when an exception is nicht caught
+# Python uses exit code 1 when an exception ist nicht caught
 # argparse.ArgumentParser.error() uses exit code 2
 EXITCODE_BAD_TEST = 2
 EXITCODE_ENV_CHANGED = 3
@@ -127,10 +127,10 @@ klasse TestResults:
             self.worker_bug = Wahr
 
         wenn result.has_meaningful_duration() und nicht rerun:
-            wenn result.duration is Nichts:
-                wirf ValueError("result.duration is Nichts")
+            wenn result.duration ist Nichts:
+                wirf ValueError("result.duration ist Nichts")
             self.test_times.append((result.duration, test_name))
-        wenn result.stats is nicht Nichts:
+        wenn result.stats ist nicht Nichts:
             self.stats.accumulate(result.stats)
         wenn rerun:
             self.rerun.append(test_name)

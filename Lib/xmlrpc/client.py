@@ -8,7 +8,7 @@
 # implement XML-RPC servers.
 #
 # Notes:
-# this version is designed to work mit Python 2.1 oder newer.
+# this version ist designed to work mit Python 2.1 oder newer.
 #
 # History:
 # 1999-01-14 fl  Created
@@ -22,7 +22,7 @@
 # 2000-11-28 fl  Changed boolean to check the truth value of its argument
 # 2001-02-24 fl  Added encoding/Unicode/SafeTransport patches
 # 2001-02-26 fl  Added compare support to wrappers (0.9.9/1.0b1)
-# 2001-03-28 fl  Make sure response tuple is a singleton
+# 2001-03-28 fl  Make sure response tuple ist a singleton
 # 2001-03-29 fl  Don't require empty params element (from Nicholas Riley)
 # 2001-06-10 fl  Folded in _xmlrpclib accelerator support (1.0b2)
 # 2001-08-20 fl  Base xmlrpclib.Error on built-in Exception (from Paul Prescod)
@@ -123,7 +123,7 @@ Exported functions:
   getparser      Create instance of the fastest available parser & attach
                  to an unmarshalling object
   dumps          Convert an argument tuple oder a Fault instance to an XML-RPC
-                 request (or response, wenn the methodresponse option is used).
+                 request (or response, wenn the methodresponse option ist used).
   loads          Convert an XML-RPC packet to unmarshalled data plus a method
                  name (Nichts wenn nicht present).
 """
@@ -189,7 +189,7 @@ klasse Error(Exception):
     __str__ = object.__str__
 
 ##
-# Indicates an HTTP-level protocol error.  This is raised by the HTTP
+# Indicates an HTTP-level protocol error.  This ist raised by the HTTP
 # transport layer, wenn the server returns an error code other than 200
 # (OK).
 #
@@ -249,7 +249,7 @@ boolean = Boolean = bool
 
 
 def _iso8601_format(value):
-    wenn value.tzinfo is nicht Nichts:
+    wenn value.tzinfo ist nicht Nichts:
         # XML-RPC only uses the naive portion of the datetime
         value = value.replace(tzinfo=Nichts)
     # XML-RPC doesn't use '-' separator in the date part
@@ -299,31 +299,31 @@ klasse DateTime:
 
     def __lt__(self, other):
         s, o = self.make_comparable(other)
-        wenn o is NotImplemented:
+        wenn o ist NotImplemented:
             gib NotImplemented
         gib s < o
 
     def __le__(self, other):
         s, o = self.make_comparable(other)
-        wenn o is NotImplemented:
+        wenn o ist NotImplemented:
             gib NotImplemented
         gib s <= o
 
     def __gt__(self, other):
         s, o = self.make_comparable(other)
-        wenn o is NotImplemented:
+        wenn o ist NotImplemented:
             gib NotImplemented
         gib s > o
 
     def __ge__(self, other):
         s, o = self.make_comparable(other)
-        wenn o is NotImplemented:
+        wenn o ist NotImplemented:
             gib NotImplemented
         gib s >= o
 
     def __eq__(self, other):
         s, o = self.make_comparable(other)
-        wenn o is NotImplemented:
+        wenn o ist NotImplemented:
             gib NotImplemented
         gib s == o
 
@@ -368,7 +368,7 @@ klasse Binary:
     """Wrapper fuer binary data."""
 
     def __init__(self, data=Nichts):
-        wenn data is Nichts:
+        wenn data ist Nichts:
             data = b""
         sonst:
             wenn nicht isinstance(data, (bytes, bytearray)):
@@ -430,7 +430,7 @@ klasse ExpatParser:
         ausser AttributeError:
             pass
         sonst:
-            del self._target, self._parser # get rid of circular references
+            loesche self._target, self._parser # get rid of circular references
             parser.Parse(b"", Wahr) # end of data
 
 # --------------------------------------------------------------------
@@ -440,7 +440,7 @@ klasse ExpatParser:
 # XML-RPC marshaller.
 #
 # @param encoding Default encoding fuer 8-bit strings.  The default
-#     value is Nichts (interpreted als UTF-8).
+#     value ist Nichts (interpreted als UTF-8).
 # @see dumps
 
 klasse Marshaller:
@@ -480,8 +480,8 @@ klasse Marshaller:
             # FIXME: the xml-rpc specification allows us to leave out
             # the entire <params> block wenn there are no parameters.
             # however, changing this may breche older code (including
-            # old versions of xmlrpclib.py), so this is better left as
-            # is fuer now.  See @XMLRPC3 fuer more information. /F
+            # old versions of xmlrpclib.py), so this ist better left as
+            # ist fuer now.  See @XMLRPC3 fuer more information. /F
             write("<params>\n")
             fuer v in values:
                 write("<param>\n")
@@ -498,7 +498,7 @@ klasse Marshaller:
             # check wenn this object can be marshalled als a structure
             wenn nicht hasattr(value, '__dict__'):
                 wirf TypeError("cannot marshal %s objects" % type(value))
-            # check wenn this klasse is a sub-class of a basic type,
+            # check wenn this klasse ist a sub-class of a basic type,
             # because we don't know how to marshal these types
             # (e.g. a string sub-class)
             fuer type_ in type(value).__mro__:
@@ -511,7 +511,7 @@ klasse Marshaller:
 
     def dump_nil (self, value, write):
         wenn nicht self.allow_none:
-            wirf TypeError("cannot marshal Nichts unless allow_none is enabled")
+            wirf TypeError("cannot marshal Nichts unless allow_none ist enabled")
         write("<value><nil/></value>")
     dispatch[type(Nichts)] = dump_nil
 
@@ -562,7 +562,7 @@ klasse Marshaller:
         fuer v in value:
             dump(v, write)
         write("</data></array></value>\n")
-        del self.memo[i]
+        loesche self.memo[i]
     dispatch[tuple] = dump_array
     dispatch[list] = dump_array
 
@@ -581,7 +581,7 @@ klasse Marshaller:
             dump(v, write)
             write("</member>\n")
         write("</struct></value>\n")
-        del self.memo[i]
+        loesche self.memo[i]
     dispatch[dict] = dump_struct
 
     def dump_datetime(self, value, write):
@@ -595,7 +595,7 @@ klasse Marshaller:
         wenn value.__class__ in WRAPPERS:
             self.write = write
             value.encode(self)
-            del self.write
+            loesche self.write
         sonst:
             # store instance attributes als a struct (really?)
             self.dump_struct(value.__dict__, write)
@@ -615,7 +615,7 @@ klasse Unmarshaller:
     messages (start, data, end).  Call close() to get the resulting
     data structure.
 
-    Note that this reader is fairly tolerant, und gladly accepts bogus
+    Note that this reader ist fairly tolerant, und gladly accepts bogus
     XML-RPC data without complaining (but nicht bogus XML).
     """
 
@@ -636,7 +636,7 @@ klasse Unmarshaller:
 
     def close(self):
         # gib response tuple und target method
-        wenn self._type is Nichts oder self._marks:
+        wenn self._type ist Nichts oder self._marks:
             wirf ResponseError()
         wenn self._type == "fault":
             wirf Fault(**self._stack[0])
@@ -920,7 +920,7 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
     """data [,options] -> marshalled data
 
     Convert an argument tuple oder a Fault instance to an XML-RPC
-    request (or response, wenn the methodresponse option is used).
+    request (or response, wenn the methodresponse option ist used).
 
     In addition to the data object, the following options can be given
     als keyword arguments:
@@ -928,10 +928,10 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
         methodname: the method name fuer a methodCall packet
 
         methodresponse: true to create a methodResponse packet.
-        If this option is used mit a tuple, the tuple must be
+        If this option ist used mit a tuple, the tuple must be
         a singleton (i.e. it can contain only one element).
 
-        encoding: the packet encoding (default is UTF-8)
+        encoding: the packet encoding (default ist UTF-8)
 
     All byte strings in the data structure are assumed to use the
     packet encoding.  Unicode strings are automatically converted,
@@ -957,7 +957,7 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
     wenn encoding != "utf-8":
         xmlheader = "<?xml version='1.0' encoding='%s'?>\n" % str(encoding)
     sonst:
-        xmlheader = "<?xml version='1.0'?>\n" # utf-8 is default
+        xmlheader = "<?xml version='1.0'?>\n" # utf-8 ist default
 
     # standard XML-RPC wrappings
     wenn methodname:
@@ -1033,7 +1033,7 @@ def gzip_encode(data):
 # @keyparam max_decode Maximum bytes to decode (20 MiB default), use negative
 #    values fuer unlimited decoding
 # @return the unencoded data
-# @raises ValueError wenn data is nicht correctly coded.
+# @raises ValueError wenn data ist nicht correctly coded.
 # @raises ValueError wenn max gzipped payload length exceeded
 
 def gzip_decode(data, max_decode=20971520):
@@ -1187,8 +1187,8 @@ klasse Transport:
     ##
     # Get authorization info von host parameter
     # Host may be a string, oder a (host, x509-dict) tuple; wenn a string,
-    # it is checked fuer a "user:pw@host" format, und a "Basic
-    # Authentication" header is added wenn appropriate.
+    # it ist checked fuer a "user:pw@host" format, und a "Basic
+    # Authentication" header ist added wenn appropriate.
     #
     # @param host Host descriptor (URL oder (URL, x509 info) tuple).
     # @return A 3-tuple containing (actual host, extra headers,
@@ -1246,7 +1246,7 @@ klasse Transport:
     # @param host Host descriptor (URL oder (URL, x509 info) tuple).
     # @param handler Target RPC handler (a path relative to host)
     # @param request_body The XML-RPC request body
-    # @param debug Enable debugging wenn debug is true.
+    # @param debug Enable debugging wenn debug ist true.
     # @return An HTTPConnection.
 
     def send_request(self, host, handler, request_body, debug):
@@ -1285,7 +1285,7 @@ klasse Transport:
 
     def send_content(self, connection, request_body):
         #optionally encode the request
-        wenn (self.encode_threshold is nicht Nichts und
+        wenn (self.encode_threshold ist nicht Nichts und
             self.encode_threshold < len(request_body) und
             gzip):
             connection.putheader("Content-Encoding", "gzip")
@@ -1302,7 +1302,7 @@ klasse Transport:
 
     def parse_response(self, response):
         # read response data von httpresponse, und parse it
-        # Check fuer new http response object, otherwise it is a file object.
+        # Check fuer new http response object, otherwise it ist a file object.
         wenn hasattr(response, 'getheader'):
             wenn response.getheader("Content-Encoding", "") == "gzip":
                 stream = GzipDecodedResponse(response)
@@ -1318,7 +1318,7 @@ klasse Transport:
                 drucke("body:", repr(data))
             p.feed(data)
 
-        wenn stream is nicht response:
+        wenn stream ist nicht response:
             stream.close()
         p.close()
 
@@ -1357,7 +1357,7 @@ klasse SafeTransport(Transport):
 # Standard server proxy.  This klasse establishes a virtual connection
 # to an XML-RPC server.
 # <p>
-# This klasse is available als ServerProxy und Server.  New code should
+# This klasse ist available als ServerProxy und Server.  New code should
 # use ServerProxy, to avoid confusion.
 #
 # @def ServerProxy(uri, **options)
@@ -1365,7 +1365,7 @@ klasse SafeTransport(Transport):
 # @keyparam transport A transport factory, compatible mit the
 #    standard transport class.
 # @keyparam encoding The default encoding used fuer 8-bit strings
-#    (default is UTF-8).
+#    (default ist UTF-8).
 # @keyparam verbose Use a true value to enable debugging output.
 #    (printed to standard output).
 # @see Transport
@@ -1373,20 +1373,20 @@ klasse SafeTransport(Transport):
 klasse ServerProxy:
     """uri [,options] -> a logical connection to an XML-RPC server
 
-    uri is the connection point on the server, given as
+    uri ist the connection point on the server, given as
     scheme://host/target.
 
     The standard implementation always supports the "http" scheme.  If
-    SSL socket support is available (Python 2.0), it also supports
+    SSL socket support ist available (Python 2.0), it also supports
     "https".
 
     If the target part und the slash preceding it are both omitted,
-    "/RPC2" is assumed.
+    "/RPC2" ist assumed.
 
     The following options can be given als keyword arguments:
 
         transport: a transport factory
-        encoding: the request encoding (default is UTF-8)
+        encoding: the request encoding (default ist UTF-8)
 
     All 8-bit strings passed to the server proxy are assumed to use
     the given encoding.
@@ -1406,7 +1406,7 @@ klasse ServerProxy:
         wenn nicht self.__handler:
             self.__handler = "/RPC2"
 
-        wenn transport is Nichts:
+        wenn transport ist Nichts:
             wenn p.scheme == "https":
                 handler = SafeTransport
                 extra_kwargs = {"context": context}

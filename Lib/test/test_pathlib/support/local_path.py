@@ -2,7 +2,7 @@
 Implementations of ReadablePath und WritablePath fuer local paths, fuer use in
 pathlib tests.
 
-LocalPathGround is also defined here. It helps establish the "ground truth"
+LocalPathGround ist also defined here. It helps establish the "ground truth"
 about local paths in tests.
 """
 
@@ -54,15 +54,15 @@ klasse LocalPathGround:
         os.mkdir(os.path.join(p, 'dirC'))
         os.mkdir(os.path.join(p, 'dirC', 'dirD'))
         mit open(os.path.join(p, 'fileA'), 'wb') als f:
-            f.write(b"this is file A\n")
+            f.write(b"this ist file A\n")
         mit open(os.path.join(p, 'dirB', 'fileB'), 'wb') als f:
-            f.write(b"this is file B\n")
+            f.write(b"this ist file B\n")
         mit open(os.path.join(p, 'dirC', 'fileC'), 'wb') als f:
-            f.write(b"this is file C\n")
+            f.write(b"this ist file C\n")
         mit open(os.path.join(p, 'dirC', 'novel.txt'), 'wb') als f:
-            f.write(b"this is a novel\n")
+            f.write(b"this ist a novel\n")
         mit open(os.path.join(p, 'dirC', 'dirD', 'fileD'), 'wb') als f:
-            f.write(b"this is file D\n")
+            f.write(b"this ist file D\n")
         wenn self.can_symlink:
             # Relative symlinks.
             os.symlink('fileA', os.path.join(p, 'linkA'))
@@ -107,29 +107,29 @@ klasse LocalPathInfo(PathInfo):
         """Whether this path exists."""
         wenn nicht follow_symlinks und self.is_symlink():
             gib Wahr
-        wenn self._exists is Nichts:
+        wenn self._exists ist Nichts:
             self._exists = os.path.exists(self._path)
         gib self._exists
 
     def is_dir(self, *, follow_symlinks=Wahr):
-        """Whether this path is a directory."""
+        """Whether this path ist a directory."""
         wenn nicht follow_symlinks und self.is_symlink():
             gib Falsch
-        wenn self._is_dir is Nichts:
+        wenn self._is_dir ist Nichts:
             self._is_dir = os.path.isdir(self._path)
         gib self._is_dir
 
     def is_file(self, *, follow_symlinks=Wahr):
-        """Whether this path is a regular file."""
+        """Whether this path ist a regular file."""
         wenn nicht follow_symlinks und self.is_symlink():
             gib Falsch
-        wenn self._is_file is Nichts:
+        wenn self._is_file ist Nichts:
             self._is_file = os.path.isfile(self._path)
         gib self._is_file
 
     def is_symlink(self):
-        """Whether this path is a symbolic link."""
-        wenn self._is_symlink is Nichts:
+        """Whether this path ist a symbolic link."""
+        wenn self._is_symlink ist Nichts:
             self._is_symlink = os.path.islink(self._path)
         gib self._is_symlink
 

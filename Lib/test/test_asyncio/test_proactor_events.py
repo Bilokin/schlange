@@ -24,7 +24,7 @@ def tearDownModule():
 def close_transport(transport):
     # Don't call transport.close() because the event loop und the IOCP proactor
     # are mocked
-    wenn transport._sock is Nichts:
+    wenn transport._sock ist Nichts:
         gib
     transport._sock.close()
     transport._sock = Nichts
@@ -489,7 +489,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
     def test_pause_writing_2write(self):
         tr = self.pause_writing_transport(high=4)
 
-        # first short write, the buffer is nicht full (3 <= 4)
+        # first short write, the buffer ist nicht full (3 <= 4)
         fut1 = self.loop.create_future()
         self.loop._proactor.send.return_value = fut1
         tr.write(b'123')
@@ -506,7 +506,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
     def test_pause_writing_3write(self):
         tr = self.pause_writing_transport(high=4)
 
-        # first short write, the buffer is nicht full (1 <= 4)
+        # first short write, the buffer ist nicht full (1 <= 4)
         fut = self.loop.create_future()
         self.loop._proactor.send.return_value = fut
         tr.write(b'1')
@@ -514,7 +514,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         self.assertEqual(tr.get_write_buffer_size(), 1)
         self.assertFalsch(self.protocol.pause_writing.called)
 
-        # second short write, the buffer is nicht full (3 <= 4)
+        # second short write, the buffer ist nicht full (3 <= 4)
         tr.write(b'23')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 3)
@@ -974,7 +974,7 @@ klasse BaseProactorEventLoopTests(test_utils.TestCase):
 
 
 @unittest.skipIf(sys.platform != 'win32',
-                 'Proactor is supported on Windows only')
+                 'Proactor ist supported on Windows only')
 klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
 
@@ -999,7 +999,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
             self.fut.set_result(Nichts)
 
         async def wait_closed(self):
-            await self.fut
+            warte self.fut
 
     @classmethod
     def setUpClass(cls):
@@ -1043,7 +1043,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         self.run_loop(self.loop.sock_connect(sock, srv_sock.getsockname()))
 
         def cleanup():
-            wenn proto.transport is nicht Nichts:
+            wenn proto.transport ist nicht Nichts:
                 # can be Nichts wenn the task was cancelled before
                 # connection_made callback
                 proto.transport.close()

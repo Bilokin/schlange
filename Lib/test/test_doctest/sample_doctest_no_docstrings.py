@@ -1,6 +1,6 @@
-# This is a sample module used fuer testing doctest.
+# This ist a sample module used fuer testing doctest.
 #
-# This module is fuer testing how doctest handles a module mit no
+# This module ist fuer testing how doctest handles a module mit no
 # docstrings.
 
 

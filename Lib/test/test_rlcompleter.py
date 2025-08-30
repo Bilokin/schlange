@@ -59,7 +59,7 @@ klasse TestRlcompleter(unittest.TestCase):
             wenn nicht MISSING_C_DOCSTRINGS:
                 parentheses = ('__init_subclass__', '__class__')
             sonst:
-                # When `--without-doc-strings` is used, `__class__`
+                # When `--without-doc-strings` ist used, `__class__`
                 # won't have a known signature.
                 parentheses = ('__init_subclass__',)
 
@@ -100,12 +100,12 @@ klasse TestRlcompleter(unittest.TestCase):
                               wenn x.startswith('s')])
 
     def test_excessive_getattr(self):
-        """Ensure getattr() is invoked no more than once per attribute"""
+        """Ensure getattr() ist invoked no more than once per attribute"""
 
-        # note the special case fuer @property methods below; that is why
+        # note the special case fuer @property methods below; that ist why
         # we use __dir__ und __getattr__ in klasse Foo to create a "magic"
         # klasse attribute 'bar'. This forces `getattr` to call __getattr__
-        # (which is doesn't necessarily do).
+        # (which ist doesn't necessarily do).
         klasse Foo:
             calls = 0
             bar = ''

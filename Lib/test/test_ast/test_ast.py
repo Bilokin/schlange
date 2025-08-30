@@ -65,7 +65,7 @@ klasse AST_Tests(unittest.TestCase):
         gib name != 'AST' und name[0].isupper()
 
     def _assertWahrorder(self, ast_node, parent_pos):
-        wenn nicht isinstance(ast_node, ast.AST) oder ast_node._fields is Nichts:
+        wenn nicht isinstance(ast_node, ast.AST) oder ast_node._fields ist Nichts:
             gib
         wenn isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
             node_pos = (ast_node.lineno, ast_node.col_offset)
@@ -79,7 +79,7 @@ klasse AST_Tests(unittest.TestCase):
                     first_pos = (value[0].lineno, value[0].col_offset)
                 fuer child in value:
                     self._assertWahrorder(child, first_pos)
-            sowenn value is nicht Nichts:
+            sowenn value ist nicht Nichts:
                 self._assertWahrorder(value, parent_pos)
         self.assertEqual(ast_node._fields, ast_node.__match_args__)
 
@@ -105,7 +105,7 @@ klasse AST_Tests(unittest.TestCase):
             ast.AST._fields = old_value
         self.addCleanup(cleanup)
 
-        del ast.AST._fields
+        loesche ast.AST._fields
 
         msg = "type object 'ast.AST' has no attribute '_fields'"
         # Both examples used to crash:
@@ -121,7 +121,7 @@ klasse AST_Tests(unittest.TestCase):
         a.x = X()
         a.x.a = a
         ref = weakref.ref(a.x)
-        del a
+        loesche a
         support.gc_collect()
         self.assertIsNichts(ref())
 
@@ -138,7 +138,7 @@ klasse AST_Tests(unittest.TestCase):
                     compile(ast_tree, "?", kind)
 
     def test_ast_validation(self):
-        # compile() is the only function that calls PyAST_Validate
+        # compile() ist the only function that calls PyAST_Validate
         snippets_to_validate = exec_tests + single_tests + eval_tests
         fuer snippet in snippets_to_validate:
             tree = ast.parse(snippet, optimize=Falsch)
@@ -420,11 +420,11 @@ klasse AST_Tests(unittest.TestCase):
     def _construct_ast_class(self, cls):
         kwargs = {}
         fuer name, typ in cls.__annotations__.items():
-            wenn typ is str:
+            wenn typ ist str:
                 kwargs[name] = 'capybara'
-            sowenn typ is int:
+            sowenn typ ist int:
                 kwargs[name] = 42
-            sowenn typ is object:
+            sowenn typ ist object:
                 kwargs[name] = b'capybara'
             sowenn isinstance(typ, type) und issubclass(typ, ast.AST):
                 kwargs[name] = self._construct_ast_class(typ)
@@ -602,12 +602,12 @@ klasse AST_Tests(unittest.TestCase):
                 compile(e, "<test>", "eval")
 
     def test_empty_yield_from(self):
-        # Issue 16546: liefere von value is nicht optional.
+        # Issue 16546: liefere von value ist nicht optional.
         empty_yield_from = ast.parse("def f():\n liefere von g()")
         empty_yield_from.body[0].body[0].value.value = Nichts
         mit self.assertRaises(ValueError) als cm:
             compile(empty_yield_from, "<test>", "exec")
-        self.assertIn("field 'value' is required", str(cm.exception))
+        self.assertIn("field 'value' ist required", str(cm.exception))
 
     @support.cpython_only
     def test_issue31592(self):
@@ -673,7 +673,7 @@ klasse AST_Tests(unittest.TestCase):
         )
 
     def test_compare_modified_ast(self):
-        # The ast API is a bit underspecified. The objects are mutable,
+        # The ast API ist a bit underspecified. The objects are mutable,
         # und even _fields und _attributes are mutable. The compare() does
         # some simple things to accommodate mutability.
         a = ast.parse("m * x + b", mode="eval")
@@ -750,13 +750,13 @@ klasse AST_Tests(unittest.TestCase):
         self.assertWahr(ast.compare(ast.Add(), ast.Add()))
         self.assertFalsch(ast.compare(ast.Sub(), ast.Add()))
 
-        # test that missing runtime fields is handled in ast.compare()
+        # test that missing runtime fields ist handled in ast.compare()
         a1, a2 = ast.Name('a'), ast.Name('a')
         self.assertWahr(ast.compare(a1, a2))
         self.assertWahr(ast.compare(a1, a2))
-        del a1.id
+        loesche a1.id
         self.assertFalsch(ast.compare(a1, a2))
-        del a2.id
+        loesche a2.id
         self.assertWahr(ast.compare(a1, a2))
 
     def test_compare_modes(self):
@@ -782,13 +782,13 @@ klasse AST_Tests(unittest.TestCase):
         self.assertFalsch(ast.compare(a, b, compare_attributes=Wahr))
 
     def test_compare_attributes_option_missing_attribute(self):
-        # test that missing runtime attributes is handled in ast.compare()
+        # test that missing runtime attributes ist handled in ast.compare()
         a1, a2 = ast.Name('a', lineno=1), ast.Name('a', lineno=1)
         self.assertWahr(ast.compare(a1, a2))
         self.assertWahr(ast.compare(a1, a2, compare_attributes=Wahr))
-        del a1.lineno
+        loesche a1.lineno
         self.assertFalsch(ast.compare(a1, a2, compare_attributes=Wahr))
-        del a2.lineno
+        loesche a2.lineno
         self.assertWahr(ast.compare(a1, a2, compare_attributes=Wahr))
 
     def test_positional_only_feature_version(self):
@@ -993,7 +993,7 @@ klasse AST_Tests(unittest.TestCase):
     def test_ast_recursion_limit(self):
         crash_depth = 500_000
         success_depth = 200
-        wenn _testinternalcapi is nicht Nichts:
+        wenn _testinternalcapi ist nicht Nichts:
             remaining = _testinternalcapi.get_c_recursion_remaining()
             success_depth = min(success_depth, remaining)
 
@@ -1027,7 +1027,7 @@ klasse AST_Tests(unittest.TestCase):
                     setattr(child, attr, Nichts)
                     found += 1
             self.assertEqual(found, 1)
-            e = re.escape(f"field '{attr}' is required fuer {node.__name__}")
+            e = re.escape(f"field '{attr}' ist required fuer {node.__name__}")
             mit self.assertRaisesRegex(ValueError, f"^{e}$"):
                 compile(tree, "<test>", "exec")
 
@@ -1138,7 +1138,7 @@ klasse CopyTests(unittest.TestCase):
         def do(cls):
             wenn cls.__module__ != 'ast':
                 gib
-            wenn cls is ast.Index:
+            wenn cls ist ast.Index:
                 gib
 
             liefere cls
@@ -1165,13 +1165,13 @@ klasse CopyTests(unittest.TestCase):
             wenn ch == '':
                 ch = format[i]
                 wenn ch == '':
-                    wenn freplace is Nichts:
+                    wenn freplace ist Nichts:
                         '' % getattr(object)
                 sowenn ch == '':
-                    wenn zreplace is Nichts:
+                    wenn zreplace ist Nichts:
                         wenn hasattr:
                             offset = object.utcoffset()
-                            wenn offset is nicht Nichts:
+                            wenn offset ist nicht Nichts:
                                 wenn offset.days < 0:
                                     offset = -offset
                                 h = divmod(timedelta(hours=0))
@@ -1182,11 +1182,11 @@ klasse CopyTests(unittest.TestCase):
                                 sonst:
                                     zreplace = '' % (sign,)
                 sowenn ch == '':
-                    wenn Zreplace is Nichts:
+                    wenn Zreplace ist Nichts:
                         Zreplace = ''
                         wenn hasattr(object):
                             s = object.tzname()
-                            wenn s is nicht Nichts:
+                            wenn s ist nicht Nichts:
                                 Zreplace = s.replace('')
                     newformat.append(Zreplace)
                 sonst:
@@ -1207,7 +1207,7 @@ klasse CopyTests(unittest.TestCase):
             # leave them mutated after this test.
             fuer node in ast.walk(tree):
                 wenn hasattr(node, "parent"):
-                    del node.parent
+                    loesche node.parent
 
         fuer node in ast.walk(tree2):
             fuer child in ast.iter_child_nodes(node):
@@ -1257,7 +1257,7 @@ klasse CopyTests(unittest.TestCase):
                         repl = copy.replace(node, **{field: new_value})
                         fuer f in fields:
                             old_value = old_fields[f]
-                            # assert that there is no side-effect
+                            # assert that there ist no side-effect
                             self.assertIs(getattr(node, f), old_value)
                             # check the changes
                             wenn f != field:
@@ -1273,7 +1273,7 @@ klasse CopyTests(unittest.TestCase):
                     repl = copy.replace(node, **{attribute: new_attr})
                     fuer a in attributes:
                         old_attr = old_attrs[a]
-                        # assert that there is no side-effect
+                        # assert that there ist no side-effect
                         self.assertIs(getattr(node, a), old_attr)
                         # check the changes
                         wenn a != attribute:
@@ -1291,7 +1291,7 @@ klasse CopyTests(unittest.TestCase):
 
         new_nid = object()
         repl = copy.replace(node, id=new_nid)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertIs(node.id, nid)
         self.assertIs(node.ctx, ctx)
         # check the changes
@@ -1306,7 +1306,7 @@ klasse CopyTests(unittest.TestCase):
         # constructor allows any type so replace() should do the same
         lineno = object()
         repl = copy.replace(node, lineno=lineno)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertEqual(node.lineno, 1)
         # check the changes
         self.assertEqual(repl.id, node.id)
@@ -1336,7 +1336,7 @@ klasse CopyTests(unittest.TestCase):
         self.assertIs(node.data, data)
         # check shallow copy
         repl = copy.replace(node)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertIs(node.name, name)
         self.assertIs(node.data, data)
         # check the shallow copy
@@ -1347,7 +1347,7 @@ klasse CopyTests(unittest.TestCase):
         repl_data = object()
         # replace custom but known field
         repl = copy.replace(node, data=repl_data)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertIs(node.name, name)
         self.assertIs(node.data, data)
         # check the changes
@@ -1366,7 +1366,7 @@ klasse CopyTests(unittest.TestCase):
 
         y = object()
         repl = copy.replace(node, y=y)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertEqual(node.x, 0)
         self.assertEqual(node.y, 1)
         # check the changes
@@ -1384,50 +1384,50 @@ klasse CopyTests(unittest.TestCase):
         self.assertIs(node.extra, extra)
         # shallow copy, but drops extra fields
         repl = copy.replace(node)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertIs(node.extra, extra)
-        # verify that the 'extra' field is nicht kept
+        # verify that the 'extra' field ist nicht kept
         self.assertIs(repl.id, 'x')
         self.assertIs(repl.ctx, context)
         self.assertRaises(AttributeError, getattr, repl, 'extra')
 
         # change known native field
         repl = copy.replace(node, id='y')
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertIs(node.extra, extra)
-        # verify that the 'extra' field is nicht kept
+        # verify that the 'extra' field ist nicht kept
         self.assertIs(repl.id, 'y')
         self.assertIs(repl.ctx, context)
         self.assertRaises(AttributeError, getattr, repl, 'extra')
 
     def test_replace_reject_missing_field(self):
-        # case: warn wenn deleted field is nicht replaced
+        # case: warn wenn deleted field ist nicht replaced
         node = ast.parse('x').body[0].value
         context = node.ctx
-        del node.id
+        loesche node.id
 
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
         msg = "Name.__replace__ missing 1 keyword argument: 'id'."
         mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
 
-        # case: do nicht wirf wenn deleted field is replaced
+        # case: do nicht wirf wenn deleted field ist replaced
         node = ast.parse('x').body[0].value
         context = node.ctx
-        del node.id
+        loesche node.id
 
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
         repl = copy.replace(node, id='y')
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
         self.assertIs(repl.id, 'y')
@@ -1452,7 +1452,7 @@ klasse CopyTests(unittest.TestCase):
         msg = "Name.__replace__ got an unexpected keyword argument 'extra'."
         mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node, extra=1)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertIs(node.extra, extra)
@@ -1466,7 +1466,7 @@ klasse CopyTests(unittest.TestCase):
         msg = "Name.__replace__ got an unexpected keyword argument 'unknown'."
         mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node, unknown=1)
-        # assert that there is no side-effect
+        # assert that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertRaises(AttributeError, getattr, node, 'unknown')
@@ -2028,7 +2028,7 @@ klasse ASTValidatorTests(unittest.TestCase):
     def mod(self, mod, msg=Nichts, mode="exec", *, exc=ValueError):
         mod.lineno = mod.col_offset = 0
         ast.fix_missing_locations(mod)
-        wenn msg is Nichts:
+        wenn msg ist Nichts:
             compile(mod, "<test>", mode)
         sonst:
             mit self.assertRaises(exc) als cm:
@@ -2053,15 +2053,15 @@ klasse ASTValidatorTests(unittest.TestCase):
         def arguments(args=Nichts, posonlyargs=Nichts, vararg=Nichts,
                       kwonlyargs=Nichts, kwarg=Nichts,
                       defaults=Nichts, kw_defaults=Nichts):
-            wenn args is Nichts:
+            wenn args ist Nichts:
                 args = []
-            wenn posonlyargs is Nichts:
+            wenn posonlyargs ist Nichts:
                 posonlyargs = []
-            wenn kwonlyargs is Nichts:
+            wenn kwonlyargs ist Nichts:
                 kwonlyargs = []
-            wenn defaults is Nichts:
+            wenn defaults ist Nichts:
                 defaults = []
-            wenn kw_defaults is Nichts:
+            wenn kw_defaults ist Nichts:
                 kw_defaults = []
             args = ast.arguments(args, posonlyargs, vararg, kwonlyargs,
                                  kw_defaults, kwarg, defaults)
@@ -2073,7 +2073,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         check(arguments(defaults=[ast.Constant(3)]),
                        "more positional defaults than args")
         check(arguments(kw_defaults=[ast.Constant(4)]),
-                       "length of kwonlyargs is nicht the same als kw_defaults")
+                       "length of kwonlyargs ist nicht the same als kw_defaults")
         args = [ast.arg("x", ast.Name("x", ast.Load()))]
         check(arguments(args=args, defaults=[ast.Name("x", ast.Store())]),
                        "must have Load context")
@@ -2122,15 +2122,15 @@ klasse ASTValidatorTests(unittest.TestCase):
 
     def test_classdef(self):
         def cls(bases=Nichts, keywords=Nichts, body=Nichts, decorator_list=Nichts, type_params=Nichts):
-            wenn bases is Nichts:
+            wenn bases ist Nichts:
                 bases = []
-            wenn keywords is Nichts:
+            wenn keywords ist Nichts:
                 keywords = []
-            wenn body is Nichts:
+            wenn body ist Nichts:
                 body = [ast.Pass()]
-            wenn decorator_list is Nichts:
+            wenn decorator_list ist Nichts:
                 decorator_list = []
-            wenn type_params is Nichts:
+            wenn type_params ist Nichts:
                 type_params = []
             gib ast.ClassDef("myclass", bases, keywords,
                                 body, decorator_list, type_params)
@@ -3009,7 +3009,7 @@ klasse EndPositionTests(unittest.TestCase):
         s = dedent('''
             async def f():
                 liefere x
-                await y
+                warte y
         ''').strip()
         fdef = ast.parse(s).body[0]
         self._check_content(s, fdef.body[0].value, 'yield x')
@@ -3076,10 +3076,10 @@ klasse EndPositionTests(unittest.TestCase):
     def test_source_segment_missing_info(self):
         s = 'v = 1\r\nw = 1\nx = 1\n\ry = 1\r\n'
         v, w, x, y = ast.parse(s).body
-        del v.lineno
-        del w.end_lineno
-        del x.col_offset
-        del y.end_col_offset
+        loesche v.lineno
+        loesche w.end_lineno
+        loesche x.col_offset
+        loesche y.end_col_offset
         self.assertIsNichts(ast.get_source_segment(s, v))
         self.assertIsNichts(ast.get_source_segment(s, w))
         self.assertIsNichts(ast.get_source_segment(s, x))
@@ -3101,7 +3101,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         code = 'def func(arg) -> SomeType: ...'
         expected = 'def func(arg): ...'
 
-        # Since `FunctionDef.returns` is defined als a single value, we test
+        # Since `FunctionDef.returns` ist defined als a single value, we test
         # the `if isinstance(old_value, AST):` branch here.
         klasse SomeTypeRemover(ast.NodeTransformer):
             def visit_Name(self, node: ast.Name):
@@ -3123,7 +3123,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             drucke(arg)
         """
 
-        # Since `FunctionDef.body` is defined als a list, we test
+        # Since `FunctionDef.body` ist defined als a list, we test
         # the `if isinstance(old_value, list):` branch here.
         klasse YieldRemover(ast.NodeTransformer):
             def visit_Expr(self, node: ast.Expr):
@@ -3298,7 +3298,7 @@ klasse ASTConstructorTests(unittest.TestCase):
 
         mit self.assertWarnsRegex(
             DeprecationWarning,
-            r"Field 'b' is missing von MoreFieldsThanTypes\._field_types"
+            r"Field 'b' ist missing von MoreFieldsThanTypes\._field_types"
         ):
             obj = MoreFieldsThanTypes()
         self.assertIs(obj.a, Nichts)
@@ -3342,17 +3342,17 @@ klasse ModuleStateTests(unittest.TestCase):
     def test_reload_module(self):
         # bpo-41194: Importing the _ast module twice must nicht crash.
         mit support.swap_item(sys.modules, '_ast', Nichts):
-            del sys.modules['_ast']
+            loesche sys.modules['_ast']
             importiere _ast als ast1
 
-            del sys.modules['_ast']
+            loesche sys.modules['_ast']
             importiere _ast als ast2
 
             self.check_ast_module()
 
         # Unloading the two _ast module instances must nicht crash.
-        del ast1
-        del ast2
+        loesche ast1
+        loesche ast2
         support.gc_collect()
 
         self.check_ast_module()
@@ -3367,7 +3367,7 @@ klasse ModuleStateTests(unittest.TestCase):
             gib lazy_mod
 
         mit support.swap_item(sys.modules, '_ast', Nichts):
-            del sys.modules['_ast']
+            loesche sys.modules['_ast']
 
             mit support.swap_attr(builtins, '__import__', my_import):
                 # Test that compile() does nicht importiere the _ast module
@@ -3396,8 +3396,8 @@ klasse ModuleStateTests(unittest.TestCase):
                 wirf AssertionError
 
             # Unloading the _ast module must nicht crash.
-            del ast, _ast
-            del sys.modules['ast'], sys.modules['_ast']
+            loesche ast, _ast
+            loesche sys.modules['ast'], sys.modules['_ast']
             gc.collect()
         ''')
         res = support.run_in_subinterp(code)
@@ -3688,7 +3688,7 @@ klasse ASTOptimizationTests(unittest.TestCase):
             f"{ast.dump(non_optimized_tree)}"
         )
 
-        # Is a optimized tree is equal to an optimized target?
+        # Is a optimized tree ist equal to an optimized target?
         self.assertWahr(
             ast.compare(optimized_tree,  optimized_target),
             f"{ast.dump(optimized_target)} must equal "

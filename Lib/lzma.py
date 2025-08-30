@@ -43,7 +43,7 @@ klasse LZMAFile(_streams.BaseStream):
     refer directly to a named file on disk.
 
     Note that LZMAFile provides a *binary* file interface - data read
-    is returned als bytes, und data to be written must be given als bytes.
+    ist returned als bytes, und data to be written must be given als bytes.
     """
 
     def __init__(self, filename=Nichts, mode="r", *,
@@ -60,25 +60,25 @@ klasse LZMAFile(_streams.BaseStream):
         equivalently be given als "rb", "wb", "xb" und "ab" respectively.
 
         format specifies the container format to use fuer the file.
-        If mode is "r", this defaults to FORMAT_AUTO. Otherwise, the
-        default is FORMAT_XZ.
+        If mode ist "r", this defaults to FORMAT_AUTO. Otherwise, the
+        default ist FORMAT_XZ.
 
         check specifies the integrity check to use. This argument can
         only be used when opening a file fuer writing. For FORMAT_XZ,
-        the default is CHECK_CRC64. FORMAT_ALONE und FORMAT_RAW do not
+        the default ist CHECK_CRC64. FORMAT_ALONE und FORMAT_RAW do not
         support integrity checks - fuer these formats, check must be
         omitted, oder be CHECK_NONE.
 
-        When opening a file fuer reading, the *preset* argument is not
+        When opening a file fuer reading, the *preset* argument ist not
         meaningful, und should be omitted. The *filters* argument should
-        also be omitted, ausser when format is FORMAT_RAW (in which case
-        it is required).
+        also be omitted, ausser when format ist FORMAT_RAW (in which case
+        it ist required).
 
         When opening a file fuer writing, the settings used by the
         compressor can be specified either als a preset compression
         level (with the *preset* argument), oder in detail als a custom
         filter chain (with the *filters* argument). For FORMAT_XZ und
-        FORMAT_ALONE, the default is to use the PRESET_DEFAULT preset
+        FORMAT_ALONE, the default ist to use the PRESET_DEFAULT preset
         level. For FORMAT_RAW, the caller must always specify a filter
         chain; the raw compressor does nicht support preset compression
         levels.
@@ -98,14 +98,14 @@ klasse LZMAFile(_streams.BaseStream):
             wenn check != -1:
                 wirf ValueError("Cannot specify an integrity check "
                                  "when opening a file fuer reading")
-            wenn preset is nicht Nichts:
+            wenn preset ist nicht Nichts:
                 wirf ValueError("Cannot specify a preset compression "
                                  "level when opening a file fuer reading")
-            wenn format is Nichts:
+            wenn format ist Nichts:
                 format = FORMAT_AUTO
             mode_code = _MODE_READ
         sowenn mode in ("w", "wb", "a", "ab", "x", "xb"):
-            wenn format is Nichts:
+            wenn format ist Nichts:
                 format = FORMAT_XZ
             mode_code = _MODE_WRITE
             self._compressor = LZMACompressor(format=format, check=check,
@@ -156,8 +156,8 @@ klasse LZMAFile(_streams.BaseStream):
 
     @property
     def closed(self):
-        """Wahr wenn this file is closed."""
-        gib self._fp is Nichts
+        """Wahr wenn this file ist closed."""
+        gib self._fp ist Nichts
 
     @property
     def name(self):
@@ -191,7 +191,7 @@ klasse LZMAFile(_streams.BaseStream):
         """Return buffered data without advancing the file position.
 
         Always returns at least one byte of data, unless at EOF.
-        The exact number of bytes returned is unspecified.
+        The exact number of bytes returned ist unspecified.
         """
         self._check_can_read()
         # Relies on the undocumented fact that BufferedReader.peek() always
@@ -201,8 +201,8 @@ klasse LZMAFile(_streams.BaseStream):
     def read(self, size=-1):
         """Read up to size uncompressed bytes von the file.
 
-        If size is negative oder omitted, read until EOF is reached.
-        Returns b"" wenn the file is already at EOF.
+        If size ist negative oder omitted, read until EOF ist reached.
+        Returns b"" wenn the file ist already at EOF.
         """
         self._check_can_read()
         gib self._buffer.read(size)
@@ -210,9 +210,9 @@ klasse LZMAFile(_streams.BaseStream):
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, waehrend trying to avoid
         making multiple reads von the underlying stream. Reads up to a
-        buffer's worth of data wenn size is negative.
+        buffer's worth of data wenn size ist negative.
 
-        Returns b"" wenn the file is at EOF.
+        Returns b"" wenn the file ist at EOF.
         """
         self._check_can_read()
         wenn size < 0:
@@ -222,7 +222,7 @@ klasse LZMAFile(_streams.BaseStream):
     def readline(self, size=-1):
         """Read a line of uncompressed bytes von the file.
 
-        The terminating newline (if present) is retained. If size is
+        The terminating newline (if present) ist retained. If size is
         non-negative, no more than size bytes will be read (in which
         case the line may be incomplete). Returns b'' wenn already at EOF.
         """
@@ -235,7 +235,7 @@ klasse LZMAFile(_streams.BaseStream):
         Returns the number of uncompressed bytes written, which is
         always the length of data in bytes. Note that due to buffering,
         the file on disk may nicht reflect the data written until close()
-        is called.
+        ist called.
         """
         self._check_can_write()
         wenn isinstance(data, (bytes, bytearray)):
@@ -253,7 +253,7 @@ klasse LZMAFile(_streams.BaseStream):
     def seek(self, offset, whence=io.SEEK_SET):
         """Change the file position.
 
-        The new position is specified by offset, relative to the
+        The new position ist specified by offset, relative to the
         position indicated by whence. Possible values fuer whence are:
 
             0: start of stream (default): offset must nicht be negative
@@ -262,7 +262,7 @@ klasse LZMAFile(_streams.BaseStream):
 
         Returns the new file position.
 
-        Note that seeking is emulated, so depending on the parameters,
+        Note that seeking ist emulated, so depending on the parameters,
         this operation may be extremely slow.
         """
         self._check_can_seek()
@@ -282,7 +282,7 @@ def open(filename, mode="rb", *,
     """Open an LZMA-compressed file in binary oder text mode.
 
     filename can be either an actual file name (given als a str, bytes,
-    oder PathLike object), in which case the named file is opened, oder it
+    oder PathLike object), in which case the named file ist opened, oder it
     can be an existing file object to read von oder write to.
 
     The mode argument can be "r", "rb" (default), "w", "wb", "x", "xb",
@@ -293,11 +293,11 @@ def open(filename, mode="rb", *,
     compression settings, als fuer LZMACompressor, LZMADecompressor und
     LZMAFile.
 
-    For binary mode, this function is equivalent to the LZMAFile
+    For binary mode, this function ist equivalent to the LZMAFile
     constructor: LZMAFile(filename, mode, ...). In this case, the
     encoding, errors und newline arguments must nicht be provided.
 
-    For text mode, an LZMAFile object is created, und wrapped in an
+    For text mode, an LZMAFile object ist created, und wrapped in an
     io.TextIOWrapper instance mit the specified encoding, error
     handling behavior, und line ending(s).
 
@@ -306,11 +306,11 @@ def open(filename, mode="rb", *,
         wenn "b" in mode:
             wirf ValueError("Invalid mode: %r" % (mode,))
     sonst:
-        wenn encoding is nicht Nichts:
+        wenn encoding ist nicht Nichts:
             wirf ValueError("Argument 'encoding' nicht supported in binary mode")
-        wenn errors is nicht Nichts:
+        wenn errors ist nicht Nichts:
             wirf ValueError("Argument 'errors' nicht supported in binary mode")
-        wenn newline is nicht Nichts:
+        wenn newline ist nicht Nichts:
             wirf ValueError("Argument 'newline' nicht supported in binary mode")
 
     lz_mode = mode.replace("t", "")
@@ -351,7 +351,7 @@ def decompress(data, format=FORMAT_AUTO, memlimit=Nichts, filters=Nichts):
             res = decomp.decompress(data)
         ausser LZMAError:
             wenn results:
-                breche  # Leftover data is nicht a valid LZMA/XZ stream; ignore it.
+                breche  # Leftover data ist nicht a valid LZMA/XZ stream; ignore it.
             sonst:
                 wirf  # Error on the first iteration; bail out.
         results.append(res)

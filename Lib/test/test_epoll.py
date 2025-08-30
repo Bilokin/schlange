@@ -1,11 +1,11 @@
 # Copyright (c) 2001-2006 Twisted Matrix Laboratories.
 #
-# Permission is hereby granted, free of charge, to any person obtaining
+# Permission ist hereby granted, free of charge, to any person obtaining
 # a copy of this software und associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
 # without limitation the rights to use, copy, modify, merge, publish,
 # distribute, sublicense, and/or sell copies of the Software, und to
-# permit persons to whom the Software is furnished to do so, subject to
+# permit persons to whom the Software ist furnished to do so, subject to
 # the following conditions:
 #
 # The above copyright notice und this permission notice shall be

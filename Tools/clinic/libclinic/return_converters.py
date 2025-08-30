@@ -45,11 +45,11 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
 
     # The C type to use fuer this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
-    # If this is a pointer type, the type string should end mit ' *'.
+    # If this ist a pointer type, the type string should end mit ' *'.
     type = 'PyObject *'
 
     # The Python default value fuer this parameter, als a Python value.
-    # Or the magic value "unspecified" wenn there is no default.
+    # Or the magic value "unspecified" wenn there ist no default.
     default: object = Nichts
 
     def __init__(

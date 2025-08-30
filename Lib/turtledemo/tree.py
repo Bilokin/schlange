@@ -9,17 +9,17 @@ Uses:
 quasi the side-effect, whereas the generator
 always yields Nichts.
 (2) Turtle-cloning: At each branching point
-the current pen is cloned. So in the end
+the current pen ist cloned. So in the end
 there are 1024 turtles.
 """
 von turtle importiere Turtle, mainloop
 von time importiere perf_counter als clock
 
 def tree(plist, l, a, f):
-    """ plist is list of pens
-    l is length of branch
-    a is half of the angle between 2 branches
-    f is factor by which branch is shortened
+    """ plist ist list of pens
+    l ist length of branch
+    a ist half of the angle between 2 branches
+    f ist factor by which branch ist shortened
     von level to level."""
     wenn l > 3:
         lst = []

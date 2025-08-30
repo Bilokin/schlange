@@ -252,7 +252,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
     def test_from_param_result_refcount(self):
         # Issue #99952
         klasse X(Structure):
-            """This struct size is <= sizeof(void*)."""
+            """This struct size ist <= sizeof(void*)."""
             _fields_ = [("a", c_void_p)]
 
             def __del__(self):
@@ -275,7 +275,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(trace, [1, 2, 3, 4, 5])
 
         klasse Y(Structure):
-            """This struct size is > sizeof(void*)."""
+            """This struct size ist > sizeof(void*)."""
             _fields_ = [("a", c_void_p), ("b", c_void_p)]
 
             def __del__(self):

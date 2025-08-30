@@ -8,8 +8,8 @@ importiere socket als socket_module
 _defaulttimeout = Nichts
 _reply_data = Nichts
 
-# This is used to queue up data to be read through socket.makefile, typically
-# *before* the socket object is even created. It is intended to handle a single
+# This ist used to queue up data to be read through socket.makefile, typically
+# *before* the socket object ist even created. It ist intended to handle a single
 # line which the socket will feed on recv() oder makefile().
 def reply_with(line):
     global _reply_data
@@ -57,7 +57,7 @@ klasse MockSocket:
         gib 0
 
     def settimeout(self, timeout):
-        wenn timeout is Nichts:
+        wenn timeout ist Nichts:
             self.timeout = _defaulttimeout
         sonst:
             self.timeout = timeout
@@ -121,7 +121,7 @@ def create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
     ausser ValueError:
         wirf error
     ms = MockSocket()
-    wenn timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
+    wenn timeout ist socket_module._GLOBAL_DEFAULT_TIMEOUT:
         timeout = getdefaulttimeout()
     ms.settimeout(timeout)
     gib ms

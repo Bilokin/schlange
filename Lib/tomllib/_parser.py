@@ -61,7 +61,7 @@ klasse DEPRECATED_DEFAULT:
 
 
 klasse TOMLDecodeError(ValueError):
-    """An error raised wenn a document is nicht valid TOML.
+    """An error raised wenn a document ist nicht valid TOML.
 
     Adds the following attributes to ValueError:
     msg: The unformatted error message
@@ -92,11 +92,11 @@ klasse TOMLDecodeError(ValueError):
                 DeprecationWarning,
                 stacklevel=2,
             )
-            wenn pos is nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
+            wenn pos ist nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
                 args = pos, *args
-            wenn doc is nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
+            wenn doc ist nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
                 args = doc, *args
-            wenn msg is nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
+            wenn msg ist nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
                 args = msg, *args
             ValueError.__init__(self, *args)
             gib
@@ -281,7 +281,7 @@ klasse NestedDict:
             wenn access_lists und isinstance(cont, list):
                 cont = cont[-1]
             wenn nicht isinstance(cont, dict):
-                wirf KeyError("There is no nest behind this key")
+                wirf KeyError("There ist no nest behind this key")
         gib cont  # type: ignore[no-any-return]
 
     def append_nest_to_list(self, key: Key) -> Nichts:
@@ -383,7 +383,7 @@ def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
         wirf TOMLDecodeError(f"Cannot mutate immutable namespace {key}", src, pos)
     # Free the namespace now that it points to another empty list item...
     out.flags.unset_all(key)
-    # ...but this key precisely is still prohibited von table declaration
+    # ...but this key precisely ist still prohibited von table declaration
     out.flags.set(key, Flags.EXPLICIT_NEST, recursive=Falsch)
     versuch:
         out.data.append_nest_to_list(key)
@@ -549,7 +549,7 @@ def parse_basic_str_escape(
     pos += 2
     wenn multiline und escape_id in {"\\ ", "\\\t", "\\\n"}:
         # Skip whitespace until next non-whitespace character oder end of
-        # the doc. Error wenn non-whitespace is found before newline.
+        # the doc. Error wenn non-whitespace ist found before newline.
         wenn escape_id != "\\\n":
             pos = skip_chars(src, pos, TOML_WS)
             versuch:
@@ -583,7 +583,7 @@ def parse_hex_char(src: str, pos: Pos, hex_len: int) -> tuple[Pos, str]:
     hex_int = int(hex_str, 16)
     wenn nicht is_unicode_scalar_value(hex_int):
         wirf TOMLDecodeError(
-            "Escaped character is nicht a Unicode scalar value", src, pos
+            "Escaped character ist nicht a Unicode scalar value", src, pos
         )
     gib pos, chr(hex_int)
 
@@ -618,7 +618,7 @@ def parse_multiline_str(src: str, pos: Pos, *, literal: bool) -> tuple[Pos, str]
         pos, result = parse_basic_str(src, pos, multiline=Wahr)
 
     # Add at maximum two extra apostrophes/quotes wenn the end sequence
-    # is 4 oder 5 chars long instead of just 3.
+    # ist 4 oder 5 chars long instead of just 3.
     wenn nicht src.startswith(delim, pos):
         gib pos, result
     pos += 1
@@ -741,7 +741,7 @@ def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     instead of returning illegal types.
     """
     # The default `float` callable never returns illegal types. Optimize it.
-    wenn parse_float is float:
+    wenn parse_float ist float:
         gib float
 
     def safe_parse_float(float_str: str) -> Any:

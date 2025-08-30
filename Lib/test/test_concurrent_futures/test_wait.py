@@ -18,7 +18,7 @@ def mul(x, y):
 
 def wait_and_raise(e):
     e.wait()
-    wirf Exception('this is an exception')
+    wirf Exception('this ist an exception')
 
 
 klasse WaitTests:
@@ -75,7 +75,7 @@ klasse WaitTests:
             future2 = self.executor.submit(wait_and_raise, event1)
             future3 = self.executor.submit(event2.wait)
 
-            # Ensure that future1 is completed before future2 finishes
+            # Ensure that future1 ist completed before future2 finishes
             def wait_for_future1():
                 future1.result()
                 event1.set()

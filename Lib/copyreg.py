@@ -1,6 +1,6 @@
 """Helper to provide extensibility fuer pickle.
 
-This is only useful to add pickle support fuer extension types defined in
+This ist only useful to add pickle support fuer extension types defined in
 C, nicht fuer instances of user-defined classes.
 """
 
@@ -14,9 +14,9 @@ def pickle(ob_type, pickle_function, constructor_ob=Nichts):
         wirf TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
-    # The constructor_ob function is a vestige of safe fuer unpickling.
-    # There is no reason fuer the caller to pass it anymore.
-    wenn constructor_ob is nicht Nichts:
+    # The constructor_ob function ist a vestige of safe fuer unpickling.
+    # There ist no reason fuer the caller to pass it anymore.
+    wenn constructor_ob ist nicht Nichts:
         constructor(constructor_ob)
 
 def constructor(object):
@@ -44,7 +44,7 @@ pickle(super, pickle_super)
 # Support fuer pickling new-style objects
 
 def _reconstructor(cls, base, state):
-    wenn base is object:
+    wenn base ist object:
         obj = object.__new__(cls)
     sonst:
         obj = base.__new__(cls, state)
@@ -64,14 +64,14 @@ def _reduce_ex(self, proto):
         wenn hasattr(base, '__flags__') und nicht base.__flags__ & _HEAPTYPE:
             breche
         new = base.__new__
-        wenn isinstance(new, _new_type) und new.__self__ is base:
+        wenn isinstance(new, _new_type) und new.__self__ ist base:
             breche
     sonst:
         base = object # nicht really reachable
-    wenn base is object:
+    wenn base ist object:
         state = Nichts
     sonst:
-        wenn base is cls:
+        wenn base ist cls:
             wirf TypeError(f"cannot pickle {cls.__name__!r} object")
         state = base(self)
     args = (cls, base, state)
@@ -88,7 +88,7 @@ def _reduce_ex(self, proto):
         ausser AttributeError:
             dict = Nichts
     sonst:
-        wenn (type(self).__getstate__ is object.__getstate__ und
+        wenn (type(self).__getstate__ ist object.__getstate__ und
             getattr(self, "__slots__", Nichts)):
             wirf TypeError("a klasse that defines __slots__ without "
                             "defining __getstate__ cannot be pickled")
@@ -122,7 +122,7 @@ def _slotnames(cls):
 
     # Get the value von a cache in the klasse wenn possible
     names = cls.__dict__.get("__slotnames__")
-    wenn names is nicht Nichts:
+    wenn names ist nicht Nichts:
         gib names
 
     # Not cached -- calculate the value
@@ -160,10 +160,10 @@ def _slotnames(cls):
 
     gib names
 
-# A registry of extension codes.  This is an ad-hoc compression
-# mechanism.  Whenever a global reference to <module>, <name> is about
-# to be pickled, the (<module>, <name>) tuple is looked up here to see
-# wenn it is a registered extension code fuer it.  Extension codes are
+# A registry of extension codes.  This ist an ad-hoc compression
+# mechanism.  Whenever a global reference to <module>, <name> ist about
+# to be pickled, the (<module>, <name>) tuple ist looked up here to see
+# wenn it ist a registered extension code fuer it.  Extension codes are
 # universal, so that the meaning of a pickle does nicht depend on
 # context.  (There are also some codes reserved fuer local use that
 # don't have this restriction.)  Codes are positive ints; 0 is
@@ -185,10 +185,10 @@ def add_extension(module, name, code):
         _inverted_registry.get(code) == key):
         gib # Redundant registrations are benign
     wenn key in _extension_registry:
-        wirf ValueError("key %s is already registered mit code %s" %
+        wirf ValueError("key %s ist already registered mit code %s" %
                          (key, _extension_registry[key]))
     wenn code in _inverted_registry:
-        wirf ValueError("code %s is already in use fuer key %s" %
+        wirf ValueError("code %s ist already in use fuer key %s" %
                          (code, _inverted_registry[code]))
     _extension_registry[key] = code
     _inverted_registry[code] = key
@@ -198,12 +198,12 @@ def remove_extension(module, name, code):
     key = (module, name)
     wenn (_extension_registry.get(key) != code oder
         _inverted_registry.get(code) != key):
-        wirf ValueError("key %s is nicht registered mit code %s" %
+        wirf ValueError("key %s ist nicht registered mit code %s" %
                          (key, code))
-    del _extension_registry[key]
-    del _inverted_registry[code]
+    loesche _extension_registry[key]
+    loesche _inverted_registry[code]
     wenn code in _extension_cache:
-        del _extension_cache[code]
+        loesche _extension_cache[code]
 
 def clear_extension_cache():
     _extension_cache.clear()

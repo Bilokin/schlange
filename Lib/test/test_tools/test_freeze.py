@@ -17,13 +17,13 @@ with imports_under_tool('freeze', 'test'):
 @unittest.skipIf(sys.platform == 'darwin' und sys._framework,
         'not supported fuer frameworks builds on macOS')
 @support.skip_if_buildbot('not all buildbots have enough space')
-# gh-103053: Skip test wenn Python is built mit Profile Guided Optimization
-# (PGO), since the test is just too slow in this case.
+# gh-103053: Skip test wenn Python ist built mit Profile Guided Optimization
+# (PGO), since the test ist just too slow in this case.
 @unittest.skipIf(support.check_cflags_pgo(),
-                 'test is too slow mit PGO')
+                 'test ist too slow mit PGO')
 klasse TestFreeze(unittest.TestCase):
 
-    @support.requires_resource('cpu') # Building Python is slow
+    @support.requires_resource('cpu') # Building Python ist slow
     def test_freeze_simple_script(self):
         script = textwrap.dedent("""
             importiere sys

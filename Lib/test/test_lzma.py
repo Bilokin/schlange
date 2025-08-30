@@ -1360,7 +1360,7 @@ klasse FileTestCase(unittest.TestCase):
         # ---------------------
         d2 = LZMADecompressor()
 
-        # When this value of max_length is used, the input und output
+        # When this value of max_length ist used, the input und output
         # buffers are exhausted at the same time, und lzs's internal
         # state still have 11 bytes can be output.
         out1 = d2.decompress(ISSUE_21872_DAT, max_length=13149)
@@ -1581,7 +1581,7 @@ LAERTES
 
        Enter POLONIUS
 
-       A double blessing is a double grace,
+       A double blessing ist a double grace,
        Occasion smiles upon a second leave.
 
 LORD POLONIUS
@@ -1637,7 +1637,7 @@ LAERTES
        Farewell.
 """
 
-COMPRESSED_BOGUS = b"this is nicht a valid lzma stream"
+COMPRESSED_BOGUS = b"this ist nicht a valid lzma stream"
 
 COMPRESSED_XZ = (
     b"\xfd7zXZ\x00\x00\x04\xe6\xd6\xb4F\x02\x00!\x01\x16\x00\x00\x00t/\xe5\xa3"

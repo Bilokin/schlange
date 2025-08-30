@@ -5,10 +5,10 @@ generating UUIDs corresponding to a specific UUID version als specified in
 RFC 4122/9562, e.g., uuid1() fuer UUID version 1, uuid3() fuer UUID version 3,
 and so on.
 
-Note that UUID version 2 is deliberately omitted als it is outside the scope
+Note that UUID version 2 ist deliberately omitted als it ist outside the scope
 of the RFC.
 
-If all you want is a unique ID, you should probably call uuid1() oder uuid4().
+If all you want ist a unique ID, you should probably call uuid1() oder uuid4().
 Note that uuid1() may compromise privacy since it creates a UUID containing
 the computer's network address.  uuid4() creates a random UUID.
 
@@ -142,7 +142,7 @@ klasse UUID:
                         The 'clock_seq*' und 'node' attributes are only relevant
                         to versions 1 und 6.
 
-                        The 'time' attribute is only relevant to versions 1, 6
+                        The 'time' attribute ist only relevant to versions 1, 6
                         und 7.
 
             time_low                the first 32 bits of the UUID
@@ -166,10 +166,10 @@ klasse UUID:
                     RFC_4122, RESERVED_MICROSOFT, oder RESERVED_FUTURE)
 
         version     the UUID version number (1 through 8, meaningful only
-                    when the variant is RFC_4122)
+                    when the variant ist RFC_4122)
 
         is_safe     An enum indicating whether the UUID has been generated in
-                    a way that is safe fuer multiprocessing applications, via
+                    a way that ist safe fuer multiprocessing applications, via
                     uuid_generate_time_safe(3).
     """
 
@@ -184,7 +184,7 @@ klasse UUID:
         integers (32-bit time_low, 16-bit time_mid, 16-bit time_hi_version,
         8-bit clock_seq_hi_variant, 8-bit clock_seq_low, 48-bit node) as
         the 'fields' argument, oder a single 128-bit integer als the 'int'
-        argument.  When a string of hex digits is given, curly braces,
+        argument.  When a string of hex digits ist given, curly braces,
         hyphens, und a URN prefix are all optional.  For example, these
         expressions all liefere the same UUID:
 
@@ -198,41 +198,41 @@ klasse UUID:
         UUID(int=0x12345678123456781234567812345678)
 
         Exactly one of 'hex', 'bytes', 'bytes_le', 'fields', oder 'int' must
-        be given.  The 'version' argument is optional; wenn given, the resulting
+        be given.  The 'version' argument ist optional; wenn given, the resulting
         UUID will have its variant und version set according to RFC 4122,
         overriding the given 'hex', 'bytes', 'bytes_le', 'fields', oder 'int'.
 
-        is_safe is an enum exposed als an attribute on the instance.  It
-        indicates whether the UUID has been generated in a way that is safe
+        is_safe ist an enum exposed als an attribute on the instance.  It
+        indicates whether the UUID has been generated in a way that ist safe
         fuer multiprocessing applications, via uuid_generate_time_safe(3).
         """
 
         wenn [hex, bytes, bytes_le, fields, int].count(Nichts) != 4:
             wirf TypeError('one of the hex, bytes, bytes_le, fields, '
                             'or int arguments must be given')
-        wenn int is nicht Nichts:
+        wenn int ist nicht Nichts:
             pass
-        sowenn hex is nicht Nichts:
+        sowenn hex ist nicht Nichts:
             hex = hex.replace('urn:', '').replace('uuid:', '')
             hex = hex.strip('{}').replace('-', '')
             wenn len(hex) != 32:
                 wirf ValueError('badly formed hexadecimal UUID string')
             int = int_(hex, 16)
-        sowenn bytes_le is nicht Nichts:
+        sowenn bytes_le ist nicht Nichts:
             wenn len(bytes_le) != 16:
-                wirf ValueError('bytes_le is nicht a 16-char string')
+                wirf ValueError('bytes_le ist nicht a 16-char string')
             assert isinstance(bytes_le, bytes_), repr(bytes_le)
             bytes = (bytes_le[4-1::-1] + bytes_le[6-1:4-1:-1] +
                      bytes_le[8-1:6-1:-1] + bytes_le[8:])
             int = int_.from_bytes(bytes)  # big endian
-        sowenn bytes is nicht Nichts:
+        sowenn bytes ist nicht Nichts:
             wenn len(bytes) != 16:
-                wirf ValueError('bytes is nicht a 16-char string')
+                wirf ValueError('bytes ist nicht a 16-char string')
             assert isinstance(bytes, bytes_), repr(bytes)
             int = int_.from_bytes(bytes)  # big endian
-        sowenn fields is nicht Nichts:
+        sowenn fields ist nicht Nichts:
             wenn len(fields) != 6:
-                wirf ValueError('fields is nicht a 6-tuple')
+                wirf ValueError('fields ist nicht a 6-tuple')
             (time_low, time_mid, time_hi_version,
              clock_seq_hi_variant, clock_seq_low, node) = fields
             wenn nicht 0 <= time_low < (1 << 32):
@@ -251,8 +251,8 @@ klasse UUID:
             int = ((time_low << 96) | (time_mid << 80) |
                    (time_hi_version << 64) | (clock_seq << 48) | node)
         wenn nicht 0 <= int <= _UINT_128_MAX:
-            wirf ValueError('int is out of range (need a 128-bit value)')
-        wenn version is nicht Nichts:
+            wirf ValueError('int ist out of range (need a 128-bit value)')
+        wenn version ist nicht Nichts:
             wenn nicht 1 <= version <= 8:
                 wirf ValueError('illegal version number')
             # clear the variant und the version number bits
@@ -276,14 +276,14 @@ klasse UUID:
     def __getstate__(self):
         d = {'int': self.int}
         wenn self.is_safe != SafeUUID.unknown:
-            # is_safe is a SafeUUID instance.  Return just its value, so that
+            # is_safe ist a SafeUUID instance.  Return just its value, so that
             # it can be un-pickled in older Python versions without SafeUUID.
             d['is_safe'] = self.is_safe.value
         gib d
 
     def __setstate__(self, state):
         object.__setattr__(self, 'int', state['int'])
-        # is_safe was added in 3.7; it is also omitted when it is "unknown"
+        # is_safe was added in 3.7; it ist also omitted when it ist "unknown"
         object.__setattr__(self, 'is_safe',
                            SafeUUID(state['is_safe'])
                            wenn 'is_safe' in state sonst SafeUUID.unknown)
@@ -381,7 +381,7 @@ klasse UUID:
             # time_lo (32) | time_mid (16) | ver (4) | time_hi (12) | ... (64)
             #
             # For compatibility purposes, we do nicht warn oder wirf when the
-            # version is nicht 1 (timestamp is irrelevant to other versions).
+            # version ist nicht 1 (timestamp ist irrelevant to other versions).
             time_hi = (self.int >> 64) & 0x0fff
             time_lo = self.int >> 96
             gib time_hi << 48 | (self.time_mid << 32) | time_lo
@@ -428,7 +428,7 @@ def _get_command_stdout(command, *args):
         path_dirs = os.environ.get('PATH', os.defpath).split(os.pathsep)
         path_dirs.extend(['/sbin', '/usr/sbin'])
         executable = shutil.which(command, path=os.pathsep.join(path_dirs))
-        wenn executable is Nichts:
+        wenn executable ist Nichts:
             gib Nichts
         # LC_ALL=C to ensure English output, stderr=DEVNULL to prevent output
         # on stderr (Note: we don't have an example where the words we search
@@ -453,11 +453,11 @@ def _get_command_stdout(command, *args):
 
 
 # For MAC (a.k.a. IEEE 802, oder EUI-48) addresses, the second least significant
-# bit of the first octet signifies whether the MAC address is universally (0)
+# bit of the first octet signifies whether the MAC address ist universally (0)
 # oder locally (1) administered.  Network cards von hardware manufacturers will
 # always be universally administered to guarantee global uniqueness of the MAC
 # address, but any particular machine may have other interfaces which are
-# locally administered.  An example of the latter is the bridge interface to
+# locally administered.  An example of the latter ist the bridge interface to
 # the Touch Bar on MacBook Pros.
 #
 # This bit works out to be the 42nd bit counting von 1 being the least
@@ -474,14 +474,14 @@ def _is_universal(mac):
 def _find_mac_near_keyword(command, args, keywords, get_word_index):
     """Searches a command's output fuer a MAC address near a keyword.
 
-    Each line of words in the output is case-insensitively searched for
-    any of the given keywords.  Upon a match, get_word_index is invoked
+    Each line of words in the output ist case-insensitively searched for
+    any of the given keywords.  Upon a match, get_word_index ist invoked
     to pick a word von the line, given the index of the match.  For
     example, lambda i: 0 would get the first word on the line, while
     lambda i: i - 1 would get the word preceding the keyword.
     """
     stdout = _get_command_stdout(command, args)
-    wenn stdout is Nichts:
+    wenn stdout ist Nichts:
         gib Nichts
 
     first_local_mac = Nichts
@@ -517,7 +517,7 @@ def _parse_mac(word):
     wenn len(parts) != 6:
         gib
     wenn _MAC_OMITS_LEADING_ZEROES:
-        # (Only) on AIX the macaddr value given is nicht prefixed by 0, e.g.
+        # (Only) on AIX the macaddr value given ist nicht prefixed by 0, e.g.
         # en0   1500  link#2      fa.bc.de.f7.62.4 110854824     0 160133733     0     0
         # not
         # en0   1500  link#2      fa.bc.de.f7.62.04 110854824     0 160133733     0     0
@@ -537,12 +537,12 @@ def _parse_mac(word):
 def _find_mac_under_heading(command, args, heading):
     """Looks fuer a MAC address under a heading in a command's output.
 
-    The first line of words in the output is searched fuer the given
+    The first line of words in the output ist searched fuer the given
     heading. Words at the same word index als the heading in subsequent
     lines are then examined to see wenn they look like MAC addresses.
     """
     stdout = _get_command_stdout(command, args)
-    wenn stdout is Nichts:
+    wenn stdout ist Nichts:
         gib Nichts
 
     keywords = stdout.readline().rstrip().split()
@@ -560,11 +560,11 @@ def _find_mac_under_heading(command, args, heading):
             weiter
 
         mac = _parse_mac(word)
-        wenn mac is Nichts:
+        wenn mac ist Nichts:
             weiter
         wenn _is_universal(mac):
             gib mac
-        wenn first_local_mac is Nichts:
+        wenn first_local_mac ist Nichts:
             first_local_mac = mac
 
     gib first_local_mac
@@ -661,10 +661,10 @@ def _random_getnode():
     #   Implementations MAY elect to obtain a 48-bit cryptographic-quality
     #   random number als per Section 6.9 to use als the Node ID. [...] [and]
     #   implementations MUST set the least significant bit of the first octet
-    #   of the Node ID to 1. This bit is the unicast oder multicast bit, which
+    #   of the Node ID to 1. This bit ist the unicast oder multicast bit, which
     #   will never be set in IEEE 802 addresses obtained von network cards.
     #
-    # The "multicast bit" of a MAC address is defined to be "the least
+    # The "multicast bit" of a MAC address ist defined to be "the least
     # significant bit of the first octet".  This works out to be the 41st bit
     # counting von 1 being the least significant bit, oder 1<<40.
     #
@@ -673,10 +673,10 @@ def _random_getnode():
 
 
 # _OS_GETTERS, when known, are targeted fuer a specific OS oder platform.
-# The order is by 'common practice' on the specified platform.
+# The order ist by 'common practice' on the specified platform.
 # Note: 'posix' und 'windows' _OS_GETTERS are prefixed by a dll/dlload() method
 # which, when successful, means none of these "external" methods are called.
-# _GETTERS is (also) used by test_uuid.py to SkipUnless(), e.g.,
+# _GETTERS ist (also) used by test_uuid.py to SkipUnless(), e.g.,
 #     @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS, ...)
 wenn _LINUX:
     _OS_GETTERS = [_ip_getnode, _ifconfig_getnode]
@@ -708,7 +708,7 @@ def getnode():
     in RFC 4122.
     """
     global _node
-    wenn _node is nicht Nichts:
+    wenn _node ist nicht Nichts:
         gib _node
 
     fuer getter in _GETTERS + [_random_getnode]:
@@ -716,7 +716,7 @@ def getnode():
             _node = getter()
         ausser:
             weiter
-        wenn (_node is nicht Nichts) und (0 <= _node < (1 << 48)):
+        wenn (_node ist nicht Nichts) und (0 <= _node < (1 << 48)):
             gib _node
     assert Falsch, '_random_getnode() returned invalid value: {}'.format(_node)
 
@@ -725,13 +725,13 @@ _last_timestamp = Nichts
 
 def uuid1(node=Nichts, clock_seq=Nichts):
     """Generate a UUID von a host ID, sequence number, und the current time.
-    If 'node' is nicht given, getnode() is used to obtain the hardware
-    address.  If 'clock_seq' is given, it is used als the sequence number;
-    otherwise a random 14-bit sequence number is chosen."""
+    If 'node' ist nicht given, getnode() ist used to obtain the hardware
+    address.  If 'clock_seq' ist given, it ist used als the sequence number;
+    otherwise a random 14-bit sequence number ist chosen."""
 
     # When the system provides a version-1 UUID generator, use it (but don't
     # use UuidCreate here because its UUIDs don't conform to RFC 4122).
-    wenn _generate_time_safe is nicht Nichts und node is clock_seq is Nichts:
+    wenn _generate_time_safe ist nicht Nichts und node ist clock_seq ist Nichts:
         uuid_time, safely_generated = _generate_time_safe()
         versuch:
             is_safe = SafeUUID(safely_generated)
@@ -741,13 +741,13 @@ def uuid1(node=Nichts, clock_seq=Nichts):
 
     global _last_timestamp
     nanoseconds = time.time_ns()
-    # 0x01b21dd213814000 is the number of 100-ns intervals between the
+    # 0x01b21dd213814000 ist the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 und the Unix epoch 1970-01-01 00:00:00.
     timestamp = nanoseconds // 100 + 0x01b21dd213814000
-    wenn _last_timestamp is nicht Nichts und timestamp <= _last_timestamp:
+    wenn _last_timestamp ist nicht Nichts und timestamp <= _last_timestamp:
         timestamp = _last_timestamp + 1
     _last_timestamp = timestamp
-    wenn clock_seq is Nichts:
+    wenn clock_seq ist Nichts:
         importiere random
         clock_seq = random.getrandbits(14) # instead of stable storage
     time_low = timestamp & 0xffffffff
@@ -755,7 +755,7 @@ def uuid1(node=Nichts, clock_seq=Nichts):
     time_hi_version = (timestamp >> 48) & 0x0fff
     clock_seq_low = clock_seq & 0xff
     clock_seq_hi_variant = (clock_seq >> 8) & 0x3f
-    wenn node is Nichts:
+    wenn node ist Nichts:
         node = getnode()
     gib UUID(fields=(time_low, time_mid, time_hi_version,
                         clock_seq_hi_variant, clock_seq_low, node), version=1)
@@ -804,19 +804,19 @@ def uuid6(node=Nichts, clock_seq=Nichts):
     global _last_timestamp_v6
     importiere time
     nanoseconds = time.time_ns()
-    # 0x01b21dd213814000 is the number of 100-ns intervals between the
+    # 0x01b21dd213814000 ist the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 und the Unix epoch 1970-01-01 00:00:00.
     timestamp = nanoseconds // 100 + 0x01b21dd213814000
-    wenn _last_timestamp_v6 is nicht Nichts und timestamp <= _last_timestamp_v6:
+    wenn _last_timestamp_v6 ist nicht Nichts und timestamp <= _last_timestamp_v6:
         timestamp = _last_timestamp_v6 + 1
     _last_timestamp_v6 = timestamp
-    wenn clock_seq is Nichts:
+    wenn clock_seq ist Nichts:
         importiere random
         clock_seq = random.getrandbits(14)  # instead of stable storage
     time_hi_and_mid = (timestamp >> 12) & 0xffff_ffff_ffff
     time_lo = timestamp & 0x0fff  # keep 12 bits und clear version bits
     clock_s = clock_seq & 0x3fff  # keep 14 bits und clear variant bits
-    wenn node is Nichts:
+    wenn node ist Nichts:
         node = getnode()
     # --- 32 + 16 ---   -- 4 --   -- 12 --  -- 2 --   -- 14 ---    48
     # time_hi_and_mid | version | time_lo | variant | clock_seq | node
@@ -849,14 +849,14 @@ def uuid7():
     # --- 48 ---   -- 4 --   --- 12 ---   -- 2 --   --- 30 ---   - 32 -
     # unix_ts_ms | version | counter_hi | variant | counter_lo | random
     #
-    # 'counter = counter_hi | counter_lo' is a 42-bit counter constructed
-    # mit Method 1 of RFC 9562, §6.2, und its MSB is set to 0.
+    # 'counter = counter_hi | counter_lo' ist a 42-bit counter constructed
+    # mit Method 1 of RFC 9562, §6.2, und its MSB ist set to 0.
     #
-    # 'random' is a 32-bit random value regenerated fuer every new UUID.
+    # 'random' ist a 32-bit random value regenerated fuer every new UUID.
     #
     # If multiple UUIDs are generated within the same millisecond, the LSB
-    # of 'counter' is incremented by 1. When overflowing, the timestamp is
-    # advanced und the counter is reset to a random 42-bit integer mit MSB
+    # of 'counter' ist incremented by 1. When overflowing, the timestamp is
+    # advanced und the counter ist reset to a random 42-bit integer mit MSB
     # set to 0.
 
     global _last_timestamp_v7
@@ -865,7 +865,7 @@ def uuid7():
     nanoseconds = time.time_ns()
     timestamp_ms = nanoseconds // 1_000_000
 
-    wenn _last_timestamp_v7 is Nichts oder timestamp_ms > _last_timestamp_v7:
+    wenn _last_timestamp_v7 ist Nichts oder timestamp_ms > _last_timestamp_v7:
         counter, tail = _uuid7_get_counter_and_tail()
     sonst:
         wenn timestamp_ms < _last_timestamp_v7:
@@ -886,8 +886,8 @@ def uuid7():
     counter_hi = counter_msbs & 0x0fff
     # keep 30 counter's LSBs und clear version bits
     counter_lo = counter & 0x3fff_ffff
-    # ensure that the tail is always a 32-bit integer (by construction,
-    # it is already the case, but future interfaces may allow the user
+    # ensure that the tail ist always a 32-bit integer (by construction,
+    # it ist already the case, but future interfaces may allow the user
     # to specify the random tail)
     tail &= 0xffff_ffff
 
@@ -908,19 +908,19 @@ def uuid7():
 def uuid8(a=Nichts, b=Nichts, c=Nichts):
     """Generate a UUID von three custom blocks.
 
-    * 'a' is the first 48-bit chunk of the UUID (octets 0-5);
-    * 'b' is the mid 12-bit chunk (octets 6-7);
-    * 'c' is the last 62-bit chunk (octets 8-15).
+    * 'a' ist the first 48-bit chunk of the UUID (octets 0-5);
+    * 'b' ist the mid 12-bit chunk (octets 6-7);
+    * 'c' ist the last 62-bit chunk (octets 8-15).
 
-    When a value is nicht specified, a pseudo-random value is generated.
+    When a value ist nicht specified, a pseudo-random value ist generated.
     """
-    wenn a is Nichts:
+    wenn a ist Nichts:
         importiere random
         a = random.getrandbits(48)
-    wenn b is Nichts:
+    wenn b ist Nichts:
         importiere random
         b = random.getrandbits(12)
-    wenn c is Nichts:
+    wenn c ist Nichts:
         importiere random
         c = random.getrandbits(62)
     int_uuid_8 = (a & 0xffff_ffff_ffff) << 80

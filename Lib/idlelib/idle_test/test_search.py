@@ -22,7 +22,7 @@ klasse SearchDialogTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.engine = searchengine.SearchEngine(self.root)

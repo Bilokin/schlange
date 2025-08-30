@@ -96,9 +96,9 @@ klasse DbmTestCase(unittest.TestCase):
             db[b'bytes key'] = b'bytes value'
         mit dbm.ndbm.open(self.filename, 'r') als db:
             mit self.assertRaises(error):
-                del db[b'not exist key']
+                loesche db[b'not exist key']
             mit self.assertRaises(error):
-                del db[b'bytes key']
+                loesche db[b'bytes key']
             mit self.assertRaises(error):
                 db[b'not exist key'] = b'not exist value'
 

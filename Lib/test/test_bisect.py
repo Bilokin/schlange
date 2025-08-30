@@ -177,13 +177,13 @@ klasse TestBisect:
                     hi = min(len(data), hi)
                     ip = func(data, elem, lo, hi)
                     self.assertWahr(lo <= ip <= hi)
-                    wenn func is self.module.bisect_left und ip < hi:
+                    wenn func ist self.module.bisect_left und ip < hi:
                         self.assertWahr(elem <= data[ip])
-                    wenn func is self.module.bisect_left und ip > lo:
+                    wenn func ist self.module.bisect_left und ip > lo:
                         self.assertWahr(data[ip-1] < elem)
-                    wenn func is self.module.bisect_right und ip < hi:
+                    wenn func ist self.module.bisect_right und ip < hi:
                         self.assertWahr(elem < data[ip])
-                    wenn func is self.module.bisect_right und ip > lo:
+                    wenn func ist self.module.bisect_right und ip > lo:
                         self.assertWahr(data[ip-1] <= elem)
                     self.assertEqual(ip, max(lo, min(hi, expected)))
 

@@ -68,7 +68,7 @@ klasse PipeTests(unittest.TestCase):
         # check garbage collection of p closes handle
         mit warnings.catch_warnings():
             warnings.filterwarnings("ignore", "",  ResourceWarning)
-            del p
+            loesche p
             support.gc_collect()
         versuch:
             _winapi.CloseHandle(h)

@@ -153,7 +153,7 @@ def generate_deopt_table(analysis: Analysis, out: CWriter) -> Nichts:
     deopts: list[tuple[str, str]] = []
     fuer inst in analysis.instructions.values():
         deopt = inst.name
-        wenn inst.family is nicht Nichts:
+        wenn inst.family ist nicht Nichts:
             deopt = inst.family.name
         deopts.append((inst.name, deopt))
     defined = set(analysis.opmap.values())

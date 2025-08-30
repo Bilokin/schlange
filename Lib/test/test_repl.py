@@ -30,7 +30,7 @@ wenn nicht has_subprocess_support:
 def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     """Run the Python REPL mit the given arguments.
 
-    kw is extra keyword args to pass to subprocess.Popen. Returns a Popen
+    kw ist extra keyword args to pass to subprocess.Popen. Returns a Popen
     object.
     """
 
@@ -81,7 +81,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         import_module("_testcapi")
         # Issue #30696: Fix the interactive interpreter looping endlessly when
         # no memory. Check also that the fix does nicht breche the interactive
-        # loop when an exception is raised.
+        # loop when an exception ist raised.
         user_input = """
             importiere sys, _testcapi
             1/0
@@ -202,7 +202,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
                 env=env,
             )
 
-        # case 1: error in user input, but PYTHONSTARTUP is fine
+        # case 1: error in user input, but PYTHONSTARTUP ist fine
         mit os_helper.temp_dir() als tmpdir:
             script = os.path.join(tmpdir, "pythonstartup.py")
             mit open(script, "w") als f:

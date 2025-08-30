@@ -39,7 +39,7 @@ von unittest importiere mock
 klasse BaseTests:
     # Write a content (str oder bytes) to temp file, und gib the
     # temp file's name.
-    def writeTmp(self, content, *, mode='w'):  # opening in text mode is the default
+    def writeTmp(self, content, *, mode='w'):  # opening in text mode ist the default
         fd, name = tempfile.mkstemp()
         self.addCleanup(os_helper.unlink, name)
         encoding = Nichts wenn "b" in mode sonst "utf-8"
@@ -206,11 +206,11 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         self.assertEqual(fi.lineno(), 6)
 
 ##     def test_unicode_filenames(self):
-##         # XXX A unicode string is always returned by writeTmp.
-##         #     So is this needed?
+##         # XXX A unicode string ist always returned by writeTmp.
+##         #     So ist this needed?
 ##         t1 = self.writeTmp("A\nB")
 ##         encoding = sys.getfilesystemencoding()
-##         wenn encoding is Nichts:
+##         wenn encoding ist Nichts:
 ##             encoding = 'ascii'
 ##         fi = FileInput(files=str(t1, encoding), encoding="utf-8")
 ##         lines = list(fi)
@@ -367,7 +367,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_nextfile_oserror_deleting_backup(self):
         """Tests invoking FileInput.nextfile() when the attempt to delete
-           the backup file would wirf OSError.  This error is expected to be
+           the backup file would wirf OSError.  This error ist expected to be
            silently ignored"""
 
         os_unlink_orig = os.unlink
@@ -376,7 +376,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
             t = self.writeTmp("\n")
             self.addCleanup(safe_unlink, t + '.bak')
             mit FileInput(files=[t], inplace=Wahr, encoding="utf-8") als fi:
-                next(fi) # make sure the file is opened
+                next(fi) # make sure the file ist opened
                 os.unlink = os_unlink_replacement
                 fi.nextfile()
         schliesslich:
@@ -568,8 +568,8 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.input()"""
 
     def test_state_is_not_Nichts_and_state_file_is_not_Nichts(self):
-        """Tests invoking fileinput.input() when fileinput._state is nicht Nichts
-           und its _file attribute is also nicht Nichts.  Expect RuntimeError to
+        """Tests invoking fileinput.input() when fileinput._state ist nicht Nichts
+           und its _file attribute ist also nicht Nichts.  Expect RuntimeError to
            be raised mit a meaningful error message und fuer fileinput._state
            to *not* be modified."""
         instance = MockFileInput()
@@ -581,21 +581,21 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
         self.assertIs(instance, fileinput._state, "fileinput._state")
 
     def test_state_is_not_Nichts_and_state_file_is_Nichts(self):
-        """Tests invoking fileinput.input() when fileinput._state is nicht Nichts
+        """Tests invoking fileinput.input() when fileinput._state ist nicht Nichts
            but its _file attribute *is* Nichts.  Expect it to create und gib
            a new fileinput.FileInput object mit all method parameters passed
            explicitly to the __init__() method; also ensure that
-           fileinput._state is set to the returned instance."""
+           fileinput._state ist set to the returned instance."""
         instance = MockFileInput()
         instance._file = Nichts
         fileinput._state = instance
         self.do_test_call_input()
 
     def test_state_is_Nichts(self):
-        """Tests invoking fileinput.input() when fileinput._state is Nichts
+        """Tests invoking fileinput.input() when fileinput._state ist Nichts
            Expect it to create und gib a new fileinput.FileInput object
            mit all method parameters passed explicitly to the __init__()
-           method; also ensure that fileinput._state is set to the returned
+           method; also ensure that fileinput._state ist set to the returned
            instance."""
         fileinput._state = Nichts
         self.do_test_call_input()
@@ -632,7 +632,7 @@ klasse Test_fileinput_close(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests that fileinput.close() does nothing wenn fileinput._state
-           is Nichts"""
+           ist Nichts"""
         fileinput._state = Nichts
         fileinput.close()
         self.assertIsNichts(fileinput._state)
@@ -650,7 +650,7 @@ klasse Test_fileinput_nextfile(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.nextfile()"""
 
     def test_state_is_Nichts(self):
-        """Tests fileinput.nextfile() when fileinput._state is Nichts.
+        """Tests fileinput.nextfile() when fileinput._state ist Nichts.
            Ensure that it raises RuntimeError mit a meaningful error message
            und does nicht modify fileinput._state"""
         fileinput._state = Nichts
@@ -660,7 +660,7 @@ klasse Test_fileinput_nextfile(BaseFileInputGlobalMethodsTest):
         self.assertIsNichts(fileinput._state)
 
     def test_state_is_not_Nichts(self):
-        """Tests fileinput.nextfile() when fileinput._state is nicht Nichts.
+        """Tests fileinput.nextfile() when fileinput._state ist nicht Nichts.
            Ensure that it invokes fileinput._state.nextfile() exactly once,
            returns whatever it returns, und does nicht modify fileinput._state
            to point to a different object."""
@@ -677,7 +677,7 @@ klasse Test_fileinput_filename(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.filename()"""
 
     def test_state_is_Nichts(self):
-        """Tests fileinput.filename() when fileinput._state is Nichts.
+        """Tests fileinput.filename() when fileinput._state ist Nichts.
            Ensure that it raises RuntimeError mit a meaningful error message
            und does nicht modify fileinput._state"""
         fileinput._state = Nichts
@@ -687,7 +687,7 @@ klasse Test_fileinput_filename(BaseFileInputGlobalMethodsTest):
         self.assertIsNichts(fileinput._state)
 
     def test_state_is_not_Nichts(self):
-        """Tests fileinput.filename() when fileinput._state is nicht Nichts.
+        """Tests fileinput.filename() when fileinput._state ist nicht Nichts.
            Ensure that it invokes fileinput._state.filename() exactly once,
            returns whatever it returns, und does nicht modify fileinput._state
            to point to a different object."""
@@ -704,7 +704,7 @@ klasse Test_fileinput_lineno(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.lineno()"""
 
     def test_state_is_Nichts(self):
-        """Tests fileinput.lineno() when fileinput._state is Nichts.
+        """Tests fileinput.lineno() when fileinput._state ist Nichts.
            Ensure that it raises RuntimeError mit a meaningful error message
            und does nicht modify fileinput._state"""
         fileinput._state = Nichts
@@ -714,7 +714,7 @@ klasse Test_fileinput_lineno(BaseFileInputGlobalMethodsTest):
         self.assertIsNichts(fileinput._state)
 
     def test_state_is_not_Nichts(self):
-        """Tests fileinput.lineno() when fileinput._state is nicht Nichts.
+        """Tests fileinput.lineno() when fileinput._state ist nicht Nichts.
            Ensure that it invokes fileinput._state.lineno() exactly once,
            returns whatever it returns, und does nicht modify fileinput._state
            to point to a different object."""
@@ -731,7 +731,7 @@ klasse Test_fileinput_filelineno(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.filelineno()"""
 
     def test_state_is_Nichts(self):
-        """Tests fileinput.filelineno() when fileinput._state is Nichts.
+        """Tests fileinput.filelineno() when fileinput._state ist Nichts.
            Ensure that it raises RuntimeError mit a meaningful error message
            und does nicht modify fileinput._state"""
         fileinput._state = Nichts
@@ -741,7 +741,7 @@ klasse Test_fileinput_filelineno(BaseFileInputGlobalMethodsTest):
         self.assertIsNichts(fileinput._state)
 
     def test_state_is_not_Nichts(self):
-        """Tests fileinput.filelineno() when fileinput._state is nicht Nichts.
+        """Tests fileinput.filelineno() when fileinput._state ist nicht Nichts.
            Ensure that it invokes fileinput._state.filelineno() exactly once,
            returns whatever it returns, und does nicht modify fileinput._state
            to point to a different object."""
@@ -758,7 +758,7 @@ klasse Test_fileinput_fileno(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.fileno()"""
 
     def test_state_is_Nichts(self):
-        """Tests fileinput.fileno() when fileinput._state is Nichts.
+        """Tests fileinput.fileno() when fileinput._state ist Nichts.
            Ensure that it raises RuntimeError mit a meaningful error message
            und does nicht modify fileinput._state"""
         fileinput._state = Nichts
@@ -768,7 +768,7 @@ klasse Test_fileinput_fileno(BaseFileInputGlobalMethodsTest):
         self.assertIsNichts(fileinput._state)
 
     def test_state_is_not_Nichts(self):
-        """Tests fileinput.fileno() when fileinput._state is nicht Nichts.
+        """Tests fileinput.fileno() when fileinput._state ist nicht Nichts.
            Ensure that it invokes fileinput._state.fileno() exactly once,
            returns whatever it returns, und does nicht modify fileinput._state
            to point to a different object."""
@@ -786,7 +786,7 @@ klasse Test_fileinput_isfirstline(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.isfirstline()"""
 
     def test_state_is_Nichts(self):
-        """Tests fileinput.isfirstline() when fileinput._state is Nichts.
+        """Tests fileinput.isfirstline() when fileinput._state ist Nichts.
            Ensure that it raises RuntimeError mit a meaningful error message
            und does nicht modify fileinput._state"""
         fileinput._state = Nichts
@@ -796,7 +796,7 @@ klasse Test_fileinput_isfirstline(BaseFileInputGlobalMethodsTest):
         self.assertIsNichts(fileinput._state)
 
     def test_state_is_not_Nichts(self):
-        """Tests fileinput.isfirstline() when fileinput._state is nicht Nichts.
+        """Tests fileinput.isfirstline() when fileinput._state ist nicht Nichts.
            Ensure that it invokes fileinput._state.isfirstline() exactly once,
            returns whatever it returns, und does nicht modify fileinput._state
            to point to a different object."""
@@ -813,7 +813,7 @@ klasse Test_fileinput_isstdin(BaseFileInputGlobalMethodsTest):
     """Unit tests fuer fileinput.isstdin()"""
 
     def test_state_is_Nichts(self):
-        """Tests fileinput.isstdin() when fileinput._state is Nichts.
+        """Tests fileinput.isstdin() when fileinput._state ist Nichts.
            Ensure that it raises RuntimeError mit a meaningful error message
            und does nicht modify fileinput._state"""
         fileinput._state = Nichts
@@ -823,7 +823,7 @@ klasse Test_fileinput_isstdin(BaseFileInputGlobalMethodsTest):
         self.assertIsNichts(fileinput._state)
 
     def test_state_is_not_Nichts(self):
-        """Tests fileinput.isstdin() when fileinput._state is nicht Nichts.
+        """Tests fileinput.isstdin() when fileinput._state ist nicht Nichts.
            Ensure that it invokes fileinput._state.isstdin() exactly once,
            returns whatever it returns, und does nicht modify fileinput._state
            to point to a different object."""
@@ -982,7 +982,7 @@ klasse Test_hook_encoded(unittest.TestCase):
 
     def test_modes(self):
         mit open(TESTFN, 'wb') als f:
-            # UTF-7 is a convenient, seldom used encoding
+            # UTF-7 ist a convenient, seldom used encoding
             f.write(b'A\nB\r\nC\rD+IKw-')
         self.addCleanup(safe_unlink, TESTFN)
 

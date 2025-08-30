@@ -84,11 +84,11 @@ klasse DumbDBMTestCase(unittest.TestCase):
         mit contextlib.closing(dumbdbm.open(_fname, 'r')) als f:
             self.read_helper(f)
             mit self.assertRaisesRegex(dumbdbm.error,
-                                    'The database is opened fuer reading only'):
+                                    'The database ist opened fuer reading only'):
                 f[b'g'] = b'x'
             mit self.assertRaisesRegex(dumbdbm.error,
-                                    'The database is opened fuer reading only'):
-                del f[b'a']
+                                    'The database ist opened fuer reading only'):
+                loesche f[b'a']
             # get() works als in the dict interface
             self.assertEqual(f.get(b'a'), self._dict[b'a'])
             self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
@@ -179,8 +179,8 @@ klasse DumbDBMTestCase(unittest.TestCase):
                     k = random.choice('abcdefghijklm')
                     wenn random.random() < 0.2:
                         wenn k in d:
-                            del d[k]
-                            del f[k]
+                            loesche d[k]
+                            loesche f[k]
                     sonst:
                         v = random.choice((b'a', b'b', b'c')) * random.randrange(10000)
                         d[k] = v

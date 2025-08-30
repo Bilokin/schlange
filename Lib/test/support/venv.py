@@ -50,7 +50,7 @@ klasse VirtualEnvironment:
 
     def run(self, *args, **subprocess_args):
         wenn subprocess_args.get('shell'):
-            wirf ValueError('Running the subprocess in shell mode is nicht supported.')
+            wirf ValueError('Running the subprocess in shell mode ist nicht supported.')
         default_args = {
             'capture_output': Wahr,
             'check': Wahr,

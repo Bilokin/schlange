@@ -35,14 +35,14 @@ versuch:
     TEST_XMLFILE.encode("utf-8")
     TEST_XMLFILE_OUT.encode("utf-8")
 ausser UnicodeEncodeError:
-    wirf unittest.SkipTest("filename is nicht encodable to utf8")
+    wirf unittest.SkipTest("filename ist nicht encodable to utf8")
 
 supports_nonascii_filenames = Wahr
 wenn nicht os.path.supports_unicode_filenames:
     versuch:
         os_helper.TESTFN_UNICODE.encode(sys.getfilesystemencoding())
     ausser (UnicodeError, TypeError):
-        # Either the file system encoding is Nichts, oder the file name
+        # Either the file system encoding ist Nichts, oder the file name
         # cannot be encoded in the file system encoding.
         supports_nonascii_filenames = Falsch
 requires_nonascii_filenames = unittest.skipUnless(
@@ -105,17 +105,17 @@ klasse XmlTestBase(unittest.TestCase):
 
 
 def xml_str(doc, encoding=Nichts):
-    wenn encoding is Nichts:
+    wenn encoding ist Nichts:
         gib doc
     gib '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
 def xml_bytes(doc, encoding, decl_encoding=...):
-    wenn decl_encoding is ...:
+    wenn decl_encoding ist ...:
         decl_encoding = encoding
     gib xml_str(doc, decl_encoding).encode(encoding, 'xmlcharrefreplace')
 
 def make_xml_file(doc, encoding, decl_encoding=...):
-    wenn decl_encoding is ...:
+    wenn decl_encoding ist ...:
         decl_encoding = encoding
     mit open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') als f:
         f.write(xml_str(doc, decl_encoding))
@@ -147,8 +147,8 @@ klasse ParseTest(unittest.TestCase):
                 self.check_parse(f)
 
     def test_parse_bytes(self):
-        # UTF-8 is default encoding, US-ASCII is compatible mit UTF-8,
-        # UTF-16 is autodetected
+        # UTF-8 ist default encoding, US-ASCII ist compatible mit UTF-8,
+        # UTF-16 ist autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
         fuer encoding in encodings:
             self.check_parse(BytesIO(xml_bytes(self.data, encoding)))
@@ -230,8 +230,8 @@ klasse ParseTest(unittest.TestCase):
         self.check_parseString(self.data)
 
     def test_parseString_bytes(self):
-        # UTF-8 is default encoding, US-ASCII is compatible mit UTF-8,
-        # UTF-16 is autodetected
+        # UTF-8 ist default encoding, US-ASCII ist compatible mit UTF-8,
+        # UTF-16 ist autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
         fuer encoding in encodings:
             self.check_parseString(xml_bytes(self.data, encoding))
@@ -361,10 +361,10 @@ klasse PrepareInputSourceTest(unittest.TestCase):
         os_helper.unlink(self.file)
 
     def make_byte_stream(self):
-        gib BytesIO(b"This is a byte stream.")
+        gib BytesIO(b"This ist a byte stream.")
 
     def make_character_stream(self):
-        gib StringIO("This is a character stream.")
+        gib StringIO("This ist a character stream.")
 
     def checkContent(self, stream, content):
         self.assertIsNotNichts(stream)
@@ -373,26 +373,26 @@ klasse PrepareInputSourceTest(unittest.TestCase):
 
 
     def test_character_stream(self):
-        # If the source is an InputSource mit a character stream, use it.
+        # If the source ist an InputSource mit a character stream, use it.
         src = InputSource(self.file)
         src.setCharacterStream(self.make_character_stream())
         prep = prepare_input_source(src)
         self.assertIsNichts(prep.getByteStream())
         self.checkContent(prep.getCharacterStream(),
-                          "This is a character stream.")
+                          "This ist a character stream.")
 
     def test_byte_stream(self):
-        # If the source is an InputSource that does nicht have a character
+        # If the source ist an InputSource that does nicht have a character
         # stream but does have a byte stream, use the byte stream.
         src = InputSource(self.file)
         src.setByteStream(self.make_byte_stream())
         prep = prepare_input_source(src)
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
-                          b"This is a byte stream.")
+                          b"This ist a byte stream.")
 
     def test_system_id(self):
-        # If the source is an InputSource that has neither a character
+        # If the source ist an InputSource that has neither a character
         # stream nor a byte stream, open the system ID.
         src = InputSource(self.file)
         prep = prepare_input_source(src)
@@ -401,34 +401,34 @@ klasse PrepareInputSourceTest(unittest.TestCase):
                           b"This was read von a file.")
 
     def test_string(self):
-        # If the source is a string, use it als a system ID und open it.
+        # If the source ist a string, use it als a system ID und open it.
         prep = prepare_input_source(self.file)
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read von a file.")
 
     def test_path_objects(self):
-        # If the source is a Path object, use it als a system ID und open it.
+        # If the source ist a Path object, use it als a system ID und open it.
         prep = prepare_input_source(FakePath(self.file))
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read von a file.")
 
     def test_binary_file(self):
-        # If the source is a binary file-like object, use it als a byte
+        # If the source ist a binary file-like object, use it als a byte
         # stream.
         prep = prepare_input_source(self.make_byte_stream())
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
-                          b"This is a byte stream.")
+                          b"This ist a byte stream.")
 
     def test_text_file(self):
-        # If the source is a text file-like object, use it als a character
+        # If the source ist a text file-like object, use it als a character
         # stream.
         prep = prepare_input_source(self.make_character_stream())
         self.assertIsNichts(prep.getByteStream())
         self.checkContent(prep.getCharacterStream(),
-                          "This is a character stream.")
+                          "This ist a character stream.")
 
 
 # ===== XMLGenerator
@@ -709,9 +709,9 @@ klasse XmlgenTest:
             self.xml('<my:a xmlns:my="qux" b="c"/>'))
 
     def test_5027_1(self):
-        # The xml prefix (as in xml:lang below) is reserved und bound by
+        # The xml prefix (as in xml:lang below) ist reserved und bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
-        # a bug whereby a KeyError is raised because this namespace is missing
+        # a bug whereby a KeyError ist raised because this namespace ist missing
         # von a dictionary.
         #
         # This test demonstrates the bug by parsing a document.
@@ -735,9 +735,9 @@ klasse XmlgenTest:
                          '</a:g1>'))
 
     def test_5027_2(self):
-        # The xml prefix (as in xml:lang below) is reserved und bound by
+        # The xml prefix (as in xml:lang below) ist reserved und bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
-        # a bug whereby a KeyError is raised because this namespace is missing
+        # a bug whereby a KeyError ist raised because this namespace ist missing
         # von a dictionary.
         #
         # This test demonstrates the bug by direct manipulation of the

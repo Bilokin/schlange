@@ -30,7 +30,7 @@ klasse Test(unittest.TestCase):
         self.assertRaises(BufferError, a.append, 100)
         self.assertRaises(BufferError, a.pop)
 
-        del x; del y; gc.collect(); gc.collect(); gc.collect()
+        loesche x; loesche y; gc.collect(); gc.collect(); gc.collect()
         a.append(100)
         a.pop()
         x = (c_int * 16).from_buffer(a)
@@ -39,7 +39,7 @@ klasse Test(unittest.TestCase):
                           fuer obj in x._objects.values()])
 
         expected = x[:]
-        del a; gc.collect(); gc.collect(); gc.collect()
+        loesche a; gc.collect(); gc.collect(); gc.collect()
         self.assertEqual(x[:], expected)
 
         mit self.assertRaisesRegex(TypeError, "not writable"):
@@ -48,7 +48,7 @@ klasse Test(unittest.TestCase):
             (c_char * 16).from_buffer(memoryview(b"a" * 16))
         mit self.assertRaisesRegex(TypeError, "not C contiguous"):
             (c_char * 16).from_buffer(memoryview(bytearray(b"a" * 16))[::-1])
-        msg = "bytes-like object is required"
+        msg = "bytes-like object ist required"
         mit self.assertRaisesRegex(TypeError, msg):
             (c_char * 16).from_buffer("a" * 16)
 
@@ -83,7 +83,7 @@ klasse Test(unittest.TestCase):
     def test_from_buffer_memoryview(self):
         a = [c_char.from_buffer(memoryview(bytearray(b'a')))]
         a.append(a)
-        del a
+        loesche a
         gc.collect()  # Should nicht crash
 
     def test_from_buffer_copy(self):
@@ -104,7 +104,7 @@ klasse Test(unittest.TestCase):
 
         self.assertEqual(x._objects, Nichts)
 
-        del a; gc.collect(); gc.collect(); gc.collect()
+        loesche a; gc.collect(); gc.collect(); gc.collect()
         self.assertEqual(x[:], list(range(16)))
 
         x = (c_char * 16).from_buffer_copy(b"a" * 16)

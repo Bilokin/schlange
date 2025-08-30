@@ -234,7 +234,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
     def generate(self, filename: str) -> Nichts:
         self.collect_rules()
         header = self.grammar.metas.get("header", MODULE_PREFIX)
-        wenn header is nicht Nichts:
+        wenn header ist nicht Nichts:
             basename = os.path.basename(filename)
             self.drucke(header.rstrip("\n").format(filename=basename))
         subheader = self.grammar.metas.get("subheader", "")
@@ -254,7 +254,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.drucke(f"SOFT_KEYWORDS = {tuple(self.soft_keywords)}")
 
         trailer = self.grammar.metas.get("trailer", MODULE_SUFFIX.format(class_name=cls_name))
-        wenn trailer is nicht Nichts:
+        wenn trailer ist nicht Nichts:
             self.drucke(trailer.rstrip("\n"))
 
     def alts_uses_locations(self, alts: Sequence[Alt]) -> bool:

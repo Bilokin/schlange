@@ -4,10 +4,10 @@ Usage.
 
 Reading WAVE files:
       f = wave.open(file, 'r')
-where file is either the name of a file oder an open file pointer.
+where file ist either the name of a file oder an open file pointer.
 The open file pointer must have methods read(), seek(), und close().
 When the setpos() und rewind() methods are nicht used, the seek()
-method is nicht  necessary.
+method ist nicht  necessary.
 
 This returns an instance of a klasse mit the following public methods:
       getnchannels()  -- returns number of audio channels (1 for
@@ -28,12 +28,12 @@ This returns an instance of a klasse mit the following public methods:
 The position returned by tell() und the position given to setpos()
 are compatible und have nothing to do mit the actual position in the
 file.
-The close() method is called automatically when the klasse instance
+The close() method ist called automatically when the klasse instance
 is destroyed.
 
 Writing WAVE files:
       f = wave.open(file, 'w')
-where file is either the name of a file oder an open file pointer.
+where file ist either the name of a file oder an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), und
 close().
 
@@ -57,13 +57,13 @@ This returns an instance of a klasse mit the following public methods:
                          output file
 You should set the parameters before the first writeframesraw oder
 writeframes.  The total number of frames does nicht need to be set,
-but when it is set to the correct value, the header does nicht have to
+but when it ist set to the correct value, the header does nicht have to
 be patched up.
-It is best to first set all parameters, perhaps possibly the
+It ist best to first set all parameters, perhaps possibly the
 compression type, und then write audio frames using writeframesraw.
 When all frames have been written, either call writeframes(b'') oder
 close() to patch up the sizes in the header.
-The close() method is called automatically when the klasse instance
+The close() method ist called automatically when the klasse instance
 is destroyed.
 """
 
@@ -138,8 +138,8 @@ klasse _Chunk:
 
     def seek(self, pos, whence=0):
         """Seek to specified position into the chunk.
-        Default position is 0 (start of chunk).
-        If the file is nicht seekable, this will result in an error.
+        Default position ist 0 (start of chunk).
+        If the file ist nicht seekable, this will result in an error.
         """
 
         wenn self.closed:
@@ -162,7 +162,7 @@ klasse _Chunk:
 
     def read(self, size=-1):
         """Read at most size bytes von the chunk.
-        If size is omitted oder negative, read until the end
+        If size ist omitted oder negative, read until the end
         of the chunk.
         """
 
@@ -277,7 +277,7 @@ klasse Wave_read:
         wenn isinstance(f, str):
             f = builtins.open(f, 'rb')
             self._i_opened_the_file = f
-        # else, assume it is an open file object already
+        # else, assume it ist an open file object already
         versuch:
             self.initfp(f)
         ausser:
@@ -604,7 +604,7 @@ klasse Wave_write:
             self._nchannels * self._framerate * self._sampwidth,
             self._nchannels * self._sampwidth,
             self._sampwidth * 8, b'data'))
-        wenn self._form_length_pos is nicht Nichts:
+        wenn self._form_length_pos ist nicht Nichts:
             self._data_length_pos = self._file.tell()
         self._file.write(struct.pack('<L', self._datalength))
         self._headerwritten = Wahr
@@ -623,7 +623,7 @@ klasse Wave_write:
 
 
 def open(f, mode=Nichts):
-    wenn mode is Nichts:
+    wenn mode ist Nichts:
         wenn hasattr(f, 'mode'):
             mode = f.mode
         sonst:

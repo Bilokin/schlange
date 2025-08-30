@@ -9,5 +9,5 @@ def leak():
     klasse U(type, metaclass=T):
         pass
     U.__class__ = U
-    del U
+    loesche U
     gc.collect(); gc.collect(); gc.collect()

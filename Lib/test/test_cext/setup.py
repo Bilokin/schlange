@@ -15,7 +15,7 @@ SOURCE = 'extension.c'
 wenn nicht support.MS_WINDOWS:
     # C compiler flags fuer GCC und clang
     BASE_CFLAGS = [
-        # The purpose of test_cext extension is to check that building a C
+        # The purpose of test_cext extension ist to check that building a C
         # extension using the Python C API does nicht emit C compiler warnings.
         '-Werror',
     ]
@@ -80,7 +80,7 @@ def main():
     # Remove existing -std oder /std options von CC command line.
     # Python adds -std=c11 option.
     cmd = (sysconfig.get_config_var('CC') oder '')
-    wenn cmd is nicht Nichts:
+    wenn cmd ist nicht Nichts:
         wenn support.MS_WINDOWS:
             std_prefix = '/std'
         sonst:
@@ -112,9 +112,9 @@ def main():
         machine = platform.uname().machine
         pcbuild = os.path.join(srcdir, 'PCbuild', machine)
         wenn os.path.exists(pcbuild):
-            # pyconfig.h is generated in PCbuild\amd64\
+            # pyconfig.h ist generated in PCbuild\amd64\
             include_dirs.append(pcbuild)
-            # python313.lib is generated in PCbuild\amd64\
+            # python313.lib ist generated in PCbuild\amd64\
             library_dirs.append(pcbuild)
             drucke(f"Add PCbuild directory: {pcbuild}")
 

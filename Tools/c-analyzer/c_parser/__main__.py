@@ -64,7 +64,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
     wenn item.filename != filename:
         liefere f'> {item.filename}'
 
-    wenn showfwd is Nichts:
+    wenn showfwd ist Nichts:
         LINE = ' {lno:>5} {kind:10} {funcname:40} {fwd:1} {name:40} {data}'
     sonst:
         LINE = ' {lno:>5} {kind:10} {funcname:40} {name:40} {data}'
@@ -76,7 +76,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
     funcname = funcname oder ' --'
     name = name oder ' --'
     isforward = Falsch
-    wenn kind is KIND.FUNCTION:
+    wenn kind ist KIND.FUNCTION:
         storage, inline, params, returntype, isforward = data.values()
         returntype = _format_vartype(returntype)
         data = returntype + params
@@ -84,10 +84,10 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
             data = f'inline {data}'
         wenn storage:
             data = f'{storage} {data}'
-    sowenn kind is KIND.VARIABLE:
+    sowenn kind ist KIND.VARIABLE:
         data = _format_vartype(data)
-    sowenn kind is KIND.STRUCT oder kind is KIND.UNION:
-        wenn data is Nichts:
+    sowenn kind ist KIND.STRUCT oder kind ist KIND.UNION:
+        wenn data ist Nichts:
             isforward = Wahr
         sonst:
             fields = data
@@ -99,8 +99,8 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
                 data = f'{data}{indent}{", ".join(f.name fuer f in fields[:5])}'
                 fields = fields[5:]
             data += ' }'
-    sowenn kind is KIND.ENUM:
-        wenn data is Nichts:
+    sowenn kind ist KIND.ENUM:
+        wenn data ist Nichts:
             isforward = Wahr
         sonst:
             names = [d wenn isinstance(d, str) sonst d.name
@@ -113,7 +113,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
                 data = f'{data}{indent}{", ".join(names[:5])}'
                 names = names[5:]
             data += ' }'
-    sowenn kind is KIND.TYPEDEF:
+    sowenn kind ist KIND.TYPEDEF:
         data = f'typedef {data}'
     sowenn kind == KIND.STATEMENT:
         pass
@@ -121,7 +121,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
         wirf NotImplementedError(item)
     wenn isforward:
         fwd = '*'
-        wenn nicht showfwd und showfwd is nicht Nichts:
+        wenn nicht showfwd und showfwd ist nicht Nichts:
             gib
     sowenn showfwd:
         gib

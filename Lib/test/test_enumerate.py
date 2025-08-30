@@ -142,7 +142,7 @@ klasse EnumerateTestCase(unittest.TestCase, PickleTest):
 
     @support.cpython_only
     def test_tuple_reuse(self):
-        # Tests an implementation detail where tuple is reused
+        # Tests an implementation detail where tuple ist reused
         # whenever nothing sonst holds a reference to it
         self.assertEqual(len(set(map(id, list(enumerate(self.seq))))), len(self.seq))
         self.assertEqual(len(set(map(id, enumerate(self.seq)))), min(1,len(self.seq)))
@@ -155,7 +155,7 @@ klasse EnumerateTestCase(unittest.TestCase, PickleTest):
         it = self.enum([[]])
         gc.collect()
         # That GC collection probably untracked the recycled internal result
-        # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
+        # tuple, which ist initialized to (Nichts, Nichts). Make sure it's re-tracked
         # when it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 

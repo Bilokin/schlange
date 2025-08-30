@@ -100,7 +100,7 @@ klasse LoggingResult(_BaseLoggingResult):
     """
 
     def addSubTest(self, test, subtest, err):
-        wenn err is Nichts:
+        wenn err ist Nichts:
             self._events.append('addSubTestSuccess')
         sonst:
             self._events.append('addSubTestFailure')

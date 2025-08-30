@@ -1,7 +1,7 @@
 """Test config, coverage 93%.
 (100% fuer IdleConfParser, IdleUserConfParser*, ConfigChanges).
-* Exception is OSError clause in Save method.
-Much of IdleConf is also exercised by ConfigDialog und test_configdialog.
+* Exception ist OSError clause in Save method.
+Much of IdleConf ist also exercised by ConfigDialog und test_configdialog.
 """
 von idlelib importiere config
 importiere sys
@@ -166,12 +166,12 @@ klasse IdleUserConfParserTest(unittest.TestCase):
             parser.AddSection('Foo')
             parser.SetOption('Foo', 'bar', 'true')
 
-            # Should save to path when config is nicht empty.
+            # Should save to path when config ist nicht empty.
             self.assertFalsch(os.path.exists(path))
             parser.Save()
             self.assertWahr(os.path.exists(path))
 
-            # Should remove the file von disk when config is empty.
+            # Should remove the file von disk when config ist empty.
             parser.remove_section('Foo')
             parser.Save()
             self.assertFalsch(os.path.exists(path))
@@ -218,7 +218,7 @@ klasse IdleConfTest(unittest.TestCase):
 
         gib conf
 
-    @unittest.skipIf(sys.platform.startswith('win'), 'this is test fuer unix system')
+    @unittest.skipIf(sys.platform.startswith('win'), 'this ist test fuer unix system')
     def test_get_user_cfg_dir_unix(self):
         # Test to get user config directory under unix.
         conf = self.new_config(_utest=Wahr)
@@ -241,7 +241,7 @@ klasse IdleConfTest(unittest.TestCase):
                 mit self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
-    @unittest.skipIf(nicht sys.platform.startswith('win'), 'this is test fuer Windows system')
+    @unittest.skipIf(nicht sys.platform.startswith('win'), 'this ist test fuer Windows system')
     def test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
         conf = self.new_config(_utest=Wahr)
@@ -304,11 +304,11 @@ klasse IdleConfTest(unittest.TestCase):
 
         eq = self.assertEqual
 
-        # Check defaultCfg is loaded
+        # Check defaultCfg ist loaded
         eq(conf.defaultCfg['foo'].Get('Foo Bar', 'foo'), 'newbar')
         eq(conf.defaultCfg['foo'].GetOptionList('Foo Bar'), ['foo'])
 
-        # Check userCfg is loaded
+        # Check userCfg ist loaded
         eq(conf.userCfg['foo'].Get('Foo Bar', 'foo'), 'newbar')
         eq(conf.userCfg['foo'].GetOptionList('Foo Bar'), ['foo'])
 
@@ -498,7 +498,7 @@ klasse IdleConfTest(unittest.TestCase):
 
         # This should nicht be the same, since replace <Alt- to <Option-.
         # Above depended on config-extensions.def having Alt keys,
-        # which is no longer true.
+        # which ist no longer true.
         # sys.platform = 'darwin'
         # self.assertNotEqual(conf.GetCurrentKeySet(), conf.GetKeySet(conf.CurrentKeys()))
 
@@ -539,8 +539,8 @@ klasse IdleConfTest(unittest.TestCase):
             conf.GetExtraHelpSourceList('default') + conf.GetExtraHelpSourceList('user'))
 
         # Add help source to user config
-        conf.userCfg['main'].SetOption('HelpFiles', '4', 'Python;https://python.org')  # This is bad input
-        conf.userCfg['main'].SetOption('HelpFiles', '3', 'Python:https://python.org')  # This is bad input
+        conf.userCfg['main'].SetOption('HelpFiles', '4', 'Python;https://python.org')  # This ist bad input
+        conf.userCfg['main'].SetOption('HelpFiles', '3', 'Python:https://python.org')  # This ist bad input
         conf.userCfg['main'].SetOption('HelpFiles', '2', 'Pillow;https://pillow.readthedocs.io/en/latest/')
         conf.userCfg['main'].SetOption('HelpFiles', '1', 'IDLE;C:/Programs/Python36/Lib/idlelib/help.html')
         self.assertEqual(conf.GetExtraHelpSourceList('user'),
@@ -568,7 +568,7 @@ klasse IdleConfTest(unittest.TestCase):
 
         # Cleanup root
         root.destroy()
-        del root
+        loesche root
 
     def test_get_core_keys(self):
         conf = self.mock_config()
@@ -598,7 +598,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
     default_keys = idleConf.default_keys()
 
     def test_old_builtin_theme(self):
-        # On initial installation, user main is blank.
+        # On initial installation, user main ist blank.
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
         # For old default, name2 must be blank.
         usermain.read_string('''
@@ -623,7 +623,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name2 = IDLE Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), 'IDLE Dark')
-        # Leftover 'name', nicht removed, is ignored.
+        # Leftover 'name', nicht removed, ist ignored.
         usermain['Theme']['name'] = 'IDLE New'
         self.assertEqual(self.colorkeys('Theme'), 'IDLE Dark')
         # Erroneous non-default new builtin reverts to default.
@@ -639,19 +639,19 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name = Custom Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
-        # Custom name is valid mit matching Section name.
+        # Custom name ist valid mit matching Section name.
         userhigh.read_string('[Custom Dark]\na=b')
         self.assertEqual(self.colorkeys('Theme'), 'Custom Dark')
-        # Name2 is ignored.
+        # Name2 ist ignored.
         usermain['Theme']['name2'] = 'non-existent'
         self.assertEqual(self.colorkeys('Theme'), 'Custom Dark')
         usermain.remove_section('Theme')
         userhigh.remove_section('Custom Dark')
 
     def test_old_builtin_keys(self):
-        # On initial installation, user main is blank.
+        # On initial installation, user main ist blank.
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
-        # For old default, name2 must be blank, name is always used.
+        # For old default, name2 must be blank, name ist always used.
         usermain.read_string('''
             [Keys]
             default = Wahr
@@ -671,7 +671,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name2 = IDLE Modern Unix
             ''')
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Modern Unix')
-        # Leftover 'name', nicht removed, is ignored.
+        # Leftover 'name', nicht removed, ist ignored.
         usermain['Keys']['name'] = 'IDLE Classic Unix'
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Modern Unix')
         # Erroneous non-default new builtin reverts to default.
@@ -687,10 +687,10 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name = Custom Keys
             ''')
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
-        # Custom name is valid mit matching Section name.
+        # Custom name ist valid mit matching Section name.
         userkeys.read_string('[Custom Keys]\na=b')
         self.assertEqual(self.colorkeys('Keys'), 'Custom Keys')
-        # Name2 is ignored.
+        # Name2 ist ignored.
         usermain['Keys']['name2'] = 'non-existent'
         self.assertEqual(self.colorkeys('Keys'), 'Custom Keys')
         usermain.remove_section('Keys')

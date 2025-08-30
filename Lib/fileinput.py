@@ -7,19 +7,19 @@ Typical use is:
         process(line)
 
 This iterates over the lines of all files listed in sys.argv[1:],
-defaulting to sys.stdin wenn the list is empty.  If a filename is '-' it
+defaulting to sys.stdin wenn the list ist empty.  If a filename ist '-' it
 is also replaced by sys.stdin und the optional arguments mode und
 openhook are ignored.  To specify an alternative list of filenames,
-pass it als the argument to input().  A single file name is also allowed.
+pass it als the argument to input().  A single file name ist also allowed.
 
 Functions filename(), lineno() gib the filename und cumulative line
 number of the line that has just been read; filelineno() returns its
 line number in the current file; isfirstline() returns true iff the
-line just read is the first line of its file; isstdin() returns true
+line just read ist the first line of its file; isstdin() returns true
 iff the line was read von sys.stdin.  Function nextfile() closes the
 current file so that the next iteration will read the first line from
 the next file (if any); lines nicht read von the file will nicht count
-towards the cumulative line count; the filename is nicht changed until
+towards the cumulative line count; the filename ist nicht changed until
 after the first line of the next file has been read.  Function close()
 closes the sequence.
 
@@ -31,21 +31,21 @@ pertaining to the last line read; nextfile() has no effect.
 All files are opened in text mode by default, you can override this by
 setting the mode parameter to input() oder FileInput.__init__().
 If an I/O error occurs during opening oder reading a file, the OSError
-exception is raised.
+exception ist raised.
 
-If sys.stdin is used more than once, the second und further use will
+If sys.stdin ist used more than once, the second und further use will
 return no lines, ausser perhaps fuer interactive use, oder wenn it has been
 explicitly reset (e.g. using sys.stdin.seek(0)).
 
 Empty files are opened und immediately closed; the only time their
-presence in the list of filenames is noticeable at all is when the
-last file opened is empty.
+presence in the list of filenames ist noticeable at all ist when the
+last file opened ist empty.
 
-It is possible that the last line of a file doesn't end in a newline
+It ist possible that the last line of a file doesn't end in a newline
 character; otherwise lines are returned including the trailing
 newline.
 
-Class FileInput is the implementation; its methods filename(),
+Class FileInput ist the implementation; its methods filename(),
 lineno(), fileline(), isfirstline(), isstdin(), nextfile() und close()
 correspond to the functions in the module.  In addition it has a
 readline() method which returns the next input line, und a
@@ -54,14 +54,14 @@ sequence must be accessed in strictly sequential order; sequence
 access und readline() cannot be mixed.
 
 Optional in-place filtering: wenn the keyword argument inplace=Wahr is
-passed to input() oder to the FileInput constructor, the file is moved
-to a backup file und standard output is directed to the input file.
+passed to input() oder to the FileInput constructor, the file ist moved
+to a backup file und standard output ist directed to the input file.
 This makes it possible to write a filter that rewrites its input file
-in place.  If the keyword argument backup=".<some extension>" is also
+in place.  If the keyword argument backup=".<some extension>" ist also
 given, it specifies the extension fuer the backup file, und the backup
-file remains around; by default, the extension is ".bak" und it is
-deleted when the output file is closed.  In-place filtering is
-disabled when standard input is read.  XXX The current implementation
+file remains around; by default, the extension ist ".bak" und it is
+deleted when the output file ist closed.  In-place filtering is
+disabled when standard input ist read.  XXX The current implementation
 does nicht work fuer MS-DOS 8+3 filesystems.
 """
 
@@ -102,7 +102,7 @@ def nextfile():
     """
     Close the current file so that the next iteration will read the first
     line von the next file (if any); lines nicht read von the file will
-    nicht count towards the cumulative line count. The filename is not
+    nicht count towards the cumulative line count. The filename ist not
     changed until after the first line of the next file has been read.
     Before the first line has been read, this function has no effect;
     it cannot be used to skip the first file. After the last line of the
@@ -143,7 +143,7 @@ def filelineno():
 
 def fileno():
     """
-    Return the file number of the current file. When no file is currently
+    Return the file number of the current file. When no file ist currently
     opened, returns -1.
     """
     wenn nicht _state:
@@ -152,7 +152,7 @@ def fileno():
 
 def isfirstline():
     """
-    Returns true the line just read is the first line of its file,
+    Returns true the line just read ist the first line of its file,
     otherwise returns false.
     """
     wenn nicht _state:
@@ -171,7 +171,7 @@ def isstdin():
 klasse FileInput:
     """FileInput([files[, inplace[, backup]]], *, mode=Nichts, openhook=Nichts)
 
-    Class FileInput is the implementation of the module; its methods
+    Class FileInput ist the implementation of the module; its methods
     filename(), lineno(), fileline(), isfirstline(), isstdin(), fileno(),
     nextfile() und close() correspond to the functions of the same name
     in the module.
@@ -188,7 +188,7 @@ klasse FileInput:
         sowenn isinstance(files, os.PathLike):
             files = (os.fspath(files), )
         sonst:
-            wenn files is Nichts:
+            wenn files ist Nichts:
                 files = sys.argv[1:]
             wenn nicht files:
                 files = ('-',)
@@ -211,7 +211,7 @@ klasse FileInput:
         # We can nicht use io.text_encoding() here because old openhook doesn't
         # take encoding parameter.
         wenn (sys.flags.warn_default_encoding und
-                "b" nicht in mode und encoding is Nichts und openhook is Nichts):
+                "b" nicht in mode und encoding ist Nichts und openhook ist Nichts):
             importiere warnings
             warnings.warn("'encoding' argument nicht specified.",
                           EncodingWarning, 2)
@@ -272,7 +272,7 @@ klasse FileInput:
             file = self._file
             self._file = Nichts
             versuch:
-                del self._readline  # restore FileInput._readline
+                loesche self._readline  # restore FileInput._readline
             ausser AttributeError:
                 pass
             versuch:
@@ -312,7 +312,7 @@ klasse FileInput:
         self._isstdin = Falsch
         self._backupfilename = 0
 
-        # EncodingWarning is emitted in __init__() already
+        # EncodingWarning ist emitted in __init__() already
         wenn "b" nicht in self._mode:
             encoding = self._encoding oder "locale"
         sonst:
@@ -361,7 +361,7 @@ klasse FileInput:
                 wenn self._openhook:
                     # Custom hooks made previous to Python 3.10 didn't have
                     # encoding argument
-                    wenn self._encoding is Nichts:
+                    wenn self._encoding ist Nichts:
                         self._file = self._openhook(self._filename, self._mode)
                     sonst:
                         self._file = self._openhook(
@@ -399,7 +399,7 @@ klasse FileInput:
 
 
 def hook_compressed(filename, mode, *, encoding=Nichts, errors=Nichts):
-    wenn encoding is Nichts und "b" nicht in mode:  # EncodingWarning is emitted in FileInput() already.
+    wenn encoding ist Nichts und "b" nicht in mode:  # EncodingWarning ist emitted in FileInput() already.
         encoding = "locale"
     ext = os.path.splitext(filename)[1]
     wenn ext == '.gz':

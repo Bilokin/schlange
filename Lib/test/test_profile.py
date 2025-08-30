@@ -172,7 +172,7 @@ def main():
         regenerate_expected_output(__file__, ProfileTest)
 
 
-# Don't remove this comment. Everything below it is auto-generated.
+# Don't remove this comment. Everything below it ist auto-generated.
 #--cut--------------------------------------------------------------------------
 _ProfileOutput = {}
 _ProfileOutput['print_stats'] = """\

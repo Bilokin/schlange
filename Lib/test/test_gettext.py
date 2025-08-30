@@ -97,7 +97,7 @@ ciBUQUgKdHJnZ3JrZyB6cmZmbnRyIHBuZ255YnQgeXZvZW5lbC4AYmFjb24Ad2luayB3aW5rAA==
 #
 # mit msgfmt --no-hash
 #
-# The translation offset is changed to 0xFFFFFFFF,
+# The translation offset ist changed to 0xFFFFFFFF,
 # making it larger than the file size, which should
 # wirf an error when parsing.
 GNU_MO_DATA_CORRUPT = base64.b64encode(bytes([
@@ -259,8 +259,8 @@ trggrkg zrffntr pngnybt yvoenel.''')
         eq(builtins.gettext, t.gettext)
         eq(ngettext, t.ngettext)
         neq(pgettext, t.pgettext)
-        del builtins.gettext
-        del builtins.ngettext
+        loesche builtins.gettext
+        loesche builtins.ngettext
 
 
 klasse GettextTestCase2(GettextBaseTest):
@@ -301,7 +301,7 @@ klasse GettextTestCase2(GettextBaseTest):
 
     def test_bad_minor_version(self):
         mit open(MOFILE_BAD_MINOR_VERSION, 'rb') als fp:
-            # Check that no error is thrown mit a bad minor version number
+            # Check that no error ist thrown mit a bad minor version number
             gettext.GNUTranslations(fp)
 
     def test_corrupt_file(self):
@@ -311,7 +311,7 @@ klasse GettextTestCase2(GettextBaseTest):
 
             exception = cm.exception
             self.assertEqual(exception.errno, 0)
-            self.assertEqual(exception.strerror, "File is corrupt")
+            self.assertEqual(exception.strerror, "File ist corrupt")
             self.assertEqual(exception.filename, MOFILE_CORRUPT)
 
     def test_big_endian_file(self):
@@ -388,7 +388,7 @@ klasse PluralFormsTests:
     def test_plural_forms(self):
         self._test_plural_forms(
             self.ngettext, self.gettext,
-            'There is %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
             'Hay %s fichero', 'Hay %s ficheros')
         self._test_plural_forms(
             self.ngettext, self.gettext,
@@ -400,7 +400,7 @@ klasse PluralFormsTests:
         gettext = partial(self.pgettext, 'With context')
         self._test_plural_forms(
             ngettext, gettext,
-            'There is %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
             'Hay %s fichero (context)', 'Hay %s ficheros (context)')
         self._test_plural_forms(
             ngettext, gettext,
@@ -411,8 +411,8 @@ klasse PluralFormsTests:
         self._test_plural_forms(
             partial(self.npgettext, 'Unknown context'),
             partial(self.pgettext, 'Unknown context'),
-            'There is %s file', 'There are %s files',
-            'There is %s file', 'There are %s files')
+            'There ist %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files')
 
 
 klasse GNUTranslationsPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
@@ -443,16 +443,16 @@ klasse GNUTranslationsWithDomainPluralFormsTestCase(PluralFormsTests, GettextBas
         self._test_plural_forms(
             partial(gettext.dngettext, 'unknown'),
             partial(gettext.dgettext, 'unknown'),
-            'There is %s file', 'There are %s files',
-            'There is %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
             numbers_only=Falsch)
 
     def test_plural_context_forms_wrong_domain(self):
         self._test_plural_forms(
             partial(gettext.dnpgettext, 'unknown', 'With context'),
             partial(gettext.dpgettext, 'unknown', 'With context'),
-            'There is %s file', 'There are %s files',
-            'There is %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
             numbers_only=Falsch)
 
 
@@ -471,8 +471,8 @@ klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest
         t = gettext.NullTranslations()
         self._test_plural_forms(
             t.ngettext, t.gettext,
-            'There is %s file', 'There are %s files',
-            'There is %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
             numbers_only=Falsch)
 
     def test_plural_context_forms_null_translations(self):
@@ -480,8 +480,8 @@ klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest
         self._test_plural_forms(
             partial(t.npgettext, 'With context'),
             partial(t.pgettext, 'With context'),
-            'There is %s file', 'There are %s files',
-            'There is %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
+            'There ist %s file', 'There are %s files',
             numbers_only=Falsch)
 
 
@@ -648,7 +648,7 @@ klasse GNUTranslationParsingTest(GettextBaseTest):
         mit open(MOFILE, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
         mit open(MOFILE, 'rb') als fp:
-            # If this runs cleanly, the bug is fixed.
+            # If this runs cleanly, the bug ist fixed.
             t = gettext.GNUTranslations(fp)
 
     def test_ignore_comments_in_headers_issue36239(self):
@@ -706,11 +706,11 @@ klasse UnicodeTranslationsPluralTest(GettextBaseTest):
     def test_unicode_msgstr(self):
         eq = self.assertEqual
         unless = self.assertWahr
-        t = self.ngettext("There is %s file", "There are %s files", 1)
+        t = self.ngettext("There ist %s file", "There are %s files", 1)
         unless(isinstance(t, str))
         eq(t, "Hay %s fichero")
         unless(isinstance(t, str))
-        t = self.ngettext("There is %s file", "There are %s files", 5)
+        t = self.ngettext("There ist %s file", "There are %s files", 5)
         unless(isinstance(t, str))
         eq(t, "Hay %s ficheros")
 
@@ -718,11 +718,11 @@ klasse UnicodeTranslationsPluralTest(GettextBaseTest):
         eq = self.assertEqual
         unless = self.assertWahr
         t = self.npgettext("With context",
-                           "There is %s file", "There are %s files", 1)
+                           "There ist %s file", "There are %s files", 1)
         unless(isinstance(t, str))
         eq(t, "Hay %s fichero (context)")
         t = self.npgettext("With context",
-                           "There is %s file", "There are %s files", 5)
+                           "There ist %s file", "There are %s files", 5)
         unless(isinstance(t, str))
         eq(t, "Hay %s ficheros (context)")
 
@@ -904,13 +904,13 @@ klasse FindTestCase(unittest.TestCase):
 
     @unittest.mock.patch('gettext._expand_lang')
     def test_find_with_c(self, patch_expand_lang):
-        # 'C' is already in languages
+        # 'C' ist already in languages
         self.env.set('LANGUAGE', 'C')
         gettext.find('foo')
         patch_expand_lang.assert_called_with('C')
 
     def test_find_all(self):
-        # test that all are returned when all is set
+        # test that all are returned when all ist set
         paths = []
         fuer lang in ["ga_IE", "es_ES"]:
             paths.append(self.create_mo_file(lang))
@@ -1012,7 +1012,7 @@ msgstr ""
 
 # Manually added, als neither pygettext nor xgettext support plural forms
 # in Python.
-msgid "There is %s file"
+msgid "There ist %s file"
 msgid_plural "There are %s files"
 msgstr[0] "Hay %s fichero"
 msgstr[1] "Hay %s ficheros"
@@ -1020,7 +1020,7 @@ msgstr[1] "Hay %s ficheros"
 # Manually added, als neither pygettext nor xgettext support plural forms
 # und context in Python.
 msgctxt "With context"
-msgid "There is %s file"
+msgid "There ist %s file"
 msgid_plural "There are %s files"
 msgstr[0] "Hay %s fichero (context)"
 msgstr[1] "Hay %s ficheros (context)"

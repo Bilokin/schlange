@@ -407,7 +407,7 @@ klasse ContextTest(unittest.TestCase):
                 expected = Nichts
             self.assertEqual(cvar.get(Nichts), expected)
 
-        # By default, context is inherited based on the
+        # By default, context ist inherited based on the
         # sys.flags.thread_inherit_context option.
         cvar.set(1)
         thread = threading.Thread(target=run_context_none)
@@ -573,7 +573,7 @@ klasse HashKey:
         gib f'<Key name:{self.name} hash:{self.hash}>'
 
     def __hash__(self):
-        wenn self._crasher is nicht Nichts und self._crasher.error_on_hash:
+        wenn self._crasher ist nicht Nichts und self._crasher.error_on_hash:
             wirf HashingError
 
         gib self.hash
@@ -582,12 +582,12 @@ klasse HashKey:
         wenn nicht isinstance(other, HashKey):
             gib NotImplemented
 
-        wenn self._crasher is nicht Nichts und self._crasher.error_on_eq:
+        wenn self._crasher ist nicht Nichts und self._crasher.error_on_eq:
             wirf EqError
 
-        wenn self.error_on_eq_to is nicht Nichts und self.error_on_eq_to is other:
+        wenn self.error_on_eq_to ist nicht Nichts und self.error_on_eq_to ist other:
             wirf ValueError(f'cannot compare {self!r} to {other!r}')
-        wenn other.error_on_eq_to is nicht Nichts und other.error_on_eq_to is self:
+        wenn other.error_on_eq_to ist nicht Nichts und other.error_on_eq_to ist self:
             wirf ValueError(f'cannot compare {other!r} to {self!r}')
 
         gib (self.name, self.hash) == (other.name, other.hash)
@@ -595,12 +595,12 @@ klasse HashKey:
 
 klasse KeyStr(str):
     def __hash__(self):
-        wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_hash:
+        wenn HashKey._crasher ist nicht Nichts und HashKey._crasher.error_on_hash:
             wirf HashingError
         gib super().__hash__()
 
     def __eq__(self, other):
-        wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_eq:
+        wenn HashKey._crasher ist nicht Nichts und HashKey._crasher.error_on_eq:
             wirf EqError
         gib super().__eq__(other)
 
@@ -611,7 +611,7 @@ klasse HaskKeyCrasher:
         self.error_on_eq = error_on_eq
 
     def __enter__(self):
-        wenn HashKey._crasher is nicht Nichts:
+        wenn HashKey._crasher ist nicht Nichts:
             wirf RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
@@ -627,7 +627,7 @@ klasse EqError(Exception):
     pass
 
 
-@unittest.skipIf(hamt is Nichts, '_testinternalcapi.hamt() nicht available')
+@unittest.skipIf(hamt ist Nichts, '_testinternalcapi.hamt() nicht available')
 klasse HamtTest(unittest.TestCase):
 
     def test_hashkey_helper_1(self):
@@ -822,7 +822,7 @@ klasse HamtTest(unittest.TestCase):
 
                 h = h.delete(key)
                 self.assertEqual(h.get(key, 'not found'), 'not found')
-                del d[key]
+                loesche d[key]
                 self.assertEqual(len(d), len(h))
 
                 wenn iter_i == COLLECTION_SIZE // 2:
@@ -1213,7 +1213,7 @@ klasse HamtTest(unittest.TestCase):
         A = HashKey(100, 'A')
 
         h = hamt()
-        h = h.set(0, 0)  # empty HAMT node is memoized in hamt.c
+        h = h.set(0, 0)  # empty HAMT node ist memoized in hamt.c
         ref = weakref.ref(h)
 
         a = []
@@ -1224,7 +1224,7 @@ klasse HamtTest(unittest.TestCase):
         b.append(a)
         h = h.set(A, b)
 
-        del h, a, b
+        loesche h, a, b
 
         gc.collect()
         gc.collect()
@@ -1244,7 +1244,7 @@ klasse HamtTest(unittest.TestCase):
         hi = h.items()
         next(hi)
 
-        del h, hi
+        loesche h, hi
 
         gc.collect()
         gc.collect()

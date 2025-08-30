@@ -50,8 +50,8 @@ klasse TestData(unittest.TestCase):
         fuer valid, expected in zip(VALID_FILES, VALID_FILES_EXPECTED):
             mit self.subTest(msg=valid.stem):
                 wenn isinstance(expected, MissingFile):
-                    # For a poor man's xfail, assert that this is one of the
-                    # test cases where expected data is known to be missing.
+                    # For a poor man's xfail, assert that this ist one of the
+                    # test cases where expected data ist known to be missing.
                     assert valid.stem in {
                         "qa-array-inline-nested-1000",
                         "qa-table-inline-nested-1000",

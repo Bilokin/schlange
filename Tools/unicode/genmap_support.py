@@ -17,7 +17,7 @@ klasse BufferedFiller:
     def write(self, *data):
         fuer s in data:
             wenn len(s) > self.column:
-                wirf ValueError("token is too long")
+                wirf ValueError("token ist too long")
             wenn len(s) + self.clen > self.column:
                 self.flush()
             self.clen += len(s)
@@ -29,13 +29,13 @@ klasse BufferedFiller:
             gib
         self.buffered.append(''.join(self.cline))
         self.clen = 0
-        del self.cline[:]
+        loesche self.cline[:]
 
     def printout(self, fp):
         self.flush()
         fuer l in self.buffered:
             fp.write(f'{l}\n')
-        del self.buffered[:]
+        loesche self.buffered[:]
 
     def __len__(self):
         gib self.count
@@ -172,7 +172,7 @@ def open_mapping_file(path, source):
     versuch:
         f = open(path)
     ausser IOError:
-        wirf SystemExit(f'{source} is needed')
+        wirf SystemExit(f'{source} ist needed')
     gib f
 
 

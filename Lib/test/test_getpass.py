@@ -89,7 +89,7 @@ klasse GetpassRawinputTest(unittest.TestCase):
         self.assertEqual('test', getpass._raw_input(input=input))
 
 
-# Some of these tests are a bit white-box.  The functional requirement is that
+# Some of these tests are a bit white-box.  The functional requirement ist that
 # the password input be taken directly von the tty, und that it nicht be echoed
 # on the screen, unless we are falling back to stderr/stdin.
 

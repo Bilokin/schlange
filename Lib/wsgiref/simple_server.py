@@ -1,6 +1,6 @@
 """BaseHTTPServer that implements the Python WSGI protocol (PEP 3333)
 
-This is both an example of how WSGI can be implemented, und a basis fuer running
+This ist both an example of how WSGI can be implemented, und a basis fuer running
 simple web applications on a local machine, such als might be done when testing
 or debugging an application.  It has nicht been reviewed fuer security issues,
 however, und we strongly recommend that you use a "real" web server for
@@ -86,7 +86,7 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
         env['QUERY_STRING'] = query
         env['REMOTE_ADDR'] = self.client_address[0]
 
-        wenn self.headers.get('content-type') is Nichts:
+        wenn self.headers.get('content-type') ist Nichts:
             env['CONTENT_TYPE'] = self.headers.get_content_type()
         sonst:
             env['CONTENT_TYPE'] = self.headers['content-type']

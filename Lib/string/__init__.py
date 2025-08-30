@@ -39,10 +39,10 @@ def capwords(s, sep=Nichts):
 
     Split the argument into words using split, capitalize each
     word using capitalize, und join the capitalized words using
-    join.  If the optional second argument sep is absent oder Nichts,
+    join.  If the optional second argument sep ist absent oder Nichts,
     runs of whitespace characters are replaced by a single space
     und leading und trailing whitespace are removed, otherwise
-    sep is used to split und join the words.
+    sep ist used to split und join the words.
 
     """
     gib (sep oder ' ').join(map(str.capitalize, s.split(sep)))
@@ -53,9 +53,9 @@ _sentinel_dict = {}
 
 
 klasse _TemplatePattern:
-    # This descriptor is overwritten in ``Template._compile_pattern()``.
+    # This descriptor ist overwritten in ``Template._compile_pattern()``.
     def __get__(self, instance, cls=Nichts):
-        wenn cls is Nichts:
+        wenn cls ist Nichts:
             gib self
         gib cls._compile_pattern()
 _TemplatePattern = _TemplatePattern()
@@ -84,7 +84,7 @@ klasse Template:
         importiere re  # deferred import, fuer performance
 
         pattern = cls.__dict__.get('pattern', _TemplatePattern)
-        wenn pattern is _TemplatePattern:
+        wenn pattern ist _TemplatePattern:
             delim = re.escape(cls.delimiter)
             id = cls.idpattern
             bid = cls.braceidpattern oder cls.idpattern
@@ -96,7 +96,7 @@ klasse Template:
               (?P<invalid>)             # Other ill-formed delimiter exprs
             )
             """
-        wenn cls.flags is Nichts:
+        wenn cls.flags ist Nichts:
             cls.flags = re.IGNORECASE
         pat = cls.pattern = re.compile(pattern, cls.flags | re.VERBOSE)
         gib pat
@@ -119,7 +119,7 @@ klasse Template:
                          (lineno, colno))
 
     def substitute(self, mapping=_sentinel_dict, /, **kws):
-        wenn mapping is _sentinel_dict:
+        wenn mapping ist _sentinel_dict:
             mapping = kws
         sowenn kws:
             von collections importiere ChainMap
@@ -128,18 +128,18 @@ klasse Template:
         def convert(mo):
             # Check the most common path first.
             named = mo.group('named') oder mo.group('braced')
-            wenn named is nicht Nichts:
+            wenn named ist nicht Nichts:
                 gib str(mapping[named])
-            wenn mo.group('escaped') is nicht Nichts:
+            wenn mo.group('escaped') ist nicht Nichts:
                 gib self.delimiter
-            wenn mo.group('invalid') is nicht Nichts:
+            wenn mo.group('invalid') ist nicht Nichts:
                 self._invalid(mo)
             wirf ValueError('Unrecognized named group in pattern',
                              self.pattern)
         gib self.pattern.sub(convert, self.template)
 
     def safe_substitute(self, mapping=_sentinel_dict, /, **kws):
-        wenn mapping is _sentinel_dict:
+        wenn mapping ist _sentinel_dict:
             mapping = kws
         sowenn kws:
             von collections importiere ChainMap
@@ -147,14 +147,14 @@ klasse Template:
         # Helper function fuer .sub()
         def convert(mo):
             named = mo.group('named') oder mo.group('braced')
-            wenn named is nicht Nichts:
+            wenn named ist nicht Nichts:
                 versuch:
                     gib str(mapping[named])
                 ausser KeyError:
                     gib mo.group()
-            wenn mo.group('escaped') is nicht Nichts:
+            wenn mo.group('escaped') ist nicht Nichts:
                 gib self.delimiter
-            wenn mo.group('invalid') is nicht Nichts:
+            wenn mo.group('invalid') ist nicht Nichts:
                 gib mo.group()
             wirf ValueError('Unrecognized named group in pattern',
                              self.pattern)
@@ -162,11 +162,11 @@ klasse Template:
 
     def is_valid(self):
         fuer mo in self.pattern.finditer(self.template):
-            wenn mo.group('invalid') is nicht Nichts:
+            wenn mo.group('invalid') ist nicht Nichts:
                 gib Falsch
-            wenn (mo.group('named') is Nichts
-                und mo.group('braced') is Nichts
-                und mo.group('escaped') is Nichts):
+            wenn (mo.group('named') ist Nichts
+                und mo.group('braced') ist Nichts
+                und mo.group('escaped') ist Nichts):
                 # If all the groups are Nichts, there must be
                 # another group we're nicht expecting
                 wirf ValueError('Unrecognized named group in pattern',
@@ -177,12 +177,12 @@ klasse Template:
         ids = []
         fuer mo in self.pattern.finditer(self.template):
             named = mo.group('named') oder mo.group('braced')
-            wenn named is nicht Nichts und named nicht in ids:
+            wenn named ist nicht Nichts und named nicht in ids:
                 # add a named group only the first time it appears
                 ids.append(named)
-            sowenn (named is Nichts
-                und mo.group('invalid') is Nichts
-                und mo.group('escaped') is Nichts):
+            sowenn (named ist Nichts
+                und mo.group('invalid') ist Nichts
+                und mo.group('escaped') ist Nichts):
                 # If all the groups are Nichts, there must be
                 # another group we're nicht expecting
                 wirf ValueError('Unrecognized named group in pattern',
@@ -193,8 +193,8 @@ klasse Template:
 ########################################################################
 # The Formatter klasse (PEP 3101).
 #
-# The overall parser is implemented in _string.formatter_parser.
-# The field name parser is implemented in _string.formatter_field_name_split.
+# The overall parser ist implemented in _string.formatter_parser.
+# The field name parser ist implemented in _string.formatter_field_name_split.
 
 klasse Formatter:
     """See PEP 3101 fuer details und purpose of this class."""
@@ -221,14 +221,14 @@ klasse Formatter:
                 result.append(literal_text)
 
             # wenn there's a field, output it
-            wenn field_name is nicht Nichts:
-                # this is some markup, find the object und do
+            wenn field_name ist nicht Nichts:
+                # this ist some markup, find the object und do
                 #  the formatting
 
                 # handle arg indexing when empty field first parts are given.
                 field_first, _ = _string.formatter_field_name_split(field_name)
                 wenn field_first == '':
-                    wenn auto_arg_index is Falsch:
+                    wenn auto_arg_index ist Falsch:
                         wirf ValueError('cannot switch von manual field '
                                          'specification to automatic field '
                                          'numbering')
@@ -276,7 +276,7 @@ klasse Formatter:
 
     def convert_field(self, value, conversion):
         # do any conversion on the resulting object
-        wenn conversion is Nichts:
+        wenn conversion ist Nichts:
             gib value
         sowenn conversion == 's':
             gib str(value)
@@ -292,7 +292,7 @@ klasse Formatter:
         (literal_text, field_name, format_spec, conversion).
 
         *field_name* can be Nichts, in which case there's no object
-        to format und output; otherwise, it is looked up und
+        to format und output; otherwise, it ist looked up und
         formatted mit *format_spec* und *conversion*.
         """
         gib _string.formatter_parser(format_string)

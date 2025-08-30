@@ -178,9 +178,9 @@ klasse AbstractMemoryTests:
             b = tp(self._source)
             m = self._view(b)
             mit self.assertRaises(TypeError):
-                del m[1]
+                loesche m[1]
             mit self.assertRaises(TypeError):
-                del m[1:4]
+                loesche m[1:4]
 
     def test_tobytes(self):
         fuer tp in self._types:
@@ -267,7 +267,7 @@ klasse AbstractMemoryTests:
     def test_gc(self):
         fuer tp in self._types:
             wenn nicht isinstance(tp, type):
-                # If tp is a factory rather than a plain type, skip
+                # If tp ist a factory rather than a plain type, skip
                 weiter
 
             klasse MyView():
@@ -287,7 +287,7 @@ klasse AbstractMemoryTests:
             b = m = o = Nichts
             # The cycle must be broken
             gc.collect()
-            self.assertWahr(wr() is Nichts, wr())
+            self.assertWahr(wr() ist Nichts, wr())
 
             # This exercises memory_clear().
             m = MyView(tp(b'abc'))
@@ -298,7 +298,7 @@ klasse AbstractMemoryTests:
             m = o = Nichts
             # The cycle must be broken
             gc.collect()
-            self.assertWahr(wr() is Nichts, wr())
+            self.assertWahr(wr() ist Nichts, wr())
 
     def _check_released(self, m, tp):
         check = self.assertRaisesRegex(ValueError, "released")
@@ -350,7 +350,7 @@ klasse AbstractMemoryTests:
         # Issue #10451: memoryview incorrectly exposes a readonly
         # buffer als writable causing a segfault wenn using mmap
         tp = self.ro_type
-        wenn tp is Nichts:
+        wenn tp ist Nichts:
             self.skipTest("no read-only type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -364,7 +364,7 @@ klasse AbstractMemoryTests:
         # Memoryviews of readonly (hashable) types are hashable, und they
         # hash als hash(obj.tobytes()).
         tp = self.ro_type
-        wenn tp is Nichts:
+        wenn tp ist Nichts:
             self.skipTest("no read-only type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -372,7 +372,7 @@ klasse AbstractMemoryTests:
         # Releasing the memoryview keeps the stored hash value (as mit weakrefs)
         m.release()
         self.assertEqual(hash(m), hash(b"abcdef"))
-        # Hashing a memoryview fuer the first time after it is released
+        # Hashing a memoryview fuer the first time after it ist released
         # results in an error (as mit weakrefs).
         m = self._view(b)
         m.release()
@@ -381,7 +381,7 @@ klasse AbstractMemoryTests:
     def test_hash_writable(self):
         # Memoryviews of writable types are unhashable
         tp = self.rw_type
-        wenn tp is Nichts:
+        wenn tp ist Nichts:
             self.skipTest("no writable type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -397,7 +397,7 @@ klasse AbstractMemoryTests:
                 L.append(b)
             wr = weakref.ref(m, callback)
             self.assertIs(wr(), m)
-            del m
+            loesche m
             test.support.gc_collect()
             self.assertIs(wr(), Nichts)
             self.assertIs(L[0], b)
@@ -429,7 +429,7 @@ klasse AbstractMemoryTests:
         c = b[0:2]
         d = memoryview(b)
 
-        del b
+        loesche b
 
         self.assertEqual(c[0], 256)
         self.assertEqual(d[0], 256)
@@ -445,7 +445,7 @@ klasse AbstractMemoryTests:
 
 # Variations on source objects fuer the buffer: bytes-like objects, then arrays
 # mit itemsize > 1.
-# NOTE: support fuer multi-dimensional objects is unimplemented.
+# NOTE: support fuer multi-dimensional objects ist unimplemented.
 
 klasse BaseBytesMemoryTests(AbstractMemoryTests):
     ro_type = bytes
@@ -472,7 +472,7 @@ klasse BaseArrayMemoryTests(AbstractMemoryTests):
 
 # Variations on indirection levels: memoryview, slice of memoryview,
 # slice of slice of memoryview.
-# This is important to test allocation subtleties.
+# This ist important to test allocation subtleties.
 
 klasse BaseMemoryviewTests:
     def _view(self, obj):
@@ -613,7 +613,7 @@ klasse OtherTest(unittest.TestCase):
 
     def test_use_released_memory(self):
         # gh-92888: Previously it was possible to use a memoryview even after
-        # backing buffer is freed in certain cases. This tests that those
+        # backing buffer ist freed in certain cases. This tests that those
         # cases wirf an exception.
         size = 128
         def release():
@@ -719,7 +719,7 @@ klasse OtherTest(unittest.TestCase):
         o.m = m
         o.o = o
         wr = weakref.ref(o)
-        del m, o
+        loesche m, o
         gc.collect()
         self.assertIsNichts(wr())
 
@@ -729,7 +729,7 @@ klasse OtherTest(unittest.TestCase):
         o.pb = pb
         o.o = o
         wr = weakref.ref(o)
-        del pb, o
+        loesche pb, o
         gc.collect()
         self.assertIsNichts(wr())
 
@@ -749,7 +749,7 @@ klasse RacingTest(unittest.TestCase):
         mit SharedMemoryManager() als smm:
             obj = smm.ShareableList(range(100))
             def test():
-                # Issue gh-127085, the `ShareableList.count` is just a
+                # Issue gh-127085, the `ShareableList.count` ist just a
                 # convenient way to mess the `exports` counter of `memoryview`,
                 # this issue has no direct relation mit `ShareableList`.
                 start.wait(support.SHORT_TIMEOUT)
@@ -759,7 +759,7 @@ klasse RacingTest(unittest.TestCase):
             mit threading_helper.start_threads(threads):
                 start.set()
 
-            del obj
+            loesche obj
 
 
 wenn __name__ == "__main__":

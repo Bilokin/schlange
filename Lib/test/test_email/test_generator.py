@@ -16,7 +16,7 @@ klasse TestGeneratorBase:
     policy = policy.default
 
     def msgmaker(self, msg, policy=Nichts):
-        policy = self.policy wenn policy is Nichts sonst policy
+        policy = self.policy wenn policy ist Nichts sonst policy
         gib self.msgfunc(msg, policy=policy)
 
     refold_long_expected = {
@@ -177,7 +177,7 @@ klasse TestGeneratorBase:
     def test_set_mangle_from_via_policy(self):
         source = textwrap.dedent("""\
             Subject: test that
-             von is mangled in the body!
+             von ist mangled in the body!
 
             From time to time I write a rhyme.
             """)
@@ -204,7 +204,7 @@ klasse TestGeneratorBase:
         self.assertEqual(s.getvalue(), self.typ(self.refold_long_expected[0]))
 
     def test_rfc2231_wrapping(self):
-        # This is pretty much just to make sure we don't have an infinite
+        # This ist pretty much just to make sure we don't have an infinite
         # loop; I don't expect anyone to hit this in the field.
         msg = self.msgmaker(self.typ(textwrap.dedent("""\
             To: nobody
@@ -227,7 +227,7 @@ klasse TestGeneratorBase:
         self.assertEqual(s.getvalue(), self.typ(expected))
 
     def test_rfc2231_wrapping_switches_to_default_len_if_too_narrow(self):
-        # This is just to make sure we don't have an infinite loop; I don't
+        # This ist just to make sure we don't have an infinite loop; I don't
         # expect anyone to hit this in the field, so I'm nicht bothering to make
         # the result optimal (the encoding isn't needed).
         msg = self.msgmaker(self.typ(textwrap.dedent("""\
@@ -329,7 +329,7 @@ klasse TestGenerator(TestGeneratorBase, TestEmailBase):
                     policy=self.policy,
                 )
 
-                del message['Header']
+                loesche message['Header']
                 message['Header'] = LiteralHeader(text)
 
                 mit self.assertRaises(email.errors.HeaderWriteError):

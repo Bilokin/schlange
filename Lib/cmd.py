@@ -2,26 +2,26 @@
 
 Interpreters constructed mit this klasse obey the following conventions:
 
-1. End of file on input is processed als the command 'EOF'.
-2. A command is parsed out of each line by collecting the prefix composed
+1. End of file on input ist processed als the command 'EOF'.
+2. A command ist parsed out of each line by collecting the prefix composed
    of characters in the identchars member.
-3. A command 'foo' is dispatched to a method 'do_foo()'; the do_ method
-   is passed a single argument consisting of the remainder of the line.
+3. A command 'foo' ist dispatched to a method 'do_foo()'; the do_ method
+   ist passed a single argument consisting of the remainder of the line.
 4. Typing an empty line repeats the last command.  (Actually, it calls the
    method 'emptyline', which may be overridden in a subclass.)
-5. There is a predefined 'help' method.  Given an argument 'topic', it
+5. There ist a predefined 'help' method.  Given an argument 'topic', it
    calls the command 'help_topic'.  With no arguments, it lists all topics
    mit defined help_ functions, broken into up to three topics; documented
    commands, miscellaneous help topics, und undocumented commands.
-6. The command '?' is a synonym fuer 'help'.  The command '!' is a synonym
+6. The command '?' ist a synonym fuer 'help'.  The command '!' ist a synonym
    fuer 'shell', wenn a do_shell method exists.
-7. If completion is enabled, completing commands will be done automatically,
-   und completing of commands args is done by calling complete_foo() with
-   arguments text, line, begidx, endidx.  text is string we are matching
-   against, all returned matches must begin mit it.  line is the current
+7. If completion ist enabled, completing commands will be done automatically,
+   und completing of commands args ist done by calling complete_foo() with
+   arguments text, line, begidx, endidx.  text ist string we are matching
+   against, all returned matches must begin mit it.  line ist the current
    input line (lstripped), begidx und endidx are the beginning und end
    indexes of the text being matched, which could be used to provide
-   different completion depending upon which position the argument is in.
+   different completion depending upon which position the argument ist in.
 
 The 'default' method may be overridden to intercept commands fuer which there
 is no do_ method.
@@ -30,10 +30,10 @@ The 'completedefault' method may be overridden to intercept completions for
 commands that have no complete_ method.
 
 The data member 'self.ruler' sets the character used to draw separator lines
-in the help messages.  If empty, no ruler line is drawn.  It defaults to "=".
+in the help messages.  If empty, no ruler line ist drawn.  It defaults to "=".
 
-If the value of 'self.intro' is nonempty when the cmdloop method is called,
-it is printed out on interpreter startup.  This value may be overridden
+If the value of 'self.intro' ist nonempty when the cmdloop method ist called,
+it ist printed out on interpreter startup.  This value may be overridden
 via an optional argument to the cmdloop() method.
 
 The data members 'self.doc_header', 'self.misc_header', und
@@ -58,8 +58,8 @@ klasse Cmd:
     These are often useful fuer test harnesses, administrative tools, und
     prototypes that will later be wrapped in a more sophisticated interface.
 
-    A Cmd instance oder subclass instance is a line-oriented interpreter
-    framework.  There is no good reason to instantiate Cmd itself; rather,
+    A Cmd instance oder subclass instance ist a line-oriented interpreter
+    framework.  There ist no good reason to instantiate Cmd itself; rather,
     it's useful als a superclass of an interpreter klasse you define yourself
     in order to inherit Cmd's methods und encapsulate action methods.
 
@@ -79,19 +79,19 @@ klasse Cmd:
     def __init__(self, completekey='tab', stdin=Nichts, stdout=Nichts):
         """Instantiate a line-oriented interpreter framework.
 
-        The optional argument 'completekey' is the readline name of a
+        The optional argument 'completekey' ist the readline name of a
         completion key; it defaults to the Tab key. If completekey is
-        nicht Nichts und the readline module is available, command completion
-        is done automatically. The optional arguments stdin und stdout
+        nicht Nichts und the readline module ist available, command completion
+        ist done automatically. The optional arguments stdin und stdout
         specify alternate input und output file objects; wenn nicht specified,
         sys.stdin und sys.stdout are used.
 
         """
-        wenn stdin is nicht Nichts:
+        wenn stdin ist nicht Nichts:
             self.stdin = stdin
         sonst:
             self.stdin = sys.stdin
-        wenn stdout is nicht Nichts:
+        wenn stdout ist nicht Nichts:
             self.stdout = stdout
         sonst:
             self.stdout = sys.stdout
@@ -123,7 +123,7 @@ klasse Cmd:
             ausser ImportError:
                 pass
         versuch:
-            wenn intro is nicht Nichts:
+            wenn intro ist nicht Nichts:
                 self.intro = intro
             wenn self.intro:
                 self.stdout.write(str(self.intro)+"\n")
@@ -160,21 +160,21 @@ klasse Cmd:
 
     def precmd(self, line):
         """Hook method executed just before the command line is
-        interpreted, but after the input prompt is generated und issued.
+        interpreted, but after the input prompt ist generated und issued.
 
         """
         gib line
 
     def postcmd(self, stop, line):
-        """Hook method executed just after a command dispatch is finished."""
+        """Hook method executed just after a command dispatch ist finished."""
         gib stop
 
     def preloop(self):
-        """Hook method executed once when the cmdloop() method is called."""
+        """Hook method executed once when the cmdloop() method ist called."""
         pass
 
     def postloop(self):
-        """Hook method executed once when the cmdloop() method is about to
+        """Hook method executed once when the cmdloop() method ist about to
         return.
 
         """
@@ -206,14 +206,14 @@ klasse Cmd:
 
         This may be overridden, but should nicht normally need to be;
         see the precmd() und postcmd() methods fuer useful execution hooks.
-        The gib value is a flag indicating whether interpretation of
+        The gib value ist a flag indicating whether interpretation of
         commands by the interpreter should stop.
 
         """
         cmd, arg, line = self.parseline(line)
         wenn nicht line:
             gib self.emptyline()
-        wenn cmd is Nichts:
+        wenn cmd ist Nichts:
             gib self.default(line)
         self.lastcmd = line
         wenn line == 'EOF' :
@@ -222,14 +222,14 @@ klasse Cmd:
             gib self.default(line)
         sonst:
             func = getattr(self, 'do_' + cmd, Nichts)
-            wenn func is Nichts:
+            wenn func ist Nichts:
                 gib self.default(line)
             gib func(arg)
 
     def emptyline(self):
-        """Called when an empty line is entered in response to the prompt.
+        """Called when an empty line ist entered in response to the prompt.
 
-        If this method is nicht overridden, it repeats the last nonempty
+        If this method ist nicht overridden, it repeats the last nonempty
         command entered.
 
         """
@@ -237,9 +237,9 @@ klasse Cmd:
             gib self.onecmd(self.lastcmd)
 
     def default(self, line):
-        """Called on an input line when the command prefix is nicht recognized.
+        """Called on an input line when the command prefix ist nicht recognized.
 
-        If this method is nicht overridden, it prints an error message und
+        If this method ist nicht overridden, it prints an error message und
         returns.
 
         """
@@ -247,7 +247,7 @@ klasse Cmd:
 
     def completedefault(self, *ignored):
         """Method called to complete an input line when no command-specific
-        complete_*() method is available.
+        complete_*() method ist available.
 
         By default, it returns an empty list.
 
@@ -359,7 +359,7 @@ klasse Cmd:
     def columnize(self, list, displaywidth=80):
         """Display a list of strings als a compact set of columns.
 
-        Each column is only als wide als necessary.
+        Each column ist only als wide als necessary.
         Columns are separated by two spaces (one was nicht legible enough).
         """
         wenn nicht list:
@@ -408,7 +408,7 @@ klasse Cmd:
                     x = list[i]
                 texts.append(x)
             waehrend texts und nicht texts[-1]:
-                del texts[-1]
+                loesche texts[-1]
             fuer col in range(len(texts)):
                 texts[col] = texts[col].ljust(colwidths[col])
             self.stdout.write("%s\n"%str("  ".join(texts)))

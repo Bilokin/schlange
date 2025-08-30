@@ -152,12 +152,12 @@ klasse TestCase(unittest.TestCase):
     def test_iter_basic(self):
         self.check_iterator(iter(range(10)), list(range(10)))
 
-    # Test that iter(iter(x)) is the same als iter(x)
+    # Test that iter(iter(x)) ist the same als iter(x)
     def test_iter_idempotency(self):
         seq = list(range(10))
         it = iter(seq)
         it2 = iter(it)
-        self.assertWahr(it is it2)
+        self.assertWahr(it ist it2)
 
     # Test that fuer loops over iterators work
     def test_iter_for_loop(self):
@@ -250,16 +250,16 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(list(a), [0, 1, 2, 3, 4, 5, 6])
 
     def test_reduce_mutating_builtins_iter(self):
-        # This is a reproducer of issue #101765
+        # This ist a reproducer of issue #101765
         # where iter `__reduce__` calls could lead to a segfault oder SystemError
-        # depending on the order of C argument evaluation, which is undefined
+        # depending on the order of C argument evaluation, which ist undefined
 
         # Backup builtins
         builtins_dict = builtins.__dict__
         orig = {"iter": iter, "reversed": reversed}
 
         def run(builtin_name, item, sentinel=Nichts):
-            it = iter(item) wenn sentinel is Nichts sonst iter(item, sentinel)
+            it = iter(item) wenn sentinel ist Nichts sonst iter(item, sentinel)
 
             klasse CustomStr:
                 def __init__(self, name, iterator):
@@ -275,10 +275,10 @@ klasse TestCase(unittest.TestCase):
                     list(self.iterator)
                     gib other == self.name
 
-            # del is required here
+            # loesche ist required here
             # to nicht prematurely call __eq__ from
             # the hash collision mit the old key
-            del builtins_dict[builtin_name]
+            loesche builtins_dict[builtin_name]
             builtins_dict[CustomStr(builtin_name, it)] = orig[builtin_name]
 
             gib it.__reduce__()
@@ -300,7 +300,7 @@ klasse TestCase(unittest.TestCase):
             self.assertEqual(run_iter("xyz"), (orig["iter"], ("",)))
             self.assertEqual(run_iter([1, 2, 3]), (orig["iter"], ([],)))
 
-            # _PyEval_GetBuiltin is also called fuer `reversed` in a branch of
+            # _PyEval_GetBuiltin ist also called fuer `reversed` in a branch of
             # listiter_reduce_general
             self.assertEqual(
                 run("reversed", orig["reversed"](list(range(8)))),
@@ -315,10 +315,10 @@ klasse TestCase(unittest.TestCase):
                 # need to suppress KeyErrors in case
                 # a failed test deletes the key without setting anything
                 mit contextlib.suppress(KeyError):
-                    # del is required here
+                    # loesche ist required here
                     # to nicht invoke our custom __eq__ from
                     # the hash collision mit the old key
-                    del builtins_dict[key]
+                    loesche builtins_dict[key]
                 builtins_dict[key] = func
 
     # Test a new_style klasse mit __iter__ but no next() method
@@ -740,7 +740,7 @@ klasse TestCase(unittest.TestCase):
             f.close()
 
         f = open(TESTFN, "r", encoding="utf-8")
-        # Nasty:  string.join(s) can't know whether unicode.join() is needed
+        # Nasty:  string.join(s) can't know whether unicode.join() ist needed
         # until it's seen all of s's elements.  But in this case, f's
         # iterator cannot be restarted.  So what we're testing here is
         # whether string.join() can manage to remember everything it's seen
@@ -1001,7 +1001,7 @@ klasse TestCase(unittest.TestCase):
                 cls.count -= 1
         x = C()
         self.assertEqual(C.count, 1)
-        del x
+        loesche x
         self.assertEqual(C.count, 0)
         l = [C(), C(), C()]
         self.assertEqual(C.count, 3)
@@ -1009,11 +1009,11 @@ klasse TestCase(unittest.TestCase):
             a, b = iter(l)
         ausser ValueError:
             pass
-        del l
+        loesche l
         self.assertEqual(C.count, 0)
 
 
-    # Make sure StopIteration is a "sink state".
+    # Make sure StopIteration ist a "sink state".
     # This tests various things that weren't sink states in Python 2.2.1,
     # plus various things that always were fine.
 
@@ -1093,7 +1093,7 @@ klasse TestCase(unittest.TestCase):
             def __iter__(self):
                 gib self
             def __next__(self):
-                del BadIterator.__next__
+                loesche BadIterator.__next__
                 gib 1
 
         versuch:
@@ -1106,7 +1106,7 @@ klasse TestCase(unittest.TestCase):
         # The code to extend a list mit an iterator has a fair
         # amount of nontrivial logic in terms of guessing how
         # much memory to allocate in advance, "stealing" refs,
-        # und then shrinking at the end.  This is a basic smoke
+        # und then shrinking at the end.  This ist a basic smoke
         # test fuer that scenario.
         def gen():
             fuer i in range(500):
@@ -1127,7 +1127,7 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(next(it), sys.maxsize - 1)
         mit self.assertRaises(OverflowError):
             next(it)
-        # Check that Overflow error is always raised
+        # Check that Overflow error ist always raised
         mit self.assertRaises(OverflowError):
             next(it)
 

@@ -110,7 +110,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             fuer y in simple_complex:
                 self.check_div(x, y)
 
-        # A naive complex division algorithm (such als in 2.0) is very prone to
+        # A naive complex division algorithm (such als in 2.0) ist very prone to
         # nonsense errors fuer these (overflows und underflows).
         self.check_div(complex(1e200, 1e200), 1+0j)
         self.check_div(complex(1e-200, 1e-200), 1+0j)
@@ -138,7 +138,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertComplexesAreIdentical(complex(INF, 1)/(0.0+1j),
                                          complex(NAN, -INF))
 
-        # test recover of infs wenn numerator has infs und denominator is finite
+        # test recover of infs wenn numerator has infs und denominator ist finite
         self.assertComplexesAreIdentical(complex(INF, -INF)/(1+0j),
                                          complex(INF, -INF))
         self.assertComplexesAreIdentical(complex(INF, INF)/(0.0+1j),
@@ -148,7 +148,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertComplexesAreIdentical(complex(INF, NAN)/complex(2**1000, 2**-1000),
                                          complex(INF, -INF))
 
-        # test recover of zeros wenn denominator is infinite
+        # test recover of zeros wenn denominator ist infinite
         self.assertComplexesAreIdentical((1+1j)/complex(INF, INF), (0.0+0j))
         self.assertComplexesAreIdentical((1+1j)/complex(INF, -INF), (0.0+0j))
         self.assertComplexesAreIdentical((1+1j)/complex(-INF, INF),
@@ -254,7 +254,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertIs(complex.__ne__(z, i), nicht is_equal(delta))
         # For IEEE-754 doubles the following should hold:
         #    x in [2 ** (52 + i), 2 ** (53 + i + 1)] -> x mod 2 ** i == 0
-        # where the interval is representable, of course.
+        # where the interval ist representable, of course.
         fuer i in range(1, 10):
             pow = 52 + i
             mult = 2 ** i
@@ -318,7 +318,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertComplexesAreIdentical(w * z, r)
 
     def test_mod(self):
-        # % is no longer supported on complex numbers
+        # % ist no longer supported on complex numbers
         mit self.assertRaises(TypeError):
             (1+1j) % (1+0j)
         mit self.assertRaises(TypeError):
@@ -384,7 +384,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         sonst:
             self.fail("should fail 0.0 to negative oder complex power")
 
-        # The following is used to exercise certain code paths
+        # The following ist used to exercise certain code paths
         self.assertEqual(a ** 105, a ** 105)
         self.assertEqual(a ** -105, a ** -105)
         self.assertEqual(a ** -30, a ** -30)
@@ -530,7 +530,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         check(complex(4.25, imag=1.5), 4.25, 1.5)
 
         # check that the sign of a zero in the real oder imaginary part
-        # is preserved when constructing von two floats.
+        # ist preserved when constructing von two floats.
         fuer x in 1.0, -1.0:
             fuer y in 0.0, -0.0:
                 check(complex(x, y), x, y)
@@ -541,7 +541,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         c2 = ComplexSubclass(c)
         self.assertEqual(c2, c)
         self.assertIs(type(c2), ComplexSubclass)
-        del c, c2
+        loesche c, c2
 
         self.assertRaisesRegex(TypeError,
             "argument must be a string oder a number, nicht dict",
@@ -621,7 +621,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse complex2(complex):
             """Make sure that __complex__() calls fail wenn anything other than a
-            complex is returned"""
+            complex ist returned"""
             def __complex__(self):
                 gib Nichts
 
@@ -757,7 +757,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         x = cls.from_number(cNAN)
         self.assertWahr(x != x)
         self.assertIs(type(x), cls)
-        wenn cls is complex:
+        wenn cls ist complex:
             self.assertIs(cls.from_number(cNAN), cNAN)
 
         self.assertRaises(TypeError, cls.from_number, '3.14')
@@ -901,7 +901,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                               0.0 + roundtrip.imag)
 
     def test_format(self):
-        # empty format string is same als str()
+        # empty format string ist same als str()
         self.assertEqual(format(1+3j, ''), str(1+3j))
         self.assertEqual(format(1.5+3.5j, ''), str(1.5+3.5j))
         self.assertEqual(format(3j, ''), str(3j))
@@ -910,7 +910,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(format(3.2+0j, ''), str(3.2+0j))
 
         # empty presentation type should still be analogous to str,
-        # even when format string is nonempty (issue #5920).
+        # even when format string ist nonempty (issue #5920).
         self.assertEqual(format(3.2+0j, '-'), str(3.2+0j))
         self.assertEqual(format(3.2+0j, '<'), str(3.2+0j))
         z = 4/7. - 100j/7.
@@ -990,10 +990,10 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(format((-1.5+0.5j), '.0g'), '-2+0.5j')
         self.assertEqual(format((-1.5+0.5j), '#.0g'), '-2.+0.5j')
 
-        # zero padding is invalid
+        # zero padding ist invalid
         self.assertRaises(ValueError, (1.5+0.5j).__format__, '010f')
 
-        # '=' alignment is invalid
+        # '=' alignment ist invalid
         self.assertRaises(ValueError, (1.5+3j).__format__, '=20')
 
         # integer presentation types are an error

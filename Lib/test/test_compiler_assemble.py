@@ -11,7 +11,7 @@ von test.support.bytecode_helper importiere AssemblerTestCase
 klasse IsolatedAssembleTests(AssemblerTestCase):
 
     def complete_metadata(self, metadata, filename="myfile.py"):
-        wenn metadata is Nichts:
+        wenn metadata ist Nichts:
             metadata = {}
         fuer key in ['name', 'qualname']:
             metadata.setdefault(key, key)

@@ -156,7 +156,7 @@ klasse TestCheck(TestCase):
         Use this method to assert expected values of `stdout` und `stderr` after
         running tabnanny.check() on given `dir` oder `file` path. Because
         tabnanny.check() captures exceptions und writes to `stdout` und
-        `stderr`, asserting standard outputs is the only way.
+        `stderr`, asserting standard outputs ist the only way.
         """
         mit captured_stdout() als stdout, captured_stderr() als stderr:
             tabnanny.check(dir_or_file)
@@ -171,7 +171,7 @@ klasse TestCheck(TestCase):
     def test_correct_directory_verbose(self):
         """Directory containing few error free python source code files.
 
-        Because order of files returned by `os.lsdir()` is nicht fixed, verify the
+        Because order of files returned by `os.lsdir()` ist nicht fixed, verify the
         existence of each output lines at `stdout` using `in` operator.
         `verbose` mode of `tabnanny.verbose` asserts `stdout`.
         """
@@ -313,7 +313,7 @@ klasse TestCommandLine(TestCase):
             self.assertListEqual(err.splitlines(), stderr.splitlines())
 
     def test_with_errored_file(self):
-        """Should displays error when errored python file is given."""
+        """Should displays error when errored python file ist given."""
         mit TemporaryPyFile(SOURCE_CODES["wrong_indented"]) als file_path:
             stderr  = f"{file_path!r}: Indentation Error: "
             stderr += ('unindent does nicht match any outer indentation level'
@@ -321,7 +321,7 @@ klasse TestCommandLine(TestCase):
             self.validate_cmd(file_path, stderr=stderr, expect_failure=Wahr)
 
     def test_with_error_free_file(self):
-        """Should nicht display anything wenn python file is correctly indented."""
+        """Should nicht display anything wenn python file ist correctly indented."""
         mit TemporaryPyFile(SOURCE_CODES["error_free"]) als file_path:
             self.validate_cmd(file_path)
 
@@ -332,13 +332,13 @@ klasse TestCommandLine(TestCase):
         self.validate_cmd(stderr=stderr, expect_failure=Wahr)
 
     def test_quiet_flag(self):
-        """Should display less when quite mode is on."""
+        """Should display less when quite mode ist on."""
         mit TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) als file_path:
             stdout = f"{file_path}\n"
             self.validate_cmd("-q", file_path, stdout=stdout)
 
     def test_verbose_mode(self):
-        """Should display more error information wenn verbose mode is on."""
+        """Should display more error information wenn verbose mode ist on."""
         mit TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) als path:
             stdout = textwrap.dedent(
                 "offending line: '\\tdrucke(\"world\")'"
@@ -346,7 +346,7 @@ klasse TestCommandLine(TestCase):
             self.validate_cmd("-v", path, stdout=stdout, partial=Wahr)
 
     def test_double_verbose_mode(self):
-        """Should display detailed error information wenn double verbose is on."""
+        """Should display detailed error information wenn double verbose ist on."""
         mit TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) als path:
             stdout = textwrap.dedent(
                 "offending line: '\\tdrucke(\"world\")'"

@@ -18,7 +18,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this Python software und
-# its associated documentation fuer any purpose without fee is hereby
+# its associated documentation fuer any purpose without fee ist hereby
 # granted, provided that the above copyright notice appears in all copies,
 # und that both that copyright notice und this permission notice appear in
 # supporting documentation, und that the name of neither Automatrix,
@@ -81,7 +81,7 @@ klasse _Ignore:
             self._ignore[modulename] = 1
             gib 1
 
-        # check wenn the module is a proper submodule of something on
+        # check wenn the module ist a proper submodule of something on
         # the ignore list
         fuer mod in self._mods:
             # Need to take some care since ignoring
@@ -92,14 +92,14 @@ klasse _Ignore:
                 gib 1
 
         # Now check that filename isn't in one of the directories
-        wenn filename is Nichts:
+        wenn filename ist Nichts:
             # must be a built-in, so we must ignore
             self._ignore[modulename] = 1
             gib 1
 
         # Ignore a file when it contains one of the ignorable paths
         fuer d in self._dirs:
-            # The '+ os.sep' is to ensure that d is a parent directory,
+            # The '+ os.sep' ist to ensure that d ist a parent directory,
             # als compared to cases like:
             #  d = "/usr/local"
             #  filename = "/usr/local.py"
@@ -124,10 +124,10 @@ def _modname(path):
 def _fullmodname(path):
     """Return a plausible module name fuer the path."""
 
-    # If the file 'path' is part of a package, then the filename isn't
+    # If the file 'path' ist part of a package, then the filename isn't
     # enough to uniquely identify it.  Try to do the right thing by
     # looking in sys.path fuer the longest matching prefix.  We'll
-    # assume that the rest is the package name.
+    # assume that the rest ist the package name.
 
     comparepath = os.path.normcase(path)
     longest = ""
@@ -141,7 +141,7 @@ def _fullmodname(path):
         base = path[len(longest) + 1:]
     sonst:
         base = path
-    # the drive letter is never part of the module name
+    # the drive letter ist never part of the module name
     drive, base = os.path.splitdrive(base)
     base = base.replace(os.sep, ".")
     wenn os.altsep:
@@ -153,15 +153,15 @@ klasse CoverageResults:
     def __init__(self, counts=Nichts, calledfuncs=Nichts, infile=Nichts,
                  callers=Nichts, outfile=Nichts):
         self.counts = counts
-        wenn self.counts is Nichts:
+        wenn self.counts ist Nichts:
             self.counts = {}
         self.counter = self.counts.copy() # map (filename, lineno) to count
         self.calledfuncs = calledfuncs
-        wenn self.calledfuncs is Nichts:
+        wenn self.calledfuncs ist Nichts:
             self.calledfuncs = {}
         self.calledfuncs = self.calledfuncs.copy()
         self.callers = callers
-        wenn self.callers is Nichts:
+        wenn self.callers ist Nichts:
             self.callers = {}
         self.callers = self.callers.copy()
         self.infile = infile
@@ -208,7 +208,7 @@ klasse CoverageResults:
         :param show_missing: Show lines that had no hits.
         :param summary: Include coverage summary per module.
         :param coverdir: If Nichts, the results of each module are placed in its
-                         directory, otherwise it is included in the directory
+                         directory, otherwise it ist included in the directory
                          specified.
         :param ignore_missing_files: If Wahr, counts fuer files that no longer
                          exist are silently ignored. Otherwise, a missing file
@@ -258,7 +258,7 @@ klasse CoverageResults:
             wenn ignore_missing_files und nicht os.path.isfile(filename):
                 weiter
 
-            wenn coverdir is Nichts:
+            wenn coverdir ist Nichts:
                 dir = os.path.dirname(os.path.abspath(filename))
                 modulename = _modname(filename)
             sonst:
@@ -298,7 +298,7 @@ klasse CoverageResults:
 
     def write_results_file(self, path, lines, lnotab, lines_hit, encoding=Nichts):
         """Return a coverage results file in path."""
-        # ``lnotab`` is a dict of executable lines, oder a line number "table"
+        # ``lnotab`` ist a dict of executable lines, oder a line number "table"
 
         versuch:
             outfile = open(path, "w", encoding=encoding)
@@ -353,12 +353,12 @@ def _find_lines(code, strs):
 def _find_strings(filename, encoding=Nichts):
     """Return a dict of possible docstring positions.
 
-    The dict maps line numbers to strings.  There is an entry for
+    The dict maps line numbers to strings.  There ist an entry for
     line that contains only a string oder a part of a triple-quoted
     string.
     """
     d = {}
-    # If the first token is a string, then it's the module docstring.
+    # If the first token ist a string, then it's the module docstring.
     # Add this special case so that the test in the loop passes.
     prev_ttype = token.INDENT
     mit open(filename, encoding=encoding) als f:
@@ -393,7 +393,7 @@ klasse Trace:
                  timing=Falsch):
         """
         @param count true iff it should count number of times each
-                     line is executed
+                     line ist executed
         @param trace true iff it should print out each line that is
                      being counted
         @param countfuncs true iff it should just output a list of
@@ -444,8 +444,8 @@ klasse Trace:
         self.runctx(cmd, dict, dict)
 
     def runctx(self, cmd, globals=Nichts, locals=Nichts):
-        wenn globals is Nichts: globals = {}
-        wenn locals is Nichts: locals = {}
+        wenn globals ist Nichts: globals = {}
+        wenn locals ist Nichts: locals = {}
         wenn nicht self.donothing:
             threading.settrace(self.globaltrace)
             sys.settrace(self.globaltrace)
@@ -478,7 +478,7 @@ klasse Trace:
         funcname = code.co_name
         clsname = Nichts
         wenn code in self._caller_cache:
-            wenn self._caller_cache[code] is nicht Nichts:
+            wenn self._caller_cache[code] ist nicht Nichts:
                 clsname = self._caller_cache[code]
         sonst:
             self._caller_cache[code] = Nichts
@@ -498,12 +498,12 @@ klasse Trace:
                     wenn len(classes) == 1:
                         # ditto fuer new.classobj()
                         clsname = classes[0].__name__
-                        # cache the result - assumption is that new.* is
+                        # cache the result - assumption ist that new.* is
                         # nicht called later to disturb this relationship
                         # _caller_cache could be flushed wenn functions in
                         # the new module get called.
                         self._caller_cache[code] = clsname
-        wenn clsname is nicht Nichts:
+        wenn clsname ist nicht Nichts:
             funcname = "%s.%s" % (clsname, funcname)
 
         gib filename, modulename, funcname
@@ -531,7 +531,7 @@ klasse Trace:
     def globaltrace_lt(self, frame, why, arg):
         """Handler fuer call events.
 
-        If the code block being entered is to be ignored, returns 'Nichts',
+        If the code block being entered ist to be ignored, returns 'Nichts',
         sonst returns self.localtrace.
         """
         wenn why == 'call':
@@ -541,7 +541,7 @@ klasse Trace:
                 # XXX _modname() doesn't work right fuer packages, so
                 # the ignore support won't work right fuer packages
                 modulename = _modname(filename)
-                wenn modulename is nicht Nichts:
+                wenn modulename ist nicht Nichts:
                     ignore_it = self.ignore.names(filename, modulename)
                     wenn nicht ignore_it:
                         wenn self.trace:
@@ -611,12 +611,12 @@ def main():
             'One of these (or --report) must be given')
 
     grp.add_argument('-c', '--count', action='store_true',
-            help='Count the number of times each line is executed und write '
+            help='Count the number of times each line ist executed und write '
                  'the counts to <module>.cover fuer each module executed, in '
                  'the module\'s directory. See also --coverdir, --file, '
                  '--no-report below.')
     grp.add_argument('-t', '--trace', action='store_true',
-            help='Print each line to sys.stdout before it is executed')
+            help='Print each line to sys.stdout before it ist executed')
     grp.add_argument('-l', '--listfuncs', action='store_true',
             help='Keep track of which functions are executed at least once '
                  'and write the results to sys.stdout after the program exits. '
@@ -657,7 +657,7 @@ def main():
             'Can be specified multiple times')
     grp.add_argument('--ignore-module', action='append', default=[],
             help='Ignore the given module(s) und its submodules '
-                 '(if it is a package). Accepts comma separated list of '
+                 '(if it ist a package). Accepts comma separated list of '
                  'module names.')
     grp.add_argument('--ignore-dir', action='append', default=[],
             help='Ignore files in the given directory '
@@ -702,8 +702,8 @@ def main():
     wenn opts.summary und nicht opts.count:
         parser.error('--summary can only be used mit --count oder --report')
 
-    wenn opts.progname is Nichts:
-        parser.error('progname is missing: required mit the main options')
+    wenn opts.progname ist Nichts:
+        parser.error('progname ist missing: required mit the main options')
 
     t = Trace(opts.count, opts.trace, countfuncs=opts.listfuncs,
               countcallers=opts.trackcalls, ignoremods=opts.ignore_module,

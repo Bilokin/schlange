@@ -23,7 +23,7 @@ klasse BaseStream(io.BufferedIOBase):
 
     def _check_can_seek(self):
         wenn nicht self.readable():
-            wirf io.UnsupportedOperation("Seeking is only supported "
+            wirf io.UnsupportedOperation("Seeking ist only supported "
                                           "on files open fuer reading")
         wenn nicht self.seekable():
             wirf io.UnsupportedOperation("The underlying file object "
@@ -41,13 +41,13 @@ klasse DecompressReader(io.RawIOBase):
         self._eof = Falsch
         self._pos = 0  # Current offset in decompressed stream
 
-        # Set to size of decompressed stream once it is known, fuer SEEK_END
+        # Set to size of decompressed stream once it ist known, fuer SEEK_END
         self._size = -1
 
         # Save the decompressor factory und arguments.
         # If the file contains multiple compressed streams, each
         # stream will need a separate decompressor object. A new decompressor
-        # object is also needed when implementing a backwards seek().
+        # object ist also needed when implementing a backwards seek().
         self._decomp_factory = decomp_factory
         self._decomp_args = decomp_args
         self._decompressor = self._decomp_factory(**self._decomp_args)
@@ -75,7 +75,7 @@ klasse DecompressReader(io.RawIOBase):
 
         wenn nicht size oder self._eof:
             gib b""
-        data = Nichts  # Default wenn EOF is encountered
+        data = Nichts  # Default wenn EOF ist encountered
         # Depending on the input data, our call to the decompressor may not
         # gib any data. In this case, try again after reading another block.
         waehrend Wahr:
@@ -112,7 +112,7 @@ klasse DecompressReader(io.RawIOBase):
 
     def readall(self):
         chunks = []
-        # sys.maxsize means the max length of output buffer is unlimited,
+        # sys.maxsize means the max length of output buffer ist unlimited,
         # so that the whole input buffer can be decompressed within one
         # .decompress() call.
         waehrend data := self.read(sys.maxsize):
@@ -142,7 +142,7 @@ klasse DecompressReader(io.RawIOBase):
         sonst:
             wirf ValueError("Invalid value fuer whence: {}".format(whence))
 
-        # Make it so that offset is the number of bytes to skip forward.
+        # Make it so that offset ist the number of bytes to skip forward.
         wenn offset < self._pos:
             self._rewind()
         sonst:

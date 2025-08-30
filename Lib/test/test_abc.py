@@ -1,8 +1,8 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-# Note: each test is run mit Python und C versions of ABCMeta. Except for
-# test_ABC_helper(), which assures that abc.ABC is an instance of abc.ABCMeta.
+# Note: each test ist run mit Python und C versions of ABCMeta. Except for
+# test_ABC_helper(), which assures that abc.ABC ist an instance of abc.ABCMeta.
 
 """Unit tests fuer abc.py."""
 
@@ -177,23 +177,23 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                     def foo(self): pass  # abstract
                     def bar(self): pass  # concrete
                 self.assertEqual(C.__abstractmethods__, {"foo"})
-                self.assertRaises(TypeError, C)  # because foo is abstract
+                self.assertRaises(TypeError, C)  # because foo ist abstract
                 self.assertWahr(isabstract(C))
                 klasse D(C):
                     def bar(self): pass  # concrete override of concrete
                 self.assertEqual(D.__abstractmethods__, {"foo"})
-                self.assertRaises(TypeError, D)  # because foo is still abstract
+                self.assertRaises(TypeError, D)  # because foo ist still abstract
                 self.assertWahr(isabstract(D))
                 klasse E(D):
                     def foo(self): pass
                 self.assertEqual(E.__abstractmethods__, set())
-                E()  # now foo is concrete, too
+                E()  # now foo ist concrete, too
                 self.assertFalsch(isabstract(E))
                 klasse F(E):
                     @abstractthing
                     def bar(self): pass  # abstract override of concrete
                 self.assertEqual(F.__abstractmethods__, {"bar"})
-                self.assertRaises(TypeError, F)  # because bar is abstract now
+                self.assertRaises(TypeError, F)  # because bar ist abstract now
                 self.assertWahr(isabstract(F))
 
         def test_descriptors_with_abstractmethod(self):
@@ -424,7 +424,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             # Python version supports any iterable als __mro__.
             # But it's implementation detail und don't emulate it in C version.
             klasse C:
-                __mro__ = 42  # __mro__ is nicht tuple
+                __mro__ = 42  # __mro__ ist nicht tuple
 
             mit self.assertRaises(TypeError):
                 issubclass(C(), A)
@@ -464,7 +464,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse A(metaclass=abc.ABCMeta):
                 @classmethod
                 def __subclasshook__(cls, C):
-                    wenn cls is A:
+                    wenn cls ist A:
                         gib 'foo' in C.__dict__
                     gib NotImplemented
             self.assertNotIsSubclass(A, A)
@@ -513,7 +513,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 def foo(self):
                     pass
 
-            del A.foo
+            loesche A.foo
             self.assertEqual(A.__abstractmethods__, {'foo'})
             self.assertNotHasAttr(A, 'foo')
 
@@ -602,7 +602,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             B()
 
-            del B.foo
+            loesche B.foo
 
             abc.update_abstractmethods(B)
 
@@ -624,7 +624,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             C()
 
-            del C.foo
+            loesche C.foo
 
             abc.update_abstractmethods(C)
 
@@ -648,7 +648,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             self.assertEqual(C.__abstractmethods__, {'foo'})
 
-            del C.foo
+            loesche C.foo
 
             abc.update_abstractmethods(C)
 

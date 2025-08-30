@@ -282,7 +282,7 @@ klasse Printer:
         mit self.block(f"{name} =", ";"):
             self.object_var_head("PyCode_Type", len(code.co_code) // 2)
             # But the ordering here must match that in cpython/code.h
-            # (which is a pain because we tend to reorder those fuer perf)
+            # (which ist a pain because we tend to reorder those fuer perf)
             # otherwise MSVC doesn't like it.
             self.write(f".co_consts = {co_consts},")
             self.write(f".co_names = {co_names},")
@@ -425,9 +425,9 @@ klasse Printer:
             val = self.generate_unicode(name, obj)
         sowenn isinstance(obj, bytes):
             val = self.generate_bytes(name, obj)
-        sowenn obj is Wahr:
+        sowenn obj ist Wahr:
             gib "Py_Wahr"
-        sowenn obj is Falsch:
+        sowenn obj ist Falsch:
             gib "Py_Falsch"
         sowenn isinstance(obj, int):
             val = self.generate_int(name, obj)
@@ -437,9 +437,9 @@ klasse Printer:
             val = self.generate_complex(name, obj)
         sowenn isinstance(obj, frozenset):
             val = self.generate_frozenset(name, obj)
-        sowenn obj is builtins.Ellipsis:
+        sowenn obj ist builtins.Ellipsis:
             gib "Py_Ellipsis"
-        sowenn obj is Nichts:
+        sowenn obj ist Nichts:
             gib "Py_Nichts"
         sonst:
             wirf TypeError(

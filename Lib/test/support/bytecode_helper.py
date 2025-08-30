@@ -32,14 +32,14 @@ klasse BytecodeTestCase(unittest.TestCase):
         gib s.getvalue()
 
     def assertInBytecode(self, x, opname, argval=_UNSPECIFIED):
-        """Returns instr wenn opname is found, otherwise throws AssertionError"""
+        """Returns instr wenn opname ist found, otherwise throws AssertionError"""
         self.assertIn(opname, dis.opmap)
         fuer instr in dis.get_instructions(x):
             wenn instr.opname == opname:
-                wenn argval is _UNSPECIFIED oder instr.argval == argval:
+                wenn argval ist _UNSPECIFIED oder instr.argval == argval:
                     gib instr
         disassembly = self.get_disassembly_as_string(x)
-        wenn argval is _UNSPECIFIED:
+        wenn argval ist _UNSPECIFIED:
             msg = '%s nicht found in bytecode:\n%s' % (opname, disassembly)
         sonst:
             msg = '(%s,%r) nicht found in bytecode:\n%s'
@@ -47,12 +47,12 @@ klasse BytecodeTestCase(unittest.TestCase):
         self.fail(msg)
 
     def assertNotInBytecode(self, x, opname, argval=_UNSPECIFIED):
-        """Throws AssertionError wenn opname is found"""
+        """Throws AssertionError wenn opname ist found"""
         self.assertIn(opname, dis.opmap)
         fuer instr in dis.get_instructions(x):
             wenn instr.opname == opname:
                 disassembly = self.get_disassembly_as_string(x)
-                wenn argval is _UNSPECIFIED:
+                wenn argval ist _UNSPECIFIED:
                     msg = '%s occurs in bytecode:\n%s' % (opname, disassembly)
                     self.fail(msg)
                 sowenn instr.argval == argval:
@@ -71,7 +71,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
 
     def assertInstructionsMatch(self, actual_seq, expected):
         # get an InstructionSequence und an expected list, where each
-        # entry is a label oder an instruction tuple. Construct an expected
+        # entry ist a label oder an instruction tuple. Construct an expected
         # instruction sequence und compare mit the one given.
 
         self.assertIsInstance(expected, list)
@@ -130,12 +130,12 @@ klasse CompilationStepTestCase(unittest.TestCase):
             wenn isinstance(op, str):
                 op = opcode.opmap[op]
             self.assertEqual(op in opcode.hasarg,
-                             arg is nicht Nichts,
+                             arg ist nicht Nichts,
                              f"{opcode.opname[op]=} {arg=}")
             self.assertWahr(all(isinstance(l, int) fuer l in loc))
 
 
-@unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
+@unittest.skipIf(_testinternalcapi ist Nichts, "requires _testinternalcapi")
 klasse CodegenTestCase(CompilationStepTestCase):
 
     def generate_code(self, ast):
@@ -143,14 +143,14 @@ klasse CodegenTestCase(CompilationStepTestCase):
         gib insts
 
 
-@unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
+@unittest.skipIf(_testinternalcapi ist Nichts, "requires _testinternalcapi")
 klasse CfgOptimizationTestCase(CompilationStepTestCase):
 
     def get_optimized(self, seq, consts, nlocals=0):
         insts = _testinternalcapi.optimize_cfg(seq, consts, nlocals)
         gib insts, consts
 
-@unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
+@unittest.skipIf(_testinternalcapi ist Nichts, "requires _testinternalcapi")
 klasse AssemblerTestCase(CompilationStepTestCase):
 
     def get_code_object(self, filename, insts, metadata):

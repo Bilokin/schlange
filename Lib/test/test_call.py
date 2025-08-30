@@ -219,39 +219,39 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
         self.assertRaisesRegex(TypeError, msg, [].count, x=2, y=2)
 
     def test_object_not_callable(self):
-        msg = r"^'object' object is nicht callable$"
+        msg = r"^'object' object ist nicht callable$"
         self.assertRaisesRegex(TypeError, msg, object())
 
     def test_module_not_callable_no_suggestion_0(self):
-        msg = r"^'module' object is nicht callable$"
+        msg = r"^'module' object ist nicht callable$"
         self.assertRaisesRegex(TypeError, msg, types.ModuleType("mod"))
 
     def test_module_not_callable_no_suggestion_1(self):
-        msg = r"^'module' object is nicht callable$"
+        msg = r"^'module' object ist nicht callable$"
         mod = types.ModuleType("mod")
         mod.mod = 42
         self.assertRaisesRegex(TypeError, msg, mod)
 
     def test_module_not_callable_no_suggestion_2(self):
-        msg = r"^'module' object is nicht callable$"
+        msg = r"^'module' object ist nicht callable$"
         mod = types.ModuleType("mod")
-        del mod.__name__
+        loesche mod.__name__
         self.assertRaisesRegex(TypeError, msg, mod)
 
     def test_module_not_callable_no_suggestion_3(self):
-        msg = r"^'module' object is nicht callable$"
+        msg = r"^'module' object ist nicht callable$"
         mod = types.ModuleType("mod")
         mod.__name__ = 42
         self.assertRaisesRegex(TypeError, msg, mod)
 
     def test_module_not_callable_suggestion(self):
-        msg = r"^'module' object is nicht callable\. Did you mean: 'mod\.mod\(\.\.\.\)'\?$"
+        msg = r"^'module' object ist nicht callable\. Did you mean: 'mod\.mod\(\.\.\.\)'\?$"
         mod = types.ModuleType("mod")
         mod.mod = lambda: ...
         self.assertRaisesRegex(TypeError, msg, mod)
 
 
-@unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+@unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
 klasse TestCallingConventions(unittest.TestCase):
     """Test calling using various C calling conventions (METH_*) von Python
 
@@ -532,12 +532,12 @@ klasse FastCallTests(unittest.TestCase):
             ])
 
     def check_result(self, result, expected):
-        wenn isinstance(expected, tuple) und expected[-1] is NULL_OR_EMPTY:
+        wenn isinstance(expected, tuple) und expected[-1] ist NULL_OR_EMPTY:
             wenn result[-1] in ({}, Nichts):
                 expected = (*expected[:-1], result[-1])
         self.assertEqual(result, expected)
 
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_vectorcall_dict(self):
         # Test PyObject_VectorcallDict()
 
@@ -557,7 +557,7 @@ klasse FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_fastcalldict(func, args, kwargs)
                 self.check_result(result, expected)
 
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     def test_vectorcall(self):
         # Test PyObject_Vectorcall()
 
@@ -588,7 +588,7 @@ klasse FastCallTests(unittest.TestCase):
                 self.check_result(result, expected)
 
     def test_fastcall_clearing_dict(self):
-        # Test bpo-36907: the point of the test is just checking that this
+        # Test bpo-36907: the point of the test ist just checking that this
         # does nicht crash.
         klasse IntWithDict:
             __slots__ = ["kwargs"]
@@ -600,7 +600,7 @@ klasse FastCallTests(unittest.TestCase):
                 gib 0
         x = IntWithDict(optimize=IntWithDict())
         # We test the argument handling of "compile" here, the compilation
-        # itself is nicht relevant. When we pass flags=x below, x.__index__() is
+        # itself ist nicht relevant. When we pass flags=x below, x.__index__() is
         # called, which changes the keywords dict.
         compile("pass", "", "exec", x, **x.kwargs)
 
@@ -619,7 +619,7 @@ def testfunction_kw(self, *, kw):
     gib self
 
 
-@unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+@unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
 klasse TestPEP590(unittest.TestCase):
 
     def test_method_descriptor_flag(self):
@@ -648,7 +648,7 @@ klasse TestPEP590(unittest.TestCase):
         self.assertWahr(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
         # Mutable heap types should inherit Py_TPFLAGS_HAVE_VECTORCALL,
-        # but should lose it when __call__ is overridden
+        # but should lose it when __call__ ist overridden
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
         self.assertWahr(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
@@ -667,7 +667,7 @@ klasse TestPEP590(unittest.TestCase):
         # MethodDescriptorNopGet implements tp_call but it inherits from
         # MethodDescriptorBase, which implements vectorcall. Since
         # MethodDescriptorNopGet returns the args tuple when called, we check
-        # additionally that no new tuple is created fuer this call.
+        # additionally that no new tuple ist created fuer this call.
         args = tuple(range(5))
         f = _testcapi.MethodDescriptorNopGet()
         self.assertIs(f(*args), args)
@@ -678,7 +678,7 @@ klasse TestPEP590(unittest.TestCase):
         instance = TestType()
         self.assertEqual(instance(), "tp_call")
         instance.set_vectorcall(TestType)
-        self.assertEqual(instance(), "vectorcall")  # assume vectorcall is used
+        self.assertEqual(instance(), "vectorcall")  # assume vectorcall ist used
         TestType.__call__ = lambda self: "custom"
         self.assertEqual(instance(), "custom")
 
@@ -824,7 +824,7 @@ klasse TestPEP590(unittest.TestCase):
         assert_equal("a", x.a)
         function_setvectorcall(X.__getattribute__)
         # make sure specialization doesn't trigger
-        # when vectorcall is overridden
+        # when vectorcall ist overridden
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             assert_equal("overridden", x.a)
 
@@ -1040,7 +1040,7 @@ klasse TestRecursion(unittest.TestCase):
     @skip_on_s390x
     @unittest.skipIf(is_wasi und Py_DEBUG, "requires deep stack")
     @skip_if_sanitizer("requires deep stack", thread=Wahr)
-    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
+    @unittest.skipIf(_testcapi ist Nichts, "requires _testcapi")
     @skip_emscripten_stack_overflow()
     @skip_wasi_stack_overflow()
     def test_super_deep(self):
@@ -1094,7 +1094,7 @@ klasse TestFunctionWithManyArgs(unittest.TestCase):
                 self.assertEqual(l['f'](*range(N)), N//2)
 
 
-@unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
+@unittest.skipIf(_testcapi ist Nichts, 'need _testcapi')
 klasse TestCAPI(unittest.TestCase):
     def test_cfunction_call(self):
         def func(*args, **kwargs):

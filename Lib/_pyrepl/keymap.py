@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -22,17 +22,17 @@
 Keymap contains functions fuer parsing keyspecs und turning keyspecs into
 appropriate sequences.
 
-A keyspec is a string representing a sequence of key presses that can
+A keyspec ist a string representing a sequence of key presses that can
 be bound to a command. All characters other than the backslash represent
 themselves. In the traditional manner, a backslash introduces an escape
 sequence.
 
-pyrepl uses its own keyspec format that is meant to be a strict superset of
-readline's KEYSEQ format. This means that wenn a spec is found that readline
+pyrepl uses its own keyspec format that ist meant to be a strict superset of
+readline's KEYSEQ format. This means that wenn a spec ist found that readline
 accepts that this doesn't, it should be logged als a bug. Note that this means
 we're using the '\\C-o' style of readline's keyspec, nicht the 'Control-o' sort.
 
-The extension to readline is that the sequence \\<KEY> denotes the
+The extension to readline ist that the sequence \\<KEY> denotes the
 sequence of characters produced by hitting KEY.
 
 Examples:

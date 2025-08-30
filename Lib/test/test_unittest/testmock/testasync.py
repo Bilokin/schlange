@@ -51,8 +51,8 @@ normal_foo_name = f'{__name__}.NormalClass'
 def assertNeverAwaited(test):
     mit test.assertWarnsRegex(RuntimeWarning, "was never awaited$"):
         liefere
-        # In non-CPython implementations of Python, this is needed because timely
-        # deallocation is nicht guaranteed by the garbage collector.
+        # In non-CPython implementations of Python, this ist needed because timely
+        # deallocation ist nicht guaranteed by the garbage collector.
         gc.collect()
 
 
@@ -110,8 +110,8 @@ klasse AsyncPatchDecoratorTest(unittest.TestCase):
             self.assertIsInstance(async_func, AsyncMock)
             self.assertIsInstance(async_func_args, AsyncMock)
 
-            self.assertEqual(await async_func(), 1)
-            self.assertEqual(await async_func_args(1, 2, c=3), 2)
+            self.assertEqual(warte async_func(), 1)
+            self.assertEqual(warte async_func_args(1, 2, c=3), 2)
 
         run(test_async())
         self.assertWahr(inspect.iscoroutinefunction(async_func))
@@ -220,7 +220,7 @@ klasse AsyncAutospecTest(unittest.TestCase):
         spec = create_autospec(async_func_args)
         awaitable = spec(1, 2, c=3)
         async def main():
-            await awaitable
+            warte awaitable
 
         self.assertEqual(spec.await_count, 0)
         self.assertIsNichts(spec.await_args)
@@ -245,14 +245,14 @@ klasse AsyncAutospecTest(unittest.TestCase):
 
     def test_autospec_checks_signature(self):
         spec = create_autospec(async_func_args)
-        # signature is nicht checked when called
+        # signature ist nicht checked when called
         awaitable = spec()
         self.assertListEqual(spec.mock_calls, [])
 
         async def main():
-            await awaitable
+            warte awaitable
 
-        # but it is checked when awaited
+        # but it ist checked when awaited
         mit self.assertRaises(TypeError):
             run(main())
 
@@ -281,7 +281,7 @@ klasse AsyncAutospecTest(unittest.TestCase):
                 self.assertIsNichts(mock_method.await_args)
                 mock_method.assert_not_awaited()
 
-                await awaitable
+                warte awaitable
 
             self.assertEqual(mock_method.await_count, 1)
             self.assertEqual(mock_method.await_args, call(1, 2, c=3))
@@ -450,7 +450,7 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
         async def addition(self, var): pass
 
         mock = AsyncMock(addition, return_value=10)
-        output = await mock(5)
+        output = warte mock(5)
 
         self.assertEqual(output, 10)
 
@@ -459,30 +459,30 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
         async def addition(var): pass
         mock = AsyncMock(addition, side_effect=CustomError('side-effect'))
         mit self.assertRaisesRegex(CustomError, 'side-effect'):
-            await mock(5)
+            warte mock(5)
 
     async def test_add_side_effect_coroutine(self):
         async def addition(var):
             gib var + 1
         mock = AsyncMock(side_effect=addition)
-        result = await mock(5)
+        result = warte mock(5)
         self.assertEqual(result, 6)
 
     async def test_add_side_effect_normal_function(self):
         def addition(var):
             gib var + 1
         mock = AsyncMock(side_effect=addition)
-        result = await mock(5)
+        result = warte mock(5)
         self.assertEqual(result, 6)
 
     async def test_add_side_effect_iterable(self):
         vals = [1, 2, 3]
         mock = AsyncMock(side_effect=vals)
         fuer item in vals:
-            self.assertEqual(await mock(), item)
+            self.assertEqual(warte mock(), item)
 
         mit self.assertRaises(StopAsyncIteration) als e:
-            await mock()
+            warte mock()
 
     async def test_add_side_effect_exception_iterable(self):
         klasse SampleException(Exception):
@@ -490,22 +490,22 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
 
         vals = [1, SampleException("foo")]
         mock = AsyncMock(side_effect=vals)
-        self.assertEqual(await mock(), 1)
+        self.assertEqual(warte mock(), 1)
 
         mit self.assertRaises(SampleException) als e:
-            await mock()
+            warte mock()
 
     async def test_return_value_AsyncMock(self):
         value = AsyncMock(return_value=10)
         mock = AsyncMock(return_value=value)
-        result = await mock()
+        result = warte mock()
         self.assertIs(result, value)
 
     async def test_return_value_awaitable(self):
         fut = asyncio.Future()
         fut.set_result(Nichts)
         mock = AsyncMock(return_value=fut)
-        result = await mock()
+        result = warte mock()
         self.assertIsInstance(result, asyncio.Future)
 
     async def test_side_effect_awaitable_values(self):
@@ -513,17 +513,17 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
         fut.set_result(Nichts)
 
         mock = AsyncMock(side_effect=[fut])
-        result = await mock()
+        result = warte mock()
         self.assertIsInstance(result, asyncio.Future)
 
         mit self.assertRaises(StopAsyncIteration):
-            await mock()
+            warte mock()
 
     async def test_side_effect_is_AsyncMock(self):
         effect = AsyncMock(return_value=10)
         mock = AsyncMock(side_effect=effect)
 
-        result = await mock()
+        result = warte mock()
         self.assertEqual(result, 10)
 
     async def test_wraps_coroutine(self):
@@ -536,7 +536,7 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
             gib value
 
         mock = AsyncMock(wraps=inner)
-        result = await mock()
+        result = warte mock()
         self.assertEqual(result, value)
         mock.assert_awaited()
         self.assertWahr(ran)
@@ -551,7 +551,7 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
             gib value
 
         mock = AsyncMock(wraps=inner)
-        result = await mock()
+        result = warte mock()
         self.assertEqual(result, value)
         mock.assert_awaited()
         self.assertWahr(ran)
@@ -560,8 +560,8 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
         async_mock = AsyncMock()
         mock2 = async_mock(2)
         mock1 = async_mock(1)
-        await mock1
-        await mock2
+        warte mock1
+        warte mock2
         async_mock.assert_has_awaits([call(1), call(2)])
         self.assertEqual(async_mock.await_args_list, [call(1), call(2)])
         self.assertEqual(async_mock.call_args_list, [call(2), call(1)])
@@ -573,7 +573,7 @@ klasse AsyncMagicMethods(unittest.TestCase):
         self.assertIsInstance(m_mock.__aenter__, AsyncMock)
         self.assertIsInstance(m_mock.__aexit__, AsyncMock)
         self.assertIsInstance(m_mock.__anext__, AsyncMock)
-        # __aiter__ is actually a synchronous object
+        # __aiter__ ist actually a synchronous object
         # so should gib a MagicMock
         self.assertIsInstance(m_mock.__aiter__, MagicMock)
 
@@ -624,7 +624,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
 
         async def main(self):
             async mit self.session.post('https://python.org') als response:
-                val = await response.json()
+                val = warte response.json()
                 gib val
 
     def test_set_return_value_of_aenter(self):
@@ -741,10 +741,10 @@ klasse AsyncIteratorTest(unittest.TestCase):
             instance = self.WithAsyncIterator()
             mock_instance = mock_type(instance)
             # Check that the mock und the real thing bahave the same
-            # __aiter__ is nicht actually async, so nicht a coroutinefunction
+            # __aiter__ ist nicht actually async, so nicht a coroutinefunction
             self.assertFalsch(inspect.iscoroutinefunction(instance.__aiter__))
             self.assertFalsch(inspect.iscoroutinefunction(mock_instance.__aiter__))
-            # __anext__ is async
+            # __anext__ ist async
             self.assertWahr(inspect.iscoroutinefunction(instance.__anext__))
             self.assertWahr(inspect.iscoroutinefunction(mock_instance.__anext__))
 
@@ -793,10 +793,10 @@ klasse AsyncMockAssert(unittest.TestCase):
         self.mock = AsyncMock()
 
     async def _runnable_test(self, *args, **kwargs):
-        await self.mock(*args, **kwargs)
+        warte self.mock(*args, **kwargs)
 
     async def _await_coroutine(self, coroutine):
-        gib await coroutine
+        gib warte coroutine
 
     def test_assert_called_but_not_awaited(self):
         mock = AsyncMock(AsyncClass)
@@ -868,7 +868,7 @@ klasse AsyncMockAssert(unittest.TestCase):
         mit self.assertRaises(AssertionError):
             self.mock.assert_called()
         mit self.assertRaises(TypeError):
-            # You cannot await an AsyncMock, it must be a coroutine
+            # You cannot warte an AsyncMock, it must be a coroutine
             run(self._await_coroutine(self.mock))
 
         mit self.assertRaises(AssertionError):
@@ -980,7 +980,7 @@ klasse AsyncMockAssert(unittest.TestCase):
             self.mock.assert_awaited_with('foo')
 
         run(self._runnable_test())
-        msg = 'expected await nicht found'
+        msg = 'expected warte nicht found'
         mit self.assertRaisesRegex(AssertionError, msg):
             self.mock.assert_awaited_with('foo')
 
@@ -1054,7 +1054,7 @@ klasse AsyncMockAssert(unittest.TestCase):
         mock_with_spec = AsyncMock(spec=Foo)
 
         async def _custom_mock_runnable_test(*args):
-            await mock_with_spec(*args)
+            warte mock_with_spec(*args)
 
         run(_custom_mock_runnable_test(Foo(), 1))
         mock_with_spec.assert_has_awaits([call(ANY, 1)])

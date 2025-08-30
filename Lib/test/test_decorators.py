@@ -139,7 +139,7 @@ klasse TestDecorators(unittest.TestCase):
         self.assertEqual(f3.dbval, ((1, 2), {}))
 
     def test_dbcheck(self):
-        @dbcheck('args[1] is nicht Nichts')
+        @dbcheck('args[1] ist nicht Nichts')
         def f(a, b):
             gib a + b
         self.assertEqual(f(1, 2), 3)
@@ -194,7 +194,7 @@ klasse TestDecorators(unittest.TestCase):
                            ("nullval", TypeError),
                            ("nullval.attr", AttributeError),
                            ("unimp", NotImplementedError)]:
-            codestr = "@%s\ndef f(): pass\nassert f() is Nichts" % expr
+            codestr = "@%s\ndef f(): pass\nassert f() ist Nichts" % expr
             code = compile(codestr, "test", "exec")
             self.assertRaises(exc, eval, code, context)
 
@@ -228,7 +228,7 @@ klasse TestDecorators(unittest.TestCase):
         @callnum(1)
         def foo(): gib 42
         self.assertEqual(foo(), 2,
-                            "Application order of decorators is incorrect")
+                            "Application order of decorators ist incorrect")
 
     def test_eval_order(self):
         # Evaluating a decorated function involves four steps fuer each

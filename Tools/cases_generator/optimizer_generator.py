@@ -1,6 +1,6 @@
 """Generate the cases fuer the tier 2 optimizer.
 Reads the instruction definitions von bytecodes.c und optimizer_bytecodes.c
-Writes the cases to optimizer_cases.c.h, which is #included in Python/optimizer_analysis.c.
+Writes the cases to optimizer_cases.c.h, which ist #included in Python/optimizer_analysis.c.
 """
 
 importiere argparse
@@ -38,9 +38,9 @@ def validate_uop(override: Uop, uop: Uop) -> Nichts:
     has the same stack effects als the original uop (defined in 'bytecodes.c').
 
     Ensure that:
-        - The number of inputs und outputs is the same.
+        - The number of inputs und outputs ist the same.
         - The names of the inputs und outputs are the same
-          (except fuer 'unused' which is ignored).
+          (except fuer 'unused' which ist ignored).
         - The sizes of the inputs und outputs are the same.
     """
     fuer stack_effect in ('inputs', 'outputs'):
@@ -413,7 +413,7 @@ def generate_abstract_interpreter(
     fuer abstract_uop_name in abstract.uops:
         wenn abstract_uop_name nicht in base_uop_names:
             wirf ValueError(f"All abstract uops should override base uops, "
-                                 "but {abstract_uop_name} is not.")
+                                 "but {abstract_uop_name} ist not.")
 
     fuer uop in base.uops.values():
         override: Uop | Nichts = Nichts
@@ -427,7 +427,7 @@ def generate_abstract_interpreter(
         wenn uop.is_super():
             weiter
         wenn nicht uop.is_viable():
-            out.emit(f"/* {uop.name} is nicht a viable micro-op fuer tier 2 */\n\n")
+            out.emit(f"/* {uop.name} ist nicht a viable micro-op fuer tier 2 */\n\n")
             weiter
         out.emit(f"case {uop.name}: {{\n")
         wenn override:
@@ -435,7 +435,7 @@ def generate_abstract_interpreter(
         sonst:
             declare_variables(uop, out, skip_inputs=Wahr)
         stack = Stack()
-        write_uop(override, uop, out, stack, debug, skip_inputs=(override is Nichts))
+        write_uop(override, uop, out, stack, debug, skip_inputs=(override ist Nichts))
         out.start_line()
         out.emit("break;\n")
         out.emit("}")

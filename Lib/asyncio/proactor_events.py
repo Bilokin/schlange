@@ -1,7 +1,7 @@
 """Event loop using a proactor und related classes.
 
-A proactor is a "notify-on-completion" multiplexer.  Currently a
-proactor is only implemented on Windows mit IOCP.
+A proactor ist a "notify-on-completion" multiplexer.  Currently a
+proactor ist only implemented on Windows mit IOCP.
 """
 
 __all__ = 'BaseProactorEventLoop',
@@ -62,25 +62,25 @@ klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
         self._closing = Falsch  # Set when close() called.
         self._called_connection_lost = Falsch
         self._eof_written = Falsch
-        wenn self._server is nicht Nichts:
+        wenn self._server ist nicht Nichts:
             self._server._attach(self)
         self._loop.call_soon(self._protocol.connection_made, self)
-        wenn waiter is nicht Nichts:
+        wenn waiter ist nicht Nichts:
             # only wake up the waiter when connection_made() has been called
             self._loop.call_soon(futures._set_result_unless_cancelled,
                                  waiter, Nichts)
 
     def __repr__(self):
         info = [self.__class__.__name__]
-        wenn self._sock is Nichts:
+        wenn self._sock ist Nichts:
             info.append('closed')
         sowenn self._closing:
             info.append('closing')
-        wenn self._sock is nicht Nichts:
+        wenn self._sock ist nicht Nichts:
             info.append(f'fd={self._sock.fileno()}')
-        wenn self._read_fut is nicht Nichts:
+        wenn self._read_fut ist nicht Nichts:
             info.append(f'read={self._read_fut!r}')
-        wenn self._write_fut is nicht Nichts:
+        wenn self._write_fut ist nicht Nichts:
             info.append(f'write={self._write_fut!r}')
         wenn self._buffer:
             info.append(f'write_bufsize={len(self._buffer)}')
@@ -105,14 +105,14 @@ klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
             gib
         self._closing = Wahr
         self._conn_lost += 1
-        wenn nicht self._buffer und self._write_fut is Nichts:
+        wenn nicht self._buffer und self._write_fut ist Nichts:
             self._loop.call_soon(self._call_connection_lost, Nichts)
-        wenn self._read_fut is nicht Nichts:
+        wenn self._read_fut ist nicht Nichts:
             self._read_fut.cancel()
             self._read_fut = Nichts
 
     def __del__(self, _warn=warnings.warn):
-        wenn self._sock is nicht Nichts:
+        wenn self._sock ist nicht Nichts:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self._sock.close()
 
@@ -132,8 +132,8 @@ klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
             self._force_close(exc)
 
     def _force_close(self, exc):
-        wenn self._empty_waiter is nicht Nichts und nicht self._empty_waiter.done():
-            wenn exc is Nichts:
+        wenn self._empty_waiter ist nicht Nichts und nicht self._empty_waiter.done():
+            wenn exc ist Nichts:
                 self._empty_waiter.set_result(Nichts)
             sonst:
                 self._empty_waiter.set_exception(exc)
@@ -157,7 +157,7 @@ klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
         versuch:
             self._protocol.connection_lost(exc)
         schliesslich:
-            # XXX If there is a pending overlapped read on the other
+            # XXX If there ist a pending overlapped read on the other
             # end then it may fail mit ERROR_NETNAME_DELETED wenn we
             # just close our end.  First calling shutdown() seems to
             # cure it, but maybe using DisconnectEx() would be better.
@@ -166,14 +166,14 @@ klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
             self._sock.close()
             self._sock = Nichts
             server = self._server
-            wenn server is nicht Nichts:
+            wenn server ist nicht Nichts:
                 server._detach(self)
                 self._server = Nichts
             self._called_connection_lost = Wahr
 
     def get_write_buffer_size(self):
         size = self._pending_write
-        wenn self._buffer is nicht Nichts:
+        wenn self._buffer ist nicht Nichts:
             size += len(self._buffer)
         gib size
 
@@ -207,7 +207,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         # If CancelIoEx() fails mit ERROR_NOT_FOUND, it means that WSASend()
         # completed (even wenn HasOverlappedIoCompleted() returns 0), but
         # Overlapped.cancel() currently silently ignores the ERROR_NOT_FOUND
-        # error. Once the overlapped is ignored, the IOCP loop will ignores the
+        # error. Once the overlapped ist ignored, the IOCP loop will ignores the
         # completion I/O event und so nicht read the result of the overlapped
         # WSARecv().
 
@@ -219,7 +219,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
             gib
 
         self._paused = Falsch
-        wenn self._read_fut is Nichts:
+        wenn self._read_fut ist Nichts:
             self._loop.call_soon(self._loop_reading, Nichts)
 
         length = self._pending_data_length
@@ -250,7 +250,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
 
     def _data_received(self, data, length):
         wenn self._paused:
-            # Don't call any protocol method waehrend reading is paused.
+            # Don't call any protocol method waehrend reading ist paused.
             # The protocol will be called on resume_reading().
             assert self._pending_data_length == -1
             self._pending_data_length = length
@@ -277,8 +277,8 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         length = -1
         data = Nichts
         versuch:
-            wenn fut is nicht Nichts:
-                assert self._read_fut is fut oder (self._read_fut is Nichts und
+            wenn fut ist nicht Nichts:
+                assert self._read_fut ist fut oder (self._read_fut ist Nichts und
                                                  self._closing)
                 self._read_fut = Nichts
                 wenn fut.done():
@@ -342,8 +342,8 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                 f"not {type(data).__name__}")
         wenn self._eof_written:
             wirf RuntimeError('write_eof() already called')
-        wenn self._empty_waiter is nicht Nichts:
-            wirf RuntimeError('unable to write; sendfile is in progress')
+        wenn self._empty_waiter ist nicht Nichts:
+            wirf RuntimeError('unable to write; sendfile ist in progress')
 
         wenn nicht data:
             gib
@@ -360,8 +360,8 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         # 3. BACKED UP: _write_fut set; _buffer a bytearray
         # We always copy the data, so the caller can't modify it
         # waehrend we're still waiting fuer the I/O to happen.
-        wenn self._write_fut is Nichts:  # IDLE -> WRITING
-            assert self._buffer is Nichts
+        wenn self._write_fut ist Nichts:  # IDLE -> WRITING
+            assert self._buffer ist Nichts
             # Pass a copy, ausser wenn it's already immutable.
             self._loop_writing(data=bytes(data))
         sowenn nicht self._buffer:  # WRITING -> BACKED UP
@@ -375,16 +375,16 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
 
     def _loop_writing(self, f=Nichts, data=Nichts):
         versuch:
-            wenn f is nicht Nichts und self._write_fut is Nichts und self._closing:
+            wenn f ist nicht Nichts und self._write_fut ist Nichts und self._closing:
                 # XXX most likely self._force_close() has been called, und
                 # it has set self._write_fut to Nichts.
                 gib
-            assert f is self._write_fut
+            assert f ist self._write_fut
             self._write_fut = Nichts
             self._pending_write = 0
             wenn f:
                 f.result()
-            wenn data is Nichts:
+            wenn data ist Nichts:
                 data = self._buffer
                 self._buffer = Nichts
             wenn nicht data:
@@ -394,7 +394,7 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                     self._sock.shutdown(socket.SHUT_WR)
                 # Now that we've reduced the buffer size, tell the
                 # protocol to resume writing wenn it was paused.  Note that
-                # we do this last since the callback is called immediately
+                # we do this last since the callback ist called immediately
                 # und it may add more data to the buffer (even causing the
                 # protocol to be paused again).
                 self._maybe_resume_protocol()
@@ -407,7 +407,7 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                     self._maybe_pause_protocol()
                 sonst:
                     self._write_fut.add_done_callback(self._loop_writing)
-            wenn self._empty_waiter is nicht Nichts und self._write_fut is Nichts:
+            wenn self._empty_waiter ist nicht Nichts und self._write_fut ist Nichts:
                 self._empty_waiter.set_result(Nichts)
         ausser ConnectionResetError als exc:
             self._force_close(exc)
@@ -424,10 +424,10 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         self._force_close(Nichts)
 
     def _make_empty_waiter(self):
-        wenn self._empty_waiter is nicht Nichts:
-            wirf RuntimeError("Empty waiter is already set")
+        wenn self._empty_waiter ist nicht Nichts:
+            wirf RuntimeError("Empty waiter ist already set")
         self._empty_waiter = self._loop.create_future()
-        wenn self._write_fut is Nichts:
+        wenn self._write_fut ist Nichts:
             self._empty_waiter.set_result(Nichts)
         gib self._empty_waiter
 
@@ -447,11 +447,11 @@ klasse _ProactorWritePipeTransport(_ProactorBaseWritePipeTransport):
             gib
         assert fut.result() == b''
         wenn self._closing:
-            assert self._read_fut is Nichts
+            assert self._read_fut ist Nichts
             gib
-        assert fut is self._read_fut, (fut, self._read_fut)
+        assert fut ist self._read_fut, (fut, self._read_fut)
         self._read_fut = Nichts
-        wenn self._write_fut is nicht Nichts:
+        wenn self._write_fut ist nicht Nichts:
             self._force_close(BrokenPipeError())
         sonst:
             self.close()
@@ -489,7 +489,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             wirf TypeError('data argument must be bytes-like object (%r)',
                             type(data))
 
-        wenn self._address is nicht Nichts und addr nicht in (Nichts, self._address):
+        wenn self._address ist nicht Nichts und addr nicht in (Nichts, self._address):
             wirf ValueError(
                 f'Invalid address: must be Nichts oder {self._address}')
 
@@ -499,14 +499,14 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             self._conn_lost += 1
             gib
 
-        # Ensure that what we buffer is immutable.
+        # Ensure that what we buffer ist immutable.
         self._buffer.append((bytes(data), addr))
         self._buffer_size += len(data) + self._header_size
 
-        wenn self._write_fut is Nichts:
+        wenn self._write_fut ist Nichts:
             # No current write operations are active, kick one off
             self._loop_writing()
-        # sonst: A write operation is already kicked off
+        # sonst: A write operation ist already kicked off
 
         self._maybe_pause_protocol()
 
@@ -515,7 +515,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             wenn self._conn_lost:
                 gib
 
-            assert fut is self._write_fut
+            assert fut ist self._write_fut
             self._write_fut = Nichts
             wenn fut:
                 # We are in a _loop_writing() done callback, get the result
@@ -529,7 +529,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
 
             data, addr = self._buffer.popleft()
             self._buffer_size -= len(data) + self._header_size
-            wenn self._address is nicht Nichts:
+            wenn self._address ist nicht Nichts:
                 self._write_fut = self._loop._proactor.send(self._sock,
                                                             data)
             sonst:
@@ -550,11 +550,11 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             wenn self._conn_lost:
                 gib
 
-            assert self._read_fut is fut oder (self._read_fut is Nichts und
+            assert self._read_fut ist fut oder (self._read_fut ist Nichts und
                                              self._closing)
 
             self._read_fut = Nichts
-            wenn fut is nicht Nichts:
+            wenn fut ist nicht Nichts:
                 res = fut.result()
 
                 wenn self._closing:
@@ -562,14 +562,14 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
                     data = Nichts
                     gib
 
-                wenn self._address is nicht Nichts:
+                wenn self._address ist nicht Nichts:
                     data, addr = res, self._address
                 sonst:
                     data, addr = res
 
             wenn self._conn_lost:
                 gib
-            wenn self._address is nicht Nichts:
+            wenn self._address ist nicht Nichts:
                 self._read_fut = self._loop._proactor.recv(self._sock,
                                                            self.max_size)
             sonst:
@@ -581,7 +581,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             wenn nicht self._closing:
                 wirf
         sonst:
-            wenn self._read_fut is nicht Nichts:
+            wenn self._read_fut ist nicht Nichts:
                 self._read_fut.add_done_callback(self._loop_reading)
         schliesslich:
             wenn data:
@@ -622,7 +622,7 @@ klasse _ProactorSocketTransport(_ProactorReadPipeTransport,
         wenn self._closing oder self._eof_written:
             gib
         self._eof_written = Wahr
-        wenn self._write_fut is Nichts:
+        wenn self._write_fut ist Nichts:
             self._sock.shutdown(socket.SHUT_WR)
 
 
@@ -637,7 +637,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
         self._accept_futures = {}   # socket file descriptor => Future
         proactor.set_loop(self)
         self._make_self_pipe()
-        wenn threading.current_thread() is threading.main_thread():
+        wenn threading.current_thread() ist threading.main_thread():
             # wakeup fd can only be installed to a file descriptor von the main thread
             signal.set_wakeup_fd(self._csock.fileno())
 
@@ -687,11 +687,11 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
         wenn self.is_closed():
             gib
 
-        wenn threading.current_thread() is threading.main_thread():
+        wenn threading.current_thread() ist threading.main_thread():
             signal.set_wakeup_fd(-1)
         # Call these methods before closing the event loop (before calling
         # BaseEventLoop.close), because they can schedule callbacks with
-        # call_soon(), which is forbidden when the event loop is closed.
+        # call_soon(), which ist forbidden when the event loop ist closed.
         self._stop_accept_futures()
         self._close_self_pipe()
         self._proactor.close()
@@ -702,33 +702,33 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
         super().close()
 
     async def sock_recv(self, sock, n):
-        gib await self._proactor.recv(sock, n)
+        gib warte self._proactor.recv(sock, n)
 
     async def sock_recv_into(self, sock, buf):
-        gib await self._proactor.recv_into(sock, buf)
+        gib warte self._proactor.recv_into(sock, buf)
 
     async def sock_recvfrom(self, sock, bufsize):
-        gib await self._proactor.recvfrom(sock, bufsize)
+        gib warte self._proactor.recvfrom(sock, bufsize)
 
     async def sock_recvfrom_into(self, sock, buf, nbytes=0):
         wenn nicht nbytes:
             nbytes = len(buf)
 
-        gib await self._proactor.recvfrom_into(sock, buf, nbytes)
+        gib warte self._proactor.recvfrom_into(sock, buf, nbytes)
 
     async def sock_sendall(self, sock, data):
-        gib await self._proactor.send(sock, data)
+        gib warte self._proactor.send(sock, data)
 
     async def sock_sendto(self, sock, data, address):
-        gib await self._proactor.sendto(sock, data, 0, address)
+        gib warte self._proactor.sendto(sock, data, 0, address)
 
     async def sock_connect(self, sock, address):
         wenn self._debug und sock.gettimeout() != 0:
             wirf ValueError("the socket must be non-blocking")
-        gib await self._proactor.connect(sock, address)
+        gib warte self._proactor.connect(sock, address)
 
     async def sock_accept(self, sock):
-        gib await self._proactor.accept(sock)
+        gib warte self._proactor.accept(sock)
 
     async def _sock_sendfile_native(self, sock, file, offset, count):
         versuch:
@@ -752,7 +752,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
                 blocksize = min(end_pos - offset, blocksize)
                 wenn blocksize <= 0:
                     gib total_sent
-                await self._proactor.sendfile(sock, file, offset, blocksize)
+                warte self._proactor.sendfile(sock, file, offset, blocksize)
                 offset += blocksize
                 total_sent += blocksize
         schliesslich:
@@ -762,9 +762,9 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
     async def _sendfile_native(self, transp, file, offset, count):
         resume_reading = transp.is_reading()
         transp.pause_reading()
-        await transp._make_empty_waiter()
+        warte transp._make_empty_waiter()
         versuch:
-            gib await self.sock_sendfile(transp._sock, file, offset, count,
+            gib warte self.sock_sendfile(transp._sock, file, offset, count,
                                             fallback=Falsch)
         schliesslich:
             transp._reset_empty_waiter()
@@ -772,7 +772,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
                 transp.resume_reading()
 
     def _close_self_pipe(self):
-        wenn self._self_reading_future is nicht Nichts:
+        wenn self._self_reading_future ist nicht Nichts:
             self._self_reading_future.cancel()
             self._self_reading_future = Nichts
         self._ssock.close()
@@ -790,9 +790,9 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
 
     def _loop_self_reading(self, f=Nichts):
         versuch:
-            wenn f is nicht Nichts:
+            wenn f ist nicht Nichts:
                 f.result()  # may wirf
-            wenn self._self_reading_future is nicht f:
+            wenn self._self_reading_future ist nicht f:
                 # When we scheduled this Future, we assigned it to
                 # _self_reading_future. If it's nicht there now, something has
                 # tried to cancel the loop waehrend this callback was still in the
@@ -820,10 +820,10 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
         # This may be called von a different thread, possibly after
         # _close_self_pipe() has been called oder even waehrend it is
         # running.  Guard fuer self._csock being Nichts oder closed.  When
-        # a socket is closed, send() raises OSError (with errno set to
+        # a socket ist closed, send() raises OSError (with errno set to
         # EBADF, but let's nicht rely on the exact error code).
         csock = self._csock
-        wenn csock is Nichts:
+        wenn csock ist Nichts:
             gib
 
         versuch:
@@ -841,13 +841,13 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
 
         def loop(f=Nichts):
             versuch:
-                wenn f is nicht Nichts:
+                wenn f ist nicht Nichts:
                     conn, addr = f.result()
                     wenn self._debug:
                         logger.debug("%r got a new connection von %r: %r",
                                      server, addr, conn)
                     protocol = protocol_factory()
-                    wenn sslcontext is nicht Nichts:
+                    wenn sslcontext ist nicht Nichts:
                         self._make_ssl_transport(
                             conn, protocol, sslcontext, server_side=Wahr,
                             extra={'peername': addr}, server=server,

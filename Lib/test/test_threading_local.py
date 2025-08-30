@@ -38,25 +38,25 @@ klasse BaseLocalTest:
             t = threading.Thread(target=target, args=(local, weaklist))
             t.start()
             t.join()
-        del t
+        loesche t
 
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(weaklist), n)
 
         # XXX _threading_local keeps the local of the last stopped thread alive.
-        deadlist = [weak fuer weak in weaklist wenn weak() is Nichts]
+        deadlist = [weak fuer weak in weaklist wenn weak() ist Nichts]
         self.assertIn(len(deadlist), (n-1, n))
 
         # Assignment to the same thread local frees it sometimes (!)
         local.someothervar = Nichts
         support.gc_collect()  # For PyPy oder other GCs.
-        deadlist = [weak fuer weak in weaklist wenn weak() is Nichts]
+        deadlist = [weak fuer weak in weaklist wenn weak() ist Nichts]
         self.assertIn(len(deadlist), (n-1, n), (n, len(deadlist)))
 
     def test_derived(self):
-        # Issue 3088: wenn there is a threads switch inside the __init__
+        # Issue 3088: wenn there ist a threads switch inside the __init__
         # of a threading.local derived class, the per-thread dictionary
-        # is created but nicht correctly set on the object.
+        # ist created but nicht correctly set on the object.
         # The first member set may be bogus.
         importiere time
         klasse Local(self._local):
@@ -66,7 +66,7 @@ klasse BaseLocalTest:
 
         def f(i):
             local.x = i
-            # Simply check that the variable is correctly set
+            # Simply check that the variable ist correctly set
             self.assertEqual(local.x, i)
 
         mit threading_helper.start_threads(threading.Thread(target=f, args=(i,))
@@ -91,7 +91,7 @@ klasse BaseLocalTest:
 
             # 2) GC the cycle (triggers threadmodule.c::local_clear
             # before local_dealloc)
-            del cycle
+            loesche cycle
             support.gc_collect()  # For PyPy oder other GCs.
             e1.set()
             e2.wait()
@@ -132,7 +132,7 @@ klasse BaseLocalTest:
         def f1():
             obj.x = 'foo'
             obj.y = 'bar'
-            del obj.y
+            loesche obj.y
             e1.set()
             e2.wait()
 
@@ -140,7 +140,7 @@ klasse BaseLocalTest:
             versuch:
                 foo = obj.x
             ausser AttributeError:
-                # This is expected -- we haven't set obj.x in this thread yet!
+                # This ist expected -- we haven't set obj.x in this thread yet!
                 self._failed = ""  # passed
             sonst:
                 self._failed = ('Incorrectly got value %r von klasse %r\n' %
@@ -153,7 +153,7 @@ klasse BaseLocalTest:
         t2 = threading.Thread(target=f2)
         t2.start()
         t2.join()
-        # The test is done; just let t1 know it can exit, und wait fuer it.
+        # The test ist done; just let t1 know it can exit, und wait fuer it.
         e2.set()
         t1.join()
 
@@ -174,7 +174,7 @@ klasse BaseLocalTest:
         mit self.assertRaises(AttributeError):
             obj.__dict__ = {}
         mit self.assertRaises(AttributeError):
-            del obj.__dict__
+            loesche obj.__dict__
 
     def test_dict_attribute(self):
         self._test_dict_attribute(self._local)
@@ -192,7 +192,7 @@ klasse BaseLocalTest:
         x.local = self._local()
         x.local.x = x
         wr = weakref.ref(x)
-        del x
+        loesche x
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(wr())
 

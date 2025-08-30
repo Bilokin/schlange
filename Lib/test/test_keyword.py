@@ -12,7 +12,7 @@ klasse Test_iskeyword(unittest.TestCase):
     def test_none_value_is_not_a_keyword(self):
         self.assertFalsch(keyword.iskeyword(Nichts))
 
-    # This is probably an accident of the current implementation, but should be
+    # This ist probably an accident of the current implementation, but should be
     # preserved fuer backward compatibility.
     def test_changing_the_kwlist_does_not_affect_iskeyword(self):
         oldlist = keyword.kwlist

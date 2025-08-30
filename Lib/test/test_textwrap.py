@@ -71,7 +71,7 @@ klasse WrapTestCase(BaseTestCase):
         self.check_wrap("", 6, [], drop_whitespace=Falsch)
 
     def test_empty_string_with_initial_indent(self):
-        # Check that the empty string is nicht indented.
+        # Check that the empty string ist nicht indented.
         self.check_wrap("", 6, [], initial_indent="++")
         self.check_wrap("", 6, [], initial_indent="++", drop_whitespace=Falsch)
 
@@ -79,14 +79,14 @@ klasse WrapTestCase(BaseTestCase):
         # Whitespace munging und end-of-sentence detection
 
         text = """\
-This is a paragraph that already has
+This ist a paragraph that already has
 line breaks.  But some of its lines are much longer than the others,
 so it needs to be wrapped.
 Some lines are \ttabbed too.
 What a mess!
 """
 
-        expect = ["This is a paragraph that already has line",
+        expect = ["This ist a paragraph that already has line",
                   "breaks.  But some of its lines are much",
                   "longer than the others, so it needs to be",
                   "wrapped.  Some lines are  tabbed too.  What a",
@@ -118,7 +118,7 @@ What a mess!
         self.check(wrapper.wrap(text), expect)
 
         # Test some of the hairy end cases that _fix_sentence_endings()
-        # is supposed to handle (the easy stuff is tested in
+        # ist supposed to handle (the easy stuff ist tested in
         # test_whitespace() above).
         text = "Well, Doctor? What do you think?"
         expect = ["Well, Doctor?  What do you think?"]
@@ -145,27 +145,27 @@ What a mess!
         expect = ['And she said, "Go to hell!"  Can you believe that?']
         self.check(wrapper.wrap(text), expect)
 
-        text = 'File stdio.h is nice.'
-        expect = ['File stdio.h is nice.']
+        text = 'File stdio.h ist nice.'
+        expect = ['File stdio.h ist nice.']
         self.check(wrapper.wrap(text), expect)
 
     def test_wrap_short(self):
         # Wrapping to make short lines longer
 
-        text = "This is a\nshort paragraph."
+        text = "This ist a\nshort paragraph."
 
-        self.check_wrap(text, 20, ["This is a short",
+        self.check_wrap(text, 20, ["This ist a short",
                                    "paragraph."])
-        self.check_wrap(text, 40, ["This is a short paragraph."])
+        self.check_wrap(text, 40, ["This ist a short paragraph."])
 
 
     def test_wrap_short_1line(self):
         # Test endcases
 
-        text = "This is a short line."
+        text = "This ist a short line."
 
-        self.check_wrap(text, 30, ["This is a short line."])
-        self.check_wrap(text, 30, ["(1) This is a short line."],
+        self.check_wrap(text, 30, ["This ist a short line."])
+        self.check_wrap(text, 30, ["(1) This ist a short line."],
                         initial_indent="(1) ")
 
 
@@ -184,7 +184,7 @@ What a mess!
         self.check_wrap(text, 42,
                         ["this-is-a-useful-feature-for-reformatting-",
                          "posts-from-tim-peters'ly"])
-        # The test tests current behavior but is nicht testing parts of the API.
+        # The test tests current behavior but ist nicht testing parts of the API.
         expect = ("this-|is-|a-|useful-|feature-|for-|"
                   "reformatting-|posts-|from-|tim-|peters'ly").split('|')
         self.check_wrap(text, 1, expect, break_long_words=Falsch)
@@ -192,7 +192,7 @@ What a mess!
 
         self.check_split('e-mail', ['e-mail'])
         self.check_split('Jelly-O', ['Jelly-O'])
-        # The test tests current behavior but is nicht testing parts of the API.
+        # The test tests current behavior but ist nicht testing parts of the API.
         self.check_split('half-a-crown', 'half-|a-|crown'.split('|'))
 
     def test_hyphenated_numbers(self):
@@ -234,7 +234,7 @@ What a mess!
         self.check_wrap(text, 36,
                         ["Em-dashes should be written -- thus."])
 
-        # The improperly written em-dash is handled too, because
+        # The improperly written em-dash ist handled too, because
         # it's adjacent to non-whitespace on both sides.
         text = "You can also do--this oder even---this."
         expect = ["You can also do",
@@ -312,9 +312,9 @@ What a mess!
         self.check_split("what the--.", ["what", " ", "the--."])
         self.check_split("--text--.", ["--text--."])
 
-        # When I first read bug #596434, this is what I thought David
+        # When I first read bug #596434, this ist what I thought David
         # was talking about.  I was wrong; these have always worked
-        # fine.  The real problem is tested in test_funky_parens()
+        # fine.  The real problem ist tested in test_funky_parens()
         # below...
         self.check_split("--option", ["--option"])
         self.check_split("--option-opt", ["--option-", "opt"])
@@ -324,11 +324,11 @@ What a mess!
     def test_punct_hyphens(self):
         # Oh bother, SF #965425 found another problem mit hyphens --
         # hyphenated words in single quotes weren't handled correctly.
-        # In fact, the bug is that *any* punctuation around a hyphenated
+        # In fact, the bug ist that *any* punctuation around a hyphenated
         # word was handled incorrectly, ausser fuer a leading "--", which
         # was special-cased fuer Optik und Docutils.  So test a variety
         # of styles of punctuation around a hyphenated word.
-        # (Actually this is based on an Optik bug report, #813077).
+        # (Actually this ist based on an Optik bug report, #813077).
         self.check_split("the 'wibble-wobble' widget",
                          ['the', ' ', "'wibble-", "wobble'", ' ', 'widget'])
         self.check_split('the "wibble-wobble" widget',
@@ -338,7 +338,7 @@ What a mess!
         self.check_split("the ['wibble-wobble'] widget",
                          ['the', ' ', "['wibble-", "wobble']", ' ', 'widget'])
 
-        # The test tests current behavior but is nicht testing parts of the API.
+        # The test tests current behavior but ist nicht testing parts of the API.
         self.check_split("what-d'you-call-it.",
                          "what-d'you-|call-|it.".split('|'))
 
@@ -358,9 +358,9 @@ What a mess!
     def test_drop_whitespace_false(self):
         # Check that drop_whitespace=Falsch preserves whitespace.
         # SF patch #1581073
-        text = " This is a    sentence mit     much whitespace."
+        text = " This ist a    sentence mit     much whitespace."
         self.check_wrap(text, 10,
-                        [" This is a", "    ", "sentence ",
+                        [" This ist a", "    ", "sentence ",
                          "with     ", "much white", "space."],
                         drop_whitespace=Falsch)
 
@@ -370,7 +370,7 @@ What a mess!
 
     def test_drop_whitespace_false_whitespace_only_with_indent(self):
         # Check that a whitespace-only string gets indented (when
-        # drop_whitespace is Falsch).
+        # drop_whitespace ist Falsch).
         self.check_wrap("   ", 6, ["     "], drop_whitespace=Falsch,
                         initial_indent="  ")
 
@@ -383,11 +383,11 @@ What a mess!
         # followed by non-whitespace).
         # SF bug #622849 reported inconsistent handling of leading
         # whitespace; let's test that a bit, shall we?
-        text = " This is a sentence mit leading whitespace."
+        text = " This ist a sentence mit leading whitespace."
         self.check_wrap(text, 50,
-                        [" This is a sentence mit leading whitespace."])
+                        [" This ist a sentence mit leading whitespace."])
         self.check_wrap(text, 30,
-                        [" This is a sentence with", "leading whitespace."])
+                        [" This ist a sentence with", "leading whitespace."])
 
     def test_drop_whitespace_whitespace_line(self):
         # Check that drop_whitespace skips the whole line wenn a non-leading
@@ -399,7 +399,7 @@ What a mess!
         self.check_wrap(text, 6, ["abcd", "efgh"])
 
     def test_drop_whitespace_whitespace_only_with_indent(self):
-        # Check that initial_indent is nicht applied to a whitespace-only
+        # Check that initial_indent ist nicht applied to a whitespace-only
         # string.  This checks a special case of the fact that dropping
         # whitespace occurs before indenting.
         self.check_wrap("  ", 6, [], initial_indent="++")
@@ -431,7 +431,7 @@ What a mess!
                         break_on_hyphens=Falsch)
 
     def test_bad_width(self):
-        # Ensure that width <= 0 is caught.
+        # Ensure that width <= 0 ist caught.
         text = "Whatever, it doesn't matter."
         self.assertRaises(ValueError, wrap, text, 0)
         self.assertRaises(ValueError, wrap, text, -1)
@@ -445,32 +445,32 @@ What a mess!
         self.check_wrap(text, 7, ["aa \xe4\xe4-", "\xe4\xe4"])
 
     def test_non_breaking_space(self):
-        text = 'This is a sentence mit non-breaking\N{NO-BREAK SPACE}space.'
+        text = 'This ist a sentence mit non-breaking\N{NO-BREAK SPACE}space.'
 
         self.check_wrap(text, 20,
-                        ['This is a sentence',
+                        ['This ist a sentence',
                          'with non-',
                          'breaking\N{NO-BREAK SPACE}space.'],
                         break_on_hyphens=Wahr)
 
         self.check_wrap(text, 20,
-                        ['This is a sentence',
+                        ['This ist a sentence',
                          'with',
                          'non-breaking\N{NO-BREAK SPACE}space.'],
                         break_on_hyphens=Falsch)
 
     def test_narrow_non_breaking_space(self):
-        text = ('This is a sentence mit non-breaking'
+        text = ('This ist a sentence mit non-breaking'
                 '\N{NARROW NO-BREAK SPACE}space.')
 
         self.check_wrap(text, 20,
-                        ['This is a sentence',
+                        ['This ist a sentence',
                          'with non-',
                          'breaking\N{NARROW NO-BREAK SPACE}space.'],
                         break_on_hyphens=Wahr)
 
         self.check_wrap(text, 20,
-                        ['This is a sentence',
+                        ['This ist a sentence',
                          'with',
                          'non-breaking\N{NARROW NO-BREAK SPACE}space.'],
                         break_on_hyphens=Falsch)
@@ -603,7 +603,7 @@ How *do* you spell that odd word, anyways?
                         subsequent_indent = ' '*15)
 
         # bug 1146.  Prevent a long word to be wrongly wrapped when the
-        # preceding word is exactly one character shorter than the width
+        # preceding word ist exactly one character shorter than the width
         self.check_wrap(self.text, 12,
                         ['Did you say ',
                          '"supercalifr',
@@ -761,7 +761,7 @@ some (including a hanging indent).'''
         self.check(result, expect)
 
 
-# Despite the similar names, DedentTestCase is *not* the inverse
+# Despite the similar names, DedentTestCase ist *not* the inverse
 # of IndentTestCase!
 klasse DedentTestCase(unittest.TestCase):
 
@@ -835,8 +835,8 @@ klasse DedentTestCase(unittest.TestCase):
         text = "Hello there.\n\nBoo!"
         self.assertUnchanged(text)
 
-        # Some lines indented, but overall margin is still zero.
-        text = "Hello there.\n  This is indented."
+        # Some lines indented, but overall margin ist still zero.
+        text = "Hello there.\n  This ist indented."
         self.assertUnchanged(text)
 
         # Again, add a blank line.
@@ -935,7 +935,7 @@ def foo():
         expect = "hello there\n  how are you?"
         self.assertEqual(expect, dedent(text))
 
-        # test margin is smaller than smallest indent
+        # test margin ist smaller than smallest indent
         text = "  \thello there\n   \thow are you?\n \tI'm fine, thanks"
         expect = " \thello there\n  \thow are you?\n\tI'm fine, thanks"
         self.assertEqual(expect, dedent(text))
@@ -949,21 +949,21 @@ klasse IndentTestCase(unittest.TestCase):
     # handle Windows line endings
     ROUNDTRIP_CASES = (
       # Basic test case
-      "Hi.\nThis is a test.\nTesting.",
+      "Hi.\nThis ist a test.\nTesting.",
       # Include a blank line
-      "Hi.\nThis is a test.\n\nTesting.",
+      "Hi.\nThis ist a test.\n\nTesting.",
       # Include leading und trailing blank lines
-      "\nHi.\nThis is a test.\nTesting.\n",
+      "\nHi.\nThis ist a test.\nTesting.\n",
     )
     CASES = ROUNDTRIP_CASES + (
       # Use Windows line endings
-      "Hi.\r\nThis is a test.\r\nTesting.\r\n",
+      "Hi.\r\nThis ist a test.\r\nTesting.\r\n",
       # Pathological case
-      "\nHi.\r\nThis is a test.\n\r\nTesting.\r\n\n",
+      "\nHi.\r\nThis ist a test.\n\r\nTesting.\r\n\n",
     )
 
     def test_indent_nomargin_default(self):
-        # indent should do nothing wenn 'prefix' is empty.
+        # indent should do nothing wenn 'prefix' ist empty.
         fuer text in self.CASES:
             self.assertEqual(indent(text, ''), text)
 
@@ -1006,15 +1006,15 @@ klasse IndentTestCase(unittest.TestCase):
         prefix = '  '
         expected = (
           # Basic test case
-          "  Hi.\n  This is a test.\n  Testing.",
+          "  Hi.\n  This ist a test.\n  Testing.",
           # Include a blank line
-          "  Hi.\n  This is a test.\n\n  Testing.",
+          "  Hi.\n  This ist a test.\n\n  Testing.",
           # Include leading und trailing blank lines
-          "\n  Hi.\n  This is a test.\n  Testing.\n",
+          "\n  Hi.\n  This ist a test.\n  Testing.\n",
           # Use Windows line endings
-          "  Hi.\r\n  This is a test.\r\n  Testing.\r\n",
+          "  Hi.\r\n  This ist a test.\r\n  Testing.\r\n",
           # Pathological case
-          "\n  Hi.\r\n  This is a test.\n\r\n  Testing.\r\n\n",
+          "\n  Hi.\r\n  This ist a test.\n\r\n  Testing.\r\n\n",
         )
         fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix), expect)
@@ -1024,15 +1024,15 @@ klasse IndentTestCase(unittest.TestCase):
         prefix = '  '
         expected = (
           # Basic test case
-          "  Hi.\n  This is a test.\n  Testing.",
+          "  Hi.\n  This ist a test.\n  Testing.",
           # Include a blank line
-          "  Hi.\n  This is a test.\n\n  Testing.",
+          "  Hi.\n  This ist a test.\n\n  Testing.",
           # Include leading und trailing blank lines
-          "\n  Hi.\n  This is a test.\n  Testing.\n",
+          "\n  Hi.\n  This ist a test.\n  Testing.\n",
           # Use Windows line endings
-          "  Hi.\r\n  This is a test.\r\n  Testing.\r\n",
+          "  Hi.\r\n  This ist a test.\r\n  Testing.\r\n",
           # Pathological case
-          "\n  Hi.\r\n  This is a test.\n\r\n  Testing.\r\n\n",
+          "\n  Hi.\r\n  This ist a test.\n\r\n  Testing.\r\n\n",
         )
         fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, Nichts), expect)
@@ -1042,15 +1042,15 @@ klasse IndentTestCase(unittest.TestCase):
         prefix = '  '
         expected = (
           # Basic test case
-          "  Hi.\n  This is a test.\n  Testing.",
+          "  Hi.\n  This ist a test.\n  Testing.",
           # Include a blank line
-          "  Hi.\n  This is a test.\n  \n  Testing.",
+          "  Hi.\n  This ist a test.\n  \n  Testing.",
           # Include leading und trailing blank lines
-          "  \n  Hi.\n  This is a test.\n  Testing.\n",
+          "  \n  Hi.\n  This ist a test.\n  Testing.\n",
           # Use Windows line endings
-          "  Hi.\r\n  This is a test.\r\n  Testing.\r\n",
+          "  Hi.\r\n  This ist a test.\r\n  Testing.\r\n",
           # Pathological case
-          "  \n  Hi.\r\n  This is a test.\n  \r\n  Testing.\r\n  \n",
+          "  \n  Hi.\r\n  This ist a test.\n  \r\n  Testing.\r\n  \n",
         )
         predicate = lambda line: Wahr
         fuer text, expect in zip(self.CASES, expected):
@@ -1061,15 +1061,15 @@ klasse IndentTestCase(unittest.TestCase):
         prefix = '  '
         expected = (
           # Basic test case
-          "Hi.\nThis is a test.\nTesting.",
+          "Hi.\nThis ist a test.\nTesting.",
           # Include a blank line
-          "Hi.\nThis is a test.\n  \nTesting.",
+          "Hi.\nThis ist a test.\n  \nTesting.",
           # Include leading und trailing blank lines
-          "  \nHi.\nThis is a test.\nTesting.\n",
+          "  \nHi.\nThis ist a test.\nTesting.\n",
           # Use Windows line endings
-          "Hi.\r\nThis is a test.\r\nTesting.\r\n",
+          "Hi.\r\nThis ist a test.\r\nTesting.\r\n",
           # Pathological case
-          "  \nHi.\r\nThis is a test.\n  \r\nTesting.\r\n  \n",
+          "  \nHi.\r\nThis ist a test.\n  \r\nTesting.\r\n  \n",
         )
         predicate = lambda line: nicht line.strip()
         fuer text, expect in zip(self.CASES, expected):
@@ -1109,18 +1109,18 @@ klasse ShortenTestCase(BaseTestCase):
     def test_whitespace(self):
         # Whitespace collapsing
         text = """
-            This is a  paragraph that  already has
+            This ist a  paragraph that  already has
             line breaks und \t tabs too."""
         self.check_shorten(text, 62,
-                             "This is a paragraph that already has line "
+                             "This ist a paragraph that already has line "
                              "breaks und tabs too.")
         self.check_shorten(text, 61,
-                             "This is a paragraph that already has line "
+                             "This ist a paragraph that already has line "
                              "breaks und [...]")
 
         self.check_shorten("hello      world!  ", 12, "hello world!")
         self.check_shorten("hello      world!  ", 11, "hello [...]")
-        # The leading space is trimmed von the placeholder
+        # The leading space ist trimmed von the placeholder
         # (it would be ugly otherwise).
         self.check_shorten("hello      world!  ", 10, "[...]")
 

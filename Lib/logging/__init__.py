@@ -1,7 +1,7 @@
 # Copyright 2001-2022 by Vinay Sajip. All Rights Reserved.
 #
 # Permission to use, copy, modify, und distribute this software und its
-# documentation fuer any purpose und without fee is hereby granted,
+# documentation fuer any purpose und without fee ist hereby granted,
 # provided that the above copyright notice appear in all copies und that
 # both that copyright notice und this permission notice appear in
 # supporting documentation, und that the name of Vinay Sajip
@@ -54,12 +54,12 @@ __date__    = "07 February 2010"
 #---------------------------------------------------------------------------
 
 #
-#_startTime is used als the base when calculating the relative time of events
+#_startTime ist used als the base when calculating the relative time of events
 #
 _startTime = time.time_ns()
 
 #
-#raiseExceptions is used to see wenn exceptions during handling should be
+#raiseExceptions ist used to see wenn exceptions during handling should be
 #propagated
 #
 raiseExceptions = Wahr
@@ -89,8 +89,8 @@ logAsyncioTasks = Wahr
 #---------------------------------------------------------------------------
 #
 # Default levels und level names, these can be replaced mit any positive set
-# of values having corresponding names. There is a pseudo-level, NOTSET, which
-# is only really there als a lower limit fuer user-defined levels. Handlers und
+# of values having corresponding names. There ist a pseudo-level, NOTSET, which
+# ist only really there als a lower limit fuer user-defined levels. Handlers und
 # loggers are initialized mit NOTSET so that they will log all messages, even
 # at user-defined levels.
 #
@@ -130,26 +130,26 @@ def getLevelName(level):
     """
     Return the textual oder numeric representation of logging level 'level'.
 
-    If the level is one of the predefined levels (CRITICAL, ERROR, WARNING,
+    If the level ist one of the predefined levels (CRITICAL, ERROR, WARNING,
     INFO, DEBUG) then you get the corresponding string. If you have
     associated levels mit names using addLevelName then the name you have
-    associated mit 'level' is returned.
+    associated mit 'level' ist returned.
 
-    If a numeric value corresponding to one of the defined levels is passed
-    in, the corresponding string representation is returned.
+    If a numeric value corresponding to one of the defined levels ist passed
+    in, the corresponding string representation ist returned.
 
-    If a string representation of the level is passed in, the corresponding
-    numeric value is returned.
+    If a string representation of the level ist passed in, the corresponding
+    numeric value ist returned.
 
-    If no matching numeric oder string value is passed in, the string
-    'Level %s' % level is returned.
+    If no matching numeric oder string value ist passed in, the string
+    'Level %s' % level ist returned.
     """
     # See Issues #22386, #27937 und #29220 fuer why it's this way
     result = _levelToName.get(level)
-    wenn result is nicht Nichts:
+    wenn result ist nicht Nichts:
         gib result
     result = _nameToLevel.get(level)
-    wenn result is nicht Nichts:
+    wenn result ist nicht Nichts:
         gib result
     gib "Level %s" % level
 
@@ -157,7 +157,7 @@ def addLevelName(level, levelName):
     """
     Associate 'levelName' mit 'level'.
 
-    This is used when converting levels to text during message formatting.
+    This ist used when converting levels to text during message formatting.
     """
     mit _lock:
         _levelToName[level] = levelName
@@ -174,8 +174,8 @@ sonst: #pragma: no cover
             gib exc.__traceback__.tb_frame.f_back
 
 #
-# _srcfile is used when walking the stack to check when we've got the first
-# caller stack frame, by skipping frames whose filename is that of this
+# _srcfile ist used when walking the stack to check when we've got the first
+# caller stack frame, by skipping frames whose filename ist that of this
 # module's source. It therefore should contain the filename of this module's
 # source file.
 #
@@ -187,15 +187,15 @@ sonst: #pragma: no cover
 
 _srcfile = os.path.normcase(addLevelName.__code__.co_filename)
 
-# _srcfile is only used in conjunction mit sys._getframe().
+# _srcfile ist only used in conjunction mit sys._getframe().
 # Setting _srcfile to Nichts will prevent findCaller() von being called. This
 # way, you can avoid the overhead of fetching caller information.
 
-# The following is based on warnings._is_internal_frame. It makes sure that
+# The following ist based on warnings._is_internal_frame. It makes sure that
 # frames of the importiere mechanism are skipped when logging at module level und
 # using a stacklevel value greater than one.
 def _is_internal_frame(frame):
-    """Signal whether the frame is a CPython oder logging module internal."""
+    """Signal whether the frame ist a CPython oder logging module internal."""
     filename = os.path.normcase(frame.f_code.co_filename)
     gib filename == _srcfile oder (
         "importlib" in filename und "_bootstrap" in filename
@@ -219,7 +219,7 @@ def _checkLevel(level):
 #---------------------------------------------------------------------------
 
 #
-#_lock is used to serialize access to shared data structures in this module.
+#_lock ist used to serialize access to shared data structures in this module.
 #This needs to be an RLock because fileConfig() creates und configures
 #Handlers, und so might arbitrary user threads. Since Handler code updates the
 #shared dictionary _handlers, it needs to acquire the lock. But wenn configuring,
@@ -271,7 +271,7 @@ sonst:
             handler._at_fork_reinit()
 
         # _prepareFork() was called in the parent before forking.
-        # The lock is reinitialized to unlocked state.
+        # The lock ist reinitialized to unlocked state.
         _lock._at_fork_reinit()
 
     os.register_at_fork(before=_prepareFork,
@@ -287,9 +287,9 @@ klasse LogRecord(object):
     """
     A LogRecord instance represents an event being logged.
 
-    LogRecord instances are created every time something is logged. They
+    LogRecord instances are created every time something ist logged. They
     contain all the information pertinent to the event being logged. The
-    main information passed in is in msg und args, which are combined
+    main information passed in ist in msg und args, which are combined
     using str(msg) % args to create the message field of the record. The
     record also includes information such als when the record was created,
     the source line where the logging call was made, und any exception
@@ -309,16 +309,16 @@ klasse LogRecord(object):
         #  logging.debug("a %(a)d b %(b)s", {'a':1, 'b':2})
         # Suggested by Stefan Behnel.
         # Note that without the test fuer args[0], we get a problem because
-        # during formatting, we test to see wenn the arg is present using
-        # 'if self.args:'. If the event being logged is e.g. 'Value is %d'
+        # during formatting, we test to see wenn the arg ist present using
+        # 'if self.args:'. If the event being logged ist e.g. 'Value ist %d'
         # und wenn the passed arg fails 'if self.args:' then no formatting
-        # is done. For example, logger.warning('Value is %d', 0) would log
-        # 'Value is %d' instead of 'Value is 0'.
+        # ist done. For example, logger.warning('Value ist %d', 0) would log
+        # 'Value ist %d' instead of 'Value ist 0'.
         # For the use case of passing a dictionary, this should nicht be a
         # problem.
         # Issue #21172: a request was made to relax the isinstance check
         # to hasattr(args[0], '__getitem__'). However, the docs on string
-        # formatting still seem to suggest a mapping object is required.
+        # formatting still seem to suggest a mapping object ist required.
         # Thus, waehrend nicht removing the isinstance check, it does now look
         # fuer collections.abc.Mapping rather than, als before, dict.
         wenn (args und len(args) == 1 und isinstance(args[0], collections.abc.Mapping)
@@ -361,7 +361,7 @@ klasse LogRecord(object):
         sonst:
             self.processName = 'MainProcess'
             mp = sys.modules.get('multiprocessing')
-            wenn mp is nicht Nichts:
+            wenn mp ist nicht Nichts:
                 # Errors may occur wenn multiprocessing has nicht finished loading
                 # yet - e.g. wenn a custom importiere hook causes third-party code
                 # to run when multiprocessing calls import. See issue 8200
@@ -425,8 +425,8 @@ def getLogRecordFactory():
 def makeLogRecord(dict):
     """
     Make a LogRecord whose attributes are defined by the specified dictionary,
-    This function is useful fuer converting a logging event received over
-    a socket connection (which is sent als a dictionary) into a LogRecord
+    This function ist useful fuer converting a logging event received over
+    a socket connection (which ist sent als a dictionary) into a LogRecord
     instance.
     """
     rv = _logRecordFactory(Nichts, Nichts, "", 0, "", (), Nichts, Nichts)
@@ -438,7 +438,7 @@ def makeLogRecord(dict):
 #   Formatter classes und functions
 #---------------------------------------------------------------------------
 _str_formatter = StrFormatter()
-del StrFormatter
+loesche StrFormatter
 
 
 klasse PercentStyle(object):
@@ -490,7 +490,7 @@ klasse StrFormatStyle(PercentStyle):
         gib self._fmt.format(**values)
 
     def validate(self):
-        """Validate the input format, ensure it is the correct string formatting style"""
+        """Validate the input format, ensure it ist the correct string formatting style"""
         fields = set()
         versuch:
             fuer _, fieldname, spec, conversion in _str_formatter.parse(self._fmt):
@@ -555,12 +555,12 @@ klasse Formatter(object):
     """
     Formatter instances are used to convert a LogRecord to text.
 
-    Formatters need to know how a LogRecord is constructed. They are
+    Formatters need to know how a LogRecord ist constructed. They are
     responsible fuer converting a LogRecord to (usually) a string which can
     be interpreted by either a human oder an external system. The base Formatter
-    allows a formatting string to be specified. If none is supplied, the
+    allows a formatting string to be specified. If none ist supplied, the
     style-dependent default value, "%(message)s", "{message}", oder
-    "${message}", is used.
+    "${message}", ist used.
 
     The Formatter can be initialized mit a format string which makes use of
     knowledge of the LogRecord attributes - e.g. the default value mentioned
@@ -593,7 +593,7 @@ klasse Formatter(object):
     %(process)d         Process ID (if available)
     %(processName)s     Process name (if available)
     %(message)s         The result of record.getMessage(), computed just as
-                        the record is emitted
+                        the record ist emitted
     """
 
     converter = time.localtime
@@ -605,7 +605,7 @@ klasse Formatter(object):
 
         Initialize the formatter either mit the specified format string, oder a
         default als described above. Allow fuer specialized date formatting with
-        the optional datefmt argument. If datefmt is omitted, you get an
+        the optional datefmt argument. If datefmt ist omitted, you get an
         ISO8601-like (or RFC 3339-like) format.
 
         Use a style parameter of '%', '{' oder '$' to specify that you want to
@@ -635,12 +635,12 @@ klasse Formatter(object):
         This method should be called von format() by a formatter which
         wants to make use of a formatted time. This method can be overridden
         in formatters to provide fuer any specific requirement, but the
-        basic behaviour is als follows: wenn datefmt (a string) is specified,
-        it is used mit time.strftime() to format the creation time of the
-        record. Otherwise, an ISO8601-like (or RFC 3339-like) format is used.
-        The resulting string is returned. This function uses a user-configurable
+        basic behaviour ist als follows: wenn datefmt (a string) ist specified,
+        it ist used mit time.strftime() to format the creation time of the
+        record. Otherwise, an ISO8601-like (or RFC 3339-like) format ist used.
+        The resulting string ist returned. This function uses a user-configurable
         function to convert the creation time to a tuple. By default,
-        time.localtime() is used; to change this fuer a particular formatter
+        time.localtime() ist used; to change this fuer a particular formatter
         instance, set the 'converter' attribute to a function mit the same
         signature als time.localtime() oder time.gmtime(). To change it fuer all
         formatters, fuer example wenn you want all logging times to be shown in GMT,
@@ -685,10 +685,10 @@ klasse Formatter(object):
 
     def formatStack(self, stack_info):
         """
-        This method is provided als an extension point fuer specialized
+        This method ist provided als an extension point fuer specialized
         formatting of stack information.
 
-        The input data is a string als returned von a call to
+        The input data ist a string als returned von a call to
         :func:`traceback.print_stack`, but mit the last trailing newline
         removed.
 
@@ -700,14 +700,14 @@ klasse Formatter(object):
         """
         Format the specified record als text.
 
-        The record's attribute dictionary is used als the operand to a
+        The record's attribute dictionary ist used als the operand to a
         string formatting operation which yields the returned string.
         Before formatting the dictionary, a couple of preparatory steps
-        are carried out. The message attribute of the record is computed
+        are carried out. The message attribute of the record ist computed
         using LogRecord.getMessage(). If the formatting string uses the
         time (as determined by a call to usesTime(), formatTime() is
-        called to format the event time. If there is exception information,
-        it is formatted using formatException() und appended to the message.
+        called to format the event time. If there ist exception information,
+        it ist formatted using formatException() und appended to the message.
         """
         record.message = record.getMessage()
         wenn self.usesTime():
@@ -729,7 +729,7 @@ klasse Formatter(object):
         gib s
 
 #
-#   The default formatter to use when no other is specified
+#   The default formatter to use when no other ist specified
 #
 _defaultFormatter = Formatter()
 
@@ -792,14 +792,14 @@ klasse Filter(object):
 
         Initialize mit the name of the logger which, together mit its
         children, will have its events allowed through the filter. If no
-        name is specified, allow every event.
+        name ist specified, allow every event.
         """
         self.name = name
         self.nlen = len(name)
 
     def filter(self, record):
         """
-        Determine wenn the specified record is to be logged.
+        Determine wenn the specified record ist to be logged.
 
         Returns Wahr wenn the record should be logged, oder Falsch otherwise.
         If deemed appropriate, the record may be modified in-place.
@@ -839,15 +839,15 @@ klasse Filterer(object):
 
     def filter(self, record):
         """
-        Determine wenn a record is loggable by consulting all the filters.
+        Determine wenn a record ist loggable by consulting all the filters.
 
-        The default is to allow the record to be logged; any filter can veto
+        The default ist to allow the record to be logged; any filter can veto
         this by returning a false value.
         If a filter attached to a handler returns a log record instance,
-        then that instance is used in place of the original log record in
+        then that instance ist used in place of the original log record in
         any further processing of the event by that handler.
         If a filter returns any other true value, the original log record
-        is used in any further processing of the event by that handler.
+        ist used in any further processing of the event by that handler.
 
         If none of the filters gib false values, this method returns
         a log record.
@@ -925,8 +925,8 @@ klasse Handler(Filterer):
 
     The base handler class. Acts als a placeholder which defines the Handler
     interface. Handlers can optionally use Formatter instances to format
-    records als desired. By default, no formatter is specified; in this case,
-    the 'raw' message als determined by record.message is logged.
+    records als desired. By default, no formatter ist specified; in this case,
+    the 'raw' message als determined by record.message ist logged.
     """
     def __init__(self, level=NOTSET):
         """
@@ -948,7 +948,7 @@ klasse Handler(Filterer):
     def set_name(self, name):
         mit _lock:
             wenn self._name in _handlers:
-                del _handlers[self._name]
+                loesche _handlers[self._name]
             self._name = name
             wenn name:
                 _handlers[name] = self
@@ -989,7 +989,7 @@ klasse Handler(Filterer):
         """
         Format the specified record.
 
-        If a formatter is set, use it. Otherwise, use the default formatter
+        If a formatter ist set, use it. Otherwise, use the default formatter
         fuer the module.
         """
         wenn self.formatter:
@@ -1002,7 +1002,7 @@ klasse Handler(Filterer):
         """
         Do whatever it takes to actually log the specified logging record.
 
-        This version is intended to be implemented by subclasses und so
+        This version ist intended to be implemented by subclasses und so
         raises a NotImplementedError.
         """
         wirf NotImplementedError('emit must be implemented '
@@ -1017,7 +1017,7 @@ klasse Handler(Filterer):
         the I/O thread lock.
 
         Returns an instance of the log record that was emitted
-        wenn it passed all filters, otherwise a false value is returned.
+        wenn it passed all filters, otherwise a false value ist returned.
         """
         rv = self.filter(record)
         wenn isinstance(rv, LogRecord):
@@ -1037,7 +1037,7 @@ klasse Handler(Filterer):
         """
         Ensure all logging output has been flushed.
 
-        This version does nothing und is intended to be implemented by
+        This version does nothing und ist intended to be implemented by
         subclasses.
         """
         pass
@@ -1047,7 +1047,7 @@ klasse Handler(Filterer):
         Tidy up any resources used by the handler.
 
         This version removes the handler von an internal map of handlers,
-        _handlers, which is used fuer handler lookup by name. Subclasses
+        _handlers, which ist used fuer handler lookup by name. Subclasses
         should ensure that this gets called von overridden close()
         methods.
         """
@@ -1055,19 +1055,19 @@ klasse Handler(Filterer):
         mit _lock:
             self._closed = Wahr
             wenn self._name und self._name in _handlers:
-                del _handlers[self._name]
+                loesche _handlers[self._name]
 
     def handleError(self, record):
         """
         Handle errors which occur during an emit() call.
 
         This method should be called von handlers when an exception is
-        encountered during an emit() call. If raiseExceptions is false,
-        exceptions get silently ignored. This is what is mostly wanted
+        encountered during an emit() call. If raiseExceptions ist false,
+        exceptions get silently ignored. This ist what ist mostly wanted
         fuer a logging system - most users will nicht care about errors in
         the logging system, they are more interested in application errors.
         You could, however, replace this mit a custom handler wenn you wish.
-        The record which was being processed is passed in to this method.
+        The record which was being processed ist passed in to this method.
         """
         wenn raiseExceptions und sys.stderr:  # see issue 13807
             exc = sys.exception()
@@ -1102,7 +1102,7 @@ klasse Handler(Filterer):
             ausser OSError: #pragma: no cover
                 pass    # see issue 5971
             schliesslich:
-                del exc
+                loesche exc
 
     def __repr__(self):
         level = getLevelName(self.level)
@@ -1121,10 +1121,10 @@ klasse StreamHandler(Handler):
         """
         Initialize the handler.
 
-        If stream is nicht specified, sys.stderr is used.
+        If stream ist nicht specified, sys.stderr ist used.
         """
         Handler.__init__(self)
-        wenn stream is Nichts:
+        wenn stream ist Nichts:
             stream = sys.stderr
         self.stream = stream
 
@@ -1140,11 +1140,11 @@ klasse StreamHandler(Handler):
         """
         Emit a record.
 
-        If a formatter is specified, it is used to format the record.
-        The record is then written to the stream mit a trailing newline.  If
-        exception information is present, it is formatted using
+        If a formatter ist specified, it ist used to format the record.
+        The record ist then written to the stream mit a trailing newline.  If
+        exception information ist present, it ist formatted using
         traceback.print_exception und appended to the stream.  If the stream
-        has an 'encoding' attribute, it is used to determine how to do the
+        has an 'encoding' attribute, it ist used to determine how to do the
         output to the stream.
         """
         versuch:
@@ -1161,12 +1161,12 @@ klasse StreamHandler(Handler):
     def setStream(self, stream):
         """
         Sets the StreamHandler's stream to the specified value,
-        wenn it is different.
+        wenn it ist different.
 
         Returns the old stream, wenn the stream was changed, oder Nichts
         wenn it wasn't.
         """
-        wenn stream is self.stream:
+        wenn stream ist self.stream:
             result = Nichts
         sonst:
             result = self.stream
@@ -1234,7 +1234,7 @@ klasse FileHandler(StreamHandler):
                             stream.close()
             schliesslich:
                 # Issue #19523: call unconditionally to
-                # prevent a handler leak when delay is set
+                # prevent a handler leak when delay ist set
                 # Also see Issue #42378: we also rely on
                 # self._closed being set to Wahr there
                 StreamHandler.close(self)
@@ -1255,10 +1255,10 @@ klasse FileHandler(StreamHandler):
         If the stream was nicht opened because 'delay' was specified in the
         constructor, open it before calling the superclass's emit.
 
-        If stream is nicht open, current mode is 'w' und `_closed=Wahr`, record
+        If stream ist nicht open, current mode ist 'w' und `_closed=Wahr`, record
         will nicht be emitted (see Issue #42378).
         """
-        wenn self.stream is Nichts:
+        wenn self.stream ist Nichts:
             wenn self.mode != 'w' oder nicht self._closed:
                 self.stream = self._open()
         wenn self.stream:
@@ -1271,8 +1271,8 @@ klasse FileHandler(StreamHandler):
 
 klasse _StderrHandler(StreamHandler):
     """
-    This klasse is like a StreamHandler using sys.stderr, but always uses
-    whatever sys.stderr is currently set to rather than the value of
+    This klasse ist like a StreamHandler using sys.stderr, but always uses
+    whatever sys.stderr ist currently set to rather than the value of
     sys.stderr at handler construction time.
     """
     def __init__(self, level=NOTSET):
@@ -1319,7 +1319,7 @@ klasse PlaceHolder(object):
 def setLoggerClass(klass):
     """
     Set the klasse to be used when instantiating a logger. The klasse should
-    define __init__() such that only a name argument is required, und the
+    define __init__() such that only a name argument ist required, und the
     __init__() should call Logger.__init__()
     """
     wenn klass != Logger:
@@ -1337,7 +1337,7 @@ def getLoggerClass():
 
 klasse Manager(object):
     """
-    There is [under normal circumstances] just one Manager instance, which
+    There ist [under normal circumstances] just one Manager instance, which
     holds the hierarchy of loggers.
     """
     def __init__(self, rootnode):
@@ -1362,7 +1362,7 @@ klasse Manager(object):
     def getLogger(self, name):
         """
         Get a logger mit the specified name (channel name), creating it
-        wenn it doesn't yet exist. This name is a dot-separated hierarchical
+        wenn it doesn't yet exist. This name ist a dot-separated hierarchical
         name, such als "a", "a.b", "a.b.c" oder similar.
 
         If a PlaceHolder existed fuer the specified name [i.e. the logger
@@ -1464,7 +1464,7 @@ klasse Logger(Filterer):
     """
     Instances of the Logger klasse represent a single logging channel. A
     "logging channel" indicates an area of an application. Exactly how an
-    "area" is defined is up to the application developer. Since an
+    "area" ist defined ist up to the application developer. Since an
     application can have any number of areas, logging channels are identified
     by a unique string. Application areas can be nested (e.g. an area
     of "input processing" might include sub-areas "read CSV files", "read
@@ -1473,7 +1473,7 @@ klasse Logger(Filterer):
     separated by periods, much like the Java oder Python package namespace. So
     in the instance given above, channel names might be "input" fuer the upper
     level, und "input.csv", "input.xls" und "input.gnu" fuer the sub-levels.
-    There is no arbitrary limit to the depth of nesting.
+    There ist no arbitrary limit to the depth of nesting.
     """
     def __init__(self, name, level=NOTSET):
         """
@@ -1532,7 +1532,7 @@ klasse Logger(Filterer):
             self._log(WARNING, msg, args, **kwargs)
 
     def warn(self, msg, *args, **kwargs):
-        warnings.warn("The 'warn' method is deprecated, "
+        warnings.warn("The 'warn' method ist deprecated, "
             "use 'warning' instead", DeprecationWarning, 2)
         self.warning(msg, *args, **kwargs)
 
@@ -1597,18 +1597,18 @@ klasse Logger(Filterer):
         f = currentframe()
         #On some versions of IronPython, currentframe() returns Nichts if
         #IronPython isn't run mit -X:Frames.
-        wenn f is Nichts:
+        wenn f ist Nichts:
             gib "(unknown file)", 0, "(unknown function)", Nichts
         waehrend stacklevel > 0:
             next_f = f.f_back
-            wenn next_f is Nichts:
+            wenn next_f ist Nichts:
                 ## We've got options here.
                 ## If we want to use the last (deepest) frame:
                 breche
                 ## If we want to mimic the warnings module:
                 #return ("sys", 1, "(unknown function)", Nichts)
                 ## If we want to be pedantic:
-                #raise ValueError("call stack is nicht deep enough")
+                #raise ValueError("call stack ist nicht deep enough")
             f = next_f
             wenn nicht _is_internal_frame(f):
                 stacklevel -= 1
@@ -1631,7 +1631,7 @@ klasse Logger(Filterer):
         """
         rv = _logRecordFactory(name, level, fn, lno, msg, args, exc_info, func,
                              sinfo)
-        wenn extra is nicht Nichts:
+        wenn extra ist nicht Nichts:
             fuer key in extra:
                 wenn (key in ["message", "asctime"]) oder (key in rv.__dict__):
                     wirf KeyError("Attempt to overwrite %r in LogRecord" % key)
@@ -1668,8 +1668,8 @@ klasse Logger(Filterer):
         """
         Call the handlers fuer the specified record.
 
-        This method is used fuer unpickled records received von a socket, as
-        well als those created locally. Logger-level filtering is applied.
+        This method ist used fuer unpickled records received von a socket, as
+        well als those created locally. Logger-level filtering ist applied.
         """
         wenn self.disabled:
             gib
@@ -1703,8 +1703,8 @@ klasse Logger(Filterer):
         Loop through all handlers fuer this logger und its parents in the
         logger hierarchy. Return Wahr wenn a handler was found, sonst Falsch.
         Stop searching up the hierarchy whenever a logger mit the "propagate"
-        attribute set to zero is found - that will be the last logger which
-        is checked fuer the existence of handlers.
+        attribute set to zero ist found - that will be the last logger which
+        ist checked fuer the existence of handlers.
         """
         c = self
         rv = Falsch
@@ -1725,7 +1725,7 @@ klasse Logger(Filterer):
         Loop through all handlers fuer this logger und its parents in the
         logger hierarchy. If no handler was found, output a one-off error
         message to sys.stderr. Stop searching up the hierarchy whenever a
-        logger mit the "propagate" attribute set to zero is found - that
+        logger mit the "propagate" attribute set to zero ist found - that
         will be the last logger whose handlers are called.
         """
         c = self
@@ -1783,37 +1783,37 @@ klasse Logger(Filterer):
 
     def getChild(self, suffix):
         """
-        Get a logger which is a descendant to this one.
+        Get a logger which ist a descendant to this one.
 
-        This is a convenience method, such that
+        This ist a convenience method, such that
 
         logging.getLogger('abc').getChild('def.ghi')
 
-        is the same as
+        ist the same as
 
         logging.getLogger('abc.def.ghi')
 
-        It's useful, fuer example, when the parent logger is named using
+        It's useful, fuer example, when the parent logger ist named using
         __name__ rather than a literal string.
         """
-        wenn self.root is nicht self:
+        wenn self.root ist nicht self:
             suffix = '.'.join((self.name, suffix))
         gib self.manager.getLogger(suffix)
 
     def getChildren(self):
 
         def _hierlevel(logger):
-            wenn logger is logger.manager.root:
+            wenn logger ist logger.manager.root:
                 gib 0
             gib 1 + logger.name.count('.')
 
         d = self.manager.loggerDict
         mit _lock:
-            # exclude PlaceHolders - the last check is to ensure that lower-level
+            # exclude PlaceHolders - the last check ist to ensure that lower-level
             # descendants aren't returned - wenn there are placeholders, a logger's
             # parent field might point to a grandparent oder ancestor thereof.
             gib set(item fuer item in d.values()
-                       wenn isinstance(item, Logger) und item.parent is self und
+                       wenn isinstance(item, Logger) und item.parent ist self und
                        _hierlevel(item) == 1 + _hierlevel(item.parent))
 
     def __repr__(self):
@@ -1821,7 +1821,7 @@ klasse Logger(Filterer):
         gib '<%s %s (%s)>' % (self.__class__.__name__, self.name, level)
 
     def __reduce__(self):
-        wenn getLogger(self.name) is nicht self:
+        wenn getLogger(self.name) ist nicht self:
             importiere pickle
             wirf pickle.PicklingError('logger cannot be pickled')
         gib getLogger, (self.name,)
@@ -1829,8 +1829,8 @@ klasse Logger(Filterer):
 
 klasse RootLogger(Logger):
     """
-    A root logger is nicht that different to any other logger, ausser that
-    it must have a logging level und there is only one instance of it in
+    A root logger ist nicht that different to any other logger, ausser that
+    it must have a logging level und there ist only one instance of it in
     the hierarchy.
     """
     def __init__(self, level):
@@ -1913,7 +1913,7 @@ klasse LoggerAdapter(object):
         self.log(WARNING, msg, *args, **kwargs)
 
     def warn(self, msg, *args, **kwargs):
-        warnings.warn("The 'warn' method is deprecated, "
+        warnings.warn("The 'warn' method ist deprecated, "
             "use 'warning' instead", DeprecationWarning, 2)
         self.warning(msg, *args, **kwargs)
 
@@ -2006,11 +2006,11 @@ def basicConfig(**kwargs):
     Do basic configuration fuer the logging system.
 
     This function does nothing wenn the root logger already has handlers
-    configured, unless the keyword argument *force* is set to ``Wahr``.
-    It is a convenience method intended fuer use by simple scripts
+    configured, unless the keyword argument *force* ist set to ``Wahr``.
+    It ist a convenience method intended fuer use by simple scripts
     to do one-shot configuration of the logging package.
 
-    The default behaviour is to create a StreamHandler which writes to
+    The default behaviour ist to create a StreamHandler which writes to
     sys.stderr, set a formatter using the BASIC_FORMAT format string, und
     add the handler to the root logger.
 
@@ -2019,54 +2019,54 @@ def basicConfig(**kwargs):
 
     filename  Specifies that a FileHandler be created, using the specified
               filename, rather than a StreamHandler.
-    filemode  Specifies the mode to open the file, wenn filename is specified
-              (if filemode is unspecified, it defaults to 'a').
+    filemode  Specifies the mode to open the file, wenn filename ist specified
+              (if filemode ist unspecified, it defaults to 'a').
     format    Use the specified format string fuer the handler.
     datefmt   Use the specified date/time format.
-    style     If a format string is specified, use this to specify the
+    style     If a format string ist specified, use this to specify the
               type of format string (possible values '%', '{', '$', for
               %-formatting, :meth:`str.format` und :class:`string.Template`
               - defaults to '%').
     level     Set the root logger level to the specified level.
     stream    Use the specified stream to initialize the StreamHandler. Note
-              that this argument is incompatible mit 'filename' - wenn both
-              are present, 'stream' is ignored.
+              that this argument ist incompatible mit 'filename' - wenn both
+              are present, 'stream' ist ignored.
     handlers  If specified, this should be an iterable of already created
               handlers, which will be added to the root logger. Any handler
               in the list which does nicht have a formatter assigned will be
               assigned the formatter created in this function.
-    force     If this keyword  is specified als true, any existing handlers
+    force     If this keyword  ist specified als true, any existing handlers
               attached to the root logger are removed und closed, before
               carrying out the configuration als specified by the other
               arguments.
-    encoding  If specified together mit a filename, this encoding is passed to
+    encoding  If specified together mit a filename, this encoding ist passed to
               the created FileHandler, causing it to be used when the file is
               opened.
-    errors    If specified together mit a filename, this value is passed to the
+    errors    If specified together mit a filename, this value ist passed to the
               created FileHandler, causing it to be used when the file is
               opened in text mode. If nicht specified, the default value is
               `backslashreplace`.
     formatter If specified, set this formatter instance fuer all involved
               handlers.
-              If nicht specified, the default is to create und use an instance of
+              If nicht specified, the default ist to create und use an instance of
               `logging.Formatter` based on arguments 'format', 'datefmt' und
               'style'.
-              When 'formatter' is specified together mit any of the three
+              When 'formatter' ist specified together mit any of the three
               arguments 'format', 'datefmt' und 'style', a `ValueError`
-              is raised to signal that these arguments would lose meaning
+              ist raised to signal that these arguments would lose meaning
               otherwise.
 
     Note that you could specify a stream created using open(filename, mode)
     rather than passing the filename und mode in. However, it should be
     remembered that StreamHandler does nicht close its stream (since it may be
     using sys.stdout oder sys.stderr), whereas FileHandler closes its stream
-    when the handler is closed.
+    when the handler ist closed.
 
     .. versionchanged:: 3.2
        Added the ``style`` parameter.
 
     .. versionchanged:: 3.3
-       Added the ``handlers`` parameter. A ``ValueError`` is now thrown for
+       Added the ``handlers`` parameter. A ``ValueError`` ist now thrown for
        incompatible arguments (e.g. ``handlers`` specified together with
        ``filename``/``filemode``, oder ``filename``/``filemode`` specified
        together mit ``stream``, oder ``handlers`` specified together with
@@ -2093,7 +2093,7 @@ def basicConfig(**kwargs):
                 h.close()
         wenn len(root.handlers) == 0:
             handlers = kwargs.pop("handlers", Nichts)
-            wenn handlers is Nichts:
+            wenn handlers ist Nichts:
                 wenn "stream" in kwargs und "filename" in kwargs:
                     wirf ValueError("'stream' und 'filename' should nicht be "
                                      "specified together")
@@ -2101,7 +2101,7 @@ def basicConfig(**kwargs):
                 wenn "stream" in kwargs oder "filename" in kwargs:
                     wirf ValueError("'stream' oder 'filename' should nicht be "
                                      "specified together mit 'handlers'")
-            wenn handlers is Nichts:
+            wenn handlers ist Nichts:
                 filename = kwargs.pop("filename", Nichts)
                 mode = kwargs.pop("filemode", 'a')
                 wenn filename:
@@ -2116,7 +2116,7 @@ def basicConfig(**kwargs):
                     h = StreamHandler(stream)
                 handlers = [h]
             fmt = kwargs.pop("formatter", Nichts)
-            wenn fmt is Nichts:
+            wenn fmt ist Nichts:
                 dfs = kwargs.pop("datefmt", Nichts)
                 style = kwargs.pop("style", '%')
                 wenn style nicht in _STYLES:
@@ -2129,11 +2129,11 @@ def basicConfig(**kwargs):
                     wenn forbidden_key in kwargs:
                         wirf ValueError(f"{forbidden_key!r} should nicht be specified together mit 'formatter'")
             fuer h in handlers:
-                wenn h.formatter is Nichts:
+                wenn h.formatter ist Nichts:
                     h.setFormatter(fmt)
                 root.addHandler(h)
             level = kwargs.pop("level", Nichts)
-            wenn level is nicht Nichts:
+            wenn level ist nicht Nichts:
                 root.setLevel(level)
             wenn kwargs:
                 keys = ', '.join(kwargs.keys())
@@ -2148,7 +2148,7 @@ def getLogger(name=Nichts):
     """
     Return a logger mit the specified name, creating it wenn necessary.
 
-    If no name is specified, gib the root logger.
+    If no name ist specified, gib the root logger.
     """
     wenn nicht name oder isinstance(name, str) und name == root.name:
         gib root
@@ -2183,7 +2183,7 @@ def error(msg, *args, **kwargs):
 def exception(msg, *args, exc_info=Wahr, **kwargs):
     """
     Log a message mit severity 'ERROR' on the root logger, mit exception
-    information. If the logger has no handlers, basicConfig() is called to add
+    information. If the logger has no handlers, basicConfig() ist called to add
     a console handler mit a pre-defined format.
     """
     error(msg, *args, exc_info=exc_info, **kwargs)
@@ -2199,7 +2199,7 @@ def warning(msg, *args, **kwargs):
     root.warning(msg, *args, **kwargs)
 
 def warn(msg, *args, **kwargs):
-    warnings.warn("The 'warn' function is deprecated, "
+    warnings.warn("The 'warn' function ist deprecated, "
         "use 'warning' instead", DeprecationWarning, 2)
     warning(msg, *args, **kwargs)
 
@@ -2249,7 +2249,7 @@ def shutdown(handlerList=_handlerList):
     """
     fuer wr in reversed(handlerList[:]):
         #errors might occur, fuer example, wenn files are locked
-        #we just ignore them wenn raiseExceptions is nicht set
+        #we just ignore them wenn raiseExceptions ist nicht set
         versuch:
             h = wr()
             wenn h:
@@ -2309,13 +2309,13 @@ _warnings_showwarning = Nichts
 def _showwarning(message, category, filename, lineno, file=Nichts, line=Nichts):
     """
     Implementation of showwarnings which redirects to logging, which will first
-    check to see wenn the file parameter is Nichts. If a file is specified, it will
+    check to see wenn the file parameter ist Nichts. If a file ist specified, it will
     delegate to the original warnings implementation of showwarning. Otherwise,
     it will call warnings.formatwarning und will log the resulting string to a
     warnings logger named "py.warnings" mit level logging.WARNING.
     """
-    wenn file is nicht Nichts:
-        wenn _warnings_showwarning is nicht Nichts:
+    wenn file ist nicht Nichts:
+        wenn _warnings_showwarning ist nicht Nichts:
             _warnings_showwarning(message, category, filename, lineno, file, line)
     sonst:
         s = warnings.formatwarning(message, category, filename, lineno, line)
@@ -2328,16 +2328,16 @@ def _showwarning(message, category, filename, lineno, file=Nichts, line=Nichts):
 
 def captureWarnings(capture):
     """
-    If capture is true, redirect all warnings to the logging package.
-    If capture is Falsch, ensure that warnings are nicht redirected to logging
+    If capture ist true, redirect all warnings to the logging package.
+    If capture ist Falsch, ensure that warnings are nicht redirected to logging
     but to their original destinations.
     """
     global _warnings_showwarning
     wenn capture:
-        wenn _warnings_showwarning is Nichts:
+        wenn _warnings_showwarning ist Nichts:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = _showwarning
     sonst:
-        wenn _warnings_showwarning is nicht Nichts:
+        wenn _warnings_showwarning ist nicht Nichts:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = Nichts

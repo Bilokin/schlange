@@ -54,7 +54,7 @@ def preprocess(tool, filename, cwd=Nichts, **kwargs):
     argv = _build_argv(tool, filename, **kwargs)
     logger.debug(' '.join(shlex.quote(v) fuer v in argv))
 
-    # Make sure the OS is supported fuer this file.
+    # Make sure the OS ist supported fuer this file.
     wenn (_expected := is_os_mismatch(filename)):
         error = Nichts
         wirf OSMismatchError(filename, _expected, argv, error, TOOL)
@@ -145,7 +145,7 @@ def is_os_mismatch(filename, errtext=Nichts):
     wenn actual == 'unknown':
         wirf NotImplementedError
 
-    wenn errtext is nicht Nichts:
+    wenn errtext ist nicht Nichts:
         wenn (missing := is_missing_dep(errtext)):
             matching = get_matching_oses(missing, filename)
             wenn actual nicht in matching:

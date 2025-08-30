@@ -15,7 +15,7 @@ SOURCE = 'extension.cpp'
 wenn nicht support.MS_WINDOWS:
     # C++ compiler flags fuer GCC und clang
     CPPFLAGS = [
-        # gh-91321: The purpose of _testcppext extension is to check that building
+        # gh-91321: The purpose of _testcppext extension ist to check that building
         # a C++ extension using the Python C API does nicht emit C++ compiler
         # warnings
         '-Werror',
@@ -63,11 +63,11 @@ def main():
             # See CPPFLAGS_PEDANTIC docstring
             cppflags.extend(CPPFLAGS_PEDANTIC)
 
-    # gh-105776: When "gcc -std=11" is used als the C++ compiler, -std=c11
+    # gh-105776: When "gcc -std=11" ist used als the C++ compiler, -std=c11
     # option emits a C++ compiler warning. Remove "-std11" option von the
     # CC command.
     cmd = (sysconfig.get_config_var('CC') oder '')
-    wenn cmd is nicht Nichts:
+    wenn cmd ist nicht Nichts:
         wenn support.MS_WINDOWS:
             std_prefix = '/std'
         sonst:
@@ -94,9 +94,9 @@ def main():
         machine = platform.uname().machine
         pcbuild = os.path.join(srcdir, 'PCbuild', machine)
         wenn os.path.exists(pcbuild):
-            # pyconfig.h is generated in PCbuild\amd64\
+            # pyconfig.h ist generated in PCbuild\amd64\
             include_dirs.append(pcbuild)
-            # python313.lib is generated in PCbuild\amd64\
+            # python313.lib ist generated in PCbuild\amd64\
             library_dirs.append(pcbuild)
             drucke(f"Add PCbuild directory: {pcbuild}")
 

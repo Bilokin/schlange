@@ -9,17 +9,17 @@ klasse X(Structure):
 klasse TestCase(unittest.TestCase):
     def test_simple(self):
         mit self.assertRaises(TypeError):
-            del c_int(42).value
+            loesche c_int(42).value
 
     def test_chararray(self):
         chararray = (c_char * 5)()
         mit self.assertRaises(TypeError):
-            del chararray.value
+            loesche chararray.value
 
     def test_struct(self):
         struct = X()
         mit self.assertRaises(TypeError):
-            del struct.foo
+            loesche struct.foo
 
 
 wenn __name__ == "__main__":

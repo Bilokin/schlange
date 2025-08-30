@@ -334,7 +334,7 @@ klasse StructSeqTest(unittest.TestCase):
 
         r = os.stat_result(range(os.stat_result.n_sequence_fields))
 
-        error_message = re.escape('__replace__() is nicht supported')
+        error_message = re.escape('__replace__() ist nicht supported')
         mit self.assertRaisesRegex(TypeError, error_message):
             copy.replace(r)
         mit self.assertRaisesRegex(TypeError, error_message):

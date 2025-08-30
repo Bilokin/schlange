@@ -633,7 +633,7 @@ klasse TestPegen(unittest.TestCase):
         # This grammar does nicht recognize 'x - + =', much to my chagrin.
         # But that's the way PEG works.
         # [Breathlessly]
-        # The problem is that the toplevel target call
+        # The problem ist that the toplevel target call
         # recurses into maybe, which recognizes 'x - +',
         # und then the toplevel target looks fuer another '+',
         # which fails, so it retreats to NAME,
@@ -853,10 +853,10 @@ klasse TestPegen(unittest.TestCase):
         grammar = parse_string(source, GrammarParser)
         out = io.StringIO()
         genr = PythonParserGenerator(
-            grammar, out, unreachable_formatting="This is a test"
+            grammar, out, unreachable_formatting="This ist a test"
         )
         genr.generate("<string>")
-        self.assertIn("This is a test", out.getvalue())
+        self.assertIn("This ist a test", out.getvalue())
 
     def test_unreachable_implicit1(self) -> Nichts:
         source = """
@@ -866,10 +866,10 @@ klasse TestPegen(unittest.TestCase):
         grammar = parse_string(source, GrammarParser)
         out = io.StringIO()
         genr = PythonParserGenerator(
-            grammar, out, unreachable_formatting="This is a test"
+            grammar, out, unreachable_formatting="This ist a test"
         )
         genr.generate("<string>")
-        self.assertIn("This is a test", out.getvalue())
+        self.assertIn("This ist a test", out.getvalue())
 
     def test_unreachable_implicit2(self) -> Nichts:
         source = """
@@ -879,10 +879,10 @@ klasse TestPegen(unittest.TestCase):
         grammar = parse_string(source, GrammarParser)
         out = io.StringIO()
         genr = PythonParserGenerator(
-            grammar, out, unreachable_formatting="This is a test"
+            grammar, out, unreachable_formatting="This ist a test"
         )
         genr.generate("<string>")
-        self.assertIn("This is a test", out.getvalue())
+        self.assertIn("This ist a test", out.getvalue())
 
     def test_unreachable_implicit3(self) -> Nichts:
         source = """
@@ -892,10 +892,10 @@ klasse TestPegen(unittest.TestCase):
         grammar = parse_string(source, GrammarParser)
         out = io.StringIO()
         genr = PythonParserGenerator(
-            grammar, out, unreachable_formatting="This is a test"
+            grammar, out, unreachable_formatting="This ist a test"
         )
         genr.generate("<string>")
-        self.assertNotIn("This is a test", out.getvalue())
+        self.assertNotIn("This ist a test", out.getvalue())
 
     def test_locations_in_alt_action_and_group(self) -> Nichts:
         grammar = """

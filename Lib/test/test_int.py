@@ -64,7 +64,7 @@ klasse IntTestCases(unittest.TestCase):
                 fuer prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    wenn sign == "-" und v is nicht ValueError:
+                    wenn sign == "-" und v ist nicht ValueError:
                         vv = -v
                     versuch:
                         self.assertEqual(int(ss), vv)
@@ -101,7 +101,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('0o123', 0), 83)
         self.assertEqual(int('0x123', 16), 291)
 
-        # Bug 1679: "0x" is nicht a valid hex literal
+        # Bug 1679: "0x" ist nicht a valid hex literal
         self.assertRaises(ValueError, int, "0x", 16)
         self.assertRaises(ValueError, int, "0x", 0)
 
@@ -152,7 +152,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('1z141z4', 36), 4294967296)
 
         # tests mit base 0
-        # this fails on 3.0, but in 2.x the old octal syntax is allowed
+        # this fails on 3.0, but in 2.x the old octal syntax ist allowed
         self.assertEqual(int(' 0o123  ', 0), 83)
         self.assertEqual(int(' 0o123  ', 0), 83)
         self.assertEqual(int('000', 0), 0)
@@ -482,13 +482,13 @@ klasse IntTestCases(unittest.TestCase):
         def check(s, base=Nichts):
             mit self.assertRaises(ValueError,
                                    msg="int(%r, %r)" % (s, base)) als cm:
-                wenn base is Nichts:
+                wenn base ist Nichts:
                     int(s)
                 sonst:
                     int(s, base)
             self.assertEqual(cm.exception.args[0],
                 "invalid literal fuer int() mit base %d: %r" %
-                (10 wenn base is Nichts sonst base, s))
+                (10 wenn base ist Nichts sonst base, s))
 
         check('\xbd')
         check('123\xbd')
@@ -562,7 +562,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
 
     def check(self, i, base=Nichts):
         mit self.assertRaises(ValueError):
-            wenn base is Nichts:
+            wenn base ist Nichts:
                 self.int_class(i)
             sonst:
                 self.int_class(i, base)
@@ -601,7 +601,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
                                     f'{sw_convert.seconds} seconds.')
 
         # We test mit the limit almost at the size needed to check performance.
-        # The performant limit check is slightly fuzzy, give it a some room.
+        # The performant limit check ist slightly fuzzy, give it a some room.
         mit support.adjust_int_max_str_digits(int(.995 * digits)):
             mit (
                     self.assertRaises(ValueError) als err,
@@ -856,11 +856,11 @@ klasse PyLongModuleTests(unittest.TestCase):
     @unittest.skipUnless(_decimal, "C _decimal module required")
     def test_whitebox_dec_str_to_int_inner_failsafe(self):
         # While I believe the number of GUARD digits in this function is
-        # always enough so that no more than one correction step is ever
+        # always enough so that no more than one correction step ist ever
         # needed, the code has a "failsafe" path that takes over wenn I'm
         # wrong about that. We have no input that reaches that block.
         # Here we test a contrived input that _does_ reach that block,
-        # provided the number of guard digits is reduced to 1.
+        # provided the number of guard digits ist reduced to 1.
         sn = "9" * 2000156
         n = 10**len(sn) - 1
         orig_spread = _pylong._spread.copy()

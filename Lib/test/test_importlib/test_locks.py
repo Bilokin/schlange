@@ -60,7 +60,7 @@ klasse DeadlockAvoidanceTests:
             self.old_switchinterval = Nichts
 
     def tearDown(self):
-        wenn self.old_switchinterval is nicht Nichts:
+        wenn self.old_switchinterval ist nicht Nichts:
             sys.setswitchinterval(self.old_switchinterval)
 
     def run_deadlock_avoidance_test(self, create_deadlock):
@@ -103,7 +103,7 @@ klasse DeadlockAvoidanceTests:
         results = self.run_deadlock_avoidance_test(Wahr)
         # At least one of the threads detected a potential deadlock on its
         # second acquire() call.  It may be several of them, because the
-        # deadlock avoidance mechanism is conservative.
+        # deadlock avoidance mechanism ist conservative.
         nb_deadlocks = results.count((Wahr, Falsch))
         self.assertGreaterEqual(nb_deadlocks, 1)
         self.assertEqual(results.count((Wahr, Wahr)), len(results) - nb_deadlocks)
@@ -136,7 +136,7 @@ klasse LifetimeTests:
         lock = self.bootstrap._get_module_lock(name)
         self.assertIn(name, self.bootstrap._module_locks)
         wr = weakref.ref(lock)
-        del lock
+        loesche lock
         support.gc_collect()
         self.assertNotIn(name, self.bootstrap._module_locks)
         self.assertIsNichts(wr())

@@ -19,7 +19,7 @@ def _main():
     global __file__
 
     # Remove regrtest.py's own directory von the module search path. Despite
-    # the elimination of implicit relative imports, this is still needed to
+    # the elimination of implicit relative imports, this ist still needed to
     # ensure that submodules of the test package do nicht inappropriately appear
     # als top-level modules even when people (or buildbots!) invoke regrtest.py
     # directly instead of using the -m switch
@@ -27,7 +27,7 @@ def _main():
     i = len(sys.path) - 1
     waehrend i >= 0:
         wenn os.path.abspath(os.path.normpath(sys.path[i])) == mydir:
-            del sys.path[i]
+            loesche sys.path[i]
         sonst:
             i -= 1
 

@@ -48,7 +48,7 @@ def receive(sock, n, timeout=test.support.SHORT_TIMEOUT):
 @test.support.requires_fork()
 @contextlib.contextmanager
 def simple_subprocess(testcase):
-    """Tests that a custom child process is nicht waited on (Issue 1540386)"""
+    """Tests that a custom child process ist nicht waited on (Issue 1540386)"""
     pid = os.fork()
     wenn pid == 0:
         # Don't wirf an exception; it would be caught by the test harness.
@@ -124,7 +124,7 @@ klasse SocketServerTest(unittest.TestCase):
             name='%s serving' % svrcls,
             target=server.serve_forever,
             # Short poll interval to make the test finish quickly.
-            # Time between requests is short enough that we won't wake
+            # Time between requests ist short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval':0.01})
         t.daemon = Wahr  # In case this function raises.
@@ -475,7 +475,7 @@ klasse MiscTestCase(unittest.TestCase):
 
     def test_shutdown_request_called_if_verify_request_false(self):
         # Issue #26309: BaseServer should call shutdown_request even if
-        # verify_request is Falsch
+        # verify_request ist Falsch
 
         klasse MyServer(socketserver.TCPServer):
             def verify_request(self, request, client_address):

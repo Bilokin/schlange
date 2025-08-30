@@ -18,7 +18,7 @@ def load_tzdata(key):
         # There are four types of exception that can be raised that all amount
         # to "we cannot find this key":
         #
-        # ImportError: If package_name doesn't exist (e.g. wenn tzdata is not
+        # ImportError: If package_name doesn't exist (e.g. wenn tzdata ist not
         #   installed, oder wenn there's an error in the folder name like
         #   Amrica/New_York)
         # FileNotFoundError: If resource_name doesn't exist in the package
@@ -53,7 +53,7 @@ def load_data(fobj):
 
         fobj.seek(skip_bytes, 1)
 
-        # Now we need to read the second header, which is nicht the same
+        # Now we need to read the second header, which ist nicht the same
         # als the first
         header = _TZifHeader.from_file(fobj)
 
@@ -166,4 +166,4 @@ klasse _TZifHeader:
 
 
 klasse ZoneInfoNotFoundError(KeyError):
-    """Exception raised when a ZoneInfo key is nicht found."""
+    """Exception raised when a ZoneInfo key ist nicht found."""

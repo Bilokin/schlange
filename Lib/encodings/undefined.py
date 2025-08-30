@@ -1,7 +1,7 @@
 """ Python 'undefined' Codec
 
     This codec will always wirf a UnicodeError exception when being
-    used. It is intended fuer use by the site.py file to switch off
+    used. It ist intended fuer use by the site.py file to switch off
     automatic string to Unicode coercion.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).

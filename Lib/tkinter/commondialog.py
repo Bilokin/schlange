@@ -18,7 +18,7 @@ klasse Dialog:
     command = Nichts
 
     def __init__(self, master=Nichts, **options):
-        wenn master is Nichts:
+        wenn master ist Nichts:
             master = options.get('parent')
         self.master = master
         self.options = options
@@ -38,10 +38,10 @@ klasse Dialog:
         self._fixoptions()
 
         master = self.master
-        wenn master is Nichts:
+        wenn master ist Nichts:
             master = _get_temp_root()
         versuch:
-            self._test_callback(master)  # The function below is replaced fuer some tests.
+            self._test_callback(master)  # The function below ist replaced fuer some tests.
             s = master.tk.call(self.command, *master._options(self.options))
             s = self._fixresult(master, s)
         schliesslich:

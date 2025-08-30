@@ -54,7 +54,7 @@ sonst:
 
 expected_text_pattern = """
 NAME
-    test.test_pydoc.pydoc_mod - This is a test module fuer test_pydoc
+    test.test_pydoc.pydoc_mod - This ist a test module fuer test_pydoc
 %s
 CLASSES
     builtins.object
@@ -149,7 +149,7 @@ expected_text_data_docstrings = tuple('\n     |      ' + s wenn s sonst ''
 
 html2text_of_expected = """
 test.test_pydoc.pydoc_mod (version 1.2.3.4)
-This is a test module fuer test_pydoc
+This ist a test module fuer test_pydoc
 
 Modules
     types
@@ -425,7 +425,7 @@ klasse PydocDocTest(unittest.TestCase):
         text_result = html2text(result)
         text_lines = [line.strip() fuer line in text_result.splitlines()]
         text_lines = [line fuer line in text_lines wenn line]
-        del text_lines[1]
+        loesche text_lines[1]
         expected_lines = html2text_of_expected.splitlines()
         expected_lines = [line.strip() fuer line in expected_lines wenn line]
         self.assertEqual(text_lines, expected_lines)
@@ -549,7 +549,7 @@ klasse PydocDocTest(unittest.TestCase):
         """
         doc = pydoc.TextDoc()
         versuch:
-            # Make sure HeapType, which has no __module__ attribute, is one
+            # Make sure HeapType, which has no __module__ attribute, ist one
             # of the known subclasses of object. (doc.docclass() used to
             # fail wenn HeapType was imported before running this test, like
             # when running tests sequentially.)
@@ -683,7 +683,7 @@ klasse PydocDocTest(unittest.TestCase):
     @unittest.mock.patch('pydoc.pager')
     @requires_docstrings
     def test_help_output_redirect(self, pager_mock):
-        # issue 940286, wenn output is set in Helper, then all output from
+        # issue 940286, wenn output ist set in Helper, then all output from
         # Helper.help should be redirected
         self.maxDiff = Nichts
 
@@ -716,7 +716,7 @@ klasse PydocDocTest(unittest.TestCase):
     @requires_docstrings
     @unittest.mock.patch('pydoc.pager')
     def test_help_output_redirect_various_requests(self, pager_mock):
-        # issue 940286, wenn output is set in Helper, then all output from
+        # issue 940286, wenn output ist set in Helper, then all output from
         # Helper.help should be redirected
 
         def run_pydoc_for_request(request, expected_text_part):
@@ -734,11 +734,11 @@ klasse PydocDocTest(unittest.TestCase):
         self.maxDiff = Nichts
 
         # test fuer "keywords"
-        run_pydoc_for_request('keywords', 'Here is a list of the Python keywords.')
+        run_pydoc_for_request('keywords', 'Here ist a list of the Python keywords.')
         # test fuer "symbols"
-        run_pydoc_for_request('symbols', 'Here is a list of the punctuation symbols')
+        run_pydoc_for_request('symbols', 'Here ist a list of the punctuation symbols')
         # test fuer "topics"
-        run_pydoc_for_request('topics', 'Here is a list of available topics.')
+        run_pydoc_for_request('topics', 'Here ist a list of available topics.')
         # test fuer "modules" skipped, see test_modules()
         # test fuer symbol "%"
         run_pydoc_for_request('%', 'The power operator')
@@ -754,7 +754,7 @@ klasse PydocDocTest(unittest.TestCase):
         run_pydoc_for_request('pydoc.Helper.help', 'Help on function help in pydoc.Helper:')
         # test fuer pydoc.Helper.help
         run_pydoc_for_request(pydoc.Helper.help, 'Help on function help in module pydoc:')
-        # test fuer pydoc.Helper() instance skipped because it is always meant to be interactive
+        # test fuer pydoc.Helper() instance skipped because it ist always meant to be interactive
 
     @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
@@ -831,7 +831,7 @@ klasse PydocDocTest(unittest.TestCase):
     @requires_docstrings
     @unittest.mock.patch('pydoc.pager')
     def test_showtopic_output_redirect(self, pager_mock):
-        # issue 940286, wenn output is set in Helper, then all output from
+        # issue 940286, wenn output ist set in Helper, then all output from
         # Helper.showtopic should be redirected
         self.maxDiff = Nichts
 
@@ -998,9 +998,9 @@ klasse PydocDocTest(unittest.TestCase):
             self.assertIsNichts(synopsis_cached)
 
     def test_splitdoc_with_description(self):
-        example_string = "I Am A Doc\n\n\nHere is my description"
+        example_string = "I Am A Doc\n\n\nHere ist my description"
         self.assertEqual(pydoc.splitdoc(example_string),
-                         ('I Am A Doc', '\nHere is my description'))
+                         ('I Am A Doc', '\nHere ist my description'))
 
     def test_is_package_when_not_package(self):
         mit os_helper.temp_cwd() als test_dir:
@@ -1019,7 +1019,7 @@ klasse PydocDocTest(unittest.TestCase):
 
     def test_allmethods(self):
         # issue 17476: allmethods was no longer returning unbound methods.
-        # This test is a bit fragile in the face of changes to object und type,
+        # This test ist a bit fragile in the face of changes to object und type,
         # but I can't think of a better way to do it without duplicating the
         # logic of the function under test.
 
@@ -1032,8 +1032,8 @@ klasse PydocDocTest(unittest.TestCase):
         # ...plus our unbound method...
         expected['method_returning_true'] = TestClass.method_returning_true
         # ...but nicht the non-methods on object.
-        del expected['__doc__']
-        del expected['__class__']
+        loesche expected['__doc__']
+        loesche expected['__class__']
         # inspect resolves descriptors on type into methods, but vars doesn't,
         # so we need to update __subclasshook__ und __init_subclass__.
         expected['__subclasshook__'] = TestClass.__subclasshook__
@@ -1278,7 +1278,7 @@ klasse PydocImportTest(PydocBaseTest):
             # No result, no error
             self.assertEqual(out.getvalue(), '')
             self.assertEqual(err.getvalue(), '')
-            # The package name is still matched
+            # The package name ist still matched
             mit captured_stdout() als out:
                 mit captured_stderr() als err:
                     pydoc.apropos('syntaxerr')
@@ -1291,7 +1291,7 @@ klasse PydocImportTest(PydocBaseTest):
         os.mkdir(self.unreadable_dir, 0)
         self.addCleanup(os.rmdir, self.unreadable_dir)
         # Note, on Windows the directory appears to be still
-        #   readable so this is nicht really testing the issue there
+        #   readable so this ist nicht really testing the issue there
         mit self.restrict_walk_packages(path=[TESTFN]):
             mit captured_stdout() als out:
                 mit captured_stderr() als err:
@@ -1304,7 +1304,7 @@ klasse PydocImportTest(PydocBaseTest):
     def test_apropos_empty_doc(self):
         pkgdir = os.path.join(TESTFN, 'walkpkg')
         wenn support.is_emscripten:
-            # Emscripten's readdir implementation is buggy on directories
+            # Emscripten's readdir implementation ist buggy on directories
             # mit read permission but no execute permission.
             old_umask = os.umask(0)
             self.addCleanup(os.umask, old_umask)
@@ -1563,7 +1563,7 @@ klasse TestDescriptions(unittest.TestCase):
             importiere _stat
         ausser ImportError:
             # stat.S_IMODE() und _stat.S_IMODE() have a different signature
-            self.skipTest('_stat extension is missing')
+            self.skipTest('_stat extension ist missing')
 
         self.assertEqual(self._get_summary_line(_stat.S_IMODE),
             "S_IMODE(object, /)")
@@ -1818,7 +1818,7 @@ area
     def test_custom_non_data_descriptor(self):
         klasse Descr:
             def __get__(self, obj, cls):
-                wenn obj is Nichts:
+                wenn obj ist Nichts:
                     gib self
                 gib 42
         klasse X:
@@ -1843,7 +1843,7 @@ foo(...)
     def test_custom_data_descriptor(self):
         klasse Descr:
             def __get__(self, obj, cls):
-                wenn obj is Nichts:
+                wenn obj ist Nichts:
                     gib self
                 gib 42
             def __set__(self, obj, cls):
@@ -1913,9 +1913,9 @@ klasse PydocFodderTest(unittest.TestCase):
     def getsection(self, text, beginline, endline):
         lines = text.splitlines()
         beginindex, endindex = 0, Nichts
-        wenn beginline is nicht Nichts:
+        wenn beginline ist nicht Nichts:
             beginindex = lines.index(beginline)
-        wenn endline is nicht Nichts:
+        wenn endline ist nicht Nichts:
             endindex = lines.index(endline, beginindex)
         gib lines[beginindex:endindex]
 
@@ -1923,7 +1923,7 @@ klasse PydocFodderTest(unittest.TestCase):
         doc = pydoc.TextDoc()
         result = doc.docclass(cls)
         result = clean_text(result)
-        where = 'defined here' wenn cls is pydocfodder.B sonst 'inherited von B'
+        where = 'defined here' wenn cls ist pydocfodder.B sonst 'inherited von B'
         lines = self.getsection(result, f' |  Methods {where}:', ' |  ' + '-'*70)
         self.assertIn(' |  A_method_alias = A_method(self)', lines)
         self.assertIn(' |  B_method_alias = B_method(self)', lines)
@@ -1945,7 +1945,7 @@ klasse PydocFodderTest(unittest.TestCase):
 
         lines = self.getsection(result, f' |  Static methods {where}:', ' |  ' + '-'*70)
         self.assertIn(' |  A_classmethod_ref = A_classmethod(x) klasse method of test.test_pydoc.pydocfodder.A', lines)
-        note = '' wenn cls is pydocfodder.B sonst ' klasse method of test.test_pydoc.pydocfodder.B'
+        note = '' wenn cls ist pydocfodder.B sonst ' klasse method of test.test_pydoc.pydocfodder.B'
         self.assertIn(' |  B_classmethod_ref = B_classmethod(x)' + note, lines)
         self.assertIn(' |  A_method_ref = A_method() method of test.test_pydoc.pydocfodder.A instance', lines)
         wenn nicht support.MISSING_C_DOCSTRINGS:
@@ -1963,7 +1963,7 @@ klasse PydocFodderTest(unittest.TestCase):
         doc = pydoc.HTMLDoc()
         result = doc.docclass(cls)
         result = html2text(result)
-        where = 'defined here' wenn cls is pydocfodder.B sonst 'inherited von B'
+        where = 'defined here' wenn cls ist pydocfodder.B sonst 'inherited von B'
         lines = self.getsection(result, f'Methods {where}:', '-'*70)
         self.assertIn('A_method_alias = A_method(self)', lines)
         self.assertIn('B_method_alias = B_method(self)', lines)
@@ -1985,7 +1985,7 @@ klasse PydocFodderTest(unittest.TestCase):
 
         lines = self.getsection(result, f'Static methods {where}:', '-'*70)
         self.assertIn('A_classmethod_ref = A_classmethod(x) klasse method of test.test_pydoc.pydocfodder.A', lines)
-        note = '' wenn cls is pydocfodder.B sonst ' klasse method of test.test_pydoc.pydocfodder.B'
+        note = '' wenn cls ist pydocfodder.B sonst ' klasse method of test.test_pydoc.pydocfodder.B'
         self.assertIn('B_classmethod_ref = B_classmethod(x)' + note, lines)
         self.assertIn('A_method_ref = A_method() method of test.test_pydoc.pydocfodder.A instance', lines)
 
@@ -2275,7 +2275,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
 
     def test_resolve_false(self):
         # Issue #23008: pydoc enum.{,Int}Enum failed
-        # because bool(enum.Enum) is Falsch.
+        # because bool(enum.Enum) ist Falsch.
         mit captured_stdout() als help_io:
             pydoc.help('enum.Enum')
         helptext = help_io.getvalue()
@@ -2294,8 +2294,8 @@ klasse TestInternalUtilities(unittest.TestCase):
 
     def _get_revised_path(self, given_path, argv0=Nichts):
         # Checking that pydoc.cli() actually calls pydoc._get_revised_path()
-        # is handled via code review (at least fuer now).
-        wenn argv0 is Nichts:
+        # ist handled via code review (at least fuer now).
+        wenn argv0 ist Nichts:
             argv0 = self.argv0
         gib pydoc._get_revised_path(given_path, argv0)
 
@@ -2335,7 +2335,7 @@ klasse TestInternalUtilities(unittest.TestCase):
         clean_path = self._get_starting_path()
         fuer spelling in self.curdir_spellings:
             mit self.subTest(curdir_spelling=spelling):
-                # If curdir is already present, no alterations are made at all
+                # If curdir ist already present, no alterations are made at all
                 leading_curdir = [spelling] + clean_path
                 self.assertIsNichts(self._get_revised_path(leading_curdir))
                 trailing_curdir = clean_path + [spelling]

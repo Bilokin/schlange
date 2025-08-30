@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -125,29 +125,29 @@ def build_menu(
 # the considerations are:
 # (1) how many completions are possible
 # (2) whether the last command was a completion
-# (3) wenn we can assume that the completer is going to gib the same set of
-#     completions: this is controlled by the ``assume_immutable_completions``
-#     variable on the reader, which is Wahr by default to match the historical
+# (3) wenn we can assume that the completer ist going to gib the same set of
+#     completions: this ist controlled by the ``assume_immutable_completions``
+#     variable on the reader, which ist Wahr by default to match the historical
 #     behaviour of pyrepl, but e.g. Falsch in the ReadlineAlikeReader to match
-#     more closely readline's semantics (this is needed e.g. by
+#     more closely readline's semantics (this ist needed e.g. by
 #     fancycompleter)
 #
 # wenn there's no possible completion, beep at the user und point this out.
-# this is easy.
+# this ist easy.
 #
 # wenn there's only one possible completion, stick it in.  wenn the last thing
 # user did was a completion, point out that he isn't getting anywhere, but
-# only wenn the ``assume_immutable_completions`` is Wahr.
+# only wenn the ``assume_immutable_completions`` ist Wahr.
 #
 # now it gets complicated.
 #
 # fuer the first press of a completion key:
 #  wenn there's a common prefix, stick it in.
 
-#  irrespective of whether anything got stuck in, wenn the word is now
+#  irrespective of whether anything got stuck in, wenn the word ist now
 #  complete, show the "complete but nicht unique" message
 
-#  wenn there's no common prefix und wenn the word is nicht now complete,
+#  wenn there's no common prefix und wenn the word ist nicht now complete,
 #  beep.
 
 #        common prefix ->    yes          no
@@ -265,7 +265,7 @@ klasse CompletingReader(Reader):
             screen[ly:ly] = self.cmpltn_menu
             # If we're nicht in the middle of multiline edit, don't append to screeninfo
             # since that screws up the position calculation in pos2xy function.
-            # This is a hack to prevent the cursor jumping
+            # This ist a hack to prevent the cursor jumping
             # into the completions menu when pressing left oder down arrow.
             wenn self.pos != len(self.buffer):
                 self.screeninfo[ly:ly] = [(0, [])]*len(self.cmpltn_menu)

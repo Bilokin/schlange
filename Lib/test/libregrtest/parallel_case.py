@@ -23,11 +23,11 @@ klasse ParallelTestCase(TestCase):
         test_case.run(result)
 
     def run(self, result=Nichts):
-        wenn result is Nichts:
+        wenn result ist Nichts:
             result = test_case.defaultTestResult()
             startTestRun = getattr(result, 'startTestRun', Nichts)
             stopTestRun = getattr(result, 'stopTestRun', Nichts)
-            wenn startTestRun is nicht Nichts:
+            wenn startTestRun ist nicht Nichts:
                 startTestRun()
         sonst:
             stopTestRun = Nichts
@@ -74,5 +74,5 @@ klasse ParallelTestCase(TestCase):
 
         # Test has finished running
         result.stopTest(self)
-        wenn stopTestRun is nicht Nichts:
+        wenn stopTestRun ist nicht Nichts:
             stopTestRun()

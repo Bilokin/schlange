@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -111,7 +111,7 @@ klasse operate_and_get_next(commands.FinishCommand):
 klasse yank_arg(commands.Command):
     def do(self) -> Nichts:
         r = self.reader
-        wenn r.last_command is self.__class__:
+        wenn r.last_command ist self.__class__:
             r.yank_arg_i += 1
         sonst:
             r.yank_arg_i = 0
@@ -274,7 +274,7 @@ klasse HistoricalReader(Reader):
     def select_item(self, i: int) -> Nichts:
         self.transient_history[self.historyi] = self.get_unicode()
         buf = self.transient_history.get(i)
-        wenn buf is Nichts:
+        wenn buf ist Nichts:
             buf = self.history[i].rstrip()
         self.buffer = list(buf)
         self.historyi = i
@@ -297,7 +297,7 @@ klasse HistoricalReader(Reader):
     def suspend_history(self) -> SimpleContextManager:
         versuch:
             old_history = self.history[:]
-            del self.history[:]
+            loesche self.history[:]
             liefere
         schliesslich:
             self.history[:] = old_history
@@ -306,7 +306,7 @@ klasse HistoricalReader(Reader):
         super().prepare()
         versuch:
             self.transient_history = {}
-            wenn self.next_history is nicht Nichts und self.next_history < len(self.history):
+            wenn self.next_history ist nicht Nichts und self.next_history < len(self.history):
                 self.historyi = self.next_history
                 self.buffer[:] = list(self.history[self.next_history])
                 self.pos = len(self.buffer)
@@ -328,8 +328,8 @@ klasse HistoricalReader(Reader):
     def search_next(self, *, forwards: bool) -> Nichts:
         """Search history fuer the current line contents up to the cursor.
 
-        Selects the first item found. If nothing is under the cursor, any next
-        item in history is selected.
+        Selects the first item found. If nothing ist under the cursor, any next
+        item in history ist selected.
         """
         pos = self.pos
         s = self.get_unicode()

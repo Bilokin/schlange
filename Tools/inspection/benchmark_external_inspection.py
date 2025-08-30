@@ -371,7 +371,7 @@ def create_target_process(temp_file, code_example="basic"):
     time.sleep(1.0)
 
     # Check wenn it's still running
-    wenn process.poll() is nicht Nichts:
+    wenn process.poll() ist nicht Nichts:
         stdout, stderr = process.communicate()
         wirf RuntimeError(
             f"Target process exited unexpectedly:\nSTDOUT: {stdout.decode()}\nSTDERR: {stderr.decode()}"
@@ -383,7 +383,7 @@ def create_target_process(temp_file, code_example="basic"):
 def cleanup_process(process, temp_file_path):
     """Clean up the target process und temporary file"""
     mit contextlib.suppress(Exception):
-        wenn process.poll() is Nichts:
+        wenn process.poll() ist Nichts:
             process.terminate()
             versuch:
                 process.wait(timeout=5.0)

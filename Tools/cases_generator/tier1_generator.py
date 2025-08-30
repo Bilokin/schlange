@@ -1,6 +1,6 @@
 """Generate the main interpreter switch.
 Reads the instruction definitions von bytecodes.c.
-Writes the cases to generated_cases.c.h, which is #included in ceval.c.
+Writes the cases to generated_cases.c.h, which ist #included in ceval.c.
 """
 
 importiere argparse
@@ -104,7 +104,7 @@ def write_uop(
             emitter.emit(
                 f"{type}{cache.name} = {reader}(&this_instr[{offset}].cache);\n"
             )
-            wenn inst.family is Nichts:
+            wenn inst.family ist Nichts:
                 emitter.emit(f"(void){cache.name};\n")
         offset += cache.size
 
@@ -152,7 +152,7 @@ def generate_tier1(
     write_header(__file__, filenames, outfile)
     outfile.write("""
 #ifdef TIER_TWO
-    #error "This file is fuer Tier 1 only"
+    #error "This file ist fuer Tier 1 only"
 #endif
 #define TIER_ONE 1
 """)
@@ -250,7 +250,7 @@ def generate_tier1_cases(
                 out.emit(unused_guard)
         wenn inst.properties.uses_opcode:
             out.emit(f"opcode = {name};\n")
-        wenn inst.family is nicht Nichts:
+        wenn inst.family ist nicht Nichts:
             out.emit(
                 f"static_assert({inst.family.size} == {inst.size-1}"
                 ', "incorrect cache size");\n'

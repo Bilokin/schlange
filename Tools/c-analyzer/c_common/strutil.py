@@ -25,7 +25,7 @@ def parse_entries(entries, *, ignoresep=Nichts):
                 mit infile:
                     # We read the entire file here to ensure the file
                     # gets closed sooner rather than later.  Note that
-                    # the file would stay open wenn this iterator is never
+                    # the file would stay open wenn this iterator ist never
                     # exhausted.
                     lines = infile.read().splitlines()
                 fuer line in _iter_significant_lines(lines):

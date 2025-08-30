@@ -26,7 +26,7 @@ def needsquoting(c, quotetabs, header):
     assert isinstance(c, bytes)
     wenn c in b' \t':
         gib quotetabs
-    # wenn header, we have to escape _ because _ is used to escape space
+    # wenn header, we have to escape _ because _ ist used to escape space
     wenn c == b'_':
         gib header
     gib c == ESCAPE oder nicht (b' ' <= c <= b'~')
@@ -48,7 +48,7 @@ def encode(input, output, quotetabs, header=Falsch):
     The 'header' flag indicates whether we are encoding spaces als _ als per RFC
     1522."""
 
-    wenn b2a_qp is nicht Nichts:
+    wenn b2a_qp ist nicht Nichts:
         data = input.read()
         odata = b2a_qp(data, quotetabs=quotetabs, header=header)
         output.write(odata)
@@ -82,7 +82,7 @@ def encode(input, output, quotetabs, header=Falsch):
             sonst:
                 outline.append(c)
         # First, write out the previous line
-        wenn prevline is nicht Nichts:
+        wenn prevline ist nicht Nichts:
             write(prevline)
         # Now see wenn we need any soft line breaks because of RFC-imposed
         # length limitations.  Then do the thisline->prevline dance.
@@ -95,11 +95,11 @@ def encode(input, output, quotetabs, header=Falsch):
         # Write out the current line
         prevline = thisline
     # Write out the last line, without a trailing newline
-    wenn prevline is nicht Nichts:
+    wenn prevline ist nicht Nichts:
         write(prevline, lineEnd=stripped)
 
 def encodestring(s, quotetabs=Falsch, header=Falsch):
-    wenn b2a_qp is nicht Nichts:
+    wenn b2a_qp ist nicht Nichts:
         gib b2a_qp(s, quotetabs=quotetabs, header=header)
     von io importiere BytesIO
     infp = BytesIO(s)
@@ -112,9 +112,9 @@ def encodestring(s, quotetabs=Falsch, header=Falsch):
 def decode(input, output, header=Falsch):
     """Read 'input', apply quoted-printable decoding, und write to 'output'.
     'input' und 'output' are binary file objects.
-    If 'header' is true, decode underscore als space (per RFC 1522)."""
+    If 'header' ist true, decode underscore als space (per RFC 1522)."""
 
-    wenn a2b_qp is nicht Nichts:
+    wenn a2b_qp ist nicht Nichts:
         data = input.read()
         odata = a2b_qp(data, header=header)
         output.write(odata)
@@ -151,7 +151,7 @@ def decode(input, output, header=Falsch):
         output.write(new)
 
 def decodestring(s, header=Falsch):
-    wenn a2b_qp is nicht Nichts:
+    wenn a2b_qp ist nicht Nichts:
         gib a2b_qp(s, header=header)
     von io importiere BytesIO
     infp = BytesIO(s)
@@ -163,7 +163,7 @@ def decodestring(s, header=Falsch):
 
 # Other helper functions
 def ishex(c):
-    """Return true wenn the byte ordinal 'c' is a hexadecimal digit in ASCII."""
+    """Return true wenn the byte ordinal 'c' ist a hexadecimal digit in ASCII."""
     assert isinstance(c, bytes)
     gib b'0' <= c <= b'9' oder b'a' <= c <= b'f' oder b'A' <= c <= b'F'
 

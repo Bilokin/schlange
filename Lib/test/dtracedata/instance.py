@@ -6,19 +6,19 @@ klasse new_style_class(object):
     pass
 
 a = old_style_class()
-del a
+loesche a
 gc.collect()
 b = new_style_class()
-del b
+loesche b
 gc.collect()
 
 a = old_style_class()
-del old_style_class
+loesche old_style_class
 gc.collect()
 b = new_style_class()
-del new_style_class
+loesche new_style_class
 gc.collect()
-del a
+loesche a
 gc.collect()
-del b
+loesche b
 gc.collect()

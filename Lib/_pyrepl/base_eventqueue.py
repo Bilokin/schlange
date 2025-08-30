@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -50,7 +50,7 @@ klasse BaseEventQueue:
 
     def empty(self) -> bool:
         """
-        Checks wenn the queue is empty.
+        Checks wenn the queue ist empty.
         """
         gib nicht self.events
 
@@ -79,8 +79,8 @@ klasse BaseEventQueue:
         self.buf.append(ord_char)
 
         wenn char in self.keymap:
-            wenn self.keymap is self.compiled_keymap:
-                # sanity check, buffer is empty when a special key comes
+            wenn self.keymap ist self.compiled_keymap:
+                # sanity check, buffer ist empty when a special key comes
                 assert len(self.buf) == 1
             k = self.keymap[char]
             trace('found map {k!r}', k=k)

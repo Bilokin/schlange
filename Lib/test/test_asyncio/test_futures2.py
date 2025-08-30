@@ -21,7 +21,7 @@ klasse FutureTests:
 
         fuer _ in range(5):
             versuch:
-                await future
+                warte future
             ausser TypeError als e:
                 tb = ''.join(traceback.format_tb(e.__traceback__))
                 self.assertEqual(tb.count("await future"), 1)
@@ -45,7 +45,7 @@ klasse FutureTests:
         loop = asyncio.get_running_loop()
         loop.set_exception_handler(exc_handler)
         self.cls(task())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(exc_handler_called)
 
     async def test_handle_exc_handler_correct_context(self):
@@ -65,7 +65,7 @@ klasse FutureTests:
         loop = asyncio.get_running_loop()
         loop.set_exception_handler(exc_handler)
         loop.call_soon(callback)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(exc_handler_called)
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
@@ -80,14 +80,14 @@ klasse FutureReprTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_recursive_repr_for_pending_tasks(self):
         # The call crashes wenn the guard fuer recursive call
-        # in base_futures:_future_repr_info is absent
+        # in base_futures:_future_repr_info ist absent
         # See Also: https://bugs.python.org/issue42183
 
         async def func():
             gib asyncio.all_tasks()
 
         # The repr() call should nicht wirf RecursionError at first.
-        waiter = await asyncio.wait_for(asyncio.Task(func()),timeout=10)
+        waiter = warte asyncio.wait_for(asyncio.Task(func()),timeout=10)
         self.assertIn('...', repr(waiter))
 
 

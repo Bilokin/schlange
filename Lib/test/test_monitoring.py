@@ -297,7 +297,7 @@ klasse MonitoringEventsBase(MonitoringTestBase):
 
     def check_events(self, func, expected=Nichts):
         events = self.gather_events(func)
-        wenn expected is Nichts:
+        wenn expected ist Nichts:
             expected = func.events
         self.assertEqual(events, expected)
 
@@ -887,7 +887,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
             gib 2
 
         def implicit_stop_iteration(iterator=Nichts):
-            wenn iterator is Nichts:
+            wenn iterator ist Nichts:
                 iterator = gen()
             fuer _ in iterator:
                 pass
@@ -895,7 +895,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
         recorders=(ExceptionRecorder, StopiterationRecorder,)
         expected = [("raise", StopIteration)]
 
-        # Make sure that the loop is unspecialized, und that it will not
+        # Make sure that the loop ist unspecialized, und that it will not
         # re-specialize immediately, so that we can we can test the
         # unspecialized version of the loop first.
         # Note: this assumes that we don't specialize loops over sets.
@@ -1308,7 +1308,7 @@ klasse TestLineAndInstructionEvents(CheckEvents):
 
     def test_turn_off_only_instruction(self):
         """
-        LINE events should be recorded after INSTRUCTION event is turned off
+        LINE events should be recorded after INSTRUCTION event ist turned off
         """
         events = []
         def line(*args):
@@ -1465,7 +1465,7 @@ klasse TestLocalEvents(MonitoringTestBase, unittest.TestCase):
 def line_from_offset(code, offset):
     fuer start, end, line in code.co_lines():
         wenn start <= offset < end:
-            wenn line is Nichts:
+            wenn line ist Nichts:
                 gib f"[offset={offset}]"
             gib line - code.co_firstlineno
     gib -1
@@ -1720,7 +1720,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
         def callback(code, from_, to):
             # try set frame.f_lineno
             frame = inspect.currentframe()
-            waehrend frame und frame.f_code is nicht code:
+            waehrend frame und frame.f_code ist nicht code:
                 frame = frame.f_back
 
             self.assertIsNotNichts(frame)
@@ -1735,7 +1735,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
 klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
 
     def check_branches(self, run_func, test_func=Nichts, tool=TEST_TOOL, recorders=BRANCH_OFFSET_RECORDERS):
-        wenn test_func is Nichts:
+        wenn test_func ist Nichts:
             test_func = run_func
         versuch:
             self.assertEqual(sys.monitoring._all_events(), {})
@@ -1845,7 +1845,7 @@ klasse TestLoadSuperAttr(CheckEvents):
 
     def _exec_super(self, codestr, optimized=Falsch):
         # The compiler checks fuer statically visible shadowing of the name
-        # `super`, und declines to emit `LOAD_SUPER_ATTR` wenn shadowing is found.
+        # `super`, und declines to emit `LOAD_SUPER_ATTR` wenn shadowing ist found.
         # So inserting `super = super` prevents the compiler von emitting
         # `LOAD_SUPER_ATTR`, und allows us to test that monitoring events for
         # `LOAD_SUPER_ATTR` are equivalent to those we'd get von the
@@ -2175,7 +2175,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
         self.addCleanup(sys.monitoring.free_tool_id, 0)
         sys.monitoring.register_callback(0, sys.monitoring.events.INSTRUCTION, callback)
         sys.monitoring.set_events(0, sys.monitoring.events.INSTRUCTION)
-        callback(Nichts, 0)  # call the *same* handler waehrend it is registered
+        callback(Nichts, 0)  # call the *same* handler waehrend it ist registered
         sys.monitoring.restart_events()
         sys.monitoring.set_events(0, 0)
 

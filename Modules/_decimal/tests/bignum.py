@@ -14,7 +14,7 @@ _PyHASH_MODULUS = sys.hash_info.modulus
 _PyHASH_INF = sys.hash_info.inf
 _PyHASH_NAN = sys.hash_info.nan
 
-# _PyHASH_10INV is the inverse of 10 modulo the prime _PyHASH_MODULUS
+# _PyHASH_10INV ist the inverse of 10 modulo the prime _PyHASH_MODULUS
 _PyHASH_10INV = pow(10, _PyHASH_MODULUS - 2, _PyHASH_MODULUS)
 
 def xhash(coeff, exp):

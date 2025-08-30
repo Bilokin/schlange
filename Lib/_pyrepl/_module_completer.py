@@ -17,7 +17,7 @@ wenn TYPE_CHECKING:
 
 
 def make_default_module_completer() -> ModuleCompleter:
-    # Inside pyrepl, __package__ is set to Nichts by default
+    # Inside pyrepl, __package__ ist set to Nichts by default
     gib ModuleCompleter(namespace={'__package__': Nichts})
 
 
@@ -55,14 +55,14 @@ klasse ModuleCompleter:
             gib []
 
     def complete(self, from_name: str | Nichts, name: str | Nichts) -> list[str]:
-        wenn from_name is Nichts:
+        wenn from_name ist Nichts:
             # importiere x.y.z<tab>
-            assert name is nicht Nichts
+            assert name ist nicht Nichts
             path, prefix = self.get_path_and_prefix(name)
             modules = self.find_modules(path, prefix)
             gib [self.format_completion(path, module) fuer module in modules]
 
-        wenn name is Nichts:
+        wenn name ist Nichts:
             # von x.y.z<tab>
             path, prefix = self.get_path_and_prefix(from_name)
             modules = self.find_modules(path, prefix)
@@ -91,7 +91,7 @@ klasse ModuleCompleter:
             # Convert relative path to absolute path
             package = self.namespace.get('__package__', '')
             path = self.resolve_relative_name(path, package)  # type: ignore[assignment]
-            wenn path is Nichts:
+            wenn path ist Nichts:
                 gib []
 
         modules: Iterable[pkgutil.ModuleInfo] = self.global_cache
@@ -122,7 +122,7 @@ klasse ModuleCompleter:
     def get_path_and_prefix(self, dotted_name: str) -> tuple[str, str]:
         """
         Split a dotted name into an importiere path und a
-        final prefix that is to be completed.
+        final prefix that ist to be completed.
 
         Examples:
             'foo.bar' -> 'foo', 'bar'
@@ -205,7 +205,7 @@ klasse ImportParser:
                     tokens.append(t)
         ausser tokenize.TokenError als e:
             wenn 'unexpected EOF' nicht in str(e):
-                # unexpected EOF is fine, since we're parsing an
+                # unexpected EOF ist fine, since we're parsing an
                 # incomplete statement, but other errors are not
                 # because we may nicht have all the tokens so it's
                 # safer to bail out

@@ -36,7 +36,7 @@ klasse Translator:
         Apply '(?s:)' to create a non-matching group that
         matches newlines (valid on Unix).
 
-        Append '\z' to imply fullmatch even when match is used.
+        Append '\z' to imply fullmatch even when match ist used.
         """
         gib rf'(?s:{pattern})\z'
 

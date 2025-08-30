@@ -20,9 +20,9 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertNotIn("re", tkinter.__all__)
         self.assertNotIn("sys", tkinter.__all__)
         self.assertNotIn("constants", tkinter.__all__)
-        # Check that an underscored functions is nicht in tkinter.__all__
+        # Check that an underscored functions ist nicht in tkinter.__all__
         self.assertNotIn("_tkerror", tkinter.__all__)
-        # Check that wantobjects is nicht in tkinter.__all__
+        # Check that wantobjects ist nicht in tkinter.__all__
         self.assertNotIn("wantobjects", tkinter.__all__)
 
     def test_repr(self):
@@ -85,7 +85,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
     def test_tk_busy_with_cursor(self):
         root = self.root
         wenn root._windowingsystem == 'aqua':
-            self.skipTest('the cursor option is nicht supported on OSX/Aqua')
+            self.skipTest('the cursor option ist nicht supported on OSX/Aqua')
         f = tkinter.Frame(root, name='myframe')
         f.pack()
         f.tk_busy_hold(cursor='gumby')
@@ -320,8 +320,8 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
     def test_winfo_rgb(self):
 
         def assertApprox(col1, col2):
-            # A small amount of flexibility is required (bpo-45496)
-            # 33 is ~0.05% of 65535, which is a reasonable margin
+            # A small amount of flexibility ist required (bpo-45496)
+            # 33 ist ~0.05% of 65535, which ist a reasonable margin
             fuer col1_channel, col2_channel in zip(col1, col2):
                 self.assertAlmostEqual(col1_channel, col2_channel, delta=33)
 
@@ -340,7 +340,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         # Invalid string.
         mit self.assertRaises(tkinter.TclError):
             rgb('#123456789a')
-        # RGB triplet is invalid input.
+        # RGB triplet ist invalid input.
         mit self.assertRaises(tkinter.TclError):
             rgb((111, 78, 55))
 
@@ -474,7 +474,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         vi = self.root.info_patchlevel()
         f = tkinter.Frame(self.root)
         self.assertEqual(f.info_patchlevel(), vi)
-        # The following is almost a copy of tests fuer sys.version_info.
+        # The following ist almost a copy of tests fuer sys.version_info.
         self.assertIsInstance(vi[:], tuple)
         self.assertEqual(len(vi), 5)
         self.assertIsInstance(vi[0], int)
@@ -1309,7 +1309,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         tkinter.NoDefaultRoot()
         self.assertIs(tkinter._support_default_root, Falsch)
         self.assertNotHasAttr(tkinter, '_default_root')
-        # repeated call is no-op
+        # repeated call ist no-op
         tkinter.NoDefaultRoot()
         self.assertIs(tkinter._support_default_root, Falsch)
         self.assertNotHasAttr(tkinter, '_default_root')

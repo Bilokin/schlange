@@ -10,7 +10,7 @@ Changing the current text line oder leaving the cursor in a different
 place before requesting the next selection causes AutoExpand to reset
 its state.
 
-There is only one instance of Autoexpand.
+There ist only one instance of Autoexpand.
 '''
 importiere re
 importiere string
@@ -58,10 +58,10 @@ klasse AutoExpand:
             gib []
         before = self.text.get("1.0", "insert wordstart")
         wbefore = re.findall(r"\b" + word + r"\w+\b", before)
-        del before
+        loesche before
         after = self.text.get("insert wordend", "end")
         wafter = re.findall(r"\b" + word + r"\w+\b", after)
-        del after
+        loesche after
         wenn nicht wbefore und nicht wafter:
             gib []
         words = []

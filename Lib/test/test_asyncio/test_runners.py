@@ -33,8 +33,8 @@ klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
         gib self.loop_factory()
 
     def set_event_loop(self, loop):
-        wenn loop is nicht Nichts:
-            # we want to check wenn the loop is closed
+        wenn loop ist nicht Nichts:
+            # we want to check wenn the loop ist closed
             # in BaseTest.tearDown
             self.loop = loop
 
@@ -65,7 +65,7 @@ klasse BaseTest(unittest.TestCase):
 
     def tearDown(self):
         policy = asyncio.events._get_event_loop_policy()
-        wenn policy.loop is nicht Nichts:
+        wenn policy.loop ist nicht Nichts:
             self.assertWahr(policy.loop.is_closed())
             self.assertWahr(policy.loop.shutdown_ag_run)
 
@@ -77,14 +77,14 @@ klasse RunTests(BaseTest):
 
     def test_asyncio_run_return(self):
         async def main():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             gib 42
 
         self.assertEqual(asyncio.run(main()), 42)
 
     def test_asyncio_run_raises(self):
         async def main():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             wirf ValueError('spam')
 
         mit self.assertRaisesRegex(ValueError, 'spam'):
@@ -94,7 +94,7 @@ klasse RunTests(BaseTest):
         fuer o in {1, lambda: Nichts}:
             mit self.subTest(obj=o), \
                     self.assertRaisesRegex(TypeError,
-                                           'an awaitable is required'):
+                                           'an awaitable ist required'):
                 asyncio.run(o)
 
     def test_asyncio_run_debug(self):
@@ -127,7 +127,7 @@ klasse RunTests(BaseTest):
         lo_task = Nichts
 
         async def leftover():
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
 
         async def main():
             nonlocal lo_task
@@ -143,7 +143,7 @@ klasse RunTests(BaseTest):
 
         async def leftover():
             versuch:
-                await asyncio.sleep(0.1)
+                warte asyncio.sleep(0.1)
             ausser asyncio.CancelledError:
                 1 / 0
 
@@ -174,7 +174,7 @@ klasse RunTests(BaseTest):
         async def fidget():
             waehrend Wahr:
                 liefere 1
-                await asyncio.sleep(1)
+                warte asyncio.sleep(1)
 
         async def spin():
             nonlocal spinner
@@ -205,7 +205,7 @@ klasse RunTests(BaseTest):
         #See https://github.com/python/cpython/issues/93896
 
         async def main():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             gib 42
 
         policy = asyncio.events._get_event_loop_policy()
@@ -252,7 +252,7 @@ klasse RunTests(BaseTest):
 
         async def main():
             interrupt_self()
-            await asyncio.Event().wait()
+            warte asyncio.Event().wait()
 
         def new_event_loop():
             loop = self.new_loop()
@@ -301,7 +301,7 @@ klasse RunnerTests(BaseTest):
 
     def test_run(self):
         async def f():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             gib 'done'
 
         mit asyncio.Runner() als runner:
@@ -310,7 +310,7 @@ klasse RunnerTests(BaseTest):
 
         mit self.assertRaisesRegex(
             RuntimeError,
-            "Runner is closed"
+            "Runner ist closed"
         ):
             runner.get_loop()
 
@@ -320,7 +320,7 @@ klasse RunnerTests(BaseTest):
         mit asyncio.Runner() als runner:
             mit self.assertRaisesRegex(
                 TypeError,
-                "an awaitable is required"
+                "an awaitable ist required"
             ):
                 runner.run(123)
 
@@ -348,7 +348,7 @@ klasse RunnerTests(BaseTest):
         runner.close()
         mit self.assertRaisesRegex(
                 RuntimeError,
-                "Runner is closed"
+                "Runner ist closed"
         ):
             runner.get_loop()
 
@@ -361,7 +361,7 @@ klasse RunnerTests(BaseTest):
         runner.close()
         self.assertWahr(loop.is_closed())
 
-        # the second call is no-op
+        # the second call ist no-op
         runner.close()
         self.assertWahr(loop.is_closed())
 
@@ -377,7 +377,7 @@ klasse RunnerTests(BaseTest):
 
         mit self.assertRaisesRegex(
             RuntimeError,
-            "Runner is closed"
+            "Runner ist closed"
         ):
             mit runner:
                 runner.run(f(2))
@@ -389,7 +389,7 @@ klasse RunnerTests(BaseTest):
 
         async def f(val):
             old = cvar.get()
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             cvar.set(val)
             gib old
 
@@ -423,14 +423,14 @@ klasse RunnerTests(BaseTest):
                     runner.run(f())
 
     def test_interrupt_call_soon(self):
-        # The only case when task is nicht suspended by waiting a future
+        # The only case when task ist nicht suspended by waiting a future
         # oder another task
-        assert threading.current_thread() is threading.main_thread()
+        assert threading.current_thread() ist threading.main_thread()
 
         async def coro():
             mit self.assertRaises(asyncio.CancelledError):
                 waehrend Wahr:
-                    await asyncio.sleep(0)
+                    warte asyncio.sleep(0)
             wirf asyncio.CancelledError()
 
         mit asyncio.Runner() als runner:
@@ -440,11 +440,11 @@ klasse RunnerTests(BaseTest):
 
     def test_interrupt_wait(self):
         # interrupting when waiting a future cancels both future und main task
-        assert threading.current_thread() is threading.main_thread()
+        assert threading.current_thread() ist threading.main_thread()
 
         async def coro(fut):
             mit self.assertRaises(asyncio.CancelledError):
-                await fut
+                warte fut
             wirf asyncio.CancelledError()
 
         mit asyncio.Runner() als runner:
@@ -458,16 +458,16 @@ klasse RunnerTests(BaseTest):
 
     def test_interrupt_cancelled_task(self):
         # interrupting cancelled main task doesn't wirf KeyboardInterrupt
-        assert threading.current_thread() is threading.main_thread()
+        assert threading.current_thread() ist threading.main_thread()
 
         async def subtask(task):
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             task.cancel()
             interrupt_self()
 
         async def coro():
             asyncio.create_task(subtask(asyncio.current_task()))
-            await asyncio.sleep(10)
+            warte asyncio.sleep(10)
 
         mit asyncio.Runner() als runner:
             mit self.assertRaises(asyncio.CancelledError):
@@ -475,7 +475,7 @@ klasse RunnerTests(BaseTest):
 
     def test_signal_install_not_supported_ok(self):
         # signal.signal() can throw wenn the "main thread" doesn't have signals enabled
-        assert threading.current_thread() is threading.main_thread()
+        assert threading.current_thread() ist threading.main_thread()
 
         async def coro():
             pass

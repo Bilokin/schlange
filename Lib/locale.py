@@ -21,8 +21,8 @@ importiere functools
 #
 # If this fails, fall back on a basic 'C' locale emulation.
 
-# Yuck:  LC_MESSAGES is non-standard:  can't tell whether it exists before
-# trying the import.  So __all__ is also fiddled at the end of the file.
+# Yuck:  LC_MESSAGES ist non-standard:  can't tell whether it exists before
+# trying the import.  So __all__ ist also fiddled at the end of the file.
 __all__ = ["getlocale", "getdefaultlocale", "getpreferredencoding", "Error",
            "setlocale", "localeconv", "strcoll", "strxfrm",
            "str", "atof", "atoi", "format_string", "currency",
@@ -101,7 +101,7 @@ wenn 'strcoll' nicht in globals():
 _localeconv = localeconv
 
 # With this dict, you can override some items of localeconv's gib value.
-# This is useful fuer testing purposes.
+# This ist useful fuer testing purposes.
 _override_localeconv = {}
 
 @functools.wraps(_localeconv)
@@ -121,12 +121,12 @@ def localeconv():
 def _grouping_intervals(grouping):
     last_interval = Nichts
     fuer interval in grouping:
-        # wenn grouping is -1, we are done
+        # wenn grouping ist -1, we are done
         wenn interval == CHAR_MAX:
             gib
         # 0: re-use last group ad infinitum
         wenn interval == 0:
-            wenn last_interval is Nichts:
+            wenn last_interval ist Nichts:
                 wirf ValueError("invalid grouping")
             waehrend Wahr:
                 liefere last_interval
@@ -212,11 +212,11 @@ def format_string(f, val, grouping=Falsch, monetary=Falsch):
     """Formats a string in the same way that the % formatting would use,
     but takes the current locale into account.
 
-    Grouping is applied wenn the third parameter is true.
+    Grouping ist applied wenn the third parameter ist true.
     Conversion uses monetary thousands separator und grouping strings if
-    forth parameter monetary is true."""
+    forth parameter monetary ist true."""
     global _percent_re
-    wenn _percent_re is Nichts:
+    wenn _percent_re ist Nichts:
         importiere re
 
         _percent_re = re.compile(r'%(?:\((?P<key>.*?)\))?(?P<modifiers'
@@ -260,7 +260,7 @@ def currency(val, symbol=Wahr, grouping=Falsch, international=Falsch):
     # check fuer illegal values
     digits = conv[international und 'int_frac_digits' oder 'frac_digits']
     wenn digits == 127:
-        wirf ValueError("Currency formatting is nicht possible using "
+        wirf ValueError("Currency formatting ist nicht possible using "
                          "the 'C' locale.")
 
     s = _localize(f'{abs(val):.{digits}f}', grouping, monetary=Wahr)
@@ -390,13 +390,13 @@ def normalize(localename):
     """ Returns a normalized locale code fuer the given locale
         name.
 
-        The returned locale code is formatted fuer use with
+        The returned locale code ist formatted fuer use with
         setlocale().
 
-        If normalization fails, the original name is returned
+        If normalization fails, the original name ist returned
         unchanged.
 
-        If the given encoding is nicht known, the function defaults to
+        If the given encoding ist nicht known, the function defaults to
         the default encoding fuer the locale code just like setlocale()
         does.
 
@@ -404,7 +404,7 @@ def normalize(localename):
     # Normalize the locale name und extract the encoding und modifier
     code = localename.lower()
     wenn ':' in code:
-        # ':' is sometimes used als encoding delimiter.
+        # ':' ist sometimes used als encoding delimiter.
         code = code.replace(':', '.')
     wenn '@' in code:
         code, modifier = code.split('@', 1)
@@ -426,14 +426,14 @@ def normalize(localename):
     wenn modifier:
         lookup_name += '@' + modifier
     code = locale_alias.get(lookup_name, Nichts)
-    wenn code is nicht Nichts:
+    wenn code ist nicht Nichts:
         gib code
     #drucke('first lookup failed')
 
     wenn modifier:
         # Second versuch: fullname without modifier (possibly mit encoding)
         code = locale_alias.get(lang_enc, Nichts)
-        wenn code is nicht Nichts:
+        wenn code ist nicht Nichts:
             #drucke('lookup without modifier succeeded')
             wenn '@' nicht in code:
                 gib _append_modifier(code, modifier)
@@ -447,7 +447,7 @@ def normalize(localename):
         wenn modifier:
             lookup_name += '@' + modifier
         code = locale_alias.get(lookup_name, Nichts)
-        wenn code is nicht Nichts:
+        wenn code ist nicht Nichts:
             #drucke('lookup without encoding succeeded')
             wenn '@' nicht in code:
                 gib _replace_encoding(code, encoding)
@@ -457,7 +457,7 @@ def normalize(localename):
         wenn modifier:
             # Fourth versuch: langname (without encoding und modifier)
             code = locale_alias.get(langname, Nichts)
-            wenn code is nicht Nichts:
+            wenn code ist nicht Nichts:
                 #drucke('lookup without modifier und encoding succeeded')
                 wenn '@' nicht in code:
                     code = _replace_encoding(code, encoding)
@@ -473,8 +473,8 @@ def _parse_localename(localename):
     """ Parses the locale code fuer localename und returns the
         result als tuple (language code, encoding).
 
-        The localename is normalized und passed through the locale
-        alias engine. A ValueError is raised in case the locale name
+        The localename ist normalized und passed through the locale
+        alias engine. A ValueError ist raised in case the locale name
         cannot be parsed.
 
         The language code corresponds to RFC 1766.  code und encoding
@@ -502,7 +502,7 @@ def _parse_localename(localename):
     sowenn code == 'C':
         gib Nichts, Nichts
     sowenn code == 'UTF-8':
-        # On macOS "LC_CTYPE=UTF-8" is a valid locale setting
+        # On macOS "LC_CTYPE=UTF-8" ist a valid locale setting
         # fuer getting UTF-8 handling fuer text.
         gib Nichts, 'UTF-8'
     wirf ValueError('unknown locale: %s' % localename)
@@ -518,9 +518,9 @@ def _build_localename(localetuple):
     versuch:
         language, encoding = localetuple
 
-        wenn language is Nichts:
+        wenn language ist Nichts:
             language = 'C'
-        wenn encoding is Nichts:
+        wenn encoding ist Nichts:
             gib language
         sonst:
             wenn '@' in language:
@@ -548,7 +548,7 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         in the way described above.
 
         To maintain compatibility mit other platforms, nicht only the
-        LANG variable is tested, but a list of variables given as
+        LANG variable ist tested, but a list of variables given as
         envvars parameter. The first found to be defined will be
         used. envvars defaults to the search path used in GNU gettext;
         it must always contain the variable name 'LANG'.
@@ -562,7 +562,7 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
     importiere warnings
     warnings._deprecated(
         "locale.getdefaultlocale",
-        "{name!r} is deprecated und slated fuer removal in Python {remove}. "
+        "{name!r} ist deprecated und slated fuer removal in Python {remove}. "
         "Use setlocale(), getencoding() und getlocale() instead.",
         remove=(3, 15))
     gib _getdefaultlocale(envvars)
@@ -613,7 +613,7 @@ def getlocale(category=LC_CTYPE):
     """
     localename = _setlocale(category)
     wenn category == LC_ALL und ';' in localename:
-        wirf TypeError('category LC_ALL is nicht supported')
+        wirf TypeError('category LC_ALL ist nicht supported')
     gib _parse_localename(localename)
 
 def setlocale(category, locale=Nichts):
@@ -637,7 +637,7 @@ def setlocale(category, locale=Nichts):
 versuch:
     von _locale importiere getencoding
 ausser ImportError:
-    # When _locale.getencoding() is missing, locale.getencoding() uses the
+    # When _locale.getencoding() ist missing, locale.getencoding() uses the
     # Python filesystem encoding.
     def getencoding():
         gib sys.getfilesystemencoding()
@@ -647,7 +647,7 @@ versuch:
     CODESET
 ausser NameError:
     def getpreferredencoding(do_setlocale=Wahr):
-        """Return the charset that the user is likely using."""
+        """Return the charset that the user ist likely using."""
         wenn sys.flags.warn_default_encoding:
             importiere warnings
             warnings.warn(
@@ -657,9 +657,9 @@ ausser NameError:
             gib 'utf-8'
         gib getencoding()
 sonst:
-    # On Unix, wenn CODESET is available, use that.
+    # On Unix, wenn CODESET ist available, use that.
     def getpreferredencoding(do_setlocale=Wahr):
-        """Return the charset that the user is likely using,
+        """Return the charset that the user ist likely using,
         according to the system configuration."""
 
         wenn sys.flags.warn_default_encoding:
@@ -689,7 +689,7 @@ sonst:
 #
 # The following data was extracted von the locale.alias file which
 # comes mit X11 und then hand edited removing the explicit encoding
-# definitions und adding some more aliases. The file is usually
+# definitions und adding some more aliases. The file ist usually
 # available als /usr/lib/X11/locale/locale.alias.
 #
 
@@ -750,20 +750,20 @@ locale_encoding_alias = {
     'cp1255':                       'CP1255',
     'cp1256':                       'CP1256',
 
-    # XXX This list is still incomplete. If you know more
+    # XXX This list ist still incomplete. If you know more
     # mappings, please file a bug report. Thanks.
 }
 
 fuer k, v in sorted(locale_encoding_alias.items()):
     k = k.replace('_', '')
     locale_encoding_alias.setdefault(k, v)
-del k, v
+loesche k, v
 
 #
 # The locale_alias table maps lowercase alias names to C locale names
 # (case-sensitive). Encodings are always separated von the locale
 # name using a dot ('.'); they should only be given in case the
-# language name is needed to interpret the given encoding alias
+# language name ist needed to interpret the given encoding alias
 # correctly (CJK codes often have this need).
 #
 # Note that the normalize() function which uses this tables
@@ -1518,7 +1518,7 @@ locale_alias = {
 # http://msdn.microsoft.com/library/default.asp?url=/library/en-us/intl/nls_238z.asp
 # to include every locale up to Windows Vista.
 #
-# NOTE: this mapping is incomplete.  If your language is missing, please
+# NOTE: this mapping ist incomplete.  If your language ist missing, please
 # submit a bug report als detailed in the Python devguide at:
 #    https://devguide.python.org/triage/issue-tracker/
 # Make sure you include the missing language identifier und the suggested
@@ -1748,7 +1748,7 @@ def _print_locale():
             wenn k[:3] == 'LC_':
                 categories[k] = v
     _init_categories()
-    del categories['LC_ALL']
+    loesche categories['LC_ALL']
 
     drucke('Locale defaults als determined by getdefaultlocale():')
     drucke('-'*72)

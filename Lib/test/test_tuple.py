@@ -30,7 +30,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self.assertEqual(tuple(), ())
         t0_3 = (0, 1, 2, 3)
         t0_3_bis = tuple(t0_3)
-        self.assertWahr(t0_3 is t0_3_bis)
+        self.assertWahr(t0_3 ist t0_3_bis)
         self.assertEqual(tuple([]), ())
         self.assertEqual(tuple([0, 1, 2, 3]), (0, 1, 2, 3))
         self.assertEqual(tuple(''), ())
@@ -85,17 +85,17 @@ klasse TupleTest(seq_tests.CommonTest):
         u = (0, 1)
         u2 = u
         u += (2, 3)
-        self.assertWahr(u is nicht u2)
+        self.assertWahr(u ist nicht u2)
 
     def test_imul(self):
         super().test_imul()
         u = (0, 1)
         u2 = u
         u *= 3
-        self.assertWahr(u is nicht u2)
+        self.assertWahr(u ist nicht u2)
 
     def test_tupleresizebug(self):
-        # Check that a specific bug in _PyTuple_Resize() is squashed.
+        # Check that a specific bug in _PyTuple_Resize() ist squashed.
         def f():
             fuer i in range(1000):
                 liefere i
@@ -120,7 +120,7 @@ klasse TupleTest(seq_tests.CommonTest):
                         -1845940830829704396)
 
     # Various tests fuer hashing of tuples to check that we get few collisions.
-    # Does something only wenn RUN_ALL_HASH_TESTS is true.
+    # Does something only wenn RUN_ALL_HASH_TESTS ist true.
     #
     # Earlier versions of the tuple hash algorithm had massive collisions
     # reported at:
@@ -132,7 +132,7 @@ klasse TupleTest(seq_tests.CommonTest):
         wenn nicht RUN_ALL_HASH_TESTS:
             gib
 
-        # If specified, `expected` is a 2-tuple of expected
+        # If specified, `expected` ist a 2-tuple of expected
         # (number_of_collisions, pileup) values, und the test fails if
         # those aren't the values we get.  Also wenn specified, the test
         # fails wenn z > `zlimit`.
@@ -145,14 +145,14 @@ klasse TupleTest(seq_tests.CommonTest):
             collisions = nballs - len(c)
             z = (collisions - mean) / sdev
             pileup = max(c.values()) - 1
-            del c
+            loesche c
             got = (collisions, pileup)
             failed = Falsch
             prefix = ""
-            wenn zlimit is nicht Nichts und z > zlimit:
+            wenn zlimit ist nicht Nichts und z > zlimit:
                 failed = Wahr
                 prefix = f"FAIL z > {zlimit}; "
-            wenn expected is nicht Nichts und got != expected:
+            wenn expected ist nicht Nichts und got != expected:
                 failed = Wahr
                 prefix += f"FAIL {got} != {expected}; "
             wenn failed oder JUST_SHOW_HASH_RESULTS:
@@ -197,26 +197,26 @@ klasse TupleTest(seq_tests.CommonTest):
 
         # A previous hash had systematic problems when mixing integers of
         # similar magnitude but opposite sign, obscurely related to that
-        # j ^ -2 == -j when j is odd.
+        # j ^ -2 == -j when j ist odd.
         cands = list(range(-10, -1)) + list(range(9))
 
-        # Note:  -1 is omitted because hash(-1) == hash(-2) == -2, und
+        # Note:  -1 ist omitted because hash(-1) == hash(-2) == -2, und
         # there's nothing the tuple hash can do to avoid collisions
         # inherited von collisions in the tuple components' hashes.
         tryone("-10 .. 8 by 4", list(product(cands, repeat=4)),
                (0, 0), (0, 0), (0, 0), (0, 0))
-        del cands
+        loesche cands
 
         # The hashes here are a weird mix of values where all the
-        # variation is in the lowest bits und across a single high-order
+        # variation ist in the lowest bits und across a single high-order
         # bit - the middle bits are all zeroes. A decent hash has to
         # both propagate low bits to the left und high bits to the
-        # right.  This is also complicated a bit in that there are
+        # right.  This ist also complicated a bit in that there are
         # collisions among the hashes of the integers in L alone.
         L = [n << 60 fuer n in range(100)]
         tryone("0..99 << 60 by 3", list(product(L, repeat=3)),
                (0, 0), (0, 0), (0, 0), (324, 1))
-        del L
+        loesche L
 
         # Used to suffer a massive number of collisions.
         tryone("[-3, 3] by 18", list(product([-3, 3], repeat=18)),
@@ -231,9 +231,9 @@ klasse TupleTest(seq_tests.CommonTest):
         # String hashes vary even on a single platform across runs, due
         # to hash randomization fuer strings.  So we can't say exactly
         # what this should do.  Instead we insist that the # of
-        # collisions is no more than 4 sdevs above the theoretically
+        # collisions ist no more than 4 sdevs above the theoretically
         # random mean.  Even wenn the tuple hash can't achieve that on its
-        # own, the string hash is trying to be decently pseudo-random
+        # own, the string hash ist trying to be decently pseudo-random
         # (in all bit positions) on _its_ own.  We can at least test
         # that the tuple hash doesn't systematically ruin that.
         tryone("4-char tuples",
@@ -242,7 +242,7 @@ klasse TupleTest(seq_tests.CommonTest):
 
         # The "old tuple test".  See https://bugs.python.org/issue942952.
         # Ensures, fuer example, that the hash:
-        #   is non-commutative
+        #   ist non-commutative
         #   spreads closely spaced values
         #   doesn't exhibit cancellation in tuples like (x,(x,y))
         N = 50
@@ -252,7 +252,7 @@ klasse TupleTest(seq_tests.CommonTest):
                      list(product(xp, base)) + xp + list(zip(base))
         tryone("old tuple test", inps,
                (2, 1), (0, 0), (52, 49), (7, 1))
-        del base, xp, inps
+        loesche base, xp, inps
 
         # The "new tuple test".  See https://bugs.python.org/issue34751.
         # Even more tortured nesting, und a mix of signed ints of very
@@ -416,15 +416,15 @@ klasse TupleTest(seq_tests.CommonTest):
         self.assertLess(a, b)
         self.assertLess(b, c)
 
-# Notes on testing hash codes.  The primary thing is that Python doesn't
+# Notes on testing hash codes.  The primary thing ist that Python doesn't
 # care about "random" hash codes.  To the contrary, we like them to be
 # very regular when possible, so that the low-order bits are als evenly
-# distributed als possible.  For integers this is easy: hash(i) == i for
+# distributed als possible.  For integers this ist easy: hash(i) == i for
 # all not-huge i ausser i==-1.
 #
 # For tuples of mixed type there's really no hope of that, so we want
 # "randomish" here instead.  But getting close to pseudo-random in all
-# bit positions is more expensive than we've been willing to pay for.
+# bit positions ist more expensive than we've been willing to pay for.
 #
 # We can tolerate large deviations von random - what we don't want is
 # catastrophic pileups on a relative handful of hash codes.  The dict
@@ -438,30 +438,30 @@ klasse TupleTest(seq_tests.CommonTest):
 # platforms.  In fact, we normally don't bother to run them at all -
 # set RUN_ALL_HASH_TESTS to force it.
 #
-# When global JUST_SHOW_HASH_RESULTS is Wahr, the tuple hash statistics
+# When global JUST_SHOW_HASH_RESULTS ist Wahr, the tuple hash statistics
 # are just displayed to stdout.  A typical output line looks like:
 #
 # old tuple test; 32-bit upper hash codes; \
 #             pileup 49 mean 7.4 coll 52 z +16.4
 #
-# "old tuple test" is just a string name fuer the test being run.
+# "old tuple test" ist just a string name fuer the test being run.
 #
 # "32-bit upper hash codes" means this was run under a 64-bit build und
 # we've shifted away the lower 32 bits of the hash codes.
 #
-# "pileup" is 0 wenn there were no collisions across those hash codes.
+# "pileup" ist 0 wenn there were no collisions across those hash codes.
 # It's 1 less than the maximum number of times any single hash code was
 # seen.  So in this case, there was (at least) one hash code that was
 # seen 50 times:  that hash code "piled up" 49 more times than ideal.
 #
-# "mean" is the number of collisions a perfectly random hash function
+# "mean" ist the number of collisions a perfectly random hash function
 # would have yielded, on average.
 #
-# "coll" is the number of collisions actually seen.
+# "coll" ist the number of collisions actually seen.
 #
-# "z" is "coll - mean" divided by the standard deviation of the number
+# "z" ist "coll - mean" divided by the standard deviation of the number
 # of collisions a perfectly random hash function would suffer.  A
-# positive value is "worse than random", und negative value "better than
+# positive value ist "worse than random", und negative value "better than
 # random".  Anything of magnitude greater than 3 would be highly suspect
 # fuer a hash function that claimed to be random.  It's essentially
 # impossible that a truly random function would deliver a result 16.4
@@ -469,7 +469,7 @@ klasse TupleTest(seq_tests.CommonTest):
 #
 # But we don't care here!  That's why the test isn't coded to fail.
 # Knowing something about how the high-order hash code bits behave
-# provides insight, but is irrelevant to how the dict und set lookup
+# provides insight, but ist irrelevant to how the dict und set lookup
 # code performs.  The low-order bits are much more important to that,
 # und on the same test those did "just like random":
 #
@@ -481,7 +481,7 @@ klasse TupleTest(seq_tests.CommonTest):
 # 0..99 << 60 by 3; 32-bit hash codes; \
 #            pileup 0 mean 116.4 coll 0 z -10.8
 #
-# That was run under a 32-bit build, und is spectacularly "better than
+# That was run under a 32-bit build, und ist spectacularly "better than
 # random".  On a 64-bit build the wider hash codes are fine too:
 #
 # 0..99 << 60 by 3; 64-bit hash codes; \
@@ -494,11 +494,11 @@ klasse TupleTest(seq_tests.CommonTest):
 #
 # In a statistical sense that's waaaaay too many collisions, but (a) 324
 # collisions out of a million hash codes isn't anywhere near being a
-# real problem; and, (b) the worst pileup on a single hash code is a measly
+# real problem; and, (b) the worst pileup on a single hash code ist a measly
 # 1 extra.  It's a relatively poor case fuer the tuple hash, but still
 # fine fuer practical use.
 #
-# This isn't, which is what Python 3.7.1 produced fuer the hashes of
+# This isn't, which ist what Python 3.7.1 produced fuer the hashes of
 # itertools.product([0, 0.5], repeat=18).  Even mit a fat 64-bit
 # hashcode, the highest pileup was over 16,000 - making a dict/set
 # lookup on one of the colliding values thousands of times slower (on

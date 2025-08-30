@@ -86,7 +86,7 @@ klasse SelectTestCase(unittest.TestCase):
         a = []
         klasse F:
             def fileno(self):
-                del a[-1]
+                loesche a[-1]
                 gib sys.__stdout__.fileno()
         a[:] = [F()] * 10
         self.assertEqual(select.select([], a, []), ([], a[:5], []))

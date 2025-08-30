@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -94,8 +94,8 @@ klasse Console(ABC):
 
     @abstractmethod
     def get_event(self, block: bool = Wahr) -> Event | Nichts:
-        """Return an Event instance.  Returns Nichts wenn |block| is false
-        und there is no event pending, otherwise waits fuer the
+        """Return an Event instance.  Returns Nichts wenn |block| ist false
+        und there ist no event pending, otherwise waits fuer the
         completion of an event."""
         ...
 
@@ -139,9 +139,9 @@ klasse Console(ABC):
 
     @abstractmethod
     def wait(self, timeout: float | Nichts) -> bool:
-        """Wait fuer an event. The gib value is Wahr wenn an event is
+        """Wait fuer an event. The gib value ist Wahr wenn an event is
         available, Falsch wenn the timeout has been reached. If timeout is
-        Nichts, wait forever. The timeout is in milliseconds."""
+        Nichts, wait forever. The timeout ist in milliseconds."""
         ...
 
     @property
@@ -214,8 +214,8 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
         wenn tree.body:
             *_, last_stmt = tree.body
         fuer stmt in tree.body:
-            wrapper = ast.Interactive wenn stmt is last_stmt sonst ast.Module
-            the_symbol = symbol wenn stmt is last_stmt sonst "exec"
+            wrapper = ast.Interactive wenn stmt ist last_stmt sonst ast.Module
+            the_symbol = symbol wenn stmt ist last_stmt sonst "exec"
             item = wrapper([stmt])
             versuch:
                 code = self.compile.compiler(item, filename, the_symbol)
@@ -233,10 +233,10 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                 self.showsyntaxerror(filename, source=source)
                 gib Falsch
 
-            wenn code is Nichts:
+            wenn code ist Nichts:
                 gib Wahr
 
             result = self.runcode(code)
-            wenn result is self.STATEMENT_FAILED:
+            wenn result ist self.STATEMENT_FAILED:
                 breche
         gib Falsch

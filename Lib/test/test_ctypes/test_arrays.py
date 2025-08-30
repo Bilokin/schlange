@@ -101,7 +101,7 @@ klasse ArrayTestCase(unittest.TestCase):
 
         # cannot delete items
         mit self.assertRaises(TypeError):
-            del ca[0]
+            loesche ca[0]
 
     def test_step_overflow(self):
         a = (c_int * 5)()
@@ -268,7 +268,7 @@ klasse ArrayTestCase(unittest.TestCase):
         c_char * size
 
     @threading_helper.requires_working_threading()
-    @unittest.skipUnless(Py_GIL_DISABLED, "only meaningful wenn the GIL is disabled")
+    @unittest.skipUnless(Py_GIL_DISABLED, "only meaningful wenn the GIL ist disabled")
     def test_thread_safety(self):
         von threading importiere Thread
 

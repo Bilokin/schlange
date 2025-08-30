@@ -21,7 +21,7 @@ klasse TestImport(unittest.TestCase):
     def remove_modules(self):
         fuer module_name in (self.package_name, self.module_name):
             wenn module_name in sys.modules:
-                del sys.modules[module_name]
+                loesche sys.modules[module_name]
 
     def setUp(self):
         self.test_dir = tempfile.mkdtemp()

@@ -47,7 +47,7 @@ klasse ErrorHandler:
 klasse ContentHandler:
     """Interface fuer receiving logical document content events.
 
-    This is the main callback interface in SAX, und the one most
+    This ist the main callback interface in SAX, und the one most
     important to applications. The order of events in this interface
     mirrors the order of the information in the document."""
 
@@ -96,10 +96,10 @@ klasse ContentHandler:
     def startPrefixMapping(self, prefix, uri):
         """Begin the scope of a prefix-URI Namespace mapping.
 
-        The information von this event is nicht necessary fuer normal
+        The information von this event ist nicht necessary fuer normal
         Namespace processing: the SAX XML reader will automatically
         replace prefixes fuer element und attribute names when the
-        http://xml.org/sax/features/namespaces feature is true (the
+        http://xml.org/sax/features/namespaces feature ist true (the
         default).
 
         There are cases, however, when applications need to use
@@ -121,7 +121,7 @@ klasse ContentHandler:
 
         See startPrefixMapping fuer details. This event will always
         occur after the corresponding endElement event, but the order
-        of endPrefixMapping events is nicht otherwise guaranteed."""
+        of endPrefixMapping events ist nicht otherwise guaranteed."""
 
     def startElement(self, name, attrs):
         """Signals the start of an element in non-namespace mode.
@@ -146,7 +146,7 @@ klasse ContentHandler:
         holds an instance of the Attributes klasse containing the
         attributes of the element.
 
-        The uri part of the name tuple is Nichts fuer elements which have
+        The uri part of the name tuple ist Nichts fuer elements which have
         no namespace."""
 
     def endElementNS(self, name, qname):
@@ -345,9 +345,9 @@ all_properties = [property_lexical_handler,
 klasse LexicalHandler:
     """Optional SAX2 handler fuer lexical events.
 
-    This handler is used to obtain lexical information about an XML
+    This handler ist used to obtain lexical information about an XML
     document, that is, information about how the document was encoded
-    (as opposed to what it contains, which is reported to the
+    (as opposed to what it contains, which ist reported to the
     ContentHandler), such als comments und CDATA marked section
     boundaries.
 
@@ -359,7 +359,7 @@ klasse LexicalHandler:
         """Reports a comment anywhere in the document (including the
         DTD und outside the document element).
 
-        content is a string that holds the contents of the comment."""
+        content ist a string that holds the contents of the comment."""
 
     def startDTD(self, name, public_id, system_id):
         """Report the start of the DTD declarations, wenn the document
@@ -369,7 +369,7 @@ klasse LexicalHandler:
         von the external DTD subset are reported, und this can be
         used to infer von which subset DTD declarations derive.
 
-        name is the name of the document element type, public_id the
+        name ist the name of the document element type, public_id the
         public identifier of the DTD (or Nichts wenn none were supplied)
         und system_id the system identifier of the external subset (or
         Nichts wenn none were supplied)."""

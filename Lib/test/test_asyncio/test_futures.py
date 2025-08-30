@@ -35,7 +35,7 @@ def last_cb():
 klasse ReachableCode(Exception):
     """Exception to wirf to indicate that some code was reached.
 
-    Use this exception wenn using mocks is nicht a good alternative.
+    Use this exception wenn using mocks ist nicht a good alternative.
     """
 
 
@@ -71,12 +71,12 @@ klasse DuckFuture:
 
     def done(self):
         gib (self.__cancelled
-                oder self.__result is nicht Nichts
-                oder self.__exception is nicht Nichts)
+                oder self.__result ist nicht Nichts
+                oder self.__exception ist nicht Nichts)
 
     def result(self):
         self.assertFalsch(self.cancelled())
-        wenn self.__exception is nicht Nichts:
+        wenn self.__exception ist nicht Nichts:
             wirf self.__exception
         gib self.__result
 
@@ -256,7 +256,7 @@ klasse BaseFutureTests:
         f._cancel_message = 'my new message'
         self.assertEqual(f._cancel_message, 'my new message')
 
-        # Also check that the value is used fuer cancel().
+        # Also check that the value ist used fuer cancel().
         mit self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(f)
         self.assertEqual(f._cancel_message, 'my new message')
@@ -525,7 +525,7 @@ klasse BaseFutureTests:
     @mock.patch('asyncio.base_events.logger')
     def test_tb_logger_abandoned(self, m_log):
         fut = self._new_future(loop=self.loop)
-        del fut
+        loesche fut
         self.assertFalsch(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
@@ -533,14 +533,14 @@ klasse BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_exception(Exception())
         fut.cancel()
-        del fut
+        loesche fut
         self.assertFalsch(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
     def test_tb_logger_result_unretrieved(self, m_log):
         fut = self._new_future(loop=self.loop)
         fut.set_result(42)
-        del fut
+        loesche fut
         self.assertFalsch(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
@@ -548,14 +548,14 @@ klasse BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_result(42)
         fut.result()
-        del fut
+        loesche fut
         self.assertFalsch(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
     def test_tb_logger_exception_unretrieved(self, m_log):
         fut = self._new_future(loop=self.loop)
         fut.set_exception(RuntimeError('boom'))
-        del fut
+        loesche fut
         test_utils.run_briefly(self.loop)
         support.gc_collect()
         self.assertWahr(m_log.error.called)
@@ -565,7 +565,7 @@ klasse BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_exception(RuntimeError('boom'))
         fut.exception()
-        del fut
+        loesche fut
         self.assertFalsch(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
@@ -573,7 +573,7 @@ klasse BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_exception(RuntimeError('boom'))
         self.assertRaises(RuntimeError, fut.result)
-        del fut
+        loesche fut
         self.assertFalsch(m_log.error.called)
 
     def test_wrap_future(self):
@@ -762,9 +762,9 @@ klasse CFutureTests(BaseFutureTests, test_utils.TestCase):
     def test_future_del_segfault(self):
         fut = self._new_future(loop=self.loop)
         mit self.assertRaises(AttributeError):
-            del fut._asyncio_future_blocking
+            loesche fut._asyncio_future_blocking
         mit self.assertRaises(AttributeError):
-            del fut._log_traceback
+            loesche fut._log_traceback
 
     def test_callbacks_copy(self):
         # See https://github.com/python/cpython/issues/125789
@@ -1079,7 +1079,7 @@ klasse BaseFutureDoneCallbackTests():
                 nonlocal fut_callback_0
                 wenn name == 'call_soon':
                     fut.remove_done_callback(fut_callback_0)
-                    del fut_callback_0
+                    loesche fut_callback_0
                 gib object.__getattribute__(self, name)
 
         evil_loop = EvilEventLoop()
@@ -1113,8 +1113,8 @@ klasse BaseFutureDoneCallbackTests():
             fut_callback_0 = mock.Mock()
             fut_context_0 = mock.Mock()
             fut.add_done_callback(fut_callback_0, context=fut_context_0)
-            del fut_context_0
-            del fut_callback_0
+            loesche fut_context_0
+            loesche fut_callback_0
             self.assertRaises(ReachableCode, fut.set_result, "boom")
 
 
@@ -1167,7 +1167,7 @@ klasse BaseFutureInheritanceTests:
         fut = MyFut(loop=self.loop)
         mit self.assertRaisesRegex(
             RuntimeError,
-            "Future object is nicht initialized."
+            "Future object ist nicht initialized."
         ):
             fut.get_loop()
 

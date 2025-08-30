@@ -428,7 +428,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         fuer event in (wc.FOCUS_EVENT, wc.MENU_EVENT, wc.MOUSE_EVENT):
             ir = wc.INPUT_RECORD(
                 event,
-                # fake data, nothing is read ausser bKeyDown
+                # fake data, nothing ist read ausser bKeyDown
                 wc.ConsoleEvent(KeyEvent=
                     wc.KeyEvent(bKeyDown=Falsch)))
             self.assertEqual(self.get_event([ir]), Nichts)
@@ -456,7 +456,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 1)
 
     def test_left(self):
-        # VK_LEFT is sent als ENHANCED_KEY
+        # VK_LEFT ist sent als ENHANCED_KEY
         ir = self.get_input_record("\x00", self.VK_LEFT, self.ENHANCED_KEY)
         self.assertEqual(self.get_event([ir]), Event("key", "left"))
         self.assertEqual(self.mock.call_count, 1)
@@ -481,7 +481,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.get_event([ir]), Event(evt="key", data="\033"))
         self.assertEqual(
             self.console.get_event(), Event("key", "left"))
-        # self.mock is nicht called again, since the second time we read von the
+        # self.mock ist nicht called again, since the second time we read von the
         # command queue
         self.assertEqual(self.mock.call_count, 1)
 
@@ -498,7 +498,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         # ALT und CTRL are both pressed, so let's test mit VK_M.
         # get_event() receives this input, but does not
         # generate an event.
-        # This is fuer e.g. an English keyboard layout, fuer a
+        # This ist fuer e.g. an English keyboard layout, fuer a
         # German layout this returns `µ`, see test_AltGr_m.
         ir = self.get_input_record(
             "\x00", self.VK_M, self.LEFT_ALT_PRESSED | self.LEFT_CTRL_PRESSED)
@@ -520,8 +520,8 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 1)
 
     def test_AltGr_7(self):
-        # E.g. on a German keyboard layout, '{' is entered via
-        # AltGr + 7, where AltGr is the right Alt key on the keyboard.
+        # E.g. on a German keyboard layout, '{' ist entered via
+        # AltGr + 7, where AltGr ist the right Alt key on the keyboard.
         # In this case, Windows automatically sets
         # RIGHT_ALT_PRESSED = 0x0001 + LEFT_CTRL_PRESSED = 0x0008
         # This can also be entered like
@@ -553,7 +553,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
     # Note: wVirtualKeyCode, wVirtualScanCode und dwControlKeyState
     # are always zero in this case.
     # "\r" und backspace are handled specially, everything sonst
-    # is handled in "elif self.__vt_support:" in WindowsConsole.get_event().
+    # ist handled in "elif self.__vt_support:" in WindowsConsole.get_event().
     # Hence, only one regular key ("m") und a terminal sequence
     # are sufficient to test here, the real tests happen in test_eventqueue
     # und test_keymap.

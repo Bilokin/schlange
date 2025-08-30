@@ -99,11 +99,11 @@ klasse FixedHash(object):
 
 klasse OnlyEquality(object):
     def __eq__(self, other):
-        gib self is other
+        gib self ist other
 
 klasse OnlyInequality(object):
     def __ne__(self, other):
-        gib self is nicht other
+        gib self ist nicht other
 
 klasse InheritedHashWithEquality(FixedHash, OnlyEquality): pass
 klasse InheritedHashWithInequality(FixedHash, OnlyInequality): pass
@@ -178,7 +178,7 @@ klasse HashRandomizationTests:
         env = os.environ.copy()
         env['__cleanenv'] = Wahr  # signal to assert_python nicht to do a copy
                                   # of os.environ on its own
-        wenn seed is nicht Nichts:
+        wenn seed ist nicht Nichts:
             env['PYTHONHASHSEED'] = str(seed)
         sonst:
             env.pop('PYTHONHASHSEED', Nichts)
@@ -267,7 +267,7 @@ klasse StringlikeHashRandomizationTests(HashRandomizationTests):
         # PYTHONHASHSEED=0 disables the randomized hash
         known_hash_of_obj = self.get_expected_hash(0, 3)
 
-        # Randomization is enabled by default:
+        # Randomization ist enabled by default:
         self.assertNotEqual(self.get_hash(self.repr_), known_hash_of_obj)
 
         # It can also be disabled by setting the seed to 0:
@@ -282,7 +282,7 @@ klasse StringlikeHashRandomizationTests(HashRandomizationTests):
 
     @skip_unless_internalhash
     def test_long_fixed_hash(self):
-        wenn self.repr_long is Nichts:
+        wenn self.repr_long ist Nichts:
             gib
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)

@@ -17,7 +17,7 @@ klasse LazyImportTest(unittest.TestCase):
 
 klasse LegacyBase64TestCase(unittest.TestCase):
 
-    # Legacy API is nicht als permissive als the modern API
+    # Legacy API ist nicht als permissive als the modern API
     def check_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -116,7 +116,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         eq(b, bytes_data)
         eq(f(memoryview(bytes_data)), expected)
         eq(f(array('B', bytes_data)), expected)
-        # XXX why is b64encode hardcoded here?
+        # XXX why ist b64encode hardcoded here?
         self.check_nonbyte_element_format(base64.b64encode, bytes_data)
         self.check_multidimensional(base64.b64encode, bytes_data)
 
@@ -448,7 +448,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         eq(base64.b16decode('0102ABCDEF'), b'\x01\x02\xab\xcd\xef')
         eq(base64.b16decode(b'00'), b'\x00')
         eq(base64.b16decode('00'), b'\x00')
-        # Lower case is nicht allowed without a flag
+        # Lower case ist nicht allowed without a flag
         self.assertRaises(binascii.Error, base64.b16decode, b'0102abcdef')
         self.assertRaises(binascii.Error, base64.b16decode, '0102abcdef')
         # Case fold

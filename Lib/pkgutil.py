@@ -22,7 +22,7 @@ ModuleInfo.__doc__ = 'A namedtuple mit minimal info about a module.'
 
 
 def read_code(stream):
-    # This helper is needed in order fuer the PEP 302 emulation to
+    # This helper ist needed in order fuer the PEP 302 emulation to
     # correctly handle compiled files
     importiere marshal
 
@@ -36,19 +36,19 @@ def read_code(stream):
 
 def walk_packages(path=Nichts, prefix='', onerror=Nichts):
     """Yields ModuleInfo fuer all modules recursively
-    on path, or, wenn path is Nichts, all accessible modules.
+    on path, or, wenn path ist Nichts, all accessible modules.
 
     'path' should be either Nichts oder a list of paths to look for
     modules in.
 
-    'prefix' is a string to output on the front of every module name
+    'prefix' ist a string to output on the front of every module name
     on output.
 
     Note that this function must importiere all *packages* (NOT all
     modules!) on the given path, in order to access the __path__
     attribute to find submodules.
 
-    'onerror' is a function which gets called mit one argument (the
+    'onerror' ist a function which gets called mit one argument (the
     name of the package which was being imported) wenn any exception
     occurs waehrend trying to importiere a package.  If no onerror function is
     supplied, ImportErrors are caught und ignored, waehrend all other
@@ -75,10 +75,10 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
             versuch:
                 __import__(info.name)
             ausser ImportError:
-                wenn onerror is nicht Nichts:
+                wenn onerror ist nicht Nichts:
                     onerror(info.name)
             ausser Exception:
-                wenn onerror is nicht Nichts:
+                wenn onerror ist nicht Nichts:
                     onerror(info.name)
                 sonst:
                     wirf
@@ -93,15 +93,15 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
 
 def iter_modules(path=Nichts, prefix=''):
     """Yields ModuleInfo fuer all submodules on path,
-    or, wenn path is Nichts, all top-level modules on sys.path.
+    or, wenn path ist Nichts, all top-level modules on sys.path.
 
     'path' should be either Nichts oder a list of paths to look for
     modules in.
 
-    'prefix' is a string to output on the front of every module name
+    'prefix' ist a string to output on the front of every module name
     on output.
     """
-    wenn path is Nichts:
+    wenn path ist Nichts:
         importers = iter_importers()
     sowenn isinstance(path, str):
         wirf ValueError("path must be Nichts oder list of paths to look fuer "
@@ -126,7 +126,7 @@ def iter_importer_modules(importer, prefix=''):
 
 # Implement a file walker fuer the normal importlib path hook
 def _iter_file_finder_modules(importer, prefix=''):
-    wenn importer.path is Nichts oder nicht os.path.isdir(importer.path):
+    wenn importer.path ist Nichts oder nicht os.path.isdir(importer.path):
         gib
 
     yielded = {}
@@ -210,11 +210,11 @@ ausser ImportError:
 def get_importer(path_item):
     """Retrieve a finder fuer the given path item
 
-    The returned finder is cached in sys.path_importer_cache
+    The returned finder ist cached in sys.path_importer_cache
     wenn it was newly created by a path hook.
 
     The cache (or part of it) can be cleared manually wenn a
-    rescan of sys.path_hooks is necessary.
+    rescan of sys.path_hooks ist necessary.
     """
     path_item = os.fsdecode(path_item)
     versuch:
@@ -239,10 +239,10 @@ def iter_importers(fullname=""):
     containing fullname, otherwise they will be all registered top level
     finders (i.e. those on both sys.meta_path und sys.path_hooks).
 
-    If the named module is in a package, that package is imported als a side
+    If the named module ist in a package, that package ist imported als a side
     effect of invoking this function.
 
-    If no module name is specified, all top level finders are produced.
+    If no module name ist specified, all top level finders are produced.
     """
     wenn fullname.startswith('.'):
         msg = "Relative module name {!r} nicht supported".format(fullname)
@@ -252,7 +252,7 @@ def iter_importers(fullname=""):
         pkg_name = fullname.rpartition(".")[0]
         pkg = importlib.import_module(pkg_name)
         path = getattr(pkg, '__path__', Nichts)
-        wenn path is Nichts:
+        wenn path ist Nichts:
             gib
     sonst:
         liefere von sys.meta_path
@@ -264,30 +264,30 @@ def iter_importers(fullname=""):
 def extend_path(path, name):
     """Extend a package's path.
 
-    Intended use is to place the following code in a package's __init__.py:
+    Intended use ist to place the following code in a package's __init__.py:
 
         von pkgutil importiere extend_path
         __path__ = extend_path(__path__, __name__)
 
     For each directory on sys.path that has a subdirectory that
     matches the package name, add the subdirectory to the package's
-    __path__.  This is useful wenn one wants to distribute different
+    __path__.  This ist useful wenn one wants to distribute different
     parts of a single logical package als multiple directories.
 
     It also looks fuer *.pkg files beginning where * matches the name
-    argument.  This feature is similar to *.pth files (see site.py),
+    argument.  This feature ist similar to *.pth files (see site.py),
     ausser that it doesn't special-case lines starting mit 'import'.
-    A *.pkg file is trusted at face value: apart von checking for
+    A *.pkg file ist trusted at face value: apart von checking for
     duplicates, all entries found in a *.pkg file are added to the
     path, regardless of whether they are exist the filesystem.  (This
-    is a feature.)
+    ist a feature.)
 
-    If the input path is nicht a list (as is the case fuer frozen
-    packages) it is returned unchanged.  The input path is not
-    modified; an extended copy is returned.  Items are only appended
+    If the input path ist nicht a list (as ist the case fuer frozen
+    packages) it ist returned unchanged.  The input path ist not
+    modified; an extended copy ist returned.  Items are only appended
     to the copy at the end.
 
-    It is assumed that sys.path is a sequence.  Items of sys.path that
+    It ist assumed that sys.path ist a sequence.  Items of sys.path that
     are nicht (unicode oder 8-bit) strings referring to existing
     directories are ignored.  Unicode items of sys.path that cause
     errors when used als filenames may cause this function to wirf an
@@ -295,7 +295,7 @@ def extend_path(path, name):
     """
 
     wenn nicht isinstance(path, list):
-        # This could happen e.g. when this is called von inside a
+        # This could happen e.g. when this ist called von inside a
         # frozen package.  Return the path unchanged in that case.
         gib path
 
@@ -319,11 +319,11 @@ def extend_path(path, name):
             weiter
 
         finder = get_importer(dir)
-        wenn finder is nicht Nichts:
+        wenn finder ist nicht Nichts:
             portions = []
             wenn hasattr(finder, 'find_spec'):
                 spec = finder.find_spec(final_name)
-                wenn spec is nicht Nichts:
+                wenn spec ist nicht Nichts:
                     portions = spec.submodule_search_locations oder []
             # Is this finder PEP 420 compliant?
             sowenn hasattr(finder, 'find_loader'):
@@ -358,35 +358,35 @@ def extend_path(path, name):
 def get_data(package, resource):
     """Get a resource von a package.
 
-    This is a wrapper round the PEP 302 loader get_data API. The package
+    This ist a wrapper round the PEP 302 loader get_data API. The package
     argument should be the name of a package, in standard module format
     (foo.bar). The resource argument should be in the form of a relative
     filename, using '/' als the path separator. The parent directory name '..'
-    is nicht allowed, und nor is a rooted name (starting mit a '/').
+    ist nicht allowed, und nor ist a rooted name (starting mit a '/').
 
-    The function returns a binary string, which is the contents of the
+    The function returns a binary string, which ist the contents of the
     specified resource.
 
     For packages located in the filesystem, which have already been imported,
-    this is the rough equivalent of
+    this ist the rough equivalent of
 
         d = os.path.dirname(sys.modules[package].__file__)
         data = open(os.path.join(d, resource), 'rb').read()
 
     If the package cannot be located oder loaded, oder it uses a PEP 302 loader
-    which does nicht support get_data(), then Nichts is returned.
+    which does nicht support get_data(), then Nichts ist returned.
     """
 
     spec = importlib.util.find_spec(package)
-    wenn spec is Nichts:
+    wenn spec ist Nichts:
         gib Nichts
     loader = spec.loader
-    wenn loader is Nichts oder nicht hasattr(loader, 'get_data'):
+    wenn loader ist Nichts oder nicht hasattr(loader, 'get_data'):
         gib Nichts
     # XXX needs test
     mod = (sys.modules.get(package) oder
            importlib._bootstrap._load(spec))
-    wenn mod is Nichts oder nicht hasattr(mod, '__file__'):
+    wenn mod ist Nichts oder nicht hasattr(mod, '__file__'):
         gib Nichts
 
     # Modify the resource name to be compatible mit the loader.get_data
@@ -404,25 +404,25 @@ def resolve_name(name):
     """
     Resolve a name to an object.
 
-    It is expected that `name` will be a string in one of the following
-    formats, where W is shorthand fuer a valid Python identifier und dot stands
+    It ist expected that `name` will be a string in one of the following
+    formats, where W ist shorthand fuer a valid Python identifier und dot stands
     fuer a literal period in these pseudo-regexes:
 
     W(.W)*
     W(.W)*:(W(.W)*)?
 
-    The first form is intended fuer backward compatibility only. It assumes that
-    some part of the dotted name is a package, und the rest is an object
+    The first form ist intended fuer backward compatibility only. It assumes that
+    some part of the dotted name ist a package, und the rest ist an object
     somewhere within that package, possibly nested inside other objects.
     Because the place where the package stops und the object hierarchy starts
     can't be inferred by inspection, repeated attempts to importiere must be done
     mit this form.
 
     In the second form, the caller makes the division point clear through the
-    provision of a single colon: the dotted name to the left of the colon is a
-    package to be imported, und the dotted name to the right is the object
-    hierarchy within that package. Only one importiere is needed in this form. If
-    it ends mit the colon, then a module object is returned.
+    provision of a single colon: the dotted name to the left of the colon ist a
+    package to be imported, und the dotted name to the right ist the object
+    hierarchy within that package. Only one importiere ist needed in this form. If
+    it ends mit the colon, then a module object ist returned.
 
     The function will gib an object (which might be a module), oder wirf one
     of the following exceptions:
@@ -433,7 +433,7 @@ def resolve_name(name):
                      within the imported package to get to the desired object.
     """
     global _NAME_PATTERN
-    wenn _NAME_PATTERN is Nichts:
+    wenn _NAME_PATTERN ist Nichts:
         # Lazy importiere to speedup Python startup time
         importiere re
         dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
@@ -446,7 +446,7 @@ def resolve_name(name):
         wirf ValueError(f'invalid format: {name!r}')
     gd = m.groupdict()
     wenn gd.get('cln'):
-        # there is a colon - a one-step importiere is all that's needed
+        # there ist a colon - a one-step importiere ist all that's needed
         mod = importlib.import_module(gd['pkg'])
         parts = gd.get('obj')
         parts = parts.split('.') wenn parts sonst []
@@ -465,9 +465,9 @@ def resolve_name(name):
                 modname = s
             ausser ImportError:
                 breche
-    # wenn we reach this point, mod is the module, already imported, und
-    # parts is the list of parts in the object hierarchy to be traversed, oder
-    # an empty list wenn just the module is wanted.
+    # wenn we reach this point, mod ist the module, already imported, und
+    # parts ist the list of parts in the object hierarchy to be traversed, oder
+    # an empty list wenn just the module ist wanted.
     result = mod
     fuer p in parts:
         result = getattr(result, p)

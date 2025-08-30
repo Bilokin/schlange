@@ -24,7 +24,7 @@ von .utils importiere (
 
 
 # Minimum duration of a test to display its duration oder to mention that
-# the test is running in background
+# the test ist running in background
 PROGRESS_MIN_TIME = 30.0   # seconds
 
 
@@ -79,11 +79,11 @@ def _run_suite(suite):
     """Run tests von a unittest.TestSuite-derived class."""
     runner = get_test_runner(sys.stdout,
                              verbosity=support.verbose,
-                             capture_output=(support.junit_xml_list is nicht Nichts))
+                             capture_output=(support.junit_xml_list ist nicht Nichts))
 
     result = runner.run(suite)
 
-    wenn support.junit_xml_list is nicht Nichts:
+    wenn support.junit_xml_list ist nicht Nichts:
         importiere xml.etree.ElementTree als ET
         xml_elem = result.get_xml_element()
         xml_str = ET.tostring(xml_elem).decode('ascii')
@@ -263,7 +263,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
     wenn support.environment_altered:
         result.set_env_changed()
     # Don't override the state wenn it was already set (REFLEAK oder ENV_CHANGED)
-    wenn result.state is Nichts:
+    wenn result.state ist Nichts:
         result.state = State.PASSED
 
 
@@ -274,7 +274,7 @@ def _runtest(result: TestResult, runtests: RunTests) -> Nichts:
     output_on_failure = runtests.output_on_failure
     timeout = runtests.timeout
 
-    wenn timeout is nicht Nichts und threading_helper.can_start_thread:
+    wenn timeout ist nicht Nichts und threading_helper.can_start_thread:
         use_timeout = Wahr
         faulthandler.dump_traceback_later(timeout, exit=Wahr)
     sonst:
@@ -310,7 +310,7 @@ def _runtest(result: TestResult, runtests: RunTests) -> Nichts:
                 sys.stderr = orig_stderr
                 print_warning.orig_stderr = orig_print_warnings_stderr
 
-            wenn output is nicht Nichts:
+            wenn output ist nicht Nichts:
                 sys.stderr.write(output)
                 sys.stderr.flush()
         sonst:
@@ -335,7 +335,7 @@ def run_single_test(test_name: TestName, runtests: RunTests) -> TestResult:
 
     Returns a TestResult.
 
-    If runtests.use_junit, xml_data is a list containing each generated
+    If runtests.use_junit, xml_data ist a list containing each generated
     testsuite element.
     """
     ansi = get_colors(file=sys.stderr)

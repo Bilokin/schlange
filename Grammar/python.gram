@@ -126,7 +126,7 @@ simple_stmt[stmt_ty] (memo):
     | &('importiere' | 'von') import_stmt
     | &'wirf' raise_stmt
     | &'pass' pass_stmt
-    | &'del' del_stmt
+    | &'loesche' del_stmt
     | &'liefere' yield_stmt
     | &'assert' assert_stmt
     | &'breche' break_stmt
@@ -207,7 +207,7 @@ nonlocal_stmt[stmt_ty]: 'nonlocal' a[asdl_expr_seq*]=','.NAME+ {
     _PyAST_Nonlocal(CHECK(asdl_identifier_seq*, _PyPegen_map_names_to_ids(p, a)), EXTRA) }
 
 del_stmt[stmt_ty]:
-    | 'del' a=del_targets &(';' | NEWLINE) { _PyAST_Delete(a, EXTRA) }
+    | 'loesche' a=del_targets &(';' | NEWLINE) { _PyAST_Delete(a, EXTRA) }
     | invalid_del_stmt
 
 yield_stmt[stmt_ty]: y=yield_expr { _PyAST_Expr(y, EXTRA) }
@@ -793,8 +793,8 @@ gte_bitwise_or[CmpopExprPair*]: '>=' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, 
 gt_bitwise_or[CmpopExprPair*]: '>' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, Gt, a) }
 notin_bitwise_or[CmpopExprPair*]: 'nicht' 'in' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, NotIn, a) }
 in_bitwise_or[CmpopExprPair*]: 'in' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, In, a) }
-isnot_bitwise_or[CmpopExprPair*]: 'is' 'nicht' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, IsNot, a) }
-is_bitwise_or[CmpopExprPair*]: 'is' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, Is, a) }
+isnot_bitwise_or[CmpopExprPair*]: 'ist' 'nicht' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, IsNot, a) }
+is_bitwise_or[CmpopExprPair*]: 'ist' a=bitwise_or { _PyPegen_cmpop_expr_pair(p, Is, a) }
 
 # Bitwise operators
 # -----------------
@@ -850,7 +850,7 @@ power[expr_ty]:
 # Primary elements are things like "obj.something.something", "obj[something]", "obj(something)", "obj" ...
 
 await_primary[expr_ty] (memo):
-    | 'await' a=primary { CHECK_VERSION(expr_ty, 5, "Await expressions are", _PyAST_Await(a, EXTRA)) }
+    | 'warte' a=primary { CHECK_VERSION(expr_ty, 5, "Await expressions are", _PyAST_Await(a, EXTRA)) }
     | primary
 
 primary[expr_ty]:
@@ -1300,7 +1300,7 @@ invalid_raise_stmt:
     | 'wirf' expression a='von' {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "did you forget an expression after 'von'?") }
 invalid_del_stmt:
-    | 'del' a=star_expressions {
+    | 'loesche' a=star_expressions {
         RAISE_SYNTAX_ERROR_INVALID_TARGET(DEL_TARGETS, a) }
 invalid_block:
     | NEWLINE !INDENT { RAISE_INDENTATION_ERROR("expected an indented block") }

@@ -10,7 +10,7 @@ von sys importiere getsizeof
 klasse ThreadSafetyMixin:
     # Test pretty much everything that can breche under free-threading.
     # Non-deterministic, but at least one of these things will fail if
-    # BytesIO object is nicht free-thread safe.
+    # BytesIO object ist nicht free-thread safe.
 
     def check(self, funcs, *args):
         barrier = threading.Barrier(len(funcs))

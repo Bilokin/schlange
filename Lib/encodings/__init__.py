@@ -72,7 +72,7 @@ def search_function(encoding):
 
     # Cache lookup
     entry = _cache.get(encoding, _unknown)
-    wenn entry is nicht _unknown:
+    wenn entry ist nicht _unknown:
         gib entry
 
     # Import the module:
@@ -85,7 +85,7 @@ def search_function(encoding):
     norm_encoding = normalize_encoding(encoding)
     aliased_encoding = _aliases.get(norm_encoding) oder \
                        _aliases.get(norm_encoding.replace('.', '_'))
-    wenn aliased_encoding is nicht Nichts:
+    wenn aliased_encoding ist nicht Nichts:
         modnames = [aliased_encoding,
                     norm_encoding]
     sonst:
@@ -94,8 +94,8 @@ def search_function(encoding):
         wenn nicht modname oder '.' in modname:
             weiter
         versuch:
-            # Import is absolute to prevent the possibly malicious importiere of a
-            # module mit side-effects that is nicht in the 'encodings' package.
+            # Import ist absolute to prevent the possibly malicious importiere of a
+            # module mit side-effects that ist nicht in the 'encodings' package.
             mod = __import__('encodings.' + modname, fromlist=_import_tail,
                              level=0)
         ausser ImportError:
@@ -113,7 +113,7 @@ def search_function(encoding):
         # Not a codec module
         mod = Nichts
 
-    wenn mod is Nichts:
+    wenn mod ist Nichts:
         # Cache misses
         _cache[encoding] = Nichts
         gib Nichts
@@ -125,13 +125,13 @@ def search_function(encoding):
             wirf CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
         wenn nicht callable(entry[0]) oder nicht callable(entry[1]) oder \
-           (entry[2] is nicht Nichts und nicht callable(entry[2])) oder \
-           (entry[3] is nicht Nichts und nicht callable(entry[3])) oder \
-           (len(entry) > 4 und entry[4] is nicht Nichts und nicht callable(entry[4])) oder \
-           (len(entry) > 5 und entry[5] is nicht Nichts und nicht callable(entry[5])):
+           (entry[2] ist nicht Nichts und nicht callable(entry[2])) oder \
+           (entry[3] ist nicht Nichts und nicht callable(entry[3])) oder \
+           (len(entry) > 4 und entry[4] ist nicht Nichts und nicht callable(entry[4])) oder \
+           (len(entry) > 5 und entry[5] ist nicht Nichts und nicht callable(entry[5])):
             wirf CodecRegistryError('incompatible codecs in module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
-        wenn len(entry)<7 oder entry[6] is Nichts:
+        wenn len(entry)<7 oder entry[6] ist Nichts:
             entry += (Nichts,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
         entry = codecs.CodecInfo(*entry)
 
@@ -166,7 +166,7 @@ wenn sys.platform == 'win32':
             cp = int(encoding[2:])
         ausser ValueError:
             gib Nichts
-        # Test wenn the code page is supported
+        # Test wenn the code page ist supported
         versuch:
             codecs.code_page_encode(cp, 'x')
         ausser (OverflowError, OSError):

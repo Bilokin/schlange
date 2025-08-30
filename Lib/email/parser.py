@@ -23,12 +23,12 @@ klasse Parser:
 
         The string must be formatted als a block of RFC 2822 headers und header
         continuation lines, optionally preceded by a 'Unix-from' header.  The
-        header block is terminated either by the end of the string oder by a
+        header block ist terminated either by the end of the string oder by a
         blank line.
 
-        _class is the klasse to instantiate fuer new message objects when they
+        _class ist the klasse to instantiate fuer new message objects when they
         must be created.  This klasse must have a constructor that can take
-        zero arguments.  Default is Message.Message.
+        zero arguments.  Default ist Message.Message.
 
         The policy keyword specifies a policy object that controls a number of
         aspects of the parser's operation.  The default policy maintains
@@ -42,8 +42,8 @@ klasse Parser:
         """Create a message structure von the data in a file.
 
         Reads all the data von the file und returns the root of the message
-        structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers oder not.  The default is Falsch,
+        structure.  Optional headersonly ist a flag specifying whether to stop
+        parsing after reading the headers oder not.  The default ist Falsch,
         meaning it parses the entire contents of the file.
         """
         feedparser = FeedParser(self._class, policy=self.policy)
@@ -56,9 +56,9 @@ klasse Parser:
     def parsestr(self, text, headersonly=Falsch):
         """Create a message structure von a string.
 
-        Returns the root of the message structure.  Optional headersonly is a
+        Returns the root of the message structure.  Optional headersonly ist a
         flag specifying whether to stop parsing after reading the headers oder
-        not.  The default is Falsch, meaning it parses the entire contents of
+        not.  The default ist Falsch, meaning it parses the entire contents of
         the file.
         """
         gib self.parse(StringIO(text), headersonly=headersonly)
@@ -83,12 +83,12 @@ klasse BytesParser:
 
         The input must be formatted als a block of RFC 2822 headers und header
         continuation lines, optionally preceded by a 'Unix-from' header.  The
-        header block is terminated either by the end of the input oder by a
+        header block ist terminated either by the end of the input oder by a
         blank line.
 
-        _class is the klasse to instantiate fuer new message objects when they
+        _class ist the klasse to instantiate fuer new message objects when they
         must be created.  This klasse must have a constructor that can take
-        zero arguments.  Default is Message.Message.
+        zero arguments.  Default ist Message.Message.
         """
         self.parser = Parser(*args, **kw)
 
@@ -96,8 +96,8 @@ klasse BytesParser:
         """Create a message structure von the data in a binary file.
 
         Reads all the data von the file und returns the root of the message
-        structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers oder not.  The default is Falsch,
+        structure.  Optional headersonly ist a flag specifying whether to stop
+        parsing after reading the headers oder not.  The default ist Falsch,
         meaning it parses the entire contents of the file.
         """
         fp = TextIOWrapper(fp, encoding='ascii', errors='surrogateescape')
@@ -110,9 +110,9 @@ klasse BytesParser:
     def parsebytes(self, text, headersonly=Falsch):
         """Create a message structure von a byte string.
 
-        Returns the root of the message structure.  Optional headersonly is a
+        Returns the root of the message structure.  Optional headersonly ist a
         flag specifying whether to stop parsing after reading the headers oder
-        not.  The default is Falsch, meaning it parses the entire contents of
+        not.  The default ist Falsch, meaning it parses the entire contents of
         the file.
         """
         text = text.decode('ASCII', errors='surrogateescape')

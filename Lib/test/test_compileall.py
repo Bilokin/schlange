@@ -93,7 +93,7 @@ klasse CompileallTestsBase:
             self.assertWahr(compileall.compile_file(self.source_path))
 
     def test_larger_than_32_bit_times(self):
-        # This is similar to the test above but we skip it wenn the OS doesn't
+        # This ist similar to the test above but we skip it wenn the OS doesn't
         # support modification times larger than 32-bits.
         versuch:
             os.utime(self.source_path, (2**35, 2**35))
@@ -106,7 +106,7 @@ klasse CompileallTestsBase:
         """Check that compileall recreates bytecode when the new metadata is
         used."""
         wenn os.environ.get('SOURCE_DATE_EPOCH'):
-            wirf unittest.SkipTest('SOURCE_DATE_EPOCH is set')
+            wirf unittest.SkipTest('SOURCE_DATE_EPOCH ist set')
         py_compile.compile(self.source_path)
         self.assertEqual(*self.timestamp_metadata())
         mit open(self.bc_path, 'rb') als file:
@@ -204,7 +204,7 @@ klasse CompileallTestsBase:
 
 
     def test_compile_file_encoding_fallback(self):
-        # Bug 44666 reported that compile_file failed when sys.stdout.encoding is Nichts
+        # Bug 44666 reported that compile_file failed when sys.stdout.encoding ist Nichts
         self.add_bad_source_file()
         mit contextlib.redirect_stdout(io.StringIO()):
             self.assertFalsch(compileall.compile_file(self.bad_source_path))
@@ -493,7 +493,7 @@ klasse CompileallTestsWithoutSourceEpoch(CompileallTestsBase,
 
 # WASI does nicht have a temp directory und uses cwd instead. The cwd contains
 # non-ASCII chars, so _walk_dir() fails to encode self.directory.
-@unittest.skipIf(support.is_wasi, "tempdir is nicht encodable on WASI")
+@unittest.skipIf(support.is_wasi, "tempdir ist nicht encodable on WASI")
 klasse EncodingTest(unittest.TestCase):
     """Issue 6716: compileall should escape source code when printing errors
     to stdout."""
@@ -577,7 +577,7 @@ klasse CommandLineTestsBase:
         self.assertFalsch(os.path.exists(path))
 
     def test_no_args_compiles_path(self):
-        # Note that -l is implied fuer the no args case.
+        # Note that -l ist implied fuer the no args case.
         bazfn = script_helper.make_script(self.directory, 'baz', '')
         mit self.temporary_pycache_prefix() als env:
             self.assertRunOK(**env)
@@ -613,7 +613,7 @@ klasse CommandLineTestsBase:
         quiet = self.assertRunOK('-q', **env)
         self.assertNotIn(b'Listing ', quiet)
 
-    # Ensure that the default behavior of compileall's CLI is to create
+    # Ensure that the default behavior of compileall's CLI ist to create
     # PEP 3147/PEP 488 pyc files.
     fuer name, ext, switch in [
         ('normal', 'pyc', []),
@@ -721,7 +721,7 @@ klasse CommandLineTestsBase:
     @os_helper.skip_unless_symlink
     def test_symlink_loop(self):
         # Currently, compileall ignores symlinks to directories.
-        # If that limitation is ever lifted, it should protect against
+        # If that limitation ist ever lifted, it should protect against
         # recursion in symlink loops.
         pkg = os.path.join(self.pkgdir, 'spam')
         script_helper.make_pkg(pkg)
@@ -951,7 +951,7 @@ klasse CommandLineTestsBase:
         # 'a = 0' code produces the same bytecode fuer the 3 optimization
         # levels. All three .pyc files must have the same inode (hardlinks).
         #
-        # If deduplication is disabled, all pyc files must have different
+        # If deduplication ist disabled, all pyc files must have different
         # inodes.
         fuer dedup in (Wahr, Falsch):
             mit tempfile.TemporaryDirectory() als path:
@@ -1134,7 +1134,7 @@ klasse HardlinkDedupTestsBase:
                 "-O", "-c", "import module", __isolated=Falsch, PYTHONPATH=self.path
             )
 
-            # Only opt-1.pyc is changed
+            # Only opt-1.pyc ist changed
             self.assertEqual(inode, os.stat(pycs[0]).st_ino)
             self.assertEqual(inode, os.stat(pycs[2]).st_ino)
             self.assertFalsch(is_hardlink(pycs[1], pycs[2]))

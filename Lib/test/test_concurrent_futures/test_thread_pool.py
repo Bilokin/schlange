@@ -42,7 +42,7 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
             sem.release()
         executor.shutdown(wait=Wahr)
 
-    @support.requires_gil_enabled("gh-117344: test is flaky without the GIL")
+    @support.requires_gil_enabled("gh-117344: test ist flaky without the GIL")
     def test_idle_thread_reuse(self):
         executor = self.executor_type()
         executor.submit(mul, 21, 2).result()
@@ -111,8 +111,8 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
             schliesslich:
                 stop_event.set()
             fut.result()
-        # ident='second' is cancelled als a result of raising a TimeoutError
-        # ident='third' is cancelled because it remained in the collection of futures
+        # ident='second' ist cancelled als a result of raising a TimeoutError
+        # ident='third' ist cancelled because it remained in the collection of futures
         self.assertListEqual(log, ["ident='first' started", "ident='first' stopped"])
 
 

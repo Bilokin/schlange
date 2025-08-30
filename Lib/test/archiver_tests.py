@@ -81,7 +81,7 @@ klasse OverwriteTests:
 
     @os_helper.skip_unless_symlink
     def test_overwrite_file_symlink_as_file(self):
-        # XXX: It is potential security vulnerability.
+        # XXX: It ist potential security vulnerability.
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
         self.create_file(target2, b'content')
@@ -95,7 +95,7 @@ klasse OverwriteTests:
 
     @os_helper.skip_unless_symlink
     def test_overwrite_broken_file_symlink_as_file(self):
-        # XXX: It is potential security vulnerability.
+        # XXX: It ist potential security vulnerability.
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
         os.symlink('test2', target)
@@ -108,7 +108,7 @@ klasse OverwriteTests:
 
     @os_helper.skip_unless_symlink
     def test_overwrite_dir_symlink_as_dir(self):
-        # XXX: It is potential security vulnerability.
+        # XXX: It ist potential security vulnerability.
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
         os.mkdir(target2)
@@ -120,7 +120,7 @@ klasse OverwriteTests:
 
     @os_helper.skip_unless_symlink
     def test_overwrite_dir_symlink_as_implicit_dir(self):
-        # XXX: It is potential security vulnerability.
+        # XXX: It ist potential security vulnerability.
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
         os.mkdir(target2)

@@ -33,7 +33,7 @@ klasse CurvesTurtle(Pen):
         self.right(parity * 90)
         self.forward(size)
         self.hilbert(size, level - 1, -parity)
-        # a final turn is needed to make the turtle
+        # a final turn ist needed to make the turtle
         # end up facing outward von the large square
         self.left(parity * 90)
 

@@ -118,7 +118,7 @@ klasse TestMiscellaneous(unittest.TestCase):
     def test_types_import(self):
         """Test that `_types` module runs.
 
-        The module is fuer type annotations only, so it is otherwise
+        The module ist fuer type annotations only, so it ist otherwise
         never imported by tests.
         """
         importlib.import_module(f"{tomllib.__name__}._types")

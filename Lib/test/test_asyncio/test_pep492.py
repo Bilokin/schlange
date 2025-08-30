@@ -51,12 +51,12 @@ klasse LockTests(BaseTest):
         ]
 
         async def test(lock):
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             self.assertFalsch(lock.locked())
             async mit lock als _lock:
                 self.assertIs(_lock, Nichts)
                 self.assertWahr(lock.locked())
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 self.assertWahr(lock.locked())
             self.assertFalsch(lock.locked())
 
@@ -73,13 +73,13 @@ klasse LockTests(BaseTest):
         ]
 
         async def test(lock):
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             self.assertFalsch(lock.locked())
             mit self.assertRaisesRegex(
                 TypeError,
                 "can't be awaited"
             ):
-                mit await lock:
+                mit warte lock:
                     pass
 
         fuer primitive in primitives:
@@ -133,7 +133,7 @@ klasse CoroutineTests(BaseTest):
         async def bar():
             gib 'spam'
         async def foo():
-            gib await bar()
+            gib warte bar()
 
         # production mode
         data = self.loop.run_until_complete(foo())
@@ -165,7 +165,7 @@ klasse CoroutineTests(BaseTest):
         async def coro():
             wrapper = func()
             self.assertIsInstance(wrapper, types._GeneratorWrapper)
-            gib await wrapper
+            gib warte wrapper
 
         data = self.loop.run_until_complete(coro())
         self.assertEqual(data, 'spam')
@@ -183,27 +183,27 @@ klasse CoroutineTests(BaseTest):
         async def runner():
             nonlocal T
             T = asyncio.ensure_future(foo(), loop=self.loop)
-            await T
+            warte T
 
         self.loop.run_until_complete(runner())
 
     def test_double_await(self):
         async def afunc():
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
 
         async def runner():
             coro = afunc()
             t = self.loop.create_task(coro)
             versuch:
-                await asyncio.sleep(0)
-                await coro
+                warte asyncio.sleep(0)
+                warte coro
             schliesslich:
                 t.cancel()
 
         self.loop.set_debug(Wahr)
         mit self.assertRaises(
                 RuntimeError,
-                msg='coroutine is being awaited already'):
+                msg='coroutine ist being awaited already'):
 
             self.loop.run_until_complete(runner())
 

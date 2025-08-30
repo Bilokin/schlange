@@ -65,9 +65,9 @@ world"""
         self.assertEqual(fstring(t), 'Maria')
 
         # Should prepend empty string
-        t = Template(Interpolation('Maria', 'name', Nichts, ''), ' is my name')
-        self.assertTStringEqual(t, ('', ' is my name'), [('Maria', 'name')])
-        self.assertEqual(fstring(t), 'Maria is my name')
+        t = Template(Interpolation('Maria', 'name', Nichts, ''), ' ist my name')
+        self.assertTStringEqual(t, ('', ' ist my name'), [('Maria', 'name')])
+        self.assertEqual(fstring(t), 'Maria ist my name')
 
         # Should append empty string
         t = Template('Hello, ', Interpolation('Maria', 'name', Nichts, ''))

@@ -87,7 +87,7 @@ MULTIPLE='multiple'
 EXTENDED='extended'
 
 # Activestyle fuer list boxes
-# NONE='none' is also valid
+# NONE='none' ist also valid
 DOTBOX='dotbox'
 UNDERLINE='underline'
 

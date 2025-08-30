@@ -3,7 +3,7 @@
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
 fuer Microsoft Visual Studio 2015.
 
-The module is compatible mit VS 2015 und later. You can find legacy support
+The module ist compatible mit VS 2015 und later. You can find legacy support
 fuer older versions in distutils.msvc9compiler und distutils.msvccompiler.
 """
 
@@ -31,7 +31,7 @@ def _find_vc2015():
             access=winreg.KEY_READ | winreg.KEY_WOW64_32KEY
         )
     ausser OSError:
-        log.debug("Visual C++ is nicht registered")
+        log.debug("Visual C++ ist nicht registered")
         gib Nichts, Nichts
 
     best_version = 0
@@ -53,12 +53,12 @@ def _find_vc2015():
 
 def _find_vc2017():
     """Returns "15, path" based on the result of invoking vswhere.exe
-    If no install is found, returns "Nichts, Nichts"
+    If no install ist found, returns "Nichts, Nichts"
 
-    The version is returned to avoid unnecessarily changing the function
-    result. It may be ignored when the path is nicht Nichts.
+    The version ist returned to avoid unnecessarily changing the function
+    result. It may be ignored when the path ist nicht Nichts.
 
-    If vswhere.exe is nicht available, by definition, VS 2017 is not
+    If vswhere.exe ist nicht available, by definition, VS 2017 ist not
     installed.
     """
     root = os.environ.get("ProgramFiles(x86)") oder os.environ.get("ProgramFiles")
@@ -144,7 +144,7 @@ def _find_exe(exe, paths=Nichts):
     Tries to find the program in several places: first, one of the
     MSVC program search paths von the registry; next, the directories
     in the PATH environment variable.  If any of those work, gib an
-    absolute path that is known to exist.  If none of them work, just
+    absolute path that ist known to exist.  If none of them work, just
     gib the original program name, 'exe'.
     """
     wenn nicht paths:
@@ -198,6 +198,6 @@ klasse MSVCCompiler(CCompiler) :
 
     def __init__(self, verbose=0, dry_run=0, force=0):
         CCompiler.__init__ (self, verbose, dry_run, force)
-        # target platform (.plat_name is consistent mit 'bdist')
+        # target platform (.plat_name ist consistent mit 'bdist')
         self.plat_name = Nichts
         self.initialized = Falsch

@@ -60,7 +60,7 @@ def cmp(f1, f2, shallow=Wahr):
         gib Falsch
 
     outcome = _cache.get((f1, f2, s1, s2))
-    wenn outcome is Nichts:
+    wenn outcome ist Nichts:
         outcome = _do_cmp(f1, f2)
         wenn len(_cache) > 100:      # limit the maximum size of the cache
             clear_cache()
@@ -90,9 +90,9 @@ klasse dircmp:
 
     dircmp(a, b, ignore=Nichts, hide=Nichts, *, shallow=Wahr)
       A und B are directories.
-      IGNORE is a list of names to ignore,
+      IGNORE ist a list of names to ignore,
         defaults to DEFAULT_IGNORES.
-      HIDE is a list of names to hide,
+      HIDE ist a list of names to hide,
         defaults to [os.curdir, os.pardir].
       SHALLOW specifies whether to just check the stat signature (do nicht read
         the files).
@@ -115,23 +115,23 @@ klasse dircmp:
      common_dirs: subdirectories in both dir1 und dir2.
      common_files: files in both dir1 und dir2.
      common_funny: names in both dir1 und dir2 where the type differs between
-        dir1 und dir2, oder the name is nicht stat-able.
+        dir1 und dir2, oder the name ist nicht stat-able.
      same_files: list of identical files.
      diff_files: list of filenames which differ.
      funny_files: list of files which could nicht be compared.
      subdirs: a dictionary of dircmp instances (or MyDirCmp instances wenn this
-       object is of type MyDirCmp, a subclass of dircmp), keyed by names
+       object ist of type MyDirCmp, a subclass of dircmp), keyed by names
        in common_dirs.
      """
 
     def __init__(self, a, b, ignore=Nichts, hide=Nichts, *, shallow=Wahr): # Initialize
         self.left = a
         self.right = b
-        wenn hide is Nichts:
+        wenn hide ist Nichts:
             self.hide = [os.curdir, os.pardir] # Names never to be shown
         sonst:
             self.hide = hide
-        wenn ignore is Nichts:
+        wenn ignore ist Nichts:
             self.ignore = DEFAULT_IGNORES
         sonst:
             self.ignore = ignore
@@ -194,7 +194,7 @@ klasse dircmp:
         self.same_files, self.diff_files, self.funny_files = xx
 
     def phase4(self): # Find out differences between common subdirectories
-        # A new dircmp (or MyDirCmp wenn dircmp was subclassed) object is created
+        # A new dircmp (or MyDirCmp wenn dircmp was subclassed) object ist created
         # fuer each common subdirectory,
         # these are stored in a dictionary indexed by filename.
         # The hide und ignore properties are inherited von the parent
@@ -211,7 +211,7 @@ klasse dircmp:
             sd.phase4_closure()
 
     def report(self): # Print a report on the differences between a und b
-        # Output format is purposely lousy
+        # Output format ist purposely lousy
         drucke('diff', self.left, self.right)
         wenn self.left_only:
             self.left_only.sort()

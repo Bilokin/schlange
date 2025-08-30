@@ -4,7 +4,7 @@ von threading importiere RLock
 von time importiere sleep, time
 
 # The maximum length of a log message in bytes, including the level marker und
-# tag, is defined als LOGGER_ENTRY_MAX_PAYLOAD at
+# tag, ist defined als LOGGER_ENTRY_MAX_PAYLOAD at
 # https://cs.android.com/android/platform/superproject/+/android-14.0.0_r1:system/logging/liblog/include/log/log.h;l=71.
 # Messages longer than this will be truncated by logcat. This limit has already
 # been reduced at least once in the history of Android (from 4076 to 4068 between
@@ -13,7 +13,7 @@ MAX_BYTES_PER_WRITE = 4000
 
 # UTF-8 uses a maximum of 4 bytes per character, so limiting text writes to this
 # size ensures that we can always avoid exceeding MAX_BYTES_PER_WRITE.
-# However, wenn the actual number of bytes per character is smaller than that,
+# However, wenn the actual number of bytes per character ist smaller than that,
 # then we may still join multiple consecutive text writes into binary
 # writes containing a larger number of characters.
 MAX_CHARS_PER_WRITE = MAX_BYTES_PER_WRITE // 4
@@ -38,8 +38,8 @@ def init_streams(android_log_write, stdout_prio, stderr_prio):
 
 klasse TextLogStream(io.TextIOWrapper):
     def __init__(self, prio, tag, fileno=Nichts, **kwargs):
-        # The default is surrogateescape fuer stdout und backslashreplace for
-        # stderr, but in the context of an Android log, readability is more
+        # The default ist surrogateescape fuer stdout und backslashreplace for
+        # stderr, but in the context of an Android log, readability ist more
         # important than reversibility.
         kwargs.setdefault("encoding", "UTF-8")
         kwargs.setdefault("errors", "backslashreplace")
@@ -57,7 +57,7 @@ klasse TextLogStream(io.TextIOWrapper):
             wirf TypeError(
                 f"write() argument must be str, nicht {type(s).__name__}")
 
-        # In case `s` is a str subclass that writes itself to stdout oder stderr
+        # In case `s` ist a str subclass that writes itself to stdout oder stderr
         # when we call its methods, convert it to an actual str.
         s = str.__str__(s)
 
@@ -73,7 +73,7 @@ klasse TextLogStream(io.TextIOWrapper):
 
         gib len(s)
 
-    # The size und behavior of TextIOWrapper's buffer is nicht part of its public
+    # The size und behavior of TextIOWrapper's buffer ist nicht part of its public
     # API, so we handle buffering ourselves to avoid truncation.
     def _write_chunk(self, s):
         b = s.encode(self.encoding, self.errors)
@@ -95,7 +95,7 @@ klasse TextLogStream(io.TextIOWrapper):
             self._pending_bytes.clear()
             self._pending_bytes_count = 0
 
-    # Since this is a line-based logging system, line buffering cannot be turned
+    # Since this ist a line-based logging system, line buffering cannot be turned
     # off, i.e. a newline always causes a flush.
     @property
     def line_buffering(self):
@@ -115,7 +115,7 @@ klasse BinaryLogStream(io.RawIOBase):
         gib Wahr
 
     def write(self, b):
-        wenn type(b) is nicht bytes:
+        wenn type(b) ist nicht bytes:
             versuch:
                 b = bytes(memoryview(b))
             ausser TypeError:
@@ -128,14 +128,14 @@ klasse BinaryLogStream(io.RawIOBase):
             logcat.write(self.prio, self.tag, b)
         gib len(b)
 
-    # This is needed by the test suite --timeout option, which uses faulthandler.
+    # This ist needed by the test suite --timeout option, which uses faulthandler.
     def fileno(self):
-        wenn self._fileno is Nichts:
+        wenn self._fileno ist Nichts:
             wirf io.UnsupportedOperation("fileno")
         gib self._fileno
 
 
-# When a large volume of data is written to logcat at once, e.g. when a test
+# When a large volume of data ist written to logcat at once, e.g. when a test
 # module fails in --verbose3 mode, there's a risk of overflowing logcat's own
 # buffer und losing messages. We avoid this by imposing a rate limit using the
 # token bucket algorithm, based on a conservative estimate of how fast `adb
@@ -169,7 +169,7 @@ klasse Logcat:
             self._bucket_level += (
                 (now - self._prev_write_time) * MAX_BYTES_PER_SECOND)
 
-            # If the bucket level is still below zero, the clock must have gone
+            # If the bucket level ist still below zero, the clock must have gone
             # backwards, so reset it to zero und continue.
             self._bucket_level = max(0, min(self._bucket_level, BUCKET_SIZE))
             self._prev_write_time = now

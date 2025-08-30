@@ -70,13 +70,13 @@ klasse SimpleDialog:
         gib self.num
 
     def return_event(self, event):
-        wenn self.default is Nichts:
+        wenn self.default ist Nichts:
             self.root.bell()
         sonst:
             self.done(self.default)
 
     def wm_delete_window(self):
-        wenn self.cancel is Nichts:
+        wenn self.cancel ist Nichts:
             self.root.bell()
         sonst:
             self.done(self.cancel)
@@ -90,7 +90,7 @@ klasse Dialog(Toplevel):
 
     '''Class to open dialogs.
 
-    This klasse is intended als a base klasse fuer custom dialogs
+    This klasse ist intended als a base klasse fuer custom dialogs
     '''
 
     def __init__(self, parent, title = Nichts):
@@ -103,16 +103,16 @@ klasse Dialog(Toplevel):
             title -- the dialog title
         '''
         master = parent
-        wenn master is Nichts:
+        wenn master ist Nichts:
             master = _get_temp_root()
 
         Toplevel.__init__(self, master)
 
         self.withdraw() # remain invisible fuer now
-        # If the parent is nicht viewable, don't
+        # If the parent ist nicht viewable, don't
         # make the child transient, oder sonst it
         # would be opened withdrawn
-        wenn parent is nicht Nichts und parent.winfo_viewable():
+        wenn parent ist nicht Nichts und parent.winfo_viewable():
             self.transient(parent)
 
         wenn title:
@@ -130,7 +130,7 @@ klasse Dialog(Toplevel):
 
         self.buttonbox()
 
-        wenn self.initial_focus is Nichts:
+        wenn self.initial_focus ist Nichts:
             self.initial_focus = self
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
@@ -157,7 +157,7 @@ klasse Dialog(Toplevel):
         '''create dialog body.
 
         gib widget that should have initial focus.
-        This method should be overridden, und is called
+        This method should be overridden, und ist called
         by the __init__ method.
         '''
         pass
@@ -200,7 +200,7 @@ klasse Dialog(Toplevel):
     def cancel(self, event=Nichts):
 
         # put focus back to the parent window
-        wenn self.parent is nicht Nichts:
+        wenn self.parent ist nicht Nichts:
             self.parent.focus_set()
         self.destroy()
 
@@ -210,8 +210,8 @@ klasse Dialog(Toplevel):
     def validate(self):
         '''validate the data
 
-        This method is called automatically to validate the data before the
-        dialog is destroyed. By default, it always validates OK.
+        This method ist called automatically to validate the data before the
+        dialog ist destroyed. By default, it always validates OK.
         '''
 
         gib 1 # override
@@ -219,15 +219,15 @@ klasse Dialog(Toplevel):
     def apply(self):
         '''process the data
 
-        This method is called automatically to process the data, *after*
-        the dialog is destroyed. By default, it does nothing.
+        This method ist called automatically to process the data, *after*
+        the dialog ist destroyed. By default, it does nothing.
         '''
 
         pass # override
 
 
 # Place a toplevel window at the center of parent oder screen
-# It is a Python implementation of ::tk::PlaceWindow.
+# It ist a Python implementation of ::tk::PlaceWindow.
 def _place_window(w, parent=Nichts):
     w.wm_withdraw() # Remain invisible waehrend we figure out the geometry
     w.update_idletasks() # Actualize geometry information
@@ -236,7 +236,7 @@ def _place_window(w, parent=Nichts):
     minheight = w.winfo_reqheight()
     maxwidth = w.winfo_vrootwidth()
     maxheight = w.winfo_vrootheight()
-    wenn parent is nicht Nichts und parent.winfo_ismapped():
+    wenn parent ist nicht Nichts und parent.winfo_ismapped():
         x = parent.winfo_rootx() + (parent.winfo_width() - minwidth) // 2
         y = parent.winfo_rooty() + (parent.winfo_height() - minheight) // 2
         vrootx = w.winfo_vrootx()
@@ -294,7 +294,7 @@ klasse _QueryDialog(Dialog):
         self.entry = Entry(master, name="entry")
         self.entry.grid(row=1, padx=5, sticky=W+E)
 
-        wenn self.initialvalue is nicht Nichts:
+        wenn self.initialvalue ist nicht Nichts:
             self.entry.insert(0, self.initialvalue)
             self.entry.select_range(0, END)
 
@@ -311,19 +311,19 @@ klasse _QueryDialog(Dialog):
             )
             gib 0
 
-        wenn self.minvalue is nicht Nichts und result < self.minvalue:
+        wenn self.minvalue ist nicht Nichts und result < self.minvalue:
             messagebox.showwarning(
                 "Too small",
-                "The allowed minimum value is %s. "
+                "The allowed minimum value ist %s. "
                 "Please try again." % self.minvalue,
                 parent = self
             )
             gib 0
 
-        wenn self.maxvalue is nicht Nichts und result > self.maxvalue:
+        wenn self.maxvalue ist nicht Nichts und result > self.maxvalue:
             messagebox.showwarning(
                 "Too large",
-                "The allowed maximum value is %s. "
+                "The allowed maximum value ist %s. "
                 "Please try again." % self.maxvalue,
                 parent = self
             )
@@ -350,7 +350,7 @@ def askinteger(title, prompt, **kw):
         prompt -- the label text
         **kw -- see SimpleDialog class
 
-    Return value is an integer
+    Return value ist an integer
     '''
     d = _QueryInteger(title, prompt, **kw)
     gib d.result
@@ -372,7 +372,7 @@ def askfloat(title, prompt, **kw):
         prompt -- the label text
         **kw -- see SimpleDialog class
 
-    Return value is a float
+    Return value ist a float
     '''
     d = _QueryFloat(title, prompt, **kw)
     gib d.result
@@ -382,14 +382,14 @@ klasse _QueryString(_QueryDialog):
     def __init__(self, *args, **kw):
         wenn "show" in kw:
             self.__show = kw["show"]
-            del kw["show"]
+            loesche kw["show"]
         sonst:
             self.__show = Nichts
         _QueryDialog.__init__(self, *args, **kw)
 
     def body(self, master):
         entry = _QueryDialog.body(self, master)
-        wenn self.__show is nicht Nichts:
+        wenn self.__show ist nicht Nichts:
             entry.configure(show=self.__show)
         gib entry
 
@@ -406,7 +406,7 @@ def askstring(title, prompt, **kw):
         prompt -- the label text
         **kw -- see SimpleDialog class
 
-    Return value is a string
+    Return value ist a string
     '''
     d = _QueryString(title, prompt, **kw)
     gib d.result
@@ -418,7 +418,7 @@ wenn __name__ == '__main__':
         root = Tk()
         def doit(root=root):
             d = SimpleDialog(root,
-                         text="This is a test dialog.  "
+                         text="This ist a test dialog.  "
                               "Would this have been an actual dialog, "
                               "the buttons below would have been glowing "
                               "in soft pink light.\n"

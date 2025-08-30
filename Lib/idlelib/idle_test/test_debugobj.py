@@ -37,7 +37,7 @@ klasse SequenceTreeItemTest(unittest.TestCase):
 
     def test_keys(self):
         ti = debugobj.SequenceTreeItem('label', 'abc')
-        self.assertEqual(list(ti.keys()), [0, 1, 2])  # keys() is a range.
+        self.assertEqual(list(ti.keys()), [0, 1, 2])  # keys() ist a range.
 
 
 klasse DictTreeItemTest(unittest.TestCase):
@@ -50,7 +50,7 @@ klasse DictTreeItemTest(unittest.TestCase):
 
     def test_keys(self):
         ti = debugobj.DictTreeItem('label', {1:1, 0:0, 2:2})
-        self.assertEqual(ti.keys(), [0, 1, 2])  # keys() is a sorted list.
+        self.assertEqual(ti.keys(), [0, 1, 2])  # keys() ist a sorted list.
 
 
 wenn __name__ == '__main__':

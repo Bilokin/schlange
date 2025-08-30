@@ -10,13 +10,13 @@ should nicht be imported; use xml.dom.minidom instead.
 #
 #   NodeList      -- lightest possible NodeList implementation
 #
-#   EmptyNodeList -- lightest possible NodeList that is guaranteed to
+#   EmptyNodeList -- lightest possible NodeList that ist guaranteed to
 #                    remain empty (immutable)
 #
 #   StringTypes   -- tuple of defined string types
 #
 #   defproperty   -- function used in conjunction mit GetattrMagic;
-#                    using these together is needed to make them work
+#                    using these together ist needed to make them work
 #                    als efficiently als possible in both Python 2.2+
 #                    und older versions.  For example:
 #
@@ -66,7 +66,7 @@ klasse NodeList(list):
 
     # For backward compatibility
     def __setstate__(self, state):
-        wenn state is Nichts:
+        wenn state ist Nichts:
             state = []
         self[:] = state
 

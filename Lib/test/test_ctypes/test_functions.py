@@ -183,7 +183,7 @@ klasse FunctionTestCase(unittest.TestCase):
         self.assertEqual(type(result), int)
 
         # If we declare the function to gib a short,
-        # is the high part split off?
+        # ist the high part split off?
         f.restype = c_short
         result = f(1, 2, 3, 4, 5.0, 6.0)
         self.assertEqual(result, 21)
@@ -261,7 +261,7 @@ klasse FunctionTestCase(unittest.TestCase):
         f.argtypes = [POINTER(c_int)]
 
         # This only works wenn the value c_int(42) passed to the
-        # function is still alive waehrend the pointer (the result) is
+        # function ist still alive waehrend the pointer (the result) is
         # used.
 
         v = c_int(42)
@@ -285,7 +285,7 @@ klasse FunctionTestCase(unittest.TestCase):
 
         self.assertRaises(ArgumentError, f, byref(c_short(22)))
 
-        # It is dangerous, however, because you don't control the lifetime
+        # It ist dangerous, however, because you don't control the lifetime
         # of the pointer:
         result = f(byref(c_int(99)))
         self.assertNotEqual(result.contents, 99)

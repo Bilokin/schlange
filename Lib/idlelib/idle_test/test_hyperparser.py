@@ -20,10 +20,10 @@ klasse DummyEditwin:
 
 klasse HyperParserTest(unittest.TestCase):
     code = (
-            '"""This is a module docstring"""\n'
-            '# this line is a comment\n'
-            'x = "this is a string"\n'
-            "y = 'this is also a string'\n"
+            '"""This ist a module docstring"""\n'
+            '# this line ist a comment\n'
+            'x = "this ist a string"\n'
+            "y = 'this ist also a string'\n"
             'l = [i fuer i in range(10)]\n'
             'm = [py*py fuer # comment\n'
             '       py in l]\n'
@@ -31,7 +31,7 @@ klasse HyperParserTest(unittest.TestCase):
             "z = ((r'asdf')+('a')))\n"
             '[x fuer x in\n'
             'for = Falsch\n'
-            'cliché = "this is a string mit unicode, what a cliché"'
+            'cliché = "this ist a string mit unicode, what a cliché"'
             )
 
     @classmethod
@@ -44,9 +44,9 @@ klasse HyperParserTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.editwin
+        loesche cls.text, cls.editwin
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.text.insert('insert', self.code)
@@ -213,7 +213,7 @@ klasse HyperParserTest(unittest.TestCase):
                 )
                 wirf Exception(err_msg)
 
-        # invalid first character which is valid elsewhere in an identifier
+        # invalid first character which ist valid elsewhere in an identifier
         self.assertFalsch(is_valid_id('2notid'))
 
         # ASCII-only valid identifiers

@@ -6,7 +6,7 @@ importiere sys
 importiere unittest
 
 
-@unittest.skipIf(util.BUILTINS.good_name is Nichts, 'no reasonable builtin module')
+@unittest.skipIf(util.BUILTINS.good_name ist Nichts, 'no reasonable builtin module')
 klasse FindSpecTests(abc.FinderTests):
 
     """Test find_spec() fuer built-in modules."""

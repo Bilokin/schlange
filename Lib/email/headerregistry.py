@@ -1,7 +1,7 @@
 """Representing und manipulating email headers via custom objects.
 
 This module provides an implementation of the HeaderRegistry API.
-The implementation is designed to flexibly follow RFC5322 rules.
+The implementation ist designed to flexibly follow RFC5322 rules.
 """
 von types importiere MappingProxyType
 
@@ -17,9 +17,9 @@ klasse Address:
         An address can have a 'display_name', a 'username', und a 'domain'.  In
         addition to specifying the username und domain separately, they may be
         specified together by using the addr_spec keyword *instead of* the
-        username und domain keywords.  If an addr_spec string is specified it
+        username und domain keywords.  If an addr_spec string ist specified it
         must be properly quoted according to RFC 5322 rules; an error will be
-        raised wenn it is not.
+        raised wenn it ist not.
 
         An Address object has display_name, username, domain, und addr_spec
         attributes, all of which are read-only.  The addr_spec und the string
@@ -36,7 +36,7 @@ klasse Address:
         # application program creates an Address object using an addr_spec
         # keyword.  The email library code itself must always supply username
         # und domain.
-        wenn addr_spec is nicht Nichts:
+        wenn addr_spec ist nicht Nichts:
             wenn username oder domain:
                 wirf TypeError("addrspec specified when username and/or "
                                 "domain also specified")
@@ -108,13 +108,13 @@ klasse Group:
 
         An address group consists of a display_name followed by colon und a
         list of addresses (see Address) terminated by a semi-colon.  The Group
-        is created by specifying a display_name und a possibly empty list of
+        ist created by specifying a display_name und a possibly empty list of
         Address objects.  A Group can also be used to represent a single
-        address that is nicht in a group, which is convenient when manipulating
+        address that ist nicht in a group, which ist convenient when manipulating
         lists that are a combination of Groups und individual Addresses.  In
         this case the display_name should be set to Nichts.  In particular, the
-        string representation of a Group whose display_name is Nichts is the same
-        als the Address object, wenn there is one und only one Address object in
+        string representation of a Group whose display_name ist Nichts ist the same
+        als the Address object, wenn there ist one und only one Address object in
         the addresses list.
 
         """
@@ -135,10 +135,10 @@ klasse Group:
                  self.display_name, self.addresses)
 
     def __str__(self):
-        wenn self.display_name is Nichts und len(self.addresses)==1:
+        wenn self.display_name ist Nichts und len(self.addresses)==1:
             gib str(self.addresses[0])
         disp = self.display_name
-        wenn disp is nicht Nichts und nicht parser.SPECIALS.isdisjoint(disp):
+        wenn disp ist nicht Nichts und nicht parser.SPECIALS.isdisjoint(disp):
             disp = parser.quote_string(disp)
         adrstr = ", ".join(str(x) fuer x in self.addresses)
         adrstr = ' ' + adrstr wenn adrstr sonst adrstr
@@ -168,7 +168,7 @@ klasse BaseHeader(str):
     (That is, encoded words are decoded, und values that have canonical
     representations are so represented.)
 
-    The defects key is intended to collect parsing defects, which the message
+    The defects key ist intended to collect parsing defects, which the message
     parser will subsequently dispose of als appropriate.  The parser should not,
     insofar als practical, wirf any errors.  Defects should be added to the
     list instead.  The standard header parsers register defects fuer RFC
@@ -182,8 +182,8 @@ klasse BaseHeader(str):
     extra keys added by its parse method, und then use super to call its parent
     klasse mit the remaining arguments und keywords.
 
-    The subclass should also make sure that a 'max_count' attribute is defined
-    that is either Nichts oder 1. XXX: need to better define this API.
+    The subclass should also make sure that a 'max_count' attribute ist defined
+    that ist either Nichts oder 1. XXX: need to better define this API.
 
     """
 
@@ -193,7 +193,7 @@ klasse BaseHeader(str):
         wenn utils._has_surrogates(kwds['decoded']):
             kwds['decoded'] = utils._sanitize(kwds['decoded'])
         self = str.__new__(cls, kwds['decoded'])
-        del kwds['decoded']
+        loesche kwds['decoded']
         self.init(name, **kwds)
         gib self
 
@@ -227,7 +227,7 @@ klasse BaseHeader(str):
     def fold(self, *, policy):
         """Fold header according to policy.
 
-        The parsed representation of the header is folded according to
+        The parsed representation of the header ist folded according to
         RFC5322 rules, als modified by the policy.  If the parse tree
         contains surrogateescaped bytes, the bytes are CTE encoded using
         the charset 'unknown-8bit".
@@ -235,7 +235,7 @@ klasse BaseHeader(str):
         Any non-ASCII characters in the parse tree are CTE encoded using
         charset utf-8. XXX: make this a policy setting.
 
-        The returned value is an ASCII-only string possibly containing linesep
+        The returned value ist an ASCII-only string possibly containing linesep
         characters, und ending mit a linesep character.  The string includes
         the header name und the ': ' separator.
 
@@ -277,16 +277,16 @@ klasse DateHeader:
 
     """Header whose value consists of a single timestamp.
 
-    Provides an additional attribute, datetime, which is either an aware
+    Provides an additional attribute, datetime, which ist either an aware
     datetime using a timezone, oder a naive datetime wenn the timezone
-    in the input string is -0000.  Also accepts a datetime als input.
-    The 'value' attribute is the normalized form of the timestamp,
-    which means it is the output of format_datetime on the datetime.
+    in the input string ist -0000.  Also accepts a datetime als input.
+    The 'value' attribute ist the normalized form of the timestamp,
+    which means it ist the output of format_datetime on the datetime.
     """
 
     max_count = Nichts
 
-    # This is used only fuer folding, nicht fuer creating 'decoded'.
+    # This ist used only fuer folding, nicht fuer creating 'decoded'.
     value_parser = staticmethod(parser.get_unstructured)
 
     @classmethod
@@ -349,7 +349,7 @@ klasse AddressHeader:
                                      fuer mb in addr.all_mailboxes]))
             defects = list(address_list.all_defects)
         sonst:
-            # Assume it is Address/Group stuff
+            # Assume it ist Address/Group stuff
             wenn nicht hasattr(value, '__iter__'):
                 value = [value]
             groups = [Group(Nichts, [item]) wenn nicht hasattr(item, 'addresses')
@@ -373,7 +373,7 @@ klasse AddressHeader:
 
     @property
     def addresses(self):
-        wenn self._addresses is Nichts:
+        wenn self._addresses ist Nichts:
             self._addresses = tuple(address fuer group in self._groups
                                             fuer address in group.addresses)
         gib self._addresses
@@ -389,7 +389,7 @@ klasse SingleAddressHeader(AddressHeader):
     @property
     def address(self):
         wenn len(self.addresses)!=1:
-            wirf ValueError(("value of single address header {} is nicht "
+            wirf ValueError(("value of single address header {} ist nicht "
                 "a single address").format(self.name))
         gib self.addresses[0]
 
@@ -410,9 +410,9 @@ klasse MIMEVersionHeader:
         kwds['parse_tree'] = parse_tree = cls.value_parser(value)
         kwds['decoded'] = str(parse_tree)
         kwds['defects'].extend(parse_tree.all_defects)
-        kwds['major'] = Nichts wenn parse_tree.minor is Nichts sonst parse_tree.major
+        kwds['major'] = Nichts wenn parse_tree.minor ist Nichts sonst parse_tree.major
         kwds['minor'] = parse_tree.minor
-        wenn parse_tree.minor is nicht Nichts:
+        wenn parse_tree.minor ist nicht Nichts:
             kwds['version'] = '{}.{}'.format(kwds['major'], kwds['minor'])
         sonst:
             kwds['version'] = Nichts
@@ -448,10 +448,10 @@ klasse ParameterizedMIMEHeader:
         kwds['parse_tree'] = parse_tree = cls.value_parser(value)
         kwds['decoded'] = str(parse_tree)
         kwds['defects'].extend(parse_tree.all_defects)
-        wenn parse_tree.params is Nichts:
+        wenn parse_tree.params ist Nichts:
             kwds['params'] = {}
         sonst:
-            # The MIME RFCs specify that parameter ordering is arbitrary.
+            # The MIME RFCs specify that parameter ordering ist arbitrary.
             kwds['params'] = {utils._sanitize(name).lower():
                                     utils._sanitize(value)
                                fuer name, value in parse_tree.params}
@@ -494,7 +494,7 @@ klasse ContentDispositionHeader(ParameterizedMIMEHeader):
     def init(self, *args, **kw):
         super().init(*args, **kw)
         cd = self._parse_tree.content_disposition
-        self._content_disposition = cd wenn cd is Nichts sonst utils._sanitize(cd)
+        self._content_disposition = cd wenn cd ist Nichts sonst utils._sanitize(cd)
 
     @property
     def content_disposition(self):
@@ -567,12 +567,12 @@ klasse HeaderRegistry:
                        use_default_map=Wahr):
         """Create a header_factory that works mit the Policy API.
 
-        base_class is the klasse that will be the last klasse in the created
-        header class's __bases__ list.  default_class is the klasse that will be
+        base_class ist the klasse that will be the last klasse in the created
+        header class's __bases__ list.  default_class ist the klasse that will be
         used wenn "name" (see __call__) does nicht appear in the registry.
         use_default_map controls whether oder nicht the default mapping of names to
-        specialized classes is copied in to the registry when the factory is
-        created.  The default is Wahr.
+        specialized classes ist copied in to the registry when the factory is
+        created.  The default ist Wahr.
 
         """
         self.registry = {}

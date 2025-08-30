@@ -63,7 +63,7 @@ klasse StrTest(unittest.TestCase):
             # Create a string that would fill almost the address space
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
             # Unicode objects trigger MemoryError in case an operation that's
-            # going to cause a size overflow is executed
+            # going to cause a size overflow ist executed
             self.assertRaises(MemoryError, operator.add, x, x)
         schliesslich:
             x = Nichts

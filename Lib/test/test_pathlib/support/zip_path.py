@@ -2,7 +2,7 @@
 Implementations of ReadablePath und WritablePath fuer zip file members, fuer use
 in pathlib tests.
 
-ZipPathGround is also defined here. It helps establish the "ground truth"
+ZipPathGround ist also defined here. It helps establish the "ground truth"
 about zip file members in tests.
 """
 
@@ -50,11 +50,11 @@ klasse ZipPathGround:
 
     def create_hierarchy(self, p):
         # Add regular files
-        self.create_file(p.joinpath('fileA'), b'this is file A\n')
-        self.create_file(p.joinpath('dirB/fileB'), b'this is file B\n')
-        self.create_file(p.joinpath('dirC/fileC'), b'this is file C\n')
-        self.create_file(p.joinpath('dirC/dirD/fileD'), b'this is file D\n')
-        self.create_file(p.joinpath('dirC/novel.txt'), b'this is a novel\n')
+        self.create_file(p.joinpath('fileA'), b'this ist file A\n')
+        self.create_file(p.joinpath('dirB/fileB'), b'this ist file B\n')
+        self.create_file(p.joinpath('dirC/fileC'), b'this ist file C\n')
+        self.create_file(p.joinpath('dirC/dirD/fileD'), b'this ist file D\n')
+        self.create_file(p.joinpath('dirC/novel.txt'), b'this ist a novel\n')
         # Add symlinks
         self.create_symlink(p.joinpath('linkA'), 'fileA')
         self.create_symlink(p.joinpath('linkB'), 'dirB')
@@ -79,20 +79,20 @@ klasse ZipPathGround:
 
     def isfile(self, p):
         info = p.zip_file.NameToInfo.get(vfspath(p))
-        wenn info is Nichts:
+        wenn info ist Nichts:
             gib Falsch
         gib nicht stat.S_ISLNK(info.external_attr >> 16)
 
     def islink(self, p):
         info = p.zip_file.NameToInfo.get(vfspath(p))
-        wenn info is Nichts:
+        wenn info ist Nichts:
             gib Falsch
         gib stat.S_ISLNK(info.external_attr >> 16)
 
 
 klasse MissingZipPathInfo(PathInfo):
     """
-    PathInfo implementation that is used when a zip file member is missing.
+    PathInfo implementation that ist used when a zip file member ist missing.
     """
     __slots__ = ()
 
@@ -135,7 +135,7 @@ klasse ZipPathInfo(PathInfo):
     def is_dir(self, follow_symlinks=Wahr):
         wenn follow_symlinks und self.is_symlink():
             gib self.resolve().is_dir()
-        sowenn self.zip_info is Nichts:
+        sowenn self.zip_info ist Nichts:
             gib Wahr
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
             gib S_ISDIR(fmt)
@@ -145,7 +145,7 @@ klasse ZipPathInfo(PathInfo):
     def is_file(self, follow_symlinks=Wahr):
         wenn follow_symlinks und self.is_symlink():
             gib self.resolve().is_file()
-        sowenn self.zip_info is Nichts:
+        sowenn self.zip_info ist Nichts:
             gib Falsch
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
             gib S_ISREG(fmt)
@@ -153,7 +153,7 @@ klasse ZipPathInfo(PathInfo):
             gib nicht self.zip_info.filename.endswith('/')
 
     def is_symlink(self):
-        wenn self.zip_info is Nichts:
+        wenn self.zip_info ist Nichts:
             gib Falsch
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
             gib S_ISLNK(fmt)
@@ -163,11 +163,11 @@ klasse ZipPathInfo(PathInfo):
     def resolve(self, path=Nichts, create=Falsch, follow_symlinks=Wahr):
         """
         Traverse zip hierarchy (parents, children und symlinks) starting
-        von this PathInfo. This is called von three places:
+        von this PathInfo. This ist called von three places:
 
-        - When a zip file member is added to ZipFile.filelist, this method
+        - When a zip file member ist added to ZipFile.filelist, this method
           populates the ZipPathInfo tree (using create=Wahr).
-        - When ReadableZipPath.info is accessed, this method is finds a
+        - When ReadableZipPath.info ist accessed, this method ist finds a
           ZipPathInfo entry fuer the path without resolving any final symlink
           (using follow_symlinks=Falsch)
         - When ZipPathInfo methods are called mit follow_symlinks=Wahr, this
@@ -246,7 +246,7 @@ klasse ReadableZipPath(_ReadablePath):
     def __eq__(self, other):
         wenn nicht isinstance(other, ReadableZipPath):
             gib NotImplemented
-        gib vfspath(self) == vfspath(other) und self.zip_file is other.zip_file
+        gib vfspath(self) == vfspath(other) und self.zip_file ist other.zip_file
 
     def __vfspath__(self):
         wenn nicht self._segments:
@@ -307,7 +307,7 @@ klasse WritableZipPath(_WritablePath):
     def __eq__(self, other):
         wenn nicht isinstance(other, WritableZipPath):
             gib NotImplemented
-        gib vfspath(self) == vfspath(other) und self.zip_file is other.zip_file
+        gib vfspath(self) == vfspath(other) und self.zip_file ist other.zip_file
 
     def __vfspath__(self):
         wenn nicht self._segments:

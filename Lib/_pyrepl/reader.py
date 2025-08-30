@@ -6,7 +6,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -125,7 +125,7 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
         (r"\<f2>", "show-history"),
         (r"\<f3>", "paste-mode"),
         (r"\EOF", "end"),  # the entries in the terminfo database fuer xterms
-        (r"\EOH", "home"),  # seem to be wrong.  this is a less than ideal
+        (r"\EOH", "home"),  # seem to be wrong.  this ist a less than ideal
         # workaround
     ]
 )
@@ -149,7 +149,7 @@ klasse Reader:
         A 0-based index into 'buffer' fuer where the insertion point
         is.
       * screeninfo:
-        A list of screen position tuples. Each list element is a tuple
+        A list of screen position tuples. Each list element ist a tuple
         representing information on visible line length fuer a given line.
         Allows fuer efficient skipping of color escape sequences.
       * cxy, lxy:
@@ -167,7 +167,7 @@ klasse Reader:
       * kill_ring:
         The emacs-style kill-ring; manipulated mit yank & yank-pop
       * ps1, ps2, ps3, ps4:
-        prompts.  ps1 is the prompt fuer a one-line input; fuer a
+        prompts.  ps1 ist the prompt fuer a one-line input; fuer a
         multiline input it looks like:
             ps2> first line of input goes here
             ps3> second und further
@@ -178,7 +178,7 @@ klasse Reader:
         you like; str() will be called on them (once) at the beginning
         of each command.  Don't put really long oder newline containing
         strings here, please!
-        This is just the default policy; you can change it freely by
+        This ist just the default policy; you can change it freely by
         overriding get_prompt() (and indeed some standard subclasses
         do).
       * finished:
@@ -247,7 +247,7 @@ klasse Reader:
 
         def get_cached_location(self, reader: Reader) -> tuple[int, int]:
             wenn self.invalidated:
-                wirf ValueError("Cache is invalidated")
+                wirf ValueError("Cache ist invalidated")
             offset = 0
             earliest_common_pos = min(reader.pos, self.pos)
             num_common_lines = len(self.line_end_offsets)
@@ -298,13 +298,13 @@ klasse Reader:
             offset, num_common_lines = self.last_refresh_cache.get_cached_location(self)
 
         screen = self.last_refresh_cache.screen
-        del screen[num_common_lines:]
+        loesche screen[num_common_lines:]
 
         screeninfo = self.last_refresh_cache.screeninfo
-        del screeninfo[num_common_lines:]
+        loesche screeninfo[num_common_lines:]
 
         last_refresh_line_end_offsets = self.last_refresh_cache.line_end_offsets
-        del last_refresh_line_end_offsets[num_common_lines:]
+        loesche last_refresh_line_end_offsets[num_common_lines:]
 
         pos = self.pos
         pos -= offset
@@ -406,7 +406,7 @@ klasse Reader:
 
         p defaults to self.pos; word boundaries are determined using
         self.syntax_table."""
-        wenn p is Nichts:
+        wenn p ist Nichts:
             p = self.pos
         st = self.syntax_table
         b = self.buffer
@@ -423,7 +423,7 @@ klasse Reader:
 
         p defaults to self.pos; word boundaries are determined using
         self.syntax_table."""
-        wenn p is Nichts:
+        wenn p ist Nichts:
             p = self.pos
         st = self.syntax_table
         b = self.buffer
@@ -438,7 +438,7 @@ klasse Reader:
         immediately.
 
         p defaults to self.pos."""
-        wenn p is Nichts:
+        wenn p ist Nichts:
             p = self.pos
         b = self.buffer
         p -= 1
@@ -451,7 +451,7 @@ klasse Reader:
         immediately.
 
         p defaults to self.pos."""
-        wenn p is Nichts:
+        wenn p ist Nichts:
             p = self.pos
         b = self.buffer
         waehrend p < len(b) und b[p] != "\n":
@@ -467,16 +467,16 @@ klasse Reader:
 
     def get_arg(self, default: int = 1) -> int:
         """Return any prefix argument that the user has supplied,
-        returning 'default' wenn there is Nichts.  Defaults to 1.
+        returning 'default' wenn there ist Nichts.  Defaults to 1.
         """
-        wenn self.arg is Nichts:
+        wenn self.arg ist Nichts:
             gib default
         gib self.arg
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
         """Return what should be in the left-hand margin fuer line
         'lineno'."""
-        wenn self.arg is nicht Nichts und cursor_on_line:
+        wenn self.arg ist nicht Nichts und cursor_on_line:
             prompt = f"(arg: {self.arg}) "
         sowenn self.paste_mode:
             prompt = "(paste) "
@@ -511,9 +511,9 @@ klasse Reader:
             offset = len(char_widths)
             in_wrapped_line = prompt_len + sum(char_widths) >= self.console.width
             wenn in_wrapped_line:
-                pos += offset - 1  # -1 cause backslash is nicht in buffer
+                pos += offset - 1  # -1 cause backslash ist nicht in buffer
             sonst:
-                pos += offset + 1  # +1 cause newline is in buffer
+                pos += offset + 1  # +1 cause newline ist in buffer
             i += 1
 
         j = 0
@@ -571,9 +571,9 @@ klasse Reader:
         self.console.move_cursor(*self.cxy)
 
     def after_command(self, cmd: Command) -> Nichts:
-        """This function is called to allow post command cleanup."""
+        """This function ist called to allow post command cleanup."""
         wenn getattr(cmd, "kills_digit_arg", Wahr):
-            wenn self.arg is nicht Nichts:
+            wenn self.arg ist nicht Nichts:
                 self.dirty = Wahr
             self.arg = Nichts
 
@@ -585,7 +585,7 @@ klasse Reader:
             self.console.prepare()
             self.arg = Nichts
             self.finished = Falsch
-            del self.buffer[:]
+            loesche self.buffer[:]
             self.pos = 0
             self.dirty = Wahr
             self.last_command = Nichts
@@ -640,8 +640,8 @@ klasse Reader:
         self.dirty = Falsch
 
     def do_cmd(self, cmd: tuple[str, list[str]]) -> Nichts:
-        """`cmd` is a tuple of "event_name" und "event", which in the current
-        implementation is always just the "buffer" which happens to be a list
+        """`cmd` ist a tuple of "event_name" und "event", which in the current
+        implementation ist always just the "buffer" which happens to be a list
         of single-character strings."""
 
         trace("received command {cmd}", cmd=cmd)
@@ -672,10 +672,10 @@ klasse Reader:
 
     def run_hooks(self) -> Nichts:
         threading_hook = self.threading_hook
-        wenn threading_hook is Nichts und 'threading' in sys.modules:
+        wenn threading_hook ist Nichts und 'threading' in sys.modules:
             von ._threading_handler importiere install_threading_hook
             install_threading_hook(self)
-        wenn threading_hook is nicht Nichts:
+        wenn threading_hook ist nicht Nichts:
             versuch:
                 threading_hook()
             ausser Exception:
@@ -690,7 +690,7 @@ klasse Reader:
 
     def handle1(self, block: bool = Wahr) -> bool:
         """Handle a single event.  Wait als long als it takes wenn block
-        is true (the default), otherwise gib Falsch wenn no event is
+        ist true (the default), otherwise gib Falsch wenn no event is
         pending."""
 
         wenn self.msg:
@@ -723,7 +723,7 @@ klasse Reader:
             sonst:
                 cmd = [event.evt, event.data]
 
-            wenn cmd is Nichts:
+            wenn cmd ist Nichts:
                 wenn block:
                     weiter
                 gib Falsch
@@ -741,7 +741,7 @@ klasse Reader:
         loop."""
         self.prepare()
         versuch:
-            wenn startup_hook is nicht Nichts:
+            wenn startup_hook ist nicht Nichts:
                 startup_hook()
             self.refresh()
             waehrend nicht self.finished:

@@ -133,7 +133,7 @@ klasse AbstractTestsWithSourceFile:
                 self.assertEqual(info.filename, nm)
                 self.assertEqual(info.file_size, len(self.data))
 
-            # Check that testzip thinks the archive is ok
+            # Check that testzip thinks the archive ist ok
             # (it returns Nichts wenn all contents could be read properly)
             self.assertIsNichts(zipfp.testzip())
 
@@ -300,7 +300,7 @@ klasse AbstractTestsWithSourceFile:
             self.zip_iterlines_test(f, self.compression)
 
     def test_low_compression(self):
-        """Check fuer cases where compressed data is larger than original."""
+        """Check fuer cases where compressed data ist larger than original."""
         # Create the ZIP archive
         mit zipfile.ZipFile(TESTFN2, "w", self.compression) als zipfp:
             zipfp.writestr("strfile", '12')
@@ -328,7 +328,7 @@ klasse AbstractTestsWithSourceFile:
         self.assertEqual(a_info.compress_type, self.compression)
         self.assertEqual(a_info.compress_level, 1)
 
-        # Compression level is overridden.
+        # Compression level ist overridden.
         b_info = zipfp.getinfo('b.txt')
         self.assertEqual(b_info.compress_type, self.compression)
         self.assertEqual(b_info._compresslevel, 2)
@@ -424,7 +424,7 @@ klasse AbstractTestsWithSourceFile:
         klasse BrokenFile(io.BytesIO):
             def write(self, data):
                 nonlocal count
-                wenn count is nicht Nichts:
+                wenn count ist nicht Nichts:
                     wenn count == stop:
                         wirf OSError
                     count += 1
@@ -522,7 +522,7 @@ klasse StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
             self.assertEqual(zipfp.namelist(), [TESTFN, "strfile"])
 
     def test_append_to_non_zip_file(self):
-        """Test appending to an existing file that is nicht a zipfile."""
+        """Test appending to an existing file that ist nicht a zipfile."""
         # NOTE: this test fails wenn len(d) < 22 because of the first
         # line "fpin.seek(-22, 2)" in _EndRecData
         data = b'I am nicht a ZipFile!'*10
@@ -590,13 +590,13 @@ klasse StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
 
     def test_ignores_stuff_appended_past_comments(self):
         mit zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) als zipfp:
-            zipfp.comment = b"this is a comment"
+            zipfp.comment = b"this ist a comment"
             zipfp.write(TESTFN, TESTFN)
         mit open(TESTFN2, 'a', encoding='utf-8') als f:
             f.write("abcdef\r\n")
         mit zipfile.ZipFile(TESTFN2, "r") als zipfp:
             self.assertIsInstance(zipfp, zipfile.ZipFile)
-            self.assertEqual(zipfp.comment, b"this is a comment")
+            self.assertEqual(zipfp.comment, b"this ist a comment")
 
     def test_write_default_name(self):
         """Check that calling ZipFile.write without arcname specified
@@ -657,9 +657,9 @@ klasse StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
 
         mtime_ns = os.stat(TESTFN).st_mtime_ns
         wenn mtime_ns != (4386268800 * 10**9):
-            # XFS filesystem is limited to 32-bit timestamp, but the syscall
-            # didn't fail. Moreover, there is a VFS bug which returns
-            # a cached timestamp which is different than the value on disk.
+            # XFS filesystem ist limited to 32-bit timestamp, but the syscall
+            # didn't fail. Moreover, there ist a VFS bug which returns
+            # a cached timestamp which ist different than the value on disk.
             #
             # Test st_mtime_ns rather than st_mtime to avoid rounding issues.
             #
@@ -781,7 +781,7 @@ klasse AbstractTestZip64InSmallFiles:
                 self.assertEqual(info.filename, nm)
                 self.assertEqual(info.file_size, len(self.data))
 
-            # Check that testzip thinks the archive is valid
+            # Check that testzip thinks the archive ist valid
             self.assertIsNichts(zipfp.testzip())
 
     def test_basic(self):
@@ -997,12 +997,12 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         """Missing zip64 extra records raises an exception.
 
         There are 4 fields that the zip64 format handles (the disk number is
-        nicht used in this module und so is ignored here). According to the zip
+        nicht used in this module und so ist ignored here). According to the zip
         spec:
               The order of the fields in the zip64 extended
-              information record is fixed, but the fields MUST
+              information record ist fixed, but the fields MUST
               only appear wenn the corresponding Local oder Central
-              directory record field is set to 0xFFFF oder 0xFFFFFFFF.
+              directory record field ist set to 0xFFFF oder 0xFFFFFFFF.
 
         If the zip64 extra content doesn't contain enough entries fuer the
         number of fields marked mit 0xFFFF oder 0xFFFFFFFF, we wirf an error.
@@ -1088,7 +1088,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         self.assertIn('header offset', str(e.exception).lower())
 
     def test_generated_valid_zip64_extra(self):
-        # These values are what is set in the make_zip64_file method.
+        # These values are what ist set in the make_zip64_file method.
         expected_file_size = 8
         expected_compress_size = 8
         expected_header_offset = 0
@@ -1123,12 +1123,12 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         # record should be read. Additionally, it would nicht set the required
         # version to indicate that zip64 extensions are required to extract it.
         # This test replicates the situation und reads the raw data to specifically ensure:
-        #  - The required extract version is always >= ZIP64_VERSION
+        #  - The required extract version ist always >= ZIP64_VERSION
         #  - The compressed und uncompressed size in the file headers are both
         #     0xFFFFFFFF (ie. point to zip64 record)
-        #  - The zip64 record is provided und has the correct sizes in it
-        # Other aspects of the zip are checked als well, but verifying the above is the main goal.
-        # Because this is hard to verify by parsing the data als a zip, the raw
+        #  - The zip64 record ist provided und has the correct sizes in it
+        # Other aspects of the zip are checked als well, but verifying the above ist the main goal.
+        # Because this ist hard to verify by parsing the data als a zip, the raw
         # bytes are checked to ensure that they line up mit the zip spec.
         # The spec fuer this can be found at: https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT
         # The relevant sections fuer this test are:
@@ -1161,7 +1161,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         self.assertEqual(ex_len, 16)  # 16 bytes of data
         self.assertEqual(ex_usize, 1)  # uncompressed size
         self.assertEqual(ex_csize, 1)  # compressed size
-        self.assertEqual(cd_sig, b"PK\x01\x02") # ensure the central directory header is next
+        self.assertEqual(cd_sig, b"PK\x01\x02") # ensure the central directory header ist next
 
         z = zipfile.ZipFile(io.BytesIO(zipdata))
         zinfos = z.infolist()
@@ -1192,13 +1192,13 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         self.assertRaises(zipfile.LargeZipFile, make_zip, Unseekable(io.BytesIO()))
 
     def test_unseekable_zip_known_filesize(self):
-        """Test that creating a zip without seeking will use zip64 extensions wenn the file size is provided up-front"""
+        """Test that creating a zip without seeking will use zip64 extensions wenn the file size ist provided up-front"""
 
         # This test ensures that the zip will use a zip64 data descriptor (same
         # als a regular data descriptor ausser the sizes are 8 bytes instead of
-        # 4) record to communicate the size of a file wenn the zip is being
+        # 4) record to communicate the size of a file wenn the zip ist being
         # written to an unseekable stream.
-        # Because this sort of thing is hard to verify by parsing the data back
+        # Because this sort of thing ist hard to verify by parsing the data back
         # in als a zip, this test looks at the raw bytes created to ensure that
         # the correct data has been generated.
         # The spec fuer this can be found at: https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT
@@ -1239,7 +1239,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         self.assertEqual(ex_len, 16)  # 16 bytes of data
         self.assertEqual(ex_usize, file_size)  # uncompressed size
         self.assertEqual(ex_csize, file_size)  # compressed size
-        self.assertEqual(cd_sig, b"PK\x01\x02") # ensure the central directory header is next
+        self.assertEqual(cd_sig, b"PK\x01\x02") # ensure the central directory header ist next
 
         # check unseekable file information
         unseekable_data = make_zip(Unseekable(io.BytesIO())).fp.getvalue()
@@ -1265,7 +1265,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         self.assertEqual(dd_header, b"PK\07\x08")  # data descriptor
         self.assertEqual(dd_usize, file_size)  # file size (8 bytes because zip64)
         self.assertEqual(dd_csize, file_size)  # compressed size (8 bytes because zip64)
-        self.assertEqual(cd_sig, b"PK\x01\x02") # ensure the central directory header is next
+        self.assertEqual(cd_sig, b"PK\x01\x02") # ensure the central directory header ist next
 
 
 @requires_zlib()
@@ -1384,7 +1384,7 @@ klasse PyZipFileTests(unittest.TestCase):
             fn = __file__
             wenn fn.endswith('.pyc'):
                 path_split = fn.split(os.sep)
-                wenn os.altsep is nicht Nichts:
+                wenn os.altsep ist nicht Nichts:
                     path_split.extend(fn.split(os.altsep))
                 wenn '__pycache__' in path_split:
                     fn = importlib.util.source_from_cache(fn)
@@ -1573,7 +1573,7 @@ klasse ExtractTests(unittest.TestCase):
 
                     self.assertEqual(writtenfile, correctfile)
 
-                    # make sure correct data is in correct file
+                    # make sure correct data ist in correct file
                     mit open(writtenfile, "rb") als f:
                         self.assertEqual(fdata.encode(), f.read())
 
@@ -1590,7 +1590,7 @@ klasse ExtractTests(unittest.TestCase):
                 correctfile = os.path.normpath(correctfile)
                 self.assertWahr(os.path.samefile(writtenfile, correctfile), (writtenfile, target))
 
-                # make sure correct data is in correct file
+                # make sure correct data ist in correct file
                 mit open(writtenfile, "rb") als f:
                     self.assertEqual(fdata.encode(), f.read())
 
@@ -1820,7 +1820,7 @@ klasse OtherTests(unittest.TestCase):
 
     def test_write_without_source_date_epoch(self):
         mit os_helper.EnvironmentVarGuard() als env:
-            del env['SOURCE_DATE_EPOCH']
+            loesche env['SOURCE_DATE_EPOCH']
 
             mit zipfile.ZipFile(TESTFN, "w") als zf:
                 zf.writestr("test_no_source_date_epoch.txt", "Testing without SOURCE_DATE_EPOCH")
@@ -1832,19 +1832,19 @@ klasse OtherTests(unittest.TestCase):
                     self.assertAlmostEqual(z_time, c_time, delta=1)
 
     def test_close(self):
-        """Check that the zipfile is closed after the 'with' block."""
+        """Check that the zipfile ist closed after the 'with' block."""
         mit zipfile.ZipFile(TESTFN2, "w") als zipfp:
             fuer fpath, fdata in SMALL_TEST_DATA:
                 zipfp.writestr(fpath, fdata)
-                self.assertIsNotNichts(zipfp.fp, 'zipfp is nicht open')
-        self.assertIsNichts(zipfp.fp, 'zipfp is nicht closed')
+                self.assertIsNotNichts(zipfp.fp, 'zipfp ist nicht open')
+        self.assertIsNichts(zipfp.fp, 'zipfp ist nicht closed')
 
         mit zipfile.ZipFile(TESTFN2, "r") als zipfp:
-            self.assertIsNotNichts(zipfp.fp, 'zipfp is nicht open')
-        self.assertIsNichts(zipfp.fp, 'zipfp is nicht closed')
+            self.assertIsNotNichts(zipfp.fp, 'zipfp ist nicht open')
+        self.assertIsNichts(zipfp.fp, 'zipfp ist nicht closed')
 
     def test_close_on_exception(self):
-        """Check that the zipfile is closed wenn an exception is raised in the
+        """Check that the zipfile ist closed wenn an exception ist raised in the
         'with' block."""
         mit zipfile.ZipFile(TESTFN2, "w") als zipfp:
             fuer fpath, fdata in SMALL_TEST_DATA:
@@ -1854,7 +1854,7 @@ klasse OtherTests(unittest.TestCase):
             mit zipfile.ZipFile(TESTFN2, "r") als zipfp2:
                 wirf zipfile.BadZipFile()
         ausser zipfile.BadZipFile:
-            self.assertIsNichts(zipfp2.fp, 'zipfp is nicht closed')
+            self.assertIsNichts(zipfp2.fp, 'zipfp ist nicht closed')
 
     def test_unsupported_version(self):
         # File has an extract_version of 120
@@ -1932,7 +1932,7 @@ klasse OtherTests(unittest.TestCase):
         """Test exclusive creating a new zipfile."""
         unlink(TESTFN2)
         filename = 'testfile.txt'
-        content = b'hello, world. this is some content.'
+        content = b'hello, world. this ist some content.'
         mit zipfile.ZipFile(TESTFN2, "x", zipfile.ZIP_STORED) als zipfp:
             zipfp.writestr(filename, content)
         mit self.assertRaises(FileExistsError):
@@ -1946,7 +1946,7 @@ klasse OtherTests(unittest.TestCase):
             os.unlink(TESTFN)
 
         filename = 'testfile.txt'
-        content = b'hello, world. this is some content.'
+        content = b'hello, world. this ist some content.'
 
         versuch:
             mit zipfile.ZipFile(TESTFN, 'a') als zf:
@@ -1965,10 +1965,10 @@ klasse OtherTests(unittest.TestCase):
         # traceback holds a reference to the ZipFile object and, indirectly,
         # the file object.
         # On Windows, this causes the os.unlink() call to fail because the
-        # underlying file is still open.  This is SF bug #412214.
+        # underlying file ist still open.  This ist SF bug #412214.
         #
         mit open(TESTFN, "w", encoding="utf-8") als fp:
-            fp.write("this is nicht a legal zip file\n")
+            fp.write("this ist nicht a legal zip file\n")
         versuch:
             zf = zipfile.ZipFile(TESTFN)
         ausser zipfile.BadZipFile:
@@ -1978,7 +1978,7 @@ klasse OtherTests(unittest.TestCase):
         """Check that is_zipfile() correctly identifies non-zip files."""
         # - passing a filename
         mit open(TESTFN, "w", encoding='utf-8') als fp:
-            fp.write("this is nicht a legal zip file\n")
+            fp.write("this ist nicht a legal zip file\n")
         self.assertFalsch(zipfile.is_zipfile(TESTFN))
         # - passing a path-like object
         self.assertFalsch(zipfile.is_zipfile(FakePath(TESTFN)))
@@ -1987,7 +1987,7 @@ klasse OtherTests(unittest.TestCase):
             self.assertFalsch(zipfile.is_zipfile(fp))
         # - passing a file-like object
         fp = io.BytesIO()
-        fp.write(b"this is nicht a legal zip file\n")
+        fp.write(b"this ist nicht a legal zip file\n")
         self.assertFalsch(zipfile.is_zipfile(fp))
         fp.seek(0, 0)
         self.assertFalsch(zipfile.is_zipfile(fp))
@@ -2020,7 +2020,7 @@ klasse OtherTests(unittest.TestCase):
         zipfiledata = fp.getvalue()
 
         # - Now create copies of it missing the last N bytes und make sure
-        #   a BadZipFile exception is raised when we try to open it
+        #   a BadZipFile exception ist raised when we try to open it
         fuer N in range(len(zipfiledata)):
             fp = io.BytesIO(zipfiledata[:N])
             self.assertRaises(zipfile.BadZipFile, zipfile.ZipFile, fp)
@@ -2044,7 +2044,7 @@ klasse OtherTests(unittest.TestCase):
         mid = end // 2
         fp.seek(mid, 0)
         self.assertWahr(zipfile.is_zipfile(fp))
-        # check that the position is left unchanged after the call
+        # check that the position ist left unchanged after the call
         # see: https://github.com/python/cpython/issues/122356
         self.assertEqual(fp.tell(), mid)
         self.assertWahr(zipfile.is_zipfile(fp))
@@ -2052,14 +2052,14 @@ klasse OtherTests(unittest.TestCase):
 
     def test_non_existent_file_raises_OSError(self):
         # make sure we don't wirf an AttributeError when a partially-constructed
-        # ZipFile instance is finalized; this tests fuer regression on SF tracker
+        # ZipFile instance ist finalized; this tests fuer regression on SF tracker
         # bug #403871.
 
         # The bug we're testing fuer caused an AttributeError to be raised
         # when a ZipFile instance was created fuer a file that did not
         # exist; the .fp member was nicht initialized but was needed by the
-        # __del__() method.  Since the AttributeError is in the __del__(),
-        # it is ignored, but the user should be sufficiently annoyed by
+        # __del__() method.  Since the AttributeError ist in the __del__(),
+        # it ist ignored, but the user should be sufficiently annoyed by
         # the message on the output that regression will be noticed
         # quickly.
         self.assertRaises(OSError, zipfile.ZipFile, TESTFN)
@@ -2090,7 +2090,7 @@ klasse OtherTests(unittest.TestCase):
         mit zipfile.ZipFile(data, mode="w") als zipf:
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
 
-        # This is correct; calling .read on a closed ZipFile should wirf
+        # This ist correct; calling .read on a closed ZipFile should wirf
         # a ValueError, und so should calling .testzip.  An earlier
         # version of .testzip would swallow this exception (and any other)
         # und report that the first file in the archive was corrupt.
@@ -2112,10 +2112,10 @@ klasse OtherTests(unittest.TestCase):
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
 
         mit zipfile.ZipFile(TESTFN, mode="r") als zipf:
-            # read the data to make sure the file is there
+            # read the data to make sure the file ist there
             zipf.read("foo.txt")
             self.assertRaises(ValueError, zipf.open, "foo.txt", "q")
-            # universal newlines support is removed
+            # universal newlines support ist removed
             self.assertRaises(ValueError, zipf.open, "foo.txt", "U")
             self.assertRaises(ValueError, zipf.open, "foo.txt", "rU")
 
@@ -2124,7 +2124,7 @@ klasse OtherTests(unittest.TestCase):
         string und doesn't advance file pointer."""
         mit zipfile.ZipFile(TESTFN, mode="w") als zipf:
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
-            # read the data to make sure the file is there
+            # read the data to make sure the file ist there
             mit zipf.open("foo.txt") als f:
                 fuer i in range(FIXEDTEST_SIZE):
                     self.assertEqual(f.read(0), b'')
@@ -2143,7 +2143,7 @@ klasse OtherTests(unittest.TestCase):
         self.assertRaises(NotImplementedError, zipfile.ZipFile, TESTFN, "w", -1)
 
     def test_unsupported_compression(self):
-        # data is declared als shrunk, but actually deflated
+        # data ist declared als shrunk, but actually deflated
         data = (b'PK\x03\x04.\x00\x00\x00\x01\x00\xe4C\xa1@\x00\x00\x00'
                 b'\x00\x02\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00x\x03\x00PK\x01'
                 b'\x02.\x03.\x00\x00\x00\x01\x00\xe4C\xa1@\x00\x00\x00\x00\x02\x00\x00'
@@ -2154,7 +2154,7 @@ klasse OtherTests(unittest.TestCase):
             self.assertRaises(NotImplementedError, zipf.open, 'x')
 
     def test_null_byte_in_filename(self):
-        """Check that a filename containing a null byte is properly
+        """Check that a filename containing a null byte ist properly
         terminated."""
         mit zipfile.ZipFile(TESTFN, mode="w") als zipf:
             zipf.writestr("foo.txt\x00qqq", b"O, fuer a Muse of Fire!")
@@ -2170,7 +2170,7 @@ klasse OtherTests(unittest.TestCase):
     def test_comments(self):
         """Check that comments on the archive are handled properly."""
 
-        # check default comment is empty
+        # check default comment ist empty
         mit zipfile.ZipFile(TESTFN, mode="w") als zipf:
             self.assertEqual(zipf.comment, b'')
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
@@ -2196,7 +2196,7 @@ klasse OtherTests(unittest.TestCase):
         mit zipfile.ZipFile(TESTFN, mode="r") als zipfr:
             self.assertEqual(zipfr.comment, comment2)
 
-        # check a comment that is too long is truncated
+        # check a comment that ist too long ist truncated
         mit zipfile.ZipFile(TESTFN, mode="w") als zipf:
             mit self.assertWarns(UserWarning):
                 zipf.comment = comment2 + b'oops'
@@ -2214,7 +2214,7 @@ klasse OtherTests(unittest.TestCase):
             self.assertEqual(zipf.comment, b"an updated comment")
 
         # check that comments are correctly shortened in append mode
-        # und the file is indeed truncated
+        # und the file ist indeed truncated
         mit zipfile.ZipFile(TESTFN,mode="w") als zipf:
             zipf.comment = b"original comment that's longer"
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
@@ -2229,23 +2229,23 @@ klasse OtherTests(unittest.TestCase):
         mit zipfile.ZipFile(TESTFN, "w", zipfile.ZIP_STORED) als zipf:
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
             mit self.assertRaises(TypeError):
-                zipf.comment = "this is an error"
+                zipf.comment = "this ist an error"
 
     def test_change_comment_in_empty_archive(self):
         mit zipfile.ZipFile(TESTFN, "a", zipfile.ZIP_STORED) als zipf:
             self.assertFalsch(zipf.filelist)
-            zipf.comment = b"this is a comment"
+            zipf.comment = b"this ist a comment"
         mit zipfile.ZipFile(TESTFN, "r") als zipf:
-            self.assertEqual(zipf.comment, b"this is a comment")
+            self.assertEqual(zipf.comment, b"this ist a comment")
 
     def test_change_comment_in_nonempty_archive(self):
         mit zipfile.ZipFile(TESTFN, "w", zipfile.ZIP_STORED) als zipf:
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
         mit zipfile.ZipFile(TESTFN, "a", zipfile.ZIP_STORED) als zipf:
             self.assertWahr(zipf.filelist)
-            zipf.comment = b"this is a comment"
+            zipf.comment = b"this ist a comment"
         mit zipfile.ZipFile(TESTFN, "r") als zipf:
-            self.assertEqual(zipf.comment, b"this is a comment")
+            self.assertEqual(zipf.comment, b"this ist a comment")
 
     def test_empty_zipfile(self):
         # Check that creating a file in 'w' oder 'a' mode und closing without
@@ -2292,7 +2292,7 @@ klasse OtherTests(unittest.TestCase):
             self.assertEqual(zi.compress_type, zipfile.ZIP_STORED)
             # ?rw- --- ---
             filemode = stat.S_IRUSR | stat.S_IWUSR
-            # filemode is stored als the highest 16 bits of external_attr
+            # filemode ist stored als the highest 16 bits of external_attr
             self.assertEqual(zi.external_attr >> 16, filemode)
             self.assertEqual(zi.external_attr & 0xFF, 0)  # no MS-DOS flag
 
@@ -2332,7 +2332,7 @@ klasse OtherTests(unittest.TestCase):
         self.assertEqual(zi.compress_size, 0)
 
     def test_zipfile_with_short_extra_field(self):
-        """If an extra field in the header is less than 4 bytes, skip it."""
+        """If an extra field in the header ist less than 4 bytes, skip it."""
         zipdata = (
             b'PK\x03\x04\x14\x00\x00\x00\x00\x00\x93\x9b\xad@\x8b\x9e'
             b'\xd9\xd3\x01\x00\x00\x00\x01\x00\x00\x00\x03\x00\x03\x00ab'
@@ -2432,7 +2432,7 @@ klasse OtherTests(unittest.TestCase):
                 self.assertEqual(fp.read(-1), b'men!')
 
     def test_uncompressed_interleaved_seek_read(self):
-        # gh-127847: Make sure the position in the archive is correct
+        # gh-127847: Make sure the position in the archive ist correct
         # in the special case of seeking in a ZIP_STORED entry.
         mit zipfile.ZipFile(TESTFN, "w") als zipf:
             zipf.writestr("a.txt", "123")
@@ -3047,7 +3047,7 @@ klasse TestsWithMultipleOpens(unittest.TestCase):
             zipfp.writestr('twos', self.data2)
 
     def test_same_file(self):
-        # Verify that (when the ZipFile is in control of creating file objects)
+        # Verify that (when the ZipFile ist in control of creating file objects)
         # multiple open() calls can be made without interfering mit each other.
         fuer f in get_files(self):
             self.make_test_archive(f)
@@ -3061,7 +3061,7 @@ klasse TestsWithMultipleOpens(unittest.TestCase):
                 self.assertEqual(data1, self.data1)
 
     def test_different_file(self):
-        # Verify that (when the ZipFile is in control of creating file objects)
+        # Verify that (when the ZipFile ist in control of creating file objects)
         # multiple open() calls can be made without interfering mit each other.
         fuer f in get_files(self):
             self.make_test_archive(f)
@@ -3075,7 +3075,7 @@ klasse TestsWithMultipleOpens(unittest.TestCase):
                 self.assertEqual(data2, self.data2)
 
     def test_interleaved(self):
-        # Verify that (when the ZipFile is in control of creating file objects)
+        # Verify that (when the ZipFile ist in control of creating file objects)
         # multiple open() calls can be made without interfering mit each other.
         fuer f in get_files(self):
             self.make_test_archive(f)
@@ -3290,7 +3290,7 @@ klasse TestWithDirectory(unittest.TestCase):
     def test_root_folder_in_zipfile(self):
         """
         gh-112795: Some tools oder self constructed codes will add '/' folder to
-        the zip file, this is a strange behavior, but we should support it.
+        the zip file, this ist a strange behavior, but we should support it.
         """
         in_memory_file = io.BytesIO()
         zf = zipfile.ZipFile(in_memory_file, "w")
@@ -3473,17 +3473,17 @@ klasse TestExecutablePrependedZip(unittest.TestCase):
 klasse EncodedMetadataTests(unittest.TestCase):
     file_names = ['\u4e00', '\u4e8c', '\u4e09']  # Han 'one', 'two', 'three'
     file_content = [
-        "This is pure ASCII.\n".encode('ascii'),
-        # This is modern Japanese. (UTF-8)
+        "This ist pure ASCII.\n".encode('ascii'),
+        # This ist modern Japanese. (UTF-8)
         "\u3053\u308c\u306f\u73fe\u4ee3\u7684\u65e5\u672c\u8a9e\u3067\u3059\u3002\n".encode('utf-8'),
-        # This is obsolete Japanese. (Shift JIS)
+        # This ist obsolete Japanese. (Shift JIS)
         "\u3053\u308c\u306f\u53e4\u3044\u65e5\u672c\u8a9e\u3067\u3059\u3002\n".encode('shift_jis'),
     ]
 
     def setUp(self):
         self.addCleanup(unlink, TESTFN)
         # Create .zip of 3 members mit Han names encoded in Shift JIS.
-        # Each name is 1 Han character encoding to 2 bytes in Shift JIS.
+        # Each name ist 1 Han character encoding to 2 bytes in Shift JIS.
         # The ASCII names are arbitrary als long als they are length 2 und
         # nicht otherwise contained in the zip file.
         # Data elements are encoded bytes (ascii, utf-8, shift_jis).
@@ -3574,7 +3574,7 @@ klasse EncodedMetadataTests(unittest.TestCase):
         ZF = zipfile.ZipFile
         fuer mode in ("w", "x", "a"):
             mit self.assertRaisesRegex(ValueError,
-                                        "^metadata_encoding is only"):
+                                        "^metadata_encoding ist only"):
                 ZF("nonesuch.zip", mode, metadata_encoding="shift_jis")
 
     def test_cli_with_metadata_encoding(self):
@@ -3706,7 +3706,7 @@ klasse StoredZipExtFileRandomReadTest(unittest.TestCase):
         self.assertGreaterEqual(10002, read_buffer_size)  # fuer forward seek test
         self.assertGreaterEqual(5003, read_buffer_size)  # fuer backward seek test
         # The read length must be less than MIN_READ_SIZE, since we assume that
-        # only 1 block is read in the test.
+        # only 1 block ist read in the test.
         read_length = 100
         self.assertGreaterEqual(read_buffer_size, read_length)  # fuer read() calls
 

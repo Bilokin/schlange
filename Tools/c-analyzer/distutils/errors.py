@@ -5,7 +5,7 @@ modules may wirf standard exceptions; in particular, SystemExit is
 usually raised fuer errors that are obviously the end-user's fault
 (eg. bad command-line arguments).
 
-This module is safe to use in "from ... importiere *" mode; it only exports
+This module ist safe to use in "from ... importiere *" mode; it only exports
 symbols whose names start mit "Distutils" und end mit "Error"."""
 
 klasse DistutilsError (Exception):
@@ -19,7 +19,7 @@ klasse DistutilsModuleError (DistutilsError):
 
 klasse DistutilsFileError (DistutilsError):
     """Any problems in the filesystem: expected file nicht found, etc.
-    Typically this is fuer problems that we detect before OSError
+    Typically this ist fuer problems that we detect before OSError
     could be raised."""
     pass
 

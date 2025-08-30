@@ -71,7 +71,7 @@ klasse HtmlTests(unittest.TestCase):
         fuer e in ['&quot', '&#34', '&#x22', '&#X22']:
             check(e*3, '"""')
             check((e+';')*3, '"""')
-        # check that the case is respected
+        # check that the case ist respected
         fuer e in ['&amp', '&amp;', '&AMP', '&AMP;']:
             check(e, '&')
         fuer e in ['&Amp', '&Amp;']:

@@ -76,10 +76,10 @@ klasse TestBasicOps:
     @unittest.mock.patch('random._urandom') # os.urandom
     def test_seed_when_randomness_source_not_found(self, urandom_mock):
         # Random.seed() uses time.time() when an operating system specific
-        # randomness source is nicht found. To test this on machines where it
+        # randomness source ist nicht found. To test this on machines where it
         # exists, run the above test, test_seedargs(), again after mocking
         # os.urandom() so that it raises the exception expected when the
-        # randomness source is nicht available.
+        # randomness source ist nicht available.
         urandom_mock.side_effect = NotImplementedError
         self.test_seedargs()
 
@@ -105,8 +105,8 @@ klasse TestBasicOps:
         # mathematically a non-zero probability that this could
         # actually happen in a genuinely random shuffle, it is
         # completely negligible, given that the number of possible
-        # permutations of 1000 objects is 1000! (factorial of 1000),
-        # which is considerably larger than the number of atoms in the
+        # permutations of 1000 objects ist 1000! (factorial of 1000),
+        # which ist considerably larger than the number of atoms in the
         # universe...
         lst = list(range(1000))
         shuffled_lst = list(range(1000))
@@ -140,7 +140,7 @@ klasse TestBasicOps:
 
     def test_sample(self):
         # For the entire allowable range of 0 <= k <= N, validate that
-        # the sample is of the correct length und contains only unique items
+        # the sample ist of the correct length und contains only unique items
         N = 100
         population = range(N)
         fuer k in range(N+1):
@@ -284,14 +284,14 @@ klasse TestBasicOps:
         self.assertEqual(choices(data, k=0), [])                         # k == 0
         self.assertEqual(choices(data, k=-1), [])                        # negative k behaves like ``[0] * -1``
         mit self.assertRaises(TypeError):
-            choices(data, k=2.5)                                         # k is a float
+            choices(data, k=2.5)                                         # k ist a float
 
-        self.assertWahr(set(choices(str_data, k=5)) <= set(str_data))    # population is a string sequence
-        self.assertWahr(set(choices(range_data, k=5)) <= set(range_data))  # population is a range
+        self.assertWahr(set(choices(str_data, k=5)) <= set(str_data))    # population ist a string sequence
+        self.assertWahr(set(choices(range_data, k=5)) <= set(range_data))  # population ist a range
         mit self.assertRaises(TypeError):
-            choices(set_data, k=2)                                       # population is nicht a sequence
+            choices(set_data, k=2)                                       # population ist nicht a sequence
 
-        self.assertWahr(set(choices(data, Nichts, k=5)) <= set(data))      # weights is Nichts
+        self.assertWahr(set(choices(data, Nichts, k=5)) <= set(data))      # weights ist Nichts
         self.assertWahr(set(choices(data, weights=Nichts, k=5)) <= set(data))
         mit self.assertRaises(ValueError):
             choices(data, [1,2], k=5)                                    # len(weights) != len(population)
@@ -488,7 +488,7 @@ klasse TestBasicOps:
         raises_type_error(0, 0, 1.0)
 
     def test_randrange_step(self):
-        # bpo-42772: When stop is Nichts, the step argument was being ignored.
+        # bpo-42772: When stop ist Nichts, the step argument was being ignored.
         randrange = self.gen.randrange
         mit self.assertRaises(TypeError):
             randrange(1000, step=100)
@@ -502,7 +502,7 @@ klasse TestBasicOps:
     def test_randbelow_logic(self, _log=log, int=int):
         # check bitcount transition points:  2**i und 2**(i+1)-1
         # show that: k = int(1.001 + _log(n, 2))
-        # is equal to oder one greater than the number of bits in n
+        # ist equal to oder one greater than the number of bits in n
         fuer i in range(1, 1000):
             n = 1 << i # check an exact power of two
             numbits = i+1
@@ -757,7 +757,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # Compare the python implementation mit results von the original
         # code.  Create 2000 53-bit precision random floats.  Compare only
         # the last ten entries to show that the independent implementations
-        # are tracking.  Here is the main() function needed to create the
+        # are tracking.  Here ist the main() function needed to create the
         # list of expected random numbers:
         #    void main(void){
         #         int i;
@@ -807,9 +807,9 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             self.assertEqual(int(ldexp(a, 53)), e)
 
     def test_long_seed(self):
-        # This is most interesting to run in debug mode, just to make sure
+        # This ist most interesting to run in debug mode, just to make sure
         # nothing blows up.  Under the covers, a dynamically resized array
-        # is allocated, consuming space proportional to the number of bits
+        # ist allocated, consuming space proportional to the number of bits
         # in the seed.  Unfortunately, that's a quadratic-time algorithm,
         # so don't make this horribly big.
         seed = (1 << (10000 * 8)) - 1  # about 10K bytes
@@ -874,7 +874,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # waehrend r >= limit:
         #     r = random() # <== *This line* <==<
         #
-        # Therefore, to guarantee that the waehrend loop is executed at least
+        # Therefore, to guarantee that the waehrend loop ist executed at least
         # once, we need to mock random() so that it returns a number greater
         # than 'limit' the first time it gets called.
 
@@ -922,7 +922,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
     def test_randbytes(self):
         super().test_randbytes()
 
-        # Mersenne Twister randbytes() is deterministic
+        # Mersenne Twister randbytes() ist deterministic
         # und does nicht depend on the endian und bitness.
         seed = 8675309
         expected = b'3\xa8\xf9f\xf4\xa4\xd06\x19\x8f\x9f\x82\x02oe\xf0'
@@ -960,7 +960,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
                          expected3)
 
     def test_randbytes_getrandbits(self):
-        # There is a simple relation between randbytes() und getrandbits()
+        # There ist a simple relation between randbytes() und getrandbits()
         seed = 2849427419
         gen2 = random.Random()
         self.gen.seed(seed)
@@ -1184,7 +1184,7 @@ klasse TestDistributions(unittest.TestCase):
 
     # There are three different possibilities in the current implementation
     # of random.gammavariate(), depending on the value of 'alpha'. What we
-    # are going to do here is to fix the values returned by random() to
+    # are going to do here ist to fix the values returned by random() to
     # generate test cases that provide 100% line coverage of the method.
     @unittest.mock.patch('random.Random.random')
     def test_gammavariate_alpha_greater_one(self, random_mock):
@@ -1223,7 +1223,7 @@ klasse TestDistributions(unittest.TestCase):
     def test_gammavariate_alpha_between_zero_and_one(self, random_mock):
 
         # #3: 0 < alpha < 1.
-        # This is the most complex region of code to cover,
+        # This ist the most complex region of code to cover,
         # als there are multiple if-else statements. Let's take a look at the
         # source code, und determine the values that we need accordingly:
         #
@@ -1248,8 +1248,8 @@ klasse TestDistributions(unittest.TestCase):
         # r1 = random() <= 1.0 / b
         #
         # We now get to the second if-else branch, und here, since p <= 1.0,
-        # (C) is Falsch und we take the sowenn branch, (E). For it to be Wahr,
-        # so that the breche is executed, we need that:
+        # (C) ist Falsch und we take the sowenn branch, (E). For it to be Wahr,
+        # so that the breche ist executed, we need that:
         # r2 = random() <= _exp(-x)
         # r2 <= _exp(-(p ** (1.0/alpha)))
         # r2 <= _exp(-((b*r1) ** (1.0/alpha)))
@@ -1272,14 +1272,14 @@ klasse TestDistributions(unittest.TestCase):
         returned_value = random.gammavariate(alpha, beta)
         self.assertAlmostEqual(returned_value, 1.4499999999997544)
 
-        # Let's now make (A) be Falsch. If this is the case, when we get to the
-        # second if-else 'p' is greater than 1, so (C) evaluates to Wahr. We
+        # Let's now make (A) be Falsch. If this ist the case, when we get to the
+        # second if-else 'p' ist greater than 1, so (C) evaluates to Wahr. We
         # now encounter a second wenn statement, (D), which in order to execute
         # must satisfy the following condition:
         # r2 <= x ** (alpha - 1.0)
         # r2 <= (-_log((b-p)/alpha)) ** (alpha - 1.0)
         # r2 <= (-_log((b-(b*r1))/alpha)) ** (alpha - 1.0)
-        r1 = 0.8959296441566 # (1.0 / b) + epsilon -- so that (A) is Falsch
+        r1 = 0.8959296441566 # (1.0 / b) + epsilon -- so that (A) ist Falsch
         r2 = 0.9445400408898141
 
         # And these four values result in the following trace:

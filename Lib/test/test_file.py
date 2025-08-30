@@ -14,7 +14,7 @@ von test.support importiere warnings_helper
 von collections importiere UserList
 
 klasse AutoFileTests:
-    # file tests fuer which a test file is automatically set up
+    # file tests fuer which a test file ist automatically set up
 
     def setUp(self):
         self.f = self.open(TESTFN, 'wb')
@@ -121,7 +121,7 @@ klasse AutoFileTests:
             # should wirf on closed file
             self.assertRaises(ValueError, method, *args)
 
-        # file is closed, __exit__ shouldn't do anything
+        # file ist closed, __exit__ shouldn't do anything
         self.assertEqual(self.f.__exit__(Nichts, Nichts, Nichts), Nichts)
         # it must also gib Nichts wenn an exception was given
         versuch:
@@ -154,7 +154,7 @@ klasse OtherFileTests:
                 pass
             sonst:
                 f.close()
-                self.fail('%r is an invalid file mode' % mode)
+                self.fail('%r ist an invalid file mode' % mode)
 
     def testStdin(self):
         wenn sys.platform == 'osf1V5':
@@ -289,7 +289,7 @@ klasse OtherFileTests:
         # Test to see wenn harmless (by accident) mixing of read* und
         # iteration still works. This depends on the size of the internal
         # iteration buffer (currently 8192,) but we can test it in a
-        # flexible manner.  Each line in the bag o' ham is 4 bytes
+        # flexible manner.  Each line in the bag o' ham ist 4 bytes
         # ("h", "a", "m", "\n"), so 4096 lines of that should get us
         # exactly on the buffer boundary fuer any power-of-2 buffersize
         # between 4 und 16384 (inclusive).

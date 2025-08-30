@@ -184,7 +184,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         # it still has to accept the normal python syntax
         importiere locale
         wenn nicht locale.localeconv()['decimal_point'] == ',':
-            self.skipTest('decimal_point is nicht ","')
+            self.skipTest('decimal_point ist nicht ","')
 
         self.assertEqual(float("  3.14  "), 3.14)
         self.assertEqual(float("+3.14  "), 3.14)
@@ -221,7 +221,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             def __float__(self):
                 gib 42
 
-        # Issue 5759: __float__ nicht called on str subclasses (though it is on
+        # Issue 5759: __float__ nicht called on str subclasses (though it ist on
         # unicode subclasses).
         klasse FooStr(str):
             def __float__(self):
@@ -300,7 +300,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         x = cls.from_number(NAN)
         self.assertWahr(x != x)
         self.assertIs(type(x), cls)
-        wenn cls is float:
+        wenn cls ist float:
             self.assertIs(cls.from_number(NAN), NAN)
 
         self.assertRaises(TypeError, cls.from_number, '3.14')
@@ -379,7 +379,7 @@ klasse GeneralFloatCases(unittest.TestCase):
 
     def assertEqualAndEqualSign(self, a, b):
         # fail unless a == b und a und b have the same sign bit;
-        # the only difference von assertEqual is that this test
+        # the only difference von assertEqual ist that this test
         # distinguishes -0.0 und 0.0.
         self.assertEqual((a, copysign(1.0, a)), (b, copysign(1.0, b)))
 
@@ -437,7 +437,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         # Special cases taken von section F.9.4.4 of the C99 specification
 
         fuer pow_op in pow, operator.pow:
-            # x**NAN is NAN fuer any x ausser 1
+            # x**NAN ist NAN fuer any x ausser 1
             self.assertWahr(isnan(pow_op(-INF, NAN)))
             self.assertWahr(isnan(pow_op(-2.0, NAN)))
             self.assertWahr(isnan(pow_op(-1.0, NAN)))
@@ -449,7 +449,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertWahr(isnan(pow_op(INF, NAN)))
             self.assertWahr(isnan(pow_op(NAN, NAN)))
 
-            # NAN**y is NAN fuer any y ausser +-0
+            # NAN**y ist NAN fuer any y ausser +-0
             self.assertWahr(isnan(pow_op(NAN, -INF)))
             self.assertWahr(isnan(pow_op(NAN, -2.0)))
             self.assertWahr(isnan(pow_op(NAN, -1.0)))
@@ -470,21 +470,21 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertRaises(ZeroDivisionError, pow_op, 0.0, -2.0)
             self.assertRaises(ZeroDivisionError, pow_op, 0.0, -0.5)
 
-            # (+-0)**y is +-0 fuer y a positive odd integer
+            # (+-0)**y ist +-0 fuer y a positive odd integer
             self.assertEqualAndEqualSign(pow_op(-0.0, 1.0), -0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, 1.0), 0.0)
 
-            # (+-0)**y is 0 fuer y finite und positive but nicht an odd integer
+            # (+-0)**y ist 0 fuer y finite und positive but nicht an odd integer
             self.assertEqualAndEqualSign(pow_op(-0.0, 0.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(-0.0, 2.0), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, 0.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, 2.0), 0.0)
 
-            # (-1)**+-inf is 1
+            # (-1)**+-inf ist 1
             self.assertEqualAndEqualSign(pow_op(-1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, INF), 1.0)
 
-            # 1**y is 1 fuer any y, even wenn y is an infinity oder nan
+            # 1**y ist 1 fuer any y, even wenn y ist an infinity oder nan
             self.assertEqualAndEqualSign(pow_op(1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -2.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -1.0), 1.0)
@@ -497,7 +497,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(1.0, INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, NAN), 1.0)
 
-            # x**+-0 is 1 fuer any x, even wenn x is a zero, infinity, oder nan
+            # x**+-0 ist 1 fuer any x, even wenn x ist a zero, infinity, oder nan
             self.assertEqualAndEqualSign(pow_op(-INF, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-2.0, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, 0.0), 1.0)
@@ -530,50 +530,50 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertEqual(type(pow_op(-0.5, -0.5)), complex)
             self.assertEqual(type(pow_op(-0.5, 0.5)), complex)
 
-            # x**-INF is INF fuer abs(x) < 1
+            # x**-INF ist INF fuer abs(x) < 1
             self.assertEqualAndEqualSign(pow_op(-0.5, -INF), INF)
             self.assertEqualAndEqualSign(pow_op(-0.0, -INF), INF)
             self.assertEqualAndEqualSign(pow_op(0.0, -INF), INF)
             self.assertEqualAndEqualSign(pow_op(0.5, -INF), INF)
 
-            # x**-INF is 0 fuer abs(x) > 1
+            # x**-INF ist 0 fuer abs(x) > 1
             self.assertEqualAndEqualSign(pow_op(-INF, -INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(-2.0, -INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(2.0, -INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(INF, -INF), 0.0)
 
-            # x**INF is 0 fuer abs(x) < 1
+            # x**INF ist 0 fuer abs(x) < 1
             self.assertEqualAndEqualSign(pow_op(-0.5, INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(-0.0, INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.5, INF), 0.0)
 
-            # x**INF is INF fuer abs(x) > 1
+            # x**INF ist INF fuer abs(x) > 1
             self.assertEqualAndEqualSign(pow_op(-INF, INF), INF)
             self.assertEqualAndEqualSign(pow_op(-2.0, INF), INF)
             self.assertEqualAndEqualSign(pow_op(2.0, INF), INF)
             self.assertEqualAndEqualSign(pow_op(INF, INF), INF)
 
-            # (-INF)**y is -0.0 fuer y a negative odd integer
+            # (-INF)**y ist -0.0 fuer y a negative odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, -1.0), -0.0)
 
-            # (-INF)**y is 0.0 fuer y negative but nicht an odd integer
+            # (-INF)**y ist 0.0 fuer y negative but nicht an odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, -0.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(-INF, -2.0), 0.0)
 
-            # (-INF)**y is -INF fuer y a positive odd integer
+            # (-INF)**y ist -INF fuer y a positive odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, 1.0), -INF)
 
-            # (-INF)**y is INF fuer y positive but nicht an odd integer
+            # (-INF)**y ist INF fuer y positive but nicht an odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, 0.5), INF)
             self.assertEqualAndEqualSign(pow_op(-INF, 2.0), INF)
 
-            # INF**y is INF fuer y positive
+            # INF**y ist INF fuer y positive
             self.assertEqualAndEqualSign(pow_op(INF, 0.5), INF)
             self.assertEqualAndEqualSign(pow_op(INF, 1.0), INF)
             self.assertEqualAndEqualSign(pow_op(INF, 2.0), INF)
 
-            # INF**y is 0.0 fuer y negative
+            # INF**y ist 0.0 fuer y negative
             self.assertEqualAndEqualSign(pow_op(INF, -2.0), 0.0)
             self.assertEqualAndEqualSign(pow_op(INF, -1.0), 0.0)
             self.assertEqualAndEqualSign(pow_op(INF, -0.5), 0.0)
@@ -622,7 +622,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             # check we don't wirf an exception fuer subnormal results,
             # und validate signs.  Tests currently disabled, since
             # they fail on systems where a subnormal result von pow
-            # is flushed to zero (e.g. Debian/ia64.)
+            # ist flushed to zero (e.g. Debian/ia64.)
             #self.assertWahr(0.0 < pow_op(0.5, 1048) < 1e-315)
             #self.assertWahr(0.0 < pow_op(-0.5, 1048) < 1e-315)
             #self.assertWahr(0.0 < pow_op(0.5, 1047) < 1e-315)
@@ -673,9 +673,9 @@ LE_FLOAT_INF = bytes(reversed(BE_FLOAT_INF))
 BE_FLOAT_NAN = b'\x7f\xc0\x00\x00'
 LE_FLOAT_NAN = bytes(reversed(BE_FLOAT_NAN))
 
-# on an IEEE platform, all we guarantee is that bit patterns
+# on an IEEE platform, all we guarantee ist that bit patterns
 # representing infinities oder NaNs do nicht wirf an exception; all sonst
-# is accident (today).
+# ist accident (today).
 # let's also try to guarantee that -0.0 und 0.0 don't get confused.
 
 klasse IEEEFormatTestCase(unittest.TestCase):
@@ -697,7 +697,7 @@ klasse IEEEFormatTestCase(unittest.TestCase):
             struct.unpack(fmt, data)
 
     @support.requires_IEEE_754
-    @unittest.skipIf(_testcapi is Nichts, 'needs _testcapi')
+    @unittest.skipIf(_testcapi ist Nichts, 'needs _testcapi')
     def test_serialized_float_rounding(self):
         FLT_MAX = _testcapi.FLT_MAX
         self.assertEqual(struct.pack("<f", 3.40282356e38), struct.pack("<f", FLT_MAX))
@@ -711,7 +711,7 @@ klasse FormatTestCase(unittest.TestCase):
 
         self.assertEqual(format(0.0, 'f'), '0.000000')
 
-        # the default is 'g', ausser fuer empty format spec
+        # the default ist 'g', ausser fuer empty format spec
         self.assertEqual(format(0.0, ''), '0.0')
         self.assertEqual(format(0.01, ''), '0.01')
         self.assertEqual(format(0.01, 'g'), '0.01')
@@ -856,7 +856,7 @@ klasse ReprTestCase(unittest.TestCase):
                          "applies only when using short float repr style")
     def test_short_repr(self):
         # test short float repr introduced in Python 3.1.  One aspect
-        # of this repr is that we get some degree of str -> float ->
+        # of this repr ist that we get some degree of str -> float ->
         # str roundtripping.  In particular, fuer any numeric string
         # containing 15 oder fewer significant digits, those exact same
         # digits (modulo trailing zeros) should appear in the output.
@@ -1203,7 +1203,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
             '0x\uff11p0',
             '0x1.\uff10p0',
             '0x1p0 \n 0x2p0',
-            '0x1p0\0 0x1p0',  # embedded null byte is nicht end of string
+            '0x1p0\0 0x1p0',  # embedded null byte ist nicht end of string
             ]
         fuer x in invalid_inputs:
             versuch:
@@ -1397,7 +1397,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
         self.identical(fromHex('-0x1.1p-1075'), -TINY)
         self.identical(fromHex('0x1.fffffffffffffffffp-1075'), TINY)
 
-        # check round-half-even is working correctly near 0 ...
+        # check round-half-even ist working correctly near 0 ...
         self.identical(fromHex('0x1p-1076'), 0.0)
         self.identical(fromHex('0X2p-1076'), 0.0)
         self.identical(fromHex('0X3p-1076'), TINY)

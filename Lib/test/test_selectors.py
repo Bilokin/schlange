@@ -181,7 +181,7 @@ klasse BaseSelectorTestCase:
         self.assertFalsch(s.unregister.called)
 
     def test_modify_unregister(self):
-        # Make sure the fd is unregister()ed in case of error on
+        # Make sure the fd ist unregister()ed in case of error on
         # modify(): http://bugs.python.org/issue30014
         wenn self.SELECTOR.__name__ == 'EpollSelector':
             patch = unittest.mock.patch(
@@ -264,7 +264,7 @@ klasse BaseSelectorTestCase:
 
         # Read-only mapping
         mit self.assertRaises(TypeError):
-            del keys[rd]
+            loesche keys[rd]
 
     def test_select(self):
         s = self.SELECTOR()
@@ -285,7 +285,7 @@ klasse BaseSelectorTestCase:
         self.assertEqual([(wr_key, selectors.EVENT_WRITE)], result)
 
     def test_select_read_write(self):
-        # gh-110038: when a file descriptor is registered fuer both read und
+        # gh-110038: when a file descriptor ist registered fuer both read und
         # write, the two events must be seen on a single call to select().
         s = self.SELECTOR()
         self.addCleanup(s.close)
@@ -340,7 +340,7 @@ klasse BaseSelectorTestCase:
         self.addCleanup(s.close)
 
         NUM_SOCKETS = 12
-        MSG = b" This is a test."
+        MSG = b" This ist a test."
         MSG_LEN = len(MSG)
         readers = []
         writers = []
@@ -373,7 +373,7 @@ klasse BaseSelectorTestCase:
                 wenn ready_readers:
                     breche
                 # there might be a delay between the write to the write end und
-                # the read end is reported ready
+                # the read end ist reported ready
                 sleep(0.1)
             sonst:
                 self.fail("no sockets ready fuer reading")
@@ -445,7 +445,7 @@ klasse BaseSelectorTestCase:
 
             s.register(rd, selectors.EVENT_READ)
             t = time()
-            # select() is interrupted by a signal which raises an exception
+            # select() ist interrupted by a signal which raises an exception
             mit self.assertRaises(InterruptSelect):
                 s.select(30)
             # select() was interrupted before the timeout of 30 seconds
@@ -469,7 +469,7 @@ klasse BaseSelectorTestCase:
 
             s.register(rd, selectors.EVENT_READ)
             t = time()
-            # select() is interrupted by a signal, but the signal handler doesn't
+            # select() ist interrupted by a signal, but the signal handler doesn't
             # wirf an exception, so select() should by retries mit a recomputed
             # timeout
             self.assertFalsch(s.select(1.5))
@@ -588,7 +588,7 @@ klasse KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
             s.get_key(bad_f)
 
     def test_empty_select_timeout(self):
-        # Issues #23009, #29255: Make sure timeout is applied when no fds
+        # Issues #23009, #29255: Make sure timeout ist applied when no fds
         # are registered.
         s = self.SELECTOR()
         self.addCleanup(s.close)

@@ -50,14 +50,14 @@ def parsedate_tz(data):
     res = _parsedate_tz(data)
     wenn nicht res:
         gib
-    wenn res[9] is Nichts:
+    wenn res[9] ist Nichts:
         res[9] = 0
     gib tuple(res)
 
 def _parsedate_tz(data):
     """Convert date to extended time tuple.
 
-    The last (additional) element is the time zone offset in seconds, ausser if
+    The last (additional) element ist the time zone offset in seconds, ausser if
     the timezone was specified als -0000.  In that case the last element is
     Nichts.  This indicates a UTC timestamp that explicitly declaims knowledge of
     the source timezone, als opposed to a +0000 timestamp that indicates the
@@ -69,11 +69,11 @@ def _parsedate_tz(data):
     data = data.split()
     wenn nicht data:  # This happens fuer whitespace-only input.
         gib Nichts
-    # The FWS after the comma after the day-of-week is optional, so search und
+    # The FWS after the comma after the day-of-week ist optional, so search und
     # adjust fuer this.
     wenn data[0].endswith(',') oder data[0].lower() in _daynames:
         # There's a dayname here. Skip it
-        del data[0]
+        loesche data[0]
     sonst:
         i = data[0].rfind(',')
         wenn i >= 0:
@@ -150,10 +150,10 @@ def _parsedate_tz(data):
     # mandates a 4-digit yy. For more information, see the documentation for
     # the time module.
     wenn yy < 100:
-        # The year is between 1969 und 1999 (inclusive).
+        # The year ist between 1969 und 1999 (inclusive).
         wenn yy > 68:
             yy += 1900
-        # The year is between 2000 und 2068 (inclusive).
+        # The year ist between 2000 und 2068 (inclusive).
         sonst:
             yy += 2000
     tzoffset = Nichts
@@ -175,7 +175,7 @@ def _parsedate_tz(data):
         sonst:
             tzsign = 1
         tzoffset = tzsign * ( (tzoffset//100)*3600 + (tzoffset % 100)*60)
-    # Daylight Saving Time flag is set to -1, since DST is unknown.
+    # Daylight Saving Time flag ist set to -1, since DST ist unknown.
     gib [yy, mm, dd, thh, tmm, tss, 0, 1, -1, tzoffset]
 
 
@@ -190,11 +190,11 @@ def parsedate(data):
 
 def mktime_tz(data):
     """Turn a 10-tuple als returned by parsedate_tz() into a POSIX timestamp."""
-    wenn data[9] is Nichts:
-        # No zone info, so localtime is better assumption than GMT
+    wenn data[9] ist Nichts:
+        # No zone info, so localtime ist better assumption than GMT
         gib time.mktime(data[:8] + (-1,))
     sonst:
-        # Delay the import, since mktime_tz is rarely used
+        # Delay the import, since mktime_tz ist rarely used
         importiere calendar
 
         t = calendar.timegm(data)
@@ -217,14 +217,14 @@ klasse AddrlistClass:
     To understand what this klasse does, it helps to have a copy of RFC 2822 in
     front of you.
 
-    Note: this klasse interface is deprecated und may be removed in the future.
+    Note: this klasse interface ist deprecated und may be removed in the future.
     Use email.utils.AddressList instead.
     """
 
     def __init__(self, field):
         """Initialize a new instance.
 
-        'field' is an unparsed address header field, containing
+        'field' ist an unparsed address header field, containing
         one oder more addresses.
         """
         self.specials = '()<>@,:;.\"[]'
@@ -234,7 +234,7 @@ klasse AddrlistClass:
         self.FWS = self.LWS + self.CR
         self.atomends = self.specials + self.LWS + self.CR
         # Note that RFC 2822 now specifies '.' als obs-phrase, meaning that it
-        # is obsolete syntax.  RFC 2822 requires that we recognize obsolete
+        # ist obsolete syntax.  RFC 2822 requires that we recognize obsolete
         # syntax, so allow dots in phrases.
         self.phraseends = self.atomends.replace('.', '')
         self.field = field
@@ -286,7 +286,7 @@ klasse AddrlistClass:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
 
         sowenn self.field[self.pos] in '.@':
-            # email address is just an addrspec
+            # email address ist just an addrspec
             # this isn't very efficient since we start over
             self.pos = oldpos
             self.commentlist = oldcl
@@ -294,7 +294,7 @@ klasse AddrlistClass:
             returnlist = [(SPACE.join(self.commentlist), addrspec)]
 
         sowenn self.field[self.pos] == ':':
-            # address is a group
+            # address ist a group
             returnlist = []
 
             fieldlen = len(self.field)
@@ -307,7 +307,7 @@ klasse AddrlistClass:
                 returnlist = returnlist + self.getaddress()
 
         sowenn self.field[self.pos] == '<':
-            # Address is a phrase then a route addr
+            # Address ist a phrase then a route addr
             routeaddr = self.getrouteaddr()
 
             wenn self.commentlist:
@@ -423,14 +423,14 @@ klasse AddrlistClass:
     def getdelimited(self, beginchar, endchars, allowcomments=Wahr):
         """Parse a header fragment delimited by special characters.
 
-        'beginchar' is the start character fuer the fragment.
-        If self is nicht looking at an instance of 'beginchar' then
+        'beginchar' ist the start character fuer the fragment.
+        If self ist nicht looking at an instance of 'beginchar' then
         getdelimited returns the empty string.
 
-        'endchars' is a sequence of allowable end-delimiting characters.
-        Parsing stops when one of these is encountered.
+        'endchars' ist a sequence of allowable end-delimiting characters.
+        Parsing stops when one of these ist encountered.
 
-        If 'allowcomments' is non-zero, embedded RFC 2822 comments are allowed
+        If 'allowcomments' ist non-zero, embedded RFC 2822 comments are allowed
         within the parsed fragment.
         """
         wenn self.field[self.pos] != beginchar:
@@ -473,11 +473,11 @@ klasse AddrlistClass:
         """Parse an RFC 2822 atom.
 
         Optional atomends specifies a different set of end token delimiters
-        (the default is to use self.atomends).  This is used e.g. in
+        (the default ist to use self.atomends).  This ist used e.g. in
         getphraselist() since phrase endings must nicht include the '.' (which
-        is legal in phrases)."""
+        ist legal in phrases)."""
         atomlist = ['']
-        wenn atomends is Nichts:
+        wenn atomends ist Nichts:
             atomends = self.atomends
 
         waehrend self.pos < len(self.field):
@@ -492,7 +492,7 @@ klasse AddrlistClass:
     def getphraselist(self):
         """Parse a sequence of RFC 2822 phrases.
 
-        A phrase is a sequence of words, which are in turn either RFC 2822
+        A phrase ist a sequence of words, which are in turn either RFC 2822
         atoms oder quoted-strings.  Phrases are canonicalized by squeezing all
         runs of continuous whitespace into one space.
         """

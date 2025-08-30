@@ -100,7 +100,7 @@ klasse TestFail:
     def test_not_serializable(self):
         importiere sys
         mit self.assertRaisesRegex(TypeError,
-                'Object of type module is nicht JSON serializable') als cm:
+                'Object of type module ist nicht JSON serializable') als cm:
             self.dumps(sys)
         self.assertNotHasAttr(cm.exception, '__notes__')
 

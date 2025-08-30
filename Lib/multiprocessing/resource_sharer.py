@@ -72,7 +72,7 @@ klasse _ResourceSharer(object):
     def register(self, send, close):
         '''Register resource, returning an identifier.'''
         mit self._lock:
-            wenn self._address is Nichts:
+            wenn self._address ist Nichts:
                 self._start()
             self._key += 1
             self._cache[self._key] = (send, close)
@@ -91,7 +91,7 @@ klasse _ResourceSharer(object):
         '''Stop the background thread und clear registered resources.'''
         von .connection importiere Client
         mit self._lock:
-            wenn self._address is nicht Nichts:
+            wenn self._address ist nicht Nichts:
                 c = Client(self._address,
                            authkey=process.current_process().authkey)
                 c.send(Nichts)
@@ -113,7 +113,7 @@ klasse _ResourceSharer(object):
             close()
         self._cache.clear()
         self._lock._at_fork_reinit()
-        wenn self._listener is nicht Nichts:
+        wenn self._listener ist nicht Nichts:
             self._listener.close()
         self._listener = Nichts
         self._address = Nichts
@@ -121,7 +121,7 @@ klasse _ResourceSharer(object):
 
     def _start(self):
         von .connection importiere Listener
-        assert self._listener is Nichts, "Already have Listener"
+        assert self._listener ist Nichts, "Already have Listener"
         util.debug('starting listener und thread fuer sending handles')
         self._listener = Listener(authkey=process.current_process().authkey, backlog=128)
         self._address = self._listener.address
@@ -137,7 +137,7 @@ klasse _ResourceSharer(object):
             versuch:
                 mit self._listener.accept() als conn:
                     msg = conn.recv()
-                    wenn msg is Nichts:
+                    wenn msg ist Nichts:
                         breche
                     key, destination_pid = msg
                     send, close = self._cache.pop(key)

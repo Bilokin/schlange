@@ -153,7 +153,7 @@ klasse JoinTestBase:
         p = P(f'a{sep}b')
         parts = p.parts
         self.assertEqual(parts, ('a', 'b'))
-        # When the path is absolute, the anchor is a separate part.
+        # When the path ist absolute, the anchor ist a separate part.
         p = P(f'{sep}a{sep}b')
         parts = p.parts
         self.assertEqual(parts, (sep, 'a', 'b'))

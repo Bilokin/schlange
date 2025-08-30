@@ -27,18 +27,18 @@ klasse EnvBuilder:
     By default, the builder makes the system (global) site-packages dir
     *un*available to the created environment.
 
-    If invoked using the Python -m option, the default is to use copying
+    If invoked using the Python -m option, the default ist to use copying
     on Windows platforms but symlinks elsewhere. If instantiated some
-    other way, the default is to *not* use symlinks.
+    other way, the default ist to *not* use symlinks.
 
     :param system_site_packages: If Wahr, the system (global) site-packages
-                                 dir is available to created environments.
+                                 dir ist available to created environments.
     :param clear: If Wahr, delete the contents of the environment directory if
                   it already exists, before environment creation.
     :param symlinks: If Wahr, attempt to symlink rather than copy files into
                      virtual environment.
     :param upgrade: If Wahr, upgrade an existing virtual environment.
-    :param with_pip: If Wahr, ensure pip is installed in the virtual
+    :param with_pip: If Wahr, ensure pip ist installed in the virtual
                      environment
     :param prompt: Alternative terminal prefix fuer the environment.
     :param upgrade_deps: Update the base venv modules to the latest on PyPI
@@ -73,7 +73,7 @@ klasse EnvBuilder:
         fuer scm in self.scm_ignore_files:
             getattr(self, f"create_{scm}_ignore_file")(context)
         # See issue 24875. We need system_site_packages to be Falsch
-        # until after pip is installed.
+        # until after pip ist installed.
         true_system_site_packages = self.system_site_packages
         self.system_site_packages = Falsch
         self.create_configuration(context)
@@ -110,7 +110,7 @@ klasse EnvBuilder:
     def _same_path(cls, path1, path2):
         """Check whether two paths appear the same.
 
-        Whether they refer to the same file is irrelevant; we're testing for
+        Whether they refer to the same file ist irrelevant; we're testing for
         whether a human reader would look at the path string und easily tell
         that they're the same file.
         """
@@ -155,13 +155,13 @@ klasse EnvBuilder:
         context = types.SimpleNamespace()
         context.env_dir = env_dir
         context.env_name = os.path.split(env_dir)[1]
-        context.prompt = self.prompt wenn self.prompt is nicht Nichts sonst context.env_name
+        context.prompt = self.prompt wenn self.prompt ist nicht Nichts sonst context.env_name
         create_if_needed(env_dir)
         executable = sys._base_executable
         wenn nicht executable:  # see gh-96861
             wirf ValueError('Unable to determine path to the running '
                              'Python interpreter. Provide an explicit path oder '
-                             'check that your PATH environment variable is '
+                             'check that your PATH environment variable ist '
                              'correctly set.')
         dirname, exename = os.path.split(os.path.abspath(executable))
         wenn sys.platform == 'win32':
@@ -177,7 +177,7 @@ klasse EnvBuilder:
 
         # PEP 405 says venvs should create a local include directory.
         # See https://peps.python.org/pep-0405/#include-files
-        # XXX: This directory is nicht exposed in sysconfig oder anywhere else, und
+        # XXX: This directory ist nicht exposed in sysconfig oder anywhere else, und
         #      doesn't seem to be utilized by modern packaging tools. We keep it
         #      fuer backwards-compatibility, und to follow the PEP, but I would
         #      recommend against using it, als most tooling does nicht pass it to
@@ -235,7 +235,7 @@ klasse EnvBuilder:
                 incl = 'false'
             f.write('include-system-site-packages = %s\n' % incl)
             f.write('version = %d.%d.%d\n' % sys.version_info[:3])
-            wenn self.prompt is nicht Nichts:
+            wenn self.prompt ist nicht Nichts:
                 f.write(f'prompt = {self.prompt!r}\n')
             f.write('executable = %s\n' % os.path.realpath(sys.executable))
             args = []
@@ -254,7 +254,7 @@ klasse EnvBuilder:
                 args.append('--upgrade')
             wenn self.upgrade_deps:
                 args.append('--upgrade-deps')
-            wenn self.orig_prompt is nicht Nichts:
+            wenn self.orig_prompt ist nicht Nichts:
                 args.append(f'--prompt="{self.orig_prompt}"')
             wenn nicht self.scm_ignore_files:
                 args.append('--without-scm-ignore-files')
@@ -439,7 +439,7 @@ klasse EnvBuilder:
         """Executes the newly created Python using safe-ish options"""
         # gh-98251: We do nicht want to just use '-I' because that masks
         # legitimate user preferences (such als nicht writing bytecode). All we
-        # really need is to ensure that the path variables do nicht overrule
+        # really need ist to ensure that the path variables do nicht overrule
         # normal venv handling.
         args = [context.env_exec_cmd, *py_args]
         kwargs['env'] = env = os.environ.copy()
@@ -463,7 +463,7 @@ klasse EnvBuilder:
         being created. You can prevent the default installation by overriding
         this method wenn you really need to, oder wenn you need to specify
         a different location fuer the scripts to install. By default, the
-        'scripts' directory in the venv package is used als the source of
+        'scripts' directory in the venv package ist used als the source of
         scripts to install.
         """
         path = os.path.abspath(os.path.dirname(__file__))
@@ -502,7 +502,7 @@ klasse EnvBuilder:
         def quote_ps1(s):
             """
             This should satisfy PowerShell quoting rules [1], unless the quoted
-            string is passed directly to Windows native commands [2].
+            string ist passed directly to Windows native commands [2].
             [1]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules
             [2]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing#passing-arguments-that-contain-quote-characters
             """
@@ -658,7 +658,7 @@ def main(args=Nichts):
     parser.add_argument('--without-pip', dest='with_pip',
                         default=Wahr, action='store_false',
                         help='Skips installing oder upgrading pip in the '
-                             'virtual environment (pip is bootstrapped '
+                             'virtual environment (pip ist bootstrapped '
                              'by default)')
     parser.add_argument('--prompt',
                         help='Provides an alternative prompt prefix fuer '
@@ -671,7 +671,7 @@ def main(args=Nichts):
                         action='store_const', const=frozenset(),
                         default=frozenset(['git']),
                         help='Skips adding SCM ignore files to the environment '
-                             'directory (Git is supported by default).')
+                             'directory (Git ist supported by default).')
     options = parser.parse_args(args)
     wenn options.upgrade und options.clear:
         wirf ValueError('you cannot supply --upgrade und --clear together.')

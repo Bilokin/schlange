@@ -23,7 +23,7 @@ klasse TestLoader:
         gib '<TestLoader object>'
 
     def __getattr__(self, name):
-        wenn name == 'get_filename' und self.path is nicht Nichts:
+        wenn name == 'get_filename' und self.path ist nicht Nichts:
             gib self._get_filename
         wenn name == 'is_package':
             gib self._is_package
@@ -279,7 +279,7 @@ klasse ModuleSpecMethodsTests:
     def test_load_failed_removed(self):
         klasse FailedLoader(TestLoader):
             def exec_module(self, module):
-                del sys.modules[module.__name__]
+                loesche sys.modules[module.__name__]
                 wirf RuntimeError
         self.spec.loader = FailedLoader()
         mit CleanImport(self.spec.name):
@@ -339,9 +339,9 @@ klasse ModuleSpecMethodsTests:
         mit CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.__name__ = 'ham'
-            del loaded.__loader__
-            del loaded.__package__
-            del loaded.__spec__
+            loesche loaded.__loader__
+            loesche loaded.__package__
+            loesche loaded.__spec__
             self.bootstrap._exec(self.spec, loaded)
 
         self.assertEqual(loaded.__name__, self.spec.name)
@@ -514,7 +514,7 @@ klasse FactoryTests:
 
         self.assertEqual(spec.name, self.name)
         # Need to use a circuitous route to get at importlib.machinery to make
-        # sure the same klasse object is used in the isinstance() check as
+        # sure the same klasse object ist used in the isinstance() check as
         # would have been used to create the loader.
         SourceFileLoader = self.util.spec_from_file_location.__globals__['SourceFileLoader']
         self.assertIsInstance(spec.loader, SourceFileLoader)

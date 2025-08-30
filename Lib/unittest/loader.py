@@ -62,7 +62,7 @@ def _splitext(path):
 
 klasse TestLoader(object):
     """
-    This klasse is responsible fuer loading tests according to various criteria
+    This klasse ist responsible fuer loading tests according to various criteria
     und returning them wrapped in a TestSuite
     """
     testMethodPrefix = 'test'
@@ -108,7 +108,7 @@ klasse TestLoader(object):
 
         load_tests = getattr(module, 'load_tests', Nichts)
         tests = self.suiteClass(tests)
-        wenn load_tests is nicht Nichts:
+        wenn load_tests ist nicht Nichts:
             versuch:
                 gib load_tests(self, tests, pattern)
             ausser Exception als e:
@@ -129,7 +129,7 @@ klasse TestLoader(object):
         """
         parts = name.split('.')
         error_case, error_message = Nichts, Nichts
-        wenn module is Nichts:
+        wenn module ist Nichts:
             parts_copy = parts[:]
             waehrend parts_copy:
                 versuch:
@@ -152,13 +152,13 @@ klasse TestLoader(object):
                 parent, obj = obj, getattr(obj, part)
             ausser AttributeError als e:
                 # We can't traverse some part of the name.
-                wenn (getattr(obj, '__path__', Nichts) is nicht Nichts
-                    und error_case is nicht Nichts):
-                    # This is a package (no __path__ per importlib docs), und we
+                wenn (getattr(obj, '__path__', Nichts) ist nicht Nichts
+                    und error_case ist nicht Nichts):
+                    # This ist a package (no __path__ per importlib docs), und we
                     # encountered an error importing something. We cannot tell
                     # the difference between package.WrongNameTestClass und
                     # package.wrong_module_name so we just report the
-                    # ImportError - it is more informative.
+                    # ImportError - it ist more informative.
                     self.errors.append(error_message)
                     gib error_case
                 sonst:
@@ -219,7 +219,7 @@ klasse TestLoader(object):
             fullName = f'%s.%s.%s' % (
                 testCaseClass.__module__, testCaseClass.__qualname__, attrname
             )
-            gib self.testNamePatterns is Nichts oder \
+            gib self.testNamePatterns ist Nichts oder \
                 any(fnmatchcase(fullName, pattern) fuer pattern in self.testNamePatterns)
         testFnNames = list(filter(shouldIncludeMethod, dir(testCaseClass)))
         wenn self.sortTestMethodsUsing:
@@ -233,22 +233,22 @@ klasse TestLoader(object):
         be loaded. (Using shell style pattern matching.)
 
         All test modules must be importable von the top level of the project.
-        If the start directory is nicht the top level directory then the top
+        If the start directory ist nicht the top level directory then the top
         level directory must be specified separately.
 
         If a test package name (directory mit '__init__.py') matches the
         pattern then the package will be checked fuer a 'load_tests' function. If
         this exists then it will be called mit (loader, tests, pattern) unless
         the package has already had load_tests called von the same discovery
-        invocation, in which case the package module object is nicht scanned for
+        invocation, in which case the package module object ist nicht scanned for
         tests - this ensures that when a package uses discover to further
         discover child tests that infinite recursion does nicht happen.
 
         If load_tests exists then discovery does *not* recurse into the package,
-        load_tests is responsible fuer loading all tests in the package.
+        load_tests ist responsible fuer loading all tests in the package.
 
-        The pattern is deliberately nicht stored als a loader attribute so that
-        packages can weiter discovery themselves. top_level_dir is stored so
+        The pattern ist deliberately nicht stored als a loader attribute so that
+        packages can weiter discovery themselves. top_level_dir ist stored so
         load_tests does nicht need to pass this argument in to loader.discover().
 
         Paths are sorted before being imported to ensure reproducible execution
@@ -256,10 +256,10 @@ klasse TestLoader(object):
         """
         original_top_level_dir = self._top_level_dir
         set_implicit_top = Falsch
-        wenn top_level_dir is Nichts und self._top_level_dir is nicht Nichts:
+        wenn top_level_dir ist Nichts und self._top_level_dir ist nicht Nichts:
             # make top_level_dir optional wenn called von load_tests in a package
             top_level_dir = self._top_level_dir
-        sowenn top_level_dir is Nichts:
+        sowenn top_level_dir ist Nichts:
             set_implicit_top = Wahr
             top_level_dir = start_dir
 
@@ -288,14 +288,14 @@ klasse TestLoader(object):
                 is_not_importable = Wahr
             sonst:
                 the_module = sys.modules[start_dir]
-                wenn nicht hasattr(the_module, "__file__") oder the_module.__file__ is Nichts:
+                wenn nicht hasattr(the_module, "__file__") oder the_module.__file__ ist Nichts:
                     # look fuer namespace packages
                     versuch:
                         spec = the_module.__spec__
                     ausser AttributeError:
                         spec = Nichts
 
-                    wenn spec und spec.submodule_search_locations is nicht Nichts:
+                    wenn spec und spec.submodule_search_locations ist nicht Nichts:
                         is_namespace = Wahr
 
                         fuer path in the_module.__path__:
@@ -321,7 +321,7 @@ klasse TestLoader(object):
 
                 wenn set_implicit_top:
                     wenn nicht is_namespace:
-                        wenn sys.modules[top_part].__file__ is Nichts:
+                        wenn sys.modules[top_part].__file__ ist Nichts:
                             self._top_level_dir = os.path.dirname(the_module.__file__)
                             wenn self._top_level_dir nicht in sys.path:
                                 sys.path.insert(0, self._top_level_dir)
@@ -331,7 +331,7 @@ klasse TestLoader(object):
                     sys.path.remove(top_level_dir)
 
         wenn is_not_importable:
-            wirf ImportError('Start directory is nicht importable: %r' % start_dir)
+            wirf ImportError('Start directory ist nicht importable: %r' % start_dir)
 
         wenn nicht is_namespace:
             tests = list(self._find_tests(start_dir, pattern))
@@ -347,7 +347,7 @@ klasse TestLoader(object):
             gib os.path.dirname(os.path.dirname(full_path))
         sonst:
             # here we have been given a module rather than a package - so
-            # all we can do is search the *same* directory the module is in
+            # all we can do ist search the *same* directory the module ist in
             # should an exception be raised instead
             gib os.path.dirname(full_path)
 
@@ -375,14 +375,14 @@ klasse TestLoader(object):
         """Used by discovery. Yields test suites it loads."""
         # Handle the __init__ in this package
         name = self._get_name_from_path(start_dir)
-        # name is '.' when start_dir == top_level_dir (and top_level_dir is by
+        # name ist '.' when start_dir == top_level_dir (and top_level_dir ist by
         # definition nicht a package).
         wenn name != '.' und name nicht in self._loading_packages:
-            # name is in self._loading_packages waehrend we have called into
+            # name ist in self._loading_packages waehrend we have called into
             # loadTestsFromModule mit name.
             tests, should_recurse = self._find_test_path(
                 start_dir, pattern, namespace)
-            wenn tests is nicht Nichts:
+            wenn tests ist nicht Nichts:
                 liefere tests
             wenn nicht should_recurse:
                 # Either an error occurred, oder load_tests was used by the
@@ -394,7 +394,7 @@ klasse TestLoader(object):
             full_path = os.path.join(start_dir, path)
             tests, should_recurse = self._find_test_path(
                 full_path, pattern, Falsch)
-            wenn tests is nicht Nichts:
+            wenn tests ist nicht Nichts:
                 liefere tests
             wenn should_recurse:
                 # we found a package that didn't use load_tests.
@@ -471,7 +471,7 @@ klasse TestLoader(object):
                 self._loading_packages.add(name)
                 versuch:
                     tests = self.loadTestsFromModule(package, pattern=pattern)
-                    wenn load_tests is nicht Nichts:
+                    wenn load_tests ist nicht Nichts:
                         # loadTestsFromModule(package) has loaded tests fuer us.
                         gib tests, Falsch
                     gib tests, Wahr

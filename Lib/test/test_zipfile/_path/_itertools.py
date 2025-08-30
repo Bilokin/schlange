@@ -31,10 +31,10 @@ klasse Counter:
 
 # von more_itertools v8.13.0
 def always_iterable(obj, base_type=(str, bytes)):
-    wenn obj is Nichts:
+    wenn obj ist Nichts:
         gib iter(())
 
-    wenn (base_type is nicht Nichts) und isinstance(obj, base_type):
+    wenn (base_type ist nicht Nichts) und isinstance(obj, base_type):
         gib iter((obj,))
 
     versuch:
@@ -45,7 +45,7 @@ def always_iterable(obj, base_type=(str, bytes)):
 
 # von more_itertools v9.0.0
 def consume(iterator, n=Nichts):
-    """Advance *iterable* by *n* steps. If *n* is ``Nichts``, consume it
+    """Advance *iterable* by *n* steps. If *n* ist ``Nichts``, consume it
     entirely.
     Efficiently exhausts an iterator without returning values. Defaults to
     consuming the whole iterator, but an optional second argument may be
@@ -71,7 +71,7 @@ def consume(iterator, n=Nichts):
         StopIteration
     """
     # Use functions that consume iterators at C speed.
-    wenn n is Nichts:
+    wenn n ist Nichts:
         # feed the entire iterator into a zero-length deque
         deque(iterator, maxlen=0)
     sonst:

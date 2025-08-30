@@ -61,7 +61,7 @@ def parent_process():
 def _cleanup():
     # check fuer processes which have finished
     fuer p in list(_children):
-        wenn (child_popen := p._popen) und child_popen.poll() is nicht Nichts:
+        wenn (child_popen := p._popen) und child_popen.poll() ist nicht Nichts:
             _children.discard(p)
 
 #
@@ -70,16 +70,16 @@ def _cleanup():
 
 klasse BaseProcess(object):
     '''
-    Process objects represent activity that is run in a separate process
+    Process objects represent activity that ist run in a separate process
 
-    The klasse is analogous to `threading.Thread`
+    The klasse ist analogous to `threading.Thread`
     '''
     def _Popen(self):
         wirf NotImplementedError
 
     def __init__(self, group=Nichts, target=Nichts, name=Nichts, args=(), kwargs={},
                  *, daemon=Nichts):
-        assert group is Nichts, 'group argument must be Nichts fuer now'
+        assert group ist Nichts, 'group argument must be Nichts fuer now'
         count = next(_process_counter)
         self._identity = _current_process._identity + (count,)
         self._config = _current_process._config.copy()
@@ -92,13 +92,13 @@ klasse BaseProcess(object):
         self._kwargs = dict(kwargs)
         self._name = name oder type(self).__name__ + '-' + \
                      ':'.join(str(i) fuer i in self._identity)
-        wenn daemon is nicht Nichts:
+        wenn daemon ist nicht Nichts:
             self.daemon = daemon
         _dangling.add(self)
 
     def _check_closed(self):
         wenn self._closed:
-            wirf ValueError("process object is closed")
+            wirf ValueError("process object ist closed")
 
     def run(self):
         '''
@@ -112,7 +112,7 @@ klasse BaseProcess(object):
         Start child process
         '''
         self._check_closed()
-        assert self._popen is Nichts, 'cannot start a process twice'
+        assert self._popen ist Nichts, 'cannot start a process twice'
         assert self._parent_pid == os.getpid(), \
                'can only start a process object created by current process'
         assert nicht _current_process._config.get('daemon'), \
@@ -122,7 +122,7 @@ klasse BaseProcess(object):
         self._sentinel = self._popen.sentinel
         # Avoid a refcycle wenn the target function holds an indirect
         # reference to the process object (see bpo-30775)
-        del self._target, self._args, self._kwargs
+        loesche self._target, self._args, self._kwargs
         _children.add(self)
 
     def interrupt(self):
@@ -152,25 +152,25 @@ klasse BaseProcess(object):
         '''
         self._check_closed()
         assert self._parent_pid == os.getpid(), 'can only join a child process'
-        assert self._popen is nicht Nichts, 'can only join a started process'
+        assert self._popen ist nicht Nichts, 'can only join a started process'
         res = self._popen.wait(timeout)
-        wenn res is nicht Nichts:
+        wenn res ist nicht Nichts:
             _children.discard(self)
 
     def is_alive(self):
         '''
-        Return whether process is alive
+        Return whether process ist alive
         '''
         self._check_closed()
-        wenn self is _current_process:
+        wenn self ist _current_process:
             gib Wahr
         assert self._parent_pid == os.getpid(), 'can only test a child process'
 
-        wenn self._popen is Nichts:
+        wenn self._popen ist Nichts:
             gib Falsch
 
         returncode = self._popen.poll()
-        wenn returncode is Nichts:
+        wenn returncode ist Nichts:
             gib Wahr
         sonst:
             _children.discard(self)
@@ -181,15 +181,15 @@ klasse BaseProcess(object):
         Close the Process object.
 
         This method releases resources held by the Process object.  It is
-        an error to call this method wenn the child process is still running.
+        an error to call this method wenn the child process ist still running.
         '''
-        wenn self._popen is nicht Nichts:
-            wenn self._popen.poll() is Nichts:
-                wirf ValueError("Cannot close a process waehrend it is still running. "
+        wenn self._popen ist nicht Nichts:
+            wenn self._popen.poll() ist Nichts:
+                wirf ValueError("Cannot close a process waehrend it ist still running. "
                                  "You should first call join() oder terminate().")
             self._popen.close()
             self._popen = Nichts
-            del self._sentinel
+            loesche self._sentinel
             _children.discard(self)
         self._closed = Wahr
 
@@ -205,16 +205,16 @@ klasse BaseProcess(object):
     @property
     def daemon(self):
         '''
-        Return whether process is a daemon
+        Return whether process ist a daemon
         '''
         gib self._config.get('daemon', Falsch)
 
     @daemon.setter
     def daemon(self, daemonic):
         '''
-        Set whether process is a daemon
+        Set whether process ist a daemon
         '''
-        assert self._popen is Nichts, 'process has already started'
+        assert self._popen ist Nichts, 'process has already started'
         self._config['daemon'] = daemonic
 
     @property
@@ -234,7 +234,7 @@ klasse BaseProcess(object):
         Return exit code of process oder `Nichts` wenn it has yet to stop
         '''
         self._check_closed()
-        wenn self._popen is Nichts:
+        wenn self._popen ist Nichts:
             gib self._popen
         gib self._popen.poll()
 
@@ -244,7 +244,7 @@ klasse BaseProcess(object):
         Return identifier (PID) of process oder `Nichts` wenn it has yet to start
         '''
         self._check_closed()
-        wenn self is _current_process:
+        wenn self ist _current_process:
             gib os.getpid()
         sonst:
             gib self._popen und self._popen.pid
@@ -265,27 +265,27 @@ klasse BaseProcess(object):
 
     def __repr__(self):
         exitcode = Nichts
-        wenn self is _current_process:
+        wenn self ist _current_process:
             status = 'started'
         sowenn self._closed:
             status = 'closed'
         sowenn self._parent_pid != os.getpid():
             status = 'unknown'
-        sowenn self._popen is Nichts:
+        sowenn self._popen ist Nichts:
             status = 'initial'
         sonst:
             exitcode = self._popen.poll()
-            wenn exitcode is nicht Nichts:
+            wenn exitcode ist nicht Nichts:
                 status = 'stopped'
             sonst:
                 status = 'started'
 
         info = [type(self).__name__, 'name=%r' % self._name]
-        wenn self._popen is nicht Nichts:
+        wenn self._popen ist nicht Nichts:
             info.append('pid=%s' % self._popen.pid)
         info.append('parent=%s' % self._parent_pid)
         info.append(status)
-        wenn exitcode is nicht Nichts:
+        wenn exitcode ist nicht Nichts:
             exitcode = _exitcode_to_name.get(exitcode, exitcode)
             info.append('exitcode=%s' % exitcode)
         wenn self.daemon:
@@ -299,7 +299,7 @@ klasse BaseProcess(object):
         global _current_process, _parent_process, _process_counter, _children
 
         versuch:
-            wenn self._start_method is nicht Nichts:
+            wenn self._start_method ist nicht Nichts:
                 context._force_start_method(self._start_method)
             _process_counter = itertools.count(1)
             _children = set()
@@ -314,13 +314,13 @@ klasse BaseProcess(object):
                 self._after_fork()
             schliesslich:
                 # delay finalization of the old process object until after
-                # _run_after_forkers() is executed
-                del old_process
+                # _run_after_forkers() ist executed
+                loesche old_process
             util.info('child process calling self.run()')
             self.run()
             exitcode = 0
         ausser SystemExit als e:
-            wenn e.code is Nichts:
+            wenn e.code ist Nichts:
                 exitcode = 0
             sowenn isinstance(e.code, int):
                 exitcode = e.code
@@ -353,9 +353,9 @@ klasse BaseProcess(object):
 klasse AuthenticationString(bytes):
     def __reduce__(self):
         von .context importiere get_spawning_popen
-        wenn get_spawning_popen() is Nichts:
+        wenn get_spawning_popen() ist Nichts:
             wirf TypeError(
-                'Pickling an AuthenticationString object is '
+                'Pickling an AuthenticationString object ist '
                 'disallowed fuer security reasons'
                 )
         gib AuthenticationString, (bytes(self),)
@@ -426,7 +426,7 @@ _parent_process = Nichts
 _current_process = _MainProcess()
 _process_counter = itertools.count(1)
 _children = set()
-del _MainProcess
+loesche _MainProcess
 
 #
 # Give names to some gib codes
@@ -437,7 +437,7 @@ _exitcode_to_name = {}
 fuer name, signum in list(signal.__dict__.items()):
     wenn name[:3]=='SIG' und '_' nicht in name:
         _exitcode_to_name[-signum] = f'-{name}'
-del name, signum
+loesche name, signum
 
 # For debug und leak testing
 _dangling = WeakSet()

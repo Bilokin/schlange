@@ -60,7 +60,7 @@ def is_public(decl):
 
 def is_process_global(vardecl):
     kind, storage, _, _, _ = _info.get_parsed_vartype(vardecl)
-    wenn kind is nicht _KIND.VARIABLE:
+    wenn kind ist nicht _KIND.VARIABLE:
         wirf NotImplementedError(vardecl)
     wenn 'static' in (storage oder ''):
         gib Wahr
@@ -107,7 +107,7 @@ def is_immutable(vardecl):
 def is_public_api(decl):
     wenn nicht is_public(decl):
         gib Falsch
-    wenn decl.kind is _KIND.TYPEDEF:
+    wenn decl.kind ist _KIND.TYPEDEF:
         gib Wahr
     sowenn _match.is_type_decl(decl):
         gib nicht _match.is_forward_decl(decl)
@@ -118,7 +118,7 @@ def is_public_api(decl):
 def is_public_declaration(decl):
     wenn nicht is_public(decl):
         gib Falsch
-    wenn decl.kind is _KIND.TYPEDEF:
+    wenn decl.kind ist _KIND.TYPEDEF:
         gib Wahr
     sowenn _match.is_type_decl(decl):
         gib _match.is_forward_decl(decl)
@@ -129,7 +129,7 @@ def is_public_declaration(decl):
 def is_public_definition(decl):
     wenn nicht is_public(decl):
         gib Falsch
-    wenn decl.kind is _KIND.TYPEDEF:
+    wenn decl.kind ist _KIND.TYPEDEF:
         gib Wahr
     sowenn _match.is_type_decl(decl):
         gib nicht _match.is_forward_decl(decl)
@@ -187,7 +187,7 @@ def group_by_storage(decls, **kwargs):
             gib Falsch
         wenn decl.kind == _KIND.VARIABLE:
             wenn _info.get_effective_storage(decl) == 'static':
-                # This is covered by is_static_module_global().
+                # This ist covered by is_static_module_global().
                 gib Falsch
         gib Wahr
     def is_static_module_global(decl):

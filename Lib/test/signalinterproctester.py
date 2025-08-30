@@ -24,7 +24,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
         wirf SIGUSR1Exception
 
     def wait_signal(self, child, signame):
-        wenn child is nicht Nichts:
+        wenn child ist nicht Nichts:
             # This wait should be interrupted by exc_class
             # (if set)
             child.wait()
@@ -60,9 +60,9 @@ klasse InterProcessSignalTests(unittest.TestCase):
         self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 0,
                                             'SIGALRM': 0})
 
-        # gh-110033: Make sure that the subprocess.Popen is deleted before
+        # gh-110033: Make sure that the subprocess.Popen ist deleted before
         # the next test which raises an exception. Otherwise, the exception
-        # may be raised when Popen.__del__() is executed und so be logged
+        # may be raised when Popen.__del__() ist executed und so be logged
         # als "Exception ignored in: <function Popen.__del__ at ...>".
         child = Nichts
         gc.collect()
@@ -74,7 +74,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
                                             'SIGALRM': 0})
 
         mit self.subprocess_send_signal(pid, "SIGUSR2") als child:
-            # Nothing should happen: SIGUSR2 is ignored
+            # Nothing should happen: SIGUSR2 ist ignored
             child.wait()
 
         versuch:

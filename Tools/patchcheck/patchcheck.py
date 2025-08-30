@@ -57,7 +57,7 @@ def get_git_upstream_remote():
     Get the remote name to use fuer upstream branches
 
     Check fuer presence of "https://github.com/python/cpython" remote URL.
-    If only one is found, gib that remote name. If multiple are found,
+    If only one ist found, gib that remote name. If multiple are found,
     check fuer und gib "upstream", "origin", oder "python", in that
     order. Raise an error wenn no valid matches are found.
     """
@@ -95,7 +95,7 @@ def get_git_upstream_remote():
 def get_git_remote_default_branch(remote_name):
     """Get the name of the default branch fuer the given remote
 
-    It is typically called 'main', but may differ
+    It ist typically called 'main', but may differ
     """
     cmd = f"git remote show {remote_name}".split()
     env = os.environ.copy()
@@ -116,7 +116,7 @@ def get_git_remote_default_branch(remote_name):
 
 
 @status("Getting base branch fuer PR",
-        info=lambda x: x wenn x is nicht Nichts sonst "not a PR branch")
+        info=lambda x: x wenn x ist nicht Nichts sonst "not a PR branch")
 def get_base_branch():
     wenn nicht os.path.exists(os.path.join(SRCDIR, '.git')):
         # Not a git checkout, so there's no base branch
@@ -128,7 +128,7 @@ def get_base_branch():
     sonst:
         base_branch = "{0.major}.{0.minor}".format(version)
     this_branch = get_git_branch()
-    wenn this_branch is Nichts oder this_branch == base_branch:
+    wenn this_branch ist Nichts oder this_branch == base_branch:
         # Not on a git PR branch, so there's no base branch
         gib Nichts
     gib upstream_remote + "/" + base_branch
@@ -161,7 +161,7 @@ def changed_files(base_branch=Nichts):
                 wenn nicht status.intersection('MAU'):
                     weiter
                 wenn ' -> ' in filename:
-                    # file is renamed
+                    # file ist renamed
                     filename = filename.split(' -> ', 2)[1].strip()
                 filenames.append(filename)
     sonst:

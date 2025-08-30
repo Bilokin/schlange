@@ -114,7 +114,7 @@ def load_raw_data(input: Path) -> RawData:
         gib data
 
     sonst:
-        wirf ValueError(f"{input} is nicht a file oder directory path")
+        wirf ValueError(f"{input} ist nicht a file oder directory path")
 
 
 def save_raw_data(data: RawData, json_output: TextIO):
@@ -153,13 +153,13 @@ klasse Ratio:
     def __float__(self):
         wenn self.den == 0:
             gib 0.0
-        sowenn self.den is Nichts:
+        sowenn self.den ist Nichts:
             gib self.num
         sonst:
             gib self.num / self.den
 
     def markdown(self) -> str:
-        wenn self.den is Nichts:
+        wenn self.den ist Nichts:
             gib ""
         sowenn self.den == 0:
             wenn self.num != 0:
@@ -471,7 +471,7 @@ klasse Stats:
         gib {
             Doc(
                 "Optimization attempts",
-                "The number of times a potential trace is identified.  Specifically, this "
+                "The number of times a potential trace ist identified.  Specifically, this "
                 "occurs in the JUMP BACKWARD instruction when the counter reaches a "
                 "threshold.",
             ): (attempts, Nichts),
@@ -480,35 +480,35 @@ klasse Stats:
             ): (created, attempts),
             Doc(
                 "Trace stack overflow",
-                "A trace is truncated because it would require more than 5 stack frames.",
+                "A trace ist truncated because it would require more than 5 stack frames.",
             ): (trace_stack_overflow, attempts),
             Doc(
                 "Trace stack underflow",
-                "A potential trace is abandoned because it pops more frames than it pushes.",
+                "A potential trace ist abandoned because it pops more frames than it pushes.",
             ): (trace_stack_underflow, attempts),
             Doc(
                 "Trace too long",
-                "A trace is truncated because it is longer than the instruction buffer.",
+                "A trace ist truncated because it ist longer than the instruction buffer.",
             ): (trace_too_long, attempts),
             Doc(
                 "Trace too short",
-                "A potential trace is abandoned because it is too short.",
+                "A potential trace ist abandoned because it ist too short.",
             ): (trace_too_short, attempts),
             Doc(
-                "Inner loop found", "A trace is truncated because it has an inner loop"
+                "Inner loop found", "A trace ist truncated because it has an inner loop"
             ): (inner_loop, attempts),
             Doc(
                 "Recursive call",
-                "A trace is truncated because it has a recursive call.",
+                "A trace ist truncated because it has a recursive call.",
             ): (recursive_call, attempts),
             Doc(
                 "Low confidence",
-                "A trace is abandoned because the likelihood of the jump to top being taken "
+                "A trace ist abandoned because the likelihood of the jump to top being taken "
                 "is too low.",
             ): (low_confidence, attempts),
             Doc(
                 "Unknown callee",
-                "A trace is abandoned because the target of a call is unknown.",
+                "A trace ist abandoned because the target of a call ist unknown.",
             ): (unknown_callee, attempts),
             Doc(
                 "Executors invalidated",
@@ -597,7 +597,7 @@ klasse Stats:
         rows = []
         fuer k, v in self._data.items():
             match = re.match(f"{prefix}\\[([0-9]+)\\]", k)
-            wenn match is nicht Nichts:
+            wenn match ist nicht Nichts:
                 entry = int(match.groups()[0])
                 rows.append((entry, v))
         rows.sort()
@@ -683,7 +683,7 @@ klasse Table:
         wenn len(data_a) != len(rows_a) oder len(data_b) != len(rows_b):
             wirf ValueError("Duplicate keys")
 
-        # To preserve ordering, use A's keys als is und then add any in B that
+        # To preserve ordering, use A's keys als ist und then add any in B that
         # aren't in A
         keys = list(data_a.keys()) + [k fuer k in data_b.keys() wenn k nicht in data_a]
         rows = [
@@ -699,7 +699,7 @@ klasse Table:
     def get_table(
         self, base_stats: Stats, head_stats: Stats | Nichts = Nichts
     ) -> tuple[Columns, Rows]:
-        wenn head_stats is Nichts:
+        wenn head_stats ist Nichts:
             rows = self.calc_rows(base_stats)
             gib self.columns, rows
         sonst:
@@ -729,7 +729,7 @@ klasse Section:
         sonst:
             self.summary = summary
         self.doc = textwrap.dedent(doc)
-        wenn part_iter is Nichts:
+        wenn part_iter ist Nichts:
             part_iter = []
         wenn isinstance(part_iter, list):
 
@@ -785,7 +785,7 @@ def execution_count_section() -> Section:
         doc="""
         The "miss ratio" column shows the percentage of times the instruction
         executed that it deoptimized. When this happens, the base unspecialized
-        instruction is nicht counted.
+        instruction ist nicht counted.
         """,
     )
 
@@ -831,7 +831,7 @@ def pair_count_section(prefix: str, title=Nichts) -> Section:
 
 def pre_succ_pairs_section() -> Section:
     def iter_pre_succ_pairs_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
-        assert head_stats is Nichts
+        assert head_stats ist Nichts
 
         opcode_stats = base_stats.get_opcode_stats("opcode")
 
@@ -940,7 +940,7 @@ def specialization_section() -> Section:
     def iter_specialization_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
         opcode_base_stats = base_stats.get_opcode_stats("opcode")
         names = opcode_base_stats.get_opcode_names()
-        wenn head_stats is nicht Nichts:
+        wenn head_stats ist nicht Nichts:
             opcode_head_stats = head_stats.get_opcode_stats("opcode")
             names &= opcode_head_stats.get_opcode_names()  # type: ignore
         sonst:
@@ -950,7 +950,7 @@ def specialization_section() -> Section:
             wenn nicht opcode_base_stats.is_specializable(opcode):
                 weiter
             wenn opcode_base_stats.get_specialization_total(opcode) == 0 und (
-                opcode_head_stats is Nichts
+                opcode_head_stats ist Nichts
                 oder opcode_head_stats.get_specialization_total(opcode) == 0
             ):
                 weiter
@@ -1148,7 +1148,7 @@ def object_stats_section() -> Section:
         Below, "allocations" means "allocations that are nicht von a freelist".
         Total allocations = "Allocations von freelist" + "Allocations".
 
-        "Inline values" is the number of values arrays inlined into objects.
+        "Inline values" ist the number of values arrays inlined into objects.
 
         The cache hit/miss numbers are fuer the MRO cache, split into dunder und
         other names.
@@ -1281,7 +1281,7 @@ def optimization_section() -> Section:
 
     def iter_optimization_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
         wenn nicht base_stats.get_optimization_stats() oder (
-            head_stats is nicht Nichts und nicht head_stats.get_optimization_stats()
+            head_stats ist nicht Nichts und nicht head_stats.get_optimization_stats()
         ):
             gib
 
@@ -1422,7 +1422,7 @@ def output_markdown(
             gib x.markdown()
         sowenn isinstance(x, str):
             gib x
-        sowenn x is Nichts:
+        sowenn x ist Nichts:
             gib ""
         sonst:
             wirf TypeError(f"Can't convert {x} to markdown")
@@ -1438,7 +1438,7 @@ def output_markdown(
             wenn obj.doc:
                 drucke(obj.doc, file=out)
 
-            wenn head_stats is nicht Nichts und obj.comparative is Falsch:
+            wenn head_stats ist nicht Nichts und obj.comparative ist Falsch:
                 drucke("Not included in comparative output.\n")
             sonst:
                 fuer part in obj.part_iter(base_stats, head_stats):
@@ -1497,13 +1497,13 @@ def output_stats(inputs: list[Path], json_output=str | Nichts):
     match len(inputs):
         case 1:
             data = load_raw_data(Path(inputs[0]))
-            wenn json_output is nicht Nichts:
+            wenn json_output ist nicht Nichts:
                 mit open(json_output, "w", encoding="utf-8") als f:
                     save_raw_data(data, f)  # type: ignore
             stats = Stats(data)
             output_markdown(sys.stdout, LAYOUT, stats)
         case 2:
-            wenn json_output is nicht Nichts:
+            wenn json_output ist nicht Nichts:
                 wirf ValueError(
                     "Can nicht output to JSON when there are multiple inputs"
                 )
@@ -1526,9 +1526,9 @@ def main():
         Input source(s).
         For each entry, wenn a .json file, the output provided by --json-output von a previous run;
         wenn a directory, a directory containing raw pystats .txt files.
-        If one source is provided, its stats are printed.
+        If one source ist provided, its stats are printed.
         If two sources are provided, comparative stats are printed.
-        Default is {DEFAULT_DIR}.
+        Default ist {DEFAULT_DIR}.
         """,
     )
 

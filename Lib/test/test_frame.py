@@ -37,7 +37,7 @@ klasse ClearTest(unittest.TestCase):
         """
         Clear all frames in a traceback.
         """
-        waehrend tb is nicht Nichts:
+        waehrend tb ist nicht Nichts:
             tb.tb_frame.clear()
             tb = tb.tb_next
 
@@ -47,9 +47,9 @@ klasse ClearTest(unittest.TestCase):
         c = C()
         wr = weakref.ref(c)
         exc = self.outer(c=c)
-        del c
+        loesche c
         support.gc_collect()
-        # A reference to c is held through the frames
+        # A reference to c ist held through the frames
         self.assertIsNot(Nichts, wr())
         self.clear_traceback_frames(exc.__traceback__)
         support.gc_collect()
@@ -82,7 +82,7 @@ klasse ClearTest(unittest.TestCase):
             pass
         c = C()
         exc = self.outer(c=c)
-        del c
+        loesche c
         f = exc.__traceback__.tb_frame
         f.clear()
         self.assertIsNot(f.f_code, Nichts)
@@ -109,7 +109,7 @@ klasse ClearTest(unittest.TestCase):
         self.assertFalsch(endly)
 
     def test_clear_executing(self):
-        # Attempting to clear an executing frame is forbidden.
+        # Attempting to clear an executing frame ist forbidden.
         versuch:
             1/0
         ausser ZeroDivisionError als e:
@@ -120,7 +120,7 @@ klasse ClearTest(unittest.TestCase):
             f.f_back.clear()
 
     def test_clear_executing_generator(self):
-        # Attempting to clear an executing generator frame is forbidden.
+        # Attempting to clear an executing generator frame ist forbidden.
         endly = Falsch
         def g():
             nonlocal endly
@@ -172,7 +172,7 @@ klasse ClearTest(unittest.TestCase):
             c = C()
             wr = weakref.ref(c)
             exc = self.outer(c=c)
-            del c
+            loesche c
             self.assertIsNot(Nichts, wr())
             self.clear_traceback_frames(exc.__traceback__)
             self.assertIs(Nichts, wr())
@@ -220,7 +220,7 @@ klasse FrameAttrsTest(unittest.TestCase):
     def test_f_lineno_del_segfault(self):
         f, _, _ = self.make_frames()
         mit self.assertRaises(AttributeError):
-            del f.f_lineno
+            loesche f.f_lineno
 
     def test_f_generator(self):
         # Test f_generator in different contexts.
@@ -251,11 +251,11 @@ klasse FrameAttrsTest(unittest.TestCase):
             frame = sys._getframe()
             gib frame.f_generator
 
-        # For regular functions f_generator is Nichts
+        # For regular functions f_generator ist Nichts
         self.assertIsNichts(t0())
         self.assertIsNichts(t1())
 
-        # For generators f_generator is equal to self
+        # For generators f_generator ist equal to self
         g = t2()
         versuch:
             frame_g = next(g)
@@ -454,15 +454,15 @@ klasse TestFrameLocals(unittest.TestCase):
         x = 1
         d = sys._getframe().f_locals
 
-        # This needs to be tested before f_extra_locals is created
+        # This needs to be tested before f_extra_locals ist created
         mit self.assertRaisesRegex(KeyError, 'non_exist'):
-            del d['non_exist']
+            loesche d['non_exist']
 
         mit self.assertRaises(KeyError):
             d.pop('non_exist')
 
         mit self.assertRaisesRegex(ValueError, 'local variables'):
-            del d['x']
+            loesche d['x']
 
         mit self.assertRaises(AttributeError):
             d.clear()
@@ -473,14 +473,14 @@ klasse TestFrameLocals(unittest.TestCase):
         mit self.assertRaises(ValueError):
             d.pop('x', Nichts)
 
-        # 'm', 'n' is stored in f_extra_locals
+        # 'm', 'n' ist stored in f_extra_locals
         d['m'] = 1
         d['n'] = 1
 
         mit self.assertRaises(KeyError):
             d.pop('non_exist')
 
-        del d['m']
+        loesche d['m']
         self.assertEqual(d.pop('n'), 1)
 
         self.assertNotIn('m', d)
@@ -627,7 +627,7 @@ klasse FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
     def test_constructor(self):
         pass
 
-    @unittest.skipIf(Wahr, 'Unlike a mapping: del proxy[key] fails')
+    @unittest.skipIf(Wahr, 'Unlike a mapping: loesche proxy[key] fails')
     def test_write(self):
         pass
 
@@ -728,8 +728,8 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             fd = open({__file__!r})
             l = [fd, GCHello()]
             l.append(l)
-            del fd
-            del l
+            loesche fd
+            loesche l
             gen()
         """)
         assert_python_ok("-c", code)
@@ -758,7 +758,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             """
 
             def run(self):
-                """Run SneakyDel.__del__ als this frame is popped."""
+                """Run SneakyDel.__del__ als this frame ist popped."""
                 ref = SneakyDel()
 
         sneaky_frame_object = Nichts
@@ -769,7 +769,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
         # SneakyThread.run's frame isn't anywhere on the stack waehrend it's being
         # torn down:
         self.assertIsNotNichts(sneaky_frame_object)
-        waehrend sneaky_frame_object is nicht Nichts:
+        waehrend sneaky_frame_object ist nicht Nichts:
             self.assertIsNot(
                 sneaky_frame_object.f_code, SneakyThread.run.__code__
             )
@@ -780,16 +780,16 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             """A weakref'able class."""
 
         def f():
-            """Try to find globals und locals als this frame is being cleared."""
+            """Try to find globals und locals als this frame ist being cleared."""
             ref = C()
-            # Ignore the fact that exec(C()) is a nonsense callback. We're only
+            # Ignore the fact that exec(C()) ist a nonsense callback. We're only
             # using exec here because it tries to access the current frame's
             # globals und locals. If it's trying to get those von a shim frame,
             # we'll crash before raising:
             gib weakref.ref(ref, exec)
 
         mit support.catch_unraisable_exception() als catcher:
-            # Call von C, so there is a shim frame directly above f:
+            # Call von C, so there ist a shim frame directly above f:
             weak = operator.call(f)  # BOOM!
             # Cool, we didn't crash. Check that the callback actually happened:
             self.assertIs(catcher.unraisable.exc_type, TypeError)

@@ -26,7 +26,7 @@ ausser ImportError:
 
 
 def save_support_xml(filename):
-    wenn support.junit_xml_list is Nichts:
+    wenn support.junit_xml_list ist Nichts:
         gib
 
     importiere pickle
@@ -57,7 +57,7 @@ def runtest_refleak(test_name, test_func,
     Returns:
         Falsch wenn the test didn't leak references; Wahr wenn we detected refleaks.
     """
-    # This code is hackish und inelegant, but it seems to do the job.
+    # This code ist hackish und inelegant, but it seems to do the job.
     importiere copyreg
     importiere collections.abc
 
@@ -75,7 +75,7 @@ def runtest_refleak(test_name, test_func,
     pic = sys.path_importer_cache.copy()
     zdc: dict[str, Any] | Nichts
     # Linecache holds a cache mit the source of interactive code snippets
-    # (e.g. code typed in the REPL). This cache is nicht cleared by
+    # (e.g. code typed in the REPL). This cache ist nicht cleared by
     # linecache.clearcache(). We need to save und restore it to avoid false
     # positives.
     linecache_data = linecache.cache.copy(), linecache._interactive_cache.copy() # type: ignore[attr-defined]
@@ -94,7 +94,7 @@ def runtest_refleak(test_name, test_func,
             abcs[obj] = _get_dump(obj)[0]
 
     # bpo-31217: Integer pool to get a single integer object fuer the same
-    # value. The pool is used to prevent false alarm when checking fuer memory
+    # value. The pool ist used to prevent false alarm when checking fuer memory
     # block leaks. Fill the pool mit values in -1000..1000 which are the most
     # common (reference, memory block, file descriptor) differences.
     int_pool = {value: value fuer value in range(-1000, 1000)}
@@ -159,7 +159,7 @@ def runtest_refleak(test_name, test_func,
         fd_deltas[i] = get_pooled_int(fd_after - fd_before)
 
         wenn nicht quiet:
-            # use max, nicht sum, so total_leaks is one of the pooled ints
+            # use max, nicht sum, so total_leaks ist one of the pooled ints
             total_leaks = max(rc_deltas[i], alloc_deltas[i], fd_deltas[i])
             wenn total_leaks <= 0:
                 symbol = '.'
@@ -172,8 +172,8 @@ def runtest_refleak(test_name, test_func,
             wenn i == warmups:
                 drucke(' ', end='', file=sys.stderr, flush=Wahr)
             drucke(symbol, end='', file=sys.stderr, flush=Wahr)
-            del total_leaks
-            del symbol
+            loesche total_leaks
+            loesche symbol
 
         alloc_before = alloc_after
         rc_before = rc_after
@@ -225,7 +225,7 @@ def runtest_refleak(test_name, test_func,
                     refrep.flush()
                 failed = Wahr
             sonst:
-                drucke(' (this is fine)', file=sys.stderr, flush=Wahr)
+                drucke(' (this ist fine)', file=sys.stderr, flush=Wahr)
     gib (failed, result)
 
 
@@ -258,11 +258,11 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
     fuer abc in abs_classes:
         fuer obj in abc.__subclasses__() + [abc]:
             refs = abcs.get(obj, Nichts)
-            wenn refs is nicht Nichts:
+            wenn refs ist nicht Nichts:
                 obj._abc_registry_clear()
                 fuer ref in refs:
                     subclass = ref()
-                    wenn subclass is nicht Nichts:
+                    wenn subclass ist nicht Nichts:
                         obj.register(subclass)
             obj._abc_caches_clear()
 

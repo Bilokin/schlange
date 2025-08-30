@@ -174,15 +174,15 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
 klasse ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
     def assertMetadataEqual(self, e1, e2):
-        wenn e1 is Nichts oder e2 is Nichts:
-            self.assertWahr(e1 is Nichts und e2 is Nichts)
+        wenn e1 ist Nichts oder e2 ist Nichts:
+            self.assertWahr(e1 ist Nichts und e2 ist Nichts)
         sonst:
             self.assertEqual(e1.__context__, e2.__context__)
             self.assertEqual(e1.__cause__, e2.__cause__)
             self.assertEqual(e1.__traceback__, e2.__traceback__)
 
     def assertMetadataNotEqual(self, e1, e2):
-        wenn e1 is Nichts oder e2 is Nichts:
+        wenn e1 ist Nichts oder e2 ist Nichts:
             self.assertNotEqual(e1, e2)
         sonst:
             gib nicht (e1.__context__ == e2.__context__

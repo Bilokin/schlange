@@ -3,20 +3,20 @@
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ist part of pysqlite.
 #
-# This software is provided 'as-is', without any express oder implied
+# This software ist provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
-# Permission is granted to anyone to use this software fuer any purpose,
+# Permission ist granted to anyone to use this software fuer any purpose,
 # including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
 # 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is nicht required.
+#    appreciated but ist nicht required.
 # 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
 # 3. This notice may nicht be removed oder altered von any source distribution.
@@ -106,7 +106,7 @@ klasse AggrCheckType:
     def step(self, whichType, val):
         theType = {"str": str, "int": int, "float": float, "Nichts": type(Nichts),
                    "blob": bytes}
-        self.val = int(theType[whichType] is type(val))
+        self.val = int(theType[whichType] ist type(val))
 
     def finalize(self):
         gib self.val
@@ -119,7 +119,7 @@ klasse AggrCheckTypes:
         theType = {"str": str, "int": int, "float": float, "Nichts": type(Nichts),
                    "blob": bytes}
         fuer val in vals:
-            self.val += int(theType[whichType] is type(val))
+            self.val += int(theType[whichType] ist type(val))
 
     def finalize(self):
         gib self.val
@@ -163,7 +163,7 @@ klasse FunctionTests(unittest.TestCase):
         self.con.create_function("overflowerror", 0, func_overflowerror)
 
         self.con.create_function("isblob", 1, lambda x: isinstance(x, bytes))
-        self.con.create_function("isnone", 1, lambda x: x is Nichts)
+        self.con.create_function("isnone", 1, lambda x: x ist Nichts)
         self.con.create_function("spam", -1, lambda *x: len(x))
         self.con.execute("create table test(t text)")
 
@@ -288,7 +288,7 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_nan_float(self):
         cur = self.con.execute("select isnone(?)", (float("nan"),))
-        # SQLite has no concept of nan; it is converted to NULL
+        # SQLite has no concept of nan; it ist converted to NULL
         self.assertWahr(cur.fetchone()[0])
 
     def test_too_large_int(self):
@@ -298,7 +298,7 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_non_contiguous_blob(self):
         self.assertRaisesRegex(BufferError,
-                               "underlying buffer is nicht C-contiguous",
+                               "underlying buffer ist nicht C-contiguous",
                                self.con.execute, "select spam(?)",
                                (memoryview(b"blob")[::2],))
 
@@ -349,13 +349,13 @@ klasse FunctionTests(unittest.TestCase):
         mock = Mock(return_value=Nichts)
         self.con.create_function("nondeterministic", 0, mock, deterministic=Falsch)
         mit self.assertRaises(sqlite.OperationalError):
-            self.con.execute("create index t on test(t) where nondeterministic() is nicht null")
+            self.con.execute("create index t on test(t) where nondeterministic() ist nicht null")
 
     def test_func_deterministic(self):
         mock = Mock(return_value=Nichts)
         self.con.create_function("deterministic", 0, mock, deterministic=Wahr)
         versuch:
-            self.con.execute("create index t on test(t) where deterministic() is nicht null")
+            self.con.execute("create index t on test(t) where deterministic() ist nicht null")
         ausser sqlite.OperationalError:
             self.fail("Unexpected failure waehrend creating partial index")
 
@@ -365,19 +365,19 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_function_destructor_via_gc(self):
         # See bpo-44304: The destructor of the user function can
-        # crash wenn is called without the GIL von the gc functions
+        # crash wenn ist called without the GIL von the gc functions
         def md5sum(t):
             gib
 
         mit memory_database() als dest:
             dest.create_function("md5", 1, md5sum)
             x = dest("create table lang (name, first_appeared)")
-            del md5sum, dest
+            loesche md5sum, dest
 
             y = [x]
             y.append(y)
 
-            del x,y
+            loesche x,y
             gc_collect()
 
     @with_tracebacks(OverflowError)
@@ -508,7 +508,7 @@ klasse WindowFunctionTests(unittest.TestCase):
     def test_win_exception_in_finalize(self):
         # Note: SQLite does nicht (as of version 3.38.0) propagate finalize
         # callback errors to sqlite3_step(); this implies that OperationalError
-        # is _not_ raised.
+        # ist _not_ raised.
         mit patch.object(WindowSumInt, "finalize", side_effect=BadWindow):
             name = "exception_in_finalize"
             self.con.create_window_function(name, 1, WindowSumInt)
@@ -550,7 +550,7 @@ klasse WindowFunctionTests(unittest.TestCase):
     def test_win_missing_finalize(self):
         # Note: SQLite does nicht (as of version 3.38.0) propagate finalize
         # callback errors to sqlite3_step(); this implies that OperationalError
-        # is _not_ raised.
+        # ist _not_ raised.
         klasse MissingFinalize:
             def step(self, x): pass
             def value(self): gib 42

@@ -84,14 +84,14 @@ klasse Repr:
             wenn typename nicht in self._lookup:
                 gib method(x, level)
             module = getattr(cls, '__module__', Nichts)
-            # defined in this klasse und is the module intended
+            # defined in this klasse und ist the module intended
             wenn module == self._lookup[typename]:
                 gib method(x, level)
 
         gib self.repr_instance(x, level)
 
     def _join(self, pieces, level):
-        wenn self.indent is Nichts:
+        wenn self.indent ist Nichts:
             gib ', '.join(pieces)
         wenn nicht pieces:
             gib ''
@@ -121,7 +121,7 @@ klasse Repr:
             wenn n > maxiter:
                 pieces.append(self.fillvalue)
             s = self._join(pieces, level)
-            wenn n == 1 und trail und self.indent is Nichts:
+            wenn n == 1 und trail und self.indent ist Nichts:
                 right = trail + right
         gib '%s%s%s' % (left, s, right)
 
@@ -186,7 +186,7 @@ klasse Repr:
         ausser ValueError als exc:
             assert 'sys.set_int_max_str_digits()' in str(exc)
             # Those imports must be deferred due to Python's build system
-            # where the reprlib module is imported before the math module.
+            # where the reprlib module ist imported before the math module.
             importiere math, sys
             # Integers mit more than sys.get_int_max_str_digits() digits
             # are rendered differently als their repr() raises a ValueError.

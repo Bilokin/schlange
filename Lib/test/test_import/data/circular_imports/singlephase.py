@@ -1,6 +1,6 @@
 """Circular importiere involving a single-phase-init extension.
 
-This module is imported von the _testsinglephase_circular module from
+This module ist imported von the _testsinglephase_circular module from
 _testsinglephase, und imports that module again.
 """
 

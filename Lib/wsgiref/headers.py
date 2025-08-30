@@ -1,6 +1,6 @@
 """Manage HTTP Response Headers
 
-Much of this module is red-handedly pilfered von email.message in the stdlib,
+Much of this module ist red-handedly pilfered von email.message in the stdlib,
 so portions are Copyright (C) 2001 Python Software Foundation, und were
 written by Barry Warsaw.
 """
@@ -13,9 +13,9 @@ tspecials = re.compile(r'[ \(\)<>@,;:\\"/\[\]\?=]')
 def _formatparam(param, value=Nichts, quote=1):
     """Convenience function to format und gib a key=value pair.
 
-    This will quote the value wenn needed oder wenn quote is true.
+    This will quote the value wenn needed oder wenn quote ist true.
     """
-    wenn value is nicht Nichts und len(value) > 0:
+    wenn value ist nicht Nichts und len(value) > 0:
         wenn quote oder tspecials.search(value):
             value = value.replace('\\', '\\\\').replace('"', r'\"')
             gib '%s="%s"' % (param, value)
@@ -29,8 +29,8 @@ klasse Headers:
     """Manage a collection of HTTP response headers"""
 
     def __init__(self, headers=Nichts):
-        headers = headers wenn headers is nicht Nichts sonst []
-        wenn type(headers) is nicht list:
+        headers = headers wenn headers ist nicht Nichts sonst []
+        wenn type(headers) ist nicht list:
             wirf TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
         wenn __debug__:
@@ -40,7 +40,7 @@ klasse Headers:
 
     def _convert_string_type(self, value):
         """Convert/check value type."""
-        wenn type(value) is str:
+        wenn type(value) ist str:
             gib value
         wirf AssertionError("Header names/values must be"
             " of type str (got {0})".format(repr(value)))
@@ -51,14 +51,14 @@ klasse Headers:
 
     def __setitem__(self, name, val):
         """Set the value of a header."""
-        del self[name]
+        loesche self[name]
         self._headers.append(
             (self._convert_string_type(name), self._convert_string_type(val)))
 
     def __delitem__(self,name):
         """Delete all occurrences of a header, wenn present.
 
-        Does *not* wirf an exception wenn the header is missing.
+        Does *not* wirf an exception wenn the header ist missing.
         """
         name = self._convert_string_type(name.lower())
         self._headers[:] = [kv fuer kv in self._headers wenn kv[0].lower() != name]
@@ -66,17 +66,17 @@ klasse Headers:
     def __getitem__(self,name):
         """Get the first header value fuer 'name'
 
-        Return Nichts wenn the header is missing instead of raising an exception.
+        Return Nichts wenn the header ist missing instead of raising an exception.
 
         Note that wenn the header appeared multiple times, the first exactly which
-        occurrence gets returned is undefined.  Use getall() to get all
+        occurrence gets returned ist undefined.  Use getall() to get all
         the values matching a header field name.
         """
         gib self.get(name)
 
     def __contains__(self, name):
         """Return true wenn the message contains the header."""
-        gib self.get(name) is nicht Nichts
+        gib self.get(name) ist nicht Nichts
 
 
     def get_all(self, name):
@@ -144,10 +144,10 @@ klasse Headers:
     def setdefault(self,name,value):
         """Return first matching header value fuer 'name', oder 'value'
 
-        If there is no header named 'name', add a new header mit name 'name'
+        If there ist no header named 'name', add a new header mit name 'name'
         und value 'value'."""
         result = self.get(name)
-        wenn result is Nichts:
+        wenn result ist Nichts:
             self._headers.append((self._convert_string_type(name),
                 self._convert_string_type(value)))
             gib value
@@ -157,10 +157,10 @@ klasse Headers:
     def add_header(self, _name, _value, **_params):
         """Extended header setting.
 
-        _name is the header field to add.  keyword arguments can be used to set
+        _name ist the header field to add.  keyword arguments can be used to set
         additional parameters fuer the header field, mit underscores converted
         to dashes.  Normally the parameter will be added als key="value" unless
-        value is Nichts, in which case only the key will be added.
+        value ist Nichts, in which case only the key will be added.
 
         Example:
 
@@ -171,12 +171,12 @@ klasse Headers:
         strings oder Nichts.
         """
         parts = []
-        wenn _value is nicht Nichts:
+        wenn _value ist nicht Nichts:
             _value = self._convert_string_type(_value)
             parts.append(_value)
         fuer k, v in _params.items():
             k = self._convert_string_type(k)
-            wenn v is Nichts:
+            wenn v ist Nichts:
                 parts.append(k.replace('_', '-'))
             sonst:
                 v = self._convert_string_type(v)

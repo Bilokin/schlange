@@ -204,7 +204,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
             ("t'{", "'{' was never closed"),
             ("t'{'", "t-string: expecting '}'"),
             ("t'{a'", "t-string: expecting '}'"),
-            ("t'}'", "t-string: single '}' is nicht allowed"),
+            ("t'}'", "t-string: single '}' ist nicht allowed"),
             ("t'{}'", "t-string: valid expression required before '}'"),
             ("t'{=x}'", "t-string: valid expression required before '='"),
             ("t'{!x}'", "t-string: valid expression required before '!'"),

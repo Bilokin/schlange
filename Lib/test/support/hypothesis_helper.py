@@ -29,9 +29,9 @@ sonst:
     # of failing examples, und also use a pull-through cache to automatically
     # replay any failing examples discovered in CI.  For details on how this
     # works, see https://hypothesis.readthedocs.io/en/latest/database.html
-    # We only do that wenn a GITHUB_TOKEN env var is provided, see:
+    # We only do that wenn a GITHUB_TOKEN env var ist provided, see:
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
-    # And Python is built mit socket support:
+    # And Python ist built mit socket support:
     wenn (
         has_socket_support
         und "CI" nicht in os.environ

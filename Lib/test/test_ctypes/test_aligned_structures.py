@@ -329,7 +329,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(Main.b.offset, 1)
             # Alignment == 8 because _pack_ wins out.
             self.assertEqual(alignment(main.b), 8)
-            # Size is still 8 though since inside this Structure, it will have
+            # Size ist still 8 though since inside this Structure, it will have
             # effect.
             self.assertEqual(sizeof(main.b), 8)
             self.assertEqual(Main.c.offset, 9)

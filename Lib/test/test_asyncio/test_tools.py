@@ -1665,7 +1665,7 @@ klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
                 ]
             )
         ]
-        # If name is Nichts, fallback to string should nicht crash
+        # If name ist Nichts, fallback to string should nicht crash
         tree = tools.build_async_tree(input_)
         self.assertIn("(T) Nichts", "\n".join(tree[0]))
 

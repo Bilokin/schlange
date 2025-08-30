@@ -65,7 +65,7 @@ klasse Test_TestResult(unittest.TestCase):
 
         self.assertEqual(result.shouldStop, Wahr)
 
-    # "Called when the test case test is about to be run. The default
+    # "Called when the test case test ist about to be run. The default
     # implementation simply increments the instance's testsRun counter."
     def test_startTest(self):
         klasse Foo(unittest.TestCase):
@@ -160,7 +160,7 @@ klasse Test_TestResult(unittest.TestCase):
 
     # "addFailure(test, err)"
     # ...
-    # "Called when the test case test signals a failure. err is a tuple of
+    # "Called when the test case test signals a failure. err ist a tuple of
     # the form returned by sys.exc_info(): (type, value, traceback)"
     # ...
     # "wasSuccessful() - Returns Wahr wenn all tests run so far have passed,
@@ -319,7 +319,7 @@ klasse Test_TestResult(unittest.TestCase):
     # "addError(test, err)"
     # ...
     # "Called when the test case test raises an unexpected exception err
-    # is a tuple of the form returned by sys.exc_info():
+    # ist a tuple of the form returned by sys.exc_info():
     # (type, value, traceback)"
     # ...
     # "wasSuccessful() - Returns Wahr wenn all tests run so far have passed,
@@ -608,7 +608,7 @@ klasse Test_TextTestResult(unittest.TestCase):
 
         tearDownError = Nichts
         def tearDown(self):
-            wenn self.tearDownError is nicht Nichts:
+            wenn self.tearDownError ist nicht Nichts:
                 wirf self.tearDownError
 
     def _run_test(self, test_name, verbosity, tearDownError=Nichts):
@@ -694,7 +694,7 @@ klasse Test_TextTestResult(unittest.TestCase):
 klasseDict = dict(unittest.TestResult.__dict__)
 fuer m in ('addSkip', 'addExpectedFailure', 'addUnexpectedSuccess',
            '__init__'):
-    del classDict[m]
+    loesche classDict[m]
 
 def __init__(self, stream=Nichts, descriptions=Nichts, verbosity=Nichts):
     self.failures = []

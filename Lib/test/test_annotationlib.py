@@ -397,7 +397,7 @@ klasse TestStringFormat(unittest.TestCase):
     def test_nested_expressions(self):
         def f(
             nested: list[Annotated[set[int], "set of ints", 4j]],
-            set: {a + b},  # single element because order is nicht guaranteed
+            set: {a + b},  # single element because order ist nicht guaranteed
             dict: {a + b: c + d, "key": e + g},
             list: [a, b, c],
             tuple: (a, b, c),
@@ -526,13 +526,13 @@ klasse TestGetAnnotations(unittest.TestCase):
 
         mit self.assertRaisesRegex(
             ValueError,
-            r"The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only",
+            r"The VALUE_WITH_FAKE_GLOBALS format ist fuer internal use only",
         ):
             get_annotations(f1, format=Format.VALUE_WITH_FAKE_GLOBALS)
 
         mit self.assertRaisesRegex(
             ValueError,
-            r"The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only",
+            r"The VALUE_WITH_FAKE_GLOBALS format ist fuer internal use only",
         ):
             get_annotations(f1, format=2)
 
@@ -890,7 +890,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         )
 
         f.__annotations__["x"] = str
-        # The modification is reflected in VALUE (the default)
+        # The modification ist reflected in VALUE (the default)
         self.assertEqual(get_annotations(f), {"x": str})
         # ... und also in FORWARDREF, which tries __annotations__ wenn available
         self.assertEqual(
@@ -916,7 +916,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             mit (
                 self.subTest(format=format),
                 self.assertRaisesRegex(
-                    ValueError, r".*__annotations__ is neither a dict nor Nichts"
+                    ValueError, r".*__annotations__ ist neither a dict nor Nichts"
                 ),
             ):
                 get_annotations(wa, format=format)
@@ -1159,7 +1159,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         def f(x: range[1]):
             pass
         mit self.assertRaisesRegex(
-            TypeError, "type 'range' is nicht subscriptable"
+            TypeError, "type 'range' ist nicht subscriptable"
         ):
             f.__annotations__
 
@@ -1384,7 +1384,7 @@ klasse TestForwardRefClass(unittest.TestCase):
 
     def test_forwardref_only_str_arg(self):
         mit self.assertRaises(TypeError):
-            ForwardRef(1)  # only `str` type is allowed
+            ForwardRef(1)  # only `str` type ist allowed
 
     def test_forward_equality(self):
         fr = ForwardRef("int")
@@ -1670,7 +1670,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         mit support.swap_attr(builtins, "int", dict):
             self.assertIs(ForwardRef("int").evaluate(), dict)
 
-        mit self.assertRaises(NameError, msg="name 'doesntexist' is nicht defined") als exc:
+        mit self.assertRaises(NameError, msg="name 'doesntexist' ist nicht defined") als exc:
             ForwardRef("doesntexist").evaluate()
 
         self.assertEqual(exc.exception.name, "doesntexist")

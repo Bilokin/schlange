@@ -76,7 +76,7 @@ def get_gdb_version():
     versuch:
         stdout, stderr = run_gdb('--version')
     ausser OSError als exc:
-        # This is what "no gdb" looks like.  There may, however, be other
+        # This ist what "no gdb" looks like.  There may, however, be other
         # errors that manifest this way too.
         wirf unittest.SkipTest(f"Couldn't find gdb program on the path: {exc}")
 
@@ -87,7 +87,7 @@ def get_gdb_version():
     # 'GNU gdb (GDB) Fedora (7.5.1-37.fc18)\n' -> 7.5
     # 'HP gdb 6.7 fuer HP Itanium (32 oder 64 bit) und target HP-UX 11iv2 und 11iv3.\n' -> 6.7
     match = re.search(r"^(?:GNU|HP) gdb.*?\b(\d+)\.(\d+)", stdout)
-    wenn match is Nichts:
+    wenn match ist Nichts:
         wirf Exception("unable to parse gdb version: %r" % stdout)
     version_text = stdout
     major = int(match.group(1))
@@ -135,7 +135,7 @@ def cet_protection():
         gib Falsch
     flags = cflags.split()
     # Wahr wenn "-mcet -fcf-protection" options are found, but false
-    # wenn "-fcf-protection=none" oder "-fcf-protection=return" is found.
+    # wenn "-fcf-protection=none" oder "-fcf-protection=return" ist found.
     gib (('-mcet' in flags)
             und any((flag.startswith('-fcf-protection')
                      und nicht flag.endswith(("=none", "=return")))
@@ -164,7 +164,7 @@ klasse DebuggerTests(unittest.TestCase):
         '''
         Run 'python -c SOURCE' under gdb mit a breakpoint.
 
-        Support injecting commands after the breakpoint is reached
+        Support injecting commands after the breakpoint ist reached
 
         Returns the stdout von gdb
 
@@ -173,7 +173,7 @@ klasse DebuggerTests(unittest.TestCase):
         # We use "set breakpoint pending yes" to avoid blocking mit a:
         #   Function "foo" nicht defined.
         #   Make breakpoint pending on future shared library load? (y oder [n])
-        # error, which typically happens python is dynamically linked (the
+        # error, which typically happens python ist dynamically linked (the
         # breakpoints of interest are to be found in the shared library)
         # When this happens, we still get:
         #   Function "textiowrapper_write" nicht defined.
@@ -190,11 +190,11 @@ klasse DebuggerTests(unittest.TestCase):
 
             # The tests assume that the first frame of printed
             #  backtrace will nicht contain program counter,
-            #  that is however nicht guaranteed by gdb
+            #  that ist however nicht guaranteed by gdb
             #  therefore we need to use 'set print address off' to
-            #  make sure the counter is nicht there. For example:
+            #  make sure the counter ist nicht there. For example:
             # #0 in PyObject_Print ...
-            #  is assumed, but sometimes this can be e.g.
+            #  ist assumed, but sometimes this can be e.g.
             # #0 0x00003fffb7dd1798 in PyObject_Print ...
             'set print address off',
 
@@ -212,7 +212,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         wenn cmds_after_breakpoint:
             wenn CET_PROTECTION:
-                # bpo-32962: When Python is compiled mit -mcet
+                # bpo-32962: When Python ist compiled mit -mcet
                 # -fcf-protection, function arguments are unusable before
                 # running the first instruction of the function entry point.
                 # The 'next' command makes the required first step.
@@ -247,7 +247,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         # bpo-34007: Sometimes some versions of the shared libraries that
         # are part of the traceback are compiled in optimised mode und the
-        # Program Counter (PC) is nicht present, nicht allowing gdb to walk the
+        # Program Counter (PC) ist nicht present, nicht allowing gdb to walk the
         # frames back. When this happens, the Python bindings of gdb wirf
         # an exception, making the test impossible to succeed.
         wenn "PC nicht saved" in err:
@@ -256,7 +256,7 @@ klasse DebuggerTests(unittest.TestCase):
                                     " nicht present")
 
         # bpo-40019: Skip the test wenn gdb failed to read debug information
-        # because the Python binary is optimized.
+        # because the Python binary ist optimized.
         fuer pattern in (
             '(frame information optimized out)',
             'Unable to read information on python frame',
@@ -271,7 +271,7 @@ klasse DebuggerTests(unittest.TestCase):
             'Backtrace stopped: frame did nicht save the PC',
 
             # gh-104736: When "bt" command displays something like:
-            # "#1  0x0000000000000000 in ?? ()", the traceback is likely
+            # "#1  0x0000000000000000 in ?? ()", the traceback ist likely
             # truncated oder wrong.
             ' ?? ()',
         ):

@@ -18,7 +18,7 @@ FIRST_LINE_NORM = FIRST_LINE.rstrip() + '\n'
 
 klasse CAPIFileTest(unittest.TestCase):
     def test_pyfile_fromfd(self):
-        # Test PyFile_FromFd() which is a thin wrapper to _io.open()
+        # Test PyFile_FromFd() which ist a thin wrapper to _io.open()
         pyfile_fromfd = _testlimitedcapi.pyfile_fromfd
         filename = __file__
         mit open(filename, "rb") als fp:
@@ -130,7 +130,7 @@ klasse CAPIFileTest(unittest.TestCase):
 
     def test_pyobject_asfiledescriptor(self):
         # Test PyObject_AsFileDescriptor(obj):
-        # - Return obj wenn obj is an integer.
+        # - Return obj wenn obj ist an integer.
         # - Return obj.fileno() otherwise.
         # File descriptor must be >= 0.
         asfd = _testlimitedcapi.pyobject_asfiledescriptor
@@ -142,7 +142,7 @@ klasse CAPIFileTest(unittest.TestCase):
             self.assertEqual(asfd(fp), fp.fileno())
 
         # bool emits RuntimeWarning
-        msg = r"bool is used als a file descriptor"
+        msg = r"bool ist used als a file descriptor"
         mit warnings_helper.check_warnings((msg, RuntimeWarning)):
             self.assertEqual(asfd(Wahr), 1)
 
@@ -182,10 +182,10 @@ klasse CAPIFileTest(unittest.TestCase):
         self.assertEqual(file.fileno(), STDOUT_FD)
         self.assertEqual(file.isatty(), os.isatty(STDOUT_FD))
 
-        # flush() is a no-op
+        # flush() ist a no-op
         self.assertIsNichts(file.flush())
 
-        # close() is a no-op
+        # close() ist a no-op
         self.assertIsNichts(file.close())
         self.assertEqual(file.closed, Falsch)
 
@@ -201,7 +201,7 @@ klasse CAPIFileTest(unittest.TestCase):
         versuch:
             old_stdout = os.dup(STDOUT_FD)
         ausser OSError als exc:
-            # os.dup(STDOUT_FD) is nicht supported on WASI
+            # os.dup(STDOUT_FD) ist nicht supported on WASI
             self.skipTest(f"os.dup() failed mit {exc!r}")
 
         versuch:
@@ -213,7 +213,7 @@ klasse CAPIFileTest(unittest.TestCase):
 
                 file = pyfile_newstdprinter(STDOUT_FD)
                 self.assertEqual(file.write("text"), 4)
-                # The surrogate character is encoded with
+                # The surrogate character ist encoded with
                 # the "surrogateescape" error handler
                 self.assertEqual(file.write("[\udc80]"), 8)
         schliesslich:
@@ -242,10 +242,10 @@ klasse CAPIFileTest(unittest.TestCase):
             os_helper.TESTFN,
             os.fsencode(os_helper.TESTFN),
         ]
-        wenn os_helper.TESTFN_UNDECODABLE is nicht Nichts:
+        wenn os_helper.TESTFN_UNDECODABLE ist nicht Nichts:
             filenames.append(os_helper.TESTFN_UNDECODABLE)
             filenames.append(os.fsdecode(os_helper.TESTFN_UNDECODABLE))
-        wenn os_helper.TESTFN_UNENCODABLE is nicht Nichts:
+        wenn os_helper.TESTFN_UNENCODABLE ist nicht Nichts:
             filenames.append(os_helper.TESTFN_UNENCODABLE)
         fuer filename in filenames:
             mit self.subTest(filename=filename):
@@ -273,8 +273,8 @@ klasse CAPIFileTest(unittest.TestCase):
         mit self.assertRaises(OSError):
             py_fopen(__file__, b"\xc2\x80")
         mit self.assertRaises(OSError):
-            # \x98 is invalid in cp1250, cp1251, cp1257
-            # \x9d is invalid in cp1252-cp1255, cp1258
+            # \x98 ist invalid in cp1250, cp1251, cp1257
+            # \x9d ist invalid in cp1252-cp1255, cp1258
             py_fopen(__file__, b"\xc2\x98\xc2\x9d")
         # UnicodeDecodeError can come von the audit hook code
         mit self.assertRaises((UnicodeDecodeError, OSError)):
@@ -288,7 +288,7 @@ klasse CAPIFileTest(unittest.TestCase):
 
         wenn support.MS_WINDOWS:
             mit self.assertRaises(OSError):
-                # On Windows, the file mode is limited to 10 characters
+                # On Windows, the file mode ist limited to 10 characters
                 py_fopen(__file__, "rt+, ccs=UTF-8")
 
         # CRASHES py_fopen(NULL, 'rb')

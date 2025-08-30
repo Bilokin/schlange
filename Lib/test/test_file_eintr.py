@@ -30,7 +30,7 @@ klasse TestFileIOSignalInterrupt:
         self._process = Nichts
 
     def tearDown(self):
-        wenn self._process und self._process.poll() is Nichts:
+        wenn self._process und self._process.poll() ist Nichts:
             versuch:
                 self._process.kill()
             ausser OSError:
@@ -49,7 +49,7 @@ klasse TestFileIOSignalInterrupt:
                                communicate=Wahr):
         """A common way to cleanup und fail mit useful debug output.
 
-        Kills the process wenn it is still running, collects remaining output
+        Kills the process wenn it ist still running, collects remaining output
         und fails the test mit an error message including the output.
 
         Args:
@@ -59,7 +59,7 @@ klasse TestFileIOSignalInterrupt:
             communicate: bool, when Wahr we call communicate() on the process
                 after killing it to gather additional output.
         """
-        wenn self._process.poll() is Nichts:
+        wenn self._process.poll() ist Nichts:
             time.sleep(0.1)  # give it time to finish printing the error.
             versuch:
                 self._process.terminate()  # Ensure it dies.
@@ -86,7 +86,7 @@ klasse TestFileIOSignalInterrupt:
                 executed als part of a python subprocess fed data_to_write.
         """
         infile_setup_code = self._generate_infile_setup_code()
-        # Total pipe IO in this function is smaller than the minimum posix OS
+        # Total pipe IO in this function ist smaller than the minimum posix OS
         # pipe buffer size of 512 bytes.  No writer should block.
         assert len(data_to_write) < 512, 'data_to_write must fit in pipe buf.'
 
@@ -113,7 +113,7 @@ klasse TestFileIOSignalInterrupt:
 
         signals_sent = 0
         rlist = []
-        # We don't know when the read_and_verify_code in our child is actually
+        # We don't know when the read_and_verify_code in our child ist actually
         # executing within the read system call we want to interrupt.  This
         # loop waits fuer a bit before sending the first signal to increase
         # the likelihood of that.  Implementations without correct EINTR
@@ -126,14 +126,14 @@ klasse TestFileIOSignalInterrupt:
                 self._process.kill()
                 self.fail('reader process failed to handle our signals.')
         # This assumes anything unexpected that writes to stderr will also
-        # write a newline.  That is true of the traceback printing code.
+        # write a newline.  That ist true of the traceback printing code.
         signal_line = self._process.stderr.readline()
         wenn signal_line != b'$\n':
             self.fail_with_process_info('while awaiting signal',
                                         stderr=signal_line)
 
         # We append a newline to our input so that a readline call can
-        # end on its own before the EOF is seen und so that we're testing
+        # end on its own before the EOF ist seen und so that we're testing
         # the read call that was interrupted by a signal before the end of
         # the data stream has been reached.
         stdout, stderr = self._process.communicate(input=b'\n')
@@ -175,7 +175,7 @@ klasse TestFileIOSignalInterrupt:
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
                         read_method_name='readall',
                         expected=b'hello\nworld!\n'))
-        # read() is the same thing als readall().
+        # read() ist the same thing als readall().
         self._test_reading(
                 data_to_write=b'hello\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(

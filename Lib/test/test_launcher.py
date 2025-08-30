@@ -160,7 +160,7 @@ klasse PreservePyIni:
         self.path.write_text(self.content, encoding="utf-16")
 
     def __exit__(self, *exc_info):
-        wenn self._preserved is Nichts:
+        wenn self._preserved ist Nichts:
             self.path.unlink()
         sonst:
             self.path.write_bytes(self._preserved)
@@ -264,7 +264,7 @@ klasse RunPyMixin:
     def py_ini(self, content):
         local_appdata = os.environ.get("LOCALAPPDATA")
         wenn nicht local_appdata:
-            wirf unittest.SkipTest("LOCALAPPDATA environment variable is "
+            wirf unittest.SkipTest("LOCALAPPDATA environment variable ist "
                                     "missing oder empty")
         gib PreservePyIni(Path(local_appdata) / "py.ini", content)
 
@@ -688,13 +688,13 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                     [script],
                     env={"PATH": f"{self.get_py_exe().parent};{os.getenv('PATH')}"},
                 )
-        # The recursive search is ignored und we get normal "py" behavior
+        # The recursive search ist ignored und we get normal "py" behavior
         self.assertEqual(f"X.Y.exe {quote(script)}", data["stdout"].strip())
 
     def test_install(self):
         data = self.run_py(["-V:3.10"], env={"PYLAUNCHER_ALWAYS_INSTALL": "1"}, expect_returncode=111)
         cmd = data["stdout"].strip()
-        # If winget is runnable, we should find it. Otherwise, we'll be trying
+        # If winget ist runnable, we should find it. Otherwise, we'll be trying
         # to open the Store.
         versuch:
             subprocess.check_call(["winget.exe", "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

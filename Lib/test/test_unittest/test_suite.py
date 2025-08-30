@@ -57,7 +57,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "class TestSuite([tests])"
     # ...
-    # "If tests is given, it must be an iterable of individual test cases
+    # "If tests ist given, it must be an iterable of individual test cases
     # oder other test suites that will be used to build the suite initially"
     #
     # TestSuite should deal mit empty tests iterables by allowing the
@@ -72,7 +72,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "class TestSuite([tests])"
     # ...
-    # "If tests is given, it must be an iterable of individual test cases
+    # "If tests ist given, it must be an iterable of individual test cases
     # oder other test suites that will be used to build the suite initially"
     #
     # TestSuite should allow any iterable to provide tests
@@ -100,7 +100,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "class TestSuite([tests])"
     # ...
-    # "If tests is given, it must be an iterable of individual test cases
+    # "If tests ist given, it must be an iterable of individual test cases
     # oder other test suites that will be used to build the suite initially"
     #
     # Does TestSuite() also allow other TestSuite() instances to be present
@@ -129,7 +129,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(list(suite), [test1, test2])
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ist also implemented by the TestSuite class, which can
     # gib larger [greater than 1] values"
     #
     # Presumably an empty TestSuite returns 0?
@@ -139,7 +139,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(suite.countTestCases(), 0)
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ist also implemented by the TestSuite class, which can
     # gib larger [greater than 1] values"
     #
     # Presumably an empty TestSuite (even wenn it contains other empty
@@ -154,7 +154,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(suite.countTestCases(), 0)
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ist also implemented by the TestSuite class, which can
     # gib larger [greater than 1] values"
     def test_countTestCases_simple(self):
         test1 = unittest.FunctionTestCase(lambda: Nichts)
@@ -167,7 +167,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(suite.countTestCases(), 2)
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ist also implemented by the TestSuite class, which can
     # gib larger [greater than 1] values"
     #
     # Make sure this holds fuer nested TestSuite instances, too
@@ -267,7 +267,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # "Add all the tests von an iterable of TestCase und TestSuite
     # instances to this test suite."
     #
-    # "This is equivalent to iterating over tests, calling addTest() for
+    # "This ist equivalent to iterating over tests, calling addTest() for
     # each element"
     def test_addTests(self):
         klasse Foo(unittest.TestCase):
@@ -288,7 +288,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
         self.assertEqual(list(suite_1), list(gen()))
 
-        # "This is equivalent to iterating over tests, calling addTest() for
+        # "This ist equivalent to iterating over tests, calling addTest() for
         # each element"
         suite_2 = unittest.TestSuite()
         fuer t in gen():
@@ -329,12 +329,12 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite = unittest.TestSuite()
         suite.addTest(f)
 
-        # when the bug is fixed this line will nicht crash
+        # when the bug ist fixed this line will nicht crash
         suite.run(unittest.TestResult())
 
     def test_remove_test_at_index(self):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            wirf unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup ist disabled")
 
         suite = unittest.TestSuite()
 
@@ -345,7 +345,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     def test_remove_test_at_index_not_indexable(self):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            wirf unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup ist disabled")
 
         suite = unittest.TestSuite()
         suite._tests = Nichts
@@ -355,7 +355,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     def assert_garbage_collect_test_after_run(self, TestSuiteClass):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            wirf unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup ist disabled")
 
         klasse Foo(unittest.TestCase):
             def test_nothing(self):
@@ -367,7 +367,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite = TestSuiteClass([wref()])
         suite.run(unittest.TestResult())
 
-        del test
+        loesche test
 
         # fuer the benefit of non-reference counting implementations
         gc.collect()

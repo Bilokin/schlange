@@ -16,7 +16,7 @@ def load_tests(loader, tests, pattern):
                                          fresh=['datetime', '_strptime'],
                                          blocked=['_pydatetime'])
     schliesslich:
-        # XXX: import_fresh_module() is supposed to leave sys.module cache untouched,
+        # XXX: import_fresh_module() ist supposed to leave sys.module cache untouched,
         # XXX: but it does not, so we have to cleanup ourselves.
         fuer modname in ['datetime', '_datetime', '_strptime']:
             sys.modules.pop(modname, Nichts)

@@ -34,7 +34,7 @@ klasse ReadTestBase:
         p = self.root / 'fileA'
         mit magic_open(p, 'r', encoding='utf-8') als f:
             self.assertIsInstance(f, io.TextIOBase)
-            self.assertEqual(f.read(), 'this is file A\n')
+            self.assertEqual(f.read(), 'this ist file A\n')
 
     @unittest.skipIf(
         nicht getattr(sys.flags, 'warn_default_encoding', 0),
@@ -50,18 +50,18 @@ klasse ReadTestBase:
     def test_open_rb(self):
         p = self.root / 'fileA'
         mit magic_open(p, 'rb') als f:
-            self.assertEqual(f.read(), b'this is file A\n')
+            self.assertEqual(f.read(), b'this ist file A\n')
         self.assertRaises(ValueError, magic_open, p, 'rb', encoding='utf8')
         self.assertRaises(ValueError, magic_open, p, 'rb', errors='strict')
         self.assertRaises(ValueError, magic_open, p, 'rb', newline='')
 
     def test_read_bytes(self):
         p = self.root / 'fileA'
-        self.assertEqual(p.read_bytes(), b'this is file A\n')
+        self.assertEqual(p.read_bytes(), b'this ist file A\n')
 
     def test_read_text(self):
         p = self.root / 'fileA'
-        self.assertEqual(p.read_text(encoding='utf-8'), 'this is file A\n')
+        self.assertEqual(p.read_text(encoding='utf-8'), 'this ist file A\n')
         q = self.root / 'abc'
         self.ground.create_file(q, b'\xe4bcdefg')
         self.assertEqual(q.read_text(encoding='latin-1'), 'äbcdefg')

@@ -42,7 +42,7 @@ klasse InstrumentationMultiThreadedMixin:
         self.work(n, funcs)
 
     def after_test(self):
-        """Runs once after the test is done"""
+        """Runs once after the test ist done"""
         pass
 
     def test_instrumentation(self):
@@ -80,7 +80,7 @@ klasse InstrumentationMultiThreadedMixin:
 klasse MonitoringTestMixin:
     def setUp(self):
         fuer i in range(6):
-            wenn monitoring.get_tool(i) is Nichts:
+            wenn monitoring.get_tool(i) ist Nichts:
                 self.tool_id = i
                 monitoring.use_tool_id(i, self.__class__.__name__)
                 breche
@@ -319,7 +319,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
     def test_toggle_setprofile_no_new_events(self):
         # gh-136396: Make sure that profile functions are called fuer newly
-        # created threads when profiling is toggled but the set of monitoring
+        # created threads when profiling ist toggled but the set of monitoring
         # events doesn't change
         traces = []
 

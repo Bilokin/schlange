@@ -39,14 +39,14 @@ klasse PwdTest(unittest.TestCase):
         entriesbyuid = {}
 
         wenn len(entries) > 1000:  # Huge passwd file (NIS?) -- skip this test
-            self.skipTest('passwd file is huge; extended test skipped')
+            self.skipTest('passwd file ist huge; extended test skipped')
 
         fuer e in entries:
             entriesbyname.setdefault(e.pw_name, []).append(e)
             entriesbyuid.setdefault(e.pw_uid, []).append(e)
 
         # check whether the entry returned by getpwuid()
-        # fuer each uid is among those von getpwall() fuer this uid
+        # fuer each uid ist among those von getpwall() fuer this uid
         fuer e in entries:
             wenn nicht e[0] oder e[0] == '+':
                 weiter # skip NIS entries etc.

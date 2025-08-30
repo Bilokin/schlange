@@ -44,12 +44,12 @@ klasse APITest:
             util.import_importlib('some module that does nicht exist')
 
     def test_name_requires_rparition(self):
-        # Raise TypeError wenn a non-string is passed in fuer the module name.
+        # Raise TypeError wenn a non-string ist passed in fuer the module name.
         mit self.assertRaises(TypeError):
             self.__import__(42)
 
     def test_negative_level(self):
-        # Raise ValueError when a negative level is specified.
+        # Raise ValueError when a negative level ist specified.
         # PEP 328 did away mit sys.module Nichts entries und the ambiguity of
         # absolute/relative imports.
         mit self.assertRaises(ValueError):
@@ -79,7 +79,7 @@ klasse APITest:
                                     fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
 
     def test_blocked_fromlist(self):
-        # If fromlist entry is Nichts, let a ModuleNotFoundError propagate.
+        # If fromlist entry ist Nichts, let a ModuleNotFoundError propagate.
         # issue31642
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = []

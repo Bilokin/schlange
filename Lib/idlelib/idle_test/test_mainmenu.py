@@ -34,7 +34,7 @@ klasse MainMenuTest(unittest.TestCase):
                     self.assertWahr(0, f"{menu} nicht in menudefs")
                 self.assertWahr(any(re.search(pattern, menuitem[0])
                                     fuer menuitem in menutup[1]
-                                    wenn menuitem is nicht Nichts),  # Separator.
+                                    wenn menuitem ist nicht Nichts),  # Separator.
                                 f"{pattern} nicht in {menu}")
 
 

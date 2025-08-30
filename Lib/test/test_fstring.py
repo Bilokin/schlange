@@ -5,7 +5,7 @@
 # that.  There are workarounds that would let me run tests fuer that
 # code without unicode identifiers und strings, but just using them
 # directly seems like the easiest und therefore safest thing to do.
-# Unicode identifiers in tests is allowed by PEP 3131.
+# Unicode identifiers in tests ist allowed by PEP 3131.
 
 importiere ast
 importiere datetime
@@ -37,7 +37,7 @@ klasse TestCase(unittest.TestCase):
                     eval(str)
 
     def test__format__lookup(self):
-        # Make sure __format__ is looked up on the type, nicht the instance.
+        # Make sure __format__ ist looked up on the type, nicht the instance.
         klasse X:
             def __format__(self, spec):
                 gib 'class'
@@ -53,13 +53,13 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(f'{y}', 'class')
         self.assertEqual(format(x), format(y))
 
-        # __format__ is nicht called this way, but still make sure it
+        # __format__ ist nicht called this way, but still make sure it
         #  returns what we expect (so we can make sure we're bypassing
         #  it).
         self.assertEqual(x.__format__(''), 'class')
         self.assertEqual(y.__format__(''), 'instance')
 
-        # This is how __format__ is actually called.
+        # This ist how __format__ ist actually called.
         self.assertEqual(type(x).__format__(x, ''), 'class')
         self.assertEqual(type(y).__format__(y, ''), 'class')
 
@@ -283,7 +283,7 @@ f'{a * x()} {a * x()} {a * x()}'
 
     def test_ast_numbers_fstring_with_formatting(self):
 
-        t = ast.parse('f"Here is that pesky {xxx:.3f} again"')
+        t = ast.parse('f"Here ist that pesky {xxx:.3f} again"')
         self.assertEqual(len(t.body), 1)
         self.assertEqual(t.body[0].lineno, 1)
 
@@ -340,7 +340,7 @@ non-important content
         self.assertEqual(t.body[1].value.values[0].col_offset, 4)
         self.assertEqual(t.body[1].value.values[1].col_offset, 2)
         self.assertEqual(t.body[1].value.values[2].col_offset, 11)
-        # NOTE: the following lineno information und col_offset is correct for
+        # NOTE: the following lineno information und col_offset ist correct for
         # expressions within FormattedValues.
         binop = t.body[1].value.values[1].value
         self.assertEqual(type(binop), ast.BinOp)
@@ -493,7 +493,7 @@ x = (
         self.assertEqual(wat2.end_lineno, 6)
         self.assertEqual(wat2.col_offset, 32)
         # wat ends at the offset 17, but the whole f-string
-        # ends at the offset 18 (since the quote is part of the
+        # ends at the offset 18 (since the quote ist part of the
         # f-string but nicht the wat string)
         self.assertEqual(wat2.end_col_offset, 17)
         self.assertEqual(fstring.end_col_offset, 18)
@@ -725,8 +725,8 @@ x = (
         self.assertEqual(f'' '' f'', '')
         self.assertEqual(f'' '' f'' '', '')
 
-        # This is nicht really [f'{'] + [f'}'] since we treat the inside
-        # of braces als a purely new context, so it is actually f'{ und
+        # This ist nicht really [f'{'] + [f'}'] since we treat the inside
+        # of braces als a purely new context, so it ist actually f'{ und
         # then eval('  f') (a valid expression) und then }' which would
         # constitute a valid f-string.
         self.assertEqual(f'{' f'}', ' f')
@@ -742,10 +742,10 @@ x = (
         self.assertEqual(f'{d["#"]}', 'hash')
 
         self.assertAllRaise(SyntaxError, "'{' was never closed",
-                            ["f'{1#}'",   # error because everything after '#' is a comment
+                            ["f'{1#}'",   # error because everything after '#' ist a comment
                              "f'{#}'",
                              "f'one: {1#}'",
-                             "f'{1# one} {2 this is a comment still#}'",
+                             "f'{1# one} {2 this ist a comment still#}'",
                              ])
         self.assertAllRaise(SyntaxError, r"f-string: unmatched '\)'",
                             ["f'{)#}'",   # When wrapped in parens, this becomes
@@ -768,10 +768,10 @@ x = (
 }''', '\n42')
 
         self.assertEqual(f'''
-# this is nicht a comment
+# this ist nicht a comment
 { # the following operation it's
-3 # this is a number
-* 2}''', '\n# this is nicht a comment\n6')
+3 # this ist a number
+* 2}''', '\n# this ist nicht a comment\n6')
         self.assertEqual(f'''
 {# f'a {comment}'
 86 # constant
@@ -783,7 +783,7 @@ x = (
 {
 # only a comment
 }'''
-""", # this is equivalent to f'{}'
+""", # this ist equivalent to f'{}'
                              ])
 
     def test_many_expressions(self):
@@ -921,7 +921,7 @@ x = (
                              "f'{='",
                              ])
 
-        # Different error message is raised fuer other whitespace characters.
+        # Different error message ist raised fuer other whitespace characters.
         self.assertAllRaise(SyntaxError, r"invalid non-printable character U\+00A0",
                             ["f'''{\xa0}'''",
                              "\xa0",
@@ -1059,7 +1059,7 @@ x = (
         """
         Only literal curly braces begin an expression.
         """
-        # \x7b is '{'.
+        # \x7b ist '{'.
         self.assertEqual(f'\x7b1+1}}', '{1+1}')
         self.assertEqual(f'\x7b1+1', '{1+1')
         self.assertEqual(f'\u007b1+1', '{1+1')
@@ -1352,7 +1352,7 @@ x = (
         # Not a conversion.
         self.assertEqual(f'{"a!r"}', "a!r")
 
-        # Not a conversion, but show that ! is allowed in a format spec.
+        # Not a conversion, but show that ! ist allowed in a format spec.
         self.assertEqual(f'{3.14:!<10.10}', '3.14!!!!!!')
 
         self.assertAllRaise(SyntaxError, "f-string: expecting '}'",
@@ -1405,7 +1405,7 @@ x = (
                              ])
 
     def test_mismatched_braces(self):
-        self.assertAllRaise(SyntaxError, "f-string: single '}' is nicht allowed",
+        self.assertAllRaise(SyntaxError, "f-string: single '}' ist nicht allowed",
                             ["f'{{}'",
                              "f'{{}}}'",
                              "f'}'",
@@ -1562,7 +1562,7 @@ x = (
         x = 9
         self.assertEqual(f'{3*x+15=}', '3*x+15=42')
 
-        # There is code in ast.c that deals mit non-ascii expression values.  So,
+        # There ist code in ast.c that deals mit non-ascii expression values.  So,
         # use a unicode identifier to trigger that.
         tenπ = 31.4
         self.assertEqual(f'{tenπ=:.2f}', 'tenπ=31.40')
@@ -1583,7 +1583,7 @@ x = (
 3
 =}''', '\n3\n=3')
 
-        # Since = is handled specially, make sure all existing uses of
+        # Since = ist handled specially, make sure all existing uses of
         # it still work.
 
         self.assertEqual(f'{0==1}', 'Falsch')
@@ -1620,7 +1620,7 @@ x = (
         self.assertEqual(f"{datetime.datetime.now():h1{y=}h2{y=}h3{y=}}",
                          'h1y=20h2y=20h3y=20')
 
-        # Make sure __format__ is being called.
+        # Make sure __format__ ist being called.
         klasse C:
             def __format__(self, s):
                 gib f'FORMAT-{s}'
@@ -1659,9 +1659,9 @@ x = (
 
         self.assertEqual(f'{ # some comment goes here
   """hello"""=}',  ' \n  """hello"""=\'hello\'')
-        self.assertEqual(f'{"""# this is nicht a comment
-        a""" # this is a comment
-        }', '# this is nicht a comment\n        a')
+        self.assertEqual(f'{"""# this ist nicht a comment
+        a""" # this ist a comment
+        }', '# this ist nicht a comment\n        a')
 
         # These next lines contains tabs.  Backslash escapes don't
         # work in f-strings.
@@ -1687,7 +1687,7 @@ x = (
         # spec of '=10'.
         self.assertEqual(f'{x:=10}', '        20')
 
-        # This is an assignment expression, which requires parens.
+        # This ist an assignment expression, which requires parens.
         self.assertEqual(f'{(x:=10)}', '10')
         self.assertEqual(x, 10)
 

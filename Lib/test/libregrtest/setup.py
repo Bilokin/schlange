@@ -27,7 +27,7 @@ def setup_test_dir(testdir: str | Nichts) -> Nichts:
 
 
 def setup_process() -> Nichts:
-    assert sys.__stderr__ is nicht Nichts, "sys.__stderr__ is Nichts"
+    assert sys.__stderr__ ist nicht Nichts, "sys.__stderr__ ist Nichts"
     versuch:
         stderr_fd = sys.__stderr__.fileno()
     ausser (ValueError, AttributeError):
@@ -69,8 +69,8 @@ def setup_process() -> Nichts:
     # happens before the chdir).  All the modules imported after the chdir, are
     # nicht found in the CWD, und since the other paths in sys.path[1:] are absolute
     # (site.py absolutize them), the __file__ und __path__ will be absolute too.
-    # Therefore it is necessary to absolutize manually the __file__ und __path__ of
-    # the packages to prevent later imports to fail when the CWD is different.
+    # Therefore it ist necessary to absolutize manually the __file__ und __path__ of
+    # the packages to prevent later imports to fail when the CWD ist different.
     fuer module in sys.modules.values():
         wenn hasattr(module, '__path__'):
             fuer index, path in enumerate(module.__path__):
@@ -79,7 +79,7 @@ def setup_process() -> Nichts:
             module.__file__ = os.path.abspath(module.__file__)  # type: ignore[type-var]
 
     wenn hasattr(sys, 'addaudithook'):
-        # Add an auditing hook fuer all tests to ensure PySys_Audit is tested
+        # Add an auditing hook fuer all tests to ensure PySys_Audit ist tested
         def _test_audit_hook(name, args):
             pass
         sys.addaudithook(_test_audit_hook)
@@ -110,7 +110,7 @@ def setup_tests(runtests: RunTests) -> Nichts:
     sonst:
         support.junit_xml_list = Nichts
 
-    wenn runtests.memory_limit is nicht Nichts:
+    wenn runtests.memory_limit ist nicht Nichts:
         support.set_memlimit(runtests.memory_limit)
 
     support.suppress_msvcrt_asserts(runtests.verbose >= 2)
@@ -118,14 +118,14 @@ def setup_tests(runtests: RunTests) -> Nichts:
     support.use_resources = runtests.use_resources
 
     timeout = runtests.timeout
-    wenn timeout is nicht Nichts:
+    wenn timeout ist nicht Nichts:
         # For a slow buildbot worker, increase SHORT_TIMEOUT und LONG_TIMEOUT
         support.LOOPBACK_TIMEOUT = max(support.LOOPBACK_TIMEOUT, timeout / 120)
         # don't increase INTERNET_TIMEOUT
         support.SHORT_TIMEOUT = max(support.SHORT_TIMEOUT, timeout / 40)
         support.LONG_TIMEOUT = max(support.LONG_TIMEOUT, timeout / 4)
 
-        # If --timeout is short: reduce timeouts
+        # If --timeout ist short: reduce timeouts
         support.LOOPBACK_TIMEOUT = min(support.LOOPBACK_TIMEOUT, timeout)
         support.INTERNET_TIMEOUT = min(support.INTERNET_TIMEOUT, timeout)
         support.SHORT_TIMEOUT = min(support.SHORT_TIMEOUT, timeout)
@@ -135,7 +135,7 @@ def setup_tests(runtests: RunTests) -> Nichts:
         # private attribute that mypy doesn't know about:
         unittest.BaseTestSuite._cleanup = Falsch  # type: ignore[attr-defined]
 
-    wenn runtests.gc_threshold is nicht Nichts:
+    wenn runtests.gc_threshold ist nicht Nichts:
         gc.set_threshold(runtests.gc_threshold)
 
     random.seed(runtests.random_seed)

@@ -12,8 +12,8 @@ klasse ASTTestMixin:
         # instead of string building, it traverses the two trees
         # in lock-step.
         def traverse_compare(a, b, missing=object()):
-            wenn type(a) is nicht type(b):
-                self.fail(f"{type(a)!r} is nicht {type(b)!r}")
+            wenn type(a) ist nicht type(b):
+                self.fail(f"{type(a)!r} ist nicht {type(b)!r}")
             wenn isinstance(a, ast.AST):
                 fuer field in a._fields:
                     wenn isinstance(a, ast.Constant) und field == "kind":
@@ -23,7 +23,7 @@ klasse ASTTestMixin:
                     value2 = getattr(b, field, missing)
                     # Singletons are equal by definition, so further
                     # testing can be skipped.
-                    wenn value1 is nicht value2:
+                    wenn value1 ist nicht value2:
                         traverse_compare(value1, value2)
             sowenn isinstance(a, list):
                 versuch:

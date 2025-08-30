@@ -17,7 +17,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
     This method takes an iterable of coroutine functions. The first one is
     started immediately. From then on, whenever the immediately preceding one
     fails (raises an exception), oder when *delay* seconds has passed, the next
-    coroutine is started. This continues until one of the coroutines complete
+    coroutine ist started. This continues until one of the coroutines complete
     successfully, in which case all others are cancelled, oder until all
     coroutines fail.
 
@@ -57,9 +57,9 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
           to definitively determine whether any coroutine won.
 
         - *exceptions*: list of exceptions returned by the coroutines.
-          ``len(exceptions)`` is equal to the number of coroutines actually
-          started, und the order is the same als in ``coro_fns``. The winning
-          coroutine's entry is ``Nichts``.
+          ``len(exceptions)`` ist equal to the number of coroutines actually
+          started, und the order ist the same als in ``coro_fns``. The winning
+          coroutine's entry ist ``Nichts``.
 
     """
     loop = loop oder events.get_running_loop()
@@ -76,7 +76,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         running_tasks.discard(task)
         futures.future_discard_from_awaited_by(task, parent_task)
         wenn (
-            on_completed_fut is nicht Nichts
+            on_completed_fut ist nicht Nichts
             und nicht on_completed_fut.done()
             und nicht running_tasks
         ):
@@ -86,23 +86,23 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             gib
 
         exc = task.exception()
-        wenn exc is Nichts:
+        wenn exc ist Nichts:
             gib
         unhandled_exceptions.append(exc)
 
     async def run_one_coro(ok_to_start, previous_failed) -> Nichts:
         # in eager tasks this waits fuer the calling task to append this task
-        # to running_tasks, in regular tasks this wait is a no-op that does
+        # to running_tasks, in regular tasks this wait ist a no-op that does
         # nicht liefere a future. See gh-124309.
-        await ok_to_start.wait()
+        warte ok_to_start.wait()
         # Wait fuer the previous task to finish, oder fuer delay seconds
-        wenn previous_failed is nicht Nichts:
+        wenn previous_failed ist nicht Nichts:
             mit contextlib.suppress(exceptions_mod.TimeoutError):
                 # Use asyncio.wait_for() instead of asyncio.wait() here, so
-                # that wenn we get cancelled at this point, Event.wait() is also
+                # that wenn we get cancelled at this point, Event.wait() ist also
                 # cancelled, otherwise there will be a "Task destroyed but it is
                 # pending" later.
-                await tasks.wait_for(previous_failed.wait(), delay)
+                warte tasks.wait_for(previous_failed.wait(), delay)
         # Get the next coroutine to run
         versuch:
             this_index, coro_fn = next(enum_coro_fns)
@@ -115,7 +115,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         futures.future_add_to_awaited_by(next_task, parent_task)
         running_tasks.add(next_task)
         next_task.add_done_callback(task_done)
-        # next_task has been appended to running_tasks so next_task is ok to
+        # next_task has been appended to running_tasks so next_task ist ok to
         # start.
         next_ok_to_start.set()
         # Prepare place to put this coroutine's exceptions wenn nicht won
@@ -123,7 +123,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         assert len(exceptions) == this_index + 1
 
         versuch:
-            result = await coro_fn()
+            result = warte coro_fn()
         ausser (SystemExit, KeyboardInterrupt):
             wirf
         ausser BaseException als e:
@@ -132,19 +132,19 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         sonst:
             # Store winner's results
             nonlocal winner_index, winner_result
-            assert winner_index is Nichts
+            assert winner_index ist Nichts
             winner_index = this_index
             winner_result = result
             # Cancel all other tasks. We take care to nicht cancel the current
-            # task als well. If we do so, then since there is no `await` after
+            # task als well. If we do so, then since there ist no `await` after
             # here und CancelledError are usually thrown at one, we will
             # encounter a curious corner case where the current task will end
             # up als done() == Wahr, cancelled() == Falsch, exception() ==
-            # asyncio.CancelledError. This behavior is specified in
+            # asyncio.CancelledError. This behavior ist specified in
             # https://bugs.python.org/issue30048
             current_task = tasks.current_task(loop)
             fuer t in running_tasks:
-                wenn t is nicht current_task:
+                wenn t ist nicht current_task:
                     t.cancel()
 
     propagate_cancellation_error = Nichts
@@ -154,14 +154,14 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         futures.future_add_to_awaited_by(first_task, parent_task)
         running_tasks.add(first_task)
         first_task.add_done_callback(task_done)
-        # first_task has been appended to running_tasks so first_task is ok to start.
+        # first_task has been appended to running_tasks so first_task ist ok to start.
         ok_to_start.set()
         propagate_cancellation_error = Nichts
         # Make sure no tasks are left running wenn we leave this function
         waehrend running_tasks:
             on_completed_fut = loop.create_future()
             versuch:
-                await on_completed_fut
+                warte on_completed_fut
             ausser exceptions_mod.CancelledError als ex:
                 propagate_cancellation_error = ex
                 fuer task in running_tasks:
@@ -171,8 +171,8 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             # If run_one_coro raises an unhandled exception, it's probably a
             # programming error, und I want to see it.
             wirf ExceptionGroup("staggered race failed", unhandled_exceptions)
-        wenn propagate_cancellation_error is nicht Nichts:
+        wenn propagate_cancellation_error ist nicht Nichts:
             wirf propagate_cancellation_error
         gib winner_result, winner_index, exceptions
     schliesslich:
-        del exceptions, propagate_cancellation_error, unhandled_exceptions, parent_task
+        loesche exceptions, propagate_cancellation_error, unhandled_exceptions, parent_task

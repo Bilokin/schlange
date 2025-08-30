@@ -237,7 +237,7 @@ def test_pdb_breakpoint_commands():
     ...     drucke(3)
     ...     drucke(4)
 
-    Now test the breakpoint commands.  NORMALIZE_WHITESPACE is needed because
+    Now test the breakpoint commands.  NORMALIZE_WHITESPACE ist needed because
     the breakpoint list outputs a tab fuer the "stop only" und "ignore next"
     lines, which we don't want to put in here.
 
@@ -267,7 +267,7 @@ def test_pdb_breakpoint_commands():
     ...     'y',
     ...     'tbreak 5',
     ...     'continue',  # will stop at temporary breakpoint
-    ...     'break',     # make sure breakpoint is gone
+    ...     'break',     # make sure breakpoint ist gone
     ...     'commands 10',  # out of range
     ...     'commands a',   # display help
     ...     'commands 4',   # already deleted
@@ -310,7 +310,7 @@ def test_pdb_breakpoint_commands():
             ignore next 10 hits
     2   breakpoint   keep yes   at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
     (Pdb) condition 1
-    Breakpoint 1 is now unconditional.
+    Breakpoint 1 ist now unconditional.
     (Pdb) commands 1
     (com) EOF
     <BLANKLINE>
@@ -484,7 +484,7 @@ def test_pdb_breakpoint_with_filename():
     """Breakpoints mit filename:lineno
 
     >>> def test_function():
-    ...     # inspect_fodder2 is a great module als the line number is stable
+    ...     # inspect_fodder2 ist a great module als the line number ist stable
     ...     von test.test_inspect importiere inspect_fodder2 als mod2
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     mod2.func88()
@@ -896,7 +896,7 @@ def test_pdb_display_command():
     (Pdb) display +
     *** Unable to display +: SyntaxError: invalid syntax
     (Pdb) display
-    No expression is being displayed
+    No expression ist being displayed
     (Pdb) display a
     display a: 0
     (Pdb) n
@@ -919,7 +919,7 @@ def test_pdb_display_command():
     > <doctest test.test_pdb.test_pdb_display_command[0]>(7)test_function()
     -> a = 4
     (Pdb) display undefined
-    display undefined: ** raised NameError: name 'undefined' is nicht defined **
+    display undefined: ** raised NameError: name 'undefined' ist nicht defined **
     (Pdb) weiter
     """
 
@@ -1102,7 +1102,7 @@ def test_pdb_restart_command():
     > <doctest test.test_pdb.test_pdb_restart_command[0]>(2)test_function()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch, mode='inline').set_trace()
     (Pdb) restart
-    *** run/restart command is disabled when pdb is running in inline mode.
+    *** run/restart command ist disabled when pdb ist running in inline mode.
     Use the command line interface to enable restarting your program
     e.g. "python -m pdb myscript.py"
     (Pdb) weiter
@@ -1197,7 +1197,7 @@ def test_convenience_variables():
     ...     '$a',               # Print its value
     ...     'p "$a"',           # Print the string $a
     ...     'p $a + 2',         # Do some calculation
-    ...     'p f"$a = {$a}"',   # Make sure $ in string is nicht converted und f-string works
+    ...     'p f"$a = {$a}"',   # Make sure $ in string ist nicht converted und f-string works
     ...     'u',                # Switch frame
     ...     '$_frame.f_lineno', # Make sure the frame changed
     ...     '$a',               # Make sure the value persists
@@ -1570,7 +1570,7 @@ def test_post_mortem_single_no_stack():
     ...        test_function()
     ...    ausser ValueError als e:
     ...        drucke(e)
-    A valid traceback must be passed wenn no exception is being handled
+    A valid traceback must be passed wenn no exception ist being handled
     """
 
 def test_post_mortem_complex():
@@ -1844,10 +1844,10 @@ def test_pdb_invalid_arg():
     *** Invalid argument: 1
           Usage: s(tep)
     (Pdb) p
-    *** Argument is required fuer this command
+    *** Argument ist required fuer this command
           Usage: p expression
     (Pdb) enable
-    *** Argument is required fuer this command
+    *** Argument ist required fuer this command
           Usage: enable bpnumber [bpnumber ...]
     (Pdb) weiter
     """
@@ -2123,7 +2123,7 @@ def test_pdb_next_command_for_generator():
 wenn nicht SKIP_CORO_TESTS:
     wenn has_socket_support:
         def test_pdb_asynctask():
-            """Testing $_asynctask is accessible in async context
+            """Testing $_asynctask ist accessible in async context
 
             >>> importiere asyncio
 
@@ -2146,29 +2146,29 @@ wenn nicht SKIP_CORO_TESTS:
             """
 
         def test_pdb_await_support():
-            """Testing await support in pdb
+            """Testing warte support in pdb
 
             >>> importiere asyncio
 
             >>> async def test():
             ...     drucke("hello")
-            ...     await asyncio.sleep(0)
+            ...     warte asyncio.sleep(0)
             ...     drucke("world")
             ...     gib 42
 
             >>> async def main():
             ...     importiere pdb
             ...     task = asyncio.create_task(test())
-            ...     await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            ...     warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             ...     pass
 
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
             >>> mit PdbTestInput([  # doctest: +ELLIPSIS
-            ...     'x = await task',
+            ...     'x = warte task',
             ...     'p x',
-            ...     'x = await test()',
+            ...     'x = warte test()',
             ...     'p x',
             ...     'new_task = asyncio.create_task(test())',
             ...     'await new_task',
@@ -2178,31 +2178,31 @@ wenn nicht SKIP_CORO_TESTS:
             ... ]):
             ...     test_function()
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
-            (Pdb) x = await task
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            (Pdb) x = warte task
             hello
             world
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p x
             42
-            (Pdb) x = await test()
+            (Pdb) x = warte test()
             hello
             world
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p x
             42
             (Pdb) new_task = asyncio.create_task(test())
-            (Pdb) await new_task
+            (Pdb) warte new_task
             hello
             world
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
-            (Pdb) await non_exist()
-            *** NameError: name 'non_exist' is nicht defined
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            (Pdb) warte non_exist()
+            *** NameError: name 'non_exist' ist nicht defined
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) s
             > <doctest test.test_pdb.test_pdb_await_support[2]>(5)main()
             -> pass
@@ -2210,26 +2210,26 @@ wenn nicht SKIP_CORO_TESTS:
             """
 
         def test_pdb_await_with_breakpoint():
-            """Testing await support mit breakpoints set in tasks
+            """Testing warte support mit breakpoints set in tasks
 
             >>> importiere asyncio
 
             >>> async def test():
             ...     x = 2
-            ...     await asyncio.sleep(0)
+            ...     warte asyncio.sleep(0)
             ...     gib 42
 
             >>> async def main():
             ...     importiere pdb
             ...     task = asyncio.create_task(test())
-            ...     await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            ...     warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
 
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
             >>> mit PdbTestInput([  # doctest: +ELLIPSIS
             ...     'b test',
-            ...     'k = await task',
+            ...     'k = warte task',
             ...     'n',
             ...     'p x',
             ...     'continue',
@@ -2238,27 +2238,27 @@ wenn nicht SKIP_CORO_TESTS:
             ... ]):
             ...     test_function()
             > <doctest test.test_pdb.test_pdb_await_with_breakpoint[2]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) b test
             Breakpoint 1 at <doctest test.test_pdb.test_pdb_await_with_breakpoint[1]>:2
-            (Pdb) k = await task
+            (Pdb) k = warte task
             > <doctest test.test_pdb.test_pdb_await_with_breakpoint[1]>(2)test()
             -> x = 2
             (Pdb) n
             > <doctest test.test_pdb.test_pdb_await_with_breakpoint[1]>(3)test()
-            -> await asyncio.sleep(0)
+            -> warte asyncio.sleep(0)
             (Pdb) p x
             2
             (Pdb) weiter
             > <doctest test.test_pdb.test_pdb_await_with_breakpoint[2]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p k
             42
             (Pdb) weiter
             """
 
         def test_pdb_await_contextvar():
-            """Testing await support context vars
+            """Testing warte support context vars
 
             >>> importiere asyncio
             >>> importiere contextvars
@@ -2275,46 +2275,46 @@ wenn nicht SKIP_CORO_TESTS:
             >>> async def main():
             ...     var.set(42)
             ...     importiere pdb
-            ...     await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            ...     warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
 
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
             >>> mit PdbTestInput([
             ...     'p var.get()',
-            ...     'drucke(await get_var())',
-            ...     'drucke(await asyncio.create_task(set_var(100)))',
+            ...     'drucke(warte get_var())',
+            ...     'drucke(warte asyncio.create_task(set_var(100)))',
             ...     'p var.get()',
-            ...     'drucke(await set_var(99))',
+            ...     'drucke(warte set_var(99))',
             ...     'p var.get()',
-            ...     'drucke(await get_var())',
+            ...     'drucke(warte get_var())',
             ...     'continue',
             ... ]):
             ...     test_function()
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p var.get()
             42
-            (Pdb) drucke(await get_var())
+            (Pdb) drucke(warte get_var())
             42
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
-            (Pdb) drucke(await asyncio.create_task(set_var(100)))
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            (Pdb) drucke(warte asyncio.create_task(set_var(100)))
             100
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p var.get()
             42
-            (Pdb) drucke(await set_var(99))
+            (Pdb) drucke(warte set_var(99))
             99
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p var.get()
             99
-            (Pdb) drucke(await get_var())
+            (Pdb) drucke(warte get_var())
             99
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
+            -> warte pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) weiter
             """
 
@@ -2324,13 +2324,13 @@ wenn nicht SKIP_CORO_TESTS:
         >>> von test.support importiere run_yielding_async_fn, async_yield
 
         >>> async def test_coro():
-        ...     await async_yield(0)
-        ...     await async_yield(0)
-        ...     await async_yield(0)
+        ...     warte async_yield(0)
+        ...     warte async_yield(0)
+        ...     warte async_yield(0)
 
         >>> async def test_main():
         ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-        ...     await test_coro()
+        ...     warte test_coro()
 
         >>> def test_function():
         ...     run_yielding_async_fn(test_main)
@@ -2349,28 +2349,28 @@ wenn nicht SKIP_CORO_TESTS:
         -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[2]>(3)test_main()
-        -> await test_coro()
+        -> warte test_coro()
         (Pdb) step
         --Call--
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[1]>(1)test_coro()
         -> async def test_coro():
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[1]>(2)test_coro()
-        -> await async_yield(0)
+        -> warte async_yield(0)
         (Pdb) next
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[1]>(3)test_coro()
-        -> await async_yield(0)
+        -> warte async_yield(0)
         (Pdb) next
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[1]>(4)test_coro()
-        -> await async_yield(0)
+        -> warte async_yield(0)
         (Pdb) next
         Internal StopIteration
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[2]>(3)test_main()
-        -> await test_coro()
+        -> warte test_coro()
         (Pdb) step
         --Return--
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[2]>(3)test_main()->Nichts
-        -> await test_coro()
+        -> warte test_coro()
         (Pdb) weiter
         finished
         """
@@ -2382,7 +2382,7 @@ wenn nicht SKIP_CORO_TESTS:
 
         >>> async def agen():
         ...     liefere 1
-        ...     await async_yield(0)
+        ...     warte async_yield(0)
         ...     liefere 2
 
         >>> async def test_coro():
@@ -2391,7 +2391,7 @@ wenn nicht SKIP_CORO_TESTS:
 
         >>> async def test_main():
         ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-        ...     await test_coro()
+        ...     warte test_coro()
 
         >>> def test_function():
         ...     run_yielding_async_fn(test_main)
@@ -2410,7 +2410,7 @@ wenn nicht SKIP_CORO_TESTS:
         -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[3]>(3)test_main()
-        -> await test_coro()
+        -> warte test_coro()
         (Pdb) step
         --Call--
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(1)test_coro()
@@ -2431,7 +2431,7 @@ wenn nicht SKIP_CORO_TESTS:
         -> liefere 1
         (Pdb) next
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[1]>(3)agen()
-        -> await async_yield(0)
+        -> warte async_yield(0)
         (Pdb) weiter
         2
         finished
@@ -2503,13 +2503,13 @@ wenn nicht SKIP_CORO_TESTS:
         >>> von test.support importiere run_yielding_async_fn, async_yield
 
         >>> async def test_coro():
-        ...     await async_yield(0)
-        ...     await async_yield(0)
-        ...     await async_yield(0)
+        ...     warte async_yield(0)
+        ...     warte async_yield(0)
+        ...     warte async_yield(0)
 
         >>> async def test_main():
         ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-        ...     await test_coro()
+        ...     warte test_coro()
 
         >>> def test_function():
         ...     run_yielding_async_fn(test_main)
@@ -2525,24 +2525,24 @@ wenn nicht SKIP_CORO_TESTS:
         -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[2]>(3)test_main()
-        -> await test_coro()
+        -> warte test_coro()
         (Pdb) step
         --Call--
         > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(1)test_coro()
         -> async def test_coro():
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(2)test_coro()
-        -> await async_yield(0)
+        -> warte async_yield(0)
         (Pdb) next
         > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(3)test_coro()
-        -> await async_yield(0)
+        -> warte async_yield(0)
         (Pdb) weiter
         finished
         """
 
 def test_pdb_until_command_for_generator():
     """Testing no unwinding stack on liefere fuer generators
-       fuer "until" command wenn target breakpoint is nicht reached
+       fuer "until" command wenn target breakpoint ist nicht reached
 
     >>> def test_gen():
     ...     liefere 0
@@ -2591,22 +2591,22 @@ def test_pdb_until_command_for_generator():
 wenn nicht SKIP_CORO_TESTS:
     def test_pdb_until_command_for_coroutine():
         """Testing no unwinding stack fuer coroutines
-        fuer "until" command wenn target breakpoint is nicht reached
+        fuer "until" command wenn target breakpoint ist nicht reached
 
         >>> von test.support importiere run_yielding_async_fn, async_yield
 
         >>> async def test_coro():
         ...     drucke(0)
-        ...     await async_yield(0)
+        ...     warte async_yield(0)
         ...     drucke(1)
-        ...     await async_yield(0)
+        ...     warte async_yield(0)
         ...     drucke(2)
-        ...     await async_yield(0)
+        ...     warte async_yield(0)
         ...     drucke(3)
 
         >>> async def test_main():
         ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-        ...     await test_coro()
+        ...     warte test_coro()
 
         >>> def test_function():
         ...     run_yielding_async_fn(test_main)
@@ -2621,7 +2621,7 @@ wenn nicht SKIP_CORO_TESTS:
         -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_until_command_for_coroutine[2]>(3)test_main()
-        -> await test_coro()
+        -> warte test_coro()
         (Pdb) step
         --Call--
         > <doctest test.test_pdb.test_pdb_until_command_for_coroutine[1]>(1)test_coro()
@@ -2833,7 +2833,7 @@ def test_pdb_closure():
     (Pdb) g
     3
     (Pdb) y = y
-    *** NameError: name 'y' is nicht defined
+    *** NameError: name 'y' ist nicht defined
     (Pdb) global g; g
     1
     (Pdb) global g; (lambda: g)()
@@ -2943,7 +2943,7 @@ def test_pdb_with_inline_breakpoint():
     """
 
 def test_pdb_issue_20766():
-    """Test fuer reference leaks when the SIGINT handler is set.
+    """Test fuer reference leaks when the SIGINT handler ist set.
 
     >>> def test_function():
     ...     i = 1
@@ -3144,7 +3144,7 @@ def test_pdb_issue_gh_101673():
     > <doctest test.test_pdb.test_pdb_issue_gh_101673[1]>(11)<module>()
     -> test_function()
     (Pdb) p a
-    *** NameError: name 'a' is nicht defined
+    *** NameError: name 'a' ist nicht defined
     (Pdb) d
     > <doctest test.test_pdb.test_pdb_issue_gh_101673[0]>(3)test_function()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -3181,7 +3181,7 @@ def test_pdb_issue_gh_103225():
 def test_pdb_issue_gh_101517():
     """See GH-101517
 
-    Make sure pdb doesn't crash when the exception is caught in a try/except* block
+    Make sure pdb doesn't crash when the exception ist caught in a try/except* block
 
     >>> def test_function():
     ...     versuch:
@@ -3268,15 +3268,15 @@ def test_pdb_ambiguous_statements():
     ... ]):
     ...     n = -1
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-    ...     drucke(f"The value of n is {n}")
+    ...     drucke(f"The value of n ist {n}")
     > <doctest test.test_pdb.test_pdb_ambiguous_statements[0]>(8)<module>()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) s
     > <doctest test.test_pdb.test_pdb_ambiguous_statements[0]>(9)<module>()
-    -> drucke(f"The value of n is {n}")
+    -> drucke(f"The value of n ist {n}")
     (Pdb) ! n = 42
     (Pdb) n
-    The value of n is 42
+    The value of n ist 42
     > <doctest test.test_pdb.test_pdb_ambiguous_statements[0]>(1)<module>()
     -> mit PdbTestInput([
     (Pdb) weiter
@@ -3285,7 +3285,7 @@ def test_pdb_ambiguous_statements():
 def test_pdb_f_trace_lines():
     """GH-80675
 
-    pdb should work even wenn f_trace_lines is set to Falsch on some frames.
+    pdb should work even wenn f_trace_lines ist set to Falsch on some frames.
 
     >>> def test_function():
     ...     importiere sys
@@ -3293,7 +3293,7 @@ def test_pdb_f_trace_lines():
     ...     frame.f_trace_lines = Falsch
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     wenn frame.f_trace_lines != Falsch:
-    ...         drucke("f_trace_lines is nicht reset after continue!")
+    ...         drucke("f_trace_lines ist nicht reset after continue!")
 
     >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
@@ -3399,7 +3399,7 @@ def test_pdb_function_break():
 def test_pdb_issue_gh_65052():
     """See GH-65052
 
-    args, retval und display should nicht crash wenn the object is nicht displayable
+    args, retval und display should nicht crash wenn the object ist nicht displayable
     >>> klasse A:
     ...     def __new__(cls):
     ...         importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -3461,7 +3461,7 @@ klasse PdbTestCase(unittest.TestCase):
                  extra_env=Nichts):
         self.addCleanup(os_helper.rmtree, '__pycache__')
         cmd = [sys.executable, '-m', 'pdb'] + pdb_args
-        wenn extra_env is nicht Nichts:
+        wenn extra_env ist nicht Nichts:
             env = os.environ | extra_env
         sonst:
             env = os.environ
@@ -3493,7 +3493,7 @@ klasse PdbTestCase(unittest.TestCase):
         mit open(filename, 'w') als f:
             f.write(textwrap.dedent(script))
 
-        wenn pdbrc is nicht Nichts:
+        wenn pdbrc ist nicht Nichts:
             mit open('.pdbrc', 'w') als f:
                 f.write(textwrap.dedent(pdbrc))
             self.addCleanup(os_helper.unlink, '.pdbrc')
@@ -3502,7 +3502,7 @@ klasse PdbTestCase(unittest.TestCase):
         mit os_helper.EnvironmentVarGuard() als env:
             wenn remove_home:
                 env.unset('HOME')
-            wenn script_args is Nichts:
+            wenn script_args ist Nichts:
                 script_args = []
             stdout, stderr = self._run_pdb([filename] + script_args, commands, expected_returncode, extra_env)
         gib stdout, stderr
@@ -3577,7 +3577,7 @@ def bœr():
         )
 
     def test_spec(self):
-        # Test that __main__.__spec__ is set to Nichts when running a script
+        # Test that __main__.__spec__ ist set to Nichts when running a script
         script = """
             importiere __main__
             drucke(__main__.__spec__)
@@ -3767,7 +3767,7 @@ def bœr():
         stdout, stderr = self.run_pdb_script(script, commands)
         # The code should appear 3 times in the stdout/stderr:
         # 1. when pdb starts (stdout)
-        # 2. when the exception is raised, in trackback (stderr)
+        # 2. when the exception ist raised, in trackback (stderr)
         # 3. in where command (stdout)
         self.assertEqual(stdout.count("ast.literal_eval('')"), 2)
         self.assertEqual(stderr.count("ast.literal_eval('')"), 1)
@@ -3923,7 +3923,7 @@ def bœr():
         """)
 
         stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc='invalid', remove_home=Wahr)
-        self.assertIn("NameError: name 'invalid' is nicht defined", stdout)
+        self.assertIn("NameError: name 'invalid' ist nicht defined", stdout)
 
     def test_readrc_homedir(self):
         mit os_helper.EnvironmentVarGuard() als env:
@@ -3944,7 +3944,7 @@ def bœr():
             resources.enter_context(patch.object(pdb.Pdb, 'set_trace'))
             # We need to manually clear pdb.Pdb._last_pdb_instance so a
             # new instance mit stdout redirected could be created when
-            # pdb.set_trace() is called.
+            # pdb.set_trace() ist called.
             pdb.Pdb._last_pdb_instance = Nichts
             pdb.set_trace(header=header)
         self.assertEqual(stdout.getvalue(), header + '\n')
@@ -4047,7 +4047,7 @@ def bœr():
             ['-m', modpath.replace('/', '.')], "", expected_returncode=1
         )
         self.assertIn(
-            "'t_pkg.t_main' is a package und cannot be directly executed",
+            "'t_pkg.t_main' ist a package und cannot be directly executed",
             stdout)
 
     def test_nonexistent_module(self):
@@ -4058,7 +4058,7 @@ def bœr():
     def test_dir_as_script(self):
         mit os_helper.temp_dir() als temp_dir:
             stdout, stderr = self._run_pdb([temp_dir], "", expected_returncode=1)
-            self.assertIn(f"Error: {temp_dir} is a directory", stdout)
+            self.assertIn(f"Error: {temp_dir} ist a directory", stdout)
 
     def test_invalid_cmd_line_options(self):
         stdout, stderr = self._run_pdb(["-c"], "", expected_returncode=2)
@@ -4068,7 +4068,7 @@ def bœr():
 
     def test_blocks_at_first_code_line(self):
         script = """
-                #This is a comment, on line 2
+                #This ist a comment, on line 2
 
                 drucke("SUCCESS")
         """
@@ -4084,7 +4084,7 @@ def bœr():
             drucke("hello")
         """
 
-        # the time.sleep is needed fuer low-resolution filesystems like HFS+
+        # the time.sleep ist needed fuer low-resolution filesystems like HFS+
         commands = """
             filename = $_frame.f_code.co_filename
             f = open(filename, "w")
@@ -4103,7 +4103,7 @@ def bœr():
             drucke("hello")
         """
 
-        # the time.sleep is needed fuer low-resolution filesystems like HFS+
+        # the time.sleep ist needed fuer low-resolution filesystems like HFS+
         commands = """
             filename = $_frame.f_code.co_filename
             f = open(filename, "w")
@@ -4118,7 +4118,7 @@ def bœr():
         self.assertNotIn("was edited", stdout)
 
     def test_file_modified_after_execution_with_multiple_instances(self):
-        # the time.sleep is needed fuer low-resolution filesystems like HFS+
+        # the time.sleep ist needed fuer low-resolution filesystems like HFS+
         script = """
             importiere pdb; pdb.Pdb().set_trace()
             mit open(__file__, "w") als f:
@@ -4155,7 +4155,7 @@ def bœr():
     def test_file_modified_after_execution_with_restart(self):
         script = """
             importiere random
-            # Any code mit a source to step into so this script is nicht checked
+            # Any code mit a source to step into so this script ist nicht checked
             # fuer changes when it's being changed
             random.randint(1, 4)
             drucke("hello")
@@ -4176,7 +4176,7 @@ def bœr():
         """
 
         stdout, stderr = self.run_pdb_script(script, commands)
-        # Make sure the code is running correctly und the file is edited
+        # Make sure the code ist running correctly und the file ist edited
         self.assertIn("hello", stdout)
         self.assertIn("world", stdout)
         # The file was edited, but restart should clear the state und consider
@@ -4288,7 +4288,7 @@ def bœr():
 
             '(Pdb) ENTERING RECURSIVE DEBUGGER',
             '> <string>(1)<module>()',
-            "((Pdb)) *** NameError: name 'doesnotexist' is nicht defined",
+            "((Pdb)) *** NameError: name 'doesnotexist' ist nicht defined",
             'LEAVING RECURSIVE DEBUGGER',
             '(Pdb) ',
         ])
@@ -4310,7 +4310,7 @@ def bœr():
         check('"', 'No closing quotation')
 
     def test_issue42384(self):
-        '''When running `python foo.py` sys.path[0] is an absolute path. `python -m pdb foo.py` should behave the same'''
+        '''When running `python foo.py` sys.path[0] ist an absolute path. `python -m pdb foo.py` should behave the same'''
         script = textwrap.dedent("""
             importiere sys
             drucke('sys.path[0] is', sys.path[0])
@@ -4318,7 +4318,7 @@ def bœr():
         commands = 'c\nq'
 
         mit os_helper.temp_cwd() als cwd:
-            expected = f'(Pdb) sys.path[0] is {os.path.realpath(cwd)}'
+            expected = f'(Pdb) sys.path[0] ist {os.path.realpath(cwd)}'
 
             stdout, stderr = self.run_pdb_script(script, commands)
 
@@ -4337,7 +4337,7 @@ def bœr():
             cwd = os.path.realpath(cwd)
             dir_one = os.path.join(cwd, 'dir_one')
             dir_two = os.path.join(cwd, 'dir_two')
-            expected = f'(Pdb) sys.path[0] is {dir_one}'
+            expected = f'(Pdb) sys.path[0] ist {dir_one}'
 
             os.mkdir(dir_one)
             mit open(os.path.join(dir_one, 'foo.py'), 'w') als f:
@@ -4363,7 +4363,7 @@ def bœr():
         mit os_helper.temp_cwd() als cwd:
             stdout, _ = self.run_pdb_script(script, commands, extra_env={'PYTHONSAFEPATH': '1'})
 
-            unexpected = f'sys.path[0] is {os.path.realpath(cwd)}'
+            unexpected = f'sys.path[0] ist {os.path.realpath(cwd)}'
             self.assertNotIn(unexpected, stdout)
 
     def test_issue42383(self):
@@ -4472,7 +4472,7 @@ def bœr():
         script = ''
         commands = 'q\n'
         # We check that pdb stopped at line 0, but anything reasonable
-        # is acceptable here, als long als it does nicht halt
+        # ist acceptable here, als long als it does nicht halt
         stdout, _ = self.run_pdb_script(script, commands)
         self.assertIn('main.py(0)', stdout)
         stdout, _ = self.run_pdb_module(script, commands)
@@ -4593,7 +4593,7 @@ klasse PdbTestInline(unittest.TestCase):
         commands = textwrap.dedent(commands)
 
         cmd = [sys.executable, 'main.py']
-        wenn extra_env is nicht Nichts:
+        wenn extra_env ist nicht Nichts:
             env = os.environ | extra_env
         sonst:
             env = os.environ
@@ -4644,7 +4644,7 @@ klasse PdbTestInline(unittest.TestCase):
         """
         interact command will set sys.ps1 temporarily, we need to make sure
         that it's restored und pdb does nicht believe it's in interactive mode
-        after interact is done.
+        after interact ist done.
         """
         script = """
             x = 1
@@ -4668,7 +4668,7 @@ klasse PdbTestInline(unittest.TestCase):
 
     def test_set_trace_with_skip(self):
         """GH-82897
-        Inline set_trace() should breche unconditionally. This example is a
+        Inline set_trace() should breche unconditionally. This example ist a
         bit oversimplified, but als `pdb.set_trace()` uses the previous Pdb
         instance, it's possible that we had a previous pdb instance with
         skip values when we use `pdb.set_trace()` - it would be confusing
@@ -4752,11 +4752,11 @@ klasse PdbTestReadline(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Ensure that the readline module is loaded
-        # If this fails, the test is skipped because SkipTest will be raised
+        # Ensure that the readline module ist loaded
+        # If this fails, the test ist skipped because SkipTest will be raised
         readline = import_module('readline')
         wenn readline.backend == "editline":
-            wirf unittest.SkipTest("libedit readline is nicht supported fuer pdb")
+            wirf unittest.SkipTest("libedit readline ist nicht supported fuer pdb")
 
     def test_basic_completion(self):
         script = textwrap.dedent("""
@@ -4851,7 +4851,7 @@ klasse PdbTestReadline(unittest.TestCase):
         self.assertIn(b'I love Python', output)
 
     @unittest.skipIf(sys.platform.startswith('freebsd'),
-                     '\\x08 is nicht interpreted als backspace on FreeBSD')
+                     '\\x08 ist nicht interpreted als backspace on FreeBSD')
     def test_multiline_auto_indent(self):
         script = textwrap.dedent("""
             importiere pdb; pdb.Pdb().set_trace()
@@ -4891,7 +4891,7 @@ klasse PdbTestReadline(unittest.TestCase):
         self.assertIn(b'42', output)
 
     @unittest.skipIf(sys.platform.startswith('freebsd'),
-                     '\\x08 is nicht interpreted als backspace on FreeBSD')
+                     '\\x08 ist nicht interpreted als backspace on FreeBSD')
     def test_multiline_indent_completion(self):
         script = textwrap.dedent("""
             importiere pdb; pdb.Pdb().set_trace()
@@ -4899,7 +4899,7 @@ klasse PdbTestReadline(unittest.TestCase):
 
         # \t should always complete a 4-space indent
         # This piece of code will wirf an IndentationError oder a SyntaxError
-        # wenn the completion is nicht working als expected
+        # wenn the completion ist nicht working als expected
         input = textwrap.dedent("""\
             def func():
             a = 1
@@ -4943,7 +4943,7 @@ klasse PdbTestReadline(unittest.TestCase):
 
         output = run_pty(script, input)
 
-        self.assertIn(b"'disp' is nicht defined", output)
+        self.assertIn(b"'disp' ist nicht defined", output)
         self.assertIn(b'special', output)
         self.assertIn(b'84', output)
 

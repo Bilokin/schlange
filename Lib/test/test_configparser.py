@@ -175,9 +175,9 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         eq(section.name, 'Spacey Bar From The Beginning')
         self.assertIs(section.parser, cf)
         mit self.assertRaises(AttributeError):
-            section.name = 'Name is read-only'
+            section.name = 'Name ist read-only'
         mit self.assertRaises(AttributeError):
-            section.parser = 'Parser is read-only'
+            section.parser = 'Parser ist read-only'
         eq(section['foo'], 'bar3')
         eq(section['baz'], 'qwe')
         eq(cf['Commented Bar']['foo'], 'bar4')
@@ -185,7 +185,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         eq(cf['Spaces']['key mit spaces'], 'value')
         eq(cf['Spaces']['another mit spaces'], 'splat!')
         eq(cf['Long Line']['foo'],
-           'this line is much, much longer than my editor\nlikes it.')
+           'this line ist much, much longer than my editor\nlikes it.')
         wenn self.allow_no_value:
             eq(cf['NoValue']['option-without-value'], Nichts)
         # test vars= und fallback=
@@ -265,28 +265,28 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         self.assertEqual(cm.exception.args, ('No Such Section',))
 
         eq(cf.get('Long Line', 'foo'),
-           'this line is much, much longer than my editor\nlikes it.')
+           'this line ist much, much longer than my editor\nlikes it.')
 
         # mapping access
-        del cf['Types']
+        loesche cf['Types']
         self.assertFalsch('Types' in cf)
         mit self.assertRaises(KeyError):
-            del cf['Types']
+            loesche cf['Types']
         mit self.assertRaises(ValueError):
-            del cf[self.default_section]
-        del cf['Spacey Bar']['foo']
+            loesche cf[self.default_section]
+        loesche cf['Spacey Bar']['foo']
         self.assertFalsch('foo' in cf['Spacey Bar'])
         mit self.assertRaises(KeyError):
-            del cf['Spacey Bar']['foo']
+            loesche cf['Spacey Bar']['foo']
         self.assertWahr('that_value' in cf['Spacey Bar'])
         mit self.assertRaises(KeyError):
-            del cf['Spacey Bar']['that_value']
-        del cf[self.default_section]['that_value']
+            loesche cf['Spacey Bar']['that_value']
+        loesche cf[self.default_section]['that_value']
         self.assertFalsch('that_value' in cf['Spacey Bar'])
         mit self.assertRaises(KeyError):
-            del cf[self.default_section]['that_value']
+            loesche cf[self.default_section]['that_value']
         mit self.assertRaises(KeyError):
-            del cf['No Such Section']['foo']
+            loesche cf['No Such Section']['foo']
 
         # Don't add new asserts below in this method als most of the options
         # und sections are now removed.
@@ -304,7 +304,7 @@ foo {0[0]} bar2
 foo{0[1]} bar4 {1[1]} comment
 baz{0[0]}qwe {1[0]}another one
 [Long Line]
-foo{0[1]} this line is much, much longer than my editor
+foo{0[1]} this line ist much, much longer than my editor
    likes it.
 [Section\\with$weird%characters[\t]
 [Internationalized Stuff]
@@ -375,7 +375,7 @@ boolean {0[0]} NO
                 "baz": "qwe",
             },
             "Long Line": {
-                "foo": "this line is much, much longer than my editor\nlikes "
+                "foo": "this line ist much, much longer than my editor\nlikes "
                        "it.",
             },
             "Section\\with$weird%characters[\t": {
@@ -500,7 +500,7 @@ boolean {0[0]} NO
                 "has_option() returned false fuer option which should exist")
         eq(cf["A"].keys(), {"a-b"})
         eq(cf["a"].keys(), {"b"})
-        del cf["a"]["B"]
+        loesche cf["a"]["B"]
         elem_eq(cf["a"].keys(), {})
 
         # SF bug #432369:
@@ -663,7 +663,7 @@ boolean {0[0]} NO
     def test_write(self):
         config_string = (
             "[Long Line]\n"
-            "foo{0[0]} this line is much, much longer than my editor\n"
+            "foo{0[0]} this line ist much, much longer than my editor\n"
             "   likes it.\n"
             "[{default_section}]\n"
             "foo{0[1]} another very\n"
@@ -695,7 +695,7 @@ boolean {0[0]} NO
                 "\tlong line\n"
                 "\n"
                 "[Long Line]\n"
-                "foo{equals}this line is much, much longer than my editor\n"
+                "foo{equals}this line ist much, much longer than my editor\n"
                 "\tlikes it.\n"
                 "\n"
                 "[Long Line - With Comments!]\n"
@@ -886,7 +886,7 @@ boolean {0[0]} NO
 
     def test_invalid_multiline_value(self):
         wenn self.allow_no_value:
-            self.skipTest('if no_value is allowed, ParsingError is nicht raised')
+            self.skipTest('if no_value ist allowed, ParsingError ist nicht raised')
 
         invalid = textwrap.dedent("""\
             [DEFAULT]
@@ -1067,7 +1067,7 @@ klasse MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
         os.unlink(os_helper.TESTFN)
 
     def test_dominating_multiline_values(self):
-        # We're reading von file because this is where the code changed
+        # We're reading von file because this ist where the code changed
         # during performance updates in Python 3.2
         cf_from_file = self.newconfig()
         mit open(os_helper.TESTFN, encoding="utf-8") als f:
@@ -1108,9 +1108,9 @@ klasse RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
                          [0, 1, 1, 2, 3, 5, 8, 13])
         self.assertEqual(cf.get('non-string', 'dict'), {'pi': 3.14159})
         cf.add_section(123)
-        cf.set(123, 'this is sick', Wahr)
-        self.assertEqual(cf.get(123, 'this is sick'), Wahr)
-        wenn cf._dict is configparser._default_dict:
+        cf.set(123, 'this ist sick', Wahr)
+        self.assertEqual(cf.get(123, 'this ist sick'), Wahr)
+        wenn cf._dict ist configparser._default_dict:
             # would nicht work fuer SortedDict; only checking fuer the most common
             # default dictionary (dict)
             cf.optionxform = lambda x: x
@@ -1415,7 +1415,7 @@ klasse ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase)
 
 
 klasse Issue7005TestCase(unittest.TestCase):
-    """Test output when Nichts is set() als a value und allow_no_value == Falsch.
+    """Test output when Nichts ist set() als a value und allow_no_value == Falsch.
 
     http://bugs.python.org/issue7005
 
@@ -1424,7 +1424,7 @@ klasse Issue7005TestCase(unittest.TestCase):
     expected_output = "[section]\noption = Nichts\n\n"
 
     def prepare(self, config_class):
-        # This is the default, but that's the point.
+        # This ist the default, but that's the point.
         cp = config_class(allow_no_value=Falsch)
         cp.add_section("section")
         cp.set("section", "option", Nichts)
@@ -1476,7 +1476,7 @@ klasse CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
         [Commented Bar]
         baz=qwe ; a comment
         foo: bar # nicht a comment!
-        # but this is a comment
+        # but this ist a comment
         ; another comment
         quirk: this;is nicht a comment
         ; a space must precede an inline comment
@@ -1503,7 +1503,7 @@ klasse CopyTestCase(BasicTestCase, unittest.TestCase):
                 weiter
             fuer default, value in cf[self.default_section].items():
                 wenn section[default] == value:
-                    del section[default]
+                    loesche section[default]
         gib cf_copy
 
 
@@ -1703,11 +1703,11 @@ klasse CoverageOneHundredTestCase(unittest.TestCase):
         self.assertEqual(parser.getdecimal('s2', 'two'), 2)
         self.assertEqual(parser['s1'].getdecimal('one'), 1)
         self.assertEqual(parser['s2'].getdecimal('two'), 2)
-        del parser.getdecimal
+        loesche parser.getdecimal
         mit self.assertRaises(AttributeError):
             parser.getdecimal('s1', 'one')
         self.assertIn('decimal', parser.converters)
-        del parser.converters['decimal']
+        loesche parser.converters['decimal']
         self.assertNotIn('decimal', parser.converters)
         mit self.assertRaises(AttributeError):
             parser.getdecimal('s1', 'one')
@@ -1891,7 +1891,7 @@ klasse InlineCommentStrippingTestCase(unittest.TestCase):
 
         [multiprefix]
         k1 = v1;still v1 #a comment ; yeah, pretty much
-        k2 = v2 // this already is a comment ; continued
+        k2 = v2 // this already ist a comment ; continued
         k3 = v3;#//still v3# und still v3 ; a comment
         """)
         s = cfg['section']
@@ -2029,7 +2029,7 @@ klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
         dec0_5 = decimal.Decimal('0.5')
         self.assertEqual(cfg.getdecimal('s', 'float'), dec0_5)
         self.assertEqual(s.getdecimal('float'), dec0_5)
-        del cfg.converters['decimal']
+        loesche cfg.converters['decimal']
         self.assertNotIn('decimal', cfg.converters)
         self.assertEqual(len(cfg.converters), 4)
         mit self.assertRaises(AttributeError):
@@ -2037,11 +2037,11 @@ klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
         mit self.assertRaises(AttributeError):
             s.getdecimal('float')
         mit self.assertRaises(KeyError):
-            del cfg.converters['decimal']
+            loesche cfg.converters['decimal']
         mit self.assertRaises(KeyError):
-            del cfg.converters['']
+            loesche cfg.converters['']
         mit self.assertRaises(KeyError):
-            del cfg.converters[Nichts]
+            loesche cfg.converters[Nichts]
 
 
 klasse BlatantOverrideConvertersTestCase(unittest.TestCase):
@@ -2147,7 +2147,7 @@ klasse BlatantOverrideConvertersTestCase(unittest.TestCase):
         self.assertEqual(cfg.getlen('two', 'one'), 5)
         self.assertEqual(cfg.getlen('two', 'two'), 5)
         self.assertEqual(cfg.getlen('two', 'three'), 4)
-        # If a getter impl is assigned straight to the instance, it won't
+        # If a getter impl ist assigned straight to the instance, it won't
         # be available on the section proxies.
         mit self.assertRaises(AttributeError):
             self.assertEqual(cfg['one'].getlen('one'), 5)

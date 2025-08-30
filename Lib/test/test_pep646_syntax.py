@@ -15,9 +15,9 @@ Setup
     ...        self._setitem_name = name
     ...        self._setitem_val = val
     ...    def __repr__(self):
-    ...        wenn self._setitem_name is nicht Nichts:
+    ...        wenn self._setitem_name ist nicht Nichts:
     ...            gib f"A[{self._setitem_name}]={self._setitem_val}"
-    ...        sowenn self._delitem_name is nicht Nichts:
+    ...        sowenn self._delitem_name ist nicht Nichts:
     ...            gib f"delA[{self._delitem_name}]"
     ...    def __getitem__(self, name):
     ...        gib ParameterisedA(name)
@@ -50,91 +50,91 @@ Slices that are supposed to work, starring our custom B class
     A[(StarredB,)]
     >>> A[*b] = 1; A
     A[(StarredB,)]=1
-    >>> del A[*b]; A
+    >>> loesche A[*b]; A
     delA[(StarredB,)]
 
     >>> A[*b, *b]
     A[(StarredB, StarredB)]
     >>> A[*b, *b] = 1; A
     A[(StarredB, StarredB)]=1
-    >>> del A[*b, *b]; A
+    >>> loesche A[*b, *b]; A
     delA[(StarredB, StarredB)]
 
     >>> A[b, *b]
     A[(B, StarredB)]
     >>> A[b, *b] = 1; A
     A[(B, StarredB)]=1
-    >>> del A[b, *b]; A
+    >>> loesche A[b, *b]; A
     delA[(B, StarredB)]
 
     >>> A[*b, b]
     A[(StarredB, B)]
     >>> A[*b, b] = 1; A
     A[(StarredB, B)]=1
-    >>> del A[*b, b]; A
+    >>> loesche A[*b, b]; A
     delA[(StarredB, B)]
 
     >>> A[b, b, *b]
     A[(B, B, StarredB)]
     >>> A[b, b, *b] = 1; A
     A[(B, B, StarredB)]=1
-    >>> del A[b, b, *b]; A
+    >>> loesche A[b, b, *b]; A
     delA[(B, B, StarredB)]
 
     >>> A[*b, b, b]
     A[(StarredB, B, B)]
     >>> A[*b, b, b] = 1; A
     A[(StarredB, B, B)]=1
-    >>> del A[*b, b, b]; A
+    >>> loesche A[*b, b, b]; A
     delA[(StarredB, B, B)]
 
     >>> A[b, *b, b]
     A[(B, StarredB, B)]
     >>> A[b, *b, b] = 1; A
     A[(B, StarredB, B)]=1
-    >>> del A[b, *b, b]; A
+    >>> loesche A[b, *b, b]; A
     delA[(B, StarredB, B)]
 
     >>> A[b, b, *b, b]
     A[(B, B, StarredB, B)]
     >>> A[b, b, *b, b] = 1; A
     A[(B, B, StarredB, B)]=1
-    >>> del A[b, b, *b, b]; A
+    >>> loesche A[b, b, *b, b]; A
     delA[(B, B, StarredB, B)]
 
     >>> A[b, *b, b, b]
     A[(B, StarredB, B, B)]
     >>> A[b, *b, b, b] = 1; A
     A[(B, StarredB, B, B)]=1
-    >>> del A[b, *b, b, b]; A
+    >>> loesche A[b, *b, b, b]; A
     delA[(B, StarredB, B, B)]
 
     >>> A[A[b, *b, b]]
     A[A[(B, StarredB, B)]]
     >>> A[A[b, *b, b]] = 1; A
     A[A[(B, StarredB, B)]]=1
-    >>> del A[A[b, *b, b]]; A
+    >>> loesche A[A[b, *b, b]]; A
     delA[A[(B, StarredB, B)]]
 
     >>> A[*A[b, *b, b]]
     A[(B, StarredB, B)]
     >>> A[*A[b, *b, b]] = 1; A
     A[(B, StarredB, B)]=1
-    >>> del A[*A[b, *b, b]]; A
+    >>> loesche A[*A[b, *b, b]]; A
     delA[(B, StarredB, B)]
 
     >>> A[b, ...]
     A[(B, Ellipsis)]
     >>> A[b, ...] = 1; A
     A[(B, Ellipsis)]=1
-    >>> del A[b, ...]; A
+    >>> loesche A[b, ...]; A
     delA[(B, Ellipsis)]
 
     >>> A[*A[b, ...]]
     A[(B, Ellipsis)]
     >>> A[*A[b, ...]] = 1; A
     A[(B, Ellipsis)]=1
-    >>> del A[*A[b, ...]]; A
+    >>> loesche A[*A[b, ...]]; A
     delA[(B, Ellipsis)]
 
 Slices that are supposed to work, starring a list
@@ -145,28 +145,28 @@ Slices that are supposed to work, starring a list
     A[(1, 2, 3)]
     >>> A[*l] = 1; A
     A[(1, 2, 3)]=1
-    >>> del A[*l]; A
+    >>> loesche A[*l]; A
     delA[(1, 2, 3)]
 
     >>> A[*l, 4]
     A[(1, 2, 3, 4)]
     >>> A[*l, 4] = 1; A
     A[(1, 2, 3, 4)]=1
-    >>> del A[*l, 4]; A
+    >>> loesche A[*l, 4]; A
     delA[(1, 2, 3, 4)]
 
     >>> A[0, *l]
     A[(0, 1, 2, 3)]
     >>> A[0, *l] = 1; A
     A[(0, 1, 2, 3)]=1
-    >>> del A[0, *l]; A
+    >>> loesche A[0, *l]; A
     delA[(0, 1, 2, 3)]
 
     >>> A[1:2, *l]
     A[(slice(1, 2, Nichts), 1, 2, 3)]
     >>> A[1:2, *l] = 1; A
     A[(slice(1, 2, Nichts), 1, 2, 3)]=1
-    >>> del A[1:2, *l]; A
+    >>> loesche A[1:2, *l]; A
     delA[(slice(1, 2, Nichts), 1, 2, 3)]
 
     >>> repr(A[1:2, *l]) == repr(A[1:2, 1, 2, 3])
@@ -180,28 +180,28 @@ Slices that are supposed to work, starring a tuple
     A[(1, 2, 3)]
     >>> A[*t] = 1; A
     A[(1, 2, 3)]=1
-    >>> del A[*t]; A
+    >>> loesche A[*t]; A
     delA[(1, 2, 3)]
 
     >>> A[*t, 4]
     A[(1, 2, 3, 4)]
     >>> A[*t, 4] = 1; A
     A[(1, 2, 3, 4)]=1
-    >>> del A[*t, 4]; A
+    >>> loesche A[*t, 4]; A
     delA[(1, 2, 3, 4)]
 
     >>> A[0, *t]
     A[(0, 1, 2, 3)]
     >>> A[0, *t] = 1; A
     A[(0, 1, 2, 3)]=1
-    >>> del A[0, *t]; A
+    >>> loesche A[0, *t]; A
     delA[(0, 1, 2, 3)]
 
     >>> A[1:2, *t]
     A[(slice(1, 2, Nichts), 1, 2, 3)]
     >>> A[1:2, *t] = 1; A
     A[(slice(1, 2, Nichts), 1, 2, 3)]=1
-    >>> del A[1:2, *t]; A
+    >>> loesche A[1:2, *t]; A
     delA[(slice(1, 2, Nichts), 1, 2, 3)]
 
     >>> repr(A[1:2, *t]) == repr(A[1:2, 1, 2, 3])
@@ -216,42 +216,42 @@ Starring an expression (rather than a name) in a slice
     A[[1, 2, 3]]
     >>> A[returns_list()] = 1; A
     A[[1, 2, 3]]=1
-    >>> del A[returns_list()]; A
+    >>> loesche A[returns_list()]; A
     delA[[1, 2, 3]]
 
     >>> A[returns_list(), 4]
     A[([1, 2, 3], 4)]
     >>> A[returns_list(), 4] = 1; A
     A[([1, 2, 3], 4)]=1
-    >>> del A[returns_list(), 4]; A
+    >>> loesche A[returns_list(), 4]; A
     delA[([1, 2, 3], 4)]
 
     >>> A[*returns_list()]
     A[(1, 2, 3)]
     >>> A[*returns_list()] = 1; A
     A[(1, 2, 3)]=1
-    >>> del A[*returns_list()]; A
+    >>> loesche A[*returns_list()]; A
     delA[(1, 2, 3)]
 
     >>> A[*returns_list(), 4]
     A[(1, 2, 3, 4)]
     >>> A[*returns_list(), 4] = 1; A
     A[(1, 2, 3, 4)]=1
-    >>> del A[*returns_list(), 4]; A
+    >>> loesche A[*returns_list(), 4]; A
     delA[(1, 2, 3, 4)]
 
     >>> A[0, *returns_list()]
     A[(0, 1, 2, 3)]
     >>> A[0, *returns_list()] = 1; A
     A[(0, 1, 2, 3)]=1
-    >>> del A[0, *returns_list()]; A
+    >>> loesche A[0, *returns_list()]; A
     delA[(0, 1, 2, 3)]
 
     >>> A[*returns_list(), *returns_list()]
     A[(1, 2, 3, 1, 2, 3)]
     >>> A[*returns_list(), *returns_list()] = 1; A
     A[(1, 2, 3, 1, 2, 3)]=1
-    >>> del A[*returns_list(), *returns_list()]; A
+    >>> loesche A[*returns_list(), *returns_list()]; A
     delA[(1, 2, 3, 1, 2, 3)]
 
 Using both a starred object und a start:stop in a slice

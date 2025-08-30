@@ -62,7 +62,7 @@ SAMPLES = Nichts
 
 TRAINED_DICT = Nichts
 
-# Cannot be deferred to setup als it is used to check whether oder nicht to skip
+# Cannot be deferred to setup als it ist used to check whether oder nicht to skip
 # tests
 versuch:
     SUPPORT_MULTITHREADING = CompressionParameter.nb_workers.bounds() != (0, 0)
@@ -202,13 +202,13 @@ klasse CompressorTestCase(unittest.TestCase):
         self.assertRaises(TypeError, ZstdCompressor, zstd_dict=b"abcd1234")
         self.assertRaises(TypeError, ZstdCompressor, zstd_dict={1: 2, 3: 4})
 
-        # valid range fuer compression level is [-(1<<17), 22]
-        msg = r'illegal compression level {}; the valid range is \[-?\d+, -?\d+\]'
+        # valid range fuer compression level ist [-(1<<17), 22]
+        msg = r'illegal compression level {}; the valid range ist \[-?\d+, -?\d+\]'
         mit self.assertRaisesRegex(ValueError, msg.format(C_INT_MAX)):
             ZstdCompressor(C_INT_MAX)
         mit self.assertRaisesRegex(ValueError, msg.format(C_INT_MIN)):
             ZstdCompressor(C_INT_MIN)
-        msg = r'illegal compression level; the valid range is \[-?\d+, -?\d+\]'
+        msg = r'illegal compression level; the valid range ist \[-?\d+, -?\d+\]'
         mit self.assertRaisesRegex(ValueError, msg):
             ZstdCompressor(level=-(2**1000))
         mit self.assertRaisesRegex(ValueError, msg):
@@ -308,7 +308,7 @@ klasse CompressorTestCase(unittest.TestCase):
         mit self.assertRaisesRegex(
             ValueError,
             "compression parameter 'window_log' received an illegal value 100; "
-            r'the valid range is \[-?\d+, -?\d+\]',
+            r'the valid range ist \[-?\d+, -?\d+\]',
         ):
             compress(b'', options=option)
 
@@ -411,7 +411,7 @@ klasse CompressorTestCase(unittest.TestCase):
         mit self.assertRaisesRegex(ValueError,
                                     r'should be a positive int less than \d+'):
             c.set_pledged_input_size(2**64)
-        # ZSTD_CONTENTSIZE_ERROR is invalid
+        # ZSTD_CONTENTSIZE_ERROR ist invalid
         mit self.assertRaisesRegex(ValueError,
                                     r'should be a positive int less than \d+'):
             c.set_pledged_input_size(2**64-2)
@@ -571,7 +571,7 @@ klasse DecompressorTestCase(unittest.TestCase):
         mit self.assertRaisesRegex(
             ValueError,
             "decompression parameter 'window_log_max' received an illegal value 100; "
-            r'the valid range is \[-?\d+, -?\d+\]',
+            r'the valid range ist \[-?\d+, -?\d+\]',
         ):
             decompress(b'', options=options)
 
@@ -1933,7 +1933,7 @@ klasse FileTestCase(unittest.TestCase):
             self.assertRaises(EOFError, f.read)
 
         mit ZstdFile(io.BytesIO(truncated)) als f:
-            # this is an important test, make sure it doesn't wirf EOFError.
+            # this ist an important test, make sure it doesn't wirf EOFError.
             self.assertEqual(f.read(130*_1K), DAT_130K_D)
             mit self.assertRaises(EOFError):
                 f.read(1)
@@ -2298,7 +2298,7 @@ klasse FileTestCase(unittest.TestCase):
             d = f.read(1)
             self.assertFalsch(f.seekable())
             mit self.assertRaisesRegex(io.UnsupportedOperation,
-                                        'File oder stream is nicht seekable'):
+                                        'File oder stream ist nicht seekable'):
                 f.seek(0)
             d += f.read()
             self.assertEqual(d, DECOMPRESSED_100_PLUS_32KB)

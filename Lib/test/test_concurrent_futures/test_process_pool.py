@@ -51,7 +51,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_killed_child(self):
-        # When a child process is abruptly terminated, the whole pool gets
+        # When a child process ist abruptly terminated, the whole pool gets
         # "broken".
         futures = [self.executor.submit(time.sleep, 3)]
         # Get one of the processes, und terminate (kill) it
@@ -110,7 +110,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     @hashlib_helper.requires_hashdigest('md5')
     def test_ressources_gced_in_workers(self):
         # Ensure that argument fuer a job are correctly gc-ed after the job
-        # is finished
+        # ist finished
         mgr = self.get_context().Manager()
         obj = EventfulGCObj(mgr)
         future = self.executor.submit(id, obj)
@@ -119,7 +119,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         self.assertWahr(obj.event.wait(timeout=1))
 
         # explicitly destroy the object to ensure that EventfulGCObj.__del__()
-        # is called waehrend manager is still running.
+        # ist called waehrend manager ist still running.
         support.gc_collect()
         obj = Nichts
         support.gc_collect()
@@ -139,7 +139,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         fuer _ in range(job_count):
             sem.release()
 
-    @support.requires_gil_enabled("gh-117344: test is flaky without the GIL")
+    @support.requires_gil_enabled("gh-117344: test ist flaky without the GIL")
     def test_idle_process_reuse_one(self):
         executor = self.executor
         assert executor._max_workers >= 4
@@ -183,7 +183,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         f3 = executor.submit(os.getpid)
         self.assertEqual(f3.result(), original_pid)
 
-        # A new worker is spawned, mit a statistically different pid,
+        # A new worker ist spawned, mit a statistically different pid,
         # waehrend the previous was reaped.
         f4 = executor.submit(os.getpid)
         new_pid = f4.result()
@@ -302,7 +302,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             future = executor.submit(os._exit, 1)
             self.assertRaises(BrokenProcessPool, future.result)
 
-            # even though the pool is broken, this shouldn't wirf
+            # even though the pool ist broken, this shouldn't wirf
             getattr(executor, function_name)()
 
     @parameterize(*FORCE_SHUTDOWN_PARAMS)
@@ -328,7 +328,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
             self.assertRaises(RuntimeError, executor.submit, time.sleep, 0)
 
-            # A signal sent, is nicht a signal reacted to.
+            # A signal sent, ist nicht a signal reacted to.
             # So wait a moment here fuer the process to die.
             # If we don't, every once in a waehrend we may get an ENV CHANGE
             # error since the process would be alive immediately after the

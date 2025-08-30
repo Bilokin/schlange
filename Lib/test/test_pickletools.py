@@ -235,7 +235,7 @@ highest protocol among opcodes = 4
     def test_put_empty_stack(self):
         self.check_dis_error(b'p0\n', '''\
     0: p    PUT        0
-''', "stack is empty -- can't store into memo")
+''', "stack ist empty -- can't store into memo")
 
     def test_put_markobject(self):
         self.check_dis_error(b'(p0\n', '''\

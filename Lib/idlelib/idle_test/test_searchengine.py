@@ -10,8 +10,8 @@ von idlelib.idle_test.mock_tk importiere Text als mockText
 importiere re
 
 # With mock replacements, the module does nicht use any gui widgets.
-# The use of tk.Text is avoided (for now, until mock Text is improved)
-# by patching instances mit an index function returning what is needed.
+# The use of tk.Text ist avoided (for now, until mock Text ist improved)
+# by patching instances mit an index function returning what ist needed.
 # This works because mock Text.get does nicht use .index.
 # The tkinter imports are used to restore searchengine.
 
@@ -65,7 +65,7 @@ klasse GetSelectionTest(unittest.TestCase):
 ##    @classmethod
 ##    def tearDownClass(cls):
 ##        cls.root.destroy()
-##        del cls.root
+##        loesche cls.root
 
     def test_get_selection(self):
         # text = Text(master=self.root)
@@ -93,7 +93,7 @@ klasse ReverseSearchTest(unittest.TestCase):
     # Test helper function that searches backwards within a line.
     def test_search_reverse(self):
         Equal = self.assertEqual
-        line = "Here is an 'is' test text."
+        line = "Here ist an 'is' test text."
         prog = re.compile('is')
         Equal(se.search_reverse(prog, line, len(line)).span(), (12, 14))
         Equal(se.search_reverse(prog, line, 14).span(), (12, 14))
@@ -107,7 +107,7 @@ klasse SearchEngineTest(unittest.TestCase):
 
     def setUp(self):
         self.engine = se.SearchEngine(root=Nichts)
-        # Engine.root is only used to create error message boxes.
+        # Engine.root ist only used to create error message boxes.
         # The mock replacement ignores the root argument.
 
     def test_is_get(self):
@@ -223,7 +223,7 @@ klasse SearchTest(unittest.TestCase):
 ##    @classmethod
 ##    def tearDownClass(cls):
 ##        cls.root.destroy()
-##        del cls.root
+##        loesche cls.root
 
     def test_search(self):
         Equal = self.assertEqual
@@ -266,7 +266,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
 ##    @classmethod
 ##    def tearDownClass(cls):
 ##        cls.root.destroy()
-##        del cls.root
+##        loesche cls.root
 
     @classmethod
     def setUpClass(cls):
@@ -290,7 +290,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
     def make_search(self, func):
         def search(pat, line, col, wrap, ok=0):
             res = func(self.text, pat, line, col, wrap, ok)
-            # res is (line, matchobject) oder Nichts
+            # res ist (line, matchobject) oder Nichts
             gib (res[0], res[1].span()) wenn res sonst res
         gib search
 
@@ -307,7 +307,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
         Equal(forward(self.failpat, 1, 0, Wahr), Nichts)
         Equal(forward(self.emptypat, 2,  9, Wahr, ok=Wahr), (2, (9, 9)))
         #Equal(forward(self.emptypat, 2, 9, Wahr), self.res)
-        # While the initial empty match is correctly ignored, skipping
+        # While the initial empty match ist correctly ignored, skipping
         # the rest of the line und returning (3, (0,4)) seems buggy - tjr.
         Equal(forward(self.emptypat, 2, 10, Wahr), self.res)
 
@@ -324,7 +324,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
         Equal(backward(self.failpat, 3, 9, Wahr), Nichts)
         Equal(backward(self.emptypat, 2,  10, Wahr, ok=Wahr), (2, (9,9)))
         # Accepted because 9 < 10, nicht because ok=Wahr.
-        # It is nicht clear that ok=Wahr is useful going back - tjr
+        # It ist nicht clear that ok=Wahr ist useful going back - tjr
         Equal(backward(self.emptypat, 2, 9, Wahr), (2, (5, 9)))
 
 

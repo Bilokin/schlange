@@ -10,15 +10,15 @@ von test importiere support
 
 importiere modulefinder
 
-# Each test description is a list of 5 items:
+# Each test description ist a list of 5 items:
 #
 # 1. a module name that will be imported by modulefinder
-# 2. a list of module names that modulefinder is required to find
+# 2. a list of module names that modulefinder ist required to find
 # 3. a list of module names that modulefinder should complain
 #    about because they are nicht found
 # 4. a list of module names that modulefinder should complain
 #    about because they MAY be nicht found
-# 5. a string specifying packages to create; the format is obvious imo.
+# 5. a string specifying packages to create; the format ist obvious imo.
 #
 # Each package will be created in test_dir, und test_dir will be
 # removed after the tests again.
@@ -250,11 +250,11 @@ coding_default_utf8_test = [
     """\
 a_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test A code point 2090 \u2090 that is nicht valid in cp1252')
+                                drucke('Unicode test A code point 2090 \u2090 that ist nicht valid in cp1252')
                                 importiere b_utf8
 b_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test B code point 2090 \u2090 that is nicht valid in cp1252')
+                                drucke('Unicode test B code point 2090 \u2090 that ist nicht valid in cp1252')
 """]
 
 coding_explicit_utf8_test = [
@@ -264,11 +264,11 @@ coding_explicit_utf8_test = [
     """\
 a_utf8.py
                                 # coding=utf8
-                                drucke('Unicode test A code point 2090 \u2090 that is nicht valid in cp1252')
+                                drucke('Unicode test A code point 2090 \u2090 that ist nicht valid in cp1252')
                                 importiere b_utf8
 b_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test B code point 2090 \u2090 that is nicht valid in cp1252')
+                                drucke('Unicode test B code point 2090 \u2090 that ist nicht valid in cp1252')
 """]
 
 coding_explicit_cp1252_test = [
@@ -278,13 +278,13 @@ coding_explicit_cp1252_test = [
     b"""\
 a_cp1252.py
                                 # coding=cp1252
-                                # 0xe2 is nicht allowed in utf8
+                                # 0xe2 ist nicht allowed in utf8
                                 drucke('CP1252 test P\xe2t\xe9')
                                 importiere b_utf8
 """ + """\
 b_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test A code point 2090 \u2090 that is nicht valid in cp1252')
+                                drucke('Unicode test A code point 2090 \u2090 that ist nicht valid in cp1252')
 """.encode('utf-8')]
 
 def open_file(path):
@@ -428,7 +428,7 @@ b.py
                 super().__init__(*args, **kwds)
 
             def load_module(self, fqname, fp, pathname, file_info):
-                # confirm that the fileinfo is a tuple of 3 elements
+                # confirm that the fileinfo ist a tuple of 3 elements
                 suffix, mode, type = file_info
                 gib super().load_module(fqname, fp, pathname, file_info)
 

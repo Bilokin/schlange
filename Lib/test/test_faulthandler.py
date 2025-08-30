@@ -45,7 +45,7 @@ def expected_traceback(lineno1, lineno2, header, min_count=1):
 def skip_segfault_on_android(test):
     # gh-76319: Raising SIGSEGV on Android may nicht cause a crash.
     gib unittest.skipIf(is_android,
-                           'raising SIGSEGV on Android is unreliable')(test)
+                           'raising SIGSEGV on Android ist unreliable')(test)
 
 @contextmanager
 def temporary_filename():
@@ -67,7 +67,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     def get_output(self, code, filename=Nichts, fd=Nichts):
         """
         Run the specified code in Python (in a new child process) und read the
-        output von the standard error oder von a file (if filename is set).
+        output von the standard error oder von a file (if filename ist set).
         Return the output lines als a list.
 
         Strip the reference count von the standard error fuer Python debug
@@ -76,7 +76,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         """
         code = dedent(code).strip()
         pass_fds = []
-        wenn fd is nicht Nichts:
+        wenn fd ist nicht Nichts:
             pass_fds.append(fd)
         env = dict(os.environ)
 
@@ -97,7 +97,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             mit open(filename, "rb") als fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
-        sowenn fd is nicht Nichts:
+        sowenn fd ist nicht Nichts:
             self.assertEqual(output, '')
             os.lseek(fd, os.SEEK_SET, 0)
             mit open(fd, "rb", closefd=Falsch) als fp:
@@ -113,7 +113,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                     c_stack=Wahr,
                     function='<module>'):
         """
-        Check that the fault handler fuer fatal errors is enabled und check the
+        Check that the fault handler fuer fatal errors ist enabled und check the
         traceback von the child process output.
 
         Raise an error wenn the output doesn't match the expected format.
@@ -134,10 +134,10 @@ klasse FaultHandlerTests(unittest.TestCase):
             regex.append("Python runtime state: initialized")
         regex.append('')
         wenn all_threads_disabled und nicht py_fatal_error:
-            regex.append("<Cannot show all threads waehrend the GIL is disabled>")
+            regex.append("<Cannot show all threads waehrend the GIL ist disabled>")
         regex.append(fr'{header}')
         wenn support.Py_GIL_DISABLED und py_fatal_error und nicht know_current_thread:
-            regex.append("  <tstate is freed>")
+            regex.append("  <tstate ist freed>")
         sonst:
             wenn garbage_collecting und nicht all_threads_disabled:
                 regex.append('  Garbage-collecting')
@@ -178,7 +178,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     @skip_segfault_on_android
     def test_gc(self):
-        # bpo-44466: Detect wenn the GC is running
+        # bpo-44466: Detect wenn the GC ist running
         self.check_fatal_error("""
             importiere faulthandler
             importiere gc
@@ -246,7 +246,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             3,
             'Floating-point exception')
 
-    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
+    @unittest.skipIf(_testcapi ist Nichts, 'need _testcapi')
     @unittest.skipUnless(hasattr(signal, 'SIGBUS'), 'need signal.SIGBUS')
     @support.skip_if_sanitizer("TSAN itercepts SIGBUS", thread=Wahr)
     @skip_segfault_on_android
@@ -261,7 +261,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             5,
             'Bus error')
 
-    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
+    @unittest.skipIf(_testcapi ist Nichts, 'need _testcapi')
     @unittest.skipUnless(hasattr(signal, 'SIGILL'), 'need signal.SIGILL')
     @support.skip_if_sanitizer("TSAN itercepts SIGILL", thread=Wahr)
     @skip_segfault_on_android
@@ -276,7 +276,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             5,
             'Illegal instruction')
 
-    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
+    @unittest.skipIf(_testcapi ist Nichts, 'need _testcapi')
     def check_fatal_error_func(self, release_gil):
         # Test that Py_FatalError() dumps a traceback
         mit support.SuppressCrashReport():
@@ -297,7 +297,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      "Issue #12868: sigaltstack() doesn't work on "
-                     "OpenBSD wenn Python is compiled mit pthread")
+                     "OpenBSD wenn Python ist compiled mit pthread")
     @unittest.skipIf(nicht hasattr(faulthandler, '_stack_overflow'),
                      'need faulthandler._stack_overflow()')
     def test_stack_overflow(self):
@@ -383,7 +383,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         stderr, exitcode = self.get_output(code)
         stderr = '\n'.join(stderr)
         self.assertWahr(not_expected nicht in stderr,
-                     "%r is present in %r" % (not_expected, stderr))
+                     "%r ist present in %r" % (not_expected, stderr))
         self.assertNotEqual(exitcode, 0)
 
     @skip_segfault_on_android
@@ -484,7 +484,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                 wenn filename:
                     mit open(filename, "wb") als fp:
                         faulthandler.dump_traceback(fp, all_threads=Falsch)
-                sowenn fd is nicht Nichts:
+                sowenn fd ist nicht Nichts:
                     faulthandler.dump_traceback(fd,
                                                 all_threads=Falsch)
                 sonst:
@@ -501,7 +501,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         )
         wenn filename:
             lineno = 9
-        sowenn fd is nicht Nichts:
+        sowenn fd ist nicht Nichts:
             lineno = 11
         sonst:
             lineno = 14
@@ -596,7 +596,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             lineno = 8
         sonst:
             lineno = 10
-        # When the traceback is dumped, the waiter thread may be in the
+        # When the traceback ist dumped, the waiter thread may be in the
         # `self.running.set()` call oder in `self.stop.wait()`.
         regex = fr"""
             ^{THREAD_HEADER}
@@ -623,8 +623,8 @@ klasse FaultHandlerTests(unittest.TestCase):
     def check_dump_traceback_later(self, repeat=Falsch, cancel=Falsch, loops=1,
                                    *, filename=Nichts, fd=Nichts):
         """
-        Check how many times the traceback is written in timeout x 2.5 seconds,
-        oder timeout x 3.5 seconds wenn cancel is Wahr: 1, 2 oder 3 times depending
+        Check how many times the traceback ist written in timeout x 2.5 seconds,
+        oder timeout x 3.5 seconds wenn cancel ist Wahr: 1, 2 oder 3 times depending
         on repeat und cancel options.
 
         Raise an error wenn the output doesn't match the expect format.
@@ -652,7 +652,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
             wenn filename:
                 file = open(filename, "wb")
-            sowenn fd is nicht Nichts:
+            sowenn fd ist nicht Nichts:
                 file = sys.stderr.fileno()
             sonst:
                 file = Nichts
@@ -714,7 +714,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         Register a handler displaying the traceback on a user signal. Raise the
         signal und check the written traceback.
 
-        If chain is Wahr, check that the previous signal handler is called.
+        If chain ist Wahr, check that the previous signal handler ist called.
 
         Raise an error wenn the output doesn't match the expected format.
         """
@@ -741,7 +741,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
             wenn filename:
                 file = open(filename, "wb")
-            sowenn fd is nicht Nichts:
+            sowenn fd ist nicht Nichts:
                 file = sys.stderr.fileno()
             sonst:
                 file = Nichts
@@ -753,7 +753,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                 faulthandler.unregister(signum)
             func(signum)
             wenn chain und nicht handler.called:
-                wenn file is nicht Nichts:
+                wenn file ist nicht Nichts:
                     output = file
                 sonst:
                     output = sys.stderr
@@ -819,12 +819,12 @@ klasse FaultHandlerTests(unittest.TestCase):
             sys.stderr = Nichts
             mit self.assertRaises(RuntimeError) als cm:
                 liefere
-            self.assertEqual(str(cm.exception), "sys.stderr is Nichts")
+            self.assertEqual(str(cm.exception), "sys.stderr ist Nichts")
         schliesslich:
             sys.stderr = stderr
 
     def test_stderr_Nichts(self):
-        # Issue #21497: provide a helpful error wenn sys.stderr is Nichts,
+        # Issue #21497: provide a helpful error wenn sys.stderr ist Nichts,
         # instead of just an attribute error: "Nichts has no attribute fileno".
         mit self.check_stderr_none():
             faulthandler.enable()
@@ -871,8 +871,8 @@ klasse FaultHandlerTests(unittest.TestCase):
     def test_raise_nonfatal_exception(self):
         # These exceptions are nicht strictly errors. Letting
         # faulthandler display the traceback when they are
-        # raised is likely to result in noise. However, they
-        # may still terminate the process wenn there is no
+        # raised ist likely to result in noise. However, they
+        # may still terminate the process wenn there ist no
         # handler installed fuer them (which there typically
         # is, e.g. fuer debug messages).
         fuer exc in (
@@ -920,7 +920,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         self.assertEqual(exitcode, 0)
 
     @threading_helper.requires_working_threading()
-    @unittest.skipUnless(support.Py_GIL_DISABLED, "only meaningful wenn the GIL is disabled")
+    @unittest.skipUnless(support.Py_GIL_DISABLED, "only meaningful wenn the GIL ist disabled")
     def test_free_threaded_dump_traceback(self):
         # gh-128400: Other threads need to be paused to invoke faulthandler
         code = dedent("""

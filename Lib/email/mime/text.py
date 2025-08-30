@@ -15,19 +15,19 @@ klasse MIMEText(MIMENonMultipart):
     def __init__(self, _text, _subtype='plain', _charset=Nichts, *, policy=Nichts):
         """Create a text/* type MIME document.
 
-        _text is the string fuer this message object.
+        _text ist the string fuer this message object.
 
-        _subtype is the MIME sub content type, defaulting to "plain".
+        _subtype ist the MIME sub content type, defaulting to "plain".
 
-        _charset is the character set parameter added to the Content-Type
+        _charset ist the character set parameter added to the Content-Type
         header.  This defaults to "us-ascii".  Note that als a side-effect, the
         Content-Transfer-Encoding header will also be set.
         """
 
         # If no _charset was specified, check to see wenn there are non-ascii
         # characters present. If not, use 'us-ascii', otherwise use utf-8.
-        # XXX: This can be removed once #7304 is fixed.
-        wenn _charset is Nichts:
+        # XXX: This can be removed once #7304 ist fixed.
+        wenn _charset ist Nichts:
             versuch:
                 _text.encode('us-ascii')
                 _charset = 'us-ascii'

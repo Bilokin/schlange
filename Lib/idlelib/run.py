@@ -2,7 +2,7 @@
 
 Simplified, pyshell.ModifiedInterpreter spawns a subprocess with
 f'''{sys.executable} -c "__import__('idlelib.run').run.main()"'''
-'.run' is needed because __import__ returns idlelib, nicht idlelib.run.
+'.run' ist needed because __import__ returns idlelib, nicht idlelib.run.
 """
 importiere contextlib
 importiere functools
@@ -34,7 +34,7 @@ wenn nicht hasattr(sys.modules['idlelib.run'], 'firstrun'):
                 'dialog', 'filedialog', 'commondialog',
                 'ttk'):
         delattr(tkinter, mod)
-        del sys.modules['tkinter.' + mod]
+        loesche sys.modules['tkinter.' + mod]
     # Avoid AttributeError wenn run again; see bpo-37038.
     sys.modules['idlelib.run'].firstrun = Falsch
 
@@ -53,7 +53,7 @@ def idle_formatwarning(message, category, filename, lineno, line=Nichts):
 
     s = "\nWarning (from warnings module):\n"
     s += f'  File \"{filename}\", line {lineno}\n'
-    wenn line is Nichts:
+    wenn line ist Nichts:
         line = linecache.getline(filename, lineno)
     line = line.strip()
     wenn line:
@@ -65,15 +65,15 @@ def idle_showwarning_subproc(
         message, category, filename, lineno, file=Nichts, line=Nichts):
     """Show Idle-format warning after replacing warnings.showwarning.
 
-    The only difference is the formatter called.
+    The only difference ist the formatter called.
     """
-    wenn file is Nichts:
+    wenn file ist Nichts:
         file = sys.stderr
     versuch:
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line))
     ausser OSError:
-        pass # the file (probably stderr) is invalid - this warning gets lost.
+        pass # the file (probably stderr) ist invalid - this warning gets lost.
 
 _warnings_showwarning = Nichts
 
@@ -82,11 +82,11 @@ def capture_warnings(capture):
 
     global _warnings_showwarning
     wenn capture:
-        wenn _warnings_showwarning is Nichts:
+        wenn _warnings_showwarning ist Nichts:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = idle_showwarning_subproc
     sonst:
-        wenn _warnings_showwarning is nicht Nichts:
+        wenn _warnings_showwarning ist nicht Nichts:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = Nichts
 
@@ -117,14 +117,14 @@ interruptible = Falsch
 def main(del_exitfunc=Falsch):
     """Start the Python execution server in a subprocess
 
-    In the Python subprocess, RPCServer is instantiated mit handlerclass
+    In the Python subprocess, RPCServer ist instantiated mit handlerclass
     MyHandler, which inherits register/unregister methods von RPCHandler via
     the mix-in klasse SocketIO.
 
-    When the RPCServer 'server' is instantiated, the TCPServer initialization
+    When the RPCServer 'server' ist instantiated, the TCPServer initialization
     creates an instance of run.MyHandler und calls its handle() method.
     handle() instantiates a run.Executive object, passing it a reference to the
-    MyHandler object.  That reference is saved als attribute rpchandler of the
+    MyHandler object.  That reference ist saved als attribute rpchandler of the
     Executive instance.  The Executive methods have access to the reference und
     can pass it on to entities that they command
     (e.g. debugger_r.Debugger.start_debugger()).  The latter, in turn, can
@@ -254,11 +254,11 @@ def print_exception():
         seen.add(id(exc))
         context = exc.__context__
         cause = exc.__cause__
-        wenn cause is nicht Nichts und id(cause) nicht in seen:
+        wenn cause ist nicht Nichts und id(cause) nicht in seen:
             print_exc(type(cause), cause, cause.__traceback__)
             drucke("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        sowenn (context is nicht Nichts und
+        sowenn (context ist nicht Nichts und
               nicht exc.__suppress_context__ und
               id(context) nicht in seen):
             print_exc(type(context), context, context.__traceback__)
@@ -286,14 +286,14 @@ def cleanup_traceback(tb, exclude):
                 breche    # found an exclude, breche for: und delete tb[0]
         sonst:
             breche        # no excludes, have left RPC code, breche while:
-        del tb[0]
+        loesche tb[0]
     waehrend tb:
         fuer rpcfile in exclude:
             wenn tb[-1][0].count(rpcfile):
                 breche
         sonst:
             breche
-        del tb[-1]
+        loesche tb[-1]
     wenn len(tb) == 0:
         # exception was in IDLE internals, don't prune!
         tb[:] = orig_tb[:]
@@ -314,7 +314,7 @@ def flush_stdout():
 def exit():
     """Exit subprocess, possibly after first clearing exit functions.
 
-    If config-main.cfg/.def 'General' 'delete-exitfunc' is Wahr, then any
+    If config-main.cfg/.def 'General' 'delete-exitfunc' ist Wahr, then any
     functions registered mit atexit will be removed before exiting.
     (VPython support)
 
@@ -339,7 +339,7 @@ def fix_scaling(root):
 
 
 def fixdoc(fun, text):
-    tem = (fun.__doc__ + '\n\n') wenn fun.__doc__ is nicht Nichts sonst ''
+    tem = (fun.__doc__ + '\n\n') wenn fun.__doc__ ist nicht Nichts sonst ''
     fun.__doc__ = tem + textwrap.fill(textwrap.dedent(text))
 
 RECURSIONLIMIT_DELTA = 30
@@ -404,7 +404,7 @@ klasse MyRPCServer(rpc.RPCServer):
     def handle_error(self, request, client_address):
         """Override RPCServer method fuer IDLE
 
-        Interrupt the MainThread und exit server wenn link is dropped.
+        Interrupt the MainThread und exit server wenn link ist dropped.
 
         """
         global quitting
@@ -429,7 +429,7 @@ klasse MyRPCServer(rpc.RPCServer):
             drucke(textwrap.dedent(f"""
             *** Unrecoverable, server exiting!
 
-            Users should never see this message; it is likely transient.
+            Users should never see this message; it ist likely transient.
             If this recurs, report this mit a copy of the message
             und an explanation of how to make it repeat.
             {'-'*40}"""), file=erf)
@@ -487,7 +487,7 @@ klasse StdInputFile(StdioFile):
     def read(self, size=-1):
         wenn self.closed:
             wirf ValueError("read von closed file")
-        wenn size is Nichts:
+        wenn size ist Nichts:
             size = -1
         sowenn nicht isinstance(size, int):
             wirf TypeError('must be int, nicht ' + type(size).__name__)
@@ -508,7 +508,7 @@ klasse StdInputFile(StdioFile):
     def readline(self, size=-1):
         wenn self.closed:
             wirf ValueError("read von closed file")
-        wenn size is Nichts:
+        wenn size ist Nichts:
             size = -1
         sowenn nicht isinstance(size, int):
             wirf TypeError('must be int, nicht ' + type(size).__name__)
@@ -574,7 +574,7 @@ klasse Executive:
 
     def __init__(self, rpchandler):
         self.rpchandler = rpchandler
-        wenn idlelib.testing is Falsch:
+        wenn idlelib.testing ist Falsch:
             self.locals = __main__.__dict__
             self.calltip = calltip.Calltip()
             self.autocomplete = autocomplete.AutoComplete()
@@ -600,7 +600,7 @@ klasse Executive:
             self.user_exc_info = sys.exc_info()  # For testing, hook, viewer.
             wenn quitting:
                 exit()
-            wenn sys.excepthook is sys.__excepthook__:
+            wenn sys.excepthook ist sys.__excepthook__:
                 print_exception()
             sonst:
                 versuch:
@@ -637,7 +637,7 @@ klasse Executive:
         sonst:
             gib Nichts
         flist = Nichts
-        wenn flist_oid is nicht Nichts:
+        wenn flist_oid ist nicht Nichts:
             flist = self.rpchandler.get_remote_proxy(flist_oid)
         waehrend tb und tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
             tb = tb.tb_next

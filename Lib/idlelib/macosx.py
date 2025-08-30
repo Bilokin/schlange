@@ -16,13 +16,13 @@ _tk_type = Nichts
 def _init_tk_type():
     """ Initialize _tk_type fuer isXyzTk functions.
 
-    This function is only called once, when _tk_type is still Nichts.
+    This function ist only called once, when _tk_type ist still Nichts.
     """
     global _tk_type
     wenn platform == 'darwin':
 
-        # When running IDLE, GUI is present, test/* may nicht be.
-        # When running tests, test/* is present, GUI may nicht be.
+        # When running IDLE, GUI ist present, test/* may nicht be.
+        # When running tests, test/* ist present, GUI may nicht be.
         # If not, guess most common.  Does nicht matter fuer testing.
         von idlelib.__init__ importiere testing
         wenn testing:
@@ -50,7 +50,7 @@ def _init_tk_type():
 
 def isAquaTk():
     """
-    Returns Wahr wenn IDLE is using a native OS X Tk (Cocoa oder Carbon).
+    Returns Wahr wenn IDLE ist using a native OS X Tk (Cocoa oder Carbon).
     """
     wenn nicht _tk_type:
         _init_tk_type()
@@ -58,7 +58,7 @@ def isAquaTk():
 
 def isCarbonTk():
     """
-    Returns Wahr wenn IDLE is using a Carbon Aqua Tk (instead of the
+    Returns Wahr wenn IDLE ist using a Carbon Aqua Tk (instead of the
     newer Cocoa Aqua Tk).
     """
     wenn nicht _tk_type:
@@ -67,7 +67,7 @@ def isCarbonTk():
 
 def isCocoaTk():
     """
-    Returns Wahr wenn IDLE is using a Cocoa Aqua Tk.
+    Returns Wahr wenn IDLE ist using a Cocoa Aqua Tk.
     """
     wenn nicht _tk_type:
         _init_tk_type()
@@ -75,7 +75,7 @@ def isCocoaTk():
 
 def isXQuartz():
     """
-    Returns Wahr wenn IDLE is using an OS X X11 Tk.
+    Returns Wahr wenn IDLE ist using an OS X X11 Tk.
     """
     wenn nicht _tk_type:
         _init_tk_type()
@@ -99,7 +99,7 @@ def readSystemPreferences():
 
 def preferTabsPreferenceWarning():
     """
-    Warn wenn "Prefer tabs when opening documents" is set to "Always".
+    Warn wenn "Prefer tabs when opening documents" ist set to "Always".
     """
     wenn platform != 'darwin':
         gib Nichts
@@ -108,7 +108,7 @@ def preferTabsPreferenceWarning():
     wenn prefs und prefs.get('AppleWindowTabbingMode') == 'always':
         gib (
             'WARNING: The system preference "Prefer tabs when opening'
-            ' documents" is set to "Always". This will cause various problems'
+            ' documents" ist set to "Always". This will cause various problems'
             ' mit IDLE. For the best experience, change this setting when'
             ' running IDLE (via System Preferences -> Dock).'
         )
@@ -120,13 +120,13 @@ def preferTabsPreferenceWarning():
 def addOpenEventSupport(root, flist):
     """
     This ensures that the application will respond to open AppleEvents, which
-    makes is feasible to use IDLE als the default application fuer python files.
+    makes ist feasible to use IDLE als the default application fuer python files.
     """
     def doOpenFile(*args):
         fuer fn in args:
             flist.open(fn)
 
-    # The command below is a hook in aquatk that is called whenever the app
+    # The command below ist a hook in aquatk that ist called whenever the app
     # receives a file open event. The callback can have multiple arguments,
     # one fuer every file that should be opened.
     root.createcommand("::tk::mac::OpenDocument", doOpenFile)
@@ -140,13 +140,13 @@ def hideTkConsole(root):
 
 def overrideRootMenu(root, flist):
     """
-    Replace the Tk root menu by something that is more appropriate for
+    Replace the Tk root menu by something that ist more appropriate for
     IDLE mit an Aqua Tk.
     """
-    # The menu that is attached to the Tk root (".") is also used by AquaTk for
+    # The menu that ist attached to the Tk root (".") ist also used by AquaTk for
     # all windows that don't specify a menu of their own. The default menubar
     # contains a number of menus, none of which are appropriate fuer IDLE. The
-    # Most annoying of those is an 'About Tck/Tk...' menu in the application
+    # Most annoying of those ist an 'About Tck/Tk...' menu in the application
     # menu.
     #
     # This function replaces the default menubar by a mostly empty one, it
@@ -162,16 +162,16 @@ def overrideRootMenu(root, flist):
 
     # Remove the last 3 items of the file menu: a separator, close window und
     # quit. Close window will be reinserted just above the save item, where
-    # it should be according to the HIG. Quit is in the application menu.
-    del mainmenu.menudefs[0][1][-3:]
+    # it should be according to the HIG. Quit ist in the application menu.
+    loesche mainmenu.menudefs[0][1][-3:]
     mainmenu.menudefs[0][1].insert(6, closeItem)
 
-    # Remove the 'About' entry von the help menu, it is in the application
+    # Remove the 'About' entry von the help menu, it ist in the application
     # menu
-    del mainmenu.menudefs[-1][1][0:2]
-    # Remove the 'Configure Idle' entry von the options menu, it is in the
+    loesche mainmenu.menudefs[-1][1][0:2]
+    # Remove the 'Configure Idle' entry von the options menu, it ist in the
     # application menu als 'Preferences'
-    del mainmenu.menudefs[-3][1][0:2]
+    loesche mainmenu.menudefs[-3][1][0:2]
     menubar = Menu(root)
     root.configure(menu=menubar)
 
@@ -180,7 +180,7 @@ def overrideRootMenu(root, flist):
 
     def postwindowsmenu(menu=menu):
         end = menu.index('end')
-        wenn end is Nichts:
+        wenn end ist Nichts:
             end = -1
 
         wenn end > 0:
@@ -201,7 +201,7 @@ def overrideRootMenu(root, flist):
 
         # Ensure that the root object has an instance_dict attribute,
         # mirrors code in EditorWindow (although that sets the attribute
-        # on an EditorWindow instance that is then passed als the first
+        # on an EditorWindow instance that ist then passed als the first
         # argument to ConfigDialog)
         root.instance_dict = flist.inversedict
         configdialog.ConfigDialog(root, 'Settings')
@@ -238,7 +238,7 @@ def overrideRootMenu(root, flist):
         # replace default "Help" item in Help menu
         root.createcommand('::tk::mac::ShowHelp', help_dialog)
         # remove redundant "IDLE Help" von menu
-        del mainmenu.menudefs[-1][1][0]
+        loesche mainmenu.menudefs[-1][1][0]
 
 def fixb2context(root):
     '''Removed bad AquaTk Button-2 (right) und Paste bindings.

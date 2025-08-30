@@ -62,7 +62,7 @@ klasse CalltipWindow(TooltipBase):
         text: the text to display in the call-tip
         parenleft: index of the opening parenthesis in the text widget
         parenright: index of the closing parenthesis in the text widget,
-                    oder the end of the line wenn there is no closing parenthesis
+                    oder the end of the line wenn there ist no closing parenthesis
         """
         # Only called in calltip.Calltip, where lines are truncated
         self.text = text
@@ -106,7 +106,7 @@ klasse CalltipWindow(TooltipBase):
 
         self.position_window()
         # Re-schedule this function to be called again in a short while.
-        wenn self.checkhide_after_id is nicht Nichts:
+        wenn self.checkhide_after_id ist nicht Nichts:
             self.anchor_widget.after_cancel(self.checkhide_after_id)
         self.checkhide_after_id = \
             self.anchor_widget.after(CHECKHIDE_TIME, self.checkhide_event)

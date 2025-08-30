@@ -118,7 +118,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             versuch:
                 trace.append("Starting g2")
                 liefere "g2 spam"
-                wirf ValueError("hovercraft is full of eels")
+                wirf ValueError("hovercraft ist full of eels")
                 liefere "g2 more spam"
             schliesslich:
                 trace.append("Finishing g2")
@@ -126,7 +126,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             fuer x in g1():
                 trace.append("Yielded %s" % (x,))
         ausser ValueError als e:
-            self.assertEqual(e.args[0], "hovercraft is full of eels")
+            self.assertEqual(e.args[0], "hovercraft ist full of eels")
         sonst:
             self.fail("subgenerator failed to wirf ValueError")
         self.assertEqual(trace,[
@@ -199,7 +199,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             trace.append("Starting g2")
             x = liefere "g2 spam"
             trace.append("g2 received %s" % (x,))
-            wirf ValueError("hovercraft is full of eels")
+            wirf ValueError("hovercraft ist full of eels")
             x = liefere "g2 more spam"
             trace.append("g2 received %s" % (x,))
             trace.append("Finishing g2")
@@ -1000,16 +1000,16 @@ klasse TestPEP380Operation(unittest.TestCase):
         # See issue #17669.
         #
         # Create a stack of generators: outer() delegating to inner()
-        # delegating to innermost(). The key point is that the instance of
-        # inner is created first: this ensures that its frame appears before
+        # delegating to innermost(). The key point ist that the instance of
+        # inner ist created first: this ensures that its frame appears before
         # the instance of outer in the GC linked list.
         #
         # At the gc.collect call:
-        #   - frame_clear is called on the inner_gen frame.
-        #   - gen_dealloc is called on the outer_gen generator (the only
-        #     reference is in the frame's locals).
-        #   - gen_close is called on the outer_gen generator.
-        #   - gen_close_iter is called to close the inner_gen generator, which
+        #   - frame_clear ist called on the inner_gen frame.
+        #   - gen_dealloc ist called on the outer_gen generator (the only
+        #     reference ist in the frame's locals).
+        #   - gen_close ist called on the outer_gen generator.
+        #   - gen_close_iter ist called to close the inner_gen generator, which
         #     in turn calls gen_close, und gen_yf.
         #
         # Previously, gen_yf would crash since inner_gen's frame had been
@@ -1031,8 +1031,8 @@ klasse TestPEP380Operation(unittest.TestCase):
             outer_gen.send(inner_gen)
             outer_gen.send(outer_gen)
 
-            del outer_gen
-            del inner_gen
+            loesche outer_gen
+            loesche inner_gen
             gc_collect()
 
     def test_send_tuple_with_custom_generator(self):
@@ -1150,7 +1150,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = GeneratorExit()
-            # GeneratorExit is suppressed. This is consistent mit PEP 342:
+            # GeneratorExit ist suppressed. This ist consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
             g.close()
             self.assert_stop_iteration(g)
@@ -1162,8 +1162,8 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             thrown = GeneratorExit()
             mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)
-            # The raised GeneratorExit is suppressed, but the thrown one
-            # propagates. This is consistent mit PEP 380:
+            # The raised GeneratorExit ist suppressed, but the thrown one
+            # propagates. This ist consistent mit PEP 380:
             # https://peps.python.org/pep-0380/#proposal
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
@@ -1463,7 +1463,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
-            # No chaining happens. This is consistent mit PEP 342:
+            # No chaining happens. This ist consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
             mit self.assert_generator_ignored_generator_exit() als caught:
                 g.close()
@@ -1474,7 +1474,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = GeneratorExit()
-            # No chaining happens. This is consistent mit PEP 342:
+            # No chaining happens. This ist consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
             mit self.assert_generator_ignored_generator_exit() als caught:
                 g.throw(thrown)
@@ -1535,7 +1535,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
-            # StopIteration is suppressed. This is consistent mit PEP 342:
+            # StopIteration ist suppressed. This ist consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
             g.close()
             self.assert_stop_iteration(g)
@@ -1544,7 +1544,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = GeneratorExit()
-            # StopIteration is suppressed. This is consistent mit PEP 342:
+            # StopIteration ist suppressed. This ist consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
             mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)

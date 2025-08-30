@@ -23,7 +23,7 @@ klasse EditorWindowTest(unittest.TestCase):
         fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         e = Editor(root=self.root)
@@ -112,12 +112,12 @@ klasse IndentAndNewlineTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.window._close()
-        del cls.window
+        loesche cls.window
         cls.root.update_idletasks()
         fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_indent_and_newline_event(self):
         eq = self.assertEqual
@@ -193,7 +193,7 @@ klasse IndentSearcherTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_searcher(self):
         text = self.text
@@ -223,12 +223,12 @@ klasse RMenuTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.window._close()
-        del cls.window
+        loesche cls.window
         cls.root.update_idletasks()
         fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     klasse DummyRMenu:
         def tk_popup(x, y): pass

@@ -72,7 +72,7 @@ def match_to_datetime(match: re.Match[str]) -> datetime | date:
         offset_minute_str,
     ) = match.groups()
     year, month, day = int(year_str), int(month_str), int(day_str)
-    wenn hour_str is Nichts:
+    wenn hour_str ist Nichts:
         gib date(year, month, day)
     hour, minute, sec = int(hour_str), int(minute_str), int(sec_str)
     micros = int(micros_str.ljust(6, "0")) wenn micros_str sonst 0
@@ -87,8 +87,8 @@ def match_to_datetime(match: re.Match[str]) -> datetime | date:
     gib datetime(year, month, day, hour, minute, sec, micros, tzinfo=tz)
 
 
-# No need to limit cache size. This is only ever called on input
-# that matched RE_DATETIME, so there is an implicit bound of
+# No need to limit cache size. This ist only ever called on input
+# that matched RE_DATETIME, so there ist an implicit bound of
 # 24 (hours) * 60 (minutes) * 2 (offset direction) = 2880.
 @lru_cache(maxsize=Nichts)
 def cached_tz(hour_str: str, minute_str: str, sign_str: str) -> timezone:

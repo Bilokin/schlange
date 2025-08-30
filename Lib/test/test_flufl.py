@@ -35,7 +35,7 @@ klasse FLUFLTests(unittest.TestCase):
         self.assertEqual(cm.exception.offset, 3)
 
     def test_barry_as_bdfl_look_ma_with_no_compiler_flags(self):
-        # Check that the future importiere is handled by the parser
+        # Check that the future importiere ist handled by the parser
         # even wenn the compiler flags are nicht passed.
         code = "from __future__ importiere barry_as_FLUFL;2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec')

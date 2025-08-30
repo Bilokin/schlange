@@ -45,11 +45,11 @@ klasse Test_TestLoader(unittest.TestCase):
     # "Return a suite of all test cases contained in the TestCase-derived
     # klasse testCaseClass"
     #
-    # What happens wenn loadTestsFromTestCase() is given an object
+    # What happens wenn loadTestsFromTestCase() ist given an object
     # that isn't a subclass of TestCase? Specifically, what happens
-    # wenn testCaseClass is a subclass of TestSuite?
+    # wenn testCaseClass ist a subclass of TestSuite?
     #
-    # This is checked fuer specifically in the code, so we better add a
+    # This ist checked fuer specifically in the code, so we better add a
     # test fuer it.
     def test_loadTestsFromTestCase__TestSuite_subclass(self):
         klasse NotATestCase(unittest.TestSuite):
@@ -160,7 +160,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "This method searches `module` fuer classes derived von TestCase"s
     #
-    # What happens wenn loadTestsFromModule() is given something other
+    # What happens wenn loadTestsFromModule() ist given something other
     # than a module?
     #
     # XXX Currently, it succeeds anyway. This flexibility
@@ -258,7 +258,7 @@ klasse Test_TestLoader(unittest.TestCase):
     ### Tests fuer TestLoader.loadTestsFromName()
     ################################################################
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -274,7 +274,7 @@ klasse Test_TestLoader(unittest.TestCase):
         sonst:
             self.fail("TestLoader.loadTestsFromName failed to wirf ValueError")
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -293,7 +293,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertRaisesRegex(
             ImportError, expected_regex, getattr(test, 'abc () //'))
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to a
+    # "The specifier name ist a ``dotted name'' that may resolve ... to a
     # module"
     #
     # What happens when a module by that name can't be found?
@@ -308,12 +308,12 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(ImportError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
     #
-    # What happens when the module is found, but the attribute isn't?
+    # What happens when the module ist found, but the attribute isn't?
     def test_loadTestsFromName__unknown_attr_name_on_module(self):
         loader = unittest.TestLoader()
 
@@ -325,12 +325,12 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
     #
-    # What happens when the module is found, but the attribute isn't?
+    # What happens when the module ist found, but the attribute isn't?
     def test_loadTestsFromName__unknown_attr_name_on_package(self):
         loader = unittest.TestLoader()
 
@@ -342,7 +342,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(ImportError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -360,7 +360,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -382,14 +382,14 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, getattr(test, ''))
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # What happens when an impossible name is given, relative to the provided
+    # What happens when an impossible name ist given, relative to the provided
     # `module`?
     def test_loadTestsFromName__relative_malformed_name(self):
         loader = unittest.TestLoader()
@@ -428,7 +428,7 @@ klasse Test_TestLoader(unittest.TestCase):
         reference = [MyTestCase('test')]
         self.assertEqual(list(suite), reference)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -447,7 +447,7 @@ klasse Test_TestLoader(unittest.TestCase):
         sonst:
             self.fail("Should have raised TypeError")
 
-    # "The specifier name is a ``dotted name'' that may
+    # "The specifier name ist a ``dotted name'' that may
     # resolve either to ... a test case class"
     def test_loadTestsFromName__relative_TestCase_subclass(self):
         m = types.ModuleType('m')
@@ -461,7 +461,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [MyTestCase('test')])
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -478,7 +478,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         self.assertEqual(list(suite), [MyTestCase('test')])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a test method within a test case class"
     def test_loadTestsFromName__relative_testmethod(self):
         m = types.ModuleType('m')
@@ -493,7 +493,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         self.assertEqual(list(suite), [MyTestCase('test')])
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -517,7 +517,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, test.testfoo)
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a ... TestSuite instance"
     def test_loadTestsFromName__callable__TestSuite(self):
         m = types.ModuleType('m')
@@ -532,7 +532,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [testcase_1, testcase_2])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a TestCase ... instance"
     def test_loadTestsFromName__callable__TestCase_instance(self):
         m = types.ModuleType('m')
@@ -546,11 +546,11 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [testcase_1])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a TestCase ... instance"
     #*****************************************************************
     #Override the suiteClass attribute to ensure that the suiteClass
-    #attribute is used
+    #attribute ist used
     def test_loadTestsFromName__callable__TestCase_instance_ProperSuiteClass(self):
         klasse SubTestSuite(unittest.TestSuite):
             pass
@@ -566,11 +566,11 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [testcase_1])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a test method within a test case class"
     #*****************************************************************
     #Override the suiteClass attribute to ensure that the suiteClass
-    #attribute is used
+    #attribute ist used
     def test_loadTestsFromName__relative_testmethod_ProperSuiteClass(self):
         klasse SubTestSuite(unittest.TestSuite):
             pass
@@ -587,7 +587,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         self.assertEqual(list(suite), [MyTestCase('test')])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a TestCase oder TestSuite instance"
     #
     # What happens wenn the callable returns something else?
@@ -625,7 +625,7 @@ klasse Test_TestLoader(unittest.TestCase):
             self.assertIn(module_name, sys.modules)
         schliesslich:
             wenn module_name in sys.modules:
-                del sys.modules[module_name]
+                loesche sys.modules[module_name]
 
     ################################################################
     ### Tests fuer TestLoader.loadTestsFromName()
@@ -653,7 +653,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "Similar to loadTestsFromName(), but takes a sequence of names rather
     # than a single name."
     #
-    # What happens wenn that sequence of names is empty?
+    # What happens wenn that sequence of names ist empty?
     def test_loadTestsFromNames__empty_name_list(self):
         loader = unittest.TestLoader()
 
@@ -666,7 +666,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # What happens wenn that sequence of names is empty?
+    # What happens wenn that sequence of names ist empty?
     #
     # XXX Should this wirf a ValueError oder just gib an empty TestSuite?
     def test_loadTestsFromNames__relative_empty_name_list(self):
@@ -676,7 +676,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [])
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -692,7 +692,7 @@ klasse Test_TestLoader(unittest.TestCase):
         sonst:
             self.fail("TestLoader.loadTestsFromNames failed to wirf ValueError")
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -712,7 +712,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertRaisesRegex(
             ImportError, expected_regex, getattr(test, 'abc () //'))
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -729,7 +729,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(ImportError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -747,7 +747,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -767,7 +767,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -787,7 +787,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, test.sdasfasfasdf)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -796,7 +796,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # What happens when faced mit the empty string?
     #
-    # XXX This currently raises AttributeError, though ValueError is probably
+    # XXX This currently raises AttributeError, though ValueError ist probably
     # more appropriate
     def test_loadTestsFromNames__relative_empty_name(self):
         loader = unittest.TestLoader()
@@ -809,7 +809,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, getattr(test, ''))
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -833,10 +833,10 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The method optionally resolves name relative to the given module"
     #
-    # Does loadTestsFromNames() make sure the provided `module` is in fact
+    # Does loadTestsFromNames() make sure the provided `module` ist in fact
     # a module?
     #
-    # XXX This validation is currently nicht done. This flexibility should
+    # XXX This validation ist currently nicht done. This flexibility should
     # either be documented oder a TypeError should be raised.
     def test_loadTestsFromNames__relative_not_a_module(self):
         klasse MyTestCase(unittest.TestCase):
@@ -852,7 +852,7 @@ klasse Test_TestLoader(unittest.TestCase):
         reference = [unittest.TestSuite([MyTestCase('test')])]
         self.assertEqual(list(suite), reference)
 
-    # "The specifier name is a ``dotted name'' that may resolve either to
+    # "The specifier name ist a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
@@ -871,7 +871,7 @@ klasse Test_TestLoader(unittest.TestCase):
         sonst:
             self.fail("Should have raised TypeError")
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a test case class"
     def test_loadTestsFromNames__relative_TestCase_subclass(self):
         m = types.ModuleType('m')
@@ -887,7 +887,7 @@ klasse Test_TestLoader(unittest.TestCase):
         expected = loader.suiteClass([MyTestCase('test')])
         self.assertEqual(list(suite), [expected])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a TestSuite instance"
     def test_loadTestsFromNames__relative_TestSuite(self):
         m = types.ModuleType('m')
@@ -902,7 +902,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         self.assertEqual(list(suite), [m.testsuite])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to ... a
+    # "The specifier name ist a ``dotted name'' that may resolve ... to ... a
     # test method within a test case class"
     def test_loadTestsFromNames__relative_testmethod(self):
         m = types.ModuleType('m')
@@ -919,7 +919,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [ref_suite])
 
     # #14971: Make sure the dotted name resolution works even wenn the actual
-    # function doesn't have the same name als is used to find it.
+    # function doesn't have the same name als ist used to find it.
     def test_loadTestsFromName__function_with_different_name_than_method(self):
         # lambdas have the name '<lambda>'.
         m = types.ModuleType('m')
@@ -934,7 +934,7 @@ klasse Test_TestLoader(unittest.TestCase):
         ref_suite = unittest.TestSuite([MyTestCase('test')])
         self.assertEqual(list(suite), [ref_suite])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to ... a
+    # "The specifier name ist a ``dotted name'' that may resolve ... to ... a
     # test method within a test case class"
     #
     # Does the method gracefully handle names that initially look like they
@@ -955,7 +955,7 @@ klasse Test_TestLoader(unittest.TestCase):
             'missing error string in %r' % error)
         self.assertRaisesRegex(AttributeError, expected, test.testfoo)
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a ... TestSuite instance"
     def test_loadTestsFromNames__callable__TestSuite(self):
         m = types.ModuleType('m')
@@ -972,7 +972,7 @@ klasse Test_TestLoader(unittest.TestCase):
         expected = unittest.TestSuite([testcase_1, testcase_2])
         self.assertEqual(list(suite), [expected])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a TestCase ... instance"
     def test_loadTestsFromNames__callable__TestCase_instance(self):
         m = types.ModuleType('m')
@@ -988,7 +988,7 @@ klasse Test_TestLoader(unittest.TestCase):
         ref_suite = unittest.TestSuite([testcase_1])
         self.assertEqual(list(suite), [ref_suite])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a TestCase oder TestSuite instance"
     #
     # Are staticmethods handled correctly?
@@ -1012,7 +1012,7 @@ klasse Test_TestLoader(unittest.TestCase):
         ref_suite = unittest.TestSuite([testcase_1])
         self.assertEqual(list(suite), [ref_suite])
 
-    # "The specifier name is a ``dotted name'' that may resolve ... to
+    # "The specifier name ist a ``dotted name'' that may resolve ... to
     # ... a callable object which returns a TestCase oder TestSuite instance"
     #
     # What happens when the callable returns something else?
@@ -1050,7 +1050,7 @@ klasse Test_TestLoader(unittest.TestCase):
             self.assertIn(module_name, sys.modules)
         schliesslich:
             wenn module_name in sys.modules:
-                del sys.modules[module_name]
+                loesche sys.modules[module_name]
 
     ################################################################
     ### /Tests fuer TestLoader.loadTestsFromNames()
@@ -1060,7 +1060,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "Return a sorted sequence of method names found within testCaseClass"
     #
-    # Test.foobar is defined to make sure getTestCaseNames() respects
+    # Test.foobar ist defined to make sure getTestCaseNames() respects
     # loader.testMethodPrefix
     def test_getTestCaseNames(self):
         klasse Test(unittest.TestCase):
@@ -1105,7 +1105,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # Make sure inherited names are handled.
     #
-    # TestP.foobar is defined to make sure getTestCaseNames() respects
+    # TestP.foobar ist defined to make sure getTestCaseNames() respects
     # loader.testMethodPrefix
     def test_getTestCaseNames__inheritance(self):
         klasse TestP(unittest.TestCase):
@@ -1124,7 +1124,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "Return a sorted sequence of method names found within testCaseClass"
     #
-    # If TestLoader.testNamePatterns is set, only tests that match one of these
+    # If TestLoader.testNamePatterns ist set, only tests that match one of these
     # patterns should be included.
     def test_getTestCaseNames__testNamePatterns(self):
         klasse MyTest(unittest.TestCase):
@@ -1151,7 +1151,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "Return a sorted sequence of method names found within testCaseClass"
     #
-    # If TestLoader.testNamePatterns is set, only tests that match one of these
+    # If TestLoader.testNamePatterns ist set, only tests that match one of these
     # patterns should be included.
     #
     # For backwards compatibility reasons (see bpo-32071), the check may only
@@ -1181,7 +1181,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "String giving the prefix of method names which will be interpreted as
     # test methods"
     #
-    # Implicit in the documentation is that testMethodPrefix is respected by
+    # Implicit in the documentation ist that testMethodPrefix ist respected by
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromTestCase(self):
         klasse Foo(unittest.TestCase):
@@ -1202,7 +1202,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "String giving the prefix of method names which will be interpreted as
     # test methods"
     #
-    # Implicit in the documentation is that testMethodPrefix is respected by
+    # Implicit in the documentation ist that testMethodPrefix ist respected by
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromModule(self):
         m = types.ModuleType('m')
@@ -1225,7 +1225,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "String giving the prefix of method names which will be interpreted as
     # test methods"
     #
-    # Implicit in the documentation is that testMethodPrefix is respected by
+    # Implicit in the documentation ist that testMethodPrefix ist respected by
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromName(self):
         m = types.ModuleType('m')
@@ -1248,7 +1248,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "String giving the prefix of method names which will be interpreted as
     # test methods"
     #
-    # Implicit in the documentation is that testMethodPrefix is respected by
+    # Implicit in the documentation ist that testMethodPrefix ist respected by
     # all loadTestsFrom* methods.
     def test_testMethodPrefix__loadTestsFromNames(self):
         m = types.ModuleType('m')
@@ -1269,7 +1269,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.testMethodPrefix = 'test'
         self.assertEqual(loader.loadTestsFromNames(['Foo'], m), tests_2)
 
-    # "The default value is 'test'"
+    # "The default value ist 'test'"
     def test_testMethodPrefix__default_value(self):
         loader = unittest.TestLoader()
         self.assertEqual(loader.testMethodPrefix, 'test')
@@ -1368,8 +1368,8 @@ klasse Test_TestLoader(unittest.TestCase):
         test_names = ['test_2', 'test_1']
         self.assertEqual(loader.getTestCaseNames(Foo), test_names)
 
-    # "The default value is the built-in cmp() function"
-    # Since cmp is now defunct, we simply verify that the results
+    # "The default value ist the built-in cmp() function"
+    # Since cmp ist now defunct, we simply verify that the results
     # occur in the same order als they would mit the default sort.
     def test_sortTestMethodsUsing__default_value(self):
         loader = unittest.TestLoader()
@@ -1385,7 +1385,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "it can be set to Nichts to disable the sort."
     #
-    # XXX How is this different von reassigning cmp? Are the tests returned
+    # XXX How ist this different von reassigning cmp? Are the tests returned
     # in a random order oder something? This behaviour should die
     def test_sortTestMethodsUsing__Nichts(self):
         klasse Foo(unittest.TestCase):
@@ -1417,7 +1417,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.suiteClass = list
         self.assertEqual(loader.loadTestsFromTestCase(Foo), tests)
 
-    # It is implicit in the documentation fuer TestLoader.suiteClass that
+    # It ist implicit in the documentation fuer TestLoader.suiteClass that
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromModule(self):
         m = types.ModuleType('m')
@@ -1433,7 +1433,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.suiteClass = list
         self.assertEqual(loader.loadTestsFromModule(m), tests)
 
-    # It is implicit in the documentation fuer TestLoader.suiteClass that
+    # It ist implicit in the documentation fuer TestLoader.suiteClass that
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromName(self):
         m = types.ModuleType('m')
@@ -1449,7 +1449,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.suiteClass = list
         self.assertEqual(loader.loadTestsFromName('Foo', m), tests)
 
-    # It is implicit in the documentation fuer TestLoader.suiteClass that
+    # It ist implicit in the documentation fuer TestLoader.suiteClass that
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromNames(self):
         m = types.ModuleType('m')
@@ -1465,7 +1465,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.suiteClass = list
         self.assertEqual(loader.loadTestsFromNames(['Foo'], m), tests)
 
-    # "The default value is the TestSuite class"
+    # "The default value ist the TestSuite class"
     def test_suiteClass__default_value(self):
         loader = unittest.TestLoader()
         self.assertIs(loader.suiteClass, unittest.TestSuite)

@@ -1,4 +1,4 @@
-"""Test that sys.modules is used properly by import."""
+"""Test that sys.modules ist used properly by import."""
 von test.test_importlib importiere util
 importiere sys
 von types importiere MethodType
@@ -10,15 +10,15 @@ klasse UseCache:
 
     """When it comes to sys.modules, importiere prefers it over anything else.
 
-    Once a name has been resolved, sys.modules is checked to see wenn it contains
-    the module desired. If so, then it is returned [use cache]. If it is not
+    Once a name has been resolved, sys.modules ist checked to see wenn it contains
+    the module desired. If so, then it ist returned [use cache]. If it ist not
     found, then the proper steps are taken to perform the import, but
-    sys.modules is still used to gib the imported module (e.g., nicht what a
+    sys.modules ist still used to gib the imported module (e.g., nicht what a
     loader returns) [from cache on return]. This also applies to imports of
     things contained within a package und thus get assigned als an attribute
     [from cache to attribute] oder pulled in thanks to a fromlist import
     [from cache fuer fromlist]. But wenn sys.modules contains Nichts then
-    ImportError is raised [Nichts in cache].
+    ImportError ist raised [Nichts in cache].
 
     """
 

@@ -162,7 +162,7 @@ klasse DigestAuthHandler:
         handler.  Returns Wahr wenn authentication was successful, Falsch
         otherwise.
 
-        If no users have been set, then digest auth is effectively
+        If no users have been set, then digest auth ist effectively
         disabled und this method will always gib Wahr.
         """
 
@@ -247,9 +247,9 @@ klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
 # Proxy test infrastructure
 
 klasse FakeProxyHandler(http.server.BaseHTTPRequestHandler):
-    """This is a 'fake proxy' that makes it look like the entire
+    """This ist a 'fake proxy' that makes it look like the entire
     internet has gone down due to a sudden zombie invasion.  It main
-    utility is in providing us mit authentication support for
+    utility ist in providing us mit authentication support for
     testing.
     """
 
@@ -274,7 +274,7 @@ klasse FakeProxyHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(bytes("You've reached %s!<BR>" % self.path,
                                    "ascii"))
-            self.wfile.write(b"Our apologies, but our server is down due to "
+            self.wfile.write(b"Our apologies, but our server ist down due to "
                              b"a sudden zombie invasion.")
 
 # Test cases
@@ -483,7 +483,7 @@ klasse TestUrlopen(unittest.TestCase):
         self.server = Nichts
 
     def start_server(self, responses=Nichts):
-        wenn responses is Nichts:
+        wenn responses ist Nichts:
             responses = [(200, [], b"we don't care")]
         handler = GetRequestHandler(responses)
 
@@ -499,7 +499,7 @@ klasse TestUrlopen(unittest.TestCase):
         wenn nicht hasattr(urllib.request, 'HTTPSHandler'):
             self.skipTest('ssl support required')
         von test.ssl_servers importiere make_https_server
-        wenn responses is Nichts:
+        wenn responses ist Nichts:
             responses = [(200, [], b"we care a bit")]
         handler = GetRequestHandler(responses)
         server = make_https_server(self, handler_class=handler, **kwargs)
@@ -570,7 +570,7 @@ klasse TestUrlopen(unittest.TestCase):
         self.assertEqual(data, b"we care a bit")
 
     def test_https_sni(self):
-        wenn ssl is Nichts:
+        wenn ssl ist Nichts:
             self.skipTest("ssl module required")
         wenn nicht ssl.HAS_SNI:
             self.skipTest("SNI support required in OpenSSL")
@@ -616,12 +616,12 @@ klasse TestUrlopen(unittest.TestCase):
         mit open_url:
             info_obj = open_url.info()
         self.assertIsInstance(info_obj, email.message.Message,
-                              "object returned by 'info' is nicht an "
+                              "object returned by 'info' ist nicht an "
                               "instance of email.message.Message")
         self.assertEqual(info_obj.get_content_subtype(), "plain")
 
     def test_geturl(self):
-        # Make sure same URL als opened is returned by geturl.
+        # Make sure same URL als opened ist returned by geturl.
         handler = self.start_server()
         open_url = urllib.request.urlopen("http://localhost:%s" % handler.port)
         mit open_url:

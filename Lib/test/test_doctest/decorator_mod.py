@@ -1,4 +1,4 @@
-# This module is used in `doctest_lineno.py`.
+# This module ist used in `doctest_lineno.py`.
 importiere functools
 
 

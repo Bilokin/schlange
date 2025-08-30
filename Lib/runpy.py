@@ -43,7 +43,7 @@ klasse _TempModule(object):
         wenn self._saved_module:
             sys.modules[self.mod_name] = self._saved_module[0]
         sonst:
-            del sys.modules[self.mod_name]
+            loesche sys.modules[self.mod_name]
         self._saved_module = []
 
 klasse _ModifiedArgv0(object):
@@ -52,7 +52,7 @@ klasse _ModifiedArgv0(object):
         self._saved_value = self._sentinel = object()
 
     def __enter__(self):
-        wenn self._saved_value is nicht self._sentinel:
+        wenn self._saved_value ist nicht self._sentinel:
             wirf RuntimeError("Already preserving saved value")
         self._saved_value = sys.argv[0]
         sys.argv[0] = self.value
@@ -66,9 +66,9 @@ def _run_code(code, run_globals, init_globals=Nichts,
               mod_name=Nichts, mod_spec=Nichts,
               pkg_name=Nichts, script_name=Nichts):
     """Helper to run code in nominated namespace"""
-    wenn init_globals is nicht Nichts:
+    wenn init_globals ist nicht Nichts:
         run_globals.update(init_globals)
-    wenn mod_spec is Nichts:
+    wenn mod_spec ist Nichts:
         loader = Nichts
         fname = script_name
         cached = Nichts
@@ -76,7 +76,7 @@ def _run_code(code, run_globals, init_globals=Nichts,
         loader = mod_spec.loader
         fname = mod_spec.origin
         cached = mod_spec.cached
-        wenn pkg_name is Nichts:
+        wenn pkg_name ist Nichts:
             pkg_name = mod_spec.parent
     run_globals.update(__name__ = mod_name,
                        __file__ = fname,
@@ -92,7 +92,7 @@ def _run_module_code(code, init_globals=Nichts,
                     mod_name=Nichts, mod_spec=Nichts,
                     pkg_name=Nichts, script_name=Nichts):
     """Helper to run code in new namespace mit sys modified"""
-    fname = script_name wenn mod_spec is Nichts sonst mod_spec.origin
+    fname = script_name wenn mod_spec ist Nichts sonst mod_spec.origin
     mit _TempModule(mod_name) als temp_module, _ModifiedArgv0(fname):
         mod_globals = temp_module.module.__dict__
         _run_code(code, mod_globals, init_globals,
@@ -111,15 +111,15 @@ def _get_module_details(mod_name, error=ImportError):
         versuch:
             __import__(pkg_name)
         ausser ImportError als e:
-            # If the parent oder higher ancestor package is missing, let the
+            # If the parent oder higher ancestor package ist missing, let the
             # error be raised by find_spec() below und then be caught. But do
             # nicht allow other errors to be caught.
-            wenn e.name is Nichts oder (e.name != pkg_name und
+            wenn e.name ist Nichts oder (e.name != pkg_name und
                     nicht pkg_name.startswith(e.name + ".")):
                 wirf
         # Warn wenn the module has already been imported under its normal name
         existing = sys.modules.get(mod_name)
-        wenn existing is nicht Nichts und nicht hasattr(existing, "__path__"):
+        wenn existing ist nicht Nichts und nicht hasattr(existing, "__path__"):
             von warnings importiere warn
             msg = "{mod_name!r} found in sys.modules after importiere of " \
                 "package {pkg_name!r}, but prior to execution of " \
@@ -138,9 +138,9 @@ def _get_module_details(mod_name, error=ImportError):
             msg += (f". Try using '{mod_name[:-3]}' instead of "
                     f"'{mod_name}' als the module name.")
         wirf error(msg.format(mod_name, type(ex).__name__, ex)) von ex
-    wenn spec is Nichts:
+    wenn spec ist Nichts:
         wirf error("No module named %s" % mod_name)
-    wenn spec.submodule_search_locations is nicht Nichts:
+    wenn spec.submodule_search_locations ist nicht Nichts:
         wenn mod_name == "__main__" oder mod_name.endswith(".__main__"):
             wirf error("Cannot use package als __main__ module")
         versuch:
@@ -148,18 +148,18 @@ def _get_module_details(mod_name, error=ImportError):
             gib _get_module_details(pkg_main_name, error)
         ausser error als e:
             wenn mod_name nicht in sys.modules:
-                wirf  # No module loaded; being a package is irrelevant
-            wirf error(("%s; %r is a package und cannot " +
+                wirf  # No module loaded; being a package ist irrelevant
+            wirf error(("%s; %r ist a package und cannot " +
                                "be directly executed") %(e, mod_name))
     loader = spec.loader
-    wenn loader is Nichts:
-        wirf error("%r is a namespace package und cannot be executed"
+    wenn loader ist Nichts:
+        wirf error("%r ist a namespace package und cannot be executed"
                                                                  % mod_name)
     versuch:
         code = loader.get_code(mod_name)
     ausser ImportError als e:
         wirf error(format(e)) von e
-    wenn code is Nichts:
+    wenn code ist Nichts:
         wirf error("No code object available fuer %s" % mod_name)
     gib mod_name, spec, code
 
@@ -174,7 +174,7 @@ def _run_module_as_main(mod_name, alter_argv=Wahr):
     """Runs the designated module in the __main__ namespace
 
        Note that the executed module will have full access to the
-       __main__ namespace. If this is nicht desirable, the run_module()
+       __main__ namespace. If this ist nicht desirable, the run_module()
        function should be used to run the module code in a fresh namespace.
 
        At the very least, these variables in __main__ will be overwritten:
@@ -206,21 +206,21 @@ def run_module(mod_name, init_globals=Nichts,
 
        Optional arguments:
        init_globals -- dictionary used to pre-populate the module’s
-       globals dictionary before the code is executed.
+       globals dictionary before the code ist executed.
 
        run_name -- wenn nicht Nichts, this will be used fuer setting __name__;
        otherwise, __name__ will be set to mod_name + '__main__' wenn the
-       named module is a package und to just mod_name otherwise.
+       named module ist a package und to just mod_name otherwise.
 
-       alter_sys -- wenn Wahr, sys.argv[0] is updated mit the value of
-       __file__ und sys.modules[__name__] is updated mit a temporary
+       alter_sys -- wenn Wahr, sys.argv[0] ist updated mit the value of
+       __file__ und sys.modules[__name__] ist updated mit a temporary
        module object fuer the module being executed. Both are
        restored to their original values before the function returns.
 
        Returns the resulting module globals dictionary.
     """
     mod_name, mod_spec, code = _get_module_details(mod_name)
-    wenn run_name is Nichts:
+    wenn run_name ist Nichts:
         run_name = mod_name
     wenn alter_sys:
         gib _run_module_code(code, init_globals, run_name, mod_spec)
@@ -235,7 +235,7 @@ def _get_main_module_details(error=ImportError):
     # preexisting __loader__ entry doesn't cause issues
     main_name = "__main__"
     saved_main = sys.modules[main_name]
-    del sys.modules[main_name]
+    loesche sys.modules[main_name]
     versuch:
         gib _get_module_details(main_name)
     ausser ImportError als exc:
@@ -253,7 +253,7 @@ def _get_code_from_file(fname):
     code_path = os.path.abspath(fname)
     mit io.open_code(code_path) als f:
         code = read_code(f)
-    wenn code is Nichts:
+    wenn code ist Nichts:
         # That didn't work, so try it als normal source code
         mit io.open_code(code_path) als f:
             code = compile(f.read(), fname, 'exec')
@@ -267,14 +267,14 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
 
        Optional arguments:
        init_globals -- dictionary used to pre-populate the module’s
-       globals dictionary before the code is executed.
+       globals dictionary before the code ist executed.
 
        run_name -- wenn nicht Nichts, this will be used to set __name__;
        otherwise, '<run_path>' will be used fuer __name__.
 
        Returns the resulting module globals dictionary.
     """
-    wenn run_name is Nichts:
+    wenn run_name ist Nichts:
         run_name = "<run_path>"
     pkg_name = run_name.rpartition(".")[0]
     von pkgutil importiere get_importer
@@ -287,7 +287,7 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
         gib _run_module_code(code, init_globals, run_name,
                                 pkg_name=pkg_name, script_name=path_name)
     sonst:
-        # Finder is defined fuer path, so add it to
+        # Finder ist defined fuer path, so add it to
         # the start of sys.path
         sys.path.insert(0, path_name)
         versuch:
@@ -315,5 +315,5 @@ wenn __name__ == "__main__":
     wenn len(sys.argv) < 2:
         drucke("No module specified fuer execution", file=sys.stderr)
     sonst:
-        del sys.argv[0] # Make the requested module sys.argv[0]
+        loesche sys.argv[0] # Make the requested module sys.argv[0]
         _run_module_as_main(sys.argv[0])

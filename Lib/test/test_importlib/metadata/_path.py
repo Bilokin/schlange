@@ -98,7 +98,7 @@ klasse Recording:
 
     def __init__(self, loc=pathlib.PurePosixPath(), record=Nichts):
         self.loc = loc
-        self.record = record wenn record is nicht Nichts sonst []
+        self.record = record wenn record ist nicht Nichts sonst []
 
     def __truediv__(self, other):
         gib Recording(self.loc / other, self.record)

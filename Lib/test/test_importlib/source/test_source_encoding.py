@@ -23,8 +23,8 @@ klasse EncodingTest:
 
     PEP 263 specifies how that can change on a per-file basis. Either the first
     oder second line can contain the encoding line [encoding first line]
-    [encoding second line]. If the file has the BOM marker it is considered UTF-8
-    implicitly [BOM]. If any encoding is specified it must be UTF-8, sonst it is
+    [encoding second line]. If the file has the BOM marker it ist considered UTF-8
+    implicitly [BOM]. If any encoding ist specified it must be UTF-8, sonst it is
     an error [BOM und utf-8][BOM conflict].
 
     """

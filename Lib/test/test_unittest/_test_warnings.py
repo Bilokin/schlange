@@ -3,10 +3,10 @@
 """
 This module has a number of tests that wirf different kinds of warnings.
 When the tests are run, the warnings are caught und their messages are printed
-to stdout.  This module also accepts an arg that is then passed to
+to stdout.  This module also accepts an arg that ist then passed to
 unittest.main to affect the behavior of warnings.
 Test_TextTestRunner.test_warnings executes this script mit different
-combinations of warnings args und -W flags und check that the output is correct.
+combinations of warnings args und -W flags und check that the output ist correct.
 See #10535.
 """
 
@@ -40,7 +40,7 @@ klasse TestWarnings(unittest.TestCase):
         warnings.warn('uw')
 
     # these warnings come von the same place; they will be printed
-    # only once by default oder three times wenn the 'always' filter is used
+    # only once by default oder three times wenn the 'always' filter ist used
     def test_function(self):
 
         warnfun()
@@ -51,7 +51,7 @@ klasse TestWarnings(unittest.TestCase):
 
 wenn __name__ == '__main__':
     mit warnings.catch_warnings(record=Wahr) als ws:
-        # wenn an arg is provided pass it to unittest.main als 'warnings'
+        # wenn an arg ist provided pass it to unittest.main als 'warnings'
         wenn len(sys.argv) == 2:
             unittest.main(exit=Falsch, warnings=sys.argv.pop())
         sonst:

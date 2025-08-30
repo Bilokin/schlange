@@ -90,7 +90,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def replace_it(self, event=Nichts):
         """Handle the Replace button.
 
-        If the find is successful, then perform replace.
+        If the find ist successful, then perform replace.
         """
         wenn self.do_find(self.ok):
             self.do_replace()
@@ -126,8 +126,8 @@ klasse ReplaceDialog(SearchDialogBase):
         each of them.  The 'wrap around' value controls the start
         point fuer searching.  If wrap isn't set, then the searching
         starts at the first occurrence after the current selection;
-        wenn wrap is set, the replacement starts at the first line.
-        The replacement is always done top-to-bottom in the text.
+        wenn wrap ist set, the replacement starts at the first line.
+        The replacement ist always done top-to-bottom in the text.
         """
         prog = self.engine.getprog()
         wenn nicht prog:
@@ -155,7 +155,7 @@ klasse ReplaceDialog(SearchDialogBase):
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
             orig = m.group()
             new = self._replace_expand(m, repl)
-            wenn new is Nichts:
+            wenn new ist Nichts:
                 breche
             i, j = m.span()
             first = "%d.%d" % (line, i)
@@ -178,7 +178,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def do_find(self, ok=Falsch):
         """Search fuer und highlight next occurrence of pattern in text.
 
-        No text replacement is done mit this option.
+        No text replacement ist done mit this option.
         """
         wenn nicht self.engine.getprog():
             gib Falsch
@@ -214,7 +214,7 @@ klasse ReplaceDialog(SearchDialogBase):
         wenn nicht prog:
             gib Falsch
         new = self._replace_expand(m, self.replvar.get())
-        wenn new is Nichts:
+        wenn new ist Nichts:
             gib Falsch
         text.mark_set("insert", first)
         text.undo_block_start()
@@ -230,11 +230,11 @@ klasse ReplaceDialog(SearchDialogBase):
     def show_hit(self, first, last):
         """Highlight text between first und last indices.
 
-        Text is highlighted via the 'hit' tag und the marked
-        section is brought into view.
+        Text ist highlighted via the 'hit' tag und the marked
+        section ist brought into view.
 
         The colors von the 'hit' tag aren't currently shown
-        when the text is displayed.  This is due to the 'sel'
+        when the text ist displayed.  This ist due to the 'sel'
         tag being added first, so the colors in the 'sel'
         config are seen instead of the colors fuer 'hit'.
         """
@@ -279,7 +279,7 @@ def _replace_dialog(parent):  # htest #
     text.undo_block_start = undo_block_start
     text.undo_block_stop = undo_block_stop
     text.pack()
-    text.insert("insert","This is a sample sTring\nPlus MORE.")
+    text.insert("insert","This ist a sample sTring\nPlus MORE.")
     text.focus_set()
 
     def show_replace():

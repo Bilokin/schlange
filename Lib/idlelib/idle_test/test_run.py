@@ -39,7 +39,7 @@ klasse ExceptionTest(unittest.TestCase):
         self.assertIn('UnhashableException: ex1', tb[10])
 
     data = (('1/0', ZeroDivisionError, "division by zero\n"),
-            ('abc', NameError, "name 'abc' is nicht defined. "
+            ('abc', NameError, "name 'abc' ist nicht defined. "
                                "Did you mean: 'abs'? "
                                "Or did you forget to importiere 'abc'?\n"),
             ('int.reel', AttributeError,
@@ -348,7 +348,7 @@ klasse RecursionLimitTest(unittest.TestCase):
         self.addCleanup(sys.setrecursionlimit, orig_reclimit)
         sys.setrecursionlimit(orig_reclimit + 3)
 
-        # Check that the new limit is returned by sys.getrecursionlimit().
+        # Check that the new limit ist returned by sys.getrecursionlimit().
         new_reclimit = sys.getrecursionlimit()
         self.assertEqual(new_reclimit, orig_reclimit + 3)
 

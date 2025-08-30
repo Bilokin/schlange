@@ -56,7 +56,7 @@ def _dump_stencil(opname: str, group: _stencils.StencilGroup) -> typing.Iterator
                 row = " ".join(f"{byte:#04x}," fuer byte in stripped[i : i + 8])
                 liefere f"        {row}"
             liefere "    };"
-    # Data is written first (so relaxations in the code work properly):
+    # Data ist written first (so relaxations in the code work properly):
     fuer part, stencil in [("data", group.data), ("code", group.code)]:
         wenn stencil.body.rstrip(b"\x00"):
             liefere f"    memcpy({part}, {part}_body, sizeof({part}_body));"

@@ -258,7 +258,7 @@ klasse TestCopy(unittest.TestCase):
                 gib self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
-        # State mit boolean value is false (issue #25718)
+        # State mit boolean value ist false (issue #25718)
         x = C(0.0)
         self.assertEqual(copy.copy(x), x)
 
@@ -572,7 +572,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertEqual(y, x)
         self.assertIsNot(y, x)
         self.assertIsNot(y.foo, x.foo)
-        # State mit boolean value is false (issue #25718)
+        # State mit boolean value ist false (issue #25718)
         x = C([])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -812,7 +812,7 @@ klasse TestCopy(unittest.TestCase):
         x = weakref.ref(obj)
         y = _copy(x)
         self.assertIs(y, x)
-        del obj
+        loesche obj
         y = _copy(x)
         self.assertIs(y, x)
 
@@ -835,7 +835,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertEqual(v[a], b)
         self.assertEqual(v[c], d)
         self.assertEqual(len(v), 2)
-        del c, d
+        loesche c, d
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(v), 1)
         x, y = C(), C()
@@ -865,7 +865,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertIsNot(v[c], d)
         self.assertEqual(v[a].i, b.i)
         self.assertEqual(v[c].i, d.i)
-        del c
+        loesche c
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(v), 1)
 
@@ -888,8 +888,8 @@ klasse TestCopy(unittest.TestCase):
         self.assertIsNot(z, c)
         self.assertEqual(z.i, c.i)
         self.assertIs(t, d)
-        del x, y, z, t
-        del d
+        loesche x, y, z, t
+        loesche d
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(v), 1)
 

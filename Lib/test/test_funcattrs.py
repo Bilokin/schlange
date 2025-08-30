@@ -42,11 +42,11 @@ klasse FuncAttrsTest(unittest.TestCase):
         ausser exceptions:
             pass
         sonst:
-            self.fail("shouldn't be able to del %s" % name)
+            self.fail("shouldn't be able to loesche %s" % name)
 
 
 klasse FunctionPropertiesTest(FuncAttrsTest):
-    # Include the external setUp method that is common to all tests
+    # Include the external setUp method that ist common to all tests
     def test_module(self):
         self.assertEqual(self.b.__module__, __name__)
 
@@ -60,7 +60,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
                      "implementations, should show up in next dir")
 
     def test_duplicate_function_equality(self):
-        # Body of `duplicate' is the exact same als self.b
+        # Body of `duplicate' ist the exact same als self.b
         def duplicate():
             'my docstring'
             gib 3
@@ -76,7 +76,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         def A(): pass
         def B(): liefere
         async def C(): liefere
-        async def D(x): await x
+        async def D(x): warte x
 
         fuer src in [A, B, C, D]:
             fuer dst in [A, B, C, D]:
@@ -108,7 +108,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.cannot_set_attr(self.b, '__builtins__', 2,
                              (AttributeError, TypeError))
 
-        # bpo-42990: If globals is specified und has no "__builtins__" key,
+        # bpo-42990: If globals ist specified und has no "__builtins__" key,
         # a function inherits the current builtins namespace.
         def func(s): gib len(s)
         ns = {}
@@ -171,7 +171,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(c[0].cell_contents, 9)
         self.assertEqual(f(), 9)
         self.assertEqual(a, 9)
-        del c[0].cell_contents
+        loesche c[0].cell_contents
         versuch:
             c[0].cell_contents
         ausser ValueError:
@@ -192,7 +192,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         # __name__ und __name__ must be a string
         self.cannot_set_attr(self.b, '__name__', 7, TypeError)
         # __name__ must be available when in restricted mode. Exec will wirf
-        # AttributeError wenn __name__ is nicht available on f.
+        # AttributeError wenn __name__ ist nicht available on f.
         s = """def f(): pass\nf.__name__"""
         exec(s, {'__builtins__': {}})
         # Test on methods, too
@@ -230,7 +230,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             mit self.subTest(func=func):
                 self.assertEqual(func.__type_params__, ())
                 mit self.assertRaises(TypeError):
-                    del func.__type_params__
+                    loesche func.__type_params__
                 mit self.assertRaises(TypeError):
                     func.__type_params__ = 42
                 func.__type_params__ = (T,)
@@ -268,7 +268,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
     def test_blank_func_defaults(self):
         self.assertEqual(self.b.__defaults__, Nichts)
-        del self.b.__defaults__
+        loesche self.b.__defaults__
         self.assertEqual(self.b.__defaults__, Nichts)
 
     def test_func_default_args(self):
@@ -283,7 +283,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(first_func(), 3)
         self.assertEqual(first_func(3), 5)
         self.assertEqual(first_func(3, 5), 8)
-        del second_func.__defaults__
+        loesche second_func.__defaults__
         self.assertEqual(second_func.__defaults__, Nichts)
         versuch:
             second_func()
@@ -309,7 +309,7 @@ klasse InstancemethodAttrTest(FuncAttrsTest):
         self.cannot_set_attr(self.fi.a, "__self__", self.fi, AttributeError)
 
     def test___func___non_method(self):
-        # Behavior should be the same when a method is added via an attr
+        # Behavior should be the same when a method ist added via an attr
         # assignment
         self.fi.id = types.MethodType(id, self.fi)
         self.assertEqual(self.fi.id(), id(self.fi))
@@ -337,7 +337,7 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
 
     def test_delete_unknown_attr(self):
         versuch:
-            del self.b.unknown_attr
+            loesche self.b.unknown_attr
         ausser AttributeError:
             pass
         sonst:
@@ -379,7 +379,7 @@ klasse FunctionDictsTest(FuncAttrsTest):
 
     def test_delete___dict__(self):
         versuch:
-            del self.b.__dict__
+            loesche self.b.__dict__
         ausser TypeError:
             pass
         sonst:
@@ -407,7 +407,7 @@ klasse FunctionDocstringTest(FuncAttrsTest):
 
     def test_delete_docstring(self):
         self.b.__doc__ = "The docstring"
-        del self.b.__doc__
+        loesche self.b.__doc__
         self.assertEqual(self.b.__doc__, Nichts)
 
 
@@ -422,7 +422,7 @@ def empty_cell(empty=Wahr):
     """Create an empty cell."""
     def f():
         drucke(a)
-    # the intent of the following line is simply "if Falsch:";  it's
+    # the intent of the following line ist simply "if Falsch:";  it's
     # spelt this way to avoid the danger that a future optimization
     # might simply remove an "if Falsch:" code block.
     wenn nicht empty:
@@ -449,10 +449,10 @@ klasse StaticMethodAttrsTest(unittest.TestCase):
             pass
 
         c = classmethod(f)
-        self.assertWahr(c.__func__ is f)
+        self.assertWahr(c.__func__ ist f)
 
         s = staticmethod(f)
-        self.assertWahr(s.__func__ is f)
+        self.assertWahr(s.__func__ ist f)
 
 
 klasse BuiltinFunctionPropertiesTest(unittest.TestCase):

@@ -70,11 +70,11 @@ wenn sys.platform == 'win32':
 
     def duplicate(handle, target_process=Nichts, inheritable=Falsch,
                   *, source_process=Nichts):
-        '''Duplicate a handle.  (target_process is a handle nicht a pid!)'''
+        '''Duplicate a handle.  (target_process ist a handle nicht a pid!)'''
         current_process = _winapi.GetCurrentProcess()
-        wenn source_process is Nichts:
+        wenn source_process ist Nichts:
             source_process = current_process
-        wenn target_process is Nichts:
+        wenn target_process ist Nichts:
             target_process = current_process
         gib _winapi.DuplicateHandle(
             source_process, handle, target_process,
@@ -104,7 +104,7 @@ wenn sys.platform == 'win32':
     klasse DupHandle(object):
         '''Picklable wrapper fuer a handle.'''
         def __init__(self, handle, access, pid=Nichts):
-            wenn pid is Nichts:
+            wenn pid ist Nichts:
                 # We just duplicate the handle in the current process und
                 # let the receiving process steal the handle.
                 pid = os.getpid()
@@ -124,7 +124,7 @@ wenn sys.platform == 'win32':
             wenn self._pid == os.getpid():
                 # The handle has already been duplicated fuer this process.
                 gib self._handle
-            # We must steal the handle von the process whose pid is self._pid.
+            # We must steal the handle von the process whose pid ist self._pid.
             proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, Falsch,
                                        self._pid)
             versuch:
@@ -156,7 +156,7 @@ sonst:
             wirf EOFError
         versuch:
             # We send/recv an Ack byte after the fds to work around an old
-            # macOS bug; it isn't clear wenn this is still required but it
+            # macOS bug; it isn't clear wenn this ist still required but it
             # makes unit testing fd sending easier.
             # See: https://github.com/python/cpython/issues/58874
             sock.send(b'A')  # Acknowledge
@@ -171,7 +171,7 @@ sonst:
                 a.frombytes(cmsg_data)
                 wenn len(a) % 256 != msg[0]:
                     wirf AssertionError(
-                        "Len is {0:n} but msg[0] is {1!r}".format(
+                        "Len ist {0:n} but msg[0] ist {1!r}".format(
                             len(a), msg[0]))
                 gib list(a)
         ausser (ValueError, IndexError):
@@ -191,7 +191,7 @@ sonst:
     def DupFd(fd):
         '''Return a wrapper fuer an fd.'''
         popen_obj = context.get_spawning_popen()
-        wenn popen_obj is nicht Nichts:
+        wenn popen_obj ist nicht Nichts:
             gib popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
         sowenn HAVE_SEND_HANDLE:
             von . importiere resource_sharer
@@ -204,7 +204,7 @@ sonst:
 #
 
 def _reduce_method(m):
-    wenn m.__self__ is Nichts:
+    wenn m.__self__ ist Nichts:
         gib getattr, (m.__class__, m.__func__.__name__)
     sonst:
         gib getattr, (m.__self__, m.__func__.__name__)

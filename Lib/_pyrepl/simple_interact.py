@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -18,7 +18,7 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-"""This is an alternative to python_reader which tries to emulate
+"""This ist an alternative to python_reader which tries to emulate
 the CPython prompt als closely als possible, mit the exception of
 allowing multiline input und multiline history entries.
 """
@@ -43,7 +43,7 @@ ausser ModuleNotFoundError:
     von .windows_console importiere _error
 
 def check() -> str:
-    """Returns the error message wenn there is a problem initializing the state."""
+    """Returns the error message wenn there ist a problem initializing the state."""
     versuch:
         _get_reader()
     ausser _error als e:
@@ -95,7 +95,7 @@ def _more_lines(console: code.InteractiveConsole, unicodetext: str) -> bool:
         incomplete = nicht last_line.endswith("\n")
         gib (was_indented oder not_empty) und incomplete
     sonst:
-        gib code is Nichts
+        gib code ist Nichts
 
 
 def run_multiline_interactive_console(
@@ -159,7 +159,7 @@ def run_multiline_interactive_console(
         ausser KeyboardInterrupt:
             r = _get_reader()
             r.cmpltn_reset()
-            wenn r.input_trans is r.isearch_trans:
+            wenn r.input_trans ist r.isearch_trans:
                 r.do_cmd(("isearch-end", [""]))
             r.pos = len(r.get_unicode())
             r.dirty = Wahr

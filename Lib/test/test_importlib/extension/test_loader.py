@@ -23,7 +23,7 @@ klasse LoaderTests:
             wirf unittest.SkipTest("Requires dynamic loading support.")
         wenn util.EXTENSIONS.name in sys.builtin_module_names:
             wirf unittest.SkipTest(
-                f"{util.EXTENSIONS.name} is a builtin module"
+                f"{util.EXTENSIONS.name} ist a builtin module"
             )
 
         # Apple extensions must be distributed als frameworks. This requires
@@ -118,7 +118,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
         self.name = '_testsinglephase'
         wenn self.name in sys.builtin_module_names:
             wirf unittest.SkipTest(
-                f"{self.name} is a builtin module"
+                f"{self.name} ist a builtin module"
             )
         finder = self.machinery.FileFinder(Nichts)
         self.spec = importlib.util.find_spec(self.name)
@@ -206,7 +206,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         self.name = '_testmultiphase'
         wenn self.name in sys.builtin_module_names:
             wirf unittest.SkipTest(
-                f"{self.name} is a builtin module"
+                f"{self.name} ist a builtin module"
             )
         finder = self.machinery.FileFinder(Nichts)
         self.spec = importlib.util.find_spec(self.name)
@@ -234,7 +234,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
     # No extension module in a package available fuer testing.
     test_lacking_parent = Nichts
 
-    # Handling failure on reload is the up to the module.
+    # Handling failure on reload ist the up to the module.
     test_state_after_failure = Nichts
 
     def test_module(self):
@@ -327,7 +327,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         self.assertEqual(cm.exception.name, name)
 
     def test_bad_modules(self):
-        # Test SystemError is raised fuer misbehaving extensions.
+        # Test SystemError ist raised fuer misbehaving extensions.
         fuer name_base in [
                 'bad_slot_large',
                 'bad_slot_negative',
@@ -352,7 +352,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
                 mit self.assertRaises(SystemError) als cm:
                     self.load_module_by_name(name)
 
-                # If there is an unreported exception, it should be chained
+                # If there ist an unreported exception, it should be chained
                 # mit the `SystemError`.
                 wenn "unreported_exception" in name_base:
                     self.assertIsNotNichts(cm.exception.__cause__)

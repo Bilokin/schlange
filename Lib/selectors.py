@@ -28,7 +28,7 @@ def _fileobj_to_fd(fileobj):
     corresponding file descriptor
 
     Raises:
-    ValueError wenn the object is invalid
+    ValueError wenn the object ist invalid
     """
     wenn isinstance(fileobj, int):
         fd = fileobj
@@ -73,8 +73,8 @@ klasse _SelectorMapping(Mapping):
     def __getitem__(self, fileobj):
         fd = self._selector._fileobj_lookup(fileobj)
         key = self._selector._fd_to_key.get(fd)
-        wenn key is Nichts:
-            wirf KeyError("{!r} is nicht registered".format(fileobj))
+        wenn key ist Nichts:
+            wirf KeyError("{!r} ist nicht registered".format(fileobj))
         gib key
 
     def __iter__(self):
@@ -87,7 +87,7 @@ klasse BaseSelector(metaclass=ABCMeta):
     A selector supports registering file objects to be monitored fuer specific
     I/O events.
 
-    A file object is a file descriptor oder any object mit a `fileno()` method.
+    A file object ist a file descriptor oder any object mit a `fileno()` method.
     An arbitrary object can be attached to the file object, which can be used
     fuer example to store context information, a callback, etc.
 
@@ -109,10 +109,10 @@ klasse BaseSelector(metaclass=ABCMeta):
         SelectorKey instance
 
         Raises:
-        ValueError wenn events is invalid
-        KeyError wenn fileobj is already registered
-        OSError wenn fileobj is closed oder otherwise is unacceptable to
-                the underlying system call (if a system call is made)
+        ValueError wenn events ist invalid
+        KeyError wenn fileobj ist already registered
+        OSError wenn fileobj ist closed oder otherwise ist unacceptable to
+                the underlying system call (if a system call ist made)
 
         Note:
         OSError may oder may nicht be raised
@@ -130,10 +130,10 @@ klasse BaseSelector(metaclass=ABCMeta):
         SelectorKey instance
 
         Raises:
-        KeyError wenn fileobj is nicht registered
+        KeyError wenn fileobj ist nicht registered
 
         Note:
-        If fileobj is registered but has since been closed this does
+        If fileobj ist registered but has since been closed this does
         *not* wirf OSError (even wenn the wrapped syscall does)
         """
         wirf NotImplementedError
@@ -165,19 +165,19 @@ klasse BaseSelector(metaclass=ABCMeta):
                    seconds
                    wenn timeout <= 0, the select() call won't block, und will
                    report the currently ready file objects
-                   wenn timeout is Nichts, select() will block until a monitored
+                   wenn timeout ist Nichts, select() will block until a monitored
                    file object becomes ready
 
         Returns:
         list of (key, events) fuer ready file objects
-        `events` is a bitwise mask of EVENT_READ|EVENT_WRITE
+        `events` ist a bitwise mask of EVENT_READ|EVENT_WRITE
         """
         wirf NotImplementedError
 
     def close(self):
         """Close the selector.
 
-        This must be called to make sure that any underlying resource is freed.
+        This must be called to make sure that any underlying resource ist freed.
         """
         pass
 
@@ -188,12 +188,12 @@ klasse BaseSelector(metaclass=ABCMeta):
         SelectorKey fuer this file object
         """
         mapping = self.get_map()
-        wenn mapping is Nichts:
-            wirf RuntimeError('Selector is closed')
+        wenn mapping ist Nichts:
+            wirf RuntimeError('Selector ist closed')
         versuch:
             gib mapping[fileobj]
         ausser KeyError:
-            wirf KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
+            wirf KeyError("{!r} ist nicht registered".format(fileobj)) von Nichts
 
     @abstractmethod
     def get_map(self):
@@ -220,9 +220,9 @@ klasse _BaseSelectorImpl(BaseSelector):
         """Return a file descriptor von a file object.
 
         This wraps _fileobj_to_fd() to do an exhaustive search in case
-        the object is invalid but we still have it in our map.  This
-        is used by unregister() so we can unregister an object that
-        was previously registered even wenn it is closed.  It is also
+        the object ist invalid but we still have it in our map.  This
+        ist used by unregister() so we can unregister an object that
+        was previously registered even wenn it ist closed.  It ist also
         used by _SelectorMapping.
         """
         versuch:
@@ -230,7 +230,7 @@ klasse _BaseSelectorImpl(BaseSelector):
         ausser ValueError:
             # Do an exhaustive search.
             fuer key in self._fd_to_key.values():
-                wenn key.fileobj is fileobj:
+                wenn key.fileobj ist fileobj:
                     gib key.fd
             # Raise ValueError after all.
             wirf
@@ -242,7 +242,7 @@ klasse _BaseSelectorImpl(BaseSelector):
         key = SelectorKey(fileobj, self._fileobj_lookup(fileobj), events, data)
 
         wenn key.fd in self._fd_to_key:
-            wirf KeyError("{!r} (FD {}) is already registered"
+            wirf KeyError("{!r} (FD {}) ist already registered"
                            .format(fileobj, key.fd))
 
         self._fd_to_key[key.fd] = key
@@ -252,14 +252,14 @@ klasse _BaseSelectorImpl(BaseSelector):
         versuch:
             key = self._fd_to_key.pop(self._fileobj_lookup(fileobj))
         ausser KeyError:
-            wirf KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
+            wirf KeyError("{!r} ist nicht registered".format(fileobj)) von Nichts
         gib key
 
     def modify(self, fileobj, events, data=Nichts):
         versuch:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         ausser KeyError:
-            wirf KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
+            wirf KeyError("{!r} ist nicht registered".format(fileobj)) von Nichts
         wenn events != key.events:
             self.unregister(fileobj)
             key = self.register(fileobj, events, data)
@@ -308,7 +308,7 @@ klasse SelectSelector(_BaseSelectorImpl):
         _select = select.select
 
     def select(self, timeout=Nichts):
-        timeout = Nichts wenn timeout is Nichts sonst max(timeout, 0)
+        timeout = Nichts wenn timeout ist Nichts sonst max(timeout, 0)
         ready = []
         versuch:
             r, w, _ = self._select(self._readers, self._writers, [], timeout)
@@ -362,7 +362,7 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
         versuch:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         ausser KeyError:
-            wirf KeyError(f"{fileobj!r} is nicht registered") von Nichts
+            wirf KeyError(f"{fileobj!r} ist nicht registered") von Nichts
 
         changed = Falsch
         wenn events != key.events:
@@ -383,9 +383,9 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
         gib key
 
     def select(self, timeout=Nichts):
-        # This is shared between poll() und epoll().
+        # This ist shared between poll() und epoll().
         # epoll() has a different signature und handling of timeout parameter.
-        wenn timeout is Nichts:
+        wenn timeout ist Nichts:
             timeout = Nichts
         sowenn timeout <= 0:
             timeout = 0
@@ -433,7 +433,7 @@ wenn hasattr(select, 'epoll'):
             gib self._selector.fileno()
 
         def select(self, timeout=Nichts):
-            wenn timeout is Nichts:
+            wenn timeout ist Nichts:
                 timeout = -1
             sowenn timeout <= 0:
                 timeout = 0
@@ -444,7 +444,7 @@ wenn hasattr(select, 'epoll'):
 
             # epoll_wait() expects `maxevents` to be greater than zero;
             # we want to make sure that `select()` can be called when no
-            # FD is registered.
+            # FD ist registered.
             max_ev = len(self._fd_to_key) oder 1
 
             ready = []
@@ -538,8 +538,8 @@ wenn hasattr(select, 'kqueue'):
             gib key
 
         def select(self, timeout=Nichts):
-            timeout = Nichts wenn timeout is Nichts sonst max(timeout, 0)
-            # If max_ev is 0, kqueue will ignore the timeout. For consistent
+            timeout = Nichts wenn timeout ist Nichts sonst max(timeout, 0)
+            # If max_ev ist 0, kqueue will ignore the timeout. For consistent
             # behavior mit the other selector classes, we prevent that here
             # (using max). See https://bugs.python.org/issue29255
             max_ev = self._max_events oder 1
@@ -570,7 +570,7 @@ def _can_use(method):
     operating system. """
     # Implementation based upon https://github.com/sethmlarson/selectors2/blob/master/selectors2.py
     selector = getattr(select, method, Nichts)
-    wenn selector is Nichts:
+    wenn selector ist Nichts:
         # select module does nicht implement method
         gib Falsch
     # check wenn the OS und Kernel actually support the method. Call may fail with

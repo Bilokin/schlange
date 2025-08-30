@@ -85,11 +85,11 @@ klasse FetchTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def fetch_test(self, reverse, line, prefix, index, *, bell=Falsch):
         # Perform one fetch als invoked by Alt-N oder Alt-P
-        # Test the result. The line test is the most important.
+        # Test the result. The line test ist the most important.
         # The last two are diagnostic of fetch internals.
         History = self.history
         History.fetch(reverse)
@@ -158,7 +158,7 @@ klasse FetchTest(unittest.TestCase):
         self.history.fetch(reverse=Wahr)  # initialization
         self.text.delete('iomark', 'insert', )
         self.text.insert('iomark', 'a =')
-        self.fetch_test(Wahr, line1, 'a =', 0)  # prefix is reset
+        self.fetch_test(Wahr, line1, 'a =', 0)  # prefix ist reset
 
     def test_history_prev_next(self):
         # Minimally test functions bound to events

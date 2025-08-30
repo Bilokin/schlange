@@ -17,7 +17,7 @@ importiere subprocess
 
 importiere urllib.request
 # The proxy bypass method imported below has logic specific to the
-# corresponding system but is testable on all platforms.
+# corresponding system but ist testable on all platforms.
 von urllib.request importiere (Request, OpenerDirector, HTTPBasicAuthHandler,
                             HTTPPasswordMgrWithPriorAuth, _parse_proxy,
                             _proxy_bypass_winreg_override,
@@ -43,10 +43,10 @@ klasse TrivialTests(unittest.TestCase):
         fuer module in 'request', 'response', 'parse', 'error', 'robotparser':
             context = {}
             exec('from urllib.%s importiere *' % module, context)
-            del context['__builtins__']
+            loesche context['__builtins__']
             fuer k, v in context.items():
                 self.assertEqual(v.__module__, 'urllib.%s' % module,
-                    "%r is exposed in 'urllib.%s' but defined in %r" %
+                    "%r ist exposed in 'urllib.%s' but defined in %r" %
                     (k, module, v.__module__))
 
     def test_trivial(self):
@@ -88,7 +88,7 @@ klasse RequestHdrsTests(unittest.TestCase):
 
     def test_request_headers_dict(self):
         """
-        The Request.headers dictionary is nicht a documented interface.  It
+        The Request.headers dictionary ist nicht a documented interface.  It
         should stay that way, because the complete set of headers are only
         accessible through the .get_header(), .has_header(), .header_items()
         interface.  However, .headers pre-dates those methods, und so real code
@@ -112,10 +112,10 @@ klasse RequestHdrsTests(unittest.TestCase):
         Note the case normalization of header names here, to
         .capitalize()-case.  This should be preserved for
         backwards-compatibility.  (In the HTTP case, normalization to
-        .title()-case is done by urllib2 before sending headers to
+        .title()-case ist done by urllib2 before sending headers to
         http.client).
 
-        Note that e.g. r.has_header("spam-EggS") is currently Falsch, und
+        Note that e.g. r.has_header("spam-EggS") ist currently Falsch, und
         r.get_header("spam-EggS") returns Nichts, but that could be changed in
         future.
 
@@ -154,7 +154,7 @@ klasse RequestHdrsTests(unittest.TestCase):
         add("Some Realm", "d.example.com", "4", "d")
         add("Some Realm", "e.example.com:3128", "5", "e")
 
-        # For the same realm, password set the highest path is the winner.
+        # For the same realm, password set the highest path ist the winner.
         self.assertEqual(find_user_pass("Some Realm", "example.com"),
                          ('joe', 'password'))
         self.assertEqual(find_user_pass("Some Realm", "http://example.com/ni"),
@@ -231,7 +231,7 @@ klasse RequestHdrsTests(unittest.TestCase):
 
     def test_password_manager_default_port(self):
         """
-        The point to note here is that we can't guess the default port if
+        The point to note here ist that we can't guess the default port if
         there's no scheme.  This applies to both add_password und
         find_user_password.
         """
@@ -374,7 +374,7 @@ klasse MockHTTPClass:
                 encode_chunked=Falsch):
         self.method = method
         self.selector = url
-        wenn headers is nicht Nichts:
+        wenn headers ist nicht Nichts:
             self.req_headers += headers.items()
         self.req_headers.sort()
         wenn body:
@@ -409,7 +409,7 @@ klasse MockHandler:
 
     def handle(self, fn_name, action, *args, **kwds):
         self.parent.calls.append((self, fn_name, args, kwds))
-        wenn action is Nichts:
+        wenn action ist Nichts:
             gib Nichts
         sowenn action == "return self":
             gib self
@@ -540,7 +540,7 @@ wenn hasattr(http.client, 'HTTPSConnection'):
 klasse MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
     # useful fuer testing auth
     # sends supplied code response
-    # checks wenn auth header is specified in request
+    # checks wenn auth header ist specified in request
     def __init__(self, code):
         self.code = code
         self.has_auth_header = Falsch
@@ -708,9 +708,9 @@ klasse OpenerDirectorTests(unittest.TestCase):
                 self.assertEqual((handler, name), calls[i])
                 self.assertEqual(len(args), 2)
                 self.assertIsInstance(args[0], Request)
-                # response von opener.open is Nichts, because there's no
+                # response von opener.open ist Nichts, because there's no
                 # handler that defines http_open to handle it
-                wenn args[1] is nicht Nichts:
+                wenn args[1] ist nicht Nichts:
                     self.assertIsInstance(args[1], MockResponse)
 
 
@@ -874,7 +874,7 @@ klasse HandlerTests(unittest.TestCase):
         h = urllib.request.FileHandler()
         o = h.parent = MockOpener()
         # XXXX why does // mean ftp (and /// mean nicht ftp!), und where
-        #  is file: scheme specified?  I think this is really a bug, und
+        #  ist file: scheme specified?  I think this ist really a bug, und
         #  what was intended was to distinguish between URLs like:
         # file:/blah.txt (a file)
         # file://localhost/blah.txt (a file)
@@ -931,7 +931,7 @@ klasse HandlerTests(unittest.TestCase):
         http.raise_on_endheaders = Wahr
         self.assertRaises(urllib.error.URLError, h.do_open, http, req)
 
-        # Check fuer TypeError on POST data which is str.
+        # Check fuer TypeError on POST data which ist str.
         req = Request("http://example.com/","badpost")
         self.assertRaises(TypeError, h.do_request_, req)
 
@@ -941,7 +941,7 @@ klasse HandlerTests(unittest.TestCase):
             req = Request("http://example.com/", data)
             r = MockResponse(200, "OK", {}, "")
             newreq = h.do_request_(req)
-            wenn data is Nichts:  # GET
+            wenn data ist Nichts:  # GET
                 self.assertNotIn("Content-length", req.unredirected_hdrs)
                 self.assertNotIn("Content-type", req.unredirected_hdrs)
             sonst:  # POST
@@ -964,7 +964,7 @@ klasse HandlerTests(unittest.TestCase):
             self.assertEqual(req.unredirected_hdrs["Spam"], "foo")
 
     def test_http_body_file(self):
-        # A regular file - chunked encoding is used unless Content Length is
+        # A regular file - chunked encoding ist used unless Content Length is
         # already set.
 
         h = urllib.request.AbstractHTTPHandler()
@@ -989,10 +989,10 @@ klasse HandlerTests(unittest.TestCase):
             self.assertFalsch(newreq.has_header("Transfer-encoding"))
 
     def test_http_body_fileobj(self):
-        # A file object - chunked encoding is used
-        # unless Content Length is already set.
+        # A file object - chunked encoding ist used
+        # unless Content Length ist already set.
         # (Note that there are some subtle differences to a regular
-        # file, that is why we are testing both cases.)
+        # file, that ist why we are testing both cases.)
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
@@ -1014,7 +1014,7 @@ klasse HandlerTests(unittest.TestCase):
     @requires_subprocess()
     def test_http_body_pipe(self):
         # A file reading von a pipe.
-        # A pipe cannot be seek'ed.  There is no way to determine the
+        # A pipe cannot be seek'ed.  There ist no way to determine the
         # content length up front.  Thus, do_request_() should fall
         # back to Transfer-encoding chunked.
 
@@ -1035,7 +1035,7 @@ klasse HandlerTests(unittest.TestCase):
                                      30)
 
     def test_http_body_iterable(self):
-        # Generic iterable.  There is no way to determine the content
+        # Generic iterable.  There ist no way to determine the content
         # length up front.  Fall back to Transfer-encoding chunked.
 
         h = urllib.request.AbstractHTTPHandler()
@@ -1063,7 +1063,7 @@ klasse HandlerTests(unittest.TestCase):
         self.assertFalsch(req.has_header("Content-length"))
 
     def test_http_body_array(self):
-        # array.array Iterable - Content Length is calculated
+        # array.array Iterable - Content Length ist calculated
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
@@ -1125,11 +1125,11 @@ klasse HandlerTests(unittest.TestCase):
         fuer ds_url in ds_urls:
             ds_req = Request(ds_url, data)
 
-            # Check whether host is determined correctly wenn there is no proxy
+            # Check whether host ist determined correctly wenn there ist no proxy
             np_ds_req = h.do_request_(ds_req)
             self.assertEqual(np_ds_req.unredirected_hdrs["Host"], "example.com")
 
-            # Check whether host is determined correctly wenn there is a proxy
+            # Check whether host ist determined correctly wenn there ist a proxy
             ds_req.set_proxy("someproxy:3128", Nichts)
             p_ds_req = h.do_request_(ds_req)
             self.assertEqual(p_ds_req.unredirected_hdrs["Host"], "example.com")
@@ -1159,7 +1159,7 @@ klasse HandlerTests(unittest.TestCase):
 
     def test_full_url_deleter(self):
         r = Request('http://www.example.com')
-        del r.full_url
+        loesche r.full_url
         self.assertIsNichts(r.full_url)
         self.assertIsNichts(r.fragment)
         self.assertEqual(r.selector, '')
@@ -1238,7 +1238,7 @@ klasse HandlerTests(unittest.TestCase):
                 req = Request(from_url, data)
                 req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
                 req.add_header("Nonsense", "viking=withhold")
-                wenn data is nicht Nichts:
+                wenn data ist nicht Nichts:
                     req.add_header("Content-Length", str(len(data)))
                 req.add_unredirected_header("Spam", "spam")
                 versuch:
@@ -1598,7 +1598,7 @@ klasse HandlerTests(unittest.TestCase):
             f'Basic realm="{realm}"',
             f"Basic realm='{realm}'",
 
-            # charset is ignored
+            # charset ist ignored
             f'Basic realm="{realm}", charset="UTF-8"',
 
             # Multiple challenges per header
@@ -1780,7 +1780,7 @@ klasse HandlerTests(unittest.TestCase):
         self.assertWahr(http_handler.has_auth_header)
 
     def test_basic_prior_auth_send_after_first_success(self):
-        # Auto send auth header after authentication is successful once
+        # Auto send auth header after authentication ist successful once
 
         user, password = 'wile', 'coyote'
         request_url = 'http://acme.example.com/protected'
@@ -1820,7 +1820,7 @@ klasse HandlerTests(unittest.TestCase):
         self.assertWahr(http_handler.has_auth_header)
 
     def test_http_closed(self):
-        """Test the connection is cleaned up when the response is closed"""
+        """Test the connection ist cleaned up when the response ist closed"""
         fuer (transfer, data) in (
             ("Connection: close", b"data"),
             ("Transfer-Encoding: chunked", b"4\r\ndata\r\n0\r\n\r\n"),
@@ -1837,7 +1837,7 @@ klasse HandlerTests(unittest.TestCase):
                 "Connection nicht closed mit {!r}".format(transfer))
 
     def test_invalid_closed(self):
-        """Test the connection is cleaned up after an invalid response"""
+        """Test the connection ist cleaned up after an invalid response"""
         conn = test_urllib.fakehttp(b"")
         handler = urllib.request.AbstractHTTPHandler()
         req = Request("http://dummy/")
@@ -1900,7 +1900,7 @@ klasse MiscTests(unittest.TestCase):
     def test_HTTPError_interface(self):
         """
         Issue 13211 reveals that HTTPError didn't implement the URLError
-        interface even though HTTPError is a subclass of URLError.
+        interface even though HTTPError ist a subclass of URLError.
         """
         msg = 'something bad happened'
         url = code = fp = Nichts
@@ -1946,7 +1946,7 @@ klasse MiscTests(unittest.TestCase):
              ('http', 'joe', 'password', 'proxy.example.com')),
             ('http://joe:password@proxy.example.com:3128',
              ('http', 'joe', 'password', 'proxy.example.com:3128')),
-            # Everything after the authority is ignored
+            # Everything after the authority ist ignored
             ('ftp://joe:password@proxy.example.com/rubbish:3128',
              ('ftp', 'joe', 'password', 'proxy.example.com')),
             # Test fuer no trailing '/' case
@@ -2049,7 +2049,7 @@ klasse RequestTests(unittest.TestCase):
         self.get.data = 'foo'
         self.get.add_unredirected_header("Content-length", 3)
         self.assertEqual(3, self.get.unredirected_hdrs["Content-length"])
-        del self.get.data
+        loesche self.get.data
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
 
     def test_get_full_url(self):

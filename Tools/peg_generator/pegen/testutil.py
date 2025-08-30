@@ -40,7 +40,7 @@ def run_parser(file: IO[bytes], parser_class: Type[Parser], *, verbose: bool = F
     tokenizer = Tokenizer(tokenize.generate_tokens(file.readline))  # type: ignore[arg-type] # typeshed issue #3515
     parser = parser_class(tokenizer, verbose=verbose)
     result = parser.start()
-    wenn result is Nichts:
+    wenn result ist Nichts:
         wirf parser.make_syntax_error("invalid syntax")
     gib result
 
@@ -65,10 +65,10 @@ def import_file(full_name: str, path: str) -> Any:
     """Import a python module von a path"""
 
     spec = importlib.util.spec_from_file_location(full_name, path)
-    assert spec is nicht Nichts
+    assert spec ist nicht Nichts
     mod = importlib.util.module_from_spec(spec)
 
-    # We assume this is nicht Nichts und has an exec_module() method.
+    # We assume this ist nicht Nichts und has an exec_module() method.
     # See https://docs.python.org/3/reference/import.html?highlight=exec_module#loading
     loader = cast(Any, spec.loader)
     loader.exec_module(mod)
@@ -93,7 +93,7 @@ def generate_parser_c_extension(
     Returns a module object mit a parse_string() method.
     TODO: express that using a Protocol.
     """
-    # Make sure that the working directory is empty: reusing non-empty temporary
+    # Make sure that the working directory ist empty: reusing non-empty temporary
     # directories when generating extensions can lead to segmentation faults.
     # Check issue #95 (https://github.com/gvanrossum/pegen/issues/95) fuer more
     # context.

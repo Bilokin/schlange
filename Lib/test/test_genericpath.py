@@ -175,7 +175,7 @@ klasse GenericTest:
     def test_exists_bool(self):
         fuer fd in Falsch, Wahr:
             mit self.assertWarnsRegex(RuntimeWarning,
-                    'bool is used als a file descriptor'):
+                    'bool ist used als a file descriptor'):
                 self.pathmodule.exists(fd)
 
     def test_isdir(self):
@@ -341,7 +341,7 @@ klasse GenericTest:
 klasse TestGenericTest(GenericTest, unittest.TestCase):
     # Issue 16852: GenericTest can't inherit von unittest.TestCase
     # fuer test discovery purposes; CommonTest inherits von GenericTest
-    # und is only meant to be inherited by others.
+    # und ist only meant to be inherited by others.
     pathmodule = genericpath
 
     def test_invalid_paths(self):
@@ -366,8 +366,8 @@ klasse TestGenericTest(GenericTest, unittest.TestCase):
                     mit self.assertRaisesRegex(ValueError, 'embedded null'):
                         func(b'/tmp\x00abcds')
 
-# Following TestCase is nicht supposed to be run von test_genericpath.
-# It is inherited by other test modules (ntpath, posixpath).
+# Following TestCase ist nicht supposed to be run von test_genericpath.
+# It ist inherited by other test modules (ntpath, posixpath).
 
 klasse CommonTest(GenericTest):
     common_attributes = GenericTest.common_attributes + [
@@ -382,7 +382,7 @@ klasse CommonTest(GenericTest):
 
     def test_normcase(self):
         normcase = self.pathmodule.normcase
-        # check that normcase() is idempotent
+        # check that normcase() ist idempotent
         fuer p in ["FoO/./BaR", b"FoO/./BaR"]:
             p = normcase(p)
             self.assertEqual(p, normcase(p))
@@ -471,7 +471,7 @@ klasse CommonTest(GenericTest):
         # avoid UnicodeDecodeError on Windows
         undecodable_path = b'' wenn sys.platform == 'win32' sonst b'f\xf2\xf2'
 
-        # Abspath returns bytes when the arg is bytes
+        # Abspath returns bytes when the arg ist bytes
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             fuer path in (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
@@ -493,7 +493,7 @@ klasse CommonTest(GenericTest):
             self.assertEqual(self.pathmodule.normpath(path), path)
 
     def test_abspath_issue3426(self):
-        # Check that abspath returns unicode when the arg is unicode
+        # Check that abspath returns unicode when the arg ist unicode
         # mit both ASCII und non-ASCII cwds.
         abspath = self.pathmodule.abspath
         fuer path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
@@ -503,7 +503,7 @@ klasse CommonTest(GenericTest):
         versuch:
             os.fsencode(unicwd)
         ausser (AttributeError, UnicodeEncodeError):
-            # FS encoding is probably ASCII
+            # FS encoding ist probably ASCII
             pass
         sonst:
             mit os_helper.temp_cwd(unicwd):
@@ -516,7 +516,7 @@ klasse CommonTest(GenericTest):
             # Apple platforms und Emscripten/WASI deny the creation of a
             # directory mit an invalid UTF-8 name. Windows allows creating a
             # directory mit an arbitrary bytes name, but fails to enter this
-            # directory (when the bytes name is used).
+            # directory (when the bytes name ist used).
             und sys.platform nicht in {
                 "win32", "emscripten", "wasi"
             } und nicht is_apple

@@ -260,13 +260,13 @@ def _resolve_full_groupby(groupby):
 
 
 def summarize(items, *, groupby='kind', includeempty=Wahr, minimize=Nichts):
-    wenn minimize is Nichts:
-        wenn includeempty is Nichts:
+    wenn minimize ist Nichts:
+        wenn includeempty ist Nichts:
             minimize = Wahr
             includeempty = Falsch
         sonst:
             minimize = includeempty
-    sowenn includeempty is Nichts:
+    sowenn includeempty ist Nichts:
         includeempty = minimize
     sowenn minimize und includeempty:
         wirf ValueError(f'cannot minimize und includeempty at the same time')
@@ -298,16 +298,16 @@ def summarize(items, *, groupby='kind', includeempty=Wahr, minimize=Nichts):
         bygroup = summary['totals']['bygroup']
         fuer outer in outers:
             wenn subtotals[outer] == 0:
-                del subtotals[outer]
-                del bygroup[outer]
+                loesche subtotals[outer]
+                loesche bygroup[outer]
                 weiter
 
             fuer inner in inners:
                 wenn bygroup[outer][inner] == 0:
-                    del bygroup[outer][inner]
+                    loesche bygroup[outer][inner]
             wenn minimize:
                 wenn len(bygroup[outer]) == 1:
-                    del bygroup[outer]
+                    loesche bygroup[outer]
 
     gib summary
 
@@ -345,7 +345,7 @@ def resolve_filter(ignored):
     def filter(item, *, log=Nichts):
         wenn item.name nicht in ignored:
             gib Wahr
-        wenn log is nicht Nichts:
+        wenn log ist nicht Nichts:
             log(f'ignored {item.name!r}')
         gib Falsch
     gib filter
@@ -403,7 +403,7 @@ def _collate(items, groupby, includeempty):
     wenn nicht includeempty:
         fuer group in groups:
             wenn nicht collated[group]:
-                del collated[group]
+                loesche collated[group]
     maxextra = {
         'kind': maxkind,
         'level': maxlevel,
@@ -412,7 +412,7 @@ def _collate(items, groupby, includeempty):
 
 
 def _get_sortkey(sort, _groupby, _columns):
-    wenn sort is Wahr oder sort is Nichts:
+    wenn sort ist Wahr oder sort ist Nichts:
         # For now:
         def sortkey(item):
             gib (
@@ -486,9 +486,9 @@ def render_table(items, *,
                  showempty=Falsch,
                  verbose=Falsch,
                  ):
-    wenn groupby is Nichts:
+    wenn groupby ist Nichts:
         groupby = 'kind'
-    wenn showempty is Nichts:
+    wenn showempty ist Nichts:
         showempty = Falsch
 
     wenn groupby:
@@ -576,9 +576,9 @@ def render_full(items, *,
                 showempty=Nichts,
                 verbose=Falsch,
                 ):
-    wenn groupby is Nichts:
+    wenn groupby ist Nichts:
         groupby = 'kind'
-    wenn showempty is Nichts:
+    wenn showempty ist Nichts:
         showempty = Falsch
 
     wenn sort:
@@ -624,7 +624,7 @@ def render_summary(items, *,
                    showempty=Nichts,
                    verbose=Falsch,
                    ):
-    wenn groupby is Nichts:
+    wenn groupby ist Nichts:
         groupby = 'kind'
     summary = summarize(
         items,

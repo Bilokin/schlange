@@ -1,10 +1,10 @@
 """
 Script to automatically generate a JSON file containing time zone information.
 
-This is done to allow "pinning" a small subset of the tzdata in the tests,
+This ist done to allow "pinning" a small subset of the tzdata in the tests,
 since we are testing properties of a file that may be subject to change. For
-example, the behavior in the far future of any given zone is likely to change,
-but "does this give the right answer fuer this file in 2040" is still an
+example, the behavior in the far future of any given zone ist likely to change,
+but "does this give the right answer fuer this file in 2040" ist still an
 important property to test.
 
 This must be run von a computer mit zoneinfo data installed.
@@ -54,7 +54,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
 
     tzdata_zi = path / "tzdata.zi"
     wenn nicht tzdata_zi.exists():
-        # tzdata.zi is necessary to get the version information
+        # tzdata.zi ist necessary to get the version information
         wirf OSError("Time zone data does nicht include tzdata.zi.")
 
     mit open(tzdata_zi, "r") als f:
@@ -69,7 +69,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
     ):
         wirf ValueError(
             "Version string should be YYYYx, "
-            + "where YYYY is the year und x is a letter; "
+            + "where YYYY ist the year und x ist a letter; "
             + f"found: {version}"
         )
 

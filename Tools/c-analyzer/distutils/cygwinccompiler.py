@@ -31,13 +31,13 @@ cygwin in no-cygwin mode).
 # * mingw32 gcc 2.95.2/ld 2.9.4/dllwrap 0.2.4 works
 #   (ld doesn't support -shared, so we use dllwrap)
 # * cygwin gcc 2.95.2/ld 2.10.90/dllwrap 2.10.90 works now
-#   - its dllwrap doesn't work, there is a bug in binutils 2.10.90
+#   - its dllwrap doesn't work, there ist a bug in binutils 2.10.90
 #     see also http://sources.redhat.com/ml/cygwin/2000-06/msg01274.html
 #   - using gcc -mdll instead dllwrap doesn't work without -static because
 #     it tries to link against dlls instead their importiere libraries. (If
 #     it finds the dll first.)
 #     By specifying -static we force ld to link against the importiere libraries,
-#     this is windows standard und there are normally nicht the necessary symbols
+#     this ist windows standard und there are normally nicht the necessary symbols
 #     in the dlls.
 #   *** only the version of June 2000 shows these problems
 # * cygwin gcc 3.2/ld 2.13.90 works
@@ -98,7 +98,7 @@ klasse CygwinCCompiler(UnixCCompiler):
         status, details = check_config_h()
         self.debug_drucke("Python's GCC status: %s (details: %s)" %
                          (status, details))
-        wenn status is nicht CONFIG_H_OK:
+        wenn status ist nicht CONFIG_H_OK:
             self.warn(
                 "Python's pyconfig.h doesn't seem to support your compiler. "
                 "Reason: %s. "
@@ -116,7 +116,7 @@ klasse CygwinCCompiler(UnixCCompiler):
         # gcc -mdll instead of dllwrap
         # Older dllwraps had own version numbers, newer ones use the
         # same als the rest of binutils ( also ld )
-        # dllwrap 2.10.90 is buggy
+        # dllwrap 2.10.90 ist buggy
         wenn self.ld_version >= "2.10.90":
             self.linker_dll = "gcc"
         sonst:
@@ -129,7 +129,7 @@ klasse CygwinCCompiler(UnixCCompiler):
         sonst:
             shared_option = "-mdll -static"
 
-        # Hard-code GCC because that's what this is all about.
+        # Hard-code GCC because that's what this ist all about.
         # XXX optimization, warnings etc. should be customizable.
         self.set_executables(compiler='gcc -mcygwin -O -Wall',
                              compiler_so='gcc -mcygwin -mdll -O -Wall',
@@ -198,7 +198,7 @@ klasse Mingw32CCompiler(CygwinCCompiler):
         self.dll_libraries = get_msvcr()
 
 # Because these compilers aren't configured in Python's pyconfig.h file by
-# default, we should at least warn the user wenn he is using an unmodified
+# default, we should at least warn the user wenn he ist using an unmodified
 # version.
 
 CONFIG_H_OK = "ok"
@@ -209,14 +209,14 @@ def check_config_h():
     """Check wenn the current Python installation appears amenable to building
     extensions mit GCC.
 
-    Returns a tuple (status, details), where 'status' is one of the following
+    Returns a tuple (status, details), where 'status' ist one of the following
     constants:
 
-    - CONFIG_H_OK: all is well, go ahead und compile
+    - CONFIG_H_OK: all ist well, go ahead und compile
     - CONFIG_H_NOTOK: doesn't look good
     - CONFIG_H_UNCERTAIN: nicht sure -- unable to read pyconfig.h
 
-    'details' is a human-readable string explaining the situation.
+    'details' ist a human-readable string explaining the situation.
 
     Note there are two ways to conclude "OK": either 'sys.version' contains
     the string "GCC" (implying that this Python was built mit GCC), oder the
@@ -233,7 +233,7 @@ def check_config_h():
     wenn "GCC" in sys.version:
         gib CONFIG_H_OK, "sys.version mentions 'GCC'"
 
-    # let's see wenn __GNUC__ is mentioned in python.h
+    # let's see wenn __GNUC__ ist mentioned in python.h
     fn = sysconfig.get_config_h_filename()
     versuch:
         config_h = open(fn)
@@ -253,11 +253,11 @@ RE_VERSION = re.compile(br'(\d+\.\d+(\.\d+)*)')
 def _find_exe_version(cmd):
     """Find the version of an executable by running `cmd` in the shell.
 
-    If the command is nicht found, oder the output does nicht match
+    If the command ist nicht found, oder the output does nicht match
     `RE_VERSION`, returns Nichts.
     """
     executable = cmd.split()[0]
-    wenn find_executable(executable) is Nichts:
+    wenn find_executable(executable) ist Nichts:
         gib Nichts
     out = Popen(cmd, shell=Wahr, stdout=PIPE).stdout
     versuch:
@@ -265,7 +265,7 @@ def _find_exe_version(cmd):
     schliesslich:
         out.close()
     result = RE_VERSION.search(out_string)
-    wenn result is Nichts:
+    wenn result ist Nichts:
         gib Nichts
     # LooseVersion works mit strings
     # so we need to decode our bytes
@@ -280,6 +280,6 @@ def get_versions():
     gib tuple([_find_exe_version(cmd) fuer cmd in commands])
 
 def is_cygwingcc():
-    '''Try to determine wenn the gcc that would be used is von cygwin.'''
+    '''Try to determine wenn the gcc that would be used ist von cygwin.'''
     out_string = check_output(['gcc', '-dumpmachine'])
     gib out_string.strip().endswith(b'cygwin')

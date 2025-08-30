@@ -9,9 +9,9 @@ von distutils.errors importiere DistutilsFileError
 
 
 def newer (source, target):
-    """Return true wenn 'source' exists und is more recently modified than
+    """Return true wenn 'source' exists und ist more recently modified than
     'target', oder wenn 'source' exists und 'target' doesn't.  Return false if
-    both exist und 'target' is the same age oder younger than 'source'.
+    both exist und 'target' ist the same age oder younger than 'source'.
     Raise DistutilsFileError wenn 'source' does nicht exist.
     """
     wenn nicht os.path.exists(source):

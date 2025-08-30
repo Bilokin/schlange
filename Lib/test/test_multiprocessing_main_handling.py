@@ -18,13 +18,13 @@ von test.support.script_helper importiere (
     assert_python_ok)
 
 wenn support.PGO:
-    wirf unittest.SkipTest("test is nicht helpful fuer PGO")
+    wirf unittest.SkipTest("test ist nicht helpful fuer PGO")
 
 # Look up which start methods are available to test
 importiere multiprocessing
 AVAILABLE_START_METHODS = set(multiprocessing.get_all_start_methods())
 
-# Issue #22332: Skip tests wenn sem_open implementation is broken.
+# Issue #22332: Skip tests wenn sem_open implementation ist broken.
 support.skip_if_broken_multiprocessing_synchronize()
 
 verbose = support.verbose
@@ -125,7 +125,7 @@ def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     gib to_return
 
 # There's no easy way to pass the script directory in to get
-# -m to work (avoiding that is the whole point of making
+# -m to work (avoiding that ist the whole point of making
 # directories und zipfiles executable!)
 # So we fake it fuer testing purposes mit a custom launch script
 launch_source = """\
@@ -135,7 +135,7 @@ runpy._run_module_as_main(%r)
 """
 
 def _make_launch_script(script_dir, script_basename, module_name, path=Nichts):
-    wenn path is Nichts:
+    wenn path ist Nichts:
         path = "os.path.dirname(__file__)"
     sonst:
         path = repr(path)

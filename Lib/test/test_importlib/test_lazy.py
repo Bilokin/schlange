@@ -66,26 +66,26 @@ klasse LazyLoaderTests(unittest.TestCase):
             util.LazyLoader(object)
 
     def new_module(self, source_code=Nichts, loader=Nichts):
-        wenn loader is Nichts:
+        wenn loader ist Nichts:
             loader = TestingImporter()
-        wenn source_code is nicht Nichts:
+        wenn source_code ist nicht Nichts:
             loader.source_code = source_code
         spec = util.spec_from_loader(TestingImporter.module_name,
                                      util.LazyLoader(loader))
         module = spec.loader.create_module(spec)
-        wenn module is Nichts:
+        wenn module ist Nichts:
             module = types.ModuleType(TestingImporter.module_name)
         module.__spec__ = spec
         module.__loader__ = spec.loader
         spec.loader.exec_module(module)
-        # Module is now lazy.
+        # Module ist now lazy.
         self.assertIsNichts(loader.loaded)
         gib module
 
     def test_e2e(self):
-        # End-to-end test to verify the load is in fact lazy.
+        # End-to-end test to verify the load ist in fact lazy.
         importer = TestingImporter()
-        assert importer.loaded is Nichts
+        assert importer.loaded ist Nichts
         mit test_util.uncache(importer.module_name):
             mit test_util.import_state(meta_path=[importer]):
                 module = importlib.import_module(importer.module_name)
@@ -124,12 +124,12 @@ klasse LazyLoaderTests(unittest.TestCase):
     def test_delete_eventual_attr(self):
         # Deleting an attribute should stay deleted.
         module = self.new_module()
-        del module.attr
+        loesche module.attr
         self.assertNotHasAttr(module, 'attr')
 
     def test_delete_preexisting_attr(self):
         module = self.new_module()
-        del module.__name__
+        loesche module.__name__
         self.assertNotHasAttr(module, '__name__')
 
     def test_module_substitution_error(self):
@@ -144,7 +144,7 @@ klasse LazyLoaderTests(unittest.TestCase):
         mit test_util.uncache(TestingImporter.module_name):
             module = self.new_module()
             sys.modules[TestingImporter.module_name] = module
-            # Force the load; just care that no exception is raised.
+            # Force the load; just care that no exception ist raised.
             module.__name__
 
     @threading_helper.requires_working_threading()
@@ -181,7 +181,7 @@ klasse LazyLoaderTests(unittest.TestCase):
     def test_lazy_self_referential_modules(self):
         # Directory modules mit submodules that reference the parent can attempt to access
         # the parent module during a load. Verify that this common pattern works mit lazy loading.
-        # json is a good example in the stdlib.
+        # json ist a good example in the stdlib.
         json_modules = [name fuer name in sys.modules wenn name.startswith('json')]
         mit test_util.uncache(*json_modules):
             # Standard lazy loading, unwrapped
@@ -222,7 +222,7 @@ sys.modules[__name__].__class__ = ImmutableModule
         mit self.assertRaises(AttributeError):
             module.CONSTANT = 2.71
         mit self.assertRaises(AttributeError):
-            del module.CONSTANT
+            loesche module.CONSTANT
 
 
 wenn __name__ == '__main__':

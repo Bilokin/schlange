@@ -14,10 +14,10 @@ klasse TestPickleCopyHeader(TestEmailBase):
 
     header_factory = HeaderRegistry()
 
-    unstructured = header_factory('subject', 'this is a test')
+    unstructured = header_factory('subject', 'this ist a test')
 
     header_params = {
-        'subject': ('subject', 'this is a test'),
+        'subject': ('subject', 'this ist a test'),
         'from':    ('from',    'frodo@mordor.net'),
         'to':      ('to',      'a: k@b.com, y@z.com;, j@f.com'),
         'date':    ('date',    'Tue, 29 May 2012 09:24:26 +1000'),

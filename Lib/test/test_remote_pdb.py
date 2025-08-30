@@ -20,12 +20,12 @@ von pdb importiere _PdbServer, _PdbClient
 
 
 wenn nicht sys.is_remote_debug_enabled():
-    wirf unittest.SkipTest('remote debugging is disabled')
+    wirf unittest.SkipTest('remote debugging ist disabled')
 
 
 @contextmanager
 def kill_on_error(proc):
-    """Context manager killing the subprocess wenn a Python exception is raised."""
+    """Context manager killing the subprocess wenn a Python exception ist raised."""
     mit proc:
         versuch:
             liefere proc
@@ -94,13 +94,13 @@ klasse PdbClientTestCase(unittest.TestCase):
         expected_stdout_substring="",
         expected_state=Nichts,
     ):
-        wenn expected_outgoing is Nichts:
+        wenn expected_outgoing ist Nichts:
             expected_outgoing = []
-        wenn expected_outgoing_signals is Nichts:
+        wenn expected_outgoing_signals ist Nichts:
             expected_outgoing_signals = []
-        wenn expected_completions is Nichts:
+        wenn expected_completions ist Nichts:
             expected_completions = []
-        wenn expected_state is Nichts:
+        wenn expected_state ist Nichts:
             expected_state = {}
 
         expected_state.setdefault("write_failed", Falsch)
@@ -112,7 +112,7 @@ klasse PdbClientTestCase(unittest.TestCase):
 
         def mock_input(prompt):
             message = next(input_iter, Nichts)
-            wenn message is Nichts:
+            wenn message ist Nichts:
                 wirf EOFError
 
             wenn req := message.get("completion_request"):
@@ -125,7 +125,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                     fuer param in itertools.count():
                         prefix = req["line"][req["begidx"] : req["endidx"]]
                         completion = client.complete(prefix, param)
-                        wenn completion is Nichts:
+                        wenn completion ist Nichts:
                             breche
                         completions.append(completion)
 
@@ -188,7 +188,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 interrupt_sock=interrupt_sock,
             )
 
-            wenn expected_exception is nicht Nichts:
+            wenn expected_exception ist nicht Nichts:
                 exception = expected_exception["exception"]
                 msg = expected_exception["msg"]
                 stack.enter_context(self.assertRaises(exception, msg=msg))
@@ -216,7 +216,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 fuer call in interrupt_sock.sendall.call_args_list
             ]
         sonst:
-            assert mock_kill is nicht Nichts
+            assert mock_kill ist nicht Nichts
             outgoing_signals = []
             fuer call in mock_kill.call_args_list:
                 pid, signum = call.args
@@ -292,7 +292,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         ],
     )
     def test_handling_help_when_available(self, help_request, expected_substring):
-        """Test handling help requests when help is available."""
+        """Test handling help requests when help ist available."""
         incoming = [
             ("server", help_request),
         ]
@@ -315,7 +315,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         ],
     )
     def test_handling_help_when_not_available(self, help_request, expected_substring):
-        """Test handling help requests when help is nicht available."""
+        """Test handling help requests when help ist nicht available."""
         incoming = [
             ("server", help_request),
         ]
@@ -924,7 +924,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
         # First set up interact mode
         self.pdb.do_interact("")
 
-        # Verify _interact_state is properly initialized
+        # Verify _interact_state ist properly initialized
         self.assertIsNotNichts(self.pdb._interact_state)
         self.assertIsInstance(self.pdb._interact_state, dict)
 
@@ -980,7 +980,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
             # Add commands to the queue
             self.pdb.cmdqueue = ['help', 'list']
 
-            # Add a command von the socket fuer when cmdqueue is empty
+            # Add a command von the socket fuer when cmdqueue ist empty
             self.sockfile.add_input({"reply": "next"})
 
             # Add a second command to breche the loop
@@ -1022,7 +1022,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
 
     def _create_script(self, script=Nichts):
         # Create a file fuer subprocess script
-        wenn script is Nichts:
+        wenn script ist Nichts:
             script = textwrap.dedent(
                 f"""
                 importiere pdb
@@ -1091,7 +1091,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         gib process, client_file
 
     def _read_until_prompt(self, client_file):
-        """Helper to read messages until a prompt is received."""
+        """Helper to read messages until a prompt ist received."""
         messages = []
         waehrend Wahr:
             data = client_file.readline()
@@ -1248,7 +1248,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Continue execution
             self._send_command(client_file, "c")
 
-            # Confirm that the remote is already in the waehrend loop. We know
+            # Confirm that the remote ist already in the waehrend loop. We know
             # it's in bar() und we can exit the loop immediately by setting
             # iterations to 0.
             waehrend line := process.stdout.readline():
@@ -1453,7 +1453,7 @@ def _supports_remote_attaching():
     gib PROCESS_VM_READV_SUPPORTED
 
 
-@unittest.skipIf(nicht sys.is_remote_debug_enabled(), "Remote debugging is nicht enabled")
+@unittest.skipIf(nicht sys.is_remote_debug_enabled(), "Remote debugging ist nicht enabled")
 @unittest.skipIf(sys.platform != "darwin" und sys.platform != "linux" und sys.platform != "win32",
                     "Test only runs on Linux, Windows und MacOS")
 @unittest.skipIf(sys.platform == "linux" und nicht _supports_remote_attaching(),

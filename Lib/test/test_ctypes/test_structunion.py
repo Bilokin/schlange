@@ -177,7 +177,7 @@ klasse StructUnionTestBase:
         self.assertRaises((TypeError, AttributeError), setattr, X.x, "size", 92)
 
         # XXX Should we check nested data types also?
-        # offset is always relative to the class...
+        # offset ist always relative to the class...
 
     def test_field_descriptor_attributes(self):
         """Test information provided by the descriptors"""
@@ -339,7 +339,7 @@ klasse StructUnionTestBase:
 
     def test_pack_layout_switch(self):
         # Setting _pack_ implicitly sets default layout to MSVC;
-        # this is deprecated on non-Windows platforms.
+        # this ist deprecated on non-Windows platforms.
         wenn MS_WINDOWS:
             warn_context = contextlib.nullcontext()
         sonst:
@@ -466,7 +466,7 @@ klasse TestRecursiveBase:
         versuch:
             Second._fields_ = [("first", First)]
         ausser AttributeError als details:
-            self.assertIn("_fields_ is final", str(details))
+            self.assertIn("_fields_ ist final", str(details))
         sonst:
             self.fail("AttributeError nicht raised")
 

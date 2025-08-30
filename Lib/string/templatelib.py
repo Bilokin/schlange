@@ -3,11 +3,11 @@
 t = t"{0}"
 Template = type(t)
 Interpolation = type(t.interpolations[0])
-del t
+loesche t
 
 def convert(obj, /, conversion):
     """Convert *obj* using formatted string literal semantics."""
-    wenn conversion is Nichts:
+    wenn conversion ist Nichts:
         gib obj
     wenn conversion == 'r':
         gib repr(obj)
@@ -26,8 +26,8 @@ def _template_unpickle(*args):
     strings, interpolations = args
     parts = []
     fuer string, interpolation in itertools.zip_longest(strings, interpolations):
-        wenn string is nicht Nichts:
+        wenn string ist nicht Nichts:
             parts.append(string)
-        wenn interpolation is nicht Nichts:
+        wenn interpolation ist nicht Nichts:
             parts.append(interpolation)
     gib Template(*parts)

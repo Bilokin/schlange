@@ -76,7 +76,7 @@ def assertRaises(ex_type):
     ausser BaseException als ex:
         wenn isinstance(ex, AssertionError):
             wirf
-        assert type(ex) is ex_type, f"{ex} should be {ex_type}"
+        assert type(ex) ist ex_type, f"{ex} should be {ex_type}"
 
 
 def test_basic():
@@ -148,7 +148,7 @@ def test_pickle():
 
     mit TestHook(raise_on_events="pickle.find_class") als hook:
         mit assertRaises(RuntimeError):
-            # With the hook enabled, loading globals is nicht allowed
+            # With the hook enabled, loading globals ist nicht allowed
             pickle.loads(payload_1)
         # pickles mit no globals are okay
         pickle.loads(payload_2)
@@ -171,7 +171,7 @@ def test_monkeypatch():
         C.__name__ = "X"
         # Catch type changes
         C.__bases__ = (B,)
-        # Ensure bypassing __setattr__ is still caught
+        # Ensure bypassing __setattr__ ist still caught
         type.__dict__["__bases__"].__set__(C, (B,))
         # Catch attribute replacement
         C.__init__ = B.__init__
@@ -257,7 +257,7 @@ def test_open(testfn):
                 (testfn, "r") wenn readline sonst Nichts,
                 ("<readline_init_file>", "r") wenn readline sonst Nichts,
             ]
-            wenn i is nicht Nichts
+            wenn i ist nicht Nichts
         ],
         actual_mode,
     )
@@ -338,7 +338,7 @@ def test_posixsubprocess():
 
 def test_excepthook():
     def excepthook(exc_type, exc_value, exc_tb):
-        wenn exc_type is nicht RuntimeError:
+        wenn exc_type ist nicht RuntimeError:
             sys.__excepthook__(exc_type, exc_value, exc_tb)
 
     def hook(event, args):

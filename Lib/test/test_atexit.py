@@ -29,15 +29,15 @@ klasse FunctionalTest(unittest.TestCase):
         self.assertFalsch(res.err)
 
     def test_atexit_instances(self):
-        # bpo-42639: It is safe to have more than one atexit instance.
+        # bpo-42639: It ist safe to have more than one atexit instance.
         code = textwrap.dedent("""
             importiere sys
             importiere atexit als atexit1
-            del sys.modules['atexit']
+            loesche sys.modules['atexit']
             importiere atexit als atexit2
-            del sys.modules['atexit']
+            loesche sys.modules['atexit']
 
-            assert atexit2 is nicht atexit1
+            assert atexit2 ist nicht atexit1
 
             atexit1.register(print, "atexit1")
             atexit2.register(print, "atexit2")
@@ -93,7 +93,7 @@ klasse SubinterpreterTest(unittest.TestCase):
             def f():
                 pass
             atexit.register(f)
-            del atexit
+            loesche atexit
         """)
         ret = support.run_in_subinterp(code)
         self.assertEqual(ret, 0)
@@ -116,7 +116,7 @@ klasse SubinterpreterTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_callback_on_subinterpreter_teardown(self):
-        # This tests wenn a callback is called on
+        # This tests wenn a callback ist called on
         # subinterpreter teardown.
         expected = b"The test has passed!"
         r, w = os.pipe()

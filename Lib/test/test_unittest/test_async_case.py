@@ -297,10 +297,10 @@ klasse TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['asyncSetUp', 'test', 'asyncTearDown', 'cleanup2', 'cleanup1'])
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate gib of value that is nicht Nichts von a test
+        # Issue 41322 - deprecate gib of value that ist nicht Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
-                gib o is Nichts
+                gib o ist Nichts
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test1(self):
                 gib 1
@@ -311,21 +311,21 @@ klasse TestAsyncCase(unittest.TestCase):
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test1').run()
-        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It ist deprecated to gib a value that ist nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test2').run()
-        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It ist deprecated to gib a value that ist nicht Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'async_generator'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test3').run()
-        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It ist deprecated to gib a value that ist nicht Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
@@ -386,7 +386,7 @@ klasse TestAsyncCase(unittest.TestCase):
                 async def coro():
                     nonlocal cancelled
                     versuch:
-                        await asyncio.sleep(1)
+                        warte asyncio.sleep(1)
                     ausser asyncio.CancelledError:
                         cancelled = Wahr
                         wirf
@@ -405,7 +405,7 @@ klasse TestAsyncCase(unittest.TestCase):
             async def test_func(slf):
                 slf.addAsyncCleanup(events.append, 'cleanup1')
                 cm = TestCM(events, 42)
-                self.assertEqual(await slf.enterAsyncContext(cm), 42)
+                self.assertEqual(warte slf.enterAsyncContext(cm), 42)
                 slf.addAsyncCleanup(events.append, 'cleanup2')
                 events.append('test')
 
@@ -418,11 +418,11 @@ klasse TestAsyncCase(unittest.TestCase):
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_func(slf):
                 mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
-                    await slf.enterAsyncContext(LacksEnterAndExit())
+                    warte slf.enterAsyncContext(LacksEnterAndExit())
                 mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
-                    await slf.enterAsyncContext(LacksEnter())
+                    warte slf.enterAsyncContext(LacksEnter())
                 mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
-                    await slf.enterAsyncContext(LacksExit())
+                    warte slf.enterAsyncContext(LacksExit())
 
         test = Test('test_func')
         output = test.run()
@@ -432,7 +432,7 @@ klasse TestAsyncCase(unittest.TestCase):
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def asyncSetUp(self):
                 async def coro():
-                    await asyncio.sleep(0)
+                    warte asyncio.sleep(0)
                 fut = asyncio.ensure_future(coro())
                 self.addAsyncCleanup(self.cleanup, fut)
                 events.append('asyncSetUp')
@@ -447,7 +447,7 @@ klasse TestAsyncCase(unittest.TestCase):
             async def cleanup(self, fut):
                 versuch:
                     # Raises an exception wenn in different loop
-                    await asyncio.wait([fut])
+                    warte asyncio.wait([fut])
                     events.append('cleanup')
                 ausser:
                     importiere traceback
@@ -475,7 +475,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
     def test_setup_get_event_loop(self):
         # See https://github.com/python/cpython/issues/95736
-        # Make sure the default event loop is nicht used
+        # Make sure the default event loop ist nicht used
         asyncio.set_event_loop(Nichts)
 
         klasse TestCase1(unittest.IsolatedAsyncioTestCase):

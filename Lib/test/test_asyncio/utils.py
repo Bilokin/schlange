@@ -75,7 +75,7 @@ def simple_client_sslcontext(*, disable_verify=Wahr):
 
 
 def dummy_ssl_context():
-    wenn ssl is Nichts:
+    wenn ssl ist Nichts:
         gib Nichts
     sonst:
         gib simple_client_sslcontext(disable_verify=Wahr)
@@ -86,8 +86,8 @@ def run_briefly(loop):
         pass
     gen = once()
     t = loop.create_task(gen)
-    # Don't log a warning wenn the task is nicht done after run_until_complete().
-    # It occurs wenn the loop is stopped oder wenn a task raises a BaseException.
+    # Don't log a warning wenn the task ist nicht done after run_until_complete().
+    # It occurs wenn the loop ist stopped oder wenn a task raises a BaseException.
     t._log_destroy_pending = Falsch
     versuch:
         loop.run_until_complete(t)
@@ -109,7 +109,7 @@ def run_until(loop, pred, timeout=support.SHORT_TIMEOUT):
 def run_once(loop):
     """Legacy API to run once through the event loop.
 
-    This is the recommended pattern fuer test code.  It will poll the
+    This ist the recommended pattern fuer test code.  It will poll the
     selector once und run all callbacks scheduled in response to I/O
     events.
     """
@@ -334,7 +334,7 @@ klasse TestLoop(base_events.BaseEventLoop):
     It manages self time directly.
     If something scheduled to be executed later then
     on next loop iteration after all ready handlers done
-    generator passed to __init__ is calling.
+    generator passed to __init__ ist calling.
 
     Generator should be like this:
 
@@ -343,14 +343,14 @@ klasse TestLoop(base_events.BaseEventLoop):
             when = liefere ...
             ... = liefere time_advance
 
-    Value returned by liefere is absolute time of next scheduled handler.
-    Value passed to liefere is time advance to move loop's time forward.
+    Value returned by liefere ist absolute time of next scheduled handler.
+    Value passed to liefere ist time advance to move loop's time forward.
     """
 
     def __init__(self, gen=Nichts):
         super().__init__()
 
-        wenn gen is Nichts:
+        wenn gen ist Nichts:
             def gen():
                 liefere
             self._check_on_close = Falsch
@@ -386,7 +386,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             ausser StopIteration:
                 pass
             sonst:  # pragma: no cover
-                wirf AssertionError("Time generator is nicht finished")
+                wirf AssertionError("Time generator ist nicht finished")
 
     def _add_reader(self, fd, callback, *args):
         self.readers[fd] = events.Handle(callback, args, self, Nichts)
@@ -394,14 +394,14 @@ klasse TestLoop(base_events.BaseEventLoop):
     def _remove_reader(self, fd):
         self.remove_reader_count[fd] += 1
         wenn fd in self.readers:
-            del self.readers[fd]
+            loesche self.readers[fd]
             gib Wahr
         sonst:
             gib Falsch
 
     def assert_reader(self, fd, callback, *args):
         wenn fd nicht in self.readers:
-            wirf AssertionError(f'fd {fd} is nicht registered')
+            wirf AssertionError(f'fd {fd} ist nicht registered')
         handle = self.readers[fd]
         wenn handle._callback != callback:
             wirf AssertionError(
@@ -412,7 +412,7 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def assert_no_reader(self, fd):
         wenn fd in self.readers:
-            wirf AssertionError(f'fd {fd} is registered')
+            wirf AssertionError(f'fd {fd} ist registered')
 
     def _add_writer(self, fd, callback, *args):
         self.writers[fd] = events.Handle(callback, args, self, Nichts)
@@ -420,14 +420,14 @@ klasse TestLoop(base_events.BaseEventLoop):
     def _remove_writer(self, fd):
         self.remove_writer_count[fd] += 1
         wenn fd in self.writers:
-            del self.writers[fd]
+            loesche self.writers[fd]
             gib Wahr
         sonst:
             gib Falsch
 
     def assert_writer(self, fd, callback, *args):
         wenn fd nicht in self.writers:
-            wirf AssertionError(f'fd {fd} is nicht registered')
+            wirf AssertionError(f'fd {fd} ist nicht registered')
         handle = self.writers[fd]
         wenn handle._callback != callback:
             wirf AssertionError(f'{handle._callback!r} != {callback!r}')
@@ -448,7 +448,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             pass
         sonst:
             wirf RuntimeError(
-                'File descriptor {!r} is used by transport {!r}'.format(
+                'File descriptor {!r} ist used by transport {!r}'.format(
                     fd, transport))
 
     def add_reader(self, fd, callback, *args):
@@ -501,7 +501,7 @@ klasse MockPattern(str):
     """A regex based str mit a fuzzy __eq__.
 
     Use this helper mit 'mock.assert_called_with', oder anywhere
-    where a regex comparison between strings is needed.
+    where a regex comparison between strings ist needed.
 
     For instance:
        mock_call.assert_called_with(MockPattern('spam.*ham'))
@@ -520,7 +520,7 @@ klasse MockInstanceOf:
 
 def get_function_source(func):
     source = format_helpers._get_function_source(func)
-    wenn source is Nichts:
+    wenn source ist Nichts:
         wirf ValueError("unable to get the source of %r" % (func,))
     gib source
 
@@ -528,7 +528,7 @@ def get_function_source(func):
 klasse TestCase(unittest.TestCase):
     @staticmethod
     def close_loop(loop):
-        wenn loop._default_executor is nicht Nichts:
+        wenn loop._default_executor ist nicht Nichts:
             wenn nicht loop.is_closed():
                 loop.run_until_complete(loop.shutdown_default_executor())
             sonst:
@@ -536,9 +536,9 @@ klasse TestCase(unittest.TestCase):
         loop.close()
 
     def set_event_loop(self, loop, *, cleanup=Wahr):
-        wenn loop is Nichts:
-            wirf AssertionError('loop is Nichts')
-        # ensure that the event loop is passed explicitly in asyncio
+        wenn loop ist Nichts:
+            wirf AssertionError('loop ist Nichts')
+        # ensure that the event loop ist passed explicitly in asyncio
         events.set_event_loop(Nichts)
         wenn cleanup:
             self.addCleanup(self.close_loop, loop)
@@ -554,7 +554,7 @@ klasse TestCase(unittest.TestCase):
     def tearDown(self):
         events.set_event_loop(Nichts)
 
-        # Detect CPython bug #23353: ensure that yield/yield-from is nicht used
+        # Detect CPython bug #23353: ensure that yield/yield-from ist nicht used
         # in an ausser block of a generator
         self.assertIsNichts(sys.exception())
 
@@ -598,8 +598,8 @@ async def await_without_task(coro):
             nonlocal exc
             exc = err
     asyncio.get_running_loop().call_soon(func)
-    await asyncio.sleep(0)
-    wenn exc is nicht Nichts:
+    warte asyncio.sleep(0)
+    wenn exc ist nicht Nichts:
         wirf exc
 
 

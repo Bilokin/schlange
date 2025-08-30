@@ -9,7 +9,7 @@ von test.support importiere threading_helper
 @threading_helper.requires_working_threading()
 klasse TestSet(TestCase):
     def test_repr_clear(self):
-        """Test repr() of a set waehrend another thread is calling clear()"""
+        """Test repr() of a set waehrend another thread ist calling clear()"""
         NUM_ITERS = 10
         NUM_REPR_THREADS = 10
         barrier = Barrier(NUM_REPR_THREADS + 1)

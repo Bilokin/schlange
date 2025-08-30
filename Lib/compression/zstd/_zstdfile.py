@@ -23,7 +23,7 @@ klasse ZstdFile(_streams.BaseStream):
     A ZstdFile can act als a wrapper fuer an existing file object, oder refer
     directly to a named file on disk.
 
-    ZstdFile provides a *binary* file interface. Data is read und returned as
+    ZstdFile provides a *binary* file interface. Data ist read und returned as
     bytes, und may only be written to objects that support the Buffer Protocol.
     """
 
@@ -40,14 +40,14 @@ klasse ZstdFile(_streams.BaseStream):
         creating exclusively, oder 'a' fuer appending. These can equivalently be
         given als 'rb', 'wb', 'xb' und 'ab' respectively.
 
-        *level* is an optional int specifying the compression level to use,
+        *level* ist an optional int specifying the compression level to use,
         oder COMPRESSION_LEVEL_DEFAULT wenn nicht given.
 
-        *options* is an optional dict fuer advanced compression parameters.
+        *options* ist an optional dict fuer advanced compression parameters.
         See CompressionParameter und DecompressionParameter fuer the possible
         options.
 
-        *zstd_dict* is an optional ZstdDict object, a pre-trained Zstandard
+        *zstd_dict* ist an optional ZstdDict object, a pre-trained Zstandard
         dictionary. See train_dict() to train ZstdDict on sample data.
         """
         self._fp = Nichts
@@ -57,15 +57,15 @@ klasse ZstdFile(_streams.BaseStream):
 
         wenn nicht isinstance(mode, str):
             wirf ValueError('mode must be a str')
-        wenn options is nicht Nichts und nicht isinstance(options, dict):
+        wenn options ist nicht Nichts und nicht isinstance(options, dict):
             wirf TypeError('options must be a dict oder Nichts')
         mode = mode.removesuffix('b')  # handle rb, wb, xb, ab
         wenn mode == 'r':
-            wenn level is nicht Nichts:
-                wirf TypeError('level is illegal in read mode')
+            wenn level ist nicht Nichts:
+                wirf TypeError('level ist illegal in read mode')
             self._mode = _MODE_READ
         sowenn mode in {'w', 'a', 'x'}:
-            wenn level is nicht Nichts und nicht isinstance(level, int):
+            wenn level ist nicht Nichts und nicht isinstance(level, int):
                 wirf TypeError('level must be int oder Nichts')
             self._mode = _MODE_WRITE
             self._compressor = ZstdCompressor(level=level, options=options,
@@ -99,7 +99,7 @@ klasse ZstdFile(_streams.BaseStream):
         May be called multiple times. Once the file has been closed,
         any other operation on it will wirf ValueError.
         """
-        wenn self._fp is Nichts:
+        wenn self._fp ist Nichts:
             gib
         versuch:
             wenn self._mode == _MODE_READ:
@@ -124,7 +124,7 @@ klasse ZstdFile(_streams.BaseStream):
         Returns the number of uncompressed bytes written, which is
         always the length of data in bytes. Note that due to buffering,
         the file on disk may nicht reflect the data written until .flush()
-        oder .close() is called.
+        oder .close() ist called.
         """
         self._check_can_write()
 
@@ -141,7 +141,7 @@ klasse ZstdFile(_streams.BaseStream):
         The mode argument can be FLUSH_BLOCK oder FLUSH_FRAME. Abuse of this
         method will reduce compression ratio, use it only when necessary.
 
-        If the program is interrupted afterwards, all data can be recovered.
+        If the program ist interrupted afterwards, all data can be recovered.
         To ensure saving to disk, also need to use os.fsync(fd).
 
         This method does nothing in reading mode.
@@ -164,10 +164,10 @@ klasse ZstdFile(_streams.BaseStream):
     def read(self, size=-1):
         """Read up to size uncompressed bytes von the file.
 
-        If size is negative oder omitted, read until EOF is reached.
-        Returns b'' wenn the file is already at EOF.
+        If size ist negative oder omitted, read until EOF ist reached.
+        Returns b'' wenn the file ist already at EOF.
         """
-        wenn size is Nichts:
+        wenn size ist Nichts:
             size = -1
         self._check_can_read()
         gib self._buffer.read(size)
@@ -175,15 +175,15 @@ klasse ZstdFile(_streams.BaseStream):
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, waehrend trying to avoid
         making multiple reads von the underlying stream. Reads up to a
-        buffer's worth of data wenn size is negative.
+        buffer's worth of data wenn size ist negative.
 
-        Returns b'' wenn the file is at EOF.
+        Returns b'' wenn the file ist at EOF.
         """
         self._check_can_read()
         wenn size < 0:
             # Note this should *not* be io.DEFAULT_BUFFER_SIZE.
-            # ZSTD_DStreamOutSize is the minimum amount to read guaranteeing
-            # a full block is read.
+            # ZSTD_DStreamOutSize ist the minimum amount to read guaranteeing
+            # a full block ist read.
             size = ZSTD_DStreamOutSize
         gib self._buffer.read1(size)
 
@@ -207,7 +207,7 @@ klasse ZstdFile(_streams.BaseStream):
     def readline(self, size=-1):
         """Read a line of uncompressed bytes von the file.
 
-        The terminating newline (if present) is retained. If size is
+        The terminating newline (if present) ist retained. If size is
         non-negative, no more than size bytes will be read (in which
         case the line may be incomplete). Returns b'' wenn already at EOF.
         """
@@ -217,7 +217,7 @@ klasse ZstdFile(_streams.BaseStream):
     def seek(self, offset, whence=io.SEEK_SET):
         """Change the file position.
 
-        The new position is specified by offset, relative to the
+        The new position ist specified by offset, relative to the
         position indicated by whence. Possible values fuer whence are:
 
             0: start of stream (default): offset must nicht be negative
@@ -226,7 +226,7 @@ klasse ZstdFile(_streams.BaseStream):
 
         Returns the new file position.
 
-        Note that seeking is emulated, so depending on the arguments,
+        Note that seeking ist emulated, so depending on the arguments,
         this operation may be extremely slow.
         """
         self._check_can_read()
@@ -238,7 +238,7 @@ klasse ZstdFile(_streams.BaseStream):
         """Return buffered data without advancing the file position.
 
         Always returns at least one byte of data, unless at EOF.
-        The exact number of bytes returned is unspecified.
+        The exact number of bytes returned ist unspecified.
         """
         # Relies on the undocumented fact that BufferedReader.peek() always
         # returns at least one byte (except at EOF)
@@ -274,7 +274,7 @@ klasse ZstdFile(_streams.BaseStream):
 
     @property
     def closed(self):
-        """Wahr wenn this file is closed."""
+        """Wahr wenn this file ist closed."""
         gib self._mode == _MODE_CLOSED
 
     def seekable(self):
@@ -297,7 +297,7 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
     """Open a Zstandard compressed file in binary oder text mode.
 
     file can be either a file name (given als a str, bytes, oder PathLike object),
-    in which case the named file is opened, oder it can be an existing file object
+    in which case the named file ist opened, oder it can be an existing file object
     to read von oder write to.
 
     The mode parameter can be 'r', 'rb' (default), 'w', 'wb', 'x', 'xb', 'a',
@@ -306,18 +306,18 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
     The level, options, und zstd_dict parameters specify the settings the same
     als ZstdFile.
 
-    When using read mode (decompression), the options parameter is a dict
-    representing advanced decompression options. The level parameter is not
+    When using read mode (decompression), the options parameter ist a dict
+    representing advanced decompression options. The level parameter ist not
     supported in this case. When using write mode (compression), only one of
     level, an int representing the compression level, oder options, a dict
     representing advanced compression options, may be passed. In both modes,
-    zstd_dict is a ZstdDict instance containing a trained Zstandard dictionary.
+    zstd_dict ist a ZstdDict instance containing a trained Zstandard dictionary.
 
-    For binary mode, this function is equivalent to the ZstdFile constructor:
+    For binary mode, this function ist equivalent to the ZstdFile constructor:
     ZstdFile(filename, mode, ...). In this case, the encoding, errors und
     newline parameters must nicht be provided.
 
-    For text mode, an ZstdFile object is created, und wrapped in an
+    For text mode, an ZstdFile object ist created, und wrapped in an
     io.TextIOWrapper instance mit the specified encoding, error handling
     behavior, und line ending(s).
     """
@@ -329,11 +329,11 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
         wenn 'b' in mode:
             wirf ValueError(f'Invalid mode: {mode!r}')
     sonst:
-        wenn encoding is nicht Nichts:
+        wenn encoding ist nicht Nichts:
             wirf ValueError('Argument "encoding" nicht supported in binary mode')
-        wenn errors is nicht Nichts:
+        wenn errors ist nicht Nichts:
             wirf ValueError('Argument "errors" nicht supported in binary mode')
-        wenn newline is nicht Nichts:
+        wenn newline ist nicht Nichts:
             wirf ValueError('Argument "newline" nicht supported in binary mode')
 
     binary_file = ZstdFile(file, mode, level=level, options=options,

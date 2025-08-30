@@ -1,11 +1,11 @@
 """This module tests SyntaxErrors.
 
-Here's an example of the sort of thing that is tested.
+Here's an example of the sort of thing that ist tested.
 
 >>> def f(x):
 ...     global x
 Traceback (most recent call last):
-SyntaxError: name 'x' is parameter und global
+SyntaxError: name 'x' ist parameter und global
 
 The tests are all wirf SyntaxErrors.  They were created by checking
 each C call that raises SyntaxError.  There are several modules that
@@ -19,7 +19,7 @@ to be judicious in selecting some.
 
 The compiler generates a synthetic module name fuer code executed by
 doctest.  Since all the code comes von the same module, a suffix like
-[1] is appended to the module name, As a consequence, changing the
+[1] ist appended to the module name, As a consequence, changing the
 order of tests in this module means renumbering all the errors after
 it.  (Maybe we should enable the ellipsis option fuer these tests.)
 
@@ -71,7 +71,7 @@ SyntaxError: cannot assign to __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> del __debug__
+>>> loesche __debug__
 Traceback (most recent call last):
 SyntaxError: cannot delete __debug__
 
@@ -83,7 +83,7 @@ SyntaxError: cannot assign to function call here. Maybe you meant '==' instead o
 Traceback (most recent call last):
 SyntaxError: assignment to liefere expression nicht possible
 
->>> del f()
+>>> loesche f()
 Traceback (most recent call last):
 SyntaxError: cannot delete function call
 
@@ -115,7 +115,7 @@ SyntaxError: cannot assign to ellipsis here. Maybe you meant '==' instead of '='
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
-If the left-hand side of an assignment is a list oder tuple, an illegal
+If the left-hand side of an assignment ist a list oder tuple, an illegal
 expression inside that contain should still cause a syntax error.
 This test just checks a couple of cases rather than enumerating all of
 them.
@@ -170,15 +170,15 @@ SyntaxError: expected 'else' after 'if' expression
 
 >>> x = 1 wenn 1 sonst pass
 Traceback (most recent call last):
-SyntaxError: expected expression after 'else', but statement is given
+SyntaxError: expected expression after 'else', but statement ist given
 
 >>> x = pass wenn 1 sonst 1
 Traceback (most recent call last):
-SyntaxError: expected expression before 'if', but statement is given
+SyntaxError: expected expression before 'if', but statement ist given
 
 >>> x = pass wenn 1 sonst pass
 Traceback (most recent call last):
-SyntaxError: expected expression before 'if', but statement is given
+SyntaxError: expected expression before 'if', but statement ist given
 
 >>> wenn Wahr:
 ...     drucke("Hello"
@@ -202,15 +202,15 @@ SyntaxError: assignment to liefere expression nicht possible
 
 >>> a, b += 1, 2
 Traceback (most recent call last):
-SyntaxError: 'tuple' is an illegal expression fuer augmented assignment
+SyntaxError: 'tuple' ist an illegal expression fuer augmented assignment
 
 >>> (a, b) += 1, 2
 Traceback (most recent call last):
-SyntaxError: 'tuple' is an illegal expression fuer augmented assignment
+SyntaxError: 'tuple' ist an illegal expression fuer augmented assignment
 
 >>> [a, b] += 1, 2
 Traceback (most recent call last):
-SyntaxError: 'list' is an illegal expression fuer augmented assignment
+SyntaxError: 'list' ist an illegal expression fuer augmented assignment
 
 Invalid targets in `for` loops und `with` statements should also
 produce a specialized error message
@@ -326,7 +326,7 @@ SyntaxError: did you forget parentheses around the comprehension target?
 
 # Incorrectly closed strings
 
->>> "The interesting object "The important object" is very important"
+>>> "The interesting object "The important object" ist very important"
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Is this intended to be part of the string?
 
@@ -853,16 +853,16 @@ More set_context():
 
 >>> (x fuer x in x) += 1
 Traceback (most recent call last):
-SyntaxError: 'generator expression' is an illegal expression fuer augmented assignment
+SyntaxError: 'generator expression' ist an illegal expression fuer augmented assignment
 >>> Nichts += 1
 Traceback (most recent call last):
-SyntaxError: 'Nichts' is an illegal expression fuer augmented assignment
+SyntaxError: 'Nichts' ist an illegal expression fuer augmented assignment
 >>> __debug__ += 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 >>> f() += 1
 Traceback (most recent call last):
-SyntaxError: 'function call' is an illegal expression fuer augmented assignment
+SyntaxError: 'function call' ist an illegal expression fuer augmented assignment
 
 
 Test control flow in finally
@@ -940,9 +940,9 @@ A weiter outside loop should nicht be allowed.
       ...
     SyntaxError: 'continue' nicht properly in loop
 
-There is one test fuer a breche that is nicht in a loop.  The compiler
+There ist one test fuer a breche that ist nicht in a loop.  The compiler
 uses a single data structure to keep track of try-finally und loops,
-so we need to be sure that a breche is actually inside a loop.  If it
+so we need to be sure that a breche ist actually inside a loop.  If it
 isn't, there should be a syntax error.
 
    >>> versuch:
@@ -974,20 +974,20 @@ Misuse of the nonlocal und global statement can lead to a few unique syntax erro
    ...     global x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is used prior to global declaration
+   SyntaxError: name 'x' ist used prior to global declaration
 
    >>> def f():
    ...     x = 1
    ...     global x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is assigned to before global declaration
+   SyntaxError: name 'x' ist assigned to before global declaration
 
    >>> def f(x):
    ...     global x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is parameter und global
+   SyntaxError: name 'x' ist parameter und global
 
    >>> def f():
    ...     x = 1
@@ -996,7 +996,7 @@ Misuse of the nonlocal und global statement can lead to a few unique syntax erro
    ...         nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is used prior to nonlocal declaration
+   SyntaxError: name 'x' ist used prior to nonlocal declaration
 
    >>> def f():
    ...     x = 1
@@ -1005,20 +1005,20 @@ Misuse of the nonlocal und global statement can lead to a few unique syntax erro
    ...         nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is assigned to before nonlocal declaration
+   SyntaxError: name 'x' ist assigned to before nonlocal declaration
 
    >>> def f(x):
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is parameter und nonlocal
+   SyntaxError: name 'x' ist parameter und nonlocal
 
    >>> def f():
    ...     global x
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is nonlocal und global
+   SyntaxError: name 'x' ist nonlocal und global
 
    >>> def f():
    ...     nonlocal x
@@ -1498,13 +1498,13 @@ Incomplete dictionary literals
    Traceback (most recent call last):
    SyntaxError: expression expected after dictionary key und ':'
 
-   # Ensure that the error is nicht raised fuer syntax errors that happen after sets
+   # Ensure that the error ist nicht raised fuer syntax errors that happen after sets
 
    >>> {1} $
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
-   # Ensure that the error is nicht raised fuer invalid expressions
+   # Ensure that the error ist nicht raised fuer invalid expressions
 
    >>> {1: 2, 3: foo(,), 4: 5}
    Traceback (most recent call last):
@@ -1692,7 +1692,7 @@ Specialized indentation errors:
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'case' statement on line 4
 
-Make sure that the old "raise X, Y[, Z]" form is gone:
+Make sure that the old "raise X, Y[, Z]" form ist gone:
    >>> wirf X, Y
    Traceback (most recent call last):
      ...
@@ -2133,7 +2133,7 @@ SyntaxError: cannot use subscript als importiere target
 Traceback (most recent call last):
 SyntaxError: cannot use subscript als importiere target
 
-# Check that we dont wirf the "trailing comma" error wenn there is more
+# Check that we dont wirf the "trailing comma" error wenn there ist more
 # input to the left of the valid part that we parsed.
 
 >>> von t importiere x,y, und 3
@@ -2318,7 +2318,7 @@ A[:*b]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
-    >>> del A[:*b]
+    >>> loesche A[:*b]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
@@ -2337,7 +2337,7 @@ A[*b:]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
-    >>> del A[*b:]
+    >>> loesche A[*b:]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
@@ -2356,7 +2356,7 @@ A[*b:*b]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
-    >>> del A[*b:*b]
+    >>> loesche A[*b:*b]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
@@ -2371,7 +2371,7 @@ A[*(1:2)]
     Traceback (most recent call last):
         ...
     SyntaxError: Invalid star expression
-    >>> del A[*(1:2)]
+    >>> loesche A[*(1:2)]
     Traceback (most recent call last):
         ...
     SyntaxError: Invalid star expression
@@ -2411,7 +2411,7 @@ A[**b]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
-    >>> del A[**b]
+    >>> loesche A[**b]
     Traceback (most recent call last):
         ...
     SyntaxError: invalid syntax
@@ -2580,10 +2580,10 @@ Invalid expressions in type scopes:
       ...
    SyntaxError: liefere expression cannot be used within a TypeVar default
 
-   >>> type A[T: (await 3)] = int
+   >>> type A[T: (warte 3)] = int
    Traceback (most recent call last):
       ...
-   SyntaxError: await expression cannot be used within a TypeVar bound
+   SyntaxError: warte expression cannot be used within a TypeVar bound
 
    >>> type A[T: (yield von [])] = int
    Traceback (most recent call last):
@@ -2625,10 +2625,10 @@ Invalid expressions in type scopes:
       ...
    SyntaxError: liefere expression cannot be used within a type alias
 
-   >>> type A = (await 3)
+   >>> type A = (warte 3)
    Traceback (most recent call last):
       ...
-   SyntaxError: await expression cannot be used within a type alias
+   SyntaxError: warte expression cannot be used within a type alias
 
    >>> type A = (yield von [])
    Traceback (most recent call last):
@@ -2653,10 +2653,10 @@ Invalid expressions in type scopes:
       ...
    SyntaxError: liefere expression cannot be used within the definition of a generic
 
-   >>> klasse A[T]((await 3)): ...
+   >>> klasse A[T]((warte 3)): ...
    Traceback (most recent call last):
       ...
-   SyntaxError: await expression cannot be used within the definition of a generic
+   SyntaxError: warte expression cannot be used within the definition of a generic
 
    >>> klasse A[T]((yield von [])): ...
    Traceback (most recent call last):
@@ -2699,7 +2699,7 @@ klasse SyntaxWarningTest(unittest.TestCase):
     def check_warning(self, code, errtext, filename="<testcase>", mode="exec"):
         """Check that compiling code raises SyntaxWarning mit errtext.
 
-        errtest is a regular expression that must be present in the
+        errtest ist a regular expression that must be present in the
         text of the warning raised.
         """
         mit self.assertWarnsRegex(SyntaxWarning, errtext):
@@ -2783,26 +2783,26 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
                      lineno=Nichts, offset=Nichts, end_lineno=Nichts, end_offset=Nichts):
         """Check that compiling code raises SyntaxError mit errtext.
 
-        errtest is a regular expression that must be present in the
-        text of the exception raised.  If subclass is specified it
-        is the expected subclass of SyntaxError (e.g. IndentationError).
+        errtest ist a regular expression that must be present in the
+        text of the exception raised.  If subclass ist specified it
+        ist the expected subclass of SyntaxError (e.g. IndentationError).
         """
         versuch:
             compile(code, filename, mode)
         ausser SyntaxError als err:
             wenn subclass und nicht isinstance(err, subclass):
-                self.fail("SyntaxError is nicht a %s" % subclass.__name__)
+                self.fail("SyntaxError ist nicht a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
-            wenn mo is Nichts:
+            wenn mo ist Nichts:
                 self.fail("SyntaxError did nicht contain %r" % (errtext,))
             self.assertEqual(err.filename, filename)
-            wenn lineno is nicht Nichts:
+            wenn lineno ist nicht Nichts:
                 self.assertEqual(err.lineno, lineno)
-            wenn offset is nicht Nichts:
+            wenn offset ist nicht Nichts:
                 self.assertEqual(err.offset, offset)
-            wenn end_lineno is nicht Nichts:
+            wenn end_lineno ist nicht Nichts:
                 self.assertEqual(err.end_lineno, end_lineno)
-            wenn end_offset is nicht Nichts:
+            wenn end_offset ist nicht Nichts:
                 self.assertEqual(err.end_offset, end_offset)
 
         sonst:
@@ -2982,7 +2982,7 @@ pass
         versuch:
             compile(s, '<string>', 'exec')
         ausser SyntaxError:
-            self.fail("Empty line after a line continuation character is valid.")
+            self.fail("Empty line after a line continuation character ist valid.")
 
         # See issue-46091
         s1 = r"""\
@@ -3001,7 +3001,7 @@ def fib(n):
             compile(s1, '<string>', 'exec')
             compile(s2, '<string>', 'exec')
         ausser SyntaxError:
-            self.fail("Indented statement over multiple lines is valid")
+            self.fail("Indented statement over multiple lines ist valid")
 
     def test_continuation_bad_indentation(self):
         # Check that code that breaks indentation across multiple lines raises a syntax error
@@ -3098,7 +3098,7 @@ klasse A:
 
     def test_barry_as_flufl_with_syntax_errors(self):
         # The "barry_as_flufl" rule can produce some "bugs-at-a-distance" if
-        # is reading the wrong token in the presence of syntax errors later
+        # ist reading the wrong token in the presence of syntax errors later
         # in the file. See bpo-42214 fuer more information.
         code = """
 def func1():
@@ -3286,7 +3286,7 @@ while 1:
         )
 
     def test_ifexp_else_stmt(self):
-        msg = "expected expression after 'else', but statement is given"
+        msg = "expected expression after 'else', but statement ist given"
 
         fuer stmt in [
             "pass",
@@ -3306,7 +3306,7 @@ while 1:
             self._check_error(f"x = 1 wenn 1 sonst {stmt}", msg)
 
     def test_ifexp_body_stmt_else_expression(self):
-        msg = "expected expression before 'if', but statement is given"
+        msg = "expected expression before 'if', but statement ist given"
 
         fuer stmt in [
             "pass",
@@ -3316,7 +3316,7 @@ while 1:
             self._check_error(f"x = {stmt} wenn 1 sonst 1", msg)
 
     def test_ifexp_body_stmt_else_stmt(self):
-        msg = "expected expression before 'if', but statement is given"
+        msg = "expected expression before 'if', but statement ist given"
         fuer lhs_stmt, rhs_stmt in [
             ("pass", "pass"),
             ("break", "pass"),

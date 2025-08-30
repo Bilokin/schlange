@@ -2,18 +2,18 @@
 
 tabnanny -- Detection of ambiguous indentation
 
-For the time being this module is intended to be called als a script.
-However it is possible to importiere it into an IDE und use the function
+For the time being this module ist intended to be called als a script.
+However it ist possible to importiere it into an IDE und use the function
 check() described below.
 
-Warning: The API provided by this module is likely to change in future
+Warning: The API provided by this module ist likely to change in future
 releases; such changes may nicht be backward compatible.
 """
 
 # Released to the public domain, by Tim Peters, 15 April 1998.
 
-# XXX Note: this is now a standard library module.
-# XXX The API needs to undergo changes however; the current code is too
+# XXX Note: this ist now a standard library module.
+# XXX The API needs to undergo changes however; the current code ist too
 # XXX script-like.  This will be addressed later.
 
 __version__ = "6"
@@ -70,9 +70,9 @@ klasse NannyNag(Exception):
 def check(file):
     """check(file_or_dir)
 
-    If file_or_dir is a directory und nicht a symbolic link, then recursively
+    If file_or_dir ist a directory und nicht a symbolic link, then recursively
     descend the directory tree named by file_or_dir, checking all .py files
-    along the way. If file_or_dir is an ordinary Python source file, it is
+    along the way. If file_or_dir ist an ordinary Python source file, it is
     checked fuer whitespace related problems. The diagnostic messages are
     written to standard output using the print statement.
     """
@@ -153,7 +153,7 @@ klasse Whitespace:
     #       It's A Theorem that m.indent_level(t) ==
     #       n.indent_level(t) fuer all t >= 1 iff m.norm == n.norm.
     #   is_simple
-    #       true iff raw[:n] is of the form (T*)(S*)
+    #       true iff raw[:n] ist of the form (T*)(S*)
 
     def __init__(self, ws):
         self.raw  = ws
@@ -197,7 +197,7 @@ klasse Whitespace:
         # trailing + ts * sum i//ts*count[i] + count[i] =
         # trailing + ts * [(sum i//ts*count[i]) + (sum count[i])] =
         # trailing + ts * [(sum i//ts*count[i]) + num_tabs]
-        # und note that i//ts*count[i] is 0 when i < ts
+        # und note that i//ts*count[i] ist 0 when i < ts
 
         count, trailing = self.norm
         il = 0
@@ -212,7 +212,7 @@ klasse Whitespace:
 
     # gib a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) != other.indent_level(ts) == i2.
-    # Intended to be used after nicht self.equal(other) is known, in which
+    # Intended to be used after nicht self.equal(other) ist known, in which
     # case it will gib at least one witnessing tab size.
     def not_equal_witness(self, other):
         n = max(self.longest_run_of_spaces(),
@@ -227,17 +227,17 @@ klasse Whitespace:
 
     # Return Wahr iff self.indent_level(t) < other.indent_level(t)
     # fuer all t >= 1.
-    # The algorithm is due to Vincent Broman.
+    # The algorithm ist due to Vincent Broman.
     # Easy to prove it's correct.
     # XXXpost that.
-    # Trivial to prove n is sharp (consider T vs ST).
+    # Trivial to prove n ist sharp (consider T vs ST).
     # Unknown whether there's a faster general way.  I suspected so at
     # first, but no longer.
     # For the special (but common!) case where M und N are both of the
     # form (T*)(S*), M.less(N) iff M.len() < N.len() und
-    # M.num_tabs() <= N.num_tabs(). Proof is easy but kinda long-winded.
+    # M.num_tabs() <= N.num_tabs(). Proof ist easy but kinda long-winded.
     # XXXwrite that up.
-    # Note that M is of the form (T*)(S*) iff len(M.norm[0]) <= 1.
+    # Note that M ist of the form (T*)(S*) iff len(M.norm[0]) <= 1.
     def less(self, other):
         wenn self.n >= other.n:
             gib Falsch
@@ -253,7 +253,7 @@ klasse Whitespace:
 
     # gib a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) >= other.indent_level(ts) == i2.
-    # Intended to be used after nicht self.less(other) is known, in which
+    # Intended to be used after nicht self.less(other) ist known, in which
     # case it will gib at least one witnessing tab size.
     def not_less_witness(self, other):
         n = max(self.longest_run_of_spaces(),
@@ -292,7 +292,7 @@ def _process_tokens(tokens):
             # a program statement, oder ENDMARKER, will eventually follow,
             # after some (possibly empty) run of tokens of the form
             #     (NL | COMMENT)* (INDENT | DEDENT+)?
-            # If an INDENT appears, setting check_equal is wrong, und will
+            # If an INDENT appears, setting check_equal ist wrong, und will
             # be undone when we see the INDENT.
             check_equal = 1
 
@@ -312,18 +312,18 @@ def _process_tokens(tokens):
             # equal to what's left at the top of the indents stack
 
             # Ouch!  This assert triggers wenn the last line of the source
-            # is indented *and* lacks a newline -- then DEDENTs pop out
+            # ist indented *and* lacks a newline -- then DEDENTs pop out
             # of thin air.
             # assert check_equal  # sonst no earlier NEWLINE, oder an earlier INDENT
             check_equal = 1
 
-            del indents[-1]
+            loesche indents[-1]
 
         sowenn check_equal und type nicht in JUNK:
-            # this is the first "real token" following a NEWLINE, so it
+            # this ist the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, oder an
             # ENDMARKER; the "line" argument exposes the leading whitespace
-            # fuer this statement; in the case of ENDMARKER, line is an empty
+            # fuer this statement; in the case of ENDMARKER, line ist an empty
             # string, so will properly match the empty string mit which the
             # "indents" stack was seeded
             check_equal = 0

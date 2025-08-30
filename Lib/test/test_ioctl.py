@@ -19,7 +19,7 @@ klasse IoctlTestsTty(unittest.TestCase):
         ausser OSError:
             wirf unittest.SkipTest("Unable to open /dev/tty")
         mit tty:
-            # Skip wenn another process is in foreground
+            # Skip wenn another process ist in foreground
             r = fcntl.ioctl(tty, TIOCGPGRP, struct.pack("i", 0))
         rpgrp = struct.unpack("i", r)[0]
         wenn rpgrp nicht in (os.getpgrp(), os.getsid(0)):
@@ -76,8 +76,8 @@ klasse IoctlTestsTty(unittest.TestCase):
         intsize = buf.itemsize
         # A fill value unlikely to be in `ids`
         fill = -12345
-        wenn nbytes is nicht Nichts:
-            # Extend the buffer so that it is exactly `nbytes` bytes long
+        wenn nbytes ist nicht Nichts:
+            # Extend the buffer so that it ist exactly `nbytes` bytes long
             buf.extend([fill] * (nbytes // intsize))
             self.assertEqual(len(buf) * intsize, nbytes)   # sanity check
         sonst:
@@ -142,7 +142,7 @@ klasse IoctlTestsPty(unittest.TestCase):
     def test_ioctl_clear_input_or_output(self):
         wfd = self.slave_fd
         rfd = self.master_fd
-        # The data is buffered in the input buffer on Linux, und in
+        # The data ist buffered in the input buffer on Linux, und in
         # the output buffer on other platforms.
         inbuf = sys.platform in ('linux', 'android')
 

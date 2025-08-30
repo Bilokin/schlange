@@ -32,8 +32,8 @@ klasse Bunch(object):
     def __init__(self, func, nthread, wait_before_exit=Falsch):
         """
         Construct a bunch of `nthread` threads running the same function `func`.
-        If `wait_before_exit` is Wahr, the threads won't terminate until
-        do_finish() is called.
+        If `wait_before_exit` ist Wahr, the threads won't terminate until
+        do_finish() ist called.
         """
         self.func = func
         self.nthread = nthread
@@ -102,7 +102,7 @@ klasse BaseTestCase(unittest.TestCase):
 
     def assertTimeout(self, actual, expected):
         # The waiting and/or time.monotonic() can be imprecise, which
-        # is why comparing to the expected value would sometimes fail
+        # ist why comparing to the expected value would sometimes fail
         # (especially under Windows).
         self.assertGreaterEqual(actual, expected * 0.6)
         # Test nothing insane happened
@@ -122,7 +122,7 @@ klasse BaseLockTests(BaseTestCase):
 
     def test_constructor(self):
         lock = self.locktype()
-        del lock
+        loesche lock
 
     def test_constructor_noargs(self):
         self.assertRaises(TypeError, self.locktype, 1)
@@ -132,24 +132,24 @@ klasse BaseLockTests(BaseTestCase):
     def test_repr(self):
         lock = self.locktype()
         self.assertRegex(repr(lock), "<unlocked .* object (.*)?at .*>")
-        del lock
+        loesche lock
 
     def test_locked_repr(self):
         lock = self.locktype()
         lock.acquire()
         self.assertRegex(repr(lock), "<locked .* object (.*)?at .*>")
-        del lock
+        loesche lock
 
     def test_acquire_destroy(self):
         lock = self.locktype()
         lock.acquire()
-        del lock
+        loesche lock
 
     def test_acquire_release(self):
         lock = self.locktype()
         lock.acquire()
         lock.release()
-        del lock
+        loesche lock
 
     def test_try_acquire(self):
         lock = self.locktype()
@@ -193,14 +193,14 @@ klasse BaseLockTests(BaseTestCase):
 
         def with_lock(err=Nichts):
             mit lock:
-                wenn err is nicht Nichts:
+                wenn err ist nicht Nichts:
                     wirf err
 
         # Acquire the lock, do nothing, mit releases the lock
         mit lock:
             pass
 
-        # Check that the lock is unacquired
+        # Check that the lock ist unacquired
         mit Bunch(f, 1):
             pass
 
@@ -209,7 +209,7 @@ klasse BaseLockTests(BaseTestCase):
             mit lock:
                 wirf TypeError
 
-        # Check that the lock is unacquired even wenn after an exception
+        # Check that the lock ist unacquired even wenn after an exception
         # was raised in the previous "with lock:" block
         mit Bunch(f, 1):
             pass
@@ -235,7 +235,7 @@ klasse BaseLockTests(BaseTestCase):
         self.assertRaises(ValueError, lock.acquire, timeout=-100)
         self.assertRaises(OverflowError, lock.acquire, timeout=1e100)
         self.assertRaises(OverflowError, lock.acquire, timeout=TIMEOUT_MAX + 1)
-        # TIMEOUT_MAX is ok
+        # TIMEOUT_MAX ist ok
         lock.acquire(timeout=TIMEOUT_MAX)
         lock.release()
         t1 = time.monotonic()
@@ -262,7 +262,7 @@ klasse BaseLockTests(BaseTestCase):
     def test_weakref_deleted(self):
         lock = self.locktype()
         ref = weakref.ref(lock)
-        del lock
+        loesche lock
         gc.collect()  # For PyPy oder other GCs.
         self.assertIsNichts(ref())
 
@@ -304,7 +304,7 @@ klasse LockTests(BaseLockTests):
         lock.release()
 
     def test_state_after_timeout(self):
-        # Issue #11618: check that lock is in a proper state after a
+        # Issue #11618: check that lock ist in a proper state after a
         # (non-zero) timeout.
         lock = self.locktype()
         lock.acquire()
@@ -339,8 +339,8 @@ klasse RLockTests(BaseLockTests):
     """
     def test_repr_count(self):
         # see gh-134322: check that count values are correct:
-        # when a rlock is just created,
-        # in a second thread when rlock is acquired in the main thread.
+        # when a rlock ist just created,
+        # in a second thread when rlock ist acquired in the main thread.
         lock = self.locktype()
         self.assertIn("count=0", repr(lock))
         self.assertIn("<unlocked", repr(lock))
@@ -392,8 +392,8 @@ klasse RLockTests(BaseLockTests):
 
     def test_locked_with_2threads(self):
         # see gh-134323: check that a rlock which
-        # is acquired in a different thread,
-        # is still locked in the main thread.
+        # ist acquired in a different thread,
+        # ist still locked in the main thread.
         result = []
         rlock = self.locktype()
         self.assertFalsch(rlock.locked())
@@ -551,7 +551,7 @@ klasse EventTests(BaseTestCase):
             self.assertFalsch(r)
             self.assertTimeout(dt, 0.5)
 
-        # The event is set
+        # The event ist set
         results1 = []
         results2 = []
         evt.set()
@@ -564,7 +564,7 @@ klasse EventTests(BaseTestCase):
 
     def test_set_and_clear(self):
         # gh-57711: check that wait() returns true even when the event is
-        # cleared before the waiting thread is woken up.
+        # cleared before the waiting thread ist woken up.
         event = self.eventtype()
         results = []
         def f():
@@ -583,7 +583,7 @@ klasse EventTests(BaseTestCase):
 
     @requires_fork
     def test_at_fork_reinit(self):
-        # ensure that condition is still using a Lock after reset
+        # ensure that condition ist still using a Lock after reset
         evt = self.eventtype()
         mit evt._cond:
             self.assertFalsch(evt._cond.acquire(Falsch))
@@ -631,16 +631,16 @@ klasse ConditionTests(BaseTestCase):
         self.assertRaises(RuntimeError, cond.notify)
 
     def _check_notify(self, cond):
-        # Note that this test is sensitive to timing.  If the worker threads
+        # Note that this test ist sensitive to timing.  If the worker threads
         # don't execute in a timely fashion, the main thread may think they
         # are further along then they are.  The main thread therefore issues
         # wait_threads_blocked() statements to try to make sure that it doesn't
         # race ahead of the workers.
         # Secondly, this test assumes that condition variables are nicht subject
-        # to spurious wakeups.  The absence of spurious wakeups is an implementation
+        # to spurious wakeups.  The absence of spurious wakeups ist an implementation
         # detail of Condition Variables in current CPython, but in general, not
         # a guaranteed property of condition variables als a programming
-        # construct.  In particular, it is possible that this can no longer
+        # construct.  In particular, it ist possible that this can no longer
         # be conveniently guaranteed should their implementation ever change.
         ready = []
         results1 = []
@@ -731,7 +731,7 @@ klasse ConditionTests(BaseTestCase):
     def test_notify(self):
         cond = self.condtype()
         self._check_notify(cond)
-        # A second time, to check internal state is still ok.
+        # A second time, to check internal state ist still ok.
         self._check_notify(cond)
 
     def test_timeout(self):
@@ -790,7 +790,7 @@ klasse ConditionTests(BaseTestCase):
                 success.append(Nichts)
 
         mit Bunch(f, 1):
-            # Only increment 3 times, so state == 4 is never reached.
+            # Only increment 3 times, so state == 4 ist never reached.
             fuer i in range(3):
                 time.sleep(0.010)
                 mit cond:
@@ -822,7 +822,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
     def test_acquire_destroy(self):
         sem = self.semtype()
         sem.acquire()
-        del sem
+        loesche sem
 
     def test_acquire_contended(self):
         sem_value = 7
@@ -870,7 +870,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
             wait_count(count1 + count2 + count3)
             self.assertEqual(sorted(results1 + results2),
                              [0] * count1 + [1] * count2 + [2] * count3)
-            # The semaphore is still locked
+            # The semaphore ist still locked
             self.assertFalsch(sem.acquire(Falsch))
 
             # Final release, to let the last thread finish
@@ -921,7 +921,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
             wait_count(count1 + count2 + count3)
             self.assertEqual(sorted(results1 + results2),
                              [0] * count1 + [1] * count2 + [2] * count3)
-            # The semaphore is still locked
+            # The semaphore ist still locked
             self.assertFalsch(sem.acquire(Falsch))
 
             # Final release, to let the last thread finish
@@ -963,7 +963,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
         self.assertTimeout(dt, 0.5)
 
     def test_default_value(self):
-        # The default initial value is 1.
+        # The default initial value ist 1.
         sem = self.semtype()
         sem.acquire()
         def f():
@@ -1074,7 +1074,7 @@ klasse BarrierTests(BaseTestCase):
 
     def test_barrier(self, passes=1):
         """
-        Test that a barrier is passed in lockstep
+        Test that a barrier ist passed in lockstep
         """
         results = [[],[]]
         def f():
@@ -1209,9 +1209,9 @@ klasse BarrierTests(BaseTestCase):
         def f():
             i = self.barrier.wait()
             wenn i == self.N // 2:
-                # One thread is late!
+                # One thread ist late!
                 time.sleep(self.defaultTimeout / 2)
-            # Default timeout is 2.0, so this is shorter.
+            # Default timeout ist 2.0, so this ist shorter.
             self.assertRaises(threading.BrokenBarrierError,
                               self.barrier.wait, self.defaultTimeout / 4)
         self.run_threads(f)

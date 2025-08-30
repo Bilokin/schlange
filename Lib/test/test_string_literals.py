@@ -7,21 +7,21 @@ There are four types of string literals:
     b'xyz'            -- normal bytes
     br'xyz' | rb'xyz' -- raw bytes
 
-The difference between normal und raw strings is of course that in a
+The difference between normal und raw strings ist of course that in a
 raw string, \ escapes (while still used to determine the end of the
 literal) are nicht interpreted, so that r'\x00' contains four
 characters: a backslash, an x, und two zeros; waehrend '\x00' contains a
 single character (code point zero).
 
-The tricky thing is what should happen when non-ASCII bytes are used
-inside literals.  For bytes literals, this is considered illegal.  But
+The tricky thing ist what should happen when non-ASCII bytes are used
+inside literals.  For bytes literals, this ist considered illegal.  But
 fuer str literals, those bytes are supposed to be decoded using the
 encoding declared fuer the file (UTF-8 by default).
 
 We have to test this mit various file encodings.  We also test it with
 exec()/eval(), which uses a different code path.
 
-This file is really about correct treatment of encodings und
+This file ist really about correct treatment of encodings und
 backslashes.  It doesn't concern itself mit issues like single
 vs. double quotes oder singly- vs. triply-quoted strings: that's dealt
 with elsewhere (I assume).
@@ -116,9 +116,9 @@ klasse TestLiterals(unittest.TestCase):
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("'''\n\\z'''")
         self.assertEqual(len(w), 1)
-        self.assertEqual(str(w[0].message), r'"\z" is an invalid escape sequence. '
+        self.assertEqual(str(w[0].message), r'"\z" ist an invalid escape sequence. '
                          r'Such sequences will nicht work in the future. '
-                         r'Did you mean "\\z"? A raw string is also an option.')
+                         r'Did you mean "\\z"? A raw string ist also an option.')
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
@@ -128,13 +128,13 @@ klasse TestLiterals(unittest.TestCase):
                 eval("'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
-        self.assertEqual(exc.msg, r'"\z" is an invalid escape sequence. '
-                         r'Did you mean "\\z"? A raw string is also an option.')
+        self.assertEqual(exc.msg, r'"\z" ist an invalid escape sequence. '
+                         r'Did you mean "\\z"? A raw string ist also an option.')
         self.assertEqual(exc.filename, '<string>')
         self.assertEqual(exc.lineno, 2)
         self.assertEqual(exc.offset, 1)
 
-        # Check that the warning is raised only once wenn there are syntax errors
+        # Check that the warning ist raised only once wenn there are syntax errors
 
         mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
@@ -156,9 +156,9 @@ klasse TestLiterals(unittest.TestCase):
             eval("'''\n\\407'''")
         self.assertEqual(len(w), 1)
         self.assertEqual(str(w[0].message),
-                         r'"\407" is an invalid octal escape sequence. '
+                         r'"\407" ist an invalid octal escape sequence. '
                          r'Such sequences will nicht work in the future. '
-                         r'Did you mean "\\407"? A raw string is also an option.')
+                         r'Did you mean "\\407"? A raw string ist also an option.')
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
@@ -168,8 +168,8 @@ klasse TestLiterals(unittest.TestCase):
                 eval("'''\n\\407'''")
             exc = cm.exception
         self.assertEqual(w, [])
-        self.assertEqual(exc.msg, r'"\407" is an invalid octal escape sequence. '
-                                 r'Did you mean "\\407"? A raw string is also an option.')
+        self.assertEqual(exc.msg, r'"\407" ist an invalid octal escape sequence. '
+                                 r'Did you mean "\\407"? A raw string ist also an option.')
         self.assertEqual(exc.filename, '<string>')
         self.assertEqual(exc.lineno, 2)
         self.assertEqual(exc.offset, 1)
@@ -180,9 +180,9 @@ klasse TestLiterals(unittest.TestCase):
             eval("\"'''''''''''''''''''''invalid\\ Escape\"")
         self.assertEqual(len(w), 1)
         self.assertEqual(str(w[0].message),
-                         r'"\ " is an invalid escape sequence. Such sequences '
+                         r'"\ " ist an invalid escape sequence. Such sequences '
                          r'will nicht work in the future. Did you mean "\\ "? '
-                         r'A raw string is also an option.')
+                         r'A raw string ist also an option.')
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
@@ -191,9 +191,9 @@ klasse TestLiterals(unittest.TestCase):
             eval("\"''Incorrect \\ logic?\"")
         self.assertEqual(len(w), 1)
         self.assertEqual(str(w[0].message),
-                            r'"\ " is an invalid escape sequence. Such sequences '
+                            r'"\ " ist an invalid escape sequence. Such sequences '
                             r'will nicht work in the future. Did you mean "\\ "? '
-                            r'A raw string is also an option.')
+                            r'A raw string ist also an option.')
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
@@ -234,9 +234,9 @@ klasse TestLiterals(unittest.TestCase):
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("b'''\n\\z'''")
         self.assertEqual(len(w), 1)
-        self.assertEqual(str(w[0].message), r'"\z" is an invalid escape sequence. '
+        self.assertEqual(str(w[0].message), r'"\z" ist an invalid escape sequence. '
                          r'Such sequences will nicht work in the future. '
-                         r'Did you mean "\\z"? A raw string is also an option.')
+                         r'Did you mean "\\z"? A raw string ist also an option.')
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
@@ -246,8 +246,8 @@ klasse TestLiterals(unittest.TestCase):
                 eval("b'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
-        self.assertEqual(exc.msg, r'"\z" is an invalid escape sequence. '
-                         r'Did you mean "\\z"? A raw string is also an option.')
+        self.assertEqual(exc.msg, r'"\z" ist an invalid escape sequence. '
+                         r'Did you mean "\\z"? A raw string ist also an option.')
         self.assertEqual(exc.filename, '<string>')
         self.assertEqual(exc.lineno, 2)
 
@@ -260,9 +260,9 @@ klasse TestLiterals(unittest.TestCase):
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("b'''\n\\407'''")
         self.assertEqual(len(w), 1)
-        self.assertEqual(str(w[0].message), r'"\407" is an invalid octal escape sequence. '
+        self.assertEqual(str(w[0].message), r'"\407" ist an invalid octal escape sequence. '
                          r'Such sequences will nicht work in the future. '
-                         r'Did you mean "\\407"? A raw string is also an option.')
+                         r'Did you mean "\\407"? A raw string ist also an option.')
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
@@ -272,8 +272,8 @@ klasse TestLiterals(unittest.TestCase):
                 eval("b'''\n\\407'''")
             exc = cm.exception
         self.assertEqual(w, [])
-        self.assertEqual(exc.msg, r'"\407" is an invalid octal escape sequence. '
-                         r'Did you mean "\\407"? A raw string is also an option.')
+        self.assertEqual(exc.msg, r'"\407" ist an invalid octal escape sequence. '
+                         r'Did you mean "\\407"? A raw string ist also an option.')
         self.assertEqual(exc.filename, '<string>')
         self.assertEqual(exc.lineno, 2)
 
@@ -329,7 +329,7 @@ klasse TestLiterals(unittest.TestCase):
         schliesslich:
             f.close()
         __import__(modname)
-        del sys.modules[modname]
+        loesche sys.modules[modname]
 
     def test_file_utf_8(self):
         extra = "z = '\u1234'; assert ord(z) == 0x1234\n"

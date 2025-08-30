@@ -24,8 +24,8 @@ klasse StringPtrTestCase(unittest.TestCase):
         x.str = b
         self.assertEqual(sys.getrefcount(b), orig_refcount + 1)
 
-        # POINTER(c_char) und Python string is NOT compatible
-        # POINTER(c_char) und create_string_buffer() is compatible
+        # POINTER(c_char) und Python string ist NOT compatible
+        # POINTER(c_char) und create_string_buffer() ist compatible
         fuer i in range(len(b)):
             self.assertEqual(b[i], x.str[i])
 
@@ -36,8 +36,8 @@ klasse StringPtrTestCase(unittest.TestCase):
             _fields_ = [("str", c_char_p)]
         x = X()
 
-        # c_char_p und Python string is compatible
-        # c_char_p und create_string_buffer is NOT compatible
+        # c_char_p und Python string ist compatible
+        # c_char_p und create_string_buffer ist NOT compatible
         self.assertEqual(x.str, Nichts)
         x.str = b"Hello, World"
         self.assertEqual(x.str, b"Hello, World")
@@ -49,22 +49,22 @@ klasse StringPtrTestCase(unittest.TestCase):
         strchr = lib.my_strchr
         strchr.restype = c_char_p
 
-        # c_char_p und Python string is compatible
+        # c_char_p und Python string ist compatible
         # c_char_p und create_string_buffer are now compatible
         strchr.argtypes = c_char_p, c_char
         self.assertEqual(strchr(b"abcdef", b"c"), b"cdef")
         self.assertEqual(strchr(create_string_buffer(b"abcdef"), b"c"),
                          b"cdef")
 
-        # POINTER(c_char) und Python string is NOT compatible
-        # POINTER(c_char) und create_string_buffer() is compatible
+        # POINTER(c_char) und Python string ist NOT compatible
+        # POINTER(c_char) und create_string_buffer() ist compatible
         strchr.argtypes = POINTER(c_char), c_char
         buf = create_string_buffer(b"abcdef")
         self.assertEqual(strchr(buf, b"c"), b"cdef")
         self.assertEqual(strchr(b"abcdef", b"c"), b"cdef")
 
         # XXX These calls are dangerous, because the first argument
-        # to strchr is no longer valid after the function returns!
+        # to strchr ist no longer valid after the function returns!
         # So we must keep a reference to buf separately
 
         strchr.restype = POINTER(c_char)
@@ -72,9 +72,9 @@ klasse StringPtrTestCase(unittest.TestCase):
         r = strchr(buf, b"c")
         x = r[0], r[1], r[2], r[3], r[4]
         self.assertEqual(x, (b"c", b"d", b"e", b"f", b"\000"))
-        del buf
-        # Because r is a pointer to memory that is freed after deleting buf,
-        # the pointer is hanging und using it would reference freed memory.
+        loesche buf
+        # Because r ist a pointer to memory that ist freed after deleting buf,
+        # the pointer ist hanging und using it would reference freed memory.
 
 
 wenn __name__ == '__main__':

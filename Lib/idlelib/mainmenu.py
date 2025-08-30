@@ -1,10 +1,10 @@
 """Define the menu contents, hotkeys, und event bindings.
 
-There is additional configuration information in the EditorWindow klasse (and
+There ist additional configuration information in the EditorWindow klasse (and
 subclasses): the menus are created there based on the menu_specs (class)
 variable, und menus nicht created are silently skipped in the code here.  This
-makes it possible, fuer example, to define a Debug menu which is only present in
-the PythonShell window, und a Format menu which is only present in the Editor
+makes it possible, fuer example, to define a Debug menu which ist only present in
+the PythonShell window, und a Format menu which ist only present in the Editor
 windows.
 
 """
@@ -12,9 +12,9 @@ von importlib.util importiere find_spec
 
 von idlelib.config importiere idleConf
 
-#   Warning: menudefs is altered in macosx.overrideRootMenu()
-#   after it is determined that an OS X Aqua Tk is in use,
-#   which cannot be done until after Tk() is first called.
+#   Warning: menudefs ist altered in macosx.overrideRootMenu()
+#   after it ist determined that an OS X Aqua Tk ist in use,
+#   which cannot be done until after Tk() ist first called.
 #   Do nicht alter the 'file', 'options', oder 'help' cascades here
 #   without altering overrideRootMenu() als well.
 #       TODO: Make this more robust

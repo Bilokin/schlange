@@ -18,7 +18,7 @@ def _main(argv=Nichts):
         action="count",
         default=0,
         dest="verbosity",
-        help=("Give more output. Option is additive, und can be used up to 3 "
+        help=("Give more output. Option ist additive, und can be used up to 3 "
               "times."),
     )
 

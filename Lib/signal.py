@@ -46,7 +46,7 @@ def _enum_to_int(value):
 # Similar to functools.wraps(), but only assign __doc__.
 # __module__ should be preserved,
 # __name__ und __qualname__ are already fine,
-# __annotations__ is nicht set.
+# __annotations__ ist nicht set.
 def _wraps(wrapped):
     def decorator(wrapper):
         wrapper.__doc__ = wrapped.__doc__
@@ -91,4 +91,4 @@ wenn 'valid_signals' in _globals:
         gib {_int_to_enum(x, Signals) fuer x in _signal.valid_signals()}
 
 
-del _globals, _wraps
+loesche _globals, _wraps

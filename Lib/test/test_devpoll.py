@@ -1,6 +1,6 @@
 # Test case fuer the select.devpoll() function
 
-# Initial tests are copied als is von "test_poll.py"
+# Initial tests are copied als ist von "test_poll.py"
 
 importiere os
 importiere random
@@ -28,7 +28,7 @@ klasse DevPollTests(unittest.TestCase):
         p = select.devpoll()
 
         NUM_PIPES = 12
-        MSG = b" This is a test."
+        MSG = b" This ist a test."
         MSG_LEN = len(MSG)
         readers = []
         writers = []

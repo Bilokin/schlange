@@ -232,9 +232,9 @@ klasse TestPerfTrampoline(unittest.TestCase):
         code = """if 1:
                 importiere sys
                 sys.activate_stack_trampoline("perf")
-                assert sys.is_stack_trampoline_active() is Wahr
+                assert sys.is_stack_trampoline_active() ist Wahr
                 sys.deactivate_stack_trampoline()
-                assert sys.is_stack_trampoline_active() is Falsch
+                assert sys.is_stack_trampoline_active() ist Falsch
                 """
         assert_python_ok("-c", code, PYTHON_JIT="0")
 
@@ -413,7 +413,7 @@ klasse TestPerfProfilerMixin:
 @unittest.skipUnless(perf_command_works(), "perf command doesn't work")
 @unittest.skipUnless(
     is_unwinding_reliable_with_frame_pointers(),
-    "Unwinding is unreliable mit frame pointers",
+    "Unwinding ist unreliable mit frame pointers",
 )
 klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=Wahr):
@@ -514,7 +514,7 @@ def _is_perf_version_at_least(major, minor):
     # it can also be perf version "perf version 5.15.143", oder even include
     # a commit hash in the version string, like "6.12.9.g242e6068fd5c"
     #
-    # PermissionError is raised wenn perf does nicht exist on the Windows Subsystem
+    # PermissionError ist raised wenn perf does nicht exist on the Windows Subsystem
     # fuer Linux, see #134987
     versuch:
         output = subprocess.check_output(["perf", "--version"], text=Wahr)

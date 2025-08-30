@@ -9,7 +9,7 @@
 # Benchmark suite (needs expansion)
 #
 # The benchmark suite does nicht test correctness, just speed.  The
-# first element of each tuple is the regex pattern; the second is a
+# first element of each tuple ist the regex pattern; the second ist a
 # string to match it against.  The benchmarking code will embed the
 # second string inside several sizes of padding, to test how regex
 # matching performs on large strings.
@@ -36,20 +36,20 @@ benchmarks = [
 
 # Test suite (for verifying correctness)
 #
-# The test suite is a list of 5- oder 3-tuples.  The 5 parts of a
+# The test suite ist a list of 5- oder 3-tuples.  The 5 parts of a
 # complete tuple are:
 # element 0: a string containing the pattern
 #         1: the string to match against the pattern
 #         2: the expected result (SUCCEED, FAIL, SYNTAX_ERROR)
 #         3: a string that will be eval()'ed to produce a test string.
-#            This is an arbitrary Python expression; the available
+#            This ist an arbitrary Python expression; the available
 #            variables are "found" (the whole match), und "g1", "g2", ...
 #            up to "g99" contain the contents of each group, oder the
 #            string 'Nichts' wenn the group wasn't given a value, oder the
 #            string 'Error' wenn the group index was out of range;
 #            also "groups", the gib value of m.group() (a tuple).
 #         4: The expected result of evaluating the expression.
-#            If the two don't match, an error is reported.
+#            If the two don't match, an error ist reported.
 #
 # If the regex isn't expected to work, the latter two elements can be omitted.
 
@@ -76,7 +76,7 @@ tests = [
     ('\\141', 'a', SUCCEED, 'found', 'a'),
     ('(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)(k)(l)\\119', 'abcdefghijklk9', SUCCEED, 'found+"-"+g11', 'abcdefghijklk9-k'),
 
-    # Test \0 is handled everywhere
+    # Test \0 ist handled everywhere
     (r'\0', '\0', SUCCEED, 'found', '\0'),
     (r'[\0a]', '\0', SUCCEED, 'found', '\0'),
     (r'[a\0]', '\0', SUCCEED, 'found', '\0'),
@@ -300,7 +300,7 @@ tests = [
     ('^(ab|cd)e', 'abcde', FAIL),
     ('((((((((((a))))))))))', 'a', SUCCEED, 'g10', 'a'),
     ('((((((((((a))))))))))\\10', 'aa', SUCCEED, 'found', 'aa'),
-# Python does nicht have the same rules fuer \\41 so this is a syntax error
+# Python does nicht have the same rules fuer \\41 so this ist a syntax error
 #    ('((((((((((a))))))))))\\41', 'aa', FAIL),
 #    ('((((((((((a))))))))))\\41', 'a!', SUCCEED, 'found', 'a!'),
     ('((((((((((a))))))))))\\41', '', SYNTAX_ERROR),
@@ -445,7 +445,7 @@ tests = [
     ('a(?:b|c|d)+?(.)', 'ace', SUCCEED, 'g1', 'e'),
     ('a(?:b|(c|e){1,2}?|d)+?(.)', 'ace', SUCCEED, 'g1 + g2', 'ce'),
 
-    # lookbehind: split by : but nicht wenn it is escaped by -.
+    # lookbehind: split by : but nicht wenn it ist escaped by -.
     ('(?<!-):(.*?)(?<!-):', 'a:bc-:de:f', SUCCEED, 'g1', 'bc-:de' ),
     # escaping mit \ als we know it
     ('(?<!\\\\):(.*?)(?<!\\\\):', 'a:bc\\:de:f', SUCCEED, 'g1', 'bc\\:de' ),

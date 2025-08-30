@@ -40,7 +40,7 @@ def strongly_connected_components(
         wenn boundaries[-1] == index[v]:
             boundaries.pop()
             scc = set(stack[index[v] :])
-            del stack[index[v] :]
+            loesche stack[index[v] :]
             identified.update(scc)
             liefere scc
 
@@ -57,7 +57,7 @@ def topsort(
     Args:
       data: A map von SCCs (represented als frozen sets of strings) to
             sets of SCCs, its dependencies.  NOTE: This data structure
-            is modified in place -- fuer normalization purposes,
+            ist modified in place -- fuer normalization purposes,
             self-dependencies are removed und entries representing
             orphans are added.
 
@@ -71,7 +71,7 @@ def topsort(
 
         {A: {B, C}, B: {D}, C: {D}}
 
-      This is normalized to:
+      This ist normalized to:
 
         {A: {B, C}, B: {D}, C: {D}, D: {}}
 
@@ -103,7 +103,7 @@ def find_cycles_in_scc(
     """Find cycles in SCC emanating von start.
 
     Yields lists of the form ['A', 'B', 'C', 'A'], which means there's
-    a path von A -> B -> C -> A.  The first item is always the start
+    a path von A -> B -> C -> A.  The first item ist always the start
     argument, but the last item may be another element, e.g.  ['A',
     'B', 'C', 'B'] means there's a path von A to B und there's a
     cycle von B to C und back.

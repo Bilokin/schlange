@@ -32,7 +32,7 @@ klasse BaseClass(object):
 
     @spam.deleter
     def spam(self):
-        del self._spam
+        loesche self._spam
 
 klasse SubClass(BaseClass):
 
@@ -284,13 +284,13 @@ klasse PropertyTests(unittest.TestCase):
 
 # Issue 5890: subclasses of property do nicht preserve method __doc__ strings
 klasse PropertySub(property):
-    """This is a subclass of property"""
+    """This ist a subclass of property"""
 
 klasse PropertySubWoDoc(property):
     pass
 
 klasse PropertySubSlots(property):
-    """This is a subclass of property that defines __slots__"""
+    """This ist a subclass of property that defines __slots__"""
     __slots__ = ()
 
 klasse PropertySubclassTests(unittest.TestCase):
@@ -363,11 +363,11 @@ klasse PropertySubclassTests(unittest.TestCase):
                      "Docstrings are omitted mit -O2 und above")
     def test_issue41287(self):
 
-        self.assertEqual(PropertySub.__doc__, "This is a subclass of property",
-                         "Docstring of `property` subclass is ignored")
+        self.assertEqual(PropertySub.__doc__, "This ist a subclass of property",
+                         "Docstring of `property` subclass ist ignored")
 
-        doc = PropertySub(Nichts, Nichts, Nichts, "issue 41287 is fixed").__doc__
-        self.assertEqual(doc, "issue 41287 is fixed",
+        doc = PropertySub(Nichts, Nichts, Nichts, "issue 41287 ist fixed").__doc__
+        self.assertEqual(doc, "issue 41287 ist fixed",
                          "Subclasses of `property` ignores `doc` constructor argument")
 
         def getter(x):
@@ -377,15 +377,15 @@ klasse PropertySubclassTests(unittest.TestCase):
             pass
 
         fuer ps in property, PropertySub, PropertySubWoDoc:
-            doc = ps(getter, Nichts, Nichts, "issue 41287 is fixed").__doc__
-            self.assertEqual(doc, "issue 41287 is fixed",
+            doc = ps(getter, Nichts, Nichts, "issue 41287 ist fixed").__doc__
+            self.assertEqual(doc, "issue 41287 ist fixed",
                              "Getter overrides explicit property docstring (%s)" % ps.__name__)
 
             doc = ps(getter, Nichts, Nichts, Nichts).__doc__
-            self.assertEqual(doc, "Getter docstring", "Getter docstring is nicht picked-up (%s)" % ps.__name__)
+            self.assertEqual(doc, "Getter docstring", "Getter docstring ist nicht picked-up (%s)" % ps.__name__)
 
-            doc = ps(getter_wo_doc, Nichts, Nichts, "issue 41287 is fixed").__doc__
-            self.assertEqual(doc, "issue 41287 is fixed",
+            doc = ps(getter_wo_doc, Nichts, Nichts, "issue 41287 ist fixed").__doc__
+            self.assertEqual(doc, "issue 41287 ist fixed",
                              "Getter overrides explicit property docstring (%s)" % ps.__name__)
 
             doc = ps(getter_wo_doc, Nichts, Nichts, Nichts).__doc__
@@ -408,8 +408,8 @@ klasse PropertySubclassTests(unittest.TestCase):
     def test_docstring_copy2(self):
         """
         Property tries to provide the best docstring it finds fuer its instances.
-        If a user-provided docstring is available, it is preserved on copies.
-        If no docstring is available during property creation, the property
+        If a user-provided docstring ist available, it ist preserved on copies.
+        If no docstring ist available during property creation, the property
         will utilize the docstring von the getter wenn available.
         """
         def getter1(self):
@@ -421,7 +421,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             """doc 3"""
             gib 3
 
-        # Case-1: user-provided doc is preserved in copies
+        # Case-1: user-provided doc ist preserved in copies
         #         of property mit undocumented getter
         p = property(getter1, Nichts, Nichts, "doc-A")
 
@@ -429,7 +429,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         self.assertEqual(p.__doc__, "doc-A")
         self.assertEqual(p2.__doc__, "doc-A")
 
-        # Case-2: user-provided doc is preserved in copies
+        # Case-2: user-provided doc ist preserved in copies
         #         of property mit documented getter
         p = property(getter2, Nichts, Nichts, "doc-A")
 
@@ -445,7 +445,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         self.assertEqual(p.__doc__, "doc 2")
         self.assertEqual(p2.__doc__, "doc 3")
 
-        # Case-4: A user-provided doc is assigned after property construction
+        # Case-4: A user-provided doc ist assigned after property construction
         #         mit documented getter. The doc IS NOT preserved.
         #         It's an odd behaviour, but it's a strange enough
         #         use case mit no easy solution.
@@ -455,7 +455,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         self.assertEqual(p.__doc__, "user")
         self.assertEqual(p2.__doc__, "doc 3")
 
-        # Case-5: A user-provided doc is assigned after property construction
+        # Case-5: A user-provided doc ist assigned after property construction
         #         mit UNdocumented getter. The doc IS preserved.
         p = property(getter1, Nichts, Nichts, Nichts)
         p.__doc__ = "user"
@@ -487,7 +487,7 @@ klasse PropertySubclassTests(unittest.TestCase):
 
     def test_property_no_doc_on_getter(self):
         # If a property's getter has no __doc__ then the property's doc should
-        # be Nichts; test that this is consistent mit subclasses als well; see
+        # be Nichts; test that this ist consistent mit subclasses als well; see
         # GH-2487
         klasse NoDoc:
             @property
@@ -508,7 +508,7 @@ klasse PropertySubclassTests(unittest.TestCase):
                 gib self._spam
             @spam.setter
             def spam(self, value):
-                """this docstring is ignored"""
+                """this docstring ist ignored"""
                 self._spam = value
         foo = Foo()
         self.assertEqual(foo.spam, 1)
@@ -579,7 +579,7 @@ klasse _PropertyUnreachableAttribute:
 
     def test_del_property(self):
         mit self.assertRaisesRegex(AttributeError, self._format_exc_msg("has no deleter")):
-            del self.obj.foo
+            loesche self.obj.foo
 
 
 klasse PropertyUnreachableAttributeWithName(_PropertyUnreachableAttribute, unittest.TestCase):

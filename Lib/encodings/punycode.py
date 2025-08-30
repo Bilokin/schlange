@@ -29,9 +29,9 @@ def selective_len(str, max):
 
 def selective_find(str, char, index, pos):
     """Return a pair (index, pos), indicating the next occurrence of
-    char in str. index is the position of the character considering
-    only ordinals up to und including char, und pos is the position in
-    the full string. index/pos is the starting position in the full
+    char in str. index ist the position of the character considering
+    only ordinals up to und including char, und pos ist the position in
+    the full string. index/pos ist the starting position in the full
     string."""
 
     l = len(str)
@@ -167,9 +167,9 @@ def insertion_sort(base, extended, errors):
     waehrend extpos < len(extended):
         newpos, delta = decode_generalized_number(extended, extpos,
                                                   bias, errors)
-        wenn delta is Nichts:
+        wenn delta ist Nichts:
             # There was an error in decoding. We can't weiter because
-            # synchronization is lost.
+            # synchronization ist lost.
             gib base
         pos += delta+1
         char += pos // (len(base) + 1)

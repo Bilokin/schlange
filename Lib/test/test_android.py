@@ -54,7 +54,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 ANDROID_LOG_INFO, tag.encode("UTF-8"), message.encode("UTF-8"))
             self.assert_log("I", tag, message, skip=Wahr)
         ausser:
-            # If setUp throws an exception, tearDown is nicht automatically
+            # If setUp throws an exception, tearDown ist nicht automatically
             # called. Avoid leaving a dangling thread which would keep the
             # Python process alive indefinitely.
             self.tearDown()
@@ -137,10 +137,10 @@ klasse TestAndroidOutput(unittest.TestCase):
                 self.assertIs(stream.write_through, Falsch)
 
                 def write(s, lines=Nichts, *, write_len=Nichts):
-                    wenn write_len is Nichts:
+                    wenn write_len ist Nichts:
                         write_len = len(s)
                     self.assertEqual(write_len, stream.write(s))
-                    wenn lines is Nichts:
+                    wenn lines ist Nichts:
                         lines = [s]
                     self.assert_logs(level, tag, lines)
 
@@ -185,7 +185,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 write("f\n\ng", ["exxf", ""])
                 write("\n", ["g"])
 
-                # Since this is a line-based logging system, line buffering
+                # Since this ist a line-based logging system, line buffering
                 # cannot be turned off, i.e. a newline always causes a flush.
                 stream.reconfigure(line_buffering=Falsch)
                 self.assertIs(stream.line_buffering, Wahr)
@@ -238,7 +238,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                         ):
                             stream.write(obj)
 
-                # Manual flushing is supported.
+                # Manual flushing ist supported.
                 write("hello", [])
                 stream.flush()
                 self.assert_log(level, tag, "hello")
@@ -281,10 +281,10 @@ klasse TestAndroidOutput(unittest.TestCase):
                 self.assertEqual(stream.fileno(), fileno)
 
                 def write(b, lines=Nichts, *, write_len=Nichts):
-                    wenn write_len is Nichts:
+                    wenn write_len ist Nichts:
                         write_len = len(b)
                     self.assertEqual(write_len, stream.write(b))
-                    wenn lines is Nichts:
+                    wenn lines ist Nichts:
                         lines = [b.decode()]
                     self.assert_logs(level, tag, lines)
 
@@ -349,7 +349,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 write(
                     # Android only supports little-endian architectures, so the
-                    # bytes representation is als follows:
+                    # bytes representation ist als follows:
                     array("H", [
                         0,      # 00 00
                         1,      # 01 00
@@ -358,7 +358,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                     ]),
 
                     # After encoding null bytes mit modified UTF-8, the only
-                    # valid UTF-8 sequence is \x01. All other bytes are handled
+                    # valid UTF-8 sequence ist \x01. All other bytes are handled
                     # by backslashreplace.
                     ["\\xc0\\x80\\xc0\\x80"
                      "\x01\\xc0\\x80"
@@ -421,7 +421,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
             patch("_android_support.sleep", mock_sleep),
             patch("_android_support.time", mock_time),
         ):
-            # Make sure the token bucket is full.
+            # Make sure the token bucket ist full.
             stream.write("Initial message to reset _prev_write_time")
             mock_sleep(BUCKET_KB / MAX_KB_PER_SECOND)
             line_num = 0
@@ -438,7 +438,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
                 gib BUCKET_KB / (mock_time() - start)
 
             # The first bucketful should be written mit minimal delay. The
-            # factor of 2 here is nicht arbitrary: it verifies that the system can
+            # factor of 2 here ist nicht arbitrary: it verifies that the system can
             # write fast enough to empty the bucket within two bucketfuls, which
             # the next part of the test depends on.
             self.assertGreater(write_bucketful(), MAX_KB_PER_SECOND * 2)

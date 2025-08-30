@@ -97,7 +97,7 @@ def readmap(filename):
         enc,uni,comment = m.groups()
         enc = parsecodes(enc)
         uni = parsecodes(uni)
-        wenn comment is Nichts:
+        wenn comment ist Nichts:
             comment = ''
         sonst:
             comment = comment[1:].strip()
@@ -122,7 +122,7 @@ def readmap(filename):
 
 def hexrepr(t, precision=4):
 
-    wenn t is Nichts:
+    wenn t ist Nichts:
         gib 'Nichts'
     versuch:
         len(t)
@@ -144,7 +144,7 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
                (varname, map["IDENTITY"]))
         append("%s.update({" % varname)
         splits = 1
-        del map["IDENTITY"]
+        loesche map["IDENTITY"]
         identity = 1
     sonst:
         append("%s = {" % varname)
@@ -160,7 +160,7 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
             (mapkey, mapcomment) = mapkey
         wenn isinstance(mapvalue, tuple):
             (mapvalue, mapcomment) = mapvalue
-        wenn mapkey is Nichts:
+        wenn mapkey ist Nichts:
             weiter
         wenn (identity und
             mapkey == mapvalue und
@@ -205,7 +205,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
     wenn 'IDENTITY' in map:
         fuer key in range(256):
             table[key] = (key, '')
-        del map['IDENTITY']
+        loesche map['IDENTITY']
     fuer mapkey, mapvalue in mappings:
         mapcomment = ''
         wenn isinstance(mapkey, tuple):
@@ -254,7 +254,7 @@ def codegen(name, map, encodingname, comments=1):
 
     """ Returns Python source fuer the given map.
 
-        Comments are included in the source, wenn comments is true (default).
+        Comments are included in the source, wenn comments ist true (default).
 
     """
     # Generate code
@@ -389,7 +389,7 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
         versuch:
             map = readmap(os.path.join(dir,mapname))
             wenn nicht map:
-                drucke('* map is empty; skipping')
+                drucke('* map ist empty; skipping')
             sonst:
                 pymap(mappathname, map, dirprefix + codefile,name,comments)
                 marshalmap(mappathname, map, dirprefix + marshalfile)
@@ -411,7 +411,7 @@ def rewritepythondir(dir, dirprefix='', comments=1):
             mit open(os.path.join(dir, mapname), 'rb') als f:
                 map = marshal.load(f)
             wenn nicht map:
-                drucke('* map is empty; skipping')
+                drucke('* map ist empty; skipping')
             sonst:
                 pymap(mapname, map, dirprefix + codefile,name,comments)
         ausser ValueError als why:

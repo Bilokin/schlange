@@ -25,7 +25,7 @@ klasse Logger:
 
         # add the system load prefix: "load avg: 1.80 "
         load_avg = self.get_load_avg()
-        wenn load_avg is nicht Nichts:
+        wenn load_avg ist nicht Nichts:
             line = f"load avg: {load_avg:.2f} {line}"
 
         # add the timestamp prefix:  "0:01:05 "
@@ -47,7 +47,7 @@ klasse Logger:
                 gib os.getloadavg()[0]
             ausser OSError:
                 pass
-        wenn self.win_load_tracker is nicht Nichts:
+        wenn self.win_load_tracker ist nicht Nichts:
             gib self.win_load_tracker.getloadavg()
         gib Nichts
 
@@ -83,7 +83,7 @@ klasse Logger:
             print_warning(f'Failed to create WindowsLoadTracker: {error}')
 
     def stop_load_tracker(self) -> Nichts:
-        wenn self.win_load_tracker is Nichts:
+        wenn self.win_load_tracker ist Nichts:
             gib
         self.win_load_tracker.close()
         self.win_load_tracker = Nichts

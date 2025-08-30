@@ -144,7 +144,7 @@ klasse BaseEventTests(test_utils.TestCase):
 
     @patch_socket
     def test_ipaddr_info_no_inet_pton(self, m_socket):
-        del m_socket.inet_pton
+        loesche m_socket.inet_pton
         self.assertIsNichts(base_events._ipaddr_info('1.2.3.4', 1,
                                                    socket.AF_INET,
                                                    socket.SOCK_STREAM,
@@ -217,7 +217,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop.close()
         self.loop.close()
 
-        # operation blocked when the loop is closed
+        # operation blocked when the loop ist closed
         f = self.loop.create_future()
         self.assertRaises(RuntimeError, self.loop.run_forever)
         self.assertRaises(RuntimeError, self.loop.run_until_complete, f)
@@ -356,7 +356,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
     def test_check_thread(self):
         def check_in_thread(loop, event, debug, create_loop, fut):
-            # wait until the event loop is running
+            # wait until the event loop ist running
             event.wait()
 
             versuch:
@@ -391,14 +391,14 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # wirf RuntimeError wenn the thread has no event loop
         test_thread(self.loop, Wahr)
 
-        # check disabled wenn debug mode is disabled
+        # check disabled wenn debug mode ist disabled
         test_thread(self.loop, Falsch)
 
-        # wirf RuntimeError wenn the event loop of the thread is nicht the called
+        # wirf RuntimeError wenn the event loop of the thread ist nicht the called
         # event loop
         test_thread(self.loop, Wahr, create_loop=Wahr)
 
-        # check disabled wenn debug mode is disabled
+        # check disabled wenn debug mode ist disabled
         test_thread(self.loop, Falsch, create_loop=Wahr)
 
     def test__run_once(self):
@@ -473,7 +473,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             h = self.loop.call_later(100, cb)
             h.cancel()
 
-        # This test is invalid wenn _MIN_SCHEDULED_TIMER_HANDLES is too low
+        # This test ist invalid wenn _MIN_SCHEDULED_TIMER_HANDLES ist too low
         self.assertLessEqual(cancelled_count + not_cancelled_count,
             base_events._MIN_SCHEDULED_TIMER_HANDLES)
 
@@ -536,7 +536,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             pass
 
         async def foo(delay):
-            await asyncio.sleep(delay)
+            warte asyncio.sleep(delay)
 
         def throw():
             wirf ShowStopper
@@ -630,7 +630,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._process_events = mock.Mock()
 
         async def zero_error_coro():
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             1/0
 
         # Test Future.__del__
@@ -1031,7 +1031,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         async def iter_one():
             versuch:
-                item = await ai.__anext__()
+                item = warte ai.__anext__()
             ausser StopAsyncIteration:
                 gib
             wenn item == 'THREE':
@@ -1089,7 +1089,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         async def sock_connect(sock, address):
             wenn address[0] == '2001:db8::1':
-                await asyncio.sleep(1)
+                warte asyncio.sleep(1)
             sock.connect(address)
 
         loop = asyncio.new_event_loop()
@@ -1121,7 +1121,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         async def sock_connect(sock, address):
             wenn address[0] == '192.0.2.1':
-                await asyncio.sleep(1)
+                warte asyncio.sleep(1)
             sock.connect(address)
 
         loop = asyncio.new_event_loop()
@@ -1263,7 +1263,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @patch_socket
     def test_create_connection_timeout(self, m_socket):
-        # Ensure that the socket is closed on timeout
+        # Ensure that the socket ist closed on timeout
         sock = mock.Mock()
         m_socket.socket.return_value = sock
 
@@ -1338,7 +1338,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             MyProto, 'example.com', 80, ssl_handshake_timeout=1)
         mit self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful mit ssl'):
+                'ssl_handshake_timeout ist only meaningful mit ssl'):
             self.loop.run_until_complete(coro)
 
     @unittest.skipUnless(hasattr(socket, 'SOCK_NONBLOCK'),
@@ -1355,12 +1355,12 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'no IPv6 support')
     def test_create_server_ipv6(self):
         async def main():
-            srv = await asyncio.start_server(lambda: Nichts, '::1', 0)
+            srv = warte asyncio.start_server(lambda: Nichts, '::1', 0)
             versuch:
                 self.assertGreater(len(srv.sockets), 0)
             schliesslich:
                 srv.close()
-                await srv.wait_closed()
+                warte srv.wait_closed()
 
         versuch:
             self.loop.run_until_complete(main())
@@ -1513,7 +1513,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     def _test_create_connection_ip_addr(self, m_socket, allow_inet_pton):
         # Test the fallback code, even wenn this system has inet_pton.
         wenn nicht allow_inet_pton:
-            del m_socket.inet_pton
+            loesche m_socket.inet_pton
 
         m_socket.getaddrinfo = socket.getaddrinfo
         sock = m_socket.socket.return_value
@@ -1636,7 +1636,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_connection_bluetooth(self, m_socket):
         # See http://bugs.python.org/issue27136, fallback to getaddrinfo when
-        # we can't recognize an address is resolved, e.g. a Bluetooth address.
+        # we can't recognize an address ist resolved, e.g. a Bluetooth address.
         addr = ('00:01:02:03:04:05', 1)
 
         def getaddrinfo(host, port, *args, **kw):
@@ -1738,7 +1738,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
 
     def test_create_connection_ssl_server_hostname_errors(self):
-        # When using ssl, server_hostname may be Nichts wenn host is non-empty.
+        # When using ssl, server_hostname may be Nichts wenn host ist non-empty.
         coro = self.loop.create_connection(MyProto, '', 80, ssl=Wahr)
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
         coro = self.loop.create_connection(MyProto, Nichts, 80, ssl=Wahr)
@@ -1754,11 +1754,11 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             MyProto, 'example.com', 80, ssl_handshake_timeout=1)
         mit self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful mit ssl'):
+                'ssl_handshake_timeout ist only meaningful mit ssl'):
             self.loop.run_until_complete(coro)
 
     def test_create_server_empty_host(self):
-        # wenn host is empty string use Nichts instead
+        # wenn host ist empty string use Nichts instead
         host = object()
 
         async def getaddrinfo(*args, **kw):
@@ -1794,7 +1794,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_server_nosoreuseport(self, m_socket):
         m_socket.getaddrinfo = socket.getaddrinfo
-        del m_socket.SO_REUSEPORT
+        loesche m_socket.SO_REUSEPORT
         m_socket.socket.return_value = mock.Mock()
 
         f = self.loop.create_server(
@@ -1996,10 +1996,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(ValueError, self.loop.run_until_complete, fut)
 
     @unittest.skipIf(sys.platform == 'vxworks',
-                    "SO_BROADCAST is enabled by default on VxWorks")
+                    "SO_BROADCAST ist enabled by default on VxWorks")
     def test_create_datagram_endpoint_sockopts(self):
         # Socket options should nicht be applied unless asked for.
-        # SO_REUSEPORT is nicht available on all platforms.
+        # SO_REUSEPORT ist nicht available on all platforms.
 
         coro = self.loop.create_datagram_endpoint(
             lambda: MyDatagramProto(create_future=Wahr, loop=self.loop),
@@ -2046,7 +2046,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @patch_socket
     def test_create_datagram_endpoint_nosoreuseport(self, m_socket):
-        del m_socket.SO_REUSEPORT
+        loesche m_socket.SO_REUSEPORT
         m_socket.socket.return_value = mock.Mock()
 
         coro = self.loop.create_datagram_endpoint(
@@ -2166,7 +2166,7 @@ klasse RunningLoopTests(unittest.TestCase):
         outer_loop = asyncio.new_event_loop()
         versuch:
             mit self.assertRaisesRegex(RuntimeError,
-                                        'while another loop is running'):
+                                        'while another loop ist running'):
                 outer_loop.run_until_complete(runner(loop))
         schliesslich:
             loop.close()
@@ -2199,7 +2199,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
             self.transport = Nichts
 
         async def wait_closed(self):
-            await self.fut
+            warte self.fut
 
     @classmethod
     def setUpClass(cls):
@@ -2255,7 +2255,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         def cleanup():
             server.close()
             sock.close()
-            wenn proto.transport is nicht Nichts:
+            wenn proto.transport ist nicht Nichts:
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
             self.run_loop(server.wait_closed())
@@ -2268,7 +2268,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
 
         mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "sendfile is nicht available"):
+                                    "sendfile ist nicht available"):
             self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
                                                           0, Nichts))
 
@@ -2279,7 +2279,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
 
         mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "sendfile is nicht available"):
+                                    "sendfile ist nicht available"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file,
                                                   fallback=Falsch))
 

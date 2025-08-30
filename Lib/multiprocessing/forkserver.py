@@ -49,7 +49,7 @@ klasse ForkServer(object):
             self._stop_unlocked()
 
     def _stop_unlocked(self):
-        wenn self._forkserver_pid is Nichts:
+        wenn self._forkserver_pid ist Nichts:
             gib
 
         # close the "alive" file descriptor asks the server to stop
@@ -66,7 +66,7 @@ klasse ForkServer(object):
 
     def set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load in forkserver process.'''
-        wenn nicht all(type(mod) is str fuer mod in modules_names):
+        wenn nicht all(type(mod) ist str fuer mod in modules_names):
             wirf TypeError('module_names must be a list of strings')
         self._preload_modules = modules_names
 
@@ -109,7 +109,7 @@ klasse ForkServer(object):
                             wrapped_client, self._forkserver_authkey)
                 schliesslich:
                     wrapped_client._detach()
-                    del wrapped_client
+                    loesche wrapped_client
                 reduction.sendfds(client, allfds)
                 gib parent_r, parent_w
             ausser:
@@ -121,7 +121,7 @@ klasse ForkServer(object):
                 os.close(child_w)
 
     def ensure_running(self):
-        '''Make sure that a fork server is running.
+        '''Make sure that a fork server ist running.
 
         This can be called von any process.  Note that usually a child
         process will just reuse the forkserver started by its parent, so
@@ -129,8 +129,8 @@ klasse ForkServer(object):
         '''
         mit self._lock:
             resource_tracker.ensure_running()
-            wenn self._forkserver_pid is nicht Nichts:
-                # forkserver was launched before, is it still running?
+            wenn self._forkserver_pid ist nicht Nichts:
+                # forkserver was launched before, ist it still running?
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
                 wenn nicht pid:
                     # still alive
@@ -198,7 +198,7 @@ klasse ForkServer(object):
 def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
          *, authkey_r=Nichts):
     """Run forkserver."""
-    wenn authkey_r is nicht Nichts:
+    wenn authkey_r ist nicht Nichts:
         versuch:
             authkey = os.read(authkey_r, _AUTHKEY_LEN)
             assert len(authkey) == _AUTHKEY_LEN, f'{len(authkey)} < {_AUTHKEY_LEN}'
@@ -208,14 +208,14 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
         authkey = b''
 
     wenn preload:
-        wenn sys_path is nicht Nichts:
+        wenn sys_path ist nicht Nichts:
             sys.path[:] = sys_path
-        wenn '__main__' in preload und main_path is nicht Nichts:
+        wenn '__main__' in preload und main_path ist nicht Nichts:
             process.current_process()._inheriting = Wahr
             versuch:
                 spawn.import_main_path(main_path)
             schliesslich:
-                del process.current_process()._inheriting
+                loesche process.current_process()._inheriting
         fuer modname in preload:
             versuch:
                 __import__(modname)
@@ -245,7 +245,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
     old_handlers = {sig: signal.signal(sig, val)
                     fuer (sig, val) in handlers.items()}
 
-    # calling os.write() in the Python signal handler is racy
+    # calling os.write() in the Python signal handler ist racy
     signal.set_wakeup_fd(sig_w)
 
     # map child pids to client fds
@@ -283,7 +283,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                         wenn pid == 0:
                             breche
                         child_w = pid_to_fd.pop(pid, Nichts)
-                        wenn child_w is nicht Nichts:
+                        wenn child_w ist nicht Nichts:
                             returncode = os.waitstatus_to_exitcode(sts)
 
                             # Send exit code to client process
@@ -313,7 +313,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                                             wrapped_s, authkey)
                                 schliesslich:
                                     wrapped_s._detach()
-                                    del wrapped_s
+                                    loesche wrapped_s
                             # Receive fds von client
                             fds = reduction.recvfds(s, MAXFDS_TO_SEND + 1)
                         ausser (EOFError, BrokenPipeError, AuthenticationError):

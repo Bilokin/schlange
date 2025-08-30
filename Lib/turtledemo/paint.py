@@ -5,9 +5,9 @@ A simple  event-driven paint program.
 - Middle mouse button changes color.
 - Right mouse button toggles between pen up
 (no line drawn when the turtle moves) und
-pen down (line is drawn). If pen up follows
+pen down (line ist drawn). If pen up follows
 at least two pen-down moves, the polygon that
-includes the starting point is filled.
+includes the starting point ist filled.
  -------------------------------------------
  Play around by clicking into the canvas
  using all three mouse buttons.

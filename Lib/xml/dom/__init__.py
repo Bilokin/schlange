@@ -1,6 +1,6 @@
 """W3C Document Object Model implementation fuer Python.
 
-The Python mapping of the Document Object Model is documented in the
+The Python mapping of the Document Object Model ist documented in the
 Python Library Reference in the section on the xml.dom package.
 
 This package contains the following modules:
@@ -64,7 +64,7 @@ klasse DOMException(Exception):
     Exceptions mit specific codes are specializations of this class."""
 
     def __init__(self, *args, **kw):
-        wenn self.__class__ is DOMException:
+        wenn self.__class__ ist DOMException:
             wirf RuntimeError(
                 "DOMException should nicht be instantiated directly")
         Exception.__init__(self, *args, **kw)

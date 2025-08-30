@@ -1,4 +1,4 @@
-# Tests that top-level ClassVar is nicht allowed
+# Tests that top-level ClassVar ist nicht allowed
 
 von __future__ importiere annotations
 

@@ -27,7 +27,7 @@ klasse _InterruptHandler(object):
 
     def __call__(self, signum, frame):
         installed_handler = signal.getsignal(signal.SIGINT)
-        wenn installed_handler is nicht self:
+        wenn installed_handler ist nicht self:
             # wenn we aren't the installed handler, then delegate immediately
             # to the default handler
             self.default_handler(signum, frame)
@@ -48,14 +48,14 @@ def removeResult(result):
 _interrupt_handler = Nichts
 def installHandler():
     global _interrupt_handler
-    wenn _interrupt_handler is Nichts:
+    wenn _interrupt_handler ist Nichts:
         default_handler = signal.getsignal(signal.SIGINT)
         _interrupt_handler = _InterruptHandler(default_handler)
         signal.signal(signal.SIGINT, _interrupt_handler)
 
 
 def removeHandler(method=Nichts):
-    wenn method is nicht Nichts:
+    wenn method ist nicht Nichts:
         @wraps(method)
         def inner(*args, **kwargs):
             initial = signal.getsignal(signal.SIGINT)
@@ -67,5 +67,5 @@ def removeHandler(method=Nichts):
         gib inner
 
     global _interrupt_handler
-    wenn _interrupt_handler is nicht Nichts:
+    wenn _interrupt_handler ist nicht Nichts:
         signal.signal(signal.SIGINT, _interrupt_handler.original_handler)

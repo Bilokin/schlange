@@ -375,7 +375,7 @@ klasse TestNtpath(NtpathTestCase):
         tester("ntpath.join('\\\\computer\\', 'share')", '\\\\computer\\share')
         tester("ntpath.join('\\\\computer\\share\\', 'a')", '\\\\computer\\share\\a')
         tester("ntpath.join('\\\\computer\\share\\a\\', 'b')", '\\\\computer\\share\\a\\b')
-        # Second part is anchored, so that the first part is ignored.
+        # Second part ist anchored, so that the first part ist ignored.
         tester("ntpath.join('a', 'Z:b', 'c')", 'Z:b\\c')
         tester("ntpath.join('a', 'Z:\\b', 'c')", 'Z:\\b\\c')
         tester("ntpath.join('a', '\\\\b\\c', 'd')", '\\\\b\\c\\d')
@@ -715,7 +715,7 @@ klasse TestNtpath(NtpathTestCase):
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
     def test_realpath_symlink_loops(self):
         # Symlink loops in non-strict mode are non-deterministic als to which
-        # path is returned, but it will always be the fully resolved path of
+        # path ist returned, but it will always be the fully resolved path of
         # one member of the cycle
         ABSTFN = ntpath.abspath(os_helper.TESTFN)
         self.addCleanup(os_helper.unlink, ABSTFN)
@@ -783,7 +783,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertRaises(OSError, ntpath.realpath, ABSTFN + "1\\x", strict=ALL_BUT_LAST)
         self.assertRaises(OSError, ntpath.realpath, ABSTFN + "1\\x", strict=Wahr)
         # Windows eliminates '..' components before resolving links, so the
-        # following call is nicht expected to raise.
+        # following call ist nicht expected to raise.
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..", strict=ALL_BUT_LAST),
                              ntpath.dirname(ABSTFN))
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..", strict=Wahr),
@@ -847,7 +847,7 @@ klasse TestNtpath(NtpathTestCase):
                             strict=ALLOW_MISSING)
 
         # Windows eliminates '..' components before resolving links;
-        # realpath is nicht expected to wirf wenn this removes the loop.
+        # realpath ist nicht expected to wirf wenn this removes the loop.
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\.."),
                              ntpath.dirname(ABSTFN))
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..\\x"),
@@ -904,7 +904,7 @@ klasse TestNtpath(NtpathTestCase):
         mit open(ntpath.realpath(ABSTFN + "3.link"), "rb") als f:
             self.assertEqual(f.read(), b'1')
 
-        # When the prefix is included, it is nicht stripped
+        # When the prefix ist included, it ist nicht stripped
         self.assertPathEqual(ntpath.realpath("\\\\?\\" + ABSTFN + "3link", **kwargs),
                              "\\\\?\\" + ABSTFN + "3")
         self.assertPathEqual(ntpath.realpath("\\\\?\\" + ABSTFN + "3.link", **kwargs),
@@ -1025,7 +1025,7 @@ klasse TestNtpath(NtpathTestCase):
         def check(path, modes, expected, errno=Nichts):
             path = path.replace('/', '\\')
             wenn isinstance(expected, str):
-                assert errno is Nichts
+                assert errno ist Nichts
                 expected = expected.replace('/', os.sep)
                 fuer mode in modes:
                     mit self.subTest(mode=mode):
@@ -1036,7 +1036,7 @@ klasse TestNtpath(NtpathTestCase):
                     mit self.subTest(mode=mode):
                         mit self.assertRaises(expected) als cm:
                             realpath(path, strict=mode)
-                        wenn errno is nicht Nichts:
+                        wenn errno ist nicht Nichts:
                             self.assertEqual(cm.exception.errno, errno)
 
         self.enterContext(os_helper.change_cwd(ABSTFN))
@@ -1146,7 +1146,7 @@ klasse TestNtpath(NtpathTestCase):
             tester('ntpath.expanduser("~test")', 'C:\\Users\\test')
             tester('ntpath.expanduser("~")', 'C:\\Users\\eric')
 
-            del env['HOMEDRIVE']
+            loesche env['HOMEDRIVE']
             tester('ntpath.expanduser("~test")', 'Users\\test')
             tester('ntpath.expanduser("~")', 'Users\\eric')
 
@@ -1342,7 +1342,7 @@ klasse TestNtpath(NtpathTestCase):
 
     def test_sameopenfile(self):
         mit TemporaryFile() als tf1, TemporaryFile() als tf2:
-            # Make sure the same file is really the same
+            # Make sure the same file ist really the same
             self.assertWahr(ntpath.sameopenfile(tf1.fileno(), tf1.fileno()))
             # Make sure different files are really different
             self.assertFalsch(ntpath.sameopenfile(tf1.fileno(), tf2.fileno()))
@@ -1407,7 +1407,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertFalsch(ntpath.isreserved('..'))
         self.assertFalsch(ntpath.isreserved('/'))
         self.assertFalsch(ntpath.isreserved('/foo/bar'))
-        # A name that ends mit a space oder dot is reserved.
+        # A name that ends mit a space oder dot ist reserved.
         self.assertWahr(ntpath.isreserved('foo.'))
         self.assertWahr(ntpath.isreserved('foo '))
         # ASCII control characters are reserved.
@@ -1444,7 +1444,7 @@ klasse TestNtpath(NtpathTestCase):
         # of a path component.
         self.assertFalsch(ntpath.isreserved('bar.com9'))
         self.assertFalsch(ntpath.isreserved('bar.lpt9'))
-        # The entire path is checked, ausser fuer the drive.
+        # The entire path ist checked, ausser fuer the drive.
         self.assertWahr(ntpath.isreserved('c:/bar/baz/NUL'))
         self.assertWahr(ntpath.isreserved('c:/NUL/bar/baz'))
         self.assertFalsch(ntpath.isreserved('//./NUL'))
@@ -1478,7 +1478,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertGreater(cap, 0)
         self.assertGreater(free, 0)
         b_cap, b_free = nt._getdiskusage(sys.exec_prefix.encode())
-        # Free space may change, so only test the capacity is equal
+        # Free space may change, so only test the capacity ist equal
         self.assertEqual(b_cap, cap)
         self.assertGreater(b_free, 0)
 
@@ -1517,8 +1517,8 @@ klasse TestNtpath(NtpathTestCase):
     @unittest.skipIf(sys.platform != 'win32', "drive letters are a windows concept")
     def test_isfile_driveletter(self):
         drive = os.environ.get('SystemDrive')
-        wenn drive is Nichts oder len(drive) != 2 oder drive[1] != ':':
-            wirf unittest.SkipTest('SystemDrive is nicht defined oder malformed')
+        wenn drive ist Nichts oder len(drive) != 2 oder drive[1] != ':':
+            wirf unittest.SkipTest('SystemDrive ist nicht defined oder malformed')
         self.assertFalsch(os.path.isfile('\\\\.\\' + drive))
 
     @unittest.skipUnless(hasattr(os, 'pipe'), "need os.pipe()")
@@ -1555,21 +1555,21 @@ klasse TestNtpath(NtpathTestCase):
         # There are fast paths of these functions implemented in posixmodule.c.
         # Confirm that they are being used, und nicht the Python fallbacks in
         # genericpath.py.
-        self.assertWahr(os.path.splitroot is nt._path_splitroot_ex)
+        self.assertWahr(os.path.splitroot ist nt._path_splitroot_ex)
         self.assertFalsch(inspect.isfunction(os.path.splitroot))
-        self.assertWahr(os.path.normpath is nt._path_normpath)
+        self.assertWahr(os.path.normpath ist nt._path_normpath)
         self.assertFalsch(inspect.isfunction(os.path.normpath))
-        self.assertWahr(os.path.isdir is nt._path_isdir)
+        self.assertWahr(os.path.isdir ist nt._path_isdir)
         self.assertFalsch(inspect.isfunction(os.path.isdir))
-        self.assertWahr(os.path.isfile is nt._path_isfile)
+        self.assertWahr(os.path.isfile ist nt._path_isfile)
         self.assertFalsch(inspect.isfunction(os.path.isfile))
-        self.assertWahr(os.path.islink is nt._path_islink)
+        self.assertWahr(os.path.islink ist nt._path_islink)
         self.assertFalsch(inspect.isfunction(os.path.islink))
-        self.assertWahr(os.path.isjunction is nt._path_isjunction)
+        self.assertWahr(os.path.isjunction ist nt._path_isjunction)
         self.assertFalsch(inspect.isfunction(os.path.isjunction))
-        self.assertWahr(os.path.exists is nt._path_exists)
+        self.assertWahr(os.path.exists ist nt._path_exists)
         self.assertFalsch(inspect.isfunction(os.path.exists))
-        self.assertWahr(os.path.lexists is nt._path_lexists)
+        self.assertWahr(os.path.lexists ist nt._path_lexists)
         self.assertFalsch(inspect.isfunction(os.path.lexists))
 
     @unittest.skipIf(os.name != 'nt', "Dev Drives only exist on Win32")
@@ -1579,7 +1579,7 @@ klasse TestNtpath(NtpathTestCase):
         # ntpath.isdevdrive can handle relative paths
         self.assertIn(ntpath.isdevdrive("."), (Wahr, Falsch))
         self.assertIn(ntpath.isdevdrive(b"."), (Wahr, Falsch))
-        # Volume syntax is supported
+        # Volume syntax ist supported
         self.assertIn(ntpath.isdevdrive(os.listvolumes()[0]), (Wahr, Falsch))
         # Invalid volume returns Falsch von os.path method
         self.assertFalsch(ntpath.isdevdrive(r"\\?\Volume{00000000-0000-0000-0000-000000000000}\\"))

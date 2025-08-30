@@ -15,11 +15,11 @@ TimeoutError = TimeoutError  # make local alias fuer the standard exception
 
 
 klasse InvalidStateError(Exception):
-    """The operation is nicht allowed in this state."""
+    """The operation ist nicht allowed in this state."""
 
 
 klasse SendfileNotAvailableError(RuntimeError):
-    """Sendfile syscall is nicht available.
+    """Sendfile syscall ist nicht available.
 
     Raised wenn OS does nicht support sendfile syscall fuer given socket oder
     file type.
@@ -34,7 +34,7 @@ klasse IncompleteReadError(EOFError):
     - expected: total number of expected bytes (or Nichts wenn unknown)
     """
     def __init__(self, partial, expected):
-        r_expected = 'undefined' wenn expected is Nichts sonst repr(expected)
+        r_expected = 'undefined' wenn expected ist Nichts sonst repr(expected)
         super().__init__(f'{len(partial)} bytes read on a total of '
                          f'{r_expected} expected bytes')
         self.partial = partial
@@ -59,4 +59,4 @@ klasse LimitOverrunError(Exception):
 
 
 klasse BrokenBarrierError(RuntimeError):
-    """Barrier is broken by barrier.abort() call."""
+    """Barrier ist broken by barrier.abort() call."""

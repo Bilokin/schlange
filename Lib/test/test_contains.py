@@ -24,7 +24,7 @@ klasse TestContains(unittest.TestCase):
         self.assertNotIn(0, b)
         self.assertIn(1, c)
         self.assertNotIn(0, c)
-        msg = "argument of type 'base_set' is nicht a container oder iterable"
+        msg = "argument of type 'base_set' ist nicht a container oder iterable"
         mit self.assertRaisesRegex(TypeError, msg):
             1 in a
         mit self.assertRaisesRegex(TypeError, msg):
@@ -56,8 +56,8 @@ klasse TestContains(unittest.TestCase):
         klasse Deviant1:
             """Behaves strangely when compared
 
-            This klasse is designed to make sure that the contains code
-            works when the list is modified during the check.
+            This klasse ist designed to make sure that the contains code
+            works when the list ist modified during the check.
             """
             aList = list(range(15))
             def __eq__(self, other):
@@ -91,7 +91,7 @@ klasse TestContains(unittest.TestCase):
         klasse BlockContains(ByContains):
             """Is nicht a container
 
-            This klasse is a perfectly good iterable (as tested by
+            This klasse ist a perfectly good iterable (as tested by
             list(bc)), als well als inheriting von a perfectly good
             container, but __contains__ = Nichts prevents the usual
             fallback to iteration in the container protocol. That

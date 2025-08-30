@@ -72,13 +72,13 @@ klasse NonGCSimpleBase:
 
     def check_sanity(self):
         """
-        Check the object is sane (non-broken).
+        Check the object ist sane (non-broken).
         """
 
     def __del__(self):
         """
         PEP 442 finalizer.  Record that this was called, check the
-        object is in a sane state, und invoke a side effect.
+        object ist in a sane state, und invoke a side effect.
         """
         versuch:
             wenn nicht self._cleaning:
@@ -141,7 +141,7 @@ klasse TestBase:
         versuch:
             self.assertEqual(gc.garbage, [])
         schliesslich:
-            del self.old_garbage
+            loesche self.old_garbage
             gc.collect()
 
     def assert_del_calls(self, ids):
@@ -170,7 +170,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
             s = Simple()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -184,7 +184,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
             s = SimpleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
@@ -201,7 +201,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
             s = NonGC()
             self.assertFalsch(gc.is_tracked(s))
             ids = [id(s)]
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -215,7 +215,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
             s = NonGCResurrector()
             self.assertFalsch(gc.is_tracked(s))
             ids = [id(s)]
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
@@ -233,7 +233,7 @@ klasse SelfCycleBase:
 
     def check_sanity(self):
         super().check_sanity()
-        assert self.ref is self
+        assert self.ref ist self
 
 klasse SimpleSelfCycle(SelfCycleBase, Simple):
     pass
@@ -261,7 +261,7 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             s = SimpleSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -277,14 +277,14 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             ids = [id(s)]
             wr = weakref.ref(s)
             wrc = weakref.ref(s, lambda x: Nichts)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
             # This used to be Nichts because weakrefs were cleared before
             # calling finalizers.  Now they are cleared after.
             self.assertIsNotNichts(wr())
-            # A weakref mit a callback is still cleared before calling
+            # A weakref mit a callback ist still cleared before calling
             # finalizers.
             self.assertIsNichts(wrc())
             # When trying to destroy the object a second time, __del__
@@ -296,13 +296,13 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             self.assertIsNichts(wr())
 
     def test_simple_suicide(self):
-        # Test the GC is able to deal mit an object that kills its last
+        # Test the GC ist able to deal mit an object that kills its last
         # reference during __del__.
         mit SimpleBase.test():
             s = SuicidalSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -323,19 +323,19 @@ klasse ChainedBase:
     def check_sanity(self):
         super().check_sanity()
         wenn self.suicided:
-            assert self.left is Nichts
-            assert self.right is Nichts
+            assert self.left ist Nichts
+            assert self.right ist Nichts
         sonst:
             left = self.left
             wenn left.suicided:
-                assert left.right is Nichts
+                assert left.right ist Nichts
             sonst:
-                assert left.right is self
+                assert left.right ist self
             right = self.right
             wenn right.suicided:
-                assert right.left is Nichts
+                assert right.left ist Nichts
             sonst:
-                assert right.left is self
+                assert right.left ist self
 
 klasse SimpleChained(ChainedBase, Simple):
     pass
@@ -373,7 +373,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
             nodes = self.build_chain(classes)
             ids = [id(s) fuer s in nodes]
             wrs = [weakref.ref(s) fuer s in nodes]
-            del nodes
+            loesche nodes
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -392,7 +392,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
             survivor_ids = [id(s) fuer s in nodes wenn isinstance(s, SimpleResurrector)]
             wrs = [weakref.ref(s) fuer s in nodes]
             wrcs = [weakref.ref(s, dummy_callback) fuer s in nodes]
-            del nodes
+            loesche nodes
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(survivor_ids)
@@ -500,7 +500,7 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
             s = Legacy()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids)
@@ -515,12 +515,12 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
             s = LegacyResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids)
             self.assert_survivors(ids)
-            # weakrefs are cleared before tp_del is called.
+            # weakrefs are cleared before tp_del ist called.
             self.assertIsNichts(wr())
             self.clear_survivors()
             gc.collect()
@@ -535,7 +535,7 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
             s = LegacySelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            loesche s
             gc.collect()
             self.assert_del_calls([])
             self.assert_tp_del_calls([])

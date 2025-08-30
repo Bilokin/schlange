@@ -22,17 +22,16 @@ static KeywordToken *reserved_keywords[] = {
     (KeywordToken[]) {{NULL, -1}},
     (KeywordToken[]) {
         {"in", 700},
-        {"is", 597},
         {NULL, -1},
     },
     (KeywordToken[]) {
         {"gib", 522},
         {"von", 638},
-        {"del", 630},
         {"def", 704},
         {"mit", 652},
         {"als", 685},
         {"und", 590},
+        {"ist", 597},
         {NULL, -1},
     },
     (KeywordToken[]) {
@@ -48,7 +47,7 @@ static KeywordToken *reserved_keywords[] = {
         {"async", 703},
         {"sonst", 691},
         {"nicht", 708},
-        {"await", 598},
+        {"warte", 598},
         {NULL, -1},
     },
     (KeywordToken[]) {
@@ -65,6 +64,7 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
+        {"loesche", 630},
         {"liefere", 588},
         {"versuch", 661},
         {NULL, -1},
@@ -1555,7 +1555,7 @@ simple_stmts_rule(Parser *p)
 //     | &('importiere' | 'von') import_stmt
 //     | &'wirf' raise_stmt
 //     | &'pass' pass_stmt
-//     | &'del' del_stmt
+//     | &'loesche' del_stmt
 //     | &'liefere' yield_stmt
 //     | &'assert' assert_stmt
 //     | &'breche' break_stmt
@@ -1744,26 +1744,26 @@ simple_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'pass' pass_stmt"));
     }
-    { // &'del' del_stmt
+    { // &'loesche' del_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'del' del_stmt"));
+        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'loesche' del_stmt"));
         stmt_ty del_stmt_var;
         if (
-            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 630)  // token='del'
+            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 630)  // token='loesche'
             &&
             (del_stmt_var = del_stmt_rule(p))  // del_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'del' del_stmt"));
+            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'loesche' del_stmt"));
             _res = del_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'del' del_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'loesche' del_stmt"));
     }
     { // &'liefere' yield_stmt
         if (p->error_indicator) {
@@ -3252,7 +3252,7 @@ nonlocal_stmt_rule(Parser *p)
     return _res;
 }
 
-// del_stmt: 'del' del_targets &(';' | NEWLINE) | invalid_del_stmt
+// del_stmt: 'loesche' del_targets &(';' | NEWLINE) | invalid_del_stmt
 static stmt_ty
 del_stmt_rule(Parser *p)
 {
@@ -3274,23 +3274,23 @@ del_stmt_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'del' del_targets &(';' | NEWLINE)
+    { // 'loesche' del_targets &(';' | NEWLINE)
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> del_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'del' del_targets &(';' | NEWLINE)"));
+        D(fprintf(stderr, "%*c> del_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'loesche' del_targets &(';' | NEWLINE)"));
         Token * _keyword;
         asdl_expr_seq* a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 630))  // token='del'
+            (_keyword = _PyPegen_expect_token(p, 630))  // token='loesche'
             &&
             (a = del_targets_rule(p))  // del_targets
             &&
             _PyPegen_lookahead(1, _tmp_15_rule, p)
         )
         {
-            D(fprintf(stderr, "%*c+ del_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'del' del_targets &(';' | NEWLINE)"));
+            D(fprintf(stderr, "%*c+ del_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'loesche' del_targets &(';' | NEWLINE)"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -3310,7 +3310,7 @@ del_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s del_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'del' del_targets &(';' | NEWLINE)"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'loesche' del_targets &(';' | NEWLINE)"));
     }
     if (p->call_invalid_rules) { // invalid_del_stmt
         if (p->error_indicator) {
@@ -13093,7 +13093,7 @@ in_bitwise_or_rule(Parser *p)
     return _res;
 }
 
-// isnot_bitwise_or: 'is' 'nicht' bitwise_or
+// isnot_bitwise_or: 'ist' 'nicht' bitwise_or
 static CmpopExprPair*
 isnot_bitwise_or_rule(Parser *p)
 {
@@ -13106,24 +13106,24 @@ isnot_bitwise_or_rule(Parser *p)
     }
     CmpopExprPair* _res = NULL;
     int _mark = p->mark;
-    { // 'is' 'nicht' bitwise_or
+    { // 'ist' 'nicht' bitwise_or
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> isnot_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'is' 'nicht' bitwise_or"));
+        D(fprintf(stderr, "%*c> isnot_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'ist' 'nicht' bitwise_or"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 597))  // token='is'
+            (_keyword = _PyPegen_expect_token(p, 597))  // token='ist'
             &&
             (_keyword_1 = _PyPegen_expect_token(p, 708))  // token='nicht'
             &&
             (a = bitwise_or_rule(p))  // bitwise_or
         )
         {
-            D(fprintf(stderr, "%*c+ isnot_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'is' 'nicht' bitwise_or"));
+            D(fprintf(stderr, "%*c+ isnot_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'ist' 'nicht' bitwise_or"));
             _res = _PyPegen_cmpop_expr_pair ( p , IsNot , a );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -13134,7 +13134,7 @@ isnot_bitwise_or_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s isnot_bitwise_or[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'is' 'nicht' bitwise_or"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'ist' 'nicht' bitwise_or"));
     }
     _res = NULL;
   done:
@@ -13142,7 +13142,7 @@ isnot_bitwise_or_rule(Parser *p)
     return _res;
 }
 
-// is_bitwise_or: 'is' bitwise_or
+// is_bitwise_or: 'ist' bitwise_or
 static CmpopExprPair*
 is_bitwise_or_rule(Parser *p)
 {
@@ -13155,21 +13155,21 @@ is_bitwise_or_rule(Parser *p)
     }
     CmpopExprPair* _res = NULL;
     int _mark = p->mark;
-    { // 'is' bitwise_or
+    { // 'ist' bitwise_or
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> is_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'is' bitwise_or"));
+        D(fprintf(stderr, "%*c> is_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'ist' bitwise_or"));
         Token * _keyword;
         expr_ty a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 597))  // token='is'
+            (_keyword = _PyPegen_expect_token(p, 597))  // token='ist'
             &&
             (a = bitwise_or_rule(p))  // bitwise_or
         )
         {
-            D(fprintf(stderr, "%*c+ is_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'is' bitwise_or"));
+            D(fprintf(stderr, "%*c+ is_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'ist' bitwise_or"));
             _res = _PyPegen_cmpop_expr_pair ( p , Is , a );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -13180,7 +13180,7 @@ is_bitwise_or_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s is_bitwise_or[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'is' bitwise_or"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'ist' bitwise_or"));
     }
     _res = NULL;
   done:
@@ -14445,7 +14445,7 @@ power_rule(Parser *p)
     return _res;
 }
 
-// await_primary: 'await' primary | primary
+// await_primary: 'warte' primary | primary
 static expr_ty
 await_primary_rule(Parser *p)
 {
@@ -14471,21 +14471,21 @@ await_primary_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'await' primary
+    { // 'warte' primary
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> await_primary[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'await' primary"));
+        D(fprintf(stderr, "%*c> await_primary[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'warte' primary"));
         Token * _keyword;
         expr_ty a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 598))  // token='await'
+            (_keyword = _PyPegen_expect_token(p, 598))  // token='warte'
             &&
             (a = primary_rule(p))  // primary
         )
         {
-            D(fprintf(stderr, "%*c+ await_primary[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'await' primary"));
+            D(fprintf(stderr, "%*c+ await_primary[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'warte' primary"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -14505,7 +14505,7 @@ await_primary_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s await_primary[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'await' primary"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'warte' primary"));
     }
     { // primary
         if (p->error_indicator) {
@@ -22091,7 +22091,7 @@ invalid_raise_stmt_rule(Parser *p)
     return _res;
 }
 
-// invalid_del_stmt: 'del' star_expressions
+// invalid_del_stmt: 'loesche' star_expressions
 static void *
 invalid_del_stmt_rule(Parser *p)
 {
@@ -22104,21 +22104,21 @@ invalid_del_stmt_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'del' star_expressions
+    { // 'loesche' star_expressions
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_del_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'del' star_expressions"));
+        D(fprintf(stderr, "%*c> invalid_del_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'loesche' star_expressions"));
         Token * _keyword;
         expr_ty a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 630))  // token='del'
+            (_keyword = _PyPegen_expect_token(p, 630))  // token='loesche'
             &&
             (a = star_expressions_rule(p))  // star_expressions
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_del_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'del' star_expressions"));
+            D(fprintf(stderr, "%*c+ invalid_del_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'loesche' star_expressions"));
             _res = RAISE_SYNTAX_ERROR_INVALID_TARGET ( DEL_TARGETS , a );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -22129,7 +22129,7 @@ invalid_del_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_del_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'del' star_expressions"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'loesche' star_expressions"));
     }
     _res = NULL;
   done:

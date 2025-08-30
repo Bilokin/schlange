@@ -41,7 +41,7 @@ klasse MyBaseProto(asyncio.Protocol):
         self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is nicht Nichts:
+        wenn loop ist nicht Nichts:
             self.connected = asyncio.Future(loop=loop)
             self.done = asyncio.Future(loop=loop)
 
@@ -77,7 +77,7 @@ klasse MessageOutFilter(logging.Filter):
         gib Wahr
 
 
-@unittest.skipIf(ssl is Nichts, 'No ssl module')
+@unittest.skipIf(ssl ist Nichts, 'No ssl module')
 klasse TestSSL(test_utils.TestCase):
 
     PAYLOAD_SIZE = 1024 * 100
@@ -105,7 +105,7 @@ klasse TestSSL(test_utils.TestCase):
                    backlog=1,
                    max_clients=10):
 
-        wenn addr is Nichts:
+        wenn addr ist Nichts:
             wenn family == getattr(socket, "AF_UNIX", Nichts):
                 mit tempfile.NamedTemporaryFile() als tmp:
                     addr = tmp.name
@@ -114,8 +114,8 @@ klasse TestSSL(test_utils.TestCase):
 
         sock = socket.socket(family, socket.SOCK_STREAM)
 
-        wenn timeout is Nichts:
-            wirf RuntimeError('timeout is required')
+        wenn timeout ist Nichts:
+            wirf RuntimeError('timeout ist required')
         wenn timeout <= 0:
             wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
@@ -136,8 +136,8 @@ klasse TestSSL(test_utils.TestCase):
 
         sock = socket.socket(family, socket.SOCK_STREAM)
 
-        wenn timeout is Nichts:
-            wirf RuntimeError('timeout is required')
+        wenn timeout ist Nichts:
+            wirf RuntimeError('timeout ist required')
         wenn timeout <= 0:
             wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
@@ -191,7 +191,7 @@ klasse TestSSL(test_utils.TestCase):
         wenn nicht isinstance(obj, asyncio.StreamWriter):
             gib
         versuch:
-            await obj.wait_closed()
+            warte obj.wait_closed()
         ausser (BrokenPipeError, ConnectionError):
             pass
 
@@ -214,15 +214,15 @@ klasse TestSSL(test_utils.TestCase):
         async def handle_client(reader, writer):
             nonlocal CNT
 
-            data = await reader.readexactly(len(A_DATA))
+            data = warte reader.readexactly(len(A_DATA))
             self.assertEqual(data, A_DATA)
             writer.write(b'OK')
 
-            data = await reader.readexactly(len(B_DATA))
+            data = warte reader.readexactly(len(B_DATA))
             self.assertEqual(data, B_DATA)
             writer.writelines([b'SP', bytearray(b'A'), memoryview(b'M')])
 
-            await writer.drain()
+            warte writer.drain()
             writer.close()
 
             CNT += 1
@@ -254,13 +254,13 @@ klasse TestSSL(test_utils.TestCase):
             client.start()
             clients.append(client)
 
-            await fut
+            warte fut
 
         async def start_server():
             extras = {}
             extras = dict(ssl_handshake_timeout=support.SHORT_TIMEOUT)
 
-            srv = await asyncio.start_server(
+            srv = warte asyncio.start_server(
                 handle_client,
                 '127.0.0.1', 0,
                 family=socket.AF_INET,
@@ -277,11 +277,11 @@ klasse TestSSL(test_utils.TestCase):
                 fuer _ in range(TOTAL_CNT):
                     tasks.append(test_client(addr))
 
-                await asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
+                warte asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
 
             schliesslich:
                 self.loop.call_soon(srv.close)
-                await srv.wait_closed()
+                warte srv.wait_closed()
 
         mit self._silence_eof_received_warning():
             self.loop.run_until_complete(start_server())
@@ -325,43 +325,43 @@ klasse TestSSL(test_utils.TestCase):
             extras = {}
             extras = dict(ssl_handshake_timeout=support.SHORT_TIMEOUT)
 
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='',
                 **extras)
 
             writer.write(A_DATA)
-            self.assertEqual(await reader.readexactly(2), b'OK')
+            self.assertEqual(warte reader.readexactly(2), b'OK')
 
             writer.write(B_DATA)
-            self.assertEqual(await reader.readexactly(4), b'SPAM')
+            self.assertEqual(warte reader.readexactly(4), b'SPAM')
 
             nonlocal CNT
             CNT += 1
 
             writer.close()
-            await self.wait_closed(writer)
+            warte self.wait_closed(writer)
 
         async def client_sock(addr):
             sock = socket.socket()
             sock.connect(addr)
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 sock=sock,
                 ssl=client_sslctx,
                 server_hostname='')
 
             writer.write(A_DATA)
-            self.assertEqual(await reader.readexactly(2), b'OK')
+            self.assertEqual(warte reader.readexactly(2), b'OK')
 
             writer.write(B_DATA)
-            self.assertEqual(await reader.readexactly(4), b'SPAM')
+            self.assertEqual(warte reader.readexactly(4), b'SPAM')
 
             nonlocal CNT
             CNT += 1
 
             writer.close()
-            await self.wait_closed(writer)
+            warte self.wait_closed(writer)
             sock.close()
 
         def run(coro):
@@ -370,7 +370,7 @@ klasse TestSSL(test_utils.TestCase):
 
             async def _gather(*tasks):
                 # trampoline
-                gib await asyncio.gather(*tasks)
+                gib warte asyncio.gather(*tasks)
 
             mit self.tcp_server(server,
                                  max_clients=TOTAL_CNT,
@@ -404,13 +404,13 @@ klasse TestSSL(test_utils.TestCase):
                 sock.close()
 
         async def client(addr):
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='',
                 ssl_handshake_timeout=1.0)
             writer.close()
-            await self.wait_closed(writer)
+            warte self.wait_closed(writer)
 
         mit self.tcp_server(server,
                              max_clients=1,
@@ -444,13 +444,13 @@ klasse TestSSL(test_utils.TestCase):
                 sock.close()
 
         async def client(addr):
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='',
                 ssl_handshake_timeout=support.SHORT_TIMEOUT)
             writer.close()
-            await self.wait_closed(writer)
+            warte self.wait_closed(writer)
 
         mit self.tcp_server(server,
                              max_clients=1,
@@ -460,7 +460,7 @@ klasse TestSSL(test_utils.TestCase):
                 self.loop.run_until_complete(client(srv.addr))
 
     def test_ssl_handshake_timeout(self):
-        # bpo-29970: Check that a connection is aborted wenn handshake is not
+        # bpo-29970: Check that a connection ist aborted wenn handshake ist not
         # completed in timeout period, instead of remaining open indefinitely
         client_sslctx = test_utils.simple_client_sslcontext()
 
@@ -480,7 +480,7 @@ klasse TestSSL(test_utils.TestCase):
                 sock.close()
 
         async def client(addr):
-            await asyncio.wait_for(
+            warte asyncio.wait_for(
                 self.loop.create_connection(
                     asyncio.Protocol,
                     *addr,
@@ -503,8 +503,8 @@ klasse TestSSL(test_utils.TestCase):
         self.assertEqual(messages, [])
 
     def test_ssl_handshake_connection_lost(self):
-        # #246: make sure that no connection_lost() is called before
-        # connection_made() is called first
+        # #246: make sure that no connection_lost() ist called before
+        # connection_made() ist called first
 
         client_sslctx = test_utils.simple_client_sslcontext()
 
@@ -529,7 +529,7 @@ klasse TestSSL(test_utils.TestCase):
                 connection_lost_called = Wahr
 
         async def client(addr):
-            await self.loop.create_connection(
+            warte self.loop.create_connection(
                 ClientProto,
                 *addr,
                 ssl=client_sslctx,
@@ -590,7 +590,7 @@ klasse TestSSL(test_utils.TestCase):
             nonlocal response
             versuch:
                 csock = socket.socket(socket.AF_INET)
-                wenn client_ssl is nicht Nichts:
+                wenn client_ssl ist nicht Nichts:
                     csock = client_ssl.wrap_socket(csock)
                 csock.connect(addr)
                 csock.sendall(message)
@@ -656,18 +656,18 @@ klasse TestSSL(test_utils.TestCase):
                 orig_sock.close()
 
         async def client(addr):
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='')
 
-            self.assertEqual(await reader.readline(), b'A\n')
+            self.assertEqual(warte reader.readline(), b'A\n')
             writer.write(b'B')
             mit self.assertRaises(ssl.SSLError):
-                await reader.readline()
+                warte reader.readline()
             writer.close()
             versuch:
-                await self.wait_closed(writer)
+                warte self.wait_closed(writer)
             ausser ssl.SSLError:
                 pass
             gib 'OK'
@@ -719,20 +719,20 @@ klasse TestSSL(test_utils.TestCase):
                 self.on_eof.set_result(Wahr)
 
         async def client(addr):
-            await asyncio.sleep(0.5)
+            warte asyncio.sleep(0.5)
 
             on_data = self.loop.create_future()
             on_eof = self.loop.create_future()
 
-            tr, proto = await self.loop.create_connection(
+            tr, proto = warte self.loop.create_connection(
                 lambda: ClientProto(on_data, on_eof), *addr)
 
             tr.write(HELLO_MSG)
-            new_tr = await self.loop.start_tls(tr, proto, client_context)
+            new_tr = warte self.loop.start_tls(tr, proto, client_context)
 
-            self.assertEqual(await on_data, b'O')
+            self.assertEqual(warte on_data, b'O')
             new_tr.write(HELLO_MSG)
-            await on_eof
+            warte on_eof
 
             new_tr.close()
 
@@ -780,18 +780,18 @@ klasse TestSSL(test_utils.TestCase):
                 self.on_eof.set_result(Wahr)
 
         async def client(addr):
-            await asyncio.sleep(0.5)
+            warte asyncio.sleep(0.5)
 
             on_data = self.loop.create_future()
             on_eof = self.loop.create_future()
 
-            tr, proto = await self.loop.create_connection(
+            tr, proto = warte self.loop.create_connection(
                 lambda: ClientProto(on_data, on_eof), *addr,
                 ssl=client_context)
 
-            self.assertEqual(await on_data, b'O')
+            self.assertEqual(warte on_data, b'O')
             tr.write(HELLO_MSG)
-            await on_eof
+            warte on_eof
 
             tr.close()
 
@@ -800,7 +800,7 @@ klasse TestSSL(test_utils.TestCase):
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
 
-        # No garbage is left fuer SSL client von loop.create_connection, even
+        # No garbage ist left fuer SSL client von loop.create_connection, even
         # wenn user stores the SSLTransport in corresponding protocol instance
         client_context = weakref.ref(client_context)
         self.assertIsNichts(client_context())
@@ -868,25 +868,25 @@ klasse TestSSL(test_utils.TestCase):
                 self.on_eof.set_result(Wahr)
 
         async def client(addr):
-            await asyncio.sleep(0.5)
+            warte asyncio.sleep(0.5)
 
             on_data1 = self.loop.create_future()
             on_data2 = self.loop.create_future()
             on_eof = self.loop.create_future()
 
-            tr, proto = await self.loop.create_connection(
+            tr, proto = warte self.loop.create_connection(
                 lambda: ClientProtoFirst(on_data1), *addr)
 
             tr.write(HELLO_MSG)
-            new_tr = await self.loop.start_tls(tr, proto, client_context)
+            new_tr = warte self.loop.start_tls(tr, proto, client_context)
 
-            self.assertEqual(await on_data1, b'O')
+            self.assertEqual(warte on_data1, b'O')
             new_tr.write(HELLO_MSG)
 
             new_tr.set_protocol(ClientProtoSecond(on_data2, on_eof))
-            self.assertEqual(await on_data2, b'2')
+            self.assertEqual(warte on_data2, b'2')
             new_tr.write(HELLO_MSG)
-            await on_eof
+            warte on_eof
 
             new_tr.close()
 
@@ -939,20 +939,20 @@ klasse TestSSL(test_utils.TestCase):
                 self.on_eof.set_result(Wahr)
 
         async def client(addr):
-            await asyncio.sleep(0.5)
+            warte asyncio.sleep(0.5)
 
             on_data = self.loop.create_future()
             on_eof = self.loop.create_future()
 
-            tr, proto = await self.loop.create_connection(
+            tr, proto = warte self.loop.create_connection(
                 lambda: ClientProto(on_data, on_eof), *addr)
 
             tr.write(HELLO_MSG)
 
-            await server_waits_on_handshake
+            warte server_waits_on_handshake
 
             mit self.assertRaises(asyncio.TimeoutError):
-                await asyncio.wait_for(
+                warte asyncio.wait_for(
                     self.loop.start_tls(tr, proto, client_context),
                     0.5)
 
@@ -997,24 +997,24 @@ klasse TestSSL(test_utils.TestCase):
                 self.on_eof.set_result(1)
 
             def connection_lost(self, exc):
-                wenn exc is Nichts:
+                wenn exc ist Nichts:
                     self.on_con_lost.set_result(Nichts)
                 sonst:
                     self.on_con_lost.set_exception(exc)
 
         async def main(proto, on_con, on_eof, on_con_lost):
-            tr = await on_con
+            tr = warte on_con
             tr.write(HELLO_MSG)
 
             self.assertEqual(proto.data, b'')
 
-            new_tr = await self.loop.start_tls(
+            new_tr = warte self.loop.start_tls(
                 tr, proto, server_context,
                 server_side=Wahr,
                 ssl_handshake_timeout=self.TIMEOUT)
 
-            await on_eof
-            await on_con_lost
+            warte on_eof
+            warte on_con_lost
             self.assertEqual(proto.data, HELLO_MSG)
             new_tr.close()
 
@@ -1024,18 +1024,18 @@ klasse TestSSL(test_utils.TestCase):
             on_con_lost = self.loop.create_future()
             proto = ServerProto(on_con, on_eof, on_con_lost)
 
-            server = await self.loop.create_server(
+            server = warte self.loop.create_server(
                 lambda: proto, '127.0.0.1', 0)
             addr = server.sockets[0].getsockname()
 
             mit self.tcp_client(lambda sock: client(sock, addr),
                                  timeout=self.TIMEOUT):
-                await asyncio.wait_for(
+                warte asyncio.wait_for(
                     main(proto, on_con, on_eof, on_con_lost),
                     timeout=self.TIMEOUT)
 
             server.close()
-            await server.wait_closed()
+            warte server.wait_closed()
 
         self.loop.run_until_complete(run_main())
 
@@ -1060,15 +1060,15 @@ klasse TestSSL(test_utils.TestCase):
         async def handle_client(reader, writer):
             nonlocal CNT
 
-            data = await reader.readexactly(len(A_DATA))
+            data = warte reader.readexactly(len(A_DATA))
             self.assertEqual(data, A_DATA)
             writer.write(b'OK')
 
-            data = await reader.readexactly(len(B_DATA))
+            data = warte reader.readexactly(len(B_DATA))
             self.assertEqual(data, B_DATA)
             writer.writelines([b'SP', bytearray(b'A'), memoryview(b'M')])
 
-            await writer.drain()
+            warte writer.drain()
             writer.close()
 
             CNT += 1
@@ -1149,12 +1149,12 @@ klasse TestSSL(test_utils.TestCase):
             client.start()
             clients.append(client)
 
-            await fut
+            warte fut
 
         async def start_server():
             extras = {}
 
-            srv = await self.loop.create_server(
+            srv = warte self.loop.create_server(
                 server_protocol_factory,
                 '127.0.0.1', 0,
                 family=socket.AF_INET,
@@ -1171,11 +1171,11 @@ klasse TestSSL(test_utils.TestCase):
                 fuer _ in range(TOTAL_CNT):
                     tasks.append(test_client(addr))
 
-                await asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
+                warte asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
 
             schliesslich:
                 self.loop.call_soon(srv.close)
-                await srv.wait_closed()
+                warte srv.wait_closed()
 
         mit self._silence_eof_received_warning():
             self.loop.run_until_complete(start_server())
@@ -1212,29 +1212,29 @@ klasse TestSSL(test_utils.TestCase):
             extras = {}
             extras = dict(ssl_handshake_timeout=support.SHORT_TIMEOUT)
 
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='',
                 **extras)
 
             writer.write(A_DATA)
-            self.assertEqual(await reader.readexactly(2), b'OK')
+            self.assertEqual(warte reader.readexactly(2), b'OK')
 
-            self.assertEqual(await reader.read(), b'')
+            self.assertEqual(warte reader.read(), b'')
 
             nonlocal CNT
             CNT += 1
 
             writer.close()
-            await self.wait_closed(writer)
+            warte self.wait_closed(writer)
 
         def run(coro):
             nonlocal CNT
             CNT = 0
 
             async def _gather(*tasks):
-                gib await asyncio.gather(*tasks)
+                gib warte asyncio.gather(*tasks)
 
             mit self.tcp_server(server,
                                  max_clients=TOTAL_CNT,
@@ -1283,13 +1283,13 @@ klasse TestSSL(test_utils.TestCase):
         async def client(addr):
             nonlocal future
             future = self.loop.create_future()
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='')
             sslprotocol = writer.transport._ssl_protocol
             writer.write(b'ping')
-            data = await reader.readexactly(4)
+            data = warte reader.readexactly(4)
             self.assertEqual(data, b'pong')
 
             sslprotocol.pause_writing()
@@ -1299,13 +1299,13 @@ klasse TestSSL(test_utils.TestCase):
             writer.close()
             sslprotocol.resume_writing()
 
-            await self.wait_closed(writer)
+            warte self.wait_closed(writer)
             versuch:
-                data = await reader.read()
+                data = warte reader.read()
                 self.assertEqual(data, b'')
             ausser ConnectionResetError:
                 pass
-            await future
+            warte future
 
         mit self.tcp_server(run(server)) als srv:
             self.loop.run_until_complete(client(srv.addr))
@@ -1370,7 +1370,7 @@ klasse TestSSL(test_utils.TestCase):
 
             self.assertEqual(data_len, CHUNK * SIZE)
 
-            # verify that close_notify is received
+            # verify that close_notify ist received
             sslobj.unwrap()
 
             sock.close()
@@ -1395,12 +1395,12 @@ klasse TestSSL(test_utils.TestCase):
             nonlocal future
             future = self.loop.create_future()
 
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='')
             writer.write(b'ping')
-            data = await reader.readexactly(4)
+            data = warte reader.readexactly(4)
             self.assertEqual(data, b'pong')
 
             # fill write backlog in a hacky way - renegotiation won't help
@@ -1408,15 +1408,15 @@ klasse TestSSL(test_utils.TestCase):
                 writer.transport._test__append_write_backlog(b'x' * CHUNK)
 
             versuch:
-                data = await reader.read()
+                data = warte reader.read()
                 self.assertEqual(data, b'')
             ausser (BrokenPipeError, ConnectionResetError):
                 pass
 
-            await future
+            warte future
 
             writer.close()
-            await self.wait_closed(writer)
+            warte self.wait_closed(writer)
 
         def run(meth):
             def wrapper(sock):
@@ -1435,12 +1435,12 @@ klasse TestSSL(test_utils.TestCase):
             self.loop.run_until_complete(client(srv.addr))
 
     def test_remote_shutdown_receives_trailing_data_on_slow_socket(self):
-        # This test is the same als test_remote_shutdown_receives_trailing_data,
-        # ausser it simulates a socket that is nicht able to write data in time,
+        # This test ist the same als test_remote_shutdown_receives_trailing_data,
+        # ausser it simulates a socket that ist nicht able to write data in time,
         # thus triggering different code path in _SelectorSocketTransport.
         # This triggers bug gh-115514, also tested using mocks in
         # test.test_asyncio.test_selector_events.SelectorSocketTransportTests.test_write_buffer_after_close
-        # The slow path is triggered here by setting SO_SNDBUF, see code und comment below.
+        # The slow path ist triggered here by setting SO_SNDBUF, see code und comment below.
 
         CHUNK = 1024 * 128
         SIZE = 32
@@ -1501,7 +1501,7 @@ klasse TestSSL(test_utils.TestCase):
 
             self.assertEqual(data_len, CHUNK * SIZE*2)
 
-            # verify that close_notify is received
+            # verify that close_notify ist received
             sslobj.unwrap()
 
             sock.close()
@@ -1526,12 +1526,12 @@ klasse TestSSL(test_utils.TestCase):
             nonlocal future
             future = self.loop.create_future()
 
-            reader, writer = await asyncio.open_connection(
+            reader, writer = warte asyncio.open_connection(
                 *addr,
                 ssl=client_sslctx,
                 server_hostname='')
             writer.write(b'ping')
-            data = await reader.readexactly(4)
+            data = warte reader.readexactly(4)
             self.assertEqual(data, b'pong')
 
             # fill write backlog in a hacky way - renegotiation won't help
@@ -1539,14 +1539,14 @@ klasse TestSSL(test_utils.TestCase):
                 writer.transport._test__append_write_backlog(b'x' * CHUNK)
 
             versuch:
-                data = await reader.read()
+                data = warte reader.read()
                 self.assertEqual(data, b'')
             ausser (BrokenPipeError, ConnectionResetError):
                 pass
 
             # Make sure _SelectorSocketTransport enters the delayed write
             # path in its `write` method by wrapping socket in a fake class
-            # that acts als wenn there is nicht enough space in socket buffer.
+            # that acts als wenn there ist nicht enough space in socket buffer.
             # This triggers bug gh-115514, also tested using mocks in
             # test.test_asyncio.test_selector_events.SelectorSocketTransportTests.test_write_buffer_after_close
             socket_transport = writer.transport._ssl_protocol._transport
@@ -1559,12 +1559,12 @@ klasse TestSSL(test_utils.TestCase):
                     gib getattr(self.sock, name)
 
                 def send(self, data):
-                    # Fake that our write buffer is full, send only half
+                    # Fake that our write buffer ist full, send only half
                     to_send = len(data)//2
                     gib self.sock.send(data[:to_send])
 
             def _fake_full_write_buffer(data):
-                wenn socket_transport._read_ready_cb is Nichts und nicht isinstance(socket_transport._sock, SocketWrapper):
+                wenn socket_transport._read_ready_cb ist Nichts und nicht isinstance(socket_transport._sock, SocketWrapper):
                     socket_transport._sock = SocketWrapper(socket_transport._sock)
                 gib unittest.mock.DEFAULT
 
@@ -1573,10 +1573,10 @@ klasse TestSSL(test_utils.TestCase):
                 wraps=socket_transport.write,
                 side_effect=_fake_full_write_buffer
             ):
-                await future
+                warte future
 
                 writer.close()
-                await self.wait_closed(writer)
+                warte self.wait_closed(writer)
 
         def run(meth):
             def wrapper(sock):
@@ -1601,14 +1601,14 @@ klasse TestSSL(test_utils.TestCase):
 
         async def test():
             versuch:
-                await asyncio.wait_for(
+                warte asyncio.wait_for(
                     self.loop.create_connection(asyncio.Protocol,
                                                 *addr, ssl=Wahr),
                     0.1)
             ausser (ConnectionRefusedError, asyncio.TimeoutError):
                 pass
             sonst:
-                self.fail('TimeoutError is nicht raised')
+                self.fail('TimeoutError ist nicht raised')
 
         mit s:
             versuch:
@@ -1630,14 +1630,14 @@ klasse TestSSL(test_utils.TestCase):
 
         async def test(ctx):
             versuch:
-                await asyncio.wait_for(
+                warte asyncio.wait_for(
                     self.loop.create_connection(asyncio.Protocol, *addr,
                                                 ssl=ctx),
                     0.1)
             ausser (ConnectionRefusedError, asyncio.TimeoutError):
                 pass
             sonst:
-                self.fail('TimeoutError is nicht raised')
+                self.fail('TimeoutError ist nicht raised')
 
         mit s:
             ctx = ssl.create_default_context()
@@ -1667,9 +1667,9 @@ klasse TestSSL(test_utils.TestCase):
                 self.fut.set_result(Nichts)
 
         async def client(addr, ctx):
-            tr, pr = await loop.create_connection(Protocol, *addr, ssl=ctx)
+            tr, pr = warte loop.create_connection(Protocol, *addr, ssl=ctx)
             tr.close()
-            await pr.fut
+            warte pr.fut
 
         mit self.tcp_server(server) als srv:
             ctx = self._create_client_ssl_context()
@@ -1725,17 +1725,17 @@ klasse TestSSL(test_utils.TestCase):
                     extra = data
 
             def connection_lost(self, exc):
-                wenn exc is Nichts:
+                wenn exc ist Nichts:
                     self.fut.set_result(Nichts)
                 sonst:
                     self.fut.set_exception(exc)
 
         async def client(addr):
             ctx = self._create_client_ssl_context()
-            tr, pr = await loop.create_connection(Protocol, *addr, ssl=ctx)
-            await eof.wait()
+            tr, pr = warte loop.create_connection(Protocol, *addr, ssl=ctx)
+            warte eof.wait()
             tr.resume_reading()
-            await pr.fut
+            warte pr.fut
             tr.close()
             assert extra == b'extra bytes'
 

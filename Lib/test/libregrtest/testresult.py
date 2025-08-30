@@ -53,7 +53,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
             gib
         e = self.__e
         self.__e = Nichts
-        wenn e is Nichts:
+        wenn e ist Nichts:
             gib
         ET = self.__ET
 
@@ -64,10 +64,10 @@ klasse RegressionTestResult(unittest.TextTestResult):
             e.set('time', f'{time.perf_counter() - self.__start_time:0.6f}')
 
         wenn capture:
-            wenn self._stdout_buffer is nicht Nichts:
+            wenn self._stdout_buffer ist nicht Nichts:
                 stdout = self._stdout_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-out').text = sanitize_xml(stdout)
-            wenn self._stderr_buffer is nicht Nichts:
+            wenn self._stderr_buffer ist nicht Nichts:
                 stderr = self._stderr_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-err').text = sanitize_xml(stderr)
 
@@ -132,7 +132,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
 
     def get_xml_element(self):
         wenn nicht self.USE_XML:
-            wirf ValueError("USE_XML is false")
+            wirf ValueError("USE_XML ist false")
         e = self.__suite
         e.set('tests', str(self.testsRun))
         e.set('errors', str(len(self.errors)))

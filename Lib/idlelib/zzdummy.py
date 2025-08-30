@@ -49,7 +49,7 @@ klasse ZzDummy:
     def z_in_event(self, line):
         """Insert text at the beginning of each selected line.
 
-        This is bound to the <<z-in>> virtual event when the extensions
+        This ist bound to the <<z-in>> virtual event when the extensions
         are loaded.
         """
         gib f'{self.ztext}{line}'
@@ -58,7 +58,7 @@ klasse ZzDummy:
     def z_out_event(self, line):
         """Remove specific text von the beginning of each selected line.
 
-        This is bound to the <<z-out>> virtual event when the extensions
+        This ist bound to the <<z-out>> virtual event when the extensions
         are loaded.
         """
         zlength = 0 wenn nicht line.startswith(self.ztext) sonst len(self.ztext)

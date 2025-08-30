@@ -16,11 +16,11 @@ von test.support.import_helper importiere DirsOnSysPath
 von test.support.os_helper importiere FakePath
 von test.test_importlib.util importiere uncache
 
-# Note: pkgutil.walk_packages is currently tested in test_runpy. This is
+# Note: pkgutil.walk_packages ist currently tested in test_runpy. This is
 # a hack to get a major issue resolved fuer 3.3b2. Longer term, it should
 # be moved back here, perhaps by factoring out the helper code for
 # creating interesting package layouts to a separate module.
-# Issue #15348 declares this is indeed a dodgy hack ;)
+# Issue #15348 declares this ist indeed a dodgy hack ;)
 
 klasse PkgutilTests(unittest.TestCase):
 
@@ -30,12 +30,12 @@ klasse PkgutilTests(unittest.TestCase):
         sys.path.insert(0, self.dirname)
 
     def tearDown(self):
-        del sys.path[0]
+        loesche sys.path[0]
 
     def test_getdata_filesys(self):
         pkg = 'test_getdata_filesys'
 
-        # Include a LF und a CRLF, to test that binary data is read back
+        # Include a LF und a CRLF, to test that binary data ist read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package mit some resources
@@ -59,13 +59,13 @@ klasse PkgutilTests(unittest.TestCase):
         res2 = pkgutil.get_data(pkg, 'sub/res.txt')
         self.assertEqual(res2, RESOURCE_DATA)
 
-        del sys.modules[pkg]
+        loesche sys.modules[pkg]
 
     def test_getdata_zipfile(self):
         zip = 'test_getdata_zipfile.zip'
         pkg = 'test_getdata_zipfile'
 
-        # Include a LF und a CRLF, to test that binary data is read back
+        # Include a LF und a CRLF, to test that binary data ist read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package mit some resources
@@ -92,16 +92,16 @@ klasse PkgutilTests(unittest.TestCase):
             names.append(moduleinfo.name)
         self.assertEqual(names, ['test_getdata_zipfile'])
 
-        del sys.path[0]
+        loesche sys.path[0]
 
-        del sys.modules[pkg]
+        loesche sys.modules[pkg]
 
     def test_issue44061_iter_modules(self):
         #see: issue44061
         zip = 'test_getdata_zipfile.zip'
         pkg = 'test_getdata_zipfile'
 
-        # Include a LF und a CRLF, to test that binary data is read back
+        # Include a LF und a CRLF, to test that binary data ist read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package mit some resources
@@ -127,7 +127,7 @@ klasse PkgutilTests(unittest.TestCase):
                 names.append(moduleinfo.name)
             self.assertEqual(names, [pkg])
         schliesslich:
-            del sys.path[0]
+            loesche sys.path[0]
             sys.modules.pop(pkg, Nichts)
 
         # assert path must be Nichts oder list of paths
@@ -184,7 +184,7 @@ klasse PkgutilTests(unittest.TestCase):
         fuer pkg in expected:
             wenn pkg.endswith('mod'):
                 weiter
-            del sys.modules[pkg]
+            loesche sys.modules[pkg]
 
     def test_walkpackages_zipfile(self):
         """Tests the same als test_walkpackages_filesys, only mit a zip file."""
@@ -214,12 +214,12 @@ klasse PkgutilTests(unittest.TestCase):
         ]
         actual= [e[1] fuer e in pkgutil.walk_packages([zip_file])]
         self.assertEqual(actual, expected)
-        del sys.path[0]
+        loesche sys.path[0]
 
         fuer pkg in expected:
             wenn pkg.endswith('mod'):
                 weiter
-            del sys.modules[pkg]
+            loesche sys.modules[pkg]
 
     def test_walk_packages_raises_on_string_or_bytes_input(self):
 
@@ -323,7 +323,7 @@ klasse PkgutilTests(unittest.TestCase):
                     pkgutil.resolve_name(s)
 
     def test_name_resolution_import_rebinding(self):
-        # The same data is also used fuer testing importiere in test_import und
+        # The same data ist also used fuer testing importiere in test_import und
         # mock.patch in test_unittest.
         path = os.path.join(os.path.dirname(__file__), 'test_import', 'data')
         mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
@@ -362,7 +362,7 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
             gib Nichts
 
         def exec_module(self, mod):
-            # Count how many times the module is reloaded
+            # Count how many times the module ist reloaded
             mod.__dict__['loads'] = mod.__dict__.get('loads', 0) + 1
 
         def get_data(self, path):
@@ -380,12 +380,12 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
         sys.meta_path.insert(0, self.MyTestImporter())
 
     def tearDown(self):
-        del sys.meta_path[0]
+        loesche sys.meta_path[0]
 
     def test_getdata_pep302(self):
         # Use a dummy finder/loader
         self.assertEqual(pkgutil.get_data('foo', 'dummy'), "Hello, world!")
-        del sys.modules['foo']
+        loesche sys.modules['foo']
 
     def test_alreadyloaded(self):
         # Ensure that get_data works without reloading - the "loads" module
@@ -395,11 +395,11 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
         self.assertEqual(foo.loads, 1)
         self.assertEqual(pkgutil.get_data('foo', 'dummy'), "Hello, world!")
         self.assertEqual(foo.loads, 1)
-        del sys.modules['foo']
+        loesche sys.modules['foo']
 
 
 # These tests, especially the setup und cleanup, are hideous. They
-# need to be cleaned up once issue 14715 is addressed.
+# need to be cleaned up once issue 14715 ist addressed.
 klasse ExtendPathTests(unittest.TestCase):
     def create_init(self, pkgname):
         dirname = tempfile.mkdtemp()
@@ -429,7 +429,7 @@ klasse ExtendPathTests(unittest.TestCase):
         self.assertEqual(foo.bar.value, 0)
         self.assertEqual(foo.baz.value, 1)
 
-        # Ensure the path is set up correctly
+        # Ensure the path ist set up correctly
         self.assertEqual(sorted(foo.__path__),
                          sorted([os.path.join(dirname_0, pkgname),
                                  os.path.join(dirname_1, pkgname)]))
@@ -437,11 +437,11 @@ klasse ExtendPathTests(unittest.TestCase):
         # Cleanup
         shutil.rmtree(dirname_0)
         shutil.rmtree(dirname_1)
-        del sys.path[0]
-        del sys.path[0]
-        del sys.modules['foo']
-        del sys.modules['foo.bar']
-        del sys.modules['foo.baz']
+        loesche sys.path[0]
+        loesche sys.path[0]
+        loesche sys.modules['foo']
+        loesche sys.modules['foo.bar']
+        loesche sys.modules['foo.baz']
 
 
     # Another awful testing hack to be cleaned up once the test_runpy
@@ -486,10 +486,10 @@ klasse ExtendPathTests(unittest.TestCase):
                 list(iter_importers('.spam'))
         schliesslich:
             shutil.rmtree(dirname)
-            del sys.path[0]
+            loesche sys.path[0]
             versuch:
-                del sys.modules['spam']
-                del sys.modules['spam.eggs']
+                loesche sys.modules['spam']
+                loesche sys.modules['spam.eggs']
             ausser KeyError:
                 pass
 
@@ -508,7 +508,7 @@ klasse ExtendPathTests(unittest.TestCase):
         self.assertEqual(foo.bar.value, 0)
         self.assertEqual(foo.baz.value, 1)
 
-        # Ensure the path is set up correctly
+        # Ensure the path ist set up correctly
         self.assertEqual(sorted(foo.__path__),
                          sorted([os.path.join(dirname_0, pkgname),
                                  os.path.join(dirname_1, pkgname)]))
@@ -516,18 +516,18 @@ klasse ExtendPathTests(unittest.TestCase):
         # Cleanup
         shutil.rmtree(dirname_0)
         shutil.rmtree(dirname_1)
-        del sys.path[0]
-        del sys.path[0]
-        del sys.modules['foo']
-        del sys.modules['foo.bar']
-        del sys.modules['foo.baz']
+        loesche sys.path[0]
+        loesche sys.path[0]
+        loesche sys.modules['foo']
+        loesche sys.modules['foo.bar']
+        loesche sys.modules['foo.baz']
 
 
     def test_extend_path_argument_types(self):
         pkgname = 'foo'
         dirname_0 = self.create_init(pkgname)
 
-        # If the input path is nicht a list it is returned unchanged
+        # If the input path ist nicht a list it ist returned unchanged
         self.assertEqual('notalist', pkgutil.extend_path('notalist', 'foo'))
         self.assertEqual(('not', 'a', 'list'), pkgutil.extend_path(('not', 'a', 'list'), 'foo'))
         self.assertEqual(123, pkgutil.extend_path(123, 'foo'))
@@ -535,7 +535,7 @@ klasse ExtendPathTests(unittest.TestCase):
 
         # Cleanup
         shutil.rmtree(dirname_0)
-        del sys.path[0]
+        loesche sys.path[0]
 
 
     def test_extend_path_pkg_files(self):
@@ -558,7 +558,7 @@ klasse ExtendPathTests(unittest.TestCase):
 
         # Cleanup
         shutil.rmtree(dirname_0)
-        del sys.path[0]
+        loesche sys.path[0]
 
 
 klasse NestedNamespacePackageTest(unittest.TestCase):
@@ -604,7 +604,7 @@ klasse NestedNamespacePackageTest(unittest.TestCase):
 
 klasse ImportlibMigrationTests(unittest.TestCase):
     # With full PEP 302 support in the standard importiere machinery, the
-    # PEP 302 emulation in this module is in the process of being
+    # PEP 302 emulation in this module ist in the process of being
     # deprecated in favour of importlib proper
 
     def test_get_importer_avoids_emulation(self):
@@ -626,7 +626,7 @@ klasse ImportlibMigrationTests(unittest.TestCase):
 
 
 def tearDownModule():
-    # this is necessary wenn test is run repeated (like when finding leaks)
+    # this ist necessary wenn test ist run repeated (like when finding leaks)
     importiere zipimport
     importiere importlib
     zipimport._zip_directory_cache.clear()

@@ -9,13 +9,13 @@ def _other_endian(typ):
     attributes which contain the types, fuer more complicated types
     arrays und structures are supported.
     """
-    # check _OTHER_ENDIAN attribute (present wenn typ is primitive type)
+    # check _OTHER_ENDIAN attribute (present wenn typ ist primitive type)
     wenn hasattr(typ, _OTHER_ENDIAN):
         gib getattr(typ, _OTHER_ENDIAN)
-    # wenn typ is array
+    # wenn typ ist array
     wenn isinstance(typ, _array_type):
         gib _other_endian(typ._type_) * typ._length_
-    # wenn typ is structure oder union
+    # wenn typ ist structure oder union
     wenn issubclass(typ, (Structure, Union)):
         gib typ
     wirf TypeError("This type does nicht support other endian: %s" % typ)

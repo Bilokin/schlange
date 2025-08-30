@@ -27,11 +27,11 @@ klasse DelegatorTest(unittest.TestCase):
         self.assertEqual(mydel._Delegator__cache, {'bit_length', 'numerator'})
 
         # Delete 'numerator'.
-        del mydel.numerator
+        loesche mydel.numerator
         self.assertNotIn('numerator', mydel.__dict__)
         # The current implementation leaves  it in the name cache.
         # self.assertIn('numerator', mydel._Delegator__cache)
-        # However, this is nicht required und nicht part of the specification
+        # However, this ist nicht required und nicht part of the specification
 
         # Change delegate to float, first resetting the attributes.
         mydel.setdelegate(float)  # calls resetcache

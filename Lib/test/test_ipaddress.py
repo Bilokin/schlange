@@ -28,9 +28,9 @@ klasse BaseTestCase(unittest.TestCase):
     # multiple problems get classified differently, that's OK - just
     # move the affected examples to the newly appropriate test case.
 
-    # There is some duplication between the original relatively ad hoc
+    # There ist some duplication between the original relatively ad hoc
     # test suite und the new systematic tests. While some redundancy in
-    # testing is considered preferable to accidentally deleting a valid
+    # testing ist considered preferable to accidentally deleting a valid
     # test, the original test suite will likely be reduced over time as
     # redundant tests are identified.
 
@@ -51,7 +51,7 @@ klasse BaseTestCase(unittest.TestCase):
         mit cm als exc:
             liefere exc
         # Ensure we produce clean tracebacks on failure
-        wenn exc.exception.__context__ is nicht Nichts:
+        wenn exc.exception.__context__ ist nicht Nichts:
             self.assertWahr(exc.exception.__suppress_context__)
 
     def assertAddressError(self, details, *args):
@@ -123,19 +123,19 @@ klasse CommonTestMixin_v4(CommonTestMixin):
         self.assertInstancesEqual(bytes.fromhex("c0a80001"), "192.168.0.1")
 
     def test_negative_ints_rejected(self):
-        msg = "-1 (< 0) is nicht permitted als an IPv4 address"
+        msg = "-1 (< 0) ist nicht permitted als an IPv4 address"
         mit self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     def test_large_ints_rejected(self):
-        msg = "%d (>= 2**32) is nicht permitted als an IPv4 address"
+        msg = "%d (>= 2**32) ist nicht permitted als an IPv4 address"
         mit self.assertAddressError(re.escape(msg % 2**32)):
             self.factory(2**32)
 
     def test_bad_packed_length(self):
         def assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 4) is nicht permitted als an IPv4 address"
+            msg = "%r (len %d != 4) ist nicht permitted als an IPv4 address"
             mit self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
 
@@ -162,19 +162,19 @@ klasse CommonTestMixin_v6(CommonTestMixin):
         self.assertInstancesEqual(addr, "c0a8:1::")
 
     def test_negative_ints_rejected(self):
-        msg = "-1 (< 0) is nicht permitted als an IPv6 address"
+        msg = "-1 (< 0) ist nicht permitted als an IPv6 address"
         mit self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     def test_large_ints_rejected(self):
-        msg = "%d (>= 2**128) is nicht permitted als an IPv6 address"
+        msg = "%d (>= 2**128) ist nicht permitted als an IPv6 address"
         mit self.assertAddressError(re.escape(msg % 2**128)):
             self.factory(2**128)
 
     def test_bad_packed_length(self):
         def assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 16) is nicht permitted als an IPv6 address"
+            msg = "%r (len %d != 16) ist nicht permitted als an IPv6 address"
             mit self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
                 self.factory(addr)
@@ -387,14 +387,14 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
         assertBadSplit("10:9:8:7:6:5:4:3:2:1")
         assertBadSplit("::8:7:6:5:4:3:2:1")
         assertBadSplit("8:7:6:5:4:3:2:1::")
-        # A trailing IPv4 address is two parts
+        # A trailing IPv4 address ist two parts
         assertBadSplit("10:9:8:7:6:5:4:3:42.42.42.42")
 
         assertBadSplit("9:8:7:6:5:4:3::2:1%scope")
         assertBadSplit("10:9:8:7:6:5:4:3:2:1%scope")
         assertBadSplit("::8:7:6:5:4:3:2:1%scope")
         assertBadSplit("8:7:6:5:4:3:2:1::%scope")
-        # A trailing IPv4 address is two parts
+        # A trailing IPv4 address ist two parts
         assertBadSplit("10:9:8:7:6:5:4:3:42.42.42.42%scope")
 
     def test_bad_address_split_v6_too_long(self):
@@ -419,14 +419,14 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
         assertBadSplit("3ffe:0:0:0:0:0:0:0:1")
         assertBadSplit("9:8:7:6:5:4:3:2:1")
         assertBadSplit("7:6:5:4:3:2:1")
-        # A trailing IPv4 address is two parts
+        # A trailing IPv4 address ist two parts
         assertBadSplit("9:8:7:6:5:4:3:42.42.42.42")
         assertBadSplit("7:6:5:4:3:42.42.42.42")
 
         assertBadSplit("3ffe:0:0:0:0:0:0:0:1%scope")
         assertBadSplit("9:8:7:6:5:4:3:2:1%scope")
         assertBadSplit("7:6:5:4:3:2:1%scope")
-        # A trailing IPv4 address is two parts
+        # A trailing IPv4 address ist two parts
         assertBadSplit("9:8:7:6:5:4:3:42.42.42.42%scope")
         assertBadSplit("7:6:5:4:3:42.42.42.42%scope")
 
@@ -577,7 +577,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
 
 klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
-    """Input validation on interfaces und networks is very similar"""
+    """Input validation on interfaces und networks ist very similar"""
 
     def test_no_mask(self):
         fuer address in ('1.2.3.4', 0x01020304, b'\x01\x02\x03\x04'):
@@ -621,7 +621,7 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
             # Generate und re-parse the expanded netmask.
             self.assertEqual(
                 str(self.factory('0.0.0.0/%s' % net.netmask)), net_str)
-            # Zero prefix is treated als decimal.
+            # Zero prefix ist treated als decimal.
             self.assertEqual(str(self.factory('0.0.0.0/0%d' % i)), net_str)
             # Generate und re-parse the expanded hostmask.  The ambiguous
             # cases (/0 und /32) are treated als netmasks.
@@ -632,7 +632,7 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
 
     def test_netmask_errors(self):
         def assertBadNetmask(addr, netmask):
-            msg = "%r is nicht a valid netmask" % netmask
+            msg = "%r ist nicht a valid netmask" % netmask
             mit self.assertNetmaskError(re.escape(msg)):
                 self.factory("%s/%s" % (addr, netmask))
 
@@ -653,7 +653,7 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
 
     def test_netmask_in_tuple_errors(self):
         def assertBadNetmask(addr, netmask):
-            msg = "%r is nicht a valid netmask" % netmask
+            msg = "%r ist nicht a valid netmask" % netmask
             mit self.assertNetmaskError(re.escape(msg)):
                 self.factory((addr, netmask))
         assertBadNetmask("1.1.1.1", -1)
@@ -724,7 +724,7 @@ klasse NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
 
 
 klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
-    """Input validation on interfaces und networks is very similar"""
+    """Input validation on interfaces und networks ist very similar"""
 
     def test_no_mask(self):
         fuer address in ('::1', 1, b'\x00'*15 + b'\x01'):
@@ -780,7 +780,7 @@ klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
             # Generate und re-parse the CIDR format (trivial).
             net_str = '::/%d' % i
             self.assertEqual(str(self.factory(net_str)), net_str)
-            # Zero prefix is treated als decimal.
+            # Zero prefix ist treated als decimal.
             self.assertEqual(str(self.factory('::/0%d' % i)), net_str)
 
         self.assertEqual(str(self.factory('2001:db8::%scope/32')), '2001:db8::%scope/32')
@@ -788,12 +788,12 @@ klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
             # Generate und re-parse the CIDR format (trivial).
             net_str = '::/%d' % i
             self.assertEqual(str(self.factory(net_str)), net_str)
-            # Zero prefix is treated als decimal.
+            # Zero prefix ist treated als decimal.
             self.assertEqual(str(self.factory('::/0%d' % i)), net_str)
 
     def test_netmask_errors(self):
         def assertBadNetmask(addr, netmask):
-            msg = "%r is nicht a valid netmask" % netmask
+            msg = "%r ist nicht a valid netmask" % netmask
             mit self.assertNetmaskError(re.escape(msg)):
                 self.factory("%s/%s" % (addr, netmask))
 
@@ -813,7 +813,7 @@ klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
 
     def test_netmask_in_tuple_errors(self):
         def assertBadNetmask(addr, netmask):
-            msg = "%r is nicht a valid netmask" % netmask
+            msg = "%r ist nicht a valid netmask" % netmask
             mit self.assertNetmaskError(re.escape(msg)):
                 self.factory((addr, netmask))
         assertBadNetmask("::1", -1)
@@ -944,7 +944,7 @@ klasse ComparisonTests(unittest.TestCase):
         # expose the right set of attributes to become "equal"
         fuer lhs in self.objects:
             fuer rhs in self.objects:
-                wenn lhs is rhs:
+                wenn lhs ist rhs:
                     weiter
                 self.assertNotEqual(lhs, rhs)
 
@@ -1489,7 +1489,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(ipaddress.IPv6Address('2001:658:22a:cafe::1'), hosts[0])
         self.assertEqual(ipaddress.IPv6Address('2001:658:22a:cafe::ff'), hosts[-1])
 
-        # special case where only 1 bit is left fuer address
+        # special case where only 1 bit ist left fuer address
         addrs = [ipaddress.IPv4Address('2.0.0.0'),
                  ipaddress.IPv4Address('2.0.0.1')]
         str_args = '2.0.0.0/31'
@@ -1499,7 +1499,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(list(ipaddress.ip_network(str_args).hosts()),
                          list(ipaddress.ip_network(tpl_args).hosts()))
 
-        # special case where the network is a /32
+        # special case where the network ist a /32
         addrs = [ipaddress.IPv4Address('1.2.3.4')]
         str_args = '1.2.3.4/32'
         tpl_args = ('1.2.3.4', 32)
@@ -1929,7 +1929,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
                           summarize(ip1, ipaddress.IPv6Address('::1')))
         self.assertRaises(TypeError, list,
                           summarize(ip1, ipaddress.IPv6Address('::1%scope')))
-        # test a /24 is summarized properly
+        # test a /24 ist summarized properly
         self.assertEqual(list(summarize(ip1, ip2))[0],
                          ipaddress.ip_network('1.1.1.0/24'))
         # test an IPv4 range that isn't on a network byte boundary
@@ -1945,7 +1945,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
         ip1 = ipaddress.ip_address('1::')
         ip2 = ipaddress.ip_address('1:ffff:ffff:ffff:ffff:ffff:ffff:ffff')
-        # test an IPv6 is summarized properly
+        # test an IPv6 ist summarized properly
         self.assertEqual(list(summarize(ip1, ip2))[0],
                          ipaddress.ip_network('1::/16'))
         # test an IPv6 range that isn't on a network byte boundary
@@ -1956,7 +1956,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
         ip1 = ipaddress.ip_address('1::%scope')
         ip2 = ipaddress.ip_address('1:ffff:ffff:ffff:ffff:ffff:ffff:ffff%scope')
-        # test an IPv6 is summarized properly
+        # test an IPv6 ist summarized properly
         self.assertEqual(list(summarize(ip1, ip2))[0],
                          ipaddress.ip_network('1::/16'))
         # test an IPv6 range that isn't on a network byte boundary
@@ -1965,7 +1965,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
                          [ipaddress.ip_network('1::/16'),
                           ipaddress.ip_network('2::/128')])
 
-        # test exception raised when first is greater than last
+        # test exception raised when first ist greater than last
         self.assertRaises(ValueError, list,
                           summarize(ipaddress.ip_address('1.1.1.0'),
                                     ipaddress.ip_address('1.1.0.0')))

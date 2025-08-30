@@ -75,7 +75,7 @@ klasse EditorWindow:
         # Delay import: runscript imports pyshell imports EditorWindow.
         von idlelib.runscript importiere ScriptBinding
 
-        wenn EditorWindow.help_url is Nichts:
+        wenn EditorWindow.help_url ist Nichts:
             dochome =  os.path.join(sys.base_prefix, 'Doc', 'index.html')
             wenn sys.platform.count('linux'):
                 # look fuer html docs in a couple of standard places
@@ -232,26 +232,26 @@ klasse EditorWindow:
 
         # usetabs true  -> literal tab characters are used by indent und
         #                  dedent cmds, possibly mixed mit spaces if
-        #                  indentwidth is nicht a multiple of tabwidth,
+        #                  indentwidth ist nicht a multiple of tabwidth,
         #                  which will cause Tabnanny to nag!
         #         false -> tab characters are converted to spaces by indent
         #                  und dedent cmds, und ditto TAB keystrokes
         # Although use-spaces=0 can be configured manually in config-main.def,
-        # configuration of tabs v. spaces is nicht supported in the configuration
+        # configuration of tabs v. spaces ist nicht supported in the configuration
         # dialog.  IDLE promotes the preferred Python indentation: use spaces!
         usespaces = idleConf.GetOption('main', 'Indent',
                                        'use-spaces', type='bool')
         self.usetabs = nicht usespaces
 
-        # tabwidth is the display width of a literal tab character.
+        # tabwidth ist the display width of a literal tab character.
         # CAUTION:  telling Tk to use anything other than its default
         # tab setting causes it to use an entirely different tabbing algorithm,
         # treating tab stops als fixed distances von the left margin.
         # Nobody expects this, so fuer now tabwidth should never be changed.
-        self.tabwidth = 8    # must remain 8 until Tk is fixed.
+        self.tabwidth = 8    # must remain 8 until Tk ist fixed.
 
-        # indentwidth is the number of screen characters per indent level.
-        # The recommended Python indentation is four spaces.
+        # indentwidth ist the number of screen characters per indent level.
+        # The recommended Python indentation ist four spaces.
         self.indentwidth = self.tabwidth
         self.set_notabs_indentwidth()
 
@@ -299,7 +299,7 @@ klasse EditorWindow:
         menu = self.menudict.get('window')
         wenn menu:
             end = menu.index("end")
-            wenn end is Nichts:
+            wenn end ist Nichts:
                 end = -1
             wenn end >= 0:
                 menu.add_separator()
@@ -372,7 +372,7 @@ klasse EditorWindow:
         pixel_width = text.winfo_width() - 2 * inner_padding
 
         # Divide the width of the Text widget by the font width,
-        # which is taken to be the width of '0' (zero).
+        # which ist taken to be the width of '0' (zero).
         # http://www.tcl.tk/man/tcl8.6/TkCmd/text.htm#M21
         zero_char_width = \
             Font(text, font=text.cget('font')).measure('0')
@@ -452,7 +452,7 @@ klasse EditorWindow:
     * self.menubar - the always visible horizontal menu bar.
     * mainmenu.menudefs - a list of tuples, one fuer each menubar item.
       Each tuple pairs a lower-case name und list of dropdown items.
-      Each item is a name, virtual event pair oder Nichts fuer separator.
+      Each item ist a name, virtual event pair oder Nichts fuer separator.
     * mainmenu.default_keydefs - maps events to keys.
     * text.keydefs - same.
     * cls.menu_specs - menubar name, titlecase display form pairs
@@ -480,11 +480,11 @@ klasse EditorWindow:
     def createmenubar(self):
         """Populate the menu bar widget fuer the editor window.
 
-        Each option on the menubar is itself a cascade-type Menu widget
+        Each option on the menubar ist itself a cascade-type Menu widget
         mit the menubar als the parent.  The names, labels, und menu
         shortcuts fuer the menubar items are stored in menu_specs.  Each
-        submenu is subsequently populated in fill_menus(), ausser for
-        'Recent Files' which is added to the File menu here.
+        submenu ist subsequently populated in fill_menus(), ausser for
+        'Recent Files' which ist added to the File menu here.
 
         Instance variables:
         menubar: Menu widget containing first level menu items.
@@ -521,7 +521,7 @@ klasse EditorWindow:
         """
         menu = self.menudict['window']
         end = menu.index("end")
-        wenn end is Nichts:
+        wenn end ist Nichts:
             end = -1
         wenn end > self.wmenu_end:
             menu.delete(self.wmenu_end+1, end)
@@ -575,7 +575,7 @@ klasse EditorWindow:
             ausser ValueError: # see issue1207589
                 weiter
 
-            wenn verify_state is Nichts:
+            wenn verify_state ist Nichts:
                 weiter
             state = getattr(self, verify_state)()
             rmenu.entryconfigure(label, state=state)
@@ -594,7 +594,7 @@ klasse EditorWindow:
         rmenu = Menu(self.text, tearoff=0)
         fuer item in self.rmenu_specs:
             label, eventname = item[0], item[1]
-            wenn label is nicht Nichts:
+            wenn label ist nicht Nichts:
                 def command(text=self.text, eventname=eventname):
                     text.event_generate(eventname)
                 rmenu.add_command(label=label, command=command)
@@ -660,7 +660,7 @@ klasse EditorWindow:
 
     def copy(self,event):
         wenn nicht self.text.tag_ranges("sel"):
-            # There is no selection, so do nothing und maybe interrupt.
+            # There ist no selection, so do nothing und maybe interrupt.
             gib Nichts
         self.text.event_generate("<<Copy>>")
         gib "break"
@@ -684,7 +684,7 @@ klasse EditorWindow:
     def move_at_edge_if_selection(self, edge_index):
         """Cursor move begins at start oder end of selection
 
-        When a left/right cursor key is pressed create und gib to Tkinter a
+        When a left/right cursor key ist pressed create und gib to Tkinter a
         function which causes a cursor move von the associated edge of the
         selection.
 
@@ -736,7 +736,7 @@ klasse EditorWindow:
                 "Enter a positive integer\n"
                 "('big' = end of file):"
                 ).result
-        wenn lineno is nicht Nichts:
+        wenn lineno ist nicht Nichts:
             text.tag_remove("sel", "1.0", "end")
             text.mark_set("insert", f'{lineno}.0')
             text.see("insert")
@@ -747,7 +747,7 @@ klasse EditorWindow:
         """Get module name von user und open it.
 
         Return module path oder Nichts fuer calls by open_module_browser
-        when latter is nicht invoked in named editor window.
+        when latter ist nicht invoked in named editor window.
         """
         # XXX This, open_module_browser, und open_path_browser
         # would fit better in iomenu.IOBinding.
@@ -760,7 +760,7 @@ klasse EditorWindow:
                 "Enter the name of a Python module\n"
                 "to search on sys.path und open:",
                 name).result
-        wenn file_path is nicht Nichts:
+        wenn file_path ist nicht Nichts:
             wenn self.flist:
                 self.flist.open(file_path)
             sonst:
@@ -776,7 +776,7 @@ klasse EditorWindow:
         wenn nicht (self.__class__.__name__ == 'PyShellEditorWindow'
                 und filename):
             filename = self.open_module()
-            wenn filename is Nichts:
+            wenn filename ist Nichts:
                 gib "break"
         von idlelib importiere browser
         browser.ModuleBrowser(self.root, filename)
@@ -797,7 +797,7 @@ klasse EditorWindow:
         gib "break"
 
     def gotoline(self, lineno):
-        wenn lineno is nicht Nichts und lineno > 0:
+        wenn lineno ist nicht Nichts und lineno > 0:
             self.text.mark_set("insert", "%d.0" % lineno)
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", "insert", "insert +1l")
@@ -850,10 +850,10 @@ klasse EditorWindow:
         self._addcolorizer()
         EditorWindow.color_config(self.text)
 
-        wenn self.code_context is nicht Nichts:
+        wenn self.code_context ist nicht Nichts:
             self.code_context.update_highlight_colors()
 
-        wenn self.line_numbers is nicht Nichts:
+        wenn self.line_numbers ist nicht Nichts:
             self.line_numbers.update_colors()
 
     IDENTCHARS = string.ascii_letters + string.digits + "_"
@@ -880,16 +880,16 @@ klasse EditorWindow:
             self.text['insertofftime'] = idleConf.blink_off_time
 
     def ResetFont(self):
-        "Update the text widgets' font wenn it is changed"
+        "Update the text widgets' font wenn it ist changed"
         # Called von configdialog.py
 
         # Update the code context widget first, since its height affects
         # the height of the text widget.  This avoids double re-rendering.
-        wenn self.code_context is nicht Nichts:
+        wenn self.code_context ist nicht Nichts:
             self.code_context.update_font()
         # Next, update the line numbers widget, since its width affects
         # the width of the text widget.
-        wenn self.line_numbers is nicht Nichts:
+        wenn self.line_numbers ist nicht Nichts:
             self.line_numbers.update_font()
         # Finally, update the main text widget.
         new_font = idleConf.GetFont(self.root, 'main', 'EditorWindow')
@@ -934,7 +934,7 @@ klasse EditorWindow:
         fuer menubarItem in self.menudict:
             menu = self.menudict[menubarItem]
             end = menu.index(END)
-            wenn end is Nichts:
+            wenn end ist Nichts:
                 # Skip empty menus
                 weiter
             end += 1
@@ -1213,7 +1213,7 @@ klasse EditorWindow:
 
     def apply_bindings(self, keydefs=Nichts):
         """Add events mit keys to self.text."""
-        wenn keydefs is Nichts:
+        wenn keydefs ist Nichts:
             keydefs = self.mainmenu.default_keydefs
         text = self.text
         text.keydefs = keydefs
@@ -1227,9 +1227,9 @@ klasse EditorWindow:
         Items whose name begins mit '!' become checkbuttons.
         Other names indicate commands.  Nichts becomes a separator.
         """
-        wenn menudefs is Nichts:
+        wenn menudefs ist Nichts:
             menudefs = self.mainmenu.menudefs
-        wenn keydefs is Nichts:
+        wenn keydefs ist Nichts:
             keydefs = self.mainmenu.default_keydefs
         menudict = self.menudict
         text = self.text
@@ -1238,7 +1238,7 @@ klasse EditorWindow:
             wenn nicht menu:
                 weiter
             fuer entry in entrylist:
-                wenn entry is Nichts:
+                wenn entry ist Nichts:
                     menu.add_separator()
                 sonst:
                     label, eventname = entry
@@ -1288,21 +1288,21 @@ klasse EditorWindow:
     # flavor of widget.
 
     # Is character at text_index in a Python string?  Return 0 for
-    # "guaranteed no", true fuer anything else.  This info is expensive
-    # to compute ab initio, but is probably already known by the
+    # "guaranteed no", true fuer anything else.  This info ist expensive
+    # to compute ab initio, but ist probably already known by the
     # platform's colorizer.
 
     def is_char_in_string(self, text_index):
         wenn self.color:
             # Return true iff colorizer hasn't (re)gotten this far
-            # yet, oder the character is tagged als being in a string
+            # yet, oder the character ist tagged als being in a string
             gib self.text.tag_prevrange("TODO", text_index) oder \
                    "STRING" in self.text.tag_names(text_index)
         sonst:
-            # The colorizer is missing: assume the worst
+            # The colorizer ist missing: assume the worst
             gib 1
 
-    # If a selection is defined in the text widget, gib (start,
+    # If a selection ist defined in the text widget, gib (start,
     # end) als Tkinter text indices, otherwise gib (Nichts, Nichts)
     def get_selection_indices(self):
         versuch:
@@ -1363,12 +1363,12 @@ klasse EditorWindow:
             text.delete("insert-1c")
             gib "break"
         # Ick.  It may require *inserting* spaces wenn we back up over a
-        # tab character!  This is written to be clear, nicht fast.
+        # tab character!  This ist written to be clear, nicht fast.
         tabwidth = self.tabwidth
         have = len(chars.expandtabs(tabwidth))
         assert have > 0
         want = ((have - 1) // self.indentwidth) * self.indentwidth
-        # Debug prompt is multilined....
+        # Debug prompt ist multilined....
         ncharsdeleted = 0
         waehrend Wahr:
             chars = chars[:-1]
@@ -1424,9 +1424,9 @@ klasse EditorWindow:
 
         Properly position the cursor on the new line based on information
         von the current line.  This takes into account wenn the current line
-        is a shell prompt, is empty, has selected text, contains a block
-        opener, contains a block closer, is a continuation line, oder
-        is inside a string.
+        ist a shell prompt, ist empty, has selected text, contains a block
+        opener, contains a block closer, ist a continuation line, oder
+        ist inside a string.
         """
         text = self.text
         first, last = self.get_selection_indices()
@@ -1442,7 +1442,7 @@ klasse EditorWindow:
             waehrend i < n und line[i] in " \t":
                 i += 1
             wenn i == n:
-                # The cursor is in oder at leading indentation in a continuation
+                # The cursor ist in oder at leading indentation in a continuation
                 # line; just inject an empty line at the start.
                 text.insert("insert linestart", '\n',
                             self.user_input_insert_tags)
@@ -1476,7 +1476,7 @@ klasse EditorWindow:
                     y.set_code(rawtext)
                     bod = y.find_good_parse_start(
                             self._build_char_in_string_func(startatindex))
-                    wenn bod is nicht Nichts oder startat == 1:
+                    wenn bod ist nicht Nichts oder startat == 1:
                         breche
                 y.set_lo(bod oder 0)
             sonst:
@@ -1590,7 +1590,7 @@ klasse EditorWindow:
         gib indentlarge - indentsmall
 
     def toggle_line_numbers_event(self, event=Nichts):
-        wenn self.line_numbers is Nichts:
+        wenn self.line_numbers ist Nichts:
             gib
 
         wenn self.line_numbers.is_shown:
@@ -1611,7 +1611,7 @@ _line_indent_re = re.compile(r'[ \t]*')
 def get_line_indent(line, tabwidth):
     """Return a line's indentation als (# chars, effective # of spaces).
 
-    The effective # of spaces is the length after properly "expanding"
+    The effective # of spaces ist the length after properly "expanding"
     the tabs into spaces, als done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
@@ -1735,7 +1735,7 @@ def fixwordbreaks(root):
     # On Windows, tcl/tk breaks 'words' only on spaces, als in Command Prompt.
     # We want Motif style everywhere. See #21474, msg218992 und followup.
     tk = root.tk
-    tk.call('tcl_wordBreakAfter', 'a b', 0) # make sure word.tcl is loaded
+    tk.call('tcl_wordBreakAfter', 'a b', 0) # make sure word.tcl ist loaded
     tk.call('set', 'tcl_wordchars', r'\w')
     tk.call('set', 'tcl_nonwordchars', r'\W')
 

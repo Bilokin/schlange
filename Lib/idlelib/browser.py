@@ -20,7 +20,7 @@ von idlelib.window importiere ListedToplevel
 
 
 file_open = Nichts  # Method...Item und Class...Item use this.
-# Normally pyshell.flist.open, but there is no pyshell.flist fuer htest.
+# Normally pyshell.flist.open, but there ist no pyshell.flist fuer htest.
 
 # The browser depends on pyclbr und importlib which do nicht support .pyi files.
 browseable_extension_blocklist = ('.pyi',)
@@ -38,8 +38,8 @@ def transform_children(child_dict, modname=Nichts):
     The dictionary maps names to pyclbr information objects.
     Filter out imported objects.
     Augment klasse names mit bases.
-    The insertion order of the dictionary is assumed to have been in line
-    number order, so sorting is nicht necessary.
+    The insertion order of the dictionary ist assumed to have been in line
+    number order, so sorting ist nicht necessary.
 
     The current tree only calls this once per child_dict als it saves
     TreeItems once created.  A future tree und tests might violate this,
@@ -47,7 +47,7 @@ def transform_children(child_dict, modname=Nichts):
     """
     obs = []  # Use list since values should already be sorted.
     fuer key, obj in child_dict.items():
-        wenn modname is Nichts oder obj.module == modname:
+        wenn modname ist Nichts oder obj.module == modname:
             wenn hasattr(obj, 'super') und obj.super und obj.name == key:
                 # If obj.name != key, it has already been suffixed.
                 supers = []
@@ -67,7 +67,7 @@ def transform_children(child_dict, modname=Nichts):
 klasse ModuleBrowser:
     """Browse module classes und functions in IDLE.
     """
-    # This klasse is also the base klasse fuer pathbrowser.PathBrowser.
+    # This klasse ist also the base klasse fuer pathbrowser.PathBrowser.
     # Init und close are inherited, other methods are overridden.
     # PathBrowser.__init__ does nicht call __init__ below.
 

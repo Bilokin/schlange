@@ -165,7 +165,7 @@ klasse TestSpecifics(unittest.TestCase):
             """)
         compile(s, "<string>", "exec")
 
-    # This test is probably specific to CPython und may nicht generalize
+    # This test ist probably specific to CPython und may nicht generalize
     # to other implementations.  We are trying to ensure that when
     # the first line of code starts after 256, correct line numbers
     # in tracebacks are still produced.
@@ -253,7 +253,7 @@ klasse TestSpecifics(unittest.TestCase):
             h = -9223372036854775807  # 1 << 63 - 1
 
             fuer variable in self.test_32_63_bit_values.__code__.co_consts:
-                wenn variable is nicht Nichts:
+                wenn variable ist nicht Nichts:
                     self.assertIsInstance(variable, int)
 
     def test_sequence_unpacking_error(self):
@@ -343,8 +343,8 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertIsNichts(l.__doc__)
 
     def test_lambda_consts(self):
-        l = lambda: "this is the only const"
-        self.assertEqual(l.__code__.co_consts, ("this is the only const",))
+        l = lambda: "this ist the only const"
+        self.assertEqual(l.__code__.co_consts, ("this ist the only const",))
 
     def test_encoding(self):
         code = b'# -*- coding: badencoding -*-\npass\n'
@@ -378,7 +378,7 @@ klasse TestSpecifics(unittest.TestCase):
             def __setitem__(self, key, value):
                 self.data[str(key)] = value
             def __delitem__(self, key):
-                del self.data[str(key)]
+                loesche self.data[str(key)]
             def __contains__(self, key):
                 gib str(key) in self.data
         d = str_map()
@@ -387,56 +387,56 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertEqual(d[1], 1)
         d[1] += 1
         self.assertEqual(d[1], 2)
-        del d[1]
+        loesche d[1]
         self.assertNotIn(1, d)
         # Tuple of indices
         d[1, 1] = 1
         self.assertEqual(d[1, 1], 1)
         d[1, 1] += 1
         self.assertEqual(d[1, 1], 2)
-        del d[1, 1]
+        loesche d[1, 1]
         self.assertNotIn((1, 1), d)
         # Simple slice
         d[1:2] = 1
         self.assertEqual(d[1:2], 1)
         d[1:2] += 1
         self.assertEqual(d[1:2], 2)
-        del d[1:2]
+        loesche d[1:2]
         self.assertNotIn(slice(1, 2), d)
         # Tuple of simple slices
         d[1:2, 1:2] = 1
         self.assertEqual(d[1:2, 1:2], 1)
         d[1:2, 1:2] += 1
         self.assertEqual(d[1:2, 1:2], 2)
-        del d[1:2, 1:2]
+        loesche d[1:2, 1:2]
         self.assertNotIn((slice(1, 2), slice(1, 2)), d)
         # Extended slice
         d[1:2:3] = 1
         self.assertEqual(d[1:2:3], 1)
         d[1:2:3] += 1
         self.assertEqual(d[1:2:3], 2)
-        del d[1:2:3]
+        loesche d[1:2:3]
         self.assertNotIn(slice(1, 2, 3), d)
         # Tuple of extended slices
         d[1:2:3, 1:2:3] = 1
         self.assertEqual(d[1:2:3, 1:2:3], 1)
         d[1:2:3, 1:2:3] += 1
         self.assertEqual(d[1:2:3, 1:2:3], 2)
-        del d[1:2:3, 1:2:3]
+        loesche d[1:2:3, 1:2:3]
         self.assertNotIn((slice(1, 2, 3), slice(1, 2, 3)), d)
         # Ellipsis
         d[...] = 1
         self.assertEqual(d[...], 1)
         d[...] += 1
         self.assertEqual(d[...], 2)
-        del d[...]
+        loesche d[...]
         self.assertNotIn(Ellipsis, d)
         # Tuple of Ellipses
         d[..., ...] = 1
         self.assertEqual(d[..., ...], 1)
         d[..., ...] += 1
         self.assertEqual(d[..., ...], 2)
-        del d[..., ...]
+        loesche d[..., ...]
         self.assertNotIn((Ellipsis, Ellipsis), d)
 
     def test_annotation_limit(self):
@@ -544,10 +544,10 @@ klasse TestSpecifics(unittest.TestCase):
         # make all instruction locations the same to create redundancies
         fuer node in ast.walk(tree):
             wenn hasattr(node,"lineno"):
-                 del node.lineno
-                 del node.end_lineno
-                 del node.col_offset
-                 del node.end_col_offset
+                 loesche node.lineno
+                 loesche node.end_lineno
+                 loesche node.col_offset
+                 loesche node.end_col_offset
 
         compile(ast.fix_missing_locations(tree), "<file>", "exec")
 
@@ -569,10 +569,10 @@ klasse TestSpecifics(unittest.TestCase):
         # make all instruction locations the same to create redundancies
         fuer node in ast.walk(tree):
             wenn hasattr(node,"lineno"):
-                 del node.lineno
-                 del node.end_lineno
-                 del node.col_offset
-                 del node.end_col_offset
+                 loesche node.lineno
+                 loesche node.end_lineno
+                 loesche node.col_offset
+                 loesche node.end_col_offset
 
         compile(ast.fix_missing_locations(tree), "<file>", "exec")
 
@@ -603,7 +603,7 @@ klasse TestSpecifics(unittest.TestCase):
         co1 = compile('drucke(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
-        # wirf exception when node type is no start node
+        # wirf exception when node type ist no start node
         self.assertRaises(TypeError, compile, _ast.If(test=_ast.Name(id='x', ctx=_ast.Load())), '<ast>', 'exec')
 
         # wirf exception when node has invalid children
@@ -733,7 +733,7 @@ klasse TestSpecifics(unittest.TestCase):
         # check_limit("if a: pass", "\nelif a: pass", mode="exec")
 
     def test_null_terminated(self):
-        # The source code is null-terminated internally, but bytes-like
+        # The source code ist null-terminated internally, but bytes-like
         # objects are accepted, which could be nicht terminated.
         mit self.assertRaisesRegex(SyntaxError, "cannot contain null"):
             compile("123\x00", "<dummy>", "eval")
@@ -760,7 +760,7 @@ klasse TestSpecifics(unittest.TestCase):
             self.fail("unable to find constant %r in %r"
                       % (expected, func.__code__.co_consts))
 
-    # Merging equal constants is nicht a strict requirement fuer the Python
+    # Merging equal constants ist nicht a strict requirement fuer the Python
     # semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_merge_constants(self):
@@ -797,14 +797,14 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertIs(next(iter(f3.__code__.co_consts[1])),
                       f2.__code__.co_consts[1])
 
-        # {0} is converted to a constant frozenset({0}) by the peephole
+        # {0} ist converted to a constant frozenset({0}) by the peephole
         # optimizer
         f1, f2 = lambda x: x in {0}, lambda x: x in {0}
         self.assertIs(f1.__code__.co_consts, f2.__code__.co_consts)
         self.check_constant(f1, frozenset({0}))
         self.assertWahr(f1(0))
 
-    # Merging equal co_linetable is nicht a strict requirement
+    # Merging equal co_linetable ist nicht a strict requirement
     # fuer the Python semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_merge_code_attrs(self):
@@ -860,18 +860,18 @@ klasse TestSpecifics(unittest.TestCase):
         expected = "".join(expected[1:])
         self.assertEqual(expected, f())
 
-    # Stripping unused constants is nicht a strict requirement fuer the
+    # Stripping unused constants ist nicht a strict requirement fuer the
     # Python semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_strip_unused_Nichts(self):
-        # Python 3.10rc1 appended Nichts to co_consts when Nichts is nicht used
+        # Python 3.10rc1 appended Nichts to co_consts when Nichts ist nicht used
         # at all. See bpo-45056.
         def f1():
             "docstring"
             gib 42
         self.assertEqual(f1.__code__.co_consts, (f1.__doc__,))
 
-    # This is a regression test fuer a CPython specific peephole optimizer
+    # This ist a regression test fuer a CPython specific peephole optimizer
     # implementation bug present in a few releases.  It's assertion verifies
     # that peephole optimization was actually done though that isn't an
     # indication of the bugs presence oder nicht (crashing is).
@@ -994,7 +994,7 @@ klasse TestSpecifics(unittest.TestCase):
         check_different_constants(('a',), (b'a',))
 
         # check_different_constants() cannot be used because repr(-0j) is
-        # '(-0-0j)', but when '(-0-0j)' is evaluated to 0j: we loose the sign.
+        # '(-0-0j)', but when '(-0-0j)' ist evaluated to 0j: we loose the sign.
         f1, f2 = lambda: +0.0j, lambda: -0.0j
         self.assertIsNot(f1.__code__, f2.__code__)
         self.check_constant(f1, +0.0j)
@@ -1002,7 +1002,7 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertEqual(repr(f1()), repr(+0.0j))
         self.assertEqual(repr(f2()), repr(-0.0j))
 
-        # {0} is converted to a constant frozenset({0}) by the peephole
+        # {0} ist converted to a constant frozenset({0}) by the peephole
         # optimizer
         f1, f2 = lambda x: x in {0}, lambda x: x in {0.0}
         self.assertIsNot(f1.__code__, f2.__code__)
@@ -1087,7 +1087,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         funcs = [and_true, and_false, or_true, or_false]
 
-        # Check that condition is removed.
+        # Check that condition ist removed.
         fuer func in funcs:
             mit self.subTest(func=func):
                 opcodes = list(dis.get_instructions(func))
@@ -1205,7 +1205,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         fuer func in (no_code1, no_code2):
             mit self.subTest(func=func):
-                wenn func is no_code1 und no_code1.__doc__ is Nichts:
+                wenn func ist no_code1 und no_code1.__doc__ ist Nichts:
                     weiter
                 code = func.__code__
                 [(start, end, line)] = code.co_lines()
@@ -1217,7 +1217,7 @@ klasse TestSpecifics(unittest.TestCase):
         last_line = -2
         res = []
         fuer _, _, line in code.co_lines():
-            wenn line is nicht Nichts und line != last_line:
+            wenn line ist nicht Nichts und line != last_line:
                 res.append(line - code.co_firstlineno)
                 last_line = line
         gib res
@@ -1293,7 +1293,7 @@ klasse TestSpecifics(unittest.TestCase):
     def check_line_numbers(self, code, opnames=Nichts):
         # Check that all instructions whose op matches opnames
         # have a line number. opnames can be a single name, oder
-        # a sequence of names. If it is Nichts, match all ops.
+        # a sequence of names. If it ist Nichts, match all ops.
 
         wenn isinstance(opnames, str):
             opnames = (opnames, )
@@ -1369,7 +1369,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_redundant_jump_in_if_else_break(self):
         # Check wenn bytecode containing jumps that simply point to the next line
-        # is generated around if-else-break style structures. See bpo-42615.
+        # ist generated around if-else-break style structures. See bpo-42615.
 
         def if_else_break():
             val = 1
@@ -1570,9 +1570,9 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertEqual(f("x", "y", "z"), "y")
 
     def test_variable_dependent(self):
-        # gh-104635: Since the value of b is dependent on the value of a
+        # gh-104635: Since the value of b ist dependent on the value of a
         # the first STORE_FAST fuer a should nicht be skipped. (e.g POP_TOP).
-        # This test case is added to prevent potential regression von aggressive optimization.
+        # This test case ist added to prevent potential regression von aggressive optimization.
         def f():
             a = 42; b = a + 54; a = 54
             gib a, b
@@ -1652,15 +1652,15 @@ klasse TestSpecifics(unittest.TestCase):
         # line are now only emitted once.
         mit warnings.catch_warnings(record=Wahr) als caught:
             warnings.simplefilter("default")
-            compile('1 is 1', '<stdin>', 'eval')
-            compile('1 is 1', '<stdin>', 'eval')
+            compile('1 ist 1', '<stdin>', 'eval')
+            compile('1 ist 1', '<stdin>', 'eval')
 
         self.assertEqual(len(caught), 1)
 
         mit warnings.catch_warnings(record=Wahr) als caught:
             warnings.simplefilter("always")
-            compile('1 is 1', '<stdin>', 'eval')
-            compile('1 is 1', '<stdin>', 'eval')
+            compile('1 ist 1', '<stdin>', 'eval')
+            compile('1 ist 1', '<stdin>', 'eval')
 
         self.assertEqual(len(caught), 2)
 
@@ -1673,7 +1673,7 @@ klasse TestSpecifics(unittest.TestCase):
             versuch:
                 pass
             schliesslich:
-                1 is 1
+                1 ist 1
         """)
 
         mit warnings.catch_warnings(record=Wahr) als caught:
@@ -1744,7 +1744,7 @@ klasse TestSourcePositions(unittest.TestCase):
     # in `co_positions()`.
 
     def check_positions_against_ast(self, snippet):
-        # Basic check that makes sure each line und column is at least present
+        # Basic check that makes sure each line und column ist at least present
         # in one of the AST nodes of the source code.
         code = compile(snippet, 'test_compile.py', 'exec')
         ast_tree = compile(snippet, 'test_compile.py', 'exec', _ast.PyCF_ONLY_AST)
@@ -1767,16 +1767,16 @@ klasse TestSourcePositions(unittest.TestCase):
         # Check against the positions in the code object.
         fuer (line, end_line, col, end_col) in code.co_positions():
             wenn line == 0:
-                weiter # This is an artificial module-start line
-            # If the offset is nicht Nichts (indicating missing data), ensure that
+                weiter # This ist an artificial module-start line
+            # If the offset ist nicht Nichts (indicating missing data), ensure that
             # it was part of one of the AST nodes.
-            wenn line is nicht Nichts:
+            wenn line ist nicht Nichts:
                 self.assertIn(line, lines)
-            wenn end_line is nicht Nichts:
+            wenn end_line ist nicht Nichts:
                 self.assertIn(end_line, end_lines)
-            wenn col is nicht Nichts:
+            wenn col ist nicht Nichts:
                 self.assertIn(col, columns)
-            wenn end_col is nicht Nichts:
+            wenn end_col ist nicht Nichts:
                 self.assertIn(end_col, end_columns)
 
         gib code, ast_tree
@@ -1842,13 +1842,13 @@ klasse TestSourcePositions(unittest.TestCase):
                 x = 42
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
-        # jump wenn a is true:
+        # jump wenn a ist true:
         self.assertOpcodeSourcePositionIs(compiled_code, 'POP_JUMP_IF_TRUE',
             line=1, end_line=1, column=4, end_column=5, occurrence=1)
-        # jump wenn b is false:
+        # jump wenn b ist false:
         self.assertOpcodeSourcePositionIs(compiled_code, 'POP_JUMP_IF_FALSE',
             line=2, end_line=2, column=5, end_column=6, occurrence=1)
-        # jump wenn c is false:
+        # jump wenn c ist false:
         self.assertOpcodeSourcePositionIs(compiled_code, 'POP_JUMP_IF_FALSE',
             line=2, end_line=2, column=15, end_column=16, occurrence=2)
         # compare d und 0
@@ -2341,7 +2341,7 @@ klasse TestSourcePositions(unittest.TestCase):
         # They should all have the locations of the context manager ('xyz').
 
         load_none = [instr fuer instr in dis.get_instructions(f) if
-                     instr.opname == 'LOAD_CONST' und instr.argval is Nichts]
+                     instr.opname == 'LOAD_CONST' und instr.argval ist Nichts]
         return_value = [instr fuer instr in dis.get_instructions(f) if
                         instr.opname == 'RETURN_VALUE']
 
@@ -2423,8 +2423,8 @@ klasse TestExpressionStackSize(unittest.TestCase):
     N = 100
 
     def check_stack_size(self, code):
-        # To assert that the alleged stack size is nicht O(N), we
-        # check that it is smaller than log(N).
+        # To assert that the alleged stack size ist nicht O(N), we
+        # check that it ist smaller than log(N).
         wenn isinstance(code, str):
             code = compile(code, "<foo>", "single")
         max_size = math.ceil(math.log(len(code.co_code)))
@@ -2819,7 +2819,7 @@ klasse TestStackSizeStability(unittest.TestCase):
         self.check_stack_size(snippet, async_=Wahr)
 
 @support.cpython_only
-@unittest.skipIf(_testinternalcapi is Nichts, 'need _testinternalcapi module')
+@unittest.skipIf(_testinternalcapi ist Nichts, 'need _testinternalcapi module')
 klasse TestInstructionSequence(unittest.TestCase):
     def compare_instructions(self, seq, expected):
         self.assertEqual([(opcode.opname[i[0]],) + i[1:] fuer i in seq.get_instructions()],

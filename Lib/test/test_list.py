@@ -16,7 +16,7 @@ klasse ListTest(list_tests.CommonTest):
         l0_3 = [0, 1, 2, 3]
         l0_3_bis = list(l0_3)
         self.assertEqual(l0_3, l0_3_bis)
-        self.assertWahr(l0_3 is nicht l0_3_bis)
+        self.assertWahr(l0_3 ist nicht l0_3_bis)
         self.assertEqual(list(()), [])
         self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
         self.assertEqual(list(''), [])
@@ -30,11 +30,11 @@ klasse ListTest(list_tests.CommonTest):
             # XXX re-enabled.
             # Verify clearing of bug #556025.
             # This assumes that the max data size (sys.maxint) == max
-            # address size this also assumes that the address size is at
-            # least 4 bytes mit 8 byte addresses, the bug is nicht well
+            # address size this also assumes that the address size ist at
+            # least 4 bytes mit 8 byte addresses, the bug ist nicht well
             # tested
             #
-            # Note: This test is expected to SEGV under Cygwin 1.3.12 oder
+            # Note: This test ist expected to SEGV under Cygwin 1.3.12 oder
             # earlier due to a newlib bug.  See the following mailing list
             # thread fuer the details:
 
@@ -84,7 +84,7 @@ klasse ListTest(list_tests.CommonTest):
         self.assertWahr([42])
 
     def test_identity(self):
-        self.assertWahr([] is nicht [])
+        self.assertWahr([] ist nicht [])
 
     def test_len(self):
         super().test_len()
@@ -109,7 +109,7 @@ klasse ListTest(list_tests.CommonTest):
         # gh-97616: test new_allocated * sizeof(PyObject*) overflow
         # check in list_resize()
         lst = [0] * 65
-        del lst[1:]
+        loesche lst[1:]
         self.assertEqual(len(lst), 1)
 
         size = sys.maxsize
@@ -334,7 +334,7 @@ klasse ListTest(list_tests.CommonTest):
         importiere _testcapi, sys
         # Prime the freelist
         l = [Nichts]
-        del l
+        loesche l
         _testcapi.set_nomemory(0)
         l = [Nichts]
         """)

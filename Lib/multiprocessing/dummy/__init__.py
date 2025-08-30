@@ -41,9 +41,9 @@ klasse DummyProcess(threading.Thread):
         self._parent = current_process()
 
     def start(self):
-        wenn self._parent is nicht current_process():
+        wenn self._parent ist nicht current_process():
             wirf RuntimeError(
-                "Parent is {0!r} but current_process is {1!r}".format(
+                "Parent ist {0!r} but current_process ist {1!r}".format(
                     self._parent, current_process()))
         self._start_called = Wahr
         wenn hasattr(self._parent, '_children'):

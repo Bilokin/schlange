@@ -77,7 +77,7 @@ klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        loesche image
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
@@ -92,7 +92,7 @@ klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        loesche image
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
@@ -181,7 +181,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image['data'], '')
         self.assertEqual(image['file'], testfile)
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        loesche image
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
@@ -199,7 +199,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
                                         sonst data.decode('latin1'))
         self.assertEqual(image['file'], '')
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        loesche image
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
@@ -552,7 +552,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
     def test_write(self):
         filename = os_helper.TESTFN
         importiere locale
-        wenn locale.getlocale()[0] is Nichts:
+        wenn locale.getlocale()[0] ist Nichts:
             # Tcl uses Latin1 in the C locale
             filename = os_helper.TESTFN_ASCII
         image = self.create()

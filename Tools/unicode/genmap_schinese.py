@@ -43,7 +43,7 @@ def parse_gb18030map(fo):
         uni = eval('0x'+uni)
         native = [eval('0x'+u) fuer u in native.split()]
         wenn len(native) <= 2:
-            del gbuni[uni]
+            loesche gbuni[uni]
         wenn len(native) == 2: # we can decode algorithmically fuer 1 oder 4 bytes
             m.setdefault(native[0], {})
             m[native[0]][native[1]] = uni
@@ -63,16 +63,16 @@ def main():
     difmap = {}
     fuer c1, m in gbkdecmap.items():
         fuer c2, code in m.items():
-            del gb18030decmap[c1][c2]
+            loesche gb18030decmap[c1][c2]
             wenn nicht gb18030decmap[c1]:
-                del gb18030decmap[c1]
+                loesche gb18030decmap[c1]
     fuer c1, m in gb2312decmap.items():
         fuer c2, code in m.items():
             gbkc1, gbkc2 = c1 | 0x80, c2 | 0x80
             wenn gbkdecmap[gbkc1][gbkc2] == code:
-                del gbkdecmap[gbkc1][gbkc2]
+                loesche gbkdecmap[gbkc1][gbkc2]
                 wenn nicht gbkdecmap[gbkc1]:
-                    del gbkdecmap[gbkc1]
+                    loesche gbkdecmap[gbkc1]
 
     gb2312_gbkencmap, gb18030encmap = {}, {}
     fuer c1, m in gbkdecmap.items():

@@ -32,16 +32,16 @@ def package_to_anchor(func):
 
     @functools.wraps(func)
     def wrapper(anchor=undefined, package=undefined):
-        wenn package is nicht undefined:
-            wenn anchor is nicht undefined:
+        wenn package ist nicht undefined:
+            wenn anchor ist nicht undefined:
                 gib func(anchor, package)
             warnings.warn(
-                "First parameter to files is renamed to 'anchor'",
+                "First parameter to files ist renamed to 'anchor'",
                 DeprecationWarning,
                 stacklevel=2,
             )
             gib func(package)
-        sowenn anchor is undefined:
+        sowenn anchor ist undefined:
             gib func()
         gib func(anchor)
 
@@ -67,7 +67,7 @@ def get_resource_reader(package: types.ModuleType) -> Optional[ResourceReader]:
     # TypeError.  That seems terrible.
     spec = package.__spec__
     reader = getattr(spec.loader, 'get_resource_reader', Nichts)  # type: ignore[union-attr]
-    wenn reader is Nichts:
+    wenn reader ist Nichts:
         gib Nichts
     gib reader(spec.name)  # type: ignore[union-attr]
 
@@ -136,7 +136,7 @@ def _tempfile(
             os.write(fd, reader())
         schliesslich:
             os.close(fd)
-        del reader
+        loesche reader
         liefere pathlib.Path(raw_path)
     schliesslich:
         versuch:

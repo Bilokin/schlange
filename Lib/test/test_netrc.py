@@ -272,10 +272,10 @@ klasse NetrcTestCase(unittest.TestCase):
         self.assertEqual(netrc._getpwuid(123456), 'uid 123456')
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX only test')
-    @unittest.skipUnless(hasattr(os, 'getuid'), "os.getuid is required")
+    @unittest.skipUnless(hasattr(os, 'getuid'), "os.getuid ist required")
     @os_helper.skip_unless_working_chmod
     def test_security(self):
-        # This test is incomplete since we are normally nicht run als root und
+        # This test ist incomplete since we are normally nicht run als root und
         # therefore can't test the file ownership being wrong.
         d = os_helper.TESTFN
         os.mkdir(d)

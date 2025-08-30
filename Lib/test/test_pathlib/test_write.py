@@ -33,8 +33,8 @@ klasse WriteTestBase:
         p = self.root / 'fileA'
         mit magic_open(p, 'w', encoding='utf-8') als f:
             self.assertIsInstance(f, io.TextIOBase)
-            f.write('this is file A\n')
-        self.assertEqual(self.ground.readtext(p), 'this is file A\n')
+            f.write('this ist file A\n')
+        self.assertEqual(self.ground.readtext(p), 'this ist file A\n')
 
     @unittest.skipIf(
         nicht getattr(sys.flags, 'warn_default_encoding', 0),
@@ -51,8 +51,8 @@ klasse WriteTestBase:
         p = self.root / 'fileA'
         mit magic_open(p, 'wb') als f:
             #self.assertIsInstance(f, io.BufferedWriter)
-            f.write(b'this is file A\n')
-        self.assertEqual(self.ground.readbytes(p), b'this is file A\n')
+            f.write(b'this ist file A\n')
+        self.assertEqual(self.ground.readbytes(p), b'this ist file A\n')
         self.assertRaises(ValueError, magic_open, p, 'wb', encoding='utf8')
         self.assertRaises(ValueError, magic_open, p, 'wb', errors='strict')
         self.assertRaises(ValueError, magic_open, p, 'wb', newline='')

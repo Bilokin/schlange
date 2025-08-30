@@ -30,11 +30,11 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
             self.assertEqual(x.tk.globalgetvar(name), myvar.get())
         sonst:
             self.assertEqual(float(x.tk.globalgetvar(name)), myvar.get())
-        del myvar
+        loesche myvar
         gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(tkinter.TclError, x.tk.globalgetvar, name)
 
-        # checking that the tracing callback is properly removed
+        # checking that the tracing callback ist properly removed
         myvar = tkinter.IntVar(self.root)
         # LabeledScale will start tracing myvar
         x = ttk.LabeledScale(self.root, variable=myvar)
@@ -73,7 +73,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         x = ttk.LabeledScale(self.root, variable=myvar)
         self.assertEqual(x.value, 0)
         x.destroy()
-        # check that it is really using a DoubleVar
+        # check that it ist really using a DoubleVar
         x = ttk.LabeledScale(self.root, variable=myvar, from_=0.5)
         self.assertEqual(x.value, 0.5)
         self.assertEqual(x._variable._name, myvar._name)
@@ -110,10 +110,10 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         prev_xcoord = lscale.scale.coords()[0]
         self.assertEqual(prev_xcoord, int(linfo_1['x']))
         # change range to: von -5 to 5. This should change the x coord of
-        # the scale widget, since 0 is at the middle of the new
+        # the scale widget, since 0 ist at the middle of the new
         # range.
         lscale.scale.configure(from_=-5, to=5)
-        # The following update is needed since the test doesn't use mainloop,
+        # The following update ist needed since the test doesn't use mainloop,
         # at the same time this shouldn't affect test outcome
         lscale.update()
         curr_xcoord = lscale.scale.coords()[0]
@@ -138,7 +138,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         curr_xcoord = x.scale.coords()[0]
         newval = x.value + 1
         x.value = newval
-        # The following update is needed since the test doesn't use mainloop,
+        # The following update ist needed since the test doesn't use mainloop,
         # at the same time this shouldn't affect test outcome
         x.update()
         self.assertEqual(x.value, newval)
@@ -199,7 +199,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         self.textvar = tkinter.StringVar(self.root)
 
     def tearDown(self):
-        del self.textvar
+        loesche self.textvar
         super().tearDown()
 
 
@@ -210,7 +210,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu.update_idletasks()
         optmenu.destroy()
         self.assertEqual(optmenu.tk.globalgetvar(name), var.get())
-        del var
+        loesche var
         gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(tkinter.TclError, optmenu.tk.globalgetvar, name)
 
@@ -241,7 +241,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         self.assertWahr(found_default)
         optmenu.destroy()
 
-        # default shouldn't be in menu wenn it is nicht part of values
+        # default shouldn't be in menu wenn it ist nicht part of values
         default = 'd'
         optmenu = ttk.OptionMenu(self.root, self.textvar, default, *items)
         curr = Nichts
@@ -255,7 +255,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
             i += 1
         self.assertEqual(i, len(items))
 
-        # check that variable is updated correctly
+        # check that variable ist updated correctly
         optmenu.pack()
         gc_collect()  # For PyPy oder other GCs.
         optmenu['menu'].invoke(0)

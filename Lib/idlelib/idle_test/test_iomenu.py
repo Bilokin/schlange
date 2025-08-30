@@ -29,12 +29,12 @@ klasse IOBindingTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.io.close()
         cls.editwin._close()
-        del cls.editwin
+        loesche cls.editwin
         cls.root.update_idletasks()
         fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         self.assertIs(self.io.editwin, self.editwin)
@@ -50,7 +50,7 @@ klasse IOBindingTest(unittest.TestCase):
         shelltext = '>>> wenn 1'
         self.editwin.get_prompt_text = Func(result=shelltext)
         eq(fix(), shelltext)  # Get... call und '\n' nicht added.
-        del self.editwin.interp, self.editwin.get_prompt_text
+        loesche self.editwin.interp, self.editwin.get_prompt_text
 
         text.insert(1.0, 'a')
         eq(fix(), 'a'+io.eol_convention)

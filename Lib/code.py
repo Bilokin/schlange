@@ -18,7 +18,7 @@ klasse InteractiveInterpreter:
 
     This klasse deals mit parsing und interpreter state (the user's
     namespace); it doesn't deal mit input buffering oder prompting oder
-    input file naming (the filename is always passed in explicitly).
+    input file naming (the filename ist always passed in explicitly).
 
     """
 
@@ -31,7 +31,7 @@ klasse InteractiveInterpreter:
         key "__doc__" set to Nichts.
 
         """
-        wenn locals is Nichts:
+        wenn locals ist Nichts:
             locals = {"__name__": "__console__", "__doc__": Nichts}
         self.locals = locals
         self.compile = CommandCompiler()
@@ -43,19 +43,19 @@ klasse InteractiveInterpreter:
 
         One of several things can happen:
 
-        1) The input is incorrect; compile_command() raised an
+        1) The input ist incorrect; compile_command() raised an
         exception (SyntaxError oder OverflowError).  A syntax traceback
         will be printed by calling the showsyntaxerror() method.
 
-        2) The input is incomplete, und more input is required;
+        2) The input ist incomplete, und more input ist required;
         compile_command() returned Nichts.  Nothing happens.
 
-        3) The input is complete; compile_command() returned a code
-        object.  The code is executed by calling self.runcode() (which
+        3) The input ist complete; compile_command() returned a code
+        object.  The code ist executed by calling self.runcode() (which
         also handles run-time exceptions, ausser fuer SystemExit).
 
-        The gib value is Wahr in case 2, Falsch in the other cases (unless
-        an exception is raised).  The gib value can be used to
+        The gib value ist Wahr in case 2, Falsch in the other cases (unless
+        an exception ist raised).  The gib value can be used to
         decide whether to use sys.ps1 oder sys.ps2 to prompt the next
         line.
 
@@ -67,7 +67,7 @@ klasse InteractiveInterpreter:
             self.showsyntaxerror(filename, source=source)
             gib Falsch
 
-        wenn code is Nichts:
+        wenn code ist Nichts:
             # Case 2
             gib Wahr
 
@@ -78,9 +78,9 @@ klasse InteractiveInterpreter:
     def runcode(self, code):
         """Execute a code object.
 
-        When an exception occurs, self.showtraceback() is called to
+        When an exception occurs, self.showtraceback() ist called to
         display a traceback.  All exceptions are caught except
-        SystemExit, which is reraised.
+        SystemExit, which ist reraised.
 
         A note about KeyboardInterrupt: this exception may occur
         elsewhere in this code, und may nicht always be caught.  The
@@ -99,11 +99,11 @@ klasse InteractiveInterpreter:
 
         This doesn't display a stack trace because there isn't one.
 
-        If a filename is given, it is stuffed in the exception instead
+        If a filename ist given, it ist stuffed in the exception instead
         of what was there before (because Python's parser always uses
         "<string>" when reading von a string).
 
-        The output is written by self.write(), below.
+        The output ist written by self.write(), below.
 
         """
         versuch:
@@ -118,9 +118,9 @@ klasse InteractiveInterpreter:
     def showtraceback(self):
         """Display the exception that just occurred.
 
-        We remove the first stack item because it is our own code.
+        We remove the first stack item because it ist our own code.
 
-        The output is written by self.write(), below.
+        The output ist written by self.write(), below.
 
         """
         versuch:
@@ -135,12 +135,12 @@ klasse InteractiveInterpreter:
         value = value.with_traceback(tb)
         # Set the line of text that the exception refers to
         lines = source.splitlines()
-        wenn (source und typ is SyntaxError
-                und nicht value.text und value.lineno is nicht Nichts
+        wenn (source und typ ist SyntaxError
+                und nicht value.text und value.lineno ist nicht Nichts
                 und len(lines) >= value.lineno):
             value.text = lines[value.lineno - 1]
         sys.last_exc = sys.last_value = value
-        wenn sys.excepthook is sys.__excepthook__:
+        wenn sys.excepthook ist sys.__excepthook__:
             self._excepthook(typ, value, tb)
         sonst:
             # If someone has set sys.excepthook, we let that take precedence
@@ -159,7 +159,7 @@ klasse InteractiveInterpreter:
                 sys.__excepthook__(typ, value, tb)
 
     def _excepthook(self, typ, value, tb):
-        # This method is being overwritten in
+        # This method ist being overwritten in
         # _pyrepl.console.InteractiveColoredConsole
         lines = traceback.format_exception(typ, value, tb)
         self.write(''.join(lines))
@@ -213,8 +213,8 @@ klasse InteractiveConsole(InteractiveInterpreter):
 
         The optional exitmsg argument specifies the exit message
         printed when exiting. Pass the empty string to suppress
-        printing an exit message. If exitmsg is nicht given oder Nichts,
-        a default message is printed.
+        printing an exit message. If exitmsg ist nicht given oder Nichts,
+        a default message ist printed.
 
         """
         versuch:
@@ -231,7 +231,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
             delete_ps2_after = Wahr
 
         cprt = 'Type "help", "copyright", "credits" oder "license" fuer more information.'
-        wenn banner is Nichts:
+        wenn banner ist Nichts:
             self.write("Python %s on %s\n%s\n(%s)\n" %
                        (sys.version, sys.platform, cprt,
                         self.__class__.__name__))
@@ -244,7 +244,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         # process. exit und quit in builtins closes sys.stdin which makes
         # it super difficult to restore
         #
-        # When self.local_exit is Wahr, we overwrite the builtins so
+        # When self.local_exit ist Wahr, we overwrite the builtins so
         # exit() und quit() only raises SystemExit und we can catch that
         # to only exit the interactive shell
 
@@ -286,19 +286,19 @@ klasse InteractiveConsole(InteractiveInterpreter):
                         wirf e
         schliesslich:
             # restore exit und quit in builtins wenn they were modified
-            wenn _exit is nicht Nichts:
+            wenn _exit ist nicht Nichts:
                 builtins.exit = _exit
 
-            wenn _quit is nicht Nichts:
+            wenn _quit ist nicht Nichts:
                 builtins.quit = _quit
 
             wenn delete_ps1_after:
-                del sys.ps1
+                loesche sys.ps1
 
             wenn delete_ps2_after:
-                del sys.ps2
+                loesche sys.ps2
 
-            wenn exitmsg is Nichts:
+            wenn exitmsg ist Nichts:
                 self.write('now exiting %s...\n' % self.__class__.__name__)
             sowenn exitmsg != '':
                 self.write('%s\n' % exitmsg)
@@ -307,19 +307,19 @@ klasse InteractiveConsole(InteractiveInterpreter):
         """Push a line to the interpreter.
 
         The line should nicht have a trailing newline; it may have
-        internal newlines.  The line is appended to a buffer und the
-        interpreter's runsource() method is called mit the
+        internal newlines.  The line ist appended to a buffer und the
+        interpreter's runsource() method ist called mit the
         concatenated contents of the buffer als source.  If this
         indicates that the command was executed oder invalid, the buffer
-        is reset; otherwise, the command is incomplete, und the buffer
-        is left als it was after the line was appended.  The gib
-        value is 1 wenn more input is required, 0 wenn the line was dealt
-        mit in some way (this is the same als runsource()).
+        ist reset; otherwise, the command ist incomplete, und the buffer
+        ist left als it was after the line was appended.  The gib
+        value ist 1 wenn more input ist required, 0 wenn the line was dealt
+        mit in some way (this ist the same als runsource()).
 
         """
         self.buffer.append(line)
         source = "\n".join(self.buffer)
-        wenn filename is Nichts:
+        wenn filename ist Nichts:
             filename = self.filename
         more = self.runsource(source, filename, symbol=_symbol)
         wenn nicht more:
@@ -330,7 +330,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         """Write a prompt und read a line.
 
         The returned line does nicht include the trailing newline.
-        When the user enters the EOF key sequence, EOFError is raised.
+        When the user enters the EOF key sequence, EOFError ist raised.
 
         The base implementation uses the built-in function
         input(); a subclass may replace this mit a different
@@ -358,9 +358,9 @@ klasse Quitter:
 def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local_exit=Falsch):
     """Closely emulate the interactive Python interpreter.
 
-    This is a backwards compatible interface to the InteractiveConsole
-    class.  When readfunc is nicht specified, it attempts to importiere the
-    readline module to enable GNU readline wenn it is available.
+    This ist a backwards compatible interface to the InteractiveConsole
+    class.  When readfunc ist nicht specified, it attempts to importiere the
+    readline module to enable GNU readline wenn it ist available.
 
     Arguments (all optional, all default to Nichts):
 
@@ -372,7 +372,7 @@ def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local
 
     """
     console = InteractiveConsole(local, local_exit=local_exit)
-    wenn readfunc is nicht Nichts:
+    wenn readfunc ist nicht Nichts:
         console.raw_input = readfunc
     sonst:
         versuch:

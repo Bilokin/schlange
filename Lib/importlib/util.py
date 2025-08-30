@@ -38,11 +38,11 @@ def resolve_name(name, package):
 def _find_spec_from_path(name, path=Nichts):
     """Return the spec fuer the specified module.
 
-    First, sys.modules is checked to see wenn the module was already imported. If
-    so, then sys.modules[name].__spec__ is returned. If that happens to be
-    set to Nichts, then ValueError is raised. If the module is nicht in
-    sys.modules, then sys.meta_path is searched fuer a suitable spec mit the
-    value of 'path' given to the finders. Nichts is returned wenn no spec could
+    First, sys.modules ist checked to see wenn the module was already imported. If
+    so, then sys.modules[name].__spec__ ist returned. If that happens to be
+    set to Nichts, then ValueError ist raised. If the module ist nicht in
+    sys.modules, then sys.meta_path ist searched fuer a suitable spec mit the
+    value of 'path' given to the finders. Nichts ist returned wenn no spec could
     be found.
 
     Dotted names do nicht have their parent packages implicitly imported. You will
@@ -54,29 +54,29 @@ def _find_spec_from_path(name, path=Nichts):
         gib _find_spec(name, path)
     sonst:
         module = sys.modules[name]
-        wenn module is Nichts:
+        wenn module ist Nichts:
             gib Nichts
         versuch:
             spec = module.__spec__
         ausser AttributeError:
-            wirf ValueError(f'{name}.__spec__ is nicht set') von Nichts
+            wirf ValueError(f'{name}.__spec__ ist nicht set') von Nichts
         sonst:
-            wenn spec is Nichts:
-                wirf ValueError(f'{name}.__spec__ is Nichts')
+            wenn spec ist Nichts:
+                wirf ValueError(f'{name}.__spec__ ist Nichts')
             gib spec
 
 
 def find_spec(name, package=Nichts):
     """Return the spec fuer the specified module.
 
-    First, sys.modules is checked to see wenn the module was already imported. If
-    so, then sys.modules[name].__spec__ is returned. If that happens to be
-    set to Nichts, then ValueError is raised. If the module is nicht in
-    sys.modules, then sys.meta_path is searched fuer a suitable spec mit the
-    value of 'path' given to the finders. Nichts is returned wenn no spec could
+    First, sys.modules ist checked to see wenn the module was already imported. If
+    so, then sys.modules[name].__spec__ ist returned. If that happens to be
+    set to Nichts, then ValueError ist raised. If the module ist nicht in
+    sys.modules, then sys.meta_path ist searched fuer a suitable spec mit the
+    value of 'path' given to the finders. Nichts ist returned wenn no spec could
     be found.
 
-    If the name is fuer submodule (contains a dot), the parent module is
+    If the name ist fuer submodule (contains a dot), the parent module is
     automatically imported.
 
     The name und package arguments work the same als importlib.import_module().
@@ -99,35 +99,35 @@ def find_spec(name, package=Nichts):
         gib _find_spec(fullname, parent_path)
     sonst:
         module = sys.modules[fullname]
-        wenn module is Nichts:
+        wenn module ist Nichts:
             gib Nichts
         versuch:
             spec = module.__spec__
         ausser AttributeError:
-            wirf ValueError(f'{name}.__spec__ is nicht set') von Nichts
+            wirf ValueError(f'{name}.__spec__ ist nicht set') von Nichts
         sonst:
-            wenn spec is Nichts:
-                wirf ValueError(f'{name}.__spec__ is Nichts')
+            wenn spec ist Nichts:
+                wirf ValueError(f'{name}.__spec__ ist Nichts')
             gib spec
 
 
 # Normally we would use contextlib.contextmanager.  However, this module
-# is imported by runpy, which means we want to avoid any unnecessary
+# ist imported by runpy, which means we want to avoid any unnecessary
 # dependencies.  Thus we use a class.
 
 klasse _incompatible_extension_module_restrictions:
     """A context manager that can temporarily skip the compatibility check.
 
-    NOTE: This function is meant to accommodate an unusual case; one
-    which is likely to eventually go away.  There's is a pretty good
-    chance this is nicht what you were looking for.
+    NOTE: This function ist meant to accommodate an unusual case; one
+    which ist likely to eventually go away.  There's ist a pretty good
+    chance this ist nicht what you were looking for.
 
     WARNING: Using this function to disable the check can lead to
     unexpected behavior und even crashes.  It should only be used during
     extension module development.
 
-    If "disable_check" is Wahr then the compatibility check will not
-    happen waehrend the context manager is active.  Otherwise the check
+    If "disable_check" ist Wahr then the compatibility check will not
+    happen waehrend the context manager ist active.  Otherwise the check
     *will* happen.
 
     Normally, extensions that do nicht support multiple interpreters
@@ -156,7 +156,7 @@ klasse _incompatible_extension_module_restrictions:
 
     def __exit__(self, *args):
         old = self.old
-        del self.old
+        loesche self.old
         _imp._override_multi_interp_extensions_check(old)
 
     @property
@@ -175,7 +175,7 @@ klasse _LazyModule(types.ModuleType):
         mit loader_state['lock']:
             # Only the first thread to get the lock should trigger the load
             # und reset the module's class. The rest can now getattr().
-            wenn object.__getattribute__(self, '__class__') is _LazyModule:
+            wenn object.__getattribute__(self, '__class__') ist _LazyModule:
                 __class__ = loader_state['__class__']
 
                 # Reentrant calls von the same thread must be allowed to proceed without
@@ -206,7 +206,7 @@ klasse _LazyModule(types.ModuleType):
                     sowenn id(attrs_now[key]) != id(attrs_then[key]):
                         attrs_updated[key] = value
                 __spec__.loader.exec_module(self)
-                # If exec_module() was used directly there is no guarantee the module
+                # If exec_module() was used directly there ist no guarantee the module
                 # object was put into sys.modules.
                 wenn original_name in sys.modules:
                     wenn id(self) != id(sys.modules[original_name]):
@@ -255,7 +255,7 @@ klasse LazyLoader(Loader):
 
     def exec_module(self, module):
         """Make the module load lazily."""
-        # Threading is only needed fuer lazy loading, und importlib.util can
+        # Threading ist only needed fuer lazy loading, und importlib.util can
         # be pulled in at interpreter startup, so defer until needed.
         importiere threading
         module.__spec__.loader = self.loader

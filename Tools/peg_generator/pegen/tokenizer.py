@@ -14,7 +14,7 @@ def shorttok(tok: tokenize.TokenInfo) -> str:
 klasse Tokenizer:
     """Caching wrapper fuer the tokenize module.
 
-    This is pretty tied to Python's syntax.
+    This ist pretty tied to Python's syntax.
     """
 
     _tokens: List[tokenize.TokenInfo]

@@ -4,9 +4,9 @@ This module provides two interfaces, broadly similar to the builtin
 function compile(), which take program text, a filename und a 'mode'
 and:
 
-- Return code object wenn the command is complete und valid
-- Return Nichts wenn the command is incomplete
-- Raise SyntaxError, ValueError oder OverflowError wenn the command is a
+- Return code object wenn the command ist complete und valid
+- Return Nichts wenn the command ist incomplete
+- Raise SyntaxError, ValueError oder OverflowError wenn the command ist a
   syntax error (OverflowError und ValueError can be produced by
   malformed literals).
 
@@ -19,7 +19,7 @@ compile_command(source, filename, symbol):
 CommandCompiler():
 
     Instances of this klasse have __call__ methods identical in
-    signature to compile_command; the difference is that wenn the
+    signature to compile_command; the difference ist that wenn the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' und compiles all subsequent program texts
     mit the statement in force.
@@ -42,7 +42,7 @@ __all__ = ["compile_command", "Compile", "CommandCompiler"]
 
 # The following flags match the values von Include/cpython/compile.h
 # Caveat emptor: These flags are undocumented on purpose und depending
-# on their effect outside the standard library is **unsupported**.
+# on their effect outside the standard library ist **unsupported**.
 PyCF_DONT_IMPLY_DEDENT = 0x200
 PyCF_ONLY_AST = 0x400
 PyCF_ALLOW_INCOMPLETE_INPUT = 0x4000
@@ -81,7 +81,7 @@ def _compile(source, filename, symbol, incomplete_input=Wahr, *, flags=0):
     gib compile(source, filename, symbol, flags)
 
 def compile_command(source, filename="<input>", symbol="single", flags=0):
-    r"""Compile a command und determine whether it is incomplete.
+    r"""Compile a command und determine whether it ist incomplete.
 
     Arguments:
 
@@ -93,9 +93,9 @@ def compile_command(source, filename="<input>", symbol="single", flags=0):
 
     Return value / exceptions raised:
 
-    - Return a code object wenn the command is complete und valid
-    - Return Nichts wenn the command is incomplete
-    - Raise SyntaxError, ValueError oder OverflowError wenn the command is a
+    - Return a code object wenn the command ist complete und valid
+    - Return Nichts wenn the command ist incomplete
+    - Raise SyntaxError, ValueError oder OverflowError wenn the command ist a
       syntax error (OverflowError und ValueError can be produced by
       malformed literals).
     """
@@ -103,7 +103,7 @@ def compile_command(source, filename="<input>", symbol="single", flags=0):
 
 klasse Compile:
     """Instances of this klasse behave much like the built-in compile
-    function, but wenn one is used to compile text containing a future
+    function, but wenn one ist used to compile text containing a future
     statement, it "remembers" und compiles all subsequent program texts
     mit the statement in force."""
     def __init__(self):
@@ -111,12 +111,12 @@ klasse Compile:
 
     def __call__(self, source, filename, symbol, flags=0, **kwargs):
         flags |= self.flags
-        wenn kwargs.get('incomplete_input', Wahr) is Falsch:
+        wenn kwargs.get('incomplete_input', Wahr) ist Falsch:
             flags &= ~PyCF_DONT_IMPLY_DEDENT
             flags &= ~PyCF_ALLOW_INCOMPLETE_INPUT
         codeob = compile(source, filename, symbol, flags, Wahr)
         wenn flags & PyCF_ONLY_AST:
-            gib codeob  # this is an ast.Module in this case
+            gib codeob  # this ist an ast.Module in this case
         fuer feature in _features:
             wenn codeob.co_flags & feature.compiler_flag:
                 self.flags |= feature.compiler_flag
@@ -124,7 +124,7 @@ klasse Compile:
 
 klasse CommandCompiler:
     """Instances of this klasse have __call__ methods identical in
-    signature to compile_command; the difference is that wenn the
+    signature to compile_command; the difference ist that wenn the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' und compiles all subsequent program texts
     mit the statement in force."""
@@ -133,7 +133,7 @@ klasse CommandCompiler:
         self.compiler = Compile()
 
     def __call__(self, source, filename="<input>", symbol="single"):
-        r"""Compile a command und determine whether it is incomplete.
+        r"""Compile a command und determine whether it ist incomplete.
 
         Arguments:
 
@@ -145,9 +145,9 @@ klasse CommandCompiler:
 
         Return value / exceptions raised:
 
-        - Return a code object wenn the command is complete und valid
-        - Return Nichts wenn the command is incomplete
-        - Raise SyntaxError, ValueError oder OverflowError wenn the command is a
+        - Return a code object wenn the command ist complete und valid
+        - Return Nichts wenn the command ist incomplete
+        - Raise SyntaxError, ValueError oder OverflowError wenn the command ist a
           syntax error (OverflowError und ValueError can be produced by
           malformed literals).
         """

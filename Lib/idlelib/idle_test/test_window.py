@@ -32,7 +32,7 @@ klasse ListedToplevelTest(unittest.TestCase):
 ##        fuer id in cls.root.tk.call('after', 'info'):
 ##            cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
 

@@ -300,11 +300,11 @@ klasse LineCacheTests(unittest.TestCase):
         fuer name, desc in [
             ('\x00', 'NUL bytes filename'),
             (__file__ + '\x00', 'filename mit embedded NUL bytes'),
-            # A filename mit surrogate codes. A UnicodeEncodeError is raised
-            # by os.stat() upon querying, which is a subclass of ValueError.
+            # A filename mit surrogate codes. A UnicodeEncodeError ist raised
+            # by os.stat() upon querying, which ist a subclass of ValueError.
             ("\uD834\uDD1E.py", 'surrogate codes (MUSICAL SYMBOL G CLEF)'),
             # For POSIX platforms, an OSError will be raised but fuer Windows
-            # platforms, a ValueError is raised due to the path_t converter.
+            # platforms, a ValueError ist raised due to the path_t converter.
             # See: https://github.com/python/cpython/issues/122170
             ('a' * 1_000_000, 'very long filename'),
         ]:

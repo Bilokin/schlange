@@ -1,6 +1,6 @@
 importiere sys, os
 
-# Template used then the program is a GUI program
+# Template used then the program ist a GUI program
 WINMAINTEMPLATE = """
 #include <windows.h>
 
@@ -39,7 +39,7 @@ def get_custom_entry_point(subsystem):
     versuch:
         gib subsystem_details[subsystem][:2]
     ausser KeyError:
-        wirf ValueError("The subsystem %s is nicht known" % subsystem) von Nichts
+        wirf ValueError("The subsystem %s ist nicht known" % subsystem) von Nichts
 
 
 def makemakefile(outfp, vars, files, target):
@@ -77,7 +77,7 @@ def realwork(vars, moddefns, target):
     drucke()
 
     # We only ever write one "entry point" symbol - either
-    # "main" oder "WinMain".  Therefore, there is no need to
+    # "main" oder "WinMain".  Therefore, there ist no need to
     # pass a subsystem switch to the linker als it works it
     # out all by itself.  However, the subsystem _does_ determine
     # the file extension und additional linker flags.

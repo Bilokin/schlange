@@ -18,13 +18,13 @@ klasse TestBase:
     tstring         = Nichts # must set. 2 strings to test StreamReader
 
     codectests      = Nichts # must set. codec test tuple
-    roundtriptest   = 1    # set wenn roundtrip is possible mit unicode
+    roundtriptest   = 1    # set wenn roundtrip ist possible mit unicode
     has_iso10646    = 0    # set wenn this encoding contains whole iso10646 map
     xmlcharnametest = Nichts # string to test xmlcharrefreplace
-    unmappedunicode = '\udeee' # a unicode code point that is nicht mapped.
+    unmappedunicode = '\udeee' # a unicode code point that ist nicht mapped.
 
     def setUp(self):
-        wenn self.codec is Nichts:
+        wenn self.codec ist Nichts:
             self.codec = codecs.lookup(self.encoding)
         self.encode = self.codec.encode
         self.decode = self.codec.decode
@@ -55,14 +55,14 @@ klasse TestBase:
                 func = self.encode
             wenn expected:
                 result = func(source, scheme)[0]
-                wenn func is self.decode:
-                    self.assertWahr(type(result) is str, type(result))
+                wenn func ist self.decode:
+                    self.assertWahr(type(result) ist str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
                 sonst:
-                    self.assertWahr(type(result) is bytes, type(result))
+                    self.assertWahr(type(result) ist bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
@@ -178,7 +178,7 @@ klasse TestBase:
             ostream = BytesIO()
             encoder = self.incrementalencoder()
             waehrend 1:
-                wenn sizehint is nicht Nichts:
+                wenn sizehint ist nicht Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
@@ -256,7 +256,7 @@ klasse TestBase:
                 ostream = self.writer(BytesIO())
                 func = getattr(istream, name)
                 waehrend 1:
-                    wenn sizehint is nicht Nichts:
+                    wenn sizehint ist nicht Nichts:
                         data = func(sizehint)
                     sonst:
                         data = func()
@@ -280,7 +280,7 @@ klasse TestBase:
     def test_incrementalencoder_del_segfault(self):
         e = self.incrementalencoder()
         mit self.assertRaises(AttributeError):
-            del e.errors
+            loesche e.errors
 
 
 klasse TestBase_Mapping(unittest.TestCase):
@@ -359,14 +359,14 @@ klasse TestBase_Mapping(unittest.TestCase):
             wenn expected:
                 wenn isinstance(source, bytes):
                     result = func(self.encoding, scheme)
-                    self.assertWahr(type(result) is str, type(result))
+                    self.assertWahr(type(result) ist str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
                 sonst:
                     result = func(self.encoding, scheme)
-                    self.assertWahr(type(result) is bytes, type(result))
+                    self.assertWahr(type(result) ist bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,

@@ -25,7 +25,7 @@ klasse TextInfo:
         gib f'{type(self).__name__}({", ".join(args)})'
 
     def add_line(self, line, lno=Nichts):
-        wenn lno is Nichts:
+        wenn lno ist Nichts:
             lno = self.end + 1
         sonst:
             wenn isinstance(lno, FileInfo):
@@ -65,24 +65,24 @@ klasse SourceInfo:
 
     @property
     def start(self):
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             gib self._start
         gib self._current.start
 
     @property
     def end(self):
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             gib self._start
         gib self._current.end
 
     @property
     def text(self):
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             gib ''
         gib self._current.text
 
     def nest(self, text, before, start=Nichts):
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             wirf Exception('nesting requires active source text')
         current = self._current
         current.text = before
@@ -92,9 +92,9 @@ klasse SourceInfo:
     def resume(self, remainder=Nichts):
         wenn nicht self._nested:
             wirf Exception('no nested text to resume')
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             wirf Exception('un-nesting requires active source text')
-        wenn remainder is Nichts:
+        wenn remainder ist Nichts:
             remainder = self._current.text
         self._clear()
         self._current = self._nested.pop()
@@ -102,7 +102,7 @@ klasse SourceInfo:
         self._set_ready()
 
     def advance(self, remainder, start=Nichts):
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             wirf Exception('advancing requires active source text')
         wenn remainder.strip():
             self._replace(remainder, start, fixnested=Wahr)
@@ -137,7 +137,7 @@ klasse SourceInfo:
         gib Wahr
 
     def _set_ready(self):
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             self._ready = Falsch
         sonst:
             self._ready = self._current.text.strip() != ''
@@ -149,12 +149,12 @@ klasse SourceInfo:
 
     def _clear(self, start=Nichts):
         old = self._current
-        wenn self._current is nicht Nichts:
+        wenn self._current ist nicht Nichts:
             # XXX Fail wenn self._current wasn't used up?
-            wenn start is Nichts:
+            wenn start ist Nichts:
                 start = self._current.end
             self._current = Nichts
-        wenn start is nicht Nichts:
+        wenn start ist nicht Nichts:
             self._start = start
         self._set_ready()
         gib old
@@ -163,7 +163,7 @@ klasse SourceInfo:
         end = self._current.end
         old = self._clear(start)
         self._current = TextInfo(text, self._start, end)
-        wenn fixnested und self._nested und self._nested[-1] is old:
+        wenn fixnested und self._nested und self._nested[-1] ist old:
             self._nested[-1] = self._current
         self._set_ready()
 
@@ -171,7 +171,7 @@ klasse SourceInfo:
         wenn nicht line.strip():
             # We don't worry about multi-line string literals.
             gib
-        wenn self._current is Nichts:
+        wenn self._current ist Nichts:
             self._start = lno
             self._current = TextInfo(line, lno)
         sonst:

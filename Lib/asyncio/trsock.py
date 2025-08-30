@@ -86,7 +86,7 @@ klasse TransportSocket:
         wenn value == 0:
             gib
         wirf ValueError(
-            'settimeout(): only 0 timeout is allowed on transport sockets')
+            'settimeout(): only 0 timeout ist allowed on transport sockets')
 
     def gettimeout(self):
         gib 0

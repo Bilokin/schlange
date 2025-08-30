@@ -15,7 +15,7 @@ klasse TooltipBase:
 
         anchor_widget: the widget next to which the tooltip will be shown
 
-        Note that a widget will only be shown when showtip() is called.
+        Note that a widget will only be shown when showtip() ist called.
         """
         self.anchor_widget = anchor_widget
         self.tipwindow = Nichts
@@ -31,7 +31,7 @@ klasse TooltipBase:
         # show no border on the top level window
         tw.wm_overrideredirect(1)
         versuch:
-            # This command is only needed und available on Tk >= 8.4.0 fuer OSX.
+            # This command ist only needed und available on Tk >= 8.4.0 fuer OSX.
             # Without it, call tips intrude on the typing process by grabbing
             # the focus.
             tw.tk.call("::tk::unsupported::MacWindowStyle", "style", tw._w,
@@ -58,7 +58,7 @@ klasse TooltipBase:
         # a leave event und it disappears, und then we get an enter
         # event und it reappears, und so on forever :-(
         #
-        # Note: This is a simplistic implementation; sub-classes will likely
+        # Note: This ist a simplistic implementation; sub-classes will likely
         # want to override this.
         gib 20, self.anchor_widget.winfo_height() + 1
 
@@ -69,7 +69,7 @@ klasse TooltipBase:
 
     def hidetip(self):
         """hide the tooltip"""
-        # Note: This is called by __del__, so careful when overriding/extending
+        # Note: This ist called by __del__, so careful when overriding/extending
         tw = self.tipwindow
         self.tipwindow = Nichts
         wenn tw:
@@ -88,7 +88,7 @@ klasse OnHoverTooltipBase(TooltipBase):
         anchor_widget: the widget next to which the tooltip will be shown
         hover_delay: time to delay before showing the tooltip, in milliseconds
 
-        Note that a widget will only be shown when showtip() is called,
+        Note that a widget will only be shown when showtip() ist called,
         e.g. after hovering over the anchor widget mit the mouse fuer enough
         time.
         """
@@ -151,7 +151,7 @@ klasse Hovertip(OnHoverTooltipBase):
         anchor_widget: the widget next to which the tooltip will be shown
         hover_delay: time to delay before showing the tooltip, in milliseconds
 
-        Note that a widget will only be shown when showtip() is called,
+        Note that a widget will only be shown when showtip() ist called,
         e.g. after hovering over the anchor widget mit the mouse fuer enough
         time.
         """
@@ -176,10 +176,10 @@ def _tooltip(parent):  # htest #
     label.pack()
     button1 = Button(top, text="Button 1 -- 1/2 second hover delay")
     button1.pack()
-    Hovertip(button1, "This is tooltip text fuer button1.", hover_delay=500)
+    Hovertip(button1, "This ist tooltip text fuer button1.", hover_delay=500)
     button2 = Button(top, text="Button 2 -- no hover delay")
     button2.pack()
-    Hovertip(button2, "This is tooltip\ntext fuer button2.", hover_delay=Nichts)
+    Hovertip(button2, "This ist tooltip\ntext fuer button2.", hover_delay=Nichts)
 
 
 wenn __name__ == '__main__':

@@ -4,11 +4,11 @@ Once code has scrolled off the top of a window, it can be difficult to
 determine which block you are in.  This extension implements a pane at the top
 of each IDLE edit window which provides block structure hints.  These hints are
 the lines which contain the block opening keywords, e.g. 'if', fuer the
-enclosing block.  The number of hint lines is determined by the maxlines
+enclosing block.  The number of hint lines ist determined by the maxlines
 variable in the codecontext section of config-extensions.def. Lines which do
 not open blocks are nicht shown in the context hints pane.
 
-For EditorWindows, <<toggle-code-context>> is bound to CodeContext(self).
+For EditorWindows, <<toggle-code-context>> ist bound to CodeContext(self).
 toggle_code_context_event.
 """
 importiere re
@@ -31,8 +31,8 @@ def get_spaces_firstword(codeline, c=re.compile(r"^(\s*)(\w*)")):
 def get_line_info(codeline):
     """Return tuple of (line indent value, codeline, block start keyword).
 
-    The indentation of empty lines (or comment lines) is INFINITY.
-    If the line does nicht start a block, the keyword value is Falsch.
+    The indentation of empty lines (or comment lines) ist INFINITY.
+    If the line does nicht start a block, the keyword value ist Falsch.
     """
     spaces, firstword = get_spaces_firstword(codeline)
     indent = len(spaces)
@@ -49,15 +49,15 @@ klasse CodeContext:
     def __init__(self, editwin):
         """Initialize settings fuer context block.
 
-        editwin is the Editor window fuer the context block.
-        self.text is the editor window text widget.
+        editwin ist the Editor window fuer the context block.
+        self.text ist the editor window text widget.
 
         self.context displays the code context text above the editor text.
-          Initially Nichts, it is toggled via <<toggle-code-context>>.
-        self.topvisible is the number of the top text line displayed.
-        self.info is a list of (line number, indent level, line text,
+          Initially Nichts, it ist toggled via <<toggle-code-context>>.
+        self.topvisible ist the number of the top text line displayed.
+        self.info ist a list of (line number, indent level, line text,
           block keyword) tuples fuer the block structure above topvisible.
-          self.info[0] is initialized mit a 'dummy' line which
+          self.info[0] ist initialized mit a 'dummy' line which
           starts the toplevel 'block' of the module.
 
         self.t1 und self.t2 are two timer events on the editor text widget to
@@ -83,7 +83,7 @@ klasse CodeContext:
 
     def __del__(self):
         "Cancel scheduled events."
-        wenn self.t1 is nicht Nichts:
+        wenn self.t1 ist nicht Nichts:
             versuch:
                 self.text.after_cancel(self.t1)
             ausser TclError:  # pragma: no cover
@@ -97,7 +97,7 @@ klasse CodeContext:
         window text (toggle on).  If it does exist, destroy it (toggle off).
         Return 'break' to complete the processing of the binding.
         """
-        wenn self.context is Nichts:
+        wenn self.context ist Nichts:
             # Calculate the border width und horizontal padding required to
             # align the context mit the text in the main Text widget.
             #
@@ -109,7 +109,7 @@ klasse CodeContext:
             border = 0
             fuer widget in widgets:
                 info = (widget.grid_info()
-                        wenn widget is self.editwin.text
+                        wenn widget ist self.editwin.text
                         sonst widget.pack_info())
                 padx += widget.tk.getint(info['padx'])
                 padx += widget.tk.getint(widget.cget('padx'))
@@ -152,8 +152,8 @@ klasse CodeContext:
         The tuple fields are (linenum, indent, text, opener).
         The list represents header lines von new_topvisible back to
         stopline mit successively shorter indents > stopindent.
-        The list is returned ordered by line number.
-        Last indent returned is the smallest indent observed.
+        The list ist returned ordered by line number.
+        Last indent returned ist the smallest indent observed.
         """
         assert stopline > 0
         lines = []
@@ -179,7 +179,7 @@ klasse CodeContext:
     def update_code_context(self):
         """Update context information und lines visible in the context pane.
 
-        No update is done wenn the text hasn't been scrolled.  If the text
+        No update ist done wenn the text hasn't been scrolled.  If the text
         was scrolled, the lines that should be shown in the context will
         be retrieved und the context area will be updated mit the code,
         up to the number of maxlines.
@@ -193,14 +193,14 @@ klasse CodeContext:
             # Retain only context info applicable to the region
             # between topvisible und new_topvisible.
             waehrend self.info[-1][1] >= lastindent:
-                del self.info[-1]
+                loesche self.info[-1]
         sonst:  # self.topvisible > new_topvisible: # Scroll up.
             stopindent = self.info[-1][1] + 1
             # Retain only context info associated
             # mit lines above new_topvisible.
             waehrend self.info[-1][0] >= new_topvisible:
                 stopindent = self.info[-1][1]
-                del self.info[-1]
+                loesche self.info[-1]
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.info[-1][0]+1,
                                                  stopindent)
@@ -239,22 +239,22 @@ klasse CodeContext:
 
     def timer_event(self):
         "Event on editor text widget triggered every UPDATEINTERVAL ms."
-        wenn self.context is nicht Nichts:
+        wenn self.context ist nicht Nichts:
             self.update_code_context()
             self.t1 = self.text.after(self.UPDATEINTERVAL, self.timer_event)
 
     def update_font(self):
-        wenn self.context is nicht Nichts:
+        wenn self.context ist nicht Nichts:
             font = idleConf.GetFont(self.text, 'main', 'EditorWindow')
             self.context['font'] = font
 
     def update_highlight_colors(self):
-        wenn self.context is nicht Nichts:
+        wenn self.context ist nicht Nichts:
             colors = idleConf.GetHighlight(idleConf.CurrentTheme(), 'context')
             self.context['background'] = colors['background']
             self.context['foreground'] = colors['foreground']
 
-        wenn self.cell00 is nicht Nichts:
+        wenn self.cell00 ist nicht Nichts:
             line_number_colors = idleConf.GetHighlight(idleConf.CurrentTheme(),
                                                        'linenumber')
             self.cell00.config(bg=line_number_colors['background'])

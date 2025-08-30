@@ -1,7 +1,7 @@
 """Response classes used by urllib.
 
 The base class, addbase, defines a minimal file-like interface,
-including read() und readline().  The typical response object is an
+including read() und readline().  The typical response object ist an
 addinfourl instance, which defines an info() method that returns
 headers und a geturl() method that returns the url.
 """

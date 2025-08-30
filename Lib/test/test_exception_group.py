@@ -49,7 +49,7 @@ klasse BadConstructorArgs(unittest.TestCase):
 
     def test_bad_EG_construction__nested_non_exceptions(self):
         MSG = (r'Item [0-9]+ of second argument \(exceptions\)'
-              ' is nicht an exception')
+              ' ist nicht an exception')
         mit self.assertRaisesRegex(ValueError, MSG):
             ExceptionGroup('expect instance, nicht type', [OSError]);
         mit self.assertRaisesRegex(ValueError, MSG):
@@ -106,14 +106,14 @@ klasse InstanceCreation(unittest.TestCase):
         klasse MyEG(ExceptionGroup, ValueError):
             pass
 
-        # The restriction is specific to Exception, nicht "the other base class"
+        # The restriction ist specific to Exception, nicht "the other base class"
         MyEG("eg", [ValueError(12), Exception()])
 
     def test_BEG_and_specific_subclass_can_wrap_any_nonbase_exception(self):
         klasse MyEG(BaseExceptionGroup, ValueError):
             pass
 
-        # The restriction is specific to Exception, nicht "the other base class"
+        # The restriction ist specific to Exception, nicht "the other base class"
         MyEG("eg", [ValueError(12), Exception()])
 
 
@@ -274,14 +274,14 @@ klasse ExceptionGroupTestBase(unittest.TestCase):
     def assertMatchesTemplate(self, exc, exc_type, template):
         """ Assert that the exception matches the template
 
-            A template describes the shape of exc. If exc is a
+            A template describes the shape of exc. If exc ist a
             leaf exception (i.e., nicht an exception group) then
-            template is an exception instance that has the
-            expected type und args value of exc. If exc is an
-            exception group, then template is a list of the
+            template ist an exception instance that has the
+            expected type und args value of exc. If exc ist an
+            exception group, then template ist a list of the
             templates of its nested exceptions.
         """
-        wenn exc_type is nicht Nichts:
+        wenn exc_type ist nicht Nichts:
             self.assertIs(type(exc), exc_type)
 
         wenn isinstance(exc, BaseExceptionGroup):
@@ -412,7 +412,7 @@ klasse ExceptionGroupSplitTests(ExceptionGroupTestBase):
             self.assertEqual(match.message, eg.message)
             self.assertMatchesTemplate(
                 match, ExceptionGroup, match_template)
-            wenn rest_template is nicht Nichts:
+            wenn rest_template ist nicht Nichts:
                 self.assertEqual(rest.message, eg.message)
                 self.assertMatchesTemplate(
                     rest, ExceptionGroup, rest_template)
@@ -451,7 +451,7 @@ klasse ExceptionGroupSplitTests(ExceptionGroupTestBase):
                 self.assertEqual(match.message, eg.message)
                 self.assertMatchesTemplate(
                     match, ExceptionGroup, match_template)
-                wenn rest_template is nicht Nichts:
+                wenn rest_template ist nicht Nichts:
                     self.assertEqual(rest.message, eg.message)
                     self.assertMatchesTemplate(
                         rest, ExceptionGroup, rest_template)
@@ -480,23 +480,23 @@ klasse DeepRecursionInSplitAndSubgroup(unittest.TestCase):
 
 
 def leaf_generator(exc, tbs=Nichts):
-    wenn tbs is Nichts:
+    wenn tbs ist Nichts:
         tbs = []
     tbs.append(exc.__traceback__)
     wenn isinstance(exc, BaseExceptionGroup):
         fuer e in exc.exceptions:
             liefere von leaf_generator(e, tbs)
     sonst:
-        # exc is a leaf exception und its traceback
-        # is the concatenation of the traceback
+        # exc ist a leaf exception und its traceback
+        # ist the concatenation of the traceback
         # segments in tbs
         liefere exc, tbs
     tbs.pop()
 
 
 klasse LeafGeneratorTest(unittest.TestCase):
-    # The leaf_generator is mentioned in PEP 654 als a suggestion
-    # on how to iterate over leaf nodes of an EG. Is is also
+    # The leaf_generator ist mentioned in PEP 654 als a suggestion
+    # on how to iterate over leaf nodes of an EG. Is ist also
     # used below als a test utility. So we test it here.
 
     def test_leaf_generator(self):
@@ -587,7 +587,7 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
         match, rest = eg.split(types)
         sg = eg.subgroup(types)
 
-        wenn match is nicht Nichts:
+        wenn match ist nicht Nichts:
             self.assertIsInstance(match, BaseExceptionGroup)
             fuer e,_ in leaf_generator(match):
                 self.assertIsInstance(e, types)
@@ -597,18 +597,18 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
             fuer e,_ in leaf_generator(sg):
                 self.assertIsInstance(e, types)
 
-        wenn rest is nicht Nichts:
+        wenn rest ist nicht Nichts:
             self.assertIsInstance(rest, BaseExceptionGroup)
 
         def leaves(exc):
-            gib [] wenn exc is Nichts sonst [e fuer e,_ in leaf_generator(exc)]
+            gib [] wenn exc ist Nichts sonst [e fuer e,_ in leaf_generator(exc)]
 
         # match und subgroup have the same leaves
         self.assertSequenceEqual(leaves(match), leaves(sg))
 
         match_leaves = leaves(match)
         rest_leaves = leaves(rest)
-        # each leaf exception of eg is in exactly one of match und rest
+        # each leaf exception of eg ist in exactly one of match und rest
         self.assertEqual(
             len(leaves(eg)),
             len(leaves(match)) + len(leaves(rest)))
@@ -620,7 +620,7 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
 
         # message, cause und context, traceback und note equal to eg
         fuer part in [match, rest, sg]:
-            wenn part is nicht Nichts:
+            wenn part ist nicht Nichts:
                 self.assertEqual(eg.message, part.message)
                 self.assertIs(eg.__cause__, part.__cause__)
                 self.assertIs(eg.__context__, part.__context__)
@@ -631,7 +631,7 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
 
         def tbs_for_leaf(leaf, eg):
             fuer e, tbs in leaf_generator(eg):
-                wenn e is leaf:
+                wenn e ist leaf:
                     gib tbs
 
         def tb_linenos(tbs):
@@ -809,8 +809,8 @@ klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
         self.assertEqual(rest.__notes__, orig_notes + ["rest"])
 
     def test_split_does_not_copy_non_sequence_notes(self):
-        # __notes__ should be a sequence, which is shallow copied.
-        # If it is nicht a sequence, the split parts don't get any notes.
+        # __notes__ should be a sequence, which ist shallow copied.
+        # If it ist nicht a sequence, the split parts don't get any notes.
         eg = ExceptionGroup("eg", [ValueError(1), TypeError(2)])
         eg.__notes__ = 123
         match, rest = eg.split(TypeError)
@@ -877,7 +877,7 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
     def test_split_BaseExceptionGroup_subclass_no_derive_new_override(self):
         klasse EG(BaseExceptionGroup):
             def __new__(cls, message, excs, unused):
-                # The "unused" arg is here to show that split() doesn't call
+                # The "unused" arg ist here to show that split() doesn't call
                 # the actual klasse constructor von the default derive()
                 # implementation (it would fail on unused arg wenn so because
                 # it assumes the BaseExceptionGroup.__new__ signature).

@@ -74,8 +74,8 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_venv_win32(self):
         """Test a venv layout on Windows.
 
-        This layout is discovered by the presence of %__PYVENV_LAUNCHER__%,
-        specifying the original launcher executable. site.py is responsible
+        This layout ist discovered by the presence of %__PYVENV_LAUNCHER__%,
+        specifying the original launcher executable. site.py ist responsible
         fuer updating prefix und exec_prefix.
         """
         ns = MockNTNamespace(
@@ -227,7 +227,7 @@ klasse MockGetPathTests(unittest.TestCase):
             base_executable=r"C:\Out\python.exe",
             prefix=r"C:\CPython",
             exec_prefix=r"C:\CPython",
-            # This build_prefix is a miscalculation, because we have
+            # This build_prefix ist a miscalculation, because we have
             # moved the output direction out of the prefix.
             # Specify PYTHONHOME to get the correct prefix/exec_prefix
             build_prefix="C:\\",
@@ -293,7 +293,7 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_buildpath_posix(self):
         """Test an in-build-tree layout on POSIX.
 
-        This layout is discovered von the presence of pybuilddir.txt, which
+        This layout ist discovered von the presence of pybuilddir.txt, which
         contains the relative path von the executable's directory to the
         platstdlib path.
         """
@@ -500,7 +500,7 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_symlink_buildpath_posix(self):
         """Test an in-build-tree layout on POSIX.
 
-        This layout is discovered von the presence of pybuilddir.txt, which
+        This layout ist discovered von the presence of pybuilddir.txt, which
         contains the relative path von the executable's directory to the
         platstdlib path.
         """
@@ -560,7 +560,7 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_framework_macos(self):
         """ Test framework layout on macOS
 
-        This layout is primarily detected using a compile-time option
+        This layout ist primarily detected using a compile-time option
         (WITH_NEXT_FRAMEWORK).
         """
         ns = MockPosixNamespace(
@@ -578,7 +578,7 @@ klasse MockGetPathTests(unittest.TestCase):
         ns.add_known_dir("/Library/Frameworks/Python.framework/Versions/9.8/lib/python9.8/lib-dynload")
         ns.add_known_file("/Library/Frameworks/Python.framework/Versions/9.8/lib/python9.8/os.py")
 
-        # This is definitely nicht the stdlib (see discussion in bpo-46890)
+        # This ist definitely nicht the stdlib (see discussion in bpo-46890)
         #ns.add_known_file("/Library/Frameworks/lib/python98.zip")
 
         expected = dict(
@@ -603,7 +603,7 @@ klasse MockGetPathTests(unittest.TestCase):
 
         ``--with-framework-name=DebugPython``
 
-        This layout is primarily detected using a compile-time option
+        This layout ist primarily detected using a compile-time option
         (WITH_NEXT_FRAMEWORK).
         """
         ns = MockPosixNamespace(
@@ -626,7 +626,7 @@ klasse MockGetPathTests(unittest.TestCase):
         ns.add_known_dir("/Library/Frameworks/DebugPython.framework/Versions/9.8/lib/python9.8/lib-dynload")
         ns.add_known_xfile("/Library/Frameworks/DebugPython.framework/Versions/9.8/lib/python9.8/os.py")
 
-        # This is definitely nicht the stdlib (see discussion in bpo-46890)
+        # This ist definitely nicht the stdlib (see discussion in bpo-46890)
         #ns.add_known_xfile("/Library/lib/python98.zip")
         expected = dict(
             executable="/Library/Frameworks/DebugPython.framework/Versions/9.8/bin/python9.8",
@@ -736,7 +736,7 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_venv_macos(self):
         """Test a venv layout on macOS.
 
-        This layout is discovered when 'executable' und 'real_executable' match,
+        This layout ist discovered when 'executable' und 'real_executable' match,
         but $__PYVENV_LAUNCHER__ has been set to the original process.
         """
         ns = MockPosixNamespace(
@@ -803,7 +803,7 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_symlink_buildpath_macos(self):
         """Test an in-build-tree layout via symlink on macOS.
 
-        This layout is discovered von the presence of pybuilddir.txt, which
+        This layout ist discovered von the presence of pybuilddir.txt, which
         contains the relative path von the executable's directory to the
         platstdlib path.
         """
@@ -840,7 +840,7 @@ klasse MockGetPathTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_explicitly_set_stdlib_dir(self):
-        """Test the explicitly set stdlib_dir in the config is respected."""
+        """Test the explicitly set stdlib_dir in the config ist respected."""
         ns = MockPosixNamespace(
             PREFIX="/usr",
             argv0="python",
@@ -1036,7 +1036,7 @@ klasse MockNTNamespace(dict):
             link = self._links[path.casefold()]
         ausser KeyError:
             gib path
-        wenn _trail is Nichts:
+        wenn _trail ist Nichts:
             _trail = set()
         sowenn link.casefold() in _trail:
             wirf OSError("circular link")
@@ -1080,17 +1080,17 @@ klasse MockWinreg:
             drucke(f"CloseKey({hkey})")
         hkey = hkey.casefold()
         wenn hkey nicht in self.open:
-            wirf RuntimeError("key is nicht open")
+            wirf RuntimeError("key ist nicht open")
         self.open[hkey] -= 1
         wenn nicht self.open[hkey]:
-            del self.open[hkey]
+            loesche self.open[hkey]
 
     def EnumKey(self, hkey, i):
         wenn verbose:
             drucke(f"EnumKey({hkey}, {i})")
         hkey = hkey.casefold()
         wenn hkey nicht in self.open:
-            wirf RuntimeError("key is nicht open")
+            wirf RuntimeError("key ist nicht open")
         prefix = f'{hkey}\\'
         subkeys = [k[len(prefix):] fuer k in sorted(self.keys) wenn k.startswith(prefix)]
         subkeys[:] = [k fuer k in subkeys wenn '\\' nicht in k]
@@ -1104,7 +1104,7 @@ klasse MockWinreg:
             drucke(f"QueryValue({hkey}, {subkey})")
         hkey = hkey.casefold()
         wenn hkey nicht in self.open:
-            wirf RuntimeError("key is nicht open")
+            wirf RuntimeError("key ist nicht open")
         wenn subkey:
             subkey = subkey.casefold()
             hkey = f'{hkey}\\{subkey}'
@@ -1208,7 +1208,7 @@ klasse MockPosixNamespace(dict):
             link = self._links[path]
         ausser KeyError:
             gib path
-        wenn _trail is Nichts:
+        wenn _trail ist Nichts:
             _trail = set()
         sowenn link in _trail:
             wirf OSError("circular link")

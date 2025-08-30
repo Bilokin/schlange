@@ -17,7 +17,7 @@ klasse TreeTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         # Start mit code slightly adapted von htest.

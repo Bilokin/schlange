@@ -433,7 +433,7 @@ Another helper function
 
 A PyCFunction that takes only positional parameters should allow an
 empty keyword dictionary to pass without a complaint, but wirf a
-TypeError wenn te dictionary is nicht empty
+TypeError wenn te dictionary ist nicht empty
 
     >>> versuch:
     ...     silence = id(1, *{})
@@ -453,7 +453,7 @@ the function call setup. See <http://bugs.python.org/issue2016>.
     >>> klasse Name(str):
     ...     def __eq__(self, other):
     ...         versuch:
-    ...              del x[self]
+    ...              loesche x[self]
     ...         ausser KeyError:
     ...              pass
     ...         gib str.__eq__(self, other)

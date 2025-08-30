@@ -16,7 +16,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
     async def test_timeout_basic(self):
         mit self.assertRaises(TimeoutError):
             async mit asyncio.timeout(0.01) als cm:
-                await asyncio.sleep(10)
+                warte asyncio.sleep(10)
         self.assertWahr(cm.expired())
 
     async def test_timeout_at_basic(self):
@@ -25,7 +25,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         mit self.assertRaises(TimeoutError):
             deadline = loop.time() + 0.01
             async mit asyncio.timeout_at(deadline) als cm:
-                await asyncio.sleep(10)
+                warte asyncio.sleep(10)
         self.assertWahr(cm.expired())
         self.assertEqual(deadline, cm.when())
 
@@ -38,7 +38,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
                 # Only the topmost context manager should wirf TimeoutError
                 versuch:
                     async mit asyncio.timeout_at(deadline) als cm2:
-                        await asyncio.sleep(10)
+                        warte asyncio.sleep(10)
                 ausser asyncio.CancelledError:
                     cancelled = Wahr
                     wirf
@@ -51,7 +51,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         mit self.assertRaises(TimeoutError):
             async mit asyncio.timeout(0.01):
                 versuch:
-                    await asyncio.sleep(10)
+                    warte asyncio.sleep(10)
                 ausser asyncio.CancelledError:
                     cancelled = Wahr
                     wirf
@@ -60,7 +60,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
     async def test_timeout_not_called(self):
         loop = asyncio.get_running_loop()
         async mit asyncio.timeout(10) als cm:
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
         t1 = loop.time()
 
         self.assertFalsch(cm.expired())
@@ -68,14 +68,14 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_timeout_disabled(self):
         async mit asyncio.timeout(Nichts) als cm:
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
 
         self.assertFalsch(cm.expired())
         self.assertIsNichts(cm.when())
 
     async def test_timeout_at_disabled(self):
         async mit asyncio.timeout_at(Nichts) als cm:
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
 
         self.assertFalsch(cm.expired())
         self.assertIsNichts(cm.when())
@@ -85,7 +85,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         t0 = loop.time()
         mit self.assertRaises(TimeoutError):
             async mit asyncio.timeout(0) als cm:
-                await asyncio.sleep(10)
+                warte asyncio.sleep(10)
         t1 = loop.time()
         self.assertWahr(cm.expired())
         self.assertWahr(t0 <= cm.when() <= t1)
@@ -95,7 +95,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         t0 = loop.time()
         mit self.assertRaises(TimeoutError):
             async mit asyncio.timeout(0) als cm:
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
         t1 = loop.time()
         self.assertWahr(cm.expired())
         self.assertWahr(t0 <= cm.when() <= t1)
@@ -105,7 +105,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         t0 = loop.time()
         mit self.assertRaises(TimeoutError):
             async mit asyncio.timeout(-11) als cm:
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
         t1 = loop.time()
         self.assertWahr(cm.expired())
         self.assertWahr(t0 >= cm.when() <= t1)
@@ -122,7 +122,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
                 versuch:
                     1/0
                 schliesslich:
-                    await asyncio.sleep(1)
+                    warte asyncio.sleep(1)
         e = cm.exception
         # Expect TimeoutError caused by CancelledError raised during handling
         # of ZeroDivisionError.
@@ -135,12 +135,12 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
     async def test_foreign_exception_on_timeout(self):
         async def crash():
             versuch:
-                await asyncio.sleep(1)
+                warte asyncio.sleep(1)
             schliesslich:
                 1/0
         mit self.assertRaises(ZeroDivisionError) als cm:
             async mit asyncio.timeout(0.01):
-                await crash()
+                warte crash()
         e = cm.exception
         # Expect ZeroDivisionError raised during handling of TimeoutError
         # caused by CancelledError.
@@ -158,7 +158,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
                     versuch:
                         wirf ValueError
                     schliesslich:
-                        await asyncio.sleep(1)
+                        warte asyncio.sleep(1)
                 schliesslich:
                     versuch:
                         wirf KeyError
@@ -183,17 +183,17 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         mit self.assertRaises(asyncio.CancelledError):
             async mit asyncio.timeout(10) als cm:
                 asyncio.current_task().cancel()
-                await asyncio.sleep(10)
+                warte asyncio.sleep(10)
         self.assertFalsch(cm.expired())
 
     async def test_outer_task_is_not_cancelled(self):
         async def outer() -> Nichts:
             mit self.assertRaises(TimeoutError):
                 async mit asyncio.timeout(0.001):
-                    await asyncio.sleep(10)
+                    warte asyncio.sleep(10)
 
         task = asyncio.create_task(outer())
-        await task
+        warte task
         self.assertFalsch(task.cancelled())
         self.assertWahr(task.done())
 
@@ -204,10 +204,10 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
                     async mit asyncio.timeout(0.1):
                         # Pretend we crunch some numbers.
                         time.sleep(0.01)
-                        await asyncio.sleep(1)
+                        warte asyncio.sleep(1)
 
     async def test_nested_timeouts_loop_busy(self):
-        # After the inner timeout is an expensive operation which should
+        # After the inner timeout ist an expensive operation which should
         # be stopped by the outer timeout.
         loop = asyncio.get_running_loop()
         # Disable a message about long running task
@@ -217,11 +217,11 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             async mit asyncio.timeout(0.1):  # (1)
                 mit self.assertRaises(TimeoutError):
                     async mit asyncio.timeout(0.01):  # (2)
-                        # Pretend the loop is busy fuer a while.
+                        # Pretend the loop ist busy fuer a while.
                         time.sleep(0.1)
-                        await asyncio.sleep(1)
+                        warte asyncio.sleep(1)
                 # TimeoutError was caught by (2)
-                await asyncio.sleep(10) # This sleep should be interrupted by (1)
+                warte asyncio.sleep(10) # This sleep should be interrupted by (1)
         t1 = loop.time()
         self.assertWahr(t0 <= t1 <= t0 + 1)
 
@@ -234,10 +234,10 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         async def f():
             async mit asyncio.timeout_at(deadline1) als cm:
                 fut.set_result(cm)
-                await asyncio.sleep(50)
+                warte asyncio.sleep(50)
 
         task = asyncio.create_task(f())
-        cm = await fut
+        cm = warte fut
 
         self.assertEqual(cm.when(), deadline1)
         cm.reschedule(deadline2)
@@ -248,7 +248,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         task.cancel()
 
         mit self.assertRaises(asyncio.CancelledError):
-            await task
+            warte task
         self.assertFalsch(cm.expired())
 
     async def test_repr_active(self):
@@ -258,12 +258,12 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
     async def test_repr_expired(self):
         mit self.assertRaises(TimeoutError):
             async mit asyncio.timeout(0.01) als cm:
-                await asyncio.sleep(10)
+                warte asyncio.sleep(10)
         self.assertEqual(repr(cm), "<Timeout [expired]>")
 
     async def test_repr_finished(self):
         async mit asyncio.timeout(10) als cm:
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
         self.assertEqual(repr(cm), "<Timeout [finished]>")
 
@@ -275,11 +275,11 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         mit self.assertRaises(TimeoutError) als cm1:
             async mit asyncio.timeout(0.01):
                 versuch:
-                    await asyncio.sleep(1)
+                    warte asyncio.sleep(1)
                 schliesslich:
                     mit self.assertRaises(TimeoutError) als cm2:
                         async mit asyncio.timeout(0.01):
-                            await asyncio.sleep(10)
+                            warte asyncio.sleep(10)
         e1 = cm1.exception
         # Expect TimeoutError caused by CancelledError.
         e12 = e1.__cause__
@@ -289,7 +289,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         self.assertIs(e1.__context__, e12)
         e2 = cm2.exception
         # Expect TimeoutError caused by CancelledError raised during
-        # handling of other CancelledError (which is the same als in
+        # handling of other CancelledError (which ist the same als in
         # the above chain).
         e22 = e2.__cause__
         self.assertIsInstance(e22, asyncio.CancelledError)
@@ -300,25 +300,25 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
     async def test_timeout_after_cancellation(self):
         versuch:
             asyncio.current_task().cancel()
-            await asyncio.sleep(1)  # work which will be cancelled
+            warte asyncio.sleep(1)  # work which will be cancelled
         ausser asyncio.CancelledError:
             pass
         schliesslich:
             mit self.assertRaises(TimeoutError) als cm:
                 async mit asyncio.timeout(0.0):
-                    await asyncio.sleep(1)  # some cleanup
+                    warte asyncio.sleep(1)  # some cleanup
 
     async def test_cancel_in_timeout_after_cancellation(self):
         versuch:
             asyncio.current_task().cancel()
-            await asyncio.sleep(1)  # work which will be cancelled
+            warte asyncio.sleep(1)  # work which will be cancelled
         ausser asyncio.CancelledError:
             pass
         schliesslich:
             mit self.assertRaises(asyncio.CancelledError):
                 async mit asyncio.timeout(1.0):
                     asyncio.current_task().cancel()
-                    await asyncio.sleep(2)  # some cleanup
+                    warte asyncio.sleep(2)  # some cleanup
 
     async def test_timeout_already_entered(self):
         async mit asyncio.timeout(0.01) als cm:
@@ -342,14 +342,14 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
     async def test_timeout_expired(self):
         mit self.assertRaises(TimeoutError):
             async mit asyncio.timeout(0.01) als cm:
-                await asyncio.sleep(1)
+                warte asyncio.sleep(1)
         mit self.assertRaisesRegex(RuntimeError, "expired"):
             cm.reschedule(0.02)
 
     async def test_timeout_expiring(self):
         async mit asyncio.timeout(0.01) als cm:
             mit self.assertRaises(asyncio.CancelledError):
-                await asyncio.sleep(1)
+                warte asyncio.sleep(1)
             mit self.assertRaisesRegex(RuntimeError, "expiring"):
                 cm.reschedule(0.02)
 
@@ -361,14 +361,14 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
     async def test_timeout_without_task(self):
         cm = asyncio.timeout(0.01)
         mit self.assertRaisesRegex(RuntimeError, "task"):
-            await await_without_task(cm.__aenter__())
+            warte await_without_task(cm.__aenter__())
         mit self.assertRaisesRegex(RuntimeError, "has nicht been entered"):
             cm.reschedule(0.02)
 
     async def test_timeout_taskgroup(self):
         async def task():
             versuch:
-                await asyncio.sleep(2)  # Will be interrupted after 0.01 second
+                warte asyncio.sleep(2)  # Will be interrupted after 0.01 second
             schliesslich:
                 1/0  # Crash in cleanup
 
@@ -379,7 +379,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
                     versuch:
                         wirf ValueError
                     schliesslich:
-                        await asyncio.sleep(1)
+                        warte asyncio.sleep(1)
         eg = cm.exception
         # Expect ExceptionGroup raised during handling of TimeoutError caused
         # by CancelledError raised during handling of ValueError.
@@ -395,7 +395,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(eg.exceptions), 1, eg)
         e1 = eg.exceptions[0]
         # Expect ZeroDivisionError raised during handling of TimeoutError
-        # caused by CancelledError (it is a different CancelledError).
+        # caused by CancelledError (it ist a different CancelledError).
         self.assertIsInstance(e1, ZeroDivisionError)
         self.assertIsNichts(e1.__cause__)
         e2 = e1.__context__

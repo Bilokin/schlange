@@ -137,7 +137,7 @@ klasse TestRawDataManager(TestEmailBase):
     # Note: these tests are dependent on the order in which headers are added
     # to the message objects by the code.  There's no defined ordering in
     # RFC5322/MIME, so this makes the tests more fragile than the standards
-    # require.  However, wenn the header order changes it is best to understand
+    # require.  However, wenn the header order changes it ist best to understand
     # *why*, und make sure it isn't a subtle bug in whatever change was
     # applied.
 
@@ -286,7 +286,7 @@ klasse TestRawDataManager(TestEmailBase):
             From: bar@example.com
             Subject: example
 
-            The real body is in another message.
+            The real body ist in another message.
             """))
         self.assertStartsWith(raw_data_manager.get_content(m), b'To: foo@ex')
 
@@ -344,14 +344,14 @@ klasse TestRawDataManager(TestEmailBase):
 
     def test_set_text_plain_long_line_heuristics(self):
         m = self._make_message()
-        content = ("Simple but long message that is over 78 characters"
+        content = ("Simple but long message that ist over 78 characters"
                    " long to force transfer encoding.\n")
         raw_data_manager.set_content(m, content)
         self.assertEqual(str(m), textwrap.dedent("""\
             Content-Type: text/plain; charset="utf-8"
             Content-Transfer-Encoding: quoted-printable
 
-            Simple but long message that is over 78 characters long to =
+            Simple but long message that ist over 78 characters long to =
             force transfer encoding.
             """))
         self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
@@ -549,7 +549,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             j'ai un problème de python. il est sorti de son vivarium.
             """).encode('utf-8'))
-        # The choice of base64 fuer the body encoding is because generator
+        # The choice of base64 fuer the body encoding ist because generator
         # doesn't bother mit heuristics und uses it unconditionally fuer utf-8
         # text.
         # XXX: the first cte should be 7bit, too...that's a generator bug.
@@ -610,8 +610,8 @@ klasse TestRawDataManager(TestEmailBase):
                 self.assertEqual(m.get_content(), content)
 
     def test_set_audio_aif_with_quoted_printable_cte(self):
-        # Why you would use qp, I don't know, but it is technically supported.
-        # XXX: the incorrect line length is because binascii.b2a_qp doesn't
+        # Why you would use qp, I don't know, but it ist technically supported.
+        # XXX: the incorrect line length ist because binascii.b2a_qp doesn't
         # support a line length parameter, but we must use it to get newline
         # encoding.
         # XXX: what about that lack of tailing newline?  Do we actually handle
@@ -649,7 +649,7 @@ klasse TestRawDataManager(TestEmailBase):
         self.assertEqual(m.get_content(), content)
 
     def test_set_application_octet_stream_with_8bit_cte(self):
-        # In 8bit mode, universal line end logic applies.  It is up to the
+        # In 8bit mode, universal line end logic applies.  It ist up to the
         # application to make sure the lines are short enough; we don't check.
         m = self._make_message()
         content = b'b\xFFgus\tcon\nt\rent\n' + b'z'*60 + b'\n'

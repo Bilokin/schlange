@@ -37,15 +37,15 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
             sock.close()
 
         async def serve(reader, writer):
-            await reader.readline()
+            warte reader.readline()
             main_task.cancel()
             writer.write(b'1')
             writer.close()
-            await writer.wait_closed()
+            warte writer.wait_closed()
 
         async def main(srv):
             async mit srv:
-                await srv.serve_forever()
+                warte srv.serve_forever()
 
         srv = self.loop.run_until_complete(asyncio.start_server(
             serve, socket_helper.HOSTv4, 0, start_serving=Falsch))
@@ -88,19 +88,19 @@ klasse SelectorStartServerTests(BaseStartServer, unittest.TestCase):
             sock.close()
 
         async def serve(reader, writer):
-            await reader.readline()
+            warte reader.readline()
             main_task.cancel()
             writer.write(b'1')
             writer.close()
-            await writer.wait_closed()
+            warte writer.wait_closed()
 
         async def main(srv):
             async mit srv:
                 self.assertFalsch(srv.is_serving())
-                await srv.start_serving()
+                warte srv.start_serving()
                 self.assertWahr(srv.is_serving())
                 started.set()
-                await srv.serve_forever()
+                warte srv.serve_forever()
 
         mit test_utils.unix_socket_path() als addr:
             srv = self.loop.run_until_complete(asyncio.start_unix_server(
@@ -127,105 +127,105 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
     async def test_wait_closed_basic(self):
         async def serve(rd, wr):
             versuch:
-                await rd.read()
+                warte rd.read()
             schliesslich:
                 wr.close()
-                await wr.wait_closed()
+                warte wr.wait_closed()
 
-        srv = await asyncio.start_server(serve, socket_helper.HOSTv4, 0)
+        srv = warte asyncio.start_server(serve, socket_helper.HOSTv4, 0)
         self.addCleanup(srv.close)
 
         # active count = 0, nicht closed: should block
         task1 = asyncio.create_task(srv.wait_closed())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(task1.done())
 
         # active count != 0, nicht closed: should block
         addr = srv.sockets[0].getsockname()
-        (rd, wr) = await asyncio.open_connection(addr[0], addr[1])
+        (rd, wr) = warte asyncio.open_connection(addr[0], addr[1])
         task2 = asyncio.create_task(srv.wait_closed())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(task1.done())
         self.assertFalsch(task2.done())
 
         srv.close()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         # active count != 0, closed: should block
         task3 = asyncio.create_task(srv.wait_closed())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(task1.done())
         self.assertFalsch(task2.done())
         self.assertFalsch(task3.done())
 
         wr.close()
-        await wr.wait_closed()
+        warte wr.wait_closed()
         # active count == 0, closed: should unblock
-        await task1
-        await task2
-        await task3
-        await srv.wait_closed()  # Return immediately
+        warte task1
+        warte task2
+        warte task3
+        warte srv.wait_closed()  # Return immediately
 
     async def test_wait_closed_race(self):
         # Test a regression in 3.12.0, should be fixed in 3.12.1
         async def serve(rd, wr):
             versuch:
-                await rd.read()
+                warte rd.read()
             schliesslich:
                 wr.close()
-                await wr.wait_closed()
+                warte wr.wait_closed()
 
-        srv = await asyncio.start_server(serve, socket_helper.HOSTv4, 0)
+        srv = warte asyncio.start_server(serve, socket_helper.HOSTv4, 0)
         self.addCleanup(srv.close)
 
         task = asyncio.create_task(srv.wait_closed())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(task.done())
         addr = srv.sockets[0].getsockname()
-        (rd, wr) = await asyncio.open_connection(addr[0], addr[1])
+        (rd, wr) = warte asyncio.open_connection(addr[0], addr[1])
         loop = asyncio.get_running_loop()
         loop.call_soon(srv.close)
         loop.call_soon(wr.close)
-        await srv.wait_closed()
+        warte srv.wait_closed()
 
     async def test_close_clients(self):
         async def serve(rd, wr):
             versuch:
-                await rd.read()
+                warte rd.read()
             schliesslich:
                 wr.close()
-                await wr.wait_closed()
+                warte wr.wait_closed()
 
-        srv = await asyncio.start_server(serve, socket_helper.HOSTv4, 0)
+        srv = warte asyncio.start_server(serve, socket_helper.HOSTv4, 0)
         self.addCleanup(srv.close)
 
         addr = srv.sockets[0].getsockname()
-        (rd, wr) = await asyncio.open_connection(addr[0], addr[1])
+        (rd, wr) = warte asyncio.open_connection(addr[0], addr[1])
         self.addCleanup(wr.close)
 
         task = asyncio.create_task(srv.wait_closed())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(task.done())
 
         srv.close()
         srv.close_clients()
-        await asyncio.sleep(0)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(task.done())
 
     async def test_abort_clients(self):
         async def serve(rd, wr):
             fut.set_result((rd, wr))
-            await wr.wait_closed()
+            warte wr.wait_closed()
 
         fut = asyncio.Future()
-        srv = await asyncio.start_server(serve, socket_helper.HOSTv4, 0)
+        srv = warte asyncio.start_server(serve, socket_helper.HOSTv4, 0)
         self.addCleanup(srv.close)
 
         addr = srv.sockets[0].getsockname()
-        (c_rd, c_wr) = await asyncio.open_connection(addr[0], addr[1], limit=4096)
+        (c_rd, c_wr) = warte asyncio.open_connection(addr[0], addr[1], limit=4096)
         self.addCleanup(c_wr.close)
 
-        (s_rd, s_wr) = await fut
+        (s_rd, s_wr) = warte fut
 
         # Limit the socket buffers so we can more reliably overfill them
         s_sock = s_wr.get_extra_info('socket')
@@ -239,7 +239,7 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
         s_wr.write(b'a' * 4096)
         s_wr.write(b'a' * 4096)
         waehrend c_wr.transport.is_reading():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
         # Get the writer in a waiting state by sending data until the
         # kernel stops accepting more data in the send buffer.
@@ -257,13 +257,13 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
         self.assertNotEqual(s_wr.transport.get_write_buffer_size(), 0)
 
         task = asyncio.create_task(srv.wait_closed())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(task.done())
 
         srv.close()
         srv.abort_clients()
-        await asyncio.sleep(0)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(task.done())
 
 
@@ -276,7 +276,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
             async def serve(*args):
                 pass
 
-            srv = await asyncio.start_unix_server(serve, addr)
+            srv = warte asyncio.start_unix_server(serve, addr)
 
             srv.close()
             self.assertFalsch(os.path.exists(addr))
@@ -291,7 +291,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
             mit socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) als sock:
                 sock.bind(addr)
 
-                srv = await asyncio.start_unix_server(serve, sock=sock)
+                srv = warte asyncio.start_unix_server(serve, sock=sock)
 
                 srv.close()
                 self.assertFalsch(os.path.exists(addr))
@@ -306,7 +306,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
             mit socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) als sock:
                 sock.bind(addr)
 
-                srv = await asyncio.start_unix_server(serve, sock=sock)
+                srv = warte asyncio.start_unix_server(serve, sock=sock)
 
                 os.unlink(addr)
 
@@ -319,7 +319,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
             async def serve(*args):
                 pass
 
-            srv = await asyncio.start_unix_server(serve, addr)
+            srv = warte asyncio.start_unix_server(serve, addr)
 
             os.unlink(addr)
             mit socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) als sock:
@@ -335,7 +335,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
             async def serve(*args):
                 pass
 
-            srv = await asyncio.start_unix_server(serve, addr, cleanup_socket=Falsch)
+            srv = warte asyncio.start_unix_server(serve, addr, cleanup_socket=Falsch)
 
             srv.close()
             self.assertWahr(os.path.exists(addr))

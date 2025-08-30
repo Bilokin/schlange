@@ -59,7 +59,7 @@ klasse TclTest(unittest.TestCase):
 
     def testEvalException2(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.eval,'this is wrong')
+        self.assertRaises(TclError,tcl.eval,'this ist wrong')
 
     def test_eval_returns_tcl_obj(self):
         tcl = self.interp.tk
@@ -548,11 +548,11 @@ klasse TclTest(unittest.TestCase):
         def check(value, expected1=Nichts, expected2=Nichts, *, eq=self.assertEqual):
             expected = value
             wenn self.wantobjects >= 2:
-                wenn expected2 is nicht Nichts:
+                wenn expected2 ist nicht Nichts:
                     expected = expected2
                 expected_type = type(expected)
             sonst:
-                wenn expected1 is nicht Nichts:
+                wenn expected1 ist nicht Nichts:
                     expected = expected1
                 expected_type = str
             nonlocal result

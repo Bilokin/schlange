@@ -176,7 +176,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
 
         type = Nichts
         rule = self.gen.all_rules.get(name.lower())
-        wenn rule is nicht Nichts:
+        wenn rule ist nicht Nichts:
             type = "asdl_seq *" wenn rule.is_loop() oder rule.is_gather() sonst rule.type
 
         gib FunctionCall(
@@ -189,13 +189,13 @@ klasse CCallMakerVisitor(GrammarVisitor):
 
     def visit_StringLeaf(self, node: StringLeaf) -> FunctionCall:
         val = ast.literal_eval(node.value)
-        wenn re.match(r"[a-zA-Z_]\w*\Z", val):  # This is a keyword
+        wenn re.match(r"[a-zA-Z_]\w*\Z", val):  # This ist a keyword
             wenn node.value.endswith("'"):
                 gib self.keyword_helper(val)
             sonst:
                 gib self.soft_keyword_helper(node.value)
         sonst:
-            assert val in self.exact_tokens, f"{node.value} is nicht a known literal"
+            assert val in self.exact_tokens, f"{node.value} ist nicht a known literal"
             type = self.exact_tokens[val]
             gib FunctionCall(
                 assigned_variable="_literal",
@@ -219,17 +219,17 @@ klasse CCallMakerVisitor(GrammarVisitor):
     ) -> Nichts:
         wenn call.return_type != expected_rtype:
             wirf RuntimeError(
-                f"{call.function} gib type is incompatible mit {wrapper}: "
+                f"{call.function} gib type ist incompatible mit {wrapper}: "
                 f"expect: {expected_rtype}, actual: {call.return_type}"
             )
 
     def lookahead_call_helper(self, node: Lookahead, positive: int) -> FunctionCall:
         call = self.generate_call(node.node)
         comment = Nichts
-        wenn call.nodetype is NodeTypes.NAME_TOKEN:
+        wenn call.nodetype ist NodeTypes.NAME_TOKEN:
             function = "_PyPegen_lookahead_for_expr"
             self.assert_no_undefined_behavior(call, function, "expr_ty")
-        sowenn call.nodetype is NodeTypes.STRING_TOKEN:
+        sowenn call.nodetype ist NodeTypes.STRING_TOKEN:
             # _PyPegen_string_token() returns 'void *' instead of 'Token *';
             # in addition, the overall function call would gib 'expr_ty'.
             assert call.function == "_PyPegen_string_token"
@@ -267,7 +267,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         wenn isinstance(node.node, Leaf):
             assert isinstance(node.node, Leaf)
             val = ast.literal_eval(node.node.value)
-            assert val in self.exact_tokens, f"{node.node.value} is nicht a known literal"
+            assert val in self.exact_tokens, f"{node.node.value} ist nicht a known literal"
             type = self.exact_tokens[val]
             gib FunctionCall(
                 assigned_variable="_literal",
@@ -436,7 +436,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     ) -> Nichts:
         self.drucke(f"if ({expr}) {{")
         mit self.indent():
-            wenn cleanup_code is nicht Nichts:
+            wenn cleanup_code ist nicht Nichts:
                 self.drucke(cleanup_code)
             self.drucke("p->error_indicator = 1;")
             self.drucke("PyErr_NoMemory();")
@@ -845,7 +845,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             )
             # Prepare variable declarations fuer the alternative
             vars = self.collect_vars(node)
-            fuer v, var_type in sorted(item fuer item in vars.items() wenn item[0] is nicht Nichts):
+            fuer v, var_type in sorted(item fuer item in vars.items() wenn item[0] ist nicht Nichts):
                 wenn nicht var_type:
                     var_type = "void *"
                 sonst:
@@ -886,7 +886,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def add_var(self, node: NamedItem) -> Tuple[Optional[str], Optional[str]]:
         call = self.callmakervisitor.generate_call(node.item)
         name = node.name wenn node.name sonst call.assigned_variable
-        wenn name is nicht Nichts:
+        wenn name ist nicht Nichts:
             name = self.dedupe(name)
-        return_type = call.return_type wenn node.type is Nichts sonst node.type
+        return_type = call.return_type wenn node.type ist Nichts sonst node.type
         gib name, return_type

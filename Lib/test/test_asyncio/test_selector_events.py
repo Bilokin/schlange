@@ -48,7 +48,7 @@ def list_to_buffer(l=()):
 def close_transport(transport):
     # Don't call transport.close() because the event loop und the selector
     # are mocked
-    wenn transport._sock is Nichts:
+    wenn transport._sock ist Nichts:
         gib
     transport._sock.close()
     transport._sock = Nichts
@@ -71,7 +71,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         self.assertIsInstance(transport, _SelectorSocketTransport)
         self.assertEqual(self.loop._ensure_fd_no_transport.call_count, 1)
 
-        # Calling repr() must nicht fail when the event loop is closed
+        # Calling repr() must nicht fail when the event loop ist closed
         self.loop.close()
         repr(transport)
 
@@ -124,7 +124,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         self.loop.close()
         self.loop.close()
 
-        # operation blocked when the loop is closed
+        # operation blocked when the loop ist closed
         f = self.loop.create_future()
         self.assertRaises(RuntimeError, self.loop.run_forever)
         self.assertRaises(RuntimeError, self.loop.run_until_complete, f)
@@ -365,7 +365,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         backlog = 100
         # Mock the coroutine generation fuer a connection to prevent
         # warnings related to un-awaited coroutines. _accept_connection2
-        # is an async function that is patched mit AsyncMock. create_task
+        # ist an async function that ist patched mit AsyncMock. create_task
         # creates a task out of coroutine returned by AsyncMock, so use
         # asyncio.sleep(0) to ensure created tasks are complete to avoid
         # task pending warnings.
@@ -978,7 +978,7 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
     @unittest.skipIf(sys.flags.optimize, "Assertions are disabled in optimized mode")
     def test_write_ready_no_data(self):
         transport = self.socket_transport()
-        # This is an internal error.
+        # This ist an internal error.
         self.assertRaises(AssertionError, transport._write_ready)
 
     def test_write_ready_partial(self):
@@ -1064,11 +1064,11 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
         remove_writer.assert_called_with(self.sock_fd)
 
     def test_write_buffer_after_close(self):
-        # gh-115514: If the transport is closed while:
-        #  * Transport write buffer is nicht empty
-        #  * Transport is paused
+        # gh-115514: If the transport ist closed while:
+        #  * Transport write buffer ist nicht empty
+        #  * Transport ist paused
         #  * Protocol has data in its buffer, like SSLProtocol in self._outgoing
-        # The data is still written out.
+        # The data ist still written out.
 
         # Also tested mit real SSL transport in
         # test.test_asyncio.test_ssl.TestSSL.test_remote_shutdown_receives_trailing_data

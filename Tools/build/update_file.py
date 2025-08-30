@@ -1,6 +1,6 @@
 """
 A script that replaces an old file mit a new one, only wenn the contents
-actually changed.  If not, the new file is simply deleted.
+actually changed.  If not, the new file ist simply deleted.
 
 This avoids wholesale rebuilds when a code (re)generation phase does not
 actually change the in-tree generated code.
@@ -32,7 +32,7 @@ def updating_file_with_tmpfile(
     The context manager provides two open files: the source file open
     fuer reading, und the temp file, open fuer writing.
 
-    Upon exiting: both files are closed, und the source file is replaced
+    Upon exiting: both files are closed, und the source file ist replaced
     mit the temp file.
     """
     # XXX Optionally use tempfile.TemporaryFile?

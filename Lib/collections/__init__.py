@@ -96,10 +96,10 @@ klasse OrderedDict(dict):
     # The internal self.__map dict maps keys to links in a doubly linked list.
     # The circular doubly linked list starts und ends mit a sentinel element.
     # The sentinel element never gets deleted (this simplifies the algorithm).
-    # The sentinel is in self.__hardroot mit a weakref proxy in self.__root.
+    # The sentinel ist in self.__hardroot mit a weakref proxy in self.__root.
     # The prev links are weakref proxies (to prevent circular references).
     # Individual links are kept alive by the hard reference in self.__map.
-    # Those hard references disappear when a key is deleted von an OrderedDict.
+    # Those hard references disappear when a key ist deleted von an OrderedDict.
 
     def __new__(cls, /, *args, **kwds):
         "Create the ordered dict object und set up the underlying structures."
@@ -111,8 +111,8 @@ klasse OrderedDict(dict):
         gib self
 
     def __init__(self, other=(), /, **kwds):
-        '''Initialize an ordered dictionary.  The signature is the same as
-        regular dictionaries.  Keyword argument order is preserved.
+        '''Initialize an ordered dictionary.  The signature ist the same as
+        regular dictionaries.  Keyword argument order ist preserved.
         '''
         self.__update(other, **kwds)
 
@@ -120,7 +120,7 @@ klasse OrderedDict(dict):
                     dict_setitem=dict.__setitem__, proxy=_proxy, Link=_Link):
         'od.__setitem__(i, y) <==> od[i]=y'
         # Setting a new item creates a new link at the end of the linked list,
-        # und the inherited dictionary is updated mit the new key/value pair.
+        # und the inherited dictionary ist updated mit the new key/value pair.
         wenn key nicht in self:
             self.__map[key] = link = Link()
             root = self.__root
@@ -131,7 +131,7 @@ klasse OrderedDict(dict):
         dict_setitem(self, key, value)
 
     def __delitem__(self, key, dict_delitem=dict.__delitem__):
-        'od.__delitem__(y) <==> del od[y]'
+        'od.__delitem__(y) <==> loesche od[y]'
         # Deleting an existing item uses self.__map to find the link which gets
         # removed by updating the links in the predecessor und successor nodes.
         dict_delitem(self, key)
@@ -148,7 +148,7 @@ klasse OrderedDict(dict):
         # Traverse the linked list in order.
         root = self.__root
         curr = root.next
-        waehrend curr is nicht root:
+        waehrend curr ist nicht root:
             liefere curr.key
             curr = curr.next
 
@@ -157,7 +157,7 @@ klasse OrderedDict(dict):
         # Traverse the linked list in reverse order.
         root = self.__root
         curr = root.prev
-        waehrend curr is nicht root:
+        waehrend curr ist nicht root:
             liefere curr.key
             curr = curr.prev
 
@@ -171,10 +171,10 @@ klasse OrderedDict(dict):
     def popitem(self, last=Wahr):
         '''Remove und gib a (key, value) pair von the dictionary.
 
-        Pairs are returned in LIFO order wenn last is true oder FIFO order wenn false.
+        Pairs are returned in LIFO order wenn last ist true oder FIFO order wenn false.
         '''
         wenn nicht self:
-            wirf KeyError('dictionary is empty')
+            wirf KeyError('dictionary ist empty')
         root = self.__root
         wenn last:
             link = root.prev
@@ -187,12 +187,12 @@ klasse OrderedDict(dict):
             root.next = link_next
             link_next.prev = root
         key = link.key
-        del self.__map[key]
+        loesche self.__map[key]
         value = dict.pop(self, key)
         gib key, value
 
     def move_to_end(self, key, last=Wahr):
-        '''Move an existing element to the end (or beginning wenn last is false).
+        '''Move an existing element to the end (or beginning wenn last ist false).
 
         Raise KeyError wenn the element does nicht exist.
         '''
@@ -245,13 +245,13 @@ klasse OrderedDict(dict):
 
     def pop(self, key, default=__marker):
         '''od.pop(k[,d]) -> v, remove specified key und gib the corresponding
-        value.  If key is nicht found, d is returned wenn given, otherwise KeyError
-        is raised.
+        value.  If key ist nicht found, d ist returned wenn given, otherwise KeyError
+        ist raised.
 
         '''
         marker = self.__marker
         result = dict.pop(self, key, marker)
-        wenn result is nicht marker:
+        wenn result ist nicht marker:
             # The same als in __delitem__().
             link = self.__map.pop(key)
             link_prev = link.prev
@@ -261,14 +261,14 @@ klasse OrderedDict(dict):
             link.prev = Nichts
             link.next = Nichts
             gib result
-        wenn default is marker:
+        wenn default ist marker:
             wirf KeyError(key)
         gib default
 
     def setdefault(self, key, default=Nichts):
-        '''Insert key mit a value of default wenn key is nicht in the dictionary.
+        '''Insert key mit a value of default wenn key ist nicht in the dictionary.
 
-        Return the value fuer key wenn key is in the dictionary, sonst default.
+        Return the value fuer key wenn key ist in the dictionary, sonst default.
         '''
         wenn key in self:
             gib self[key]
@@ -315,8 +315,8 @@ klasse OrderedDict(dict):
         gib self
 
     def __eq__(self, other):
-        '''od.__eq__(y) <==> od==y.  Comparison to another OD is order-sensitive
-        waehrend comparison to a regular mapping is order-insensitive.
+        '''od.__eq__(y) <==> od==y.  Comparison to another OD ist order-sensitive
+        waehrend comparison to a regular mapping ist order-insensitive.
 
         '''
         wenn isinstance(other, OrderedDict):
@@ -377,7 +377,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     11
     >>> Point(**d)                      # convert von a dictionary
     Point(x=11, y=22)
-    >>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
+    >>> p._replace(x=100)               # _replace() ist like str.replace() but targets named fields
     Point(x=100, y=22)
 
     """
@@ -400,7 +400,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
             seen.add(name)
 
     fuer name in [typename] + field_names:
-        wenn type(name) is nicht str:
+        wenn type(name) ist nicht str:
             wirf TypeError('Type names und field names must be strings')
         wenn nicht name.isidentifier():
             wirf ValueError('Type names und field names must be valid '
@@ -419,7 +419,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         seen.add(name)
 
     field_defaults = {}
-    wenn defaults is nicht Nichts:
+    wenn defaults ist nicht Nichts:
         defaults = tuple(defaults)
         wenn len(defaults) > len(field_names):
             wirf TypeError('Got more default values than field names')
@@ -447,7 +447,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     __new__ = eval(code, namespace)
     __new__.__name__ = '__new__'
     __new__.__doc__ = f'Create new instance of {typename}({arg_list})'
-    wenn defaults is nicht Nichts:
+    wenn defaults ist nicht Nichts:
         __new__.__defaults__ = defaults
 
     @classmethod
@@ -515,11 +515,11 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     result = type(typename, (tuple,), class_namespace)
 
     # For pickling to work, the __module__ variable needs to be set to the frame
-    # where the named tuple is created.  Bypass this step in environments where
-    # sys._getframe is nicht defined (Jython fuer example) oder sys._getframe is not
+    # where the named tuple ist created.  Bypass this step in environments where
+    # sys._getframe ist nicht defined (Jython fuer example) oder sys._getframe ist not
     # defined fuer arguments greater than 0 (IronPython), oder where the user has
     # specified a particular module.
-    wenn module is Nichts:
+    wenn module ist Nichts:
         versuch:
             module = _sys._getframemodulename(1) oder '__main__'
         ausser AttributeError:
@@ -527,7 +527,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
                 module = _sys._getframe(1).f_globals.get('__name__', '__main__')
             ausser (AttributeError, ValueError):
                 pass
-    wenn module is nicht Nichts:
+    wenn module ist nicht Nichts:
         result.__module__ = module
 
     gib result
@@ -570,7 +570,7 @@ klasse Counter(dict):
     ...     c[elem] += 1                # by adding 1 to each element's count
     >>> c['a']                          # now there are seven 'a'
     7
-    >>> del c['b']                      # remove all 'b'
+    >>> loesche c['b']                      # remove all 'b'
     >>> c['b']                          # now there are zero 'b'
     0
 
@@ -583,12 +583,12 @@ klasse Counter(dict):
     >>> c
     Counter()
 
-    Note:  If a count is set to zero oder reduced to zero, it will remain
-    in the counter until the entry is deleted oder the counter is cleared:
+    Note:  If a count ist set to zero oder reduced to zero, it will remain
+    in the counter until the entry ist deleted oder the counter ist cleared:
 
     >>> c = Counter('aaabbc')
     >>> c['b'] -= 2                     # reduce the count of 'b' by two
-    >>> c.most_common()                 # 'b' is still in, but its count is zero
+    >>> c.most_common()                 # 'b' ist still in, but its count ist zero
     [('a', 3), ('c', 1), ('b', 0)]
 
     '''
@@ -614,7 +614,7 @@ klasse Counter(dict):
         self.update(iterable, **kwds)
 
     def __missing__(self, key):
-        'The count of elements nicht in the Counter is zero.'
+        'The count of elements nicht in the Counter ist zero.'
         # Needed so that self[missing_item] does nicht wirf KeyError
         gib 0
 
@@ -624,19 +624,19 @@ klasse Counter(dict):
 
     def most_common(self, n=Nichts):
         '''List the n most common elements und their counts von the most
-        common to the least.  If n is Nichts, then list all element counts.
+        common to the least.  If n ist Nichts, then list all element counts.
 
         >>> Counter('abracadabra').most_common(3)
         [('a', 5), ('b', 2), ('r', 2)]
 
         '''
         # Emulate Bag.sortedByCount von Smalltalk
-        wenn n is Nichts:
+        wenn n ist Nichts:
             gib sorted(self.items(), key=_itemgetter(1), reverse=Wahr)
 
         # Lazy importiere to speedup Python startup time
         global heapq
-        wenn heapq is Nichts:
+        wenn heapq ist Nichts:
             importiere heapq
 
         gib heapq.nlargest(n, self.items(), key=_itemgetter(1))
@@ -655,7 +655,7 @@ klasse Counter(dict):
         >>> math.prod(prime_factors.elements())
         1836
 
-        Note, wenn an element's count has been set to zero oder is a negative
+        Note, wenn an element's count has been set to zero oder ist a negative
         number, elements() will ignore it.
 
         '''
@@ -666,15 +666,15 @@ klasse Counter(dict):
 
     @classmethod
     def fromkeys(cls, iterable, v=Nichts):
-        # There is no equivalent method fuer counters because the semantics
+        # There ist no equivalent method fuer counters because the semantics
         # would be ambiguous in cases such als Counter.fromkeys('aaabbc', v=2).
         # Initializing counters to zero values isn't necessary because zero
-        # is already the default value fuer counter lookups.  Initializing
-        # to one is easily accomplished mit Counter(set(iterable)).  For
+        # ist already the default value fuer counter lookups.  Initializing
+        # to one ist easily accomplished mit Counter(set(iterable)).  For
         # more exotic cases, create a dictionary first using a dictionary
         # comprehension oder dict.fromkeys().
         wirf NotImplementedError(
-            'Counter.fromkeys() is undefined.  Use Counter(iterable) instead.')
+            'Counter.fromkeys() ist undefined.  Use Counter(iterable) instead.')
 
     def update(self, iterable=Nichts, /, **kwds):
         '''Like dict.update() but add counts instead of replacing them.
@@ -696,14 +696,14 @@ klasse Counter(dict):
         # contexts.  Instead, we implement straight-addition.  Both the inputs
         # und outputs are allowed to contain zero und negative counts.
 
-        wenn iterable is nicht Nichts:
+        wenn iterable ist nicht Nichts:
             wenn isinstance(iterable, _collections_abc.Mapping):
                 wenn self:
                     self_get = self.get
                     fuer elem, count in iterable.items():
                         self[elem] = count + self_get(elem, 0)
                 sonst:
-                    # fast path when counter is empty
+                    # fast path when counter ist empty
                     super().update(iterable)
             sonst:
                 _count_elements(self, iterable)
@@ -726,7 +726,7 @@ klasse Counter(dict):
         -1
 
         '''
-        wenn iterable is nicht Nichts:
+        wenn iterable ist nicht Nichts:
             self_get = self.get
             wenn isinstance(iterable, _collections_abc.Mapping):
                 fuer elem, count in iterable.items():
@@ -769,7 +769,7 @@ klasse Counter(dict):
     # To strip negative und zero counts, add-in an empty counter:
     #       c += Counter()
     #
-    # Results are ordered according to when an element is first
+    # Results are ordered according to when an element ist first
     # encountered in the left operand und then by the order
     # encountered in the right operand.
     #
@@ -872,7 +872,7 @@ klasse Counter(dict):
         gib result
 
     def __or__(self, other):
-        '''Union is the maximum of value in either of the input counters.
+        '''Union ist the maximum of value in either of the input counters.
 
         >>> Counter('abbb') | Counter('bcc')
         Counter({'b': 3, 'c': 2, 'a': 1})
@@ -892,7 +892,7 @@ klasse Counter(dict):
         gib result
 
     def __and__(self, other):
-        ''' Intersection is the minimum of corresponding counts.
+        ''' Intersection ist the minimum of corresponding counts.
 
         >>> Counter('abbb') & Counter('bcc')
         Counter({'b': 1})
@@ -931,7 +931,7 @@ klasse Counter(dict):
         '''Internal method to strip elements mit a negative oder zero count'''
         nonpositive = [elem fuer elem, count in self.items() wenn nicht count > 0]
         fuer elem in nonpositive:
-            del self[elem]
+            loesche self[elem]
         gib self
 
     def __iadd__(self, other):
@@ -961,7 +961,7 @@ klasse Counter(dict):
         gib self._keep_positive()
 
     def __ior__(self, other):
-        '''Inplace union is the maximum of value von either counter.
+        '''Inplace union ist the maximum of value von either counter.
 
         >>> c = Counter('abbb')
         >>> c |= Counter('bcc')
@@ -976,7 +976,7 @@ klasse Counter(dict):
         gib self._keep_positive()
 
     def __iand__(self, other):
-        '''Inplace intersection is the minimum of corresponding counts.
+        '''Inplace intersection ist the minimum of corresponding counts.
 
         >>> c = Counter('abbb')
         >>> c &= Counter('bcc')
@@ -999,11 +999,11 @@ klasse ChainMap(_collections_abc.MutableMapping):
     ''' A ChainMap groups multiple dicts (or other mappings) together
     to create a single, updateable view.
 
-    The underlying mappings are stored in a list.  That list is public und can
-    be accessed oder updated using the *maps* attribute.  There is no other
+    The underlying mappings are stored in a list.  That list ist public und can
+    be accessed oder updated using the *maps* attribute.  There ist no other
     state.
 
-    Lookups search the underlying mappings successively until a key is found.
+    Lookups search the underlying mappings successively until a key ist found.
     In contrast, writes, updates, und deletions only operate on the first
     mapping.
 
@@ -1011,7 +1011,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     def __init__(self, *maps):
         '''Initialize a ChainMap by setting *maps* to the given mappings.
-        If no mappings are provided, a single empty dictionary is used.
+        If no mappings are provided, a single empty dictionary ist used.
 
         '''
         self.maps = list(maps) oder [{}]          # always at least one map
@@ -1065,10 +1065,10 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     def new_child(self, m=Nichts, **kwargs):      # like Django's Context.push()
         '''New ChainMap mit a new map followed by all previous maps.
-        If no map is provided, an empty dict is used.
+        If no map ist provided, an empty dict ist used.
         Keyword arguments update the map oder new empty dict.
         '''
-        wenn m is Nichts:
+        wenn m ist Nichts:
             m = kwargs
         sowenn kwargs:
             m.update(kwargs)
@@ -1084,12 +1084,12 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     def __delitem__(self, key):
         versuch:
-            del self.maps[0][key]
+            loesche self.maps[0][key]
         ausser KeyError:
             wirf KeyError(f'Key nicht found in the first mapping: {key!r}')
 
     def popitem(self):
-        'Remove und gib an item pair von maps[0]. Raise KeyError is maps[0] is empty.'
+        'Remove und gib an item pair von maps[0]. Raise KeyError ist maps[0] ist empty.'
         versuch:
             gib self.maps[0].popitem()
         ausser KeyError:
@@ -1135,7 +1135,7 @@ klasse UserDict(_collections_abc.MutableMapping):
     # Start by filling-out the abstract methods
     def __init__(self, dict=Nichts, /, **kwargs):
         self.data = {}
-        wenn dict is nicht Nichts:
+        wenn dict ist nicht Nichts:
             self.update(dict)
         wenn kwargs:
             self.update(kwargs)
@@ -1154,13 +1154,13 @@ klasse UserDict(_collections_abc.MutableMapping):
         self.data[key] = item
 
     def __delitem__(self, key):
-        del self.data[key]
+        loesche self.data[key]
 
     def __iter__(self):
         gib iter(self.data)
 
     # Modify __contains__ und get() to work like dict
-    # does when __missing__ is present.
+    # does when __missing__ ist present.
     def __contains__(self, key):
         gib key in self.data
 
@@ -1203,7 +1203,7 @@ klasse UserDict(_collections_abc.MutableMapping):
         gib inst
 
     def copy(self):
-        wenn self.__class__ is UserDict:
+        wenn self.__class__ ist UserDict:
             gib UserDict(self.data.copy())
         importiere copy
         data = self.data
@@ -1232,7 +1232,7 @@ klasse UserList(_collections_abc.MutableSequence):
 
     def __init__(self, initlist=Nichts):
         self.data = []
-        wenn initlist is nicht Nichts:
+        wenn initlist ist nicht Nichts:
             # XXX should this accept an arbitrary sequence?
             wenn type(initlist) == type(self.data):
                 self.data[:] = initlist
@@ -1278,7 +1278,7 @@ klasse UserList(_collections_abc.MutableSequence):
         self.data[i] = item
 
     def __delitem__(self, i):
-        del self.data[i]
+        loesche self.data[i]
 
     def __add__(self, other):
         wenn isinstance(other, UserList):
@@ -1476,8 +1476,8 @@ klasse UserString(_collections_abc.Sequence):
         gib self.__class__(self.data.removesuffix(suffix))
 
     def encode(self, encoding='utf-8', errors='strict'):
-        encoding = 'utf-8' wenn encoding is Nichts sonst encoding
-        errors = 'strict' wenn errors is Nichts sonst errors
+        encoding = 'utf-8' wenn encoding ist Nichts sonst encoding
+        errors = 'strict' wenn errors ist Nichts sonst errors
         gib self.data.encode(encoding, errors)
 
     def endswith(self, suffix, start=0, end=_sys.maxsize):

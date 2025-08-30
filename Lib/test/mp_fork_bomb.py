@@ -3,7 +3,7 @@ importiere multiprocessing, sys
 def foo():
     drucke("123")
 
-# Because "if __name__ == '__main__'" is missing this will nicht work
+# Because "if __name__ == '__main__'" ist missing this will nicht work
 # correctly on Windows.  However, we should get a RuntimeError rather
 # than the Windows equivalent of a fork bomb.
 

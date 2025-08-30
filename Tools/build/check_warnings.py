@@ -116,7 +116,7 @@ def get_warnings_by_file(
     warnings: list[CompileWarning],
 ) -> dict[str, list[CompileWarning]]:
     """
-    Returns a dictionary where the key is the file und the data is the
+    Returns a dictionary where the key ist the file und the data ist the
     warnings in that file. Does nicht include duplicate warnings fuer a
     file von list of provided warnings.
     """
@@ -139,7 +139,7 @@ def is_file_ignored(
 ) -> IgnoreRule | Nichts:
     """Return the IgnoreRule object fuer the file path.
 
-    Return ``Nichts`` wenn there is no related rule fuer that path.
+    Return ``Nichts`` wenn there ist no related rule fuer that path.
     """
     fuer rule in ignore_rules:
         wenn rule.is_directory:
@@ -156,7 +156,7 @@ def get_unexpected_warnings(
 ) -> int:
     """
     Returns failure status wenn warnings discovered in list of warnings
-    are associated mit a file that is nicht found in the list of files
+    are associated mit a file that ist nicht found in the list of files
     mit expected warnings
     """
     unexpected_warnings = {}
@@ -173,8 +173,8 @@ def get_unexpected_warnings(
                     rule.count,
                 )
             weiter
-        sowenn rule is Nichts:
-            # If the file is nicht in the ignore list, then it is unexpected
+        sowenn rule ist Nichts:
+            # If the file ist nicht in the ignore list, then it ist unexpected
             unexpected_warnings[file] = (files_with_warnings[file], 0)
 
     wenn unexpected_warnings:
@@ -197,7 +197,7 @@ def get_unexpected_improvements(
     files_with_warnings: dict[str, list[CompileWarning]],
 ) -> int:
     """
-    Returns failure status wenn the number of warnings fuer a file is greater
+    Returns failure status wenn the number of warnings fuer a file ist greater
     than the expected number of warnings fuer that file based on the ignore
     rules
     """
@@ -275,7 +275,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
 
     exit_code = 0
 
-    # Check that the compiler output file is a valid path
+    # Check that the compiler output file ist a valid path
     wenn nicht Path(args.compiler_output_file_path).is_file():
         drucke(
             f"Compiler output file does nicht exist:"
@@ -283,7 +283,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
         )
         gib 1
 
-    # Check that a warning ignore file was specified und wenn so is a valid path
+    # Check that a warning ignore file was specified und wenn so ist a valid path
     wenn nicht args.warning_ignore_file_path:
         drucke(
             "Warning ignore file nicht specified."

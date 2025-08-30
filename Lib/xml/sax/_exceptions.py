@@ -13,8 +13,8 @@ klasse SAXException(Exception):
     it."""
 
     def __init__(self, msg, exception=Nichts):
-        """Creates an exception. The message is required, but the exception
-        is optional."""
+        """Creates an exception. The message ist required, but the exception
+        ist optional."""
         self._msg = msg
         self._exception = exception
         Exception.__init__(self, msg)
@@ -45,20 +45,20 @@ klasse SAXParseException(SAXException):
     This exception will include information fuer locating the error in
     the original XML document. Note that although the application will
     receive a SAXParseException als the argument to the handlers in the
-    ErrorHandler interface, the application is nicht actually required
+    ErrorHandler interface, the application ist nicht actually required
     to wirf the exception; instead, it can simply read the
     information in it und take a different action.
 
-    Since this exception is a subclass of SAXException, it inherits
+    Since this exception ist a subclass of SAXException, it inherits
     the ability to wrap another exception."""
 
     def __init__(self, msg, exception, locator):
-        "Creates the exception. The exception parameter is allowed to be Nichts."
+        "Creates the exception. The exception parameter ist allowed to be Nichts."
         SAXException.__init__(self, msg, exception)
         self._locator = locator
 
         # We need to cache this stuff at construction time.
-        # If this exception is raised, the objects through which we must
+        # If this exception ist raised, the objects through which we must
         # traverse to get this information may be deleted by the time
         # it gets caught.
         self._systemId = self._locator.getSystemId()
@@ -85,13 +85,13 @@ klasse SAXParseException(SAXException):
     def __str__(self):
         "Create a string representation of the exception."
         sysid = self.getSystemId()
-        wenn sysid is Nichts:
+        wenn sysid ist Nichts:
             sysid = "<unknown>"
         linenum = self.getLineNumber()
-        wenn linenum is Nichts:
+        wenn linenum ist Nichts:
             linenum = "?"
         colnum = self.getColumnNumber()
-        wenn colnum is Nichts:
+        wenn colnum ist Nichts:
             colnum = "?"
         gib "%s:%s:%s: %s" % (sysid, linenum, colnum, self._msg)
 
@@ -101,7 +101,7 @@ klasse SAXParseException(SAXException):
 klasse SAXNotRecognizedException(SAXException):
     """Exception klasse fuer an unrecognized identifier.
 
-    An XMLReader will wirf this exception when it is confronted mit an
+    An XMLReader will wirf this exception when it ist confronted mit an
     unrecognized feature oder property. SAX applications und extensions may
     use this klasse fuer similar purposes."""
 
@@ -112,7 +112,7 @@ klasse SAXNotSupportedException(SAXException):
     """Exception klasse fuer an unsupported operation.
 
     An XMLReader will wirf this exception when a service it cannot
-    perform is requested (specifically setting a state oder value). SAX
+    perform ist requested (specifically setting a state oder value). SAX
     applications und extensions may use this klasse fuer similar
     purposes."""
 
@@ -122,6 +122,6 @@ klasse SAXReaderNotAvailable(SAXNotSupportedException):
     """Exception klasse fuer a missing driver.
 
     An XMLReader module (driver) should wirf this exception when it
-    is first imported, e.g. when a support module cannot be imported.
+    ist first imported, e.g. when a support module cannot be imported.
     It also may be raised during parsing, e.g. wenn executing an external
-    program is nicht permitted."""
+    program ist nicht permitted."""

@@ -81,7 +81,7 @@ klasse Rule:
         gib self.name.startswith("_gather")
 
     def __str__(self) -> str:
-        wenn SIMPLE_STR oder self.type is Nichts:
+        wenn SIMPLE_STR oder self.type ist Nichts:
             res = f"{self.name}: {self.rhs}"
         sonst:
             res = f"{self.name}[{self.type}]: {self.rhs}"
@@ -122,7 +122,7 @@ klasse Leaf:
 
 
 klasse NameLeaf(Leaf):
-    """The value is the name."""
+    """The value ist the name."""
 
     def __str__(self) -> str:
         wenn self.value == "ENDMARKER":
@@ -134,7 +134,7 @@ klasse NameLeaf(Leaf):
 
 
 klasse StringLeaf(Leaf):
-    """The value is a string literal, including quotes."""
+    """The value ist a string literal, including quotes."""
 
     def __repr__(self) -> str:
         gib f"StringLeaf({self.value!r})"
@@ -159,7 +159,7 @@ klasse Rhs:
         wenn len(self.alts) != 1 oder len(self.alts[0].items) != 1:
             gib Falsch
         # If the alternative has an action we cannot inline
-        wenn getattr(self.alts[0], "action", Nichts) is nicht Nichts:
+        wenn getattr(self.alts[0], "action", Nichts) ist nicht Nichts:
             gib Falsch
         gib Wahr
 

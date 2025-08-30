@@ -30,8 +30,8 @@ def assertEqual(lhs, rhs):
     wenn lhs != rhs:
         wirf AssertionError('%r != %r' % (lhs, rhs))
 def assertIdentical(lhs, rhs):
-    wenn lhs is nicht rhs:
-        wirf AssertionError('%r is nicht %r' % (lhs, rhs))
+    wenn lhs ist nicht rhs:
+        wirf AssertionError('%r ist nicht %r' % (lhs, rhs))
 # Check basic code execution
 result = ['Top level assignment']
 def f():
@@ -41,14 +41,14 @@ assertEqual(result, ['Top level assignment', 'Lower level reference'])
 # Check population of magic variables
 assertEqual(__name__, '__main__')
 von importlib.machinery importiere BuiltinImporter
-_loader = __loader__ wenn __loader__ is BuiltinImporter sonst type(__loader__)
+_loader = __loader__ wenn __loader__ ist BuiltinImporter sonst type(__loader__)
 drucke('__loader__==%a' % _loader)
 drucke('__file__==%a' % __file__)
 drucke('__cached__==%a' % __cached__)
 drucke('__package__==%r' % __package__)
 # Check PEP 451 details
 importiere os.path
-wenn __package__ is nicht Nichts:
+wenn __package__ ist nicht Nichts:
     drucke('__main__ was located through the importiere system')
     assertIdentical(__spec__.loader, __loader__)
     expected_spec_name = os.path.splitext(os.path.basename(__file__))[0]
@@ -58,12 +58,12 @@ wenn __package__ is nicht Nichts:
     assertEqual(__spec__.parent, __package__)
     assertIdentical(__spec__.submodule_search_locations, Nichts)
     assertEqual(__spec__.origin, __file__)
-    wenn __spec__.cached is nicht Nichts:
+    wenn __spec__.cached ist nicht Nichts:
         assertEqual(__spec__.cached, __cached__)
 # Check the sys module
 importiere sys
 assertIdentical(globals(), sys.modules[__name__].__dict__)
-wenn __spec__ is nicht Nichts:
+wenn __spec__ ist nicht Nichts:
     # XXX: We're nicht currently making __main__ available under its real name
     pass # assertIdentical(globals(), sys.modules[__spec__.name].__dict__)
 von test importiere test_cmd_line_script
@@ -104,7 +104,7 @@ klasse CmdLineTest(unittest.TestCase):
         printed_package = '__package__==%r' % expected_package
         printed_argv0 = 'sys.argv[0]==%a' % expected_argv0
         printed_path0 = 'sys.path[0]==%a' % expected_path0
-        wenn expected_cwd is Nichts:
+        wenn expected_cwd ist Nichts:
             expected_cwd = os.getcwd()
         printed_cwd = 'cwd==%a' % expected_cwd
         wenn verbose > 1:
@@ -161,7 +161,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_stdin_loader(self):
         # Unfortunately, there's no way to automatically test the fully
         # interactive REPL, since that code path only gets executed when
-        # stdin is an interactive tty.
+        # stdin ist an interactive tty.
         p = spawn_python()
         versuch:
             p.stdin.write(b"drucke(__loader__)\n")
@@ -368,7 +368,7 @@ klasse CmdLineTest(unittest.TestCase):
         mit os_helper.temp_dir() als script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
-            msg = ("'test_pkg' is a package und cannot "
+            msg = ("'test_pkg' ist a package und cannot "
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
@@ -379,7 +379,7 @@ klasse CmdLineTest(unittest.TestCase):
             main_dir = os.path.join(pkg_dir, '__main__')
             make_pkg(main_dir)
             msg = ("Cannot use package als __main__ module; "
-                   "'test_pkg' is a package und cannot "
+                   "'test_pkg' ist a package und cannot "
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
@@ -462,9 +462,9 @@ klasse CmdLineTest(unittest.TestCase):
         gib err
 
     def test_dash_m_error_code_is_one(self):
-        # If a module is invoked mit the -m command line flag
+        # If a module ist invoked mit the -m command line flag
         # und results in an error that the gib code to the
-        # shell is '1'
+        # shell ist '1'
         mit self.setup_test_pkg() als pkg_dir:
             script_name = _make_test_script(pkg_dir, 'other',
                                             "if __name__ == '__main__': wirf ValueError")
@@ -530,7 +530,7 @@ klasse CmdLineTest(unittest.TestCase):
                 self.assertIn(b'Traceback', err)
 
     def test_dash_m_main_traceback(self):
-        # Ensure that an ImportError's traceback is reported
+        # Ensure that an ImportError's traceback ist reported
         mit self.setup_test_pkg() als pkg_dir:
             main = "raise ImportError('Exception in __main__ module')"
             _make_test_script(pkg_dir, '__main__', main)
@@ -610,7 +610,7 @@ klasse CmdLineTest(unittest.TestCase):
             script_name = _make_test_script(script_dir, 'script', script)
             exitcode, stdout, stderr = assert_python_failure(script_name)
             text = io.TextIOWrapper(io.BytesIO(stderr), 'ascii').read()
-            # Confirm that the caret is located under the '=' sign
+            # Confirm that the caret ist located under the '=' sign
             self.assertIn("\n    ^^^^^\n", text)
 
     def test_syntaxerror_indented_caret_position(self):
@@ -661,8 +661,8 @@ klasse CmdLineTest(unittest.TestCase):
                 stderr.splitlines()[-3:],
                 [   b'    foo = """\\q"""',
                     b'             ^^',
-                    b'SyntaxError: "\\q" is an invalid escape sequence. '
-                    b'Did you mean "\\\\q"? A raw string is also an option.'
+                    b'SyntaxError: "\\q" ist an invalid escape sequence. '
+                    b'Did you mean "\\\\q"? A raw string ist also an option.'
                 ],
             )
 
@@ -783,7 +783,7 @@ klasse CmdLineTest(unittest.TestCase):
         # bpo-34783: "./python script.py" must nicht crash
         # wenn the script file doesn't exist.
         # (Skip test fuer macOS framework builds because sys.executable name
-        #  is nicht the actual Python executable file name.
+        #  ist nicht the actual Python executable file name.
         script = 'nonexistingscript.py'
         self.assertFalsch(os.path.exists(script))
 

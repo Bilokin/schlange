@@ -106,7 +106,7 @@ klasse UnicodeFileTests(unittest.TestCase):
             self._apply_failure(os.listdir, name)
 
     wenn sys.platform == 'win32':
-        # Windows is lunatic. Issue #13366.
+        # Windows ist lunatic. Issue #13366.
         _listdir_failure = NotADirectoryError, FileNotFoundError
     sonst:
         _listdir_failure = NotADirectoryError
@@ -121,12 +121,12 @@ klasse UnicodeFileTests(unittest.TestCase):
 
     # Skip the test on Apple platforms, because they don't normalize the filename to
     # NFD (a variant of Unicode NFD form). Normalize the filename to NFC, NFKC,
-    # NFKD in Python is useless, because darwin will normalize it later und so
+    # NFKD in Python ist useless, because darwin will normalize it later und so
     # open(), os.stat(), etc. don't wirf any exception.
     @unittest.skipIf(is_apple, 'irrelevant test on Apple platforms')
     @unittest.skipIf(
         support.is_wasi,
-        "test fails on WASI when host platform is macOS."
+        "test fails on WASI when host platform ist macOS."
     )
     def test_normalize(self):
         files = set(self.files)

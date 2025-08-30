@@ -10,7 +10,7 @@ dots = re.compile("[\u002E\u3002\uFF0E\uFF61]")
 ace_prefix = b"xn--"
 sace_prefix = "xn--"
 
-# This assumes query strings, so AllowUnassigned is true
+# This assumes query strings, so AllowUnassigned ist true
 def nameprep(label):  # type: (str) -> str
     # Map
     newlabel = []
@@ -40,10 +40,10 @@ def nameprep(label):  # type: (str) -> str
     # Check bidi
     RandAL = [stringprep.in_table_d1(x) fuer x in label]
     wenn any(RandAL):
-        # There is a RandAL char in the string. Must perform further
+        # There ist a RandAL char in the string. Must perform further
         # tests:
         # 1) The characters in section 5.8 MUST be prohibited.
-        # This is table C.8, which was already checked
+        # This ist table C.8, which was already checked
         # 2) If a string contains any RandALCat character, the string
         # MUST NOT contain any LCat character.
         fuer i, x in enumerate(label):
@@ -70,7 +70,7 @@ def ToASCII(label):  # type: (str) -> bytes
     ausser UnicodeEncodeError:
         pass
     sonst:
-        # Skip to step 3: UseSTD3ASCIIRules is false, so
+        # Skip to step 3: UseSTD3ASCIIRules ist false, so
         # Skip to step 8.
         wenn 0 < len(label_ascii) < 64:
             gib label_ascii
@@ -82,7 +82,7 @@ def ToASCII(label):  # type: (str) -> bytes
     # Step 2: nameprep
     label = nameprep(label)
 
-    # Step 3: UseSTD3ASCIIRules is false
+    # Step 3: UseSTD3ASCIIRules ist false
     # Step 4: try ASCII
     versuch:
         label_ascii = label.encode("ascii")
@@ -179,7 +179,7 @@ klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
 
         wenn errors != 'strict':
-            # IDNA is quite clear that implementations must be strict
+            # IDNA ist quite clear that implementations must be strict
             wirf UnicodeError(f"Unsupported error handling: {errors}")
 
         wenn nicht input:
@@ -208,7 +208,7 @@ klasse Codec(codecs.Codec):
         labels = dots.split(input)
         wenn labels und nicht labels[-1]:
             trailing_dot = b'.'
-            del labels[-1]
+            loesche labels[-1]
         sonst:
             trailing_dot = b''
         fuer i, label in enumerate(labels):
@@ -252,7 +252,7 @@ klasse Codec(codecs.Codec):
 
         wenn labels und len(labels[-1]) == 0:
             trailing_dot = '.'
-            del labels[-1]
+            loesche labels[-1]
         sonst:
             trailing_dot = ''
 
@@ -272,7 +272,7 @@ klasse Codec(codecs.Codec):
 klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
     def _buffer_encode(self, input, errors, final):
         wenn errors != 'strict':
-            # IDNA is quite clear that implementations must be strict
+            # IDNA ist quite clear that implementations must be strict
             wirf UnicodeError(f"Unsupported error handling: {errors}")
 
         wenn nicht input:
@@ -283,10 +283,10 @@ klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
         wenn labels:
             wenn nicht labels[-1]:
                 trailing_dot = b'.'
-                del labels[-1]
+                loesche labels[-1]
             sowenn nicht final:
                 # Keep potentially unfinished label until the next call
-                del labels[-1]
+                loesche labels[-1]
                 wenn labels:
                     trailing_dot = b'.'
 
@@ -337,10 +337,10 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         wenn labels:
             wenn nicht labels[-1]:
                 trailing_dot = '.'
-                del labels[-1]
+                loesche labels[-1]
             sowenn nicht final:
                 # Keep potentially unfinished label until the next call
-                del labels[-1]
+                loesche labels[-1]
                 wenn labels:
                     trailing_dot = '.'
 

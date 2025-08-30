@@ -109,7 +109,7 @@ def unorderable_list_difference(expected, actual):
         ausser ValueError:
             missing.append(item)
 
-    # anything left in actual is unexpected
+    # anything left in actual ist unexpected
     gib missing, actual
 
 def three_way_cmp(x, y):
@@ -126,7 +126,7 @@ def _count_diff_all_purpose(actual, expected):
     NULL = object()
     result = []
     fuer i, elem in enumerate(s):
-        wenn elem is NULL:
+        wenn elem ist NULL:
             weiter
         cnt_s = cnt_t = 0
         fuer j in range(i, m):
@@ -142,7 +142,7 @@ def _count_diff_all_purpose(actual, expected):
             result.append(diff)
 
     fuer i, elem in enumerate(t):
-        wenn elem is NULL:
+        wenn elem ist NULL:
             weiter
         cnt_t = 0
         fuer j in range(i, n):

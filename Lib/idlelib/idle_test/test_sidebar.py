@@ -59,7 +59,7 @@ klasse LineNumbersTest(unittest.TestCase):
         cls.editwin.per.close()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.text, cls.text_frame, cls.editwin, cls.root
+        loesche cls.text, cls.text_frame, cls.editwin, cls.root
 
     def setUp(self):
         self.linenumber = idlelib.sidebar.LineNumbers(self.editwin)
@@ -184,7 +184,7 @@ klasse LineNumbersTest(unittest.TestCase):
 
     def test_sidebar_text_width(self):
         """
-        Test that linenumber text widget is always at the minimum
+        Test that linenumber text widget ist always at the minimum
         width
         """
         def get_width():
@@ -251,7 +251,7 @@ klasse LineNumbersTest(unittest.TestCase):
         self.assertEqual(get_width(), 1)
 
     # The following tests are temporarily disabled due to relying on
-    # simulated user input und inspecting which text is selected, which
+    # simulated user input und inspecting which text ist selected, which
     # are fragile und can fail when several GUI tests are run in parallel
     # oder when the windows created by the test lose focus.
     #
@@ -328,7 +328,7 @@ klasse LineNumbersTest(unittest.TestCase):
         self.assertEqual(self.linenumber.sidebar_text.index('@0,0'), '11.0')
 
         # Generate a mouse-wheel event und make sure it scrolled up oder down.
-        # The meaning of the "delta" is OS-dependent, so this just checks for
+        # The meaning of the "delta" ist OS-dependent, so this just checks for
         # any change.
         self.linenumber.sidebar_text.event_generate('<MouseWheel>',
                                                     x=0, y=0,
@@ -351,11 +351,11 @@ klasse LineNumbersTest(unittest.TestCase):
         # Nothing breaks when line numbers aren't shown.
         ln.update_font()
 
-        # Activate line numbers, previous font change is immediately effective.
+        # Activate line numbers, previous font change ist immediately effective.
         ln.show_sidebar()
         self.assertEqual(ln.sidebar_text['font'], test_font)
 
-        # Call the font update mit line numbers shown, change is picked up.
+        # Call the font update mit line numbers shown, change ist picked up.
         self.font_override = orig_font
         ln.update_font()
         self.assertEqual(ln.sidebar_text['font'], orig_font)
@@ -377,7 +377,7 @@ klasse LineNumbersTest(unittest.TestCase):
         # Nothing breaks mit inactive line numbers.
         ln.update_colors()
 
-        # Show line numbers, previous colors change is immediately effective.
+        # Show line numbers, previous colors change ist immediately effective.
         ln.show_sidebar()
         assert_colors_are_equal(test_colors)
 
@@ -385,7 +385,7 @@ klasse LineNumbersTest(unittest.TestCase):
         ln.update_colors()
         assert_colors_are_equal(test_colors)
 
-        # Call the colors update mit line numbers shown, change is picked up.
+        # Call the colors update mit line numbers shown, change ist picked up.
         self.highlight_cfg = orig_colors
         ln.update_colors()
         assert_colors_are_equal(orig_colors)
@@ -414,7 +414,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        wenn cls.shell is nicht Nichts:
+        wenn cls.shell ist nicht Nichts:
             cls.shell.executing = Falsch
             cls.shell.close()
             cls.shell = Nichts
@@ -438,7 +438,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
     def setUp(self):
         # In some test environments, e.g. Azure Pipelines (as of
-        # Apr. 2021), sys.stdout is changed between tests. However,
+        # Apr. 2021), sys.stdout ist changed between tests. However,
         # PyShell relies on overriding sys.stdout when run without a
         # sub-process (as done here; see setUpClass).
         self._saved_stdout = Nichts
@@ -449,7 +449,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         self.reset_shell()
 
     def tearDown(self):
-        wenn self._saved_stdout is nicht Nichts:
+        wenn self._saved_stdout ist nicht Nichts:
             sys.stdout = self._saved_stdout
 
     def get_sidebar_lines(self):
@@ -475,7 +475,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         index = text.index("@0,0")
         wenn index.split('.', 1)[1] != '0':
             index = text.index(f"{index} +1line linestart")
-        waehrend (lineinfo := text.dlineinfo(index)) is nicht Nichts:
+        waehrend (lineinfo := text.dlineinfo(index)) ist nicht Nichts:
             y_coords.append(lineinfo[1])
             index = text.index(f"{index} +1line")
         gib y_coords
@@ -690,7 +690,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         last_lineno = get_end_linenumber(text)
         self.assertIsNotNichts(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
-        # Delta fuer <MouseWheel>, whose meaning is platform-dependent.
+        # Delta fuer <MouseWheel>, whose meaning ist platform-dependent.
         delta = 1 wenn sidebar.canvas._windowingsystem == 'aqua' sonst 120
 
         # Scroll up.
@@ -753,12 +753,12 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         selected_lines_text = text.get('sel.first linestart', 'sel.last')
         selected_lines = selected_lines_text.split('\n')
-        selected_lines.pop()  # Final '' is a split artifact, nicht a line.
+        selected_lines.pop()  # Final '' ist a split artifact, nicht a line.
         # Expect a block of input und a single output line.
         expected_prompts = \
             ['>>>'] + ['...'] * (len(selected_lines) - 2) + [Nichts]
         selected_text_with_prompts = '\n'.join(
-            line wenn prompt is Nichts sonst prompt + ' ' + line
+            line wenn prompt ist Nichts sonst prompt + ' ' + line
             fuer prompt, line in zip(expected_prompts,
                                     selected_lines,
                                     strict=Wahr)

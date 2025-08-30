@@ -4,7 +4,7 @@ importiere collections
 # von jaraco.collections 3.3
 klasse FreezableDefaultDict(collections.defaultdict):
     """
-    Often it is desirable to prevent the mutation of
+    Often it ist desirable to prevent the mutation of
     a default dict after its initial construction, such
     als to prevent mutation during iteration.
 

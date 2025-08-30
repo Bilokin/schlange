@@ -14,7 +14,7 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
     async def _test_repr_or_str(self, fn, expect_id):
         """Test Queue's repr oder str.
 
-        fn is repr oder str. expect_id is Wahr wenn we expect the Queue's id to
+        fn ist repr oder str. expect_id ist Wahr wenn we expect the Queue's id to
         appear in fn(Queue()).
         """
         q = asyncio.Queue()
@@ -28,12 +28,12 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
             # Start a task that waits to get.
             getter = tg.create_task(q.get())
             # Let it start waiting.
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             self.assertWahr('_getters[1]' in fn(q))
             # resume q.get coroutine to finish generator
             q.put_nowait(0)
 
-        self.assertEqual(0, await getter)
+        self.assertEqual(0, warte getter)
 
         # putters
         q = asyncio.Queue(maxsize=1)
@@ -42,7 +42,7 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
             # Start a task that waits to put.
             putter = tg.create_task(q.put(2))
             # Let it start waiting.
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             self.assertWahr('_putters[1]' in fn(q))
             # resume q.put coroutine to finish generator
             q.get_nowait()
@@ -54,10 +54,10 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
         self.assertWahr('_queue=[1]' in fn(q))
 
     async def test_repr(self):
-        await self._test_repr_or_str(repr, Wahr)
+        warte self._test_repr_or_str(repr, Wahr)
 
     async def test_str(self):
-        await self._test_repr_or_str(str, Falsch)
+        warte self._test_repr_or_str(str, Falsch)
 
     def test_generic_alias(self):
         q = asyncio.Queue[int]
@@ -67,9 +67,9 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
     async def test_empty(self):
         q = asyncio.Queue()
         self.assertWahr(q.empty())
-        await q.put(1)
+        warte q.put(1)
         self.assertFalsch(q.empty())
-        self.assertEqual(1, await q.get())
+        self.assertEqual(1, warte q.get())
         self.assertWahr(q.empty())
 
     async def test_full(self):
@@ -77,13 +77,13 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalsch(q.full())
 
         q = asyncio.Queue(maxsize=1)
-        await q.put(1)
+        warte q.put(1)
         self.assertWahr(q.full())
 
     async def test_order(self):
         q = asyncio.Queue()
         fuer i in [1, 3, 2]:
-            await q.put(i)
+            warte q.put(i)
 
         items = [await q.get() fuer _ in range(3)]
         self.assertEqual([1, 3, 2], items)
@@ -95,23 +95,23 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
 
         async def putter():
             fuer i in range(3):
-                await q.put(i)
+                warte q.put(i)
                 have_been_put.append(i)
             gib Wahr
 
         t = asyncio.create_task(putter())
         fuer i in range(2):
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
-        # The putter is blocked after putting two items.
+        # The putter ist blocked after putting two items.
         self.assertEqual([0, 1], have_been_put)
-        self.assertEqual(0, await q.get())
+        self.assertEqual(0, warte q.get())
 
         # Let the putter resume und put last item.
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([0, 1, 2], have_been_put)
-        self.assertEqual(1, await q.get())
-        self.assertEqual(2, await q.get())
+        self.assertEqual(1, warte q.get())
+        self.assertEqual(2, warte q.get())
 
         self.assertWahr(t.done())
         self.assertWahr(t.result())
@@ -123,18 +123,18 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
         q = asyncio.Queue()
         q.put_nowait(1)
 
-        self.assertEqual(1, await q.get())
+        self.assertEqual(1, warte q.get())
 
     async def test_get_with_putters(self):
         loop = asyncio.get_running_loop()
 
         q = asyncio.Queue(1)
-        await q.put(1)
+        warte q.put(1)
 
         waiter = loop.create_future()
         q._putters.append(waiter)
 
-        self.assertEqual(1, await q.get())
+        self.assertEqual(1, warte q.get())
         self.assertWahr(waiter.done())
         self.assertIsNichts(waiter.result())
 
@@ -147,15 +147,15 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
         async def queue_get():
             nonlocal finished
             started.set()
-            res = await q.get()
+            res = warte q.get()
             finished = Wahr
             gib res
 
         queue_get_task = asyncio.create_task(queue_get())
-        await started.wait()
+        warte started.wait()
         self.assertFalsch(finished)
         loop.call_later(0.01, q.put_nowait, 1)
-        res = await queue_get_task
+        res = warte queue_get_task
         self.assertWahr(finished)
         self.assertEqual(1, res)
 
@@ -174,29 +174,29 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
         t1 = asyncio.create_task(q.get())
         t2 = asyncio.create_task(q.get())
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         t1.cancel()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(t1.done())
-        await q.put('a')
-        await asyncio.sleep(0)
-        self.assertEqual('a', await t2)
+        warte q.put('a')
+        warte asyncio.sleep(0)
+        self.assertEqual('a', warte t2)
 
     async def test_get_with_waiting_putters(self):
         q = asyncio.Queue(maxsize=1)
         asyncio.create_task(q.put('a'))
         asyncio.create_task(q.put('b'))
-        self.assertEqual(await q.get(), 'a')
-        self.assertEqual(await q.get(), 'b')
+        self.assertEqual(warte q.get(), 'a')
+        self.assertEqual(warte q.get(), 'b')
 
     async def test_why_are_getters_waiting(self):
         async def consumer(queue, num_expected):
             fuer _ in range(num_expected):
-                await queue.get()
+                warte queue.get()
 
         async def producer(queue, num_items):
             fuer i in range(num_items):
-                await queue.put(i)
+                warte queue.put(i)
 
         producer_num_items = 5
 
@@ -209,7 +209,7 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
         queue = asyncio.Queue(maxsize=5)
 
         mit self.assertRaises(TimeoutError):
-            await asyncio.wait_for(queue.get(), 0.1)
+            warte asyncio.wait_for(queue.get(), 0.1)
 
         self.assertEqual(len(queue._getters), 0)
 
@@ -220,8 +220,8 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         q = asyncio.Queue()
 
         # No maxsize, won't block.
-        await q.put(1)
-        self.assertEqual(1, await q.get())
+        warte q.put(1)
+        self.assertEqual(1, warte q.get())
 
     async def test_blocking_put_wait(self):
         q = asyncio.Queue(maxsize=1)
@@ -231,16 +231,16 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         async def queue_put():
             nonlocal finished
             started.set()
-            await q.put(1)
-            await q.put(2)
+            warte q.put(1)
+            warte q.put(2)
             finished = Wahr
 
         loop = asyncio.get_running_loop()
         loop.call_later(0.01, q.get_nowait)
         queue_put_task = asyncio.create_task(queue_put())
-        await started.wait()
+        warte started.wait()
         self.assertFalsch(finished)
-        await queue_put_task
+        warte queue_put_task
         self.assertWahr(finished)
 
     def test_nonblocking_put(self):
@@ -253,18 +253,18 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
 
         reader = asyncio.create_task(q.get())
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         q.put_nowait(1)
         q.put_nowait(2)
         reader.cancel()
 
         versuch:
-            await reader
+            warte reader
         ausser asyncio.CancelledError:
             # try again
             reader = asyncio.create_task(q.get())
-            await reader
+            warte reader
 
         result = reader.result()
         # wenn we get 2, it means 1 got dropped!
@@ -278,18 +278,18 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
             reader2 = tg.create_task(q.get())
             reader3 = tg.create_task(q.get())
 
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
             q.put_nowait(1)
             q.put_nowait(2)
             reader1.cancel()
 
             mit self.assertRaises(asyncio.CancelledError):
-                await reader1
+                warte reader1
 
-            await reader3
+            warte reader3
 
-        # It is undefined in which order concurrent readers receive results.
+        # It ist undefined in which order concurrent readers receive results.
         self.assertEqual({reader2.result(), reader3.result()}, {1, 2})
 
     async def test_put_cancel_drop(self):
@@ -299,18 +299,18 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
 
         # putting a second item in the queue has to block (qsize=1)
         writer = asyncio.create_task(q.put(2))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         value1 = q.get_nowait()
         self.assertEqual(value1, 1)
 
         writer.cancel()
         versuch:
-            await writer
+            warte writer
         ausser asyncio.CancelledError:
             # try again
             writer = asyncio.create_task(q.put(2))
-            await writer
+            warte writer
 
         value2 = q.get_nowait()
         self.assertEqual(value2, 2)
@@ -330,20 +330,20 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
 
         q = asyncio.Queue(maxsize=1.3, )
 
-        await q.put(1)
-        await q.put(2)
+        warte q.put(1)
+        warte q.put(2)
         self.assertWahr(q.full())
 
     async def test_put_cancelled(self):
         q = asyncio.Queue()
 
         async def queue_put():
-            await q.put(1)
+            warte q.put(1)
             gib Wahr
 
         t = asyncio.create_task(queue_put())
 
-        self.assertEqual(1, await q.get())
+        self.assertEqual(1, warte q.get())
         self.assertWahr(t.done())
         self.assertWahr(t.result())
 
@@ -354,34 +354,34 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         put_b = asyncio.create_task(q.put('b'))
         put_c = asyncio.create_task(q.put('X'))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(put_a.done())
         self.assertFalsch(put_b.done())
 
         put_c.cancel()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(put_c.done())
         self.assertEqual(q.get_nowait(), 'a')
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(q.get_nowait(), 'b')
 
-        await put_b
+        warte put_b
 
     async def test_put_with_waiting_getters(self):
         q = asyncio.Queue()
         t = asyncio.create_task(q.get())
-        await asyncio.sleep(0)
-        await q.put('a')
-        self.assertEqual(await t, 'a')
+        warte asyncio.sleep(0)
+        warte q.put('a')
+        self.assertEqual(warte t, 'a')
 
     async def test_why_are_putters_waiting(self):
         queue = asyncio.Queue(2)
 
         async def putter(item):
-            await queue.put(item)
+            warte queue.put(item)
 
         async def getter():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             num = queue.qsize()
             fuer _ in range(num):
                 queue.get_nowait()
@@ -400,14 +400,14 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
 
         # Task waiting fuer space to put an item in the queue.
         put_task = asyncio.create_task(queue.put(1))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
-        # Check that the putter is correctly removed von queue._putters when
-        # the task is canceled.
+        # Check that the putter ist correctly removed von queue._putters when
+        # the task ist canceled.
         self.assertEqual(len(queue._putters), 1)
         put_task.cancel()
         mit self.assertRaises(asyncio.CancelledError):
-            await put_task
+            warte put_task
         self.assertEqual(len(queue._putters), 0)
 
     async def test_cancelled_put_silence_value_error_exception(self):
@@ -417,19 +417,19 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
 
         # Task waiting fuer space to put a item in the queue.
         put_task = asyncio.create_task(queue.put(1))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         # get_nowait() remove the future of put_task von queue._putters.
         queue.get_nowait()
-        # When canceled, queue.put is going to remove its future from
+        # When canceled, queue.put ist going to remove its future from
         # self._putters but it was removed previously by queue.get_nowait().
         put_task.cancel()
 
         # The ValueError exception triggered by queue._putters.remove(putter)
         # inside queue.put should be silenced.
-        # If the ValueError is silenced we should catch a CancelledError.
+        # If the ValueError ist silenced we should catch a CancelledError.
         mit self.assertRaises(asyncio.CancelledError):
-            await put_task
+            warte put_task
 
 
 klasse LifoQueueTests(unittest.IsolatedAsyncioTestCase):
@@ -437,7 +437,7 @@ klasse LifoQueueTests(unittest.IsolatedAsyncioTestCase):
     async def test_order(self):
         q = asyncio.LifoQueue()
         fuer i in [1, 3, 2]:
-            await q.put(i)
+            warte q.put(i)
 
         items = [await q.get() fuer _ in range(3)]
         self.assertEqual([2, 3, 1], items)
@@ -448,7 +448,7 @@ klasse PriorityQueueTests(unittest.IsolatedAsyncioTestCase):
     async def test_order(self):
         q = asyncio.PriorityQueue()
         fuer i in [1, 3, 2]:
-            await q.put(i)
+            warte q.put(i)
 
         items = [await q.get() fuer _ in range(3)]
         self.assertEqual([1, 2, 3], items)
@@ -477,7 +477,7 @@ klasse _QueueJoinTestMixin:
             nonlocal accumulator
 
             waehrend running:
-                item = await q.get()
+                item = warte q.get()
                 accumulator += item
                 q.task_done()
 
@@ -485,7 +485,7 @@ klasse _QueueJoinTestMixin:
             tasks = [tg.create_task(worker())
                      fuer index in range(2)]
 
-            await q.join()
+            warte q.join()
             self.assertEqual(sum(range(100)), accumulator)
 
             # close running generators
@@ -499,8 +499,8 @@ klasse _QueueJoinTestMixin:
         # Test that a queue join()s successfully, und before anything sonst
         # (done twice fuer insurance).
 
-        await q.join()
-        await q.join()
+        warte q.join()
+        warte q.join()
 
     async def test_format(self):
         q = self.q_class()
@@ -540,7 +540,7 @@ klasse _QueueShutdownTestMixin:
         q = self.q_class()
         loop = asyncio.get_running_loop()
         get_task = loop.create_task(q.get())
-        await asyncio.sleep(0)  # want get task pending before shutdown
+        warte asyncio.sleep(0)  # want get task pending before shutdown
 
         # Perform shut-down
         q.shutdown(immediate=Falsch)  # unfinished tasks: 0 -> 0
@@ -548,22 +548,22 @@ klasse _QueueShutdownTestMixin:
         self.assertEqual(q.qsize(), 0)
 
         # Ensure join() task successfully finishes
-        await q.join()
+        warte q.join()
 
-        # Ensure get() task is finished, und raised ShutDown
-        await asyncio.sleep(0)
+        # Ensure get() task ist finished, und raised ShutDown
+        warte asyncio.sleep(0)
         self.assertWahr(get_task.done())
         mit self.assertRaisesShutdown():
-            await get_task
+            warte get_task
 
         # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
-            await q.put("data")
+            warte q.put("data")
         mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
         mit self.assertRaisesShutdown():
-            await q.get()
+            warte q.get()
         mit self.assertRaisesShutdown():
             q.get_nowait()
 
@@ -578,8 +578,8 @@ klasse _QueueShutdownTestMixin:
         join_task = loop.create_task(q.join())
         put_task = loop.create_task(q.put("data2"))
 
-        # Ensure put() task is nicht finished
-        await asyncio.sleep(0)
+        # Ensure put() task ist nicht finished
+        warte asyncio.sleep(0)
         self.assertFalsch(put_task.done())
 
         # Perform shut-down
@@ -587,36 +587,36 @@ klasse _QueueShutdownTestMixin:
 
         self.assertEqual(q.qsize(), 1)
 
-        # Ensure put() task is finished, und raised ShutDown
-        await asyncio.sleep(0)
+        # Ensure put() task ist finished, und raised ShutDown
+        warte asyncio.sleep(0)
         self.assertWahr(put_task.done())
         mit self.assertRaisesShutdown():
-            await put_task
+            warte put_task
 
         # Ensure get() succeeds on enqueued item
-        self.assertEqual(await q.get(), "data")
+        self.assertEqual(warte q.get(), "data")
 
-        # Ensure join() task is nicht finished
-        await asyncio.sleep(0)
+        # Ensure join() task ist nicht finished
+        warte asyncio.sleep(0)
         self.assertFalsch(join_task.done())
 
         # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
-            await q.put("data")
+            warte q.put("data")
         mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
         mit self.assertRaisesShutdown():
-            await q.get()
+            warte q.get()
         mit self.assertRaisesShutdown():
             q.get_nowait()
 
-        # Ensure there is 1 unfinished task, und join() task succeeds
+        # Ensure there ist 1 unfinished task, und join() task succeeds
         q.task_done()
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(join_task.done())
-        await join_task
+        warte join_task
 
         mit self.assertRaises(
             ValueError, msg="Didn't appear to mark all tasks done"
@@ -638,18 +638,18 @@ klasse _QueueShutdownTestMixin:
         self.assertEqual(q.qsize(), 0)
 
         # Ensure join() task has successfully finished
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(join_task.done())
-        await join_task
+        warte join_task
 
         # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
-            await q.put("data")
+            warte q.put("data")
         mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
         mit self.assertRaisesShutdown():
-            await q.get()
+            warte q.get()
         mit self.assertRaisesShutdown():
             q.get_nowait()
 
@@ -668,29 +668,29 @@ klasse _QueueShutdownTestMixin:
         q.put_nowait("data")
         q.put_nowait("data")
         join_task = loop.create_task(q.join())
-        self.assertEqual(await q.get(), "data")
+        self.assertEqual(warte q.get(), "data")
 
         # Perform shut-down
         q.shutdown(immediate=Wahr)  # unfinished tasks: 2 -> 1
 
         self.assertEqual(q.qsize(), 0)
 
-        # Ensure join() task is nicht finished
-        await asyncio.sleep(0)
+        # Ensure join() task ist nicht finished
+        warte asyncio.sleep(0)
         self.assertFalsch(join_task.done())
 
         # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
-            await q.put("data")
+            warte q.put("data")
         mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
         mit self.assertRaisesShutdown():
-            await q.get()
+            warte q.get()
         mit self.assertRaisesShutdown():
             q.get_nowait()
 
-        # Ensure there is 1 unfinished task
+        # Ensure there ist 1 unfinished task
         q.task_done()
         mit self.assertRaises(
             ValueError, msg="Didn't appear to mark all tasks done"
@@ -698,9 +698,9 @@ klasse _QueueShutdownTestMixin:
             q.task_done()
 
         # Ensure join() task has successfully finished
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(join_task.done())
-        await join_task
+        warte join_task
 
 
 klasse QueueShutdownTests(

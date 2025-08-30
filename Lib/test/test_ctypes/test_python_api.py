@@ -25,7 +25,7 @@ klasse PythonAPITestCase(unittest.TestCase):
         pyob = pythonapi.PyBytes_FromString(s)
         self.assertEqual(sys.getrefcount(s), refcnt)
         self.assertEqual(s, pyob)
-        del pyob
+        loesche pyob
         self.assertEqual(sys.getrefcount(s), refcnt)
 
     @support.refcount_test
@@ -42,19 +42,19 @@ klasse PythonAPITestCase(unittest.TestCase):
         res = pythonapi.PyLong_AsLong(42)
         # Small int refcnts don't change
         self.assertEqual(sys.getrefcount(res), ref42)
-        del res
+        loesche res
         self.assertEqual(sys.getrefcount(42), ref42)
 
     @support.refcount_test
     def test_PyObj_FromPtr(self):
         s = object()
         ref = sys.getrefcount(s)
-        # id(python-object) is the address
+        # id(python-object) ist the address
         pyobj = _ctypes.PyObj_FromPtr(id(s))
         self.assertIs(s, pyobj)
 
         self.assertEqual(sys.getrefcount(s), ref + 1)
-        del pyobj
+        loesche pyobj
         self.assertEqual(sys.getrefcount(s), ref)
 
     def test_PyOS_snprintf(self):

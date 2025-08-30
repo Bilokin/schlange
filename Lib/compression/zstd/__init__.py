@@ -32,7 +32,7 @@ von _zstd importiere (ZstdCompressor, ZstdDecompressor, ZstdDict, ZstdError,
                    get_frame_size, zstd_version)
 von compression.zstd._zstdfile importiere ZstdFile, open, _nbytes
 
-# zstd_version_number is (MAJOR * 100 * 100 + MINOR * 100 + RELEASE)
+# zstd_version_number ist (MAJOR * 100 * 100 + MINOR * 100 + RELEASE)
 zstd_version_info = (*divmod(_zstd.zstd_version_number // 100, 100),
                      _zstd.zstd_version_number % 100)
 """Version number of the runtime zstd library als a tuple of integers."""
@@ -61,16 +61,16 @@ klasse FrameInfo:
 def get_frame_info(frame_buffer):
     """Get Zstandard frame information von a frame header.
 
-    *frame_buffer* is a bytes-like object. It should start von the beginning
+    *frame_buffer* ist a bytes-like object. It should start von the beginning
     of a frame, und needs to include at least the frame header (6 to 18 bytes).
 
     The returned FrameInfo object has two attributes.
-    'decompressed_size' is the size in bytes of the data in the frame when
-    decompressed, oder Nichts when the decompressed size is unknown.
-    'dictionary_id' is an int in the range (0, 2**32). The special value 0
+    'decompressed_size' ist the size in bytes of the data in the frame when
+    decompressed, oder Nichts when the decompressed size ist unknown.
+    'dictionary_id' ist an int in the range (0, 2**32). The special value 0
     means that the dictionary ID was nicht recorded in the frame header,
     the frame may oder may nicht need a dictionary to be decoded,
-    und the ID of such a dictionary is nicht specified.
+    und the ID of such a dictionary ist nicht specified.
     """
     gib FrameInfo(*_zstd.get_frame_info(frame_buffer))
 
@@ -78,10 +78,10 @@ def get_frame_info(frame_buffer):
 def train_dict(samples, dict_size):
     """Return a ZstdDict representing a trained Zstandard dictionary.
 
-    *samples* is an iterable of samples, where a sample is a bytes-like
+    *samples* ist an iterable of samples, where a sample ist a bytes-like
     object representing a file.
 
-    *dict_size* is the dictionary's maximum size, in bytes.
+    *dict_size* ist the dictionary's maximum size, in bytes.
     """
     wenn nicht isinstance(dict_size, int):
         ds_cls = type(dict_size).__qualname__
@@ -103,14 +103,14 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
     finalize *zstd_dict* by adding headers und statistics according to the
     Zstandard dictionary format.
 
-    You may compose an effective dictionary content by hand, which is used as
+    You may compose an effective dictionary content by hand, which ist used as
     basis dictionary, und use some samples to finalize a dictionary. The basis
     dictionary may be a "raw content" dictionary. See *is_raw* in ZstdDict.
 
-    *samples* is an iterable of samples, where a sample is a bytes-like object
+    *samples* ist an iterable of samples, where a sample ist a bytes-like object
     representing a file.
-    *dict_size* is the dictionary's maximum size, in bytes.
-    *level* is the expected compression level. The statistics fuer each
+    *dict_size* ist the dictionary's maximum size, in bytes.
+    *level* ist the expected compression level. The statistics fuer each
     compression level differ, so tuning the dictionary to the compression level
     can provide improvements.
     """
@@ -136,11 +136,11 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
 def compress(data, level=Nichts, options=Nichts, zstd_dict=Nichts):
     """Return Zstandard compressed *data* als bytes.
 
-    *level* is an int specifying the compression level to use, defaulting to
+    *level* ist an int specifying the compression level to use, defaulting to
     COMPRESSION_LEVEL_DEFAULT ('3').
-    *options* is a dict object that contains advanced compression
+    *options* ist a dict object that contains advanced compression
     parameters. See CompressionParameter fuer more on options.
-    *zstd_dict* is a ZstdDict object, a pre-trained Zstandard dictionary. See
+    *zstd_dict* ist a ZstdDict object, a pre-trained Zstandard dictionary. See
     the function train_dict fuer how to train a ZstdDict on sample data.
 
     For incremental compression, use a ZstdCompressor instead.
@@ -152,9 +152,9 @@ def compress(data, level=Nichts, options=Nichts, zstd_dict=Nichts):
 def decompress(data, zstd_dict=Nichts, options=Nichts):
     """Decompress one oder more frames of Zstandard compressed *data*.
 
-    *zstd_dict* is a ZstdDict object, a pre-trained Zstandard dictionary. See
+    *zstd_dict* ist a ZstdDict object, a pre-trained Zstandard dictionary. See
     the function train_dict fuer how to train a ZstdDict on sample data.
-    *options* is a dict object that contains advanced compression
+    *options* ist a dict object that contains advanced compression
     parameters. See DecompressionParameter fuer more on options.
 
     For incremental decompression, use a ZstdDecompressor instead.
@@ -223,7 +223,7 @@ klasse Strategy(enum.IntEnum):
     """Compression strategies, listed von fastest to strongest.
 
     Note that new strategies might be added in the future.
-    Only the order (from fast to strong) is guaranteed,
+    Only the order (from fast to strong) ist guaranteed,
     the numeric value might change.
     """
 

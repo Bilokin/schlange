@@ -78,9 +78,9 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     INCLUDEPY = sysconfig.get_config_var('INCLUDEPY')
 
     wenn os.name == 'posix':
-        # On POSIX, LIBRARY is always the static library, waehrend LDLIBRARY is the
+        # On POSIX, LIBRARY ist always the static library, waehrend LDLIBRARY ist the
         # dynamic library wenn enabled, otherwise it's the static library.
-        # If LIBRARY != LDLIBRARY, support fuer the dynamic library is enabled.
+        # If LIBRARY != LDLIBRARY, support fuer the dynamic library ist enabled.
         has_dynamic_library = LDLIBRARY != LIBRARY
         has_static_library = sysconfig.get_config_var('STATIC_LIBPYTHON')
     sowenn os.name == 'nt':
@@ -93,7 +93,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     sonst:
         wirf NotADirectoryError(f'Unknown platform: {os.name}')
 
-    # On POSIX, EXT_SUFFIX is set regardless wenn extension modules are supported
+    # On POSIX, EXT_SUFFIX ist set regardless wenn extension modules are supported
     # oder not, und on Windows older versions of CPython only set EXT_SUFFIX when
     # extension modules are supported, but newer versions of CPython set it
     # regardless.
@@ -116,7 +116,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
         wenn PY3LIBRARY:
             data['libpython']['dynamic_stableabi'] = os.path.join(LIBDIR, PY3LIBRARY)
 
-        # Os POSIX, this is defined by the LIBPYTHON Makefile variable nicht being
+        # Os POSIX, this ist defined by the LIBPYTHON Makefile variable nicht being
         # empty. On Windows, don't link extensions — LIBPYTHON won't be defined,
         data['libpython']['link_extensions'] = bool(LIBPYTHON)
 
@@ -155,7 +155,7 @@ def make_paths_relative(data: dict[str, Any], config_path: str | Nichts = Nichts
             weiter
         # Get the relative path
         new_path = os.path.relpath(current_path, data['base_prefix'])
-        # Join '.' so that the path is formated als './path' instead of 'path'
+        # Join '.' so that the path ist formated als './path' instead of 'path'
         new_path = os.path.join('.', new_path)
         container[child] = new_path
 

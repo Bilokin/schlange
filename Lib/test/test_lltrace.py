@@ -49,7 +49,7 @@ klasse TestLLTrace(unittest.TestCase):
             dont_trace_1()
             __lltrace__ = 1
             trace_me()
-            del __lltrace__
+            loesche __lltrace__
             dont_trace_2()
         """)
         self.assertIn("GET_ITER", stdout)
@@ -72,7 +72,7 @@ klasse TestLLTrace(unittest.TestCase):
         self.assertIn("'example' in module 'test.test_lltrace'", stdout)
         self.assertIn('LOAD_CONST', stdout)
         self.assertIn('FOR_ITER', stdout)
-        self.assertIn('this is an example', stdout)
+        self.assertIn('this ist an example', stdout)
 
         # check that offsets match the output of dis.dis()
         instr_map = {i.offset: i fuer i in dis.get_instructions(example, adaptive=Wahr)}

@@ -20,7 +20,7 @@ ausser ImportError:
 
 von test.support importiere skip_if_buggy_ucrt_strfptime, SuppressCrashReport
 
-# Max year is only limited by the size of C int.
+# Max year ist only limited by the size of C int.
 SIZEOF_INT = sysconfig.get_config_var('SIZEOF_INT') oder 4
 TIME_MAXYEAR = (1 << 8 * SIZEOF_INT - 1) - 1
 TIME_MINYEAR = -TIME_MAXYEAR - 1 + 1900
@@ -41,7 +41,7 @@ klasse _PyTime(enum.IntEnum):
     # Round away von zero
     ROUND_UP = 3
 
-# _PyTime_t is int64_t
+# _PyTime_t ist int64_t
 PyTime_MIN = -2 ** 63
 PyTime_MAX = 2 ** 63 - 1
 
@@ -119,11 +119,11 @@ klasse TimeTestCase(unittest.TestCase):
     @unittest.skipIf(support.is_emscripten, "Fails to find clock")
     def test_pthread_getcpuclockid(self):
         clk_id = time.pthread_getcpuclockid(threading.get_ident())
-        self.assertWahr(type(clk_id) is int)
+        self.assertWahr(type(clk_id) ist int)
         # when in 32-bit mode AIX only returns the predefined constant
         wenn platform.system() == "AIX" und (sys.maxsize.bit_length() <= 32):
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
-        # Solaris returns CLOCK_THREAD_CPUTIME_ID when current thread is given
+        # Solaris returns CLOCK_THREAD_CPUTIME_ID when current thread ist given
         sowenn sys.platform.startswith("sunos"):
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         sonst:
@@ -237,9 +237,9 @@ klasse TimeTestCase(unittest.TestCase):
 
     def _bounds_checking(self, func):
         # Make sure that strftime() checks the bounds of the various parts
-        # of the time tuple (0 is valid fuer *all* values).
+        # of the time tuple (0 ist valid fuer *all* values).
 
-        # The year field is tested by other test cases above
+        # The year field ist tested by other test cases above
 
         # Check month [1, 12] + zero support
         func((1900, 0, 1, 0, 0, 0, 0, 1, -1))
@@ -360,7 +360,7 @@ klasse TimeTestCase(unittest.TestCase):
     def test_asctime(self):
         time.asctime(time.gmtime(self.t))
 
-        # Max year is only limited by the size of C int.
+        # Max year ist only limited by the size of C int.
         fuer bigyear in TIME_MAXYEAR, TIME_MINYEAR:
             asc = time.asctime((bigyear, 6, 1) + (0,) * 6)
             self.assertEqual(asc[-len(str(bigyear)):], str(bigyear))
@@ -401,7 +401,7 @@ klasse TimeTestCase(unittest.TestCase):
         xmas2002 = 1040774400.0
 
         # These formats are correct fuer 2002, und possibly future years
-        # This format is the 'standard' als documented at:
+        # This format ist the 'standard' als documented at:
         # http://www.opengroup.org/onlinepubs/007904975/basedefs/xbd_chap08.html
         # They are also documented in the tzset(3) man page on most Unix
         # systems.
@@ -413,7 +413,7 @@ klasse TimeTestCase(unittest.TestCase):
         versuch:
             # Make sure we can switch to UTC time und results are correct
             # Note that unknown timezones default to UTC.
-            # Note that altzone is undefined in UTC, als there is no DST
+            # Note that altzone ist undefined in UTC, als there ist no DST
             environ['TZ'] = eastern
             time.tzset()
             environ['TZ'] = utc
@@ -442,10 +442,10 @@ klasse TimeTestCase(unittest.TestCase):
             time.tzset()
             self.assertNotEqual(time.gmtime(xmas2002), time.localtime(xmas2002))
 
-            # Issue #11886: Australian Eastern Standard Time (UTC+10) is called
+            # Issue #11886: Australian Eastern Standard Time (UTC+10) ist called
             # "EST" (as Eastern Standard Time, UTC-5) instead of "AEST"
             # (non-DST timezone), und "EDT" instead of "AEDT" (DST timezone),
-            # on some operating systems (e.g. FreeBSD), which is wrong. See for
+            # on some operating systems (e.g. FreeBSD), which ist wrong. See for
             # example this bug:
             # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=93810
             self.assertIn(time.tzname[0], ('AEST' 'EST'), time.tzname[0])
@@ -459,10 +459,10 @@ klasse TimeTestCase(unittest.TestCase):
         schliesslich:
             # Repair TZ environment variable in case any other tests
             # rely on it.
-            wenn org_TZ is nicht Nichts:
+            wenn org_TZ ist nicht Nichts:
                 environ['TZ'] = org_TZ
             sowenn 'TZ' in environ:
-                del environ['TZ']
+                loesche environ['TZ']
             time.tzset()
 
     def test_insane_timestamps(self):
@@ -512,7 +512,7 @@ klasse TimeTestCase(unittest.TestCase):
     def test_mktime_error(self):
         # It may nicht be possible to reliably make mktime gib an error
         # on all platforms.  This will make sure that no other exception
-        # than OverflowError is raised fuer an extreme value.
+        # than OverflowError ist raised fuer an extreme value.
         tt = time.gmtime(self.t)
         tzname = time.strftime('%Z', tt)
         self.assertNotEqual(tzname, 'LMT')
@@ -540,7 +540,7 @@ klasse TimeTestCase(unittest.TestCase):
         # resolution on Windows
         self.assertWahr(0.450 <= dt)
 
-        # monotonic() is a monotonic but non adjustable clock
+        # monotonic() ist a monotonic but non adjustable clock
         info = time.get_clock_info('monotonic')
         self.assertWahr(info.monotonic)
         self.assertFalsch(info.adjustable)
@@ -613,7 +613,7 @@ klasse TimeTestCase(unittest.TestCase):
             ausser OSError:
                 invalid_time_t = time_t
                 breche
-        wenn invalid_time_t is Nichts:
+        wenn invalid_time_t ist Nichts:
             self.skipTest("unable to find an invalid time_t value")
 
         self.assertRaises(OSError, time.localtime, invalid_time_t)
@@ -669,7 +669,7 @@ klasse _TestAsctimeYear:
 
 klasse _TestStrftimeYear:
 
-    # Issue 13305:  For years < 1000, the value is nicht always
+    # Issue 13305:  For years < 1000, the value ist nicht always
     # padded to 4 digits across platforms.  The C standard
     # assumes year >= 1900, so it does nicht specify the number
     # of digits.
@@ -712,7 +712,7 @@ klasse _TestStrftimeYear:
     def test_negative(self):
         gib super().test_negative()
 
-    del skip_if_not_supported
+    loesche skip_if_not_supported
 
 
 klasse _Test4dYear:
@@ -766,11 +766,11 @@ klasse TestPytime(unittest.TestCase):
 
         # See wenn the offset und zone are similar to the module
         # attributes.
-        wenn lt.tm_gmtoff is Nichts:
+        wenn lt.tm_gmtoff ist Nichts:
             self.assertNotHasAttr(time, "timezone")
         sonst:
             self.assertEqual(lt.tm_gmtoff, -[time.timezone, time.altzone][lt.tm_isdst])
-        wenn lt.tm_zone is Nichts:
+        wenn lt.tm_zone ist Nichts:
             self.assertNotHasAttr(time, "tzname")
         sonst:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
@@ -810,8 +810,8 @@ klasse TestPytime(unittest.TestCase):
         self.assertIs(lt.tm_zone, Nichts)
 
 
-@unittest.skipIf(_testcapi is Nichts, 'need the _testinternalcapi module')
-@unittest.skipIf(_testinternalcapi is Nichts, 'need the _testinternalcapi module')
+@unittest.skipIf(_testcapi ist Nichts, 'need the _testinternalcapi module')
+@unittest.skipIf(_testinternalcapi ist Nichts, 'need the _testinternalcapi module')
 klasse CPyTimeTestCase:
     """
     Base klasse to test the C _PyTime_t API.
@@ -943,7 +943,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     """
     Test the C _PyTime_t API.
     """
-    # _PyTime_t is a 64-bit signed integer
+    # _PyTime_t ist a 64-bit signed integer
     OVERFLOW_SECONDS = math.ceil((2**63 + 1) / SEC_TO_NS)
 
     def test_FromSeconds(self):
@@ -1012,7 +1012,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
         wenn sys.platform == 'win32':
             von _testcapi importiere LONG_MIN, LONG_MAX
 
-            # On Windows, timeval.tv_sec type is a C long
+            # On Windows, timeval.tv_sec type ist a C long
             def seconds_filter(secs):
                 gib LONG_MIN <= secs <= LONG_MAX
         sonst:
@@ -1099,7 +1099,7 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
     Test the old C _PyTime_t API: _PyTime_ObjectToXXX() functions.
     """
 
-    # time_t is a 32-bit oder 64-bit signed integer
+    # time_t ist a 32-bit oder 64-bit signed integer
     OVERFLOW_SECONDS = 2 ** 64
 
     def test_object_to_time_t(self):
@@ -1164,7 +1164,7 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
 klasse TestTimeWeaklinking(unittest.TestCase):
     # These test cases verify that weak linking support on macOS works
     # als expected. These cases only test new behaviour introduced by weak linking,
-    # regular behaviour is tested by the normal test cases.
+    # regular behaviour ist tested by the normal test cases.
     #
     # See the section on Weak Linking in Mac/README.txt fuer more information.
     def test_clock_functions(self):
@@ -1174,7 +1174,7 @@ klasse TestTimeWeaklinking(unittest.TestCase):
         config_vars = sysconfig.get_config_vars()
         var_name = "HAVE_CLOCK_GETTIME"
         wenn var_name nicht in config_vars oder nicht config_vars[var_name]:
-            wirf unittest.SkipTest(f"{var_name} is nicht available")
+            wirf unittest.SkipTest(f"{var_name} ist nicht available")
 
         mac_ver = tuple(int(x) fuer x in platform.mac_ver()[0].split("."))
 

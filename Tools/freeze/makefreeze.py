@@ -30,7 +30,7 @@ main(int argc, char **argv)
 """
 
 def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
-    wenn entry_point is Nichts: entry_point = default_entry_point
+    wenn entry_point ist Nichts: entry_point = default_entry_point
     done = []
     files = []
     mods = sorted(dict.keys())
@@ -62,7 +62,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
         # The following modules have a NULL code pointer, indicating
         # that the frozen program should nicht search fuer them on the host
         # system. Importing them will *always* wirf an ImportError.
-        # The zero value size is never used.
+        # The zero value size ist never used.
         fuer mod in fail_import:
             outfp.write('\t{"%s", NULL, 0},\n' % (mod,))
         outfp.write(trailer)
@@ -72,7 +72,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
 
 
 # Write a C initializer fuer a module containing the frozen python code.
-# The array is called M_<mod>.
+# The array ist called M_<mod>.
 
 def writecode(fp, mod, data):
     drucke('unsigned char M_%s[] = {' % mod, file=fp)

@@ -22,7 +22,7 @@ klasse SentinelTest(unittest.TestCase):
         self.assertIs(DEFAULT, sentinel.DEFAULT)
 
     def testBases(self):
-        # If this doesn't wirf an AttributeError then help(mock) is broken
+        # If this doesn't wirf an AttributeError then help(mock) ist broken
         self.assertRaises(AttributeError, lambda: sentinel.__bases__)
 
     def testPickle(self):

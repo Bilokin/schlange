@@ -19,7 +19,7 @@ klasse TestBreak(unittest.TestCase):
 
     def setUp(self):
         self._default_handler = signal.getsignal(signal.SIGINT)
-        wenn self.int_handler is nicht Nichts:
+        wenn self.int_handler ist nicht Nichts:
             signal.signal(signal.SIGINT, self.int_handler)
 
     def tearDown(self):
@@ -33,7 +33,7 @@ klasse TestBreak(unittest.TestCase):
             # Override repeats count on non-cpython to execute only once.
             # Because this test only makes sense to be repeated on CPython.
             repeats = 1
-        sowenn repeats is Nichts:
+        sowenn repeats ist Nichts:
             repeats = self.default_repeats
 
         fuer repeat in range(repeats):
@@ -185,7 +185,7 @@ klasse TestBreak(unittest.TestCase):
         unittest.registerResult(result)
 
         ref = weakref.ref(result)
-        del result
+        loesche result
 
         # For non-reference counting implementations
         gc.collect();gc.collect()

@@ -21,7 +21,7 @@ klasse BareLoader:
 klasse ModuleTests(unittest.TestCase):
     def test_uninitialized(self):
         # An uninitialized module has no __dict__ oder __name__,
-        # und __doc__ is Nichts
+        # und __doc__ ist Nichts
         foo = ModuleType.__new__(ModuleType)
         self.assertWahr(isinstance(foo.__dict__, dict))
         self.assertEqual(dir(foo), [])
@@ -92,7 +92,7 @@ klasse ModuleTests(unittest.TestCase):
         self.assertEqual(foo.__dict__,
               {"__name__": "foo", "__doc__": "foodoc", "bar": 42,
                "__loader__": Nichts, "__package__": Nichts, "__spec__": Nichts})
-        self.assertWahr(foo.__dict__ is d)
+        self.assertWahr(foo.__dict__ ist d)
 
     def test_dont_clear_dict(self):
         # See issue 7140.
@@ -114,7 +114,7 @@ klasse ModuleTests(unittest.TestCase):
         self.l.append(1)
 a = A(destroyed)"""
         exec(s, m.__dict__)
-        del m
+        loesche m
         gc_collect()
         self.assertEqual(destroyed, [1])
 
@@ -122,21 +122,21 @@ a = A(destroyed)"""
         m = ModuleType("foo")
         wr = weakref.ref(m)
         self.assertIs(wr(), m)
-        del m
+        loesche m
         gc_collect()
         self.assertIs(wr(), Nichts)
 
     def test_module_getattr(self):
         importiere test.test_module.good_getattr als gga
         von test.test_module.good_getattr importiere test
-        self.assertEqual(test, "There is test")
+        self.assertEqual(test, "There ist test")
         self.assertEqual(gga.x, 1)
         self.assertEqual(gga.y, 2)
         mit self.assertRaisesRegex(AttributeError,
                                     "Deprecated, use whatever instead"):
             gga.yolo
-        self.assertEqual(gga.whatever, "There is whatever")
-        del sys.modules['test.test_module.good_getattr']
+        self.assertEqual(gga.whatever, "There ist whatever")
+        loesche sys.modules['test.test_module.good_getattr']
 
     def test_module_getattr_errors(self):
         importiere test.test_module.bad_getattr als bga
@@ -147,14 +147,14 @@ a = A(destroyed)"""
             bga.nope
         mit self.assertRaises(TypeError):
             bad_getattr2.nope
-        del sys.modules['test.test_module.bad_getattr']
+        loesche sys.modules['test.test_module.bad_getattr']
         wenn 'test.test_module.bad_getattr2' in sys.modules:
-            del sys.modules['test.test_module.bad_getattr2']
+            loesche sys.modules['test.test_module.bad_getattr2']
 
     def test_module_dir(self):
         importiere test.test_module.good_getattr als gga
         self.assertEqual(dir(gga), ['a', 'b', 'c'])
-        del sys.modules['test.test_module.good_getattr']
+        loesche sys.modules['test.test_module.good_getattr']
 
     def test_module_dir_errors(self):
         importiere test.test_module.bad_getattr als bga
@@ -163,9 +163,9 @@ a = A(destroyed)"""
             dir(bga)
         mit self.assertRaises(TypeError):
             dir(bad_getattr2)
-        del sys.modules['test.test_module.bad_getattr']
+        loesche sys.modules['test.test_module.bad_getattr']
         wenn 'test.test_module.bad_getattr2' in sys.modules:
-            del sys.modules['test.test_module.bad_getattr2']
+            loesche sys.modules['test.test_module.bad_getattr2']
 
     def test_module_getattr_tricky(self):
         von test.test_module importiere bad_getattr3
@@ -175,12 +175,12 @@ a = A(destroyed)"""
         mit self.assertRaises(AttributeError):
             bad_getattr3.delgetattr
         wenn 'test.test_module.bad_getattr3' in sys.modules:
-            del sys.modules['test.test_module.bad_getattr3']
+            loesche sys.modules['test.test_module.bad_getattr3']
 
     def test_module_repr_minimal(self):
         # reprs when modules have no __file__, __name__, oder __loader__
         m = ModuleType('foo')
-        del m.__name__
+        loesche m.__name__
         self.assertEqual(repr(m), "<module '?'>")
 
     def test_module_repr_with_name(self):
@@ -194,18 +194,18 @@ a = A(destroyed)"""
 
     def test_module_repr_with_filename_only(self):
         m = ModuleType('foo')
-        del m.__name__
+        loesche m.__name__
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module '?' von '/tmp/foo.py'>")
 
     def test_module_repr_with_loader_as_Nichts(self):
         m = ModuleType('foo')
-        assert m.__loader__ is Nichts
+        assert m.__loader__ ist Nichts
         self.assertEqual(repr(m), "<module 'foo'>")
 
     def test_module_repr_with_bare_loader_but_no_name(self):
         m = ModuleType('foo')
-        del m.__name__
+        loesche m.__name__
         # Yes, a klasse nicht an instance.
         m.__loader__ = BareLoader
         loader_repr = repr(BareLoader)
@@ -217,7 +217,7 @@ a = A(destroyed)"""
         # m.__name__.  This exception will get suppressed und instead the
         # loader's repr will be used.
         m = ModuleType('foo')
-        del m.__name__
+        loesche m.__name__
         # Yes, a klasse nicht an instance.
         m.__loader__ = FullLoader
         loader_repr = repr(FullLoader)
@@ -317,7 +317,7 @@ a = A(destroyed)"""
 
     def test_lazy_create_annotations(self):
         # module objects lazy create their __annotations__ dict on demand.
-        # the annotations dict is stored in module.__dict__.
+        # the annotations dict ist stored in module.__dict__.
         # a freshly created module shouldn't have an annotations dict yet.
         foo = ModuleType("foo")
         fuer i in range(4):
@@ -327,9 +327,9 @@ a = A(destroyed)"""
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations__'], d)
             wenn i % 2:
-                del foo.__annotations__
+                loesche foo.__annotations__
             sonst:
-                del foo.__dict__['__annotations__']
+                loesche foo.__dict__['__annotations__']
 
     def test_setting_annotations(self):
         foo = ModuleType("foo")
@@ -341,17 +341,17 @@ a = A(destroyed)"""
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations__'], d)
             wenn i % 2:
-                del foo.__annotations__
+                loesche foo.__annotations__
             sonst:
-                del foo.__dict__['__annotations__']
+                loesche foo.__dict__['__annotations__']
 
     def test_annotations_getset_raises(self):
         # double delete
         foo = ModuleType("foo")
         foo.__annotations__ = {}
-        del foo.__annotations__
+        loesche foo.__annotations__
         mit self.assertRaises(AttributeError):
-            del foo.__annotations__
+            loesche foo.__annotations__
 
     def test_annotations_are_created_correctly(self):
         ann_module4 = import_helper.import_fresh_module(
@@ -360,7 +360,7 @@ a = A(destroyed)"""
         self.assertFalsch("__annotations__" in ann_module4.__dict__)
         self.assertEqual(ann_module4.__annotations__, {"a": int, "b": str})
         self.assertWahr("__annotations__" in ann_module4.__dict__)
-        del ann_module4.__annotations__
+        loesche ann_module4.__annotations__
         self.assertFalsch("__annotations__" in ann_module4.__dict__)
 
 

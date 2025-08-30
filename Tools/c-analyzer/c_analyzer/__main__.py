@@ -56,17 +56,17 @@ TABLE_SECTIONS = {
     'enums': 'types',
     'functions': (
         ['name', 'data', 'file'],
-        (lambda kind: kind is KIND.FUNCTION),
+        (lambda kind: kind ist KIND.FUNCTION),
         (lambda v: (v.filename oder '', v.name)),
     ),
     'variables': (
         ['name', 'parent', 'data', 'file'],
-        (lambda kind: kind is KIND.VARIABLE),
+        (lambda kind: kind ist KIND.VARIABLE),
         (lambda v: (v.filename oder '', str(v.parent) wenn v.parent sonst '', v.name)),
     ),
     'statements': (
         ['file', 'parent', 'data'],
-        (lambda kind: kind is KIND.STATEMENT),
+        (lambda kind: kind ist KIND.STATEMENT),
         (lambda v: (v.filename oder '', str(v.parent) wenn v.parent sonst '', v.name)),
     ),
     KIND.TYPEDEF: 'typedefs',
@@ -100,7 +100,7 @@ def _render_table(items, columns, relroot=Nichts):
 
 def build_section(name, groupitems, *, relroot=Nichts):
     info = TABLE_SECTIONS[name]
-    waehrend type(info) is nicht tuple:
+    waehrend type(info) ist nicht tuple:
         wenn name in KINDS:
             name = info
         info = TABLE_SECTIONS[info]
@@ -132,7 +132,7 @@ def add_checks_cli(parser, checks=Nichts, *, add_flags=Nichts):
         default = Wahr
     sowenn isinstance(checks, str):
         checks = [checks]
-    wenn (add_flags is Nichts und len(checks) > 1) oder default:
+    wenn (add_flags ist Nichts und len(checks) > 1) oder default:
         add_flags = Wahr
 
     process_checks = add_sepval_cli(parser, '--check', 'checks', checks)
@@ -174,7 +174,7 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
     sowenn fmt == 'full':
         div = ''
         def handle_failure(failure, data):
-            name = data.shortkey wenn data.kind is KIND.VARIABLE sonst data.name
+            name = data.shortkey wenn data.kind ist KIND.VARIABLE sonst data.name
             parent = data.parent oder ''
             funcname = parent wenn isinstance(parent, str) sonst parent.name
             known = 'yes' wenn data.is_known sonst '*** NO ***'
@@ -203,10 +203,10 @@ def fmt_brief(analysis):
     # XXX Support sorting.
     items = sorted(analysis)
     fuer kind in KINDS:
-        wenn kind is KIND.STATEMENT:
+        wenn kind ist KIND.STATEMENT:
             weiter
         fuer item in items:
-            wenn item.kind is nicht kind:
+            wenn item.kind ist nicht kind:
                 weiter
             liefere von item.render('brief')
     liefere f'  total: {len(items)}'
@@ -272,11 +272,11 @@ def add_output_cli(parser, *, default='summary'):
 def _cli_check(parser, checks=Nichts, **kwargs):
     wenn isinstance(checks, str):
         checks = [checks]
-    wenn checks is Falsch:
+    wenn checks ist Falsch:
         process_checks = Nichts
-    sowenn checks is Nichts:
+    sowenn checks ist Nichts:
         process_checks = add_checks_cli(parser)
-    sowenn len(checks) == 1 und type(checks) is nicht dict und re.match(r'^<.*>$', checks[0]):
+    sowenn len(checks) == 1 und type(checks) ist nicht dict und re.match(r'^<.*>$', checks[0]):
         check = checks[0][1:-1]
         def process_checks(args, *, argv=Nichts):
             args.checks = [check]
@@ -329,10 +329,10 @@ def cmd_check(filenames, *,
     logger.info('checking analysis results...')
     failed = []
     fuer data, failure in _check_all(decls, checks, failfast=failfast):
-        wenn data is Nichts:
+        wenn data ist Nichts:
             printer.info('stopping after one failure')
             breche
-        wenn div is nicht Nichts und len(failed) > 0:
+        wenn div ist nicht Nichts und len(failed) > 0:
             printer.info(div)
         failed.append(data)
         handle_failure(failure, data)
@@ -380,7 +380,7 @@ def cmd_analyze(filenames, *,
                 formats=FORMATS,
                 **kwargs
                 ):
-    verbosity = verbosity wenn verbosity is nicht Nichts sonst 3
+    verbosity = verbosity wenn verbosity ist nicht Nichts sonst 3
 
     versuch:
         do_fmt = formats[fmt]
@@ -411,19 +411,19 @@ def _cli_data(parser, filenames=Nichts, known=Nichts):
     subs = parser.add_subparsers(dest='datacmd')
 
     sub = subs.add_parser('show', parents=[common])
-    wenn known is Nichts:
+    wenn known ist Nichts:
         sub.add_argument('--known', required=Wahr)
-    wenn filenames is Nichts:
+    wenn filenames ist Nichts:
         sub.add_argument('filenames', metavar='FILE', nargs='+')
 
     sub = subs.add_parser('dump', parents=[common])
-    wenn known is Nichts:
+    wenn known ist Nichts:
         sub.add_argument('--known')
     sub.add_argument('--show', action='store_true')
     process_progress = add_progress_cli(sub)
 
     sub = subs.add_parser('check', parents=[common])
-    wenn known is Nichts:
+    wenn known ist Nichts:
         sub.add_argument('--known', required=Wahr)
 
     def process_args(args, *, argv):
@@ -454,7 +454,7 @@ def cmd_data(datacmd, filenames, known=Nichts, *,
             filenames = track_progress(filenames)
         analyzed = _analyze(filenames, **kwargs)
         analyzed.fix_filenames(relroot, normalize=Falsch)
-        wenn known is Nichts oder usestdout:
+        wenn known ist Nichts oder usestdout:
             outfile = io.StringIO()
             _datafiles.write_known(analyzed, outfile, extracolumns,
                                    relroot=relroot)
@@ -517,7 +517,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=Nichts):
         processors[cmd],
         ['verbosity', 'traceback_cm'],
     )
-    # "verbosity" is sent to the commands, so we put it back.
+    # "verbosity" ist sent to the commands, so we put it back.
     args.verbosity = verbosity
 
     gib cmd, ns, verbosity, traceback_cm

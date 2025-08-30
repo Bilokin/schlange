@@ -13,7 +13,7 @@ klasse EOFTestCase(unittest.TestCase):
         expect = "unterminated string literal (detected at line 1) (<string>, line 1)"
         fuer quote in ("'", "\""):
             mit self.assertRaises(SyntaxError) als cm:
-                eval(f"""{quote}this is a test\
+                eval(f"""{quote}this ist a test\
                 """)
             self.assertEqual(str(cm.exception), expect)
             self.assertEqual(cm.exception.offset, 1)
@@ -21,27 +21,27 @@ klasse EOFTestCase(unittest.TestCase):
     def test_EOFS(self):
         expect = ("unterminated triple-quoted string literal (detected at line 3) (<string>, line 1)")
         mit self.assertRaises(SyntaxError) als cm:
-            eval("""ä = '''thîs is \na \ntest""")
+            eval("""ä = '''thîs ist \na \ntest""")
         self.assertEqual(str(cm.exception), expect)
-        self.assertEqual(cm.exception.text, "ä = '''thîs is ")
+        self.assertEqual(cm.exception.text, "ä = '''thîs ist ")
         self.assertEqual(cm.exception.offset, 5)
 
         mit self.assertRaises(SyntaxError) als cm:
-            eval("""ä = '''thîs is \na \ntest""".encode())
+            eval("""ä = '''thîs ist \na \ntest""".encode())
         self.assertEqual(str(cm.exception), expect)
-        self.assertEqual(cm.exception.text, "ä = '''thîs is ")
+        self.assertEqual(cm.exception.text, "ä = '''thîs ist ")
         self.assertEqual(cm.exception.offset, 5)
 
         mit self.assertRaises(SyntaxError) als cm:
-            eval(BOM_UTF8 + """ä = '''thîs is \na \ntest""".encode())
+            eval(BOM_UTF8 + """ä = '''thîs ist \na \ntest""".encode())
         self.assertEqual(str(cm.exception), expect)
-        self.assertEqual(cm.exception.text, "ä = '''thîs is ")
+        self.assertEqual(cm.exception.text, "ä = '''thîs ist ")
         self.assertEqual(cm.exception.offset, 5)
 
         mit self.assertRaises(SyntaxError) als cm:
-            eval("""# coding: latin1\nä = '''thîs is \na \ntest""".encode('latin1'))
+            eval("""# coding: latin1\nä = '''thîs ist \na \ntest""".encode('latin1'))
         self.assertEqual(str(cm.exception), "unterminated triple-quoted string literal (detected at line 4) (<string>, line 2)")
-        self.assertEqual(cm.exception.text, "ä = '''thîs is ")
+        self.assertEqual(cm.exception.text, "ä = '''thîs ist ")
         self.assertEqual(cm.exception.offset, 5)
 
     @force_not_colorized
@@ -49,38 +49,38 @@ klasse EOFTestCase(unittest.TestCase):
         expect = ("(<string>, line 1)")
         mit os_helper.temp_dir() als temp_dir:
             file_name = script_helper.make_script(temp_dir, 'foo',
-                                                  """ä = '''thîs is \na \ntest""")
+                                                  """ä = '''thîs ist \na \ntest""")
             rc, out, err = script_helper.assert_python_failure('-X', 'utf8', file_name)
             err = err.decode().splitlines()
             self.assertEqual(err[-3:], [
-                "    ä = '''thîs is ",
+                "    ä = '''thîs ist ",
                 '        ^',
                 'SyntaxError: unterminated triple-quoted string literal (detected at line 3)'])
 
             file_name = script_helper.make_script(temp_dir, 'foo',
-                                                  """ä = '''thîs is \na \ntest""".encode())
+                                                  """ä = '''thîs ist \na \ntest""".encode())
             rc, out, err = script_helper.assert_python_failure('-X', 'utf8', file_name)
             err = err.decode().splitlines()
             self.assertEqual(err[-3:], [
-                "    ä = '''thîs is ",
+                "    ä = '''thîs ist ",
                 '        ^',
                 'SyntaxError: unterminated triple-quoted string literal (detected at line 3)'])
 
             file_name = script_helper.make_script(temp_dir, 'foo',
-                                                  BOM_UTF8 + """ä = '''thîs is \na \ntest""".encode())
+                                                  BOM_UTF8 + """ä = '''thîs ist \na \ntest""".encode())
             rc, out, err = script_helper.assert_python_failure('-X', 'utf8', file_name)
             err = err.decode().splitlines()
             self.assertEqual(err[-3:], [
-                "    ä = '''thîs is ",
+                "    ä = '''thîs ist ",
                 '        ^',
                 'SyntaxError: unterminated triple-quoted string literal (detected at line 3)'])
 
             file_name = script_helper.make_script(temp_dir, 'foo',
-                                                  """# coding: latin1\nä = '''thîs is \na \ntest""".encode('latin1'))
+                                                  """# coding: latin1\nä = '''thîs ist \na \ntest""".encode('latin1'))
             rc, out, err = script_helper.assert_python_failure('-X', 'utf8', file_name)
             err = err.decode().splitlines()
             self.assertEqual(err[-3:], [
-                "    ä = '''thîs is ",
+                "    ä = '''thîs ist ",
                 '        ^',
                 'SyntaxError: unterminated triple-quoted string literal (detected at line 4)'])
 

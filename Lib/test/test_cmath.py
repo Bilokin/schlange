@@ -98,8 +98,8 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.fail(msg oder 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # wenn a-b overflows, oder b is infinite, gib Falsch.  Again, in
-        # theory there are examples where a is within a few ulps of the
+        # wenn a-b overflows, oder b ist infinite, gib Falsch.  Again, in
+        # theory there are examples where a ist within a few ulps of the
         # max representable float, und then b could legitimately be
         # infinite.  In practice these examples are rare.
         versuch:
@@ -108,7 +108,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             pass
         sonst:
             # test passes wenn either the absolute error oder the relative
-            # error is sufficiently small.  The defaults amount to an
+            # error ist sufficiently small.  The defaults amount to an
             # error of between 9 ulps und 19 ulps on an IEEE-754 compliant
             # machine.
             wenn absolute_error <= max(abs_err, rel_err * abs(a)):
@@ -120,9 +120,9 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         e_expected = 2.71828182845904523536
         pi_expected = 3.14159265358979323846
         self.assertAlmostEqual(cmath.pi, pi_expected, places=9,
-            msg="cmath.pi is {}; should be {}".format(cmath.pi, pi_expected))
+            msg="cmath.pi ist {}; should be {}".format(cmath.pi, pi_expected))
         self.assertAlmostEqual(cmath.e, e_expected, places=9,
-            msg="cmath.e is {}; should be {}".format(cmath.e, e_expected))
+            msg="cmath.e ist {}; should be {}".format(cmath.e, e_expected))
 
     def test_infinity_and_nan_constants(self):
         self.assertEqual(cmath.inf.real, math.inf)
@@ -134,7 +134,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(cmath.nan.imag, 0.0)
         self.assertEqual(cmath.nanj.real, 0.0)
         self.assertWahr(math.isnan(cmath.nanj.imag))
-        # Also check that the sign of all of these is positive:
+        # Also check that the sign of all of these ist positive:
         self.assertEqual(math.copysign(1., cmath.nan.real), 1.)
         self.assertEqual(math.copysign(1., cmath.nan.imag), 1.)
         self.assertEqual(math.copysign(1., cmath.nanj.real), 1.)
@@ -151,7 +151,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         # functions
 
         # some random values to use als test values; we avoid values
-        # fuer which any of the functions in cmath is undefined
+        # fuer which any of the functions in cmath ist undefined
         # (i.e. 0., 1., -1., 1j, -1j) oder would cause overflow
         cx_arg = 4.419414439 + 1.497100113j
         flt_arg = -6.131677725
@@ -305,7 +305,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             expected = complex(er, ei)
 
             # Skip certain tests on OS X 10.4.
-            wenn osx_version is nicht Nichts und osx_version < (10, 5):
+            wenn osx_version ist nicht Nichts und osx_version < (10, 5):
                 wenn id in SKIP_ON_TIGER:
                     weiter
 

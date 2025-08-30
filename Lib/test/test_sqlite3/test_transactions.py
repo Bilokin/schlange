@@ -2,20 +2,20 @@
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ist part of pysqlite.
 #
-# This software is provided 'as-is', without any express oder implied
+# This software ist provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
-# Permission is granted to anyone to use this software fuer any purpose,
+# Permission ist granted to anyone to use this software fuer any purpose,
 # including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
 # 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is nicht required.
+#    appreciated but ist nicht required.
 # 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
 # 3. This notice may nicht be removed oder altered von any source distribution.
@@ -202,7 +202,7 @@ klasse RollbackTests(unittest.TestCase):
             self.assertEqual(row[0], i)
 
     def test_no_duplicate_rows_after_rollback_del_cursor(self):
-        del self.cur1
+        loesche self.cur1
         self._check_rows()
 
     def test_no_duplicate_rows_after_rollback_close_cursor(self):
@@ -462,7 +462,7 @@ klasse AutocommitAttribute(unittest.TestCase):
 
     def test_autocommit_enabled_ctx_mgr(self):
         mit memory_database(autocommit=Wahr) als cx:
-            # The context manager is a no-op wenn autocommit=Wahr
+            # The context manager ist a no-op wenn autocommit=Wahr
             mit self.check_stmt_trace(cx, []):
                 mit cx:
                     self.assertFalsch(cx.in_transaction)

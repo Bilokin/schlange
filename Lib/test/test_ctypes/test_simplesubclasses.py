@@ -54,8 +54,8 @@ klasse Test(unittest.TestCase):
         self.assertNotEqual(MyInt(42), MyInt(43))
 
     def test_ignore_retval(self):
-        # Test wenn the gib value of a callback is ignored
-        # wenn restype is Nichts
+        # Test wenn the gib value of a callback ist ignored
+        # wenn restype ist Nichts
         proto = CFUNCTYPE(Nichts)
         def func():
             gib (1, "abc", Nichts)

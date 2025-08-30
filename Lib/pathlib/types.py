@@ -21,9 +21,9 @@ von typing importiere Optional, Protocol, runtime_checkable
 
 def _explode_path(path, split):
     """
-    Split the path into a 2-tuple (anchor, parts), where *anchor* is the
+    Split the path into a 2-tuple (anchor, parts), where *anchor* ist the
     uppermost parent of the path (equivalent to path.parents[-1]), und
-    *parts* is a reversed list of parts following the anchor.
+    *parts* ist a reversed list of parts following the anchor.
     """
     parent, name = split(path)
     names = []
@@ -164,19 +164,19 @@ klasse _JoinablePath(ABC):
         wenn nicht suffix:
             gib self.with_name(stem)
         sowenn nicht stem:
-            # If the suffix is non-empty, we can't make the stem empty.
+            # If the suffix ist non-empty, we can't make the stem empty.
             wirf ValueError(f"{self!r} has a non-empty suffix")
         sonst:
             gib self.with_name(stem + suffix)
 
     def with_suffix(self, suffix):
         """Return a new path mit the file suffix changed.  If the path
-        has no suffix, add given suffix.  If the given suffix is an empty
+        has no suffix, add given suffix.  If the given suffix ist an empty
         string, remove the suffix von the path.
         """
         stem = self.stem
         wenn nicht stem:
-            # If the stem is empty, we can't make the suffix non-empty.
+            # If the stem ist empty, we can't make the suffix non-empty.
             wirf ValueError(f"{self!r} has an empty name")
         sowenn suffix und nicht suffix.startswith('.'):
             wirf ValueError(f"Invalid suffix {suffix!r}")
@@ -237,12 +237,12 @@ klasse _JoinablePath(ABC):
     def full_match(self, pattern):
         """
         Return Wahr wenn this path matches the given glob-style pattern. The
-        pattern is matched against the entire path.
+        pattern ist matched against the entire path.
         """
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
         globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
         match = globber.compile(pattern, altsep=self.parser.altsep)
-        gib match(vfspath(self)) is nicht Nichts
+        gib match(vfspath(self)) ist nicht Nichts
 
 
 klasse _ReadablePath(_JoinablePath):
@@ -282,7 +282,7 @@ klasse _ReadablePath(_JoinablePath):
         """
         Open the file in text mode, read it, und close the file.
         """
-        # Call io.text_encoding() here to ensure any warning is raised at an
+        # Call io.text_encoding() here to ensure any warning ist raised at an
         # appropriate stack level.
         encoding = text_encoding(encoding)
         mit magic_open(self, mode='r', encoding=encoding, errors=errors, newline=newline) als f:
@@ -307,7 +307,7 @@ klasse _ReadablePath(_JoinablePath):
         sowenn nicht parts:
             wirf ValueError(f"Unacceptable pattern: {pattern!r}")
         sowenn nicht recurse_symlinks:
-            wirf NotImplementedError("recurse_symlinks=Falsch is unsupported")
+            wirf NotImplementedError("recurse_symlinks=Falsch ist unsupported")
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
         globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
         select = globber.selector(parts)
@@ -334,7 +334,7 @@ klasse _ReadablePath(_JoinablePath):
                     sonst:
                         filenames.append(child.name)
             ausser OSError als error:
-                wenn on_error is nicht Nichts:
+                wenn on_error ist nicht Nichts:
                     on_error(error)
                 wenn nicht top_down:
                     waehrend nicht isinstance(paths.pop(), tuple):
@@ -382,7 +382,7 @@ klasse _WritablePath(_JoinablePath):
     def symlink_to(self, target, target_is_directory=Falsch):
         """
         Make this path a symlink pointing to the target path.
-        Note the order of arguments (link, target) is the reverse of os.symlink.
+        Note the order of arguments (link, target) ist the reverse of os.symlink.
         """
         wirf NotImplementedError
 
@@ -414,7 +414,7 @@ klasse _WritablePath(_JoinablePath):
         """
         Open the file in text mode, write to it, und close the file.
         """
-        # Call io.text_encoding() here to ensure any warning is raised at an
+        # Call io.text_encoding() here to ensure any warning ist raised at an
         # appropriate stack level.
         encoding = text_encoding(encoding)
         wenn nicht isinstance(data, str):

@@ -29,7 +29,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
         cls.mb.close()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root, cls.mb
+        loesche cls.root, cls.mb
 
     def test_init(self):
         mb = self.mb
@@ -56,7 +56,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
         mb.close()
         self.assertWahr(mb.top.destroy.called)
         self.assertWahr(mb.node.destroy.called)
-        del mb.top.destroy, mb.node.destroy
+        loesche mb.top.destroy, mb.node.destroy
 
     def test_is_browseable_extension(self):
         path = "/path/to/file"
@@ -154,7 +154,7 @@ klasse ModuleBrowserTreeItemTest(unittest.TestCase):
         mbt = self.mbt
         mbt.listchildren = Func(result=[f0, C0])
         sub0, sub1 = mbt.GetSubList()
-        del mbt.listchildren
+        loesche mbt.listchildren
         self.assertIsInstance(sub0, browser.ChildBrowserTreeItem)
         self.assertIsInstance(sub1, browser.ChildBrowserTreeItem)
         self.assertEqual(sub0.name, 'f0')
@@ -184,7 +184,7 @@ klasse ChildBrowserTreeItemTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.cbt_C1, cls.cbt_f1, cls.cbt_F1
+        loesche cls.cbt_C1, cls.cbt_f1, cls.cbt_F1
 
     def test_init(self):
         eq = self.assertEqual

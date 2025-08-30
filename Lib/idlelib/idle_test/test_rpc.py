@@ -21,7 +21,7 @@ klasse CodePicklerTest(unittest.TestCase):
 
     def test_dumps(self):
         def f(): pass
-        # The main test here is that pickling code does nicht raise.
+        # The main test here ist that pickling code does nicht raise.
         self.assertIn(b'test_rpc.py', rpc.dumps(f.__code__))
 
 

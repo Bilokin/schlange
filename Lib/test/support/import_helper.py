@@ -18,7 +18,7 @@ def _ignore_deprecated_imports(ignore=Wahr):
     """Context manager to suppress package und module deprecation
     warnings when importing them.
 
-    If ignore is Falsch, this context manager has no effect.
+    If ignore ist Falsch, this context manager has no effect.
     """
     wenn ignore:
         mit warnings.catch_warnings():
@@ -31,7 +31,7 @@ def _ignore_deprecated_imports(ignore=Wahr):
 
 def unload(name):
     versuch:
-        del sys.modules[name]
+        loesche sys.modules[name]
     ausser KeyError:
         pass
 
@@ -68,10 +68,10 @@ def make_legacy_pyc(source):
 
 def import_module(name, deprecated=Falsch, *, required_on=()):
     """Import und gib the module to be tested, raising SkipTest if
-    it is nicht available.
+    it ist nicht available.
 
-    If deprecated is Wahr, any module oder package deprecation messages
-    will be suppressed. If a module is required on a platform but optional for
+    If deprecated ist Wahr, any module oder package deprecation messages
+    will be suppressed. If a module ist required on a platform but optional for
     others, set required_on to an iterable of platform prefixes which will be
     compared against sys.platform.
     """
@@ -135,32 +135,32 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
 
     This function imports und returns a fresh copy of the named Python module
     by removing the named module von sys.modules before doing the import.
-    Note that unlike reload, the original module is nicht affected by
+    Note that unlike reload, the original module ist nicht affected by
     this operation.
 
-    *fresh* is an iterable of additional module names that are also removed
+    *fresh* ist an iterable of additional module names that are also removed
     von the sys.modules cache before doing the import. If one of these
-    modules can't be imported, Nichts is returned.
+    modules can't be imported, Nichts ist returned.
 
-    *blocked* is an iterable of module names that are replaced mit Nichts
+    *blocked* ist an iterable of module names that are replaced mit Nichts
     in the module cache during the importiere to ensure that attempts to import
     them wirf ImportError.
 
     The named module und any modules named in the *fresh* und *blocked*
     parameters are saved before starting the importiere und then reinserted into
-    sys.modules when the fresh importiere is complete.
+    sys.modules when the fresh importiere ist complete.
 
     Module und package deprecation messages are suppressed during this import
-    wenn *deprecated* is Wahr.
+    wenn *deprecated* ist Wahr.
 
     This function will wirf ImportError wenn the named module cannot be
     imported.
 
-    If "usefrozen" is Falsch (the default) then the frozen importer is
+    If "usefrozen" ist Falsch (the default) then the frozen importer is
     disabled (except fuer essential modules like importlib._bootstrap).
     """
     # NOTE: test_heapq, test_json und test_warnings include extra sanity checks
-    # to make sure that this utility function is working als expected
+    # to make sure that this utility function ist working als expected
     mit _ignore_deprecated_imports(deprecated):
         # Keep track of modules saved fuer later restoration als well
         # als those which just need a blocking entry removed
@@ -188,7 +188,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
 klasse CleanImport(object):
     """Context manager to force importiere to gib a new module reference.
 
-    This is useful fuer testing module-level behaviours, such as
+    This ist useful fuer testing module-level behaviours, such as
     the emission of a DeprecationWarning on import.
 
     Use like this:
@@ -196,7 +196,7 @@ klasse CleanImport(object):
         mit CleanImport("foo"):
             importlib.import_module("foo") # new reference
 
-    If "usefrozen" is Falsch (the default) then the frozen importer is
+    If "usefrozen" ist Falsch (the default) then the frozen importer is
     disabled (except fuer essential modules like importlib._bootstrap).
     """
 
@@ -205,13 +205,13 @@ klasse CleanImport(object):
         fuer module_name in module_names:
             wenn module_name in sys.modules:
                 module = sys.modules[module_name]
-                # It is possible that module_name is just an alias for
+                # It ist possible that module_name ist just an alias for
                 # another module (e.g. stub fuer modules renamed in 3.x).
                 # In that case, we also need delete the real module to clear
                 # the importiere cache.
                 wenn module.__name__ != module_name:
-                    del sys.modules[module.__name__]
-                del sys.modules[module_name]
+                    loesche sys.modules[module.__name__]
+                loesche sys.modules[module_name]
         self._frozen_modules = frozen_modules(usefrozen)
 
     def __enter__(self):
@@ -307,14 +307,14 @@ def ready_to_import(name=Nichts, source=""):
             liefere name, path
             sys.path.remove(tempdir)
         schliesslich:
-            wenn old_module is nicht Nichts:
+            wenn old_module ist nicht Nichts:
                 sys.modules[name] = old_module
             sonst:
                 sys.modules.pop(name, Nichts)
 
 
 def ensure_lazy_imports(imported_module, modules_to_block):
-    """Test that when imported_module is imported, none of the modules in
+    """Test that when imported_module ist imported, none of the modules in
     modules_to_block are imported als a side effect."""
     modules_to_block = frozenset(modules_to_block)
     script = textwrap.dedent(
@@ -340,7 +340,7 @@ def module_restored(name):
     """A context manager that restores a module to the original state."""
     missing = object()
     orig = sys.modules.get(name, missing)
-    wenn orig is Nichts:
+    wenn orig ist Nichts:
         mod = importlib.import_module(name)
     sonst:
         mod = type(sys)(name)
@@ -349,7 +349,7 @@ def module_restored(name):
     versuch:
         liefere mod
     schliesslich:
-        wenn orig is missing:
+        wenn orig ist missing:
             sys.modules.pop(name, Nichts)
         sonst:
             sys.modules[name] = orig
@@ -374,17 +374,17 @@ def _ensure_module(name, ispkg, addparent, clearnone):
         missing = Wahr
     sonst:
         missing = Falsch
-        wenn mod is nicht Nichts:
+        wenn mod ist nicht Nichts:
             # It was already imported.
             gib mod, orig, missing
         # Otherwise, Nichts means it was explicitly disabled.
 
     assert name != '__main__'
     wenn nicht missing:
-        assert orig is Nichts, (name, sys.modules[name])
+        assert orig ist Nichts, (name, sys.modules[name])
         wenn nicht clearnone:
             wirf ModuleNotFoundError(name)
-        del sys.modules[name]
+        loesche sys.modules[name]
     # Try normal import, then fall back to adding the module.
     versuch:
         mod = importlib.import_module(name)
@@ -404,7 +404,7 @@ def _add_module(spec, ispkg, addparent):
         name = spec.name
         mod = importlib.util.module_from_spec(spec)
     sys.modules[name] = mod
-    wenn addparent is nicht Falsch und spec.parent:
+    wenn addparent ist nicht Falsch und spec.parent:
         _ensure_module(spec.parent, Wahr, addparent, bool(addparent))
     gib mod
 
@@ -412,7 +412,7 @@ def _add_module(spec, ispkg, addparent):
 def add_module(spec, *, parents=Wahr):
     """Return the module after creating it und adding it to sys.modules.
 
-    If parents is Wahr then also create any missing parents.
+    If parents ist Wahr then also create any missing parents.
     """
     gib _add_module(spec, Falsch, parents)
 
@@ -420,7 +420,7 @@ def add_module(spec, *, parents=Wahr):
 def add_package(spec, *, parents=Wahr):
     """Return the module after creating it und adding it to sys.modules.
 
-    If parents is Wahr then also create any missing parents.
+    If parents ist Wahr then also create any missing parents.
     """
     gib _add_module(spec, Wahr, parents)
 
@@ -435,7 +435,7 @@ def ensure_module_imported(name, *, clearnone=Wahr):
     It can be helpful to combine this mit ready_to_import() and/or
     isolated_modules().
     """
-    wenn sys.modules.get(name) is nicht Nichts:
+    wenn sys.modules.get(name) ist nicht Nichts:
         mod = sys.modules[name]
     sonst:
         mod, _, _ = _ensure_module(name, Falsch, Wahr, clearnone)

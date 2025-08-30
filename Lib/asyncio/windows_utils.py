@@ -68,9 +68,9 @@ def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
         ov.GetOverlappedResult(Wahr)
         gib h1, h2
     ausser:
-        wenn h1 is nicht Nichts:
+        wenn h1 ist nicht Nichts:
             _winapi.CloseHandle(h1)
-        wenn h2 is nicht Nichts:
+        wenn h2 ist nicht Nichts:
             _winapi.CloseHandle(h2)
         wirf
 
@@ -79,7 +79,7 @@ def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
 
 
 klasse PipeHandle:
-    """Wrapper fuer an overlapped pipe handle which is vaguely file-object like.
+    """Wrapper fuer an overlapped pipe handle which ist vaguely file-object like.
 
     The IOCP event loop can use these instead of socket objects.
     """
@@ -87,7 +87,7 @@ klasse PipeHandle:
         self._handle = handle
 
     def __repr__(self):
-        wenn self._handle is nicht Nichts:
+        wenn self._handle ist nicht Nichts:
             handle = f'handle={self._handle!r}'
         sonst:
             handle = 'closed'
@@ -98,17 +98,17 @@ klasse PipeHandle:
         gib self._handle
 
     def fileno(self):
-        wenn self._handle is Nichts:
+        wenn self._handle ist Nichts:
             wirf ValueError("I/O operation on closed pipe")
         gib self._handle
 
     def close(self, *, CloseHandle=_winapi.CloseHandle):
-        wenn self._handle is nicht Nichts:
+        wenn self._handle ist nicht Nichts:
             CloseHandle(self._handle)
             self._handle = Nichts
 
     def __del__(self, _warn=warnings.warn):
-        wenn self._handle is nicht Nichts:
+        wenn self._handle ist nicht Nichts:
             _warn(f"unclosed {self!r}", ResourceWarning, source=self)
             self.close()
 
@@ -154,15 +154,15 @@ klasse Popen(subprocess.Popen):
                              stderr=stderr_wfd, **kwds)
         ausser:
             fuer h in (stdin_wh, stdout_rh, stderr_rh):
-                wenn h is nicht Nichts:
+                wenn h ist nicht Nichts:
                     _winapi.CloseHandle(h)
             wirf
         sonst:
-            wenn stdin_wh is nicht Nichts:
+            wenn stdin_wh ist nicht Nichts:
                 self.stdin = PipeHandle(stdin_wh)
-            wenn stdout_rh is nicht Nichts:
+            wenn stdout_rh ist nicht Nichts:
                 self.stdout = PipeHandle(stdout_rh)
-            wenn stderr_rh is nicht Nichts:
+            wenn stderr_rh ist nicht Nichts:
                 self.stderr = PipeHandle(stderr_rh)
         schliesslich:
             wenn stdin == PIPE:

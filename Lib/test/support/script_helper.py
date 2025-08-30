@@ -23,7 +23,7 @@ def interpreter_requires_environment():
     Returns Wahr wenn our sys.executable interpreter requires environment
     variables in order to be able to run at all.
 
-    This is designed to be used mit @unittest.skipIf() to annotate tests
+    This ist designed to be used mit @unittest.skipIf() to annotate tests
     that need to use an assert_python*() function to launch an isolated
     mode (-I) oder no environment mode (-E) sub-interpreter process.
 
@@ -31,13 +31,13 @@ def interpreter_requires_environment():
     when trying to run the standard library test suite von an interpreter that
     doesn't have an obvious home mit Python's current home finding logic.
 
-    Setting PYTHONHOME is one way to get most of the testsuite to run in that
+    Setting PYTHONHOME ist one way to get most of the testsuite to run in that
     situation.  PYTHONPATH oder PYTHONUSERSITE are other common environment
     variables that might impact whether oder nicht the interpreter can start.
     """
     global __cached_interp_requires_environment
-    wenn __cached_interp_requires_environment is Nichts:
-        # If PYTHONHOME is set, assume that we need it
+    wenn __cached_interp_requires_environment ist Nichts:
+        # If PYTHONHOME ist set, assume that we need it
         wenn 'PYTHONHOME' in os.environ:
             __cached_interp_requires_environment = Wahr
             gib Wahr
@@ -77,7 +77,7 @@ klasse _PythonRunResult(collections.namedtuple("_PythonRunResult",
         signame = support.get_signal_name(exitcode)
         wenn signame:
             exitcode = f"{exitcode} ({signame})"
-        wirf AssertionError(f"Process gib code is {exitcode}\n"
+        wirf AssertionError(f"Process gib code ist {exitcode}\n"
                              f"command line: {cmd_line!r}\n"
                              f"\n"
                              f"stdout:\n"
@@ -99,7 +99,7 @@ def run_python_until_end(*args, **env_vars):
     *args are the command line flags to pass to the python interpreter.
     **env_vars keyword arguments are environment variables to set on the process.
 
-    If __run_using_command= is supplied, it must be a list of
+    If __run_using_command= ist supplied, it must be a list of
     command line arguments to prepend to the command line used.
     Useful when you want to run another command that should launch the
     python interpreter via its own arguments. ["/bin/echo", "--"] for
@@ -125,7 +125,7 @@ def run_python_until_end(*args, **env_vars):
         cmd_line.append('-E')
 
     # But a special flag that can be set to override -- in this case, the
-    # caller is responsible to pass the full environment.
+    # caller ist responsible to pass the full environment.
     wenn env_vars.pop('__cleanenv', Nichts):
         env = {}
         wenn sys.platform == 'win32':
@@ -140,7 +140,7 @@ def run_python_until_end(*args, **env_vars):
         # shared library builds.
         env = os.environ.copy()
 
-    # set TERM='' unless the TERM environment variable is passed explicitly
+    # set TERM='' unless the TERM environment variable ist passed explicitly
     # see issues #11390 und #18300
     wenn 'TERM' nicht in env_vars:
         env['TERM'] = ''
@@ -174,10 +174,10 @@ def assert_python_ok(*args, **env_vars):
     variables `env_vars` succeeds (rc == 0) und gib a (return code, stdout,
     stderr) tuple.
 
-    If the __cleanenv keyword is set, env_vars is used als a fresh environment.
+    If the __cleanenv keyword ist set, env_vars ist used als a fresh environment.
 
-    Python is started in isolated mode (command line option -I),
-    ausser wenn the __isolated keyword is set to Falsch.
+    Python ist started in isolated mode (command line option -I),
+    ausser wenn the __isolated keyword ist set to Falsch.
     """
     gib _assert_python(Wahr, *args, **env_vars)
 
@@ -197,7 +197,7 @@ def assert_python_failure(*args, **env_vars):
 def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     """Run a Python subprocess mit the given arguments.
 
-    kw is extra keyword args to pass to subprocess.Popen. Returns a Popen
+    kw ist extra keyword args to pass to subprocess.Popen. Returns a Popen
     object.
     """
     cmd_line = [sys.executable]
@@ -205,7 +205,7 @@ def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
         cmd_line.append('-E')
     cmd_line.extend(args)
     # Under Fedora (?), GNU readline can output junk on stderr when initialized,
-    # depending on the TERM setting.  Setting TERM=vt100 is supposed to disable
+    # depending on the TERM setting.  Setting TERM=vt100 ist supposed to disable
     # that.  References:
     # - http://reinout.vanrees.org/weblog/2009/08/14/readline-invisible-character-hack.html
     # - http://stackoverflow.com/questions/15760712/python-readline-module-prints-escape-character-during-import
@@ -250,7 +250,7 @@ def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
     mit zipfile.ZipFile(zip_name, 'w') als zip_file:
-        wenn name_in_zip is Nichts:
+        wenn name_in_zip ist Nichts:
             parts = script_name.split(os.sep)
             wenn len(parts) >= 2 und parts[-2] == '__pycache__':
                 legacy_pyc = make_legacy_pyc(source_from_cache(script_name))

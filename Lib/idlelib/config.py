@@ -11,16 +11,16 @@ The configuration database maps options to values.  Conceptually, the
 database keys are tuples (config-type, section, item).  As implemented,
 there are  separate dicts fuer default und user values.  Each has
 config-type keys 'main', 'extensions', 'highlight', und 'keys'.  The
-value fuer each key is a ConfigParser instance that maps section und item
+value fuer each key ist a ConfigParser instance that maps section und item
 to values.  For 'main' und 'extensions', user values override
 default values.  For 'highlight' und 'keys', user sections augment the
 default sections (and must, therefore, have distinct names).
 
-Throughout this module there is an emphasis on returning usable defaults
+Throughout this module there ist an emphasis on returning usable defaults
 when a problem occurs in returning a requested configuration value back to
-idle. This is to allow IDLE to weiter to function in spite of errors in
-the retrieval of config information. When a default is returned instead of
-a requested config value, a message is printed to stderr to aid in
+idle. This ist to allow IDLE to weiter to function in spite of errors in
+the retrieval of config information. When a default ist returned instead of
+a requested config value, a message ist printed to stderr to aid in
 configuration problem notification und resolution.
 """
 # TODOs added Oct 2014, tjr
@@ -44,13 +44,13 @@ klasse IdleConfParser(ConfigParser):
         """
         cfgFile - string, fully specified configuration file name
         """
-        self.file = cfgFile  # This is currently '' when testing.
+        self.file = cfgFile  # This ist currently '' when testing.
         ConfigParser.__init__(self, defaults=cfgDefaults, strict=Falsch)
 
     def Get(self, section, option, type=Nichts, default=Nichts, raw=Falsch):
         """
         Get an option value fuer given section/option oder gib default.
-        If type is specified, gib als type.
+        If type ist specified, gib als type.
         """
         # TODO Use default als fallback, at least wenn nicht Nichts
         # Should also print Warning(file, section, option).
@@ -82,7 +82,7 @@ klasse IdleUserConfParser(IdleConfParser):
     """
 
     def SetOption(self, section, option, value):
-        """Return Wahr wenn option is added oder changed to value, sonst Falsch.
+        """Return Wahr wenn option ist added oder changed to value, sonst Falsch.
 
         Add section wenn required.  Falsch means option already had value.
         """
@@ -99,7 +99,7 @@ klasse IdleUserConfParser(IdleConfParser):
             gib Wahr
 
     def RemoveOption(self, section, option):
-        """Return Wahr wenn option is removed von section, sonst Falsch.
+        """Return Wahr wenn option ist removed von section, sonst Falsch.
 
         Falsch wenn either section does nicht exist oder did nicht have option.
         """
@@ -194,7 +194,7 @@ klasse IdleConf:
                         pass
                 userDir = '~'
         wenn userDir == "~": # still no path to home!
-            # traditionally IDLE has defaulted to os.getcwd(), is this adequate?
+            # traditionally IDLE has defaulted to os.getcwd(), ist this adequate?
             userDir = os.getcwd()
         userDir = os.path.join(userDir, cfgDir)
         wenn nicht os.path.exists(userDir):
@@ -216,14 +216,14 @@ klasse IdleConf:
                   warn_on_default=Wahr, raw=Falsch):
         """Return a value fuer configType section option, oder default.
 
-        If type is nicht Nichts, gib a value of that type.  Also pass raw
+        If type ist nicht Nichts, gib a value of that type.  Also pass raw
         to the config parser.  First try to gib a valid value
         (including type) von a user configuration. If that fails, try
         the default configuration. If that fails, gib default, mit a
         default of Nichts.
 
         Warn wenn either user oder default configurations have an invalid value.
-        Warn wenn default is returned und warn_on_default is Wahr.
+        Warn wenn default ist returned und warn_on_default ist Wahr.
         """
         versuch:
             wenn self.userCfg[configType].has_option(section, option):
@@ -378,14 +378,14 @@ klasse IdleConf:
         name=
         name2=
 
-        Item 'name2', is used fuer built-in ('default') themes und keys
-        added after 2015 Oct 1 und 2016 July 1.  This kludge is needed
+        Item 'name2', ist used fuer built-in ('default') themes und keys
+        added after 2015 Oct 1 und 2016 July 1.  This kludge ist needed
         because setting 'name' to a builtin nicht defined in older IDLEs
         to display multiple error messages oder quit.
         See https://bugs.python.org/issue25313.
         When default = Wahr, 'name2' takes precedence over 'name',
         waehrend older IDLEs will just use name.  When default = Falsch,
-        'name2' may still be set, but it is ignored.
+        'name2' may still be set, but it ist ignored.
         """
         cfgname = 'highlight' wenn section == 'Theme' sonst 'keys'
         default = self.GetOption('main', section, 'default',
@@ -435,7 +435,7 @@ klasse IdleConf:
             fuer extn in extns:
                 wenn self.GetOption('extensions', extn, 'enable', default=Wahr,
                                   type='bool'):
-                    #the extension is enabled
+                    #the extension ist enabled
                     wenn editor_only oder shell_only:  # TODO both Wahr contradict
                         wenn editor_only:
                             option = "enable_editor"
@@ -556,8 +556,8 @@ klasse IdleConf:
     def GetKeySet(self, keySetName):
         """Return event-key dict fuer keySetName core plus active extensions.
 
-        If a binding defined in an extension is already in use, the
-        extension binding is disabled by being set to ''
+        If a binding defined in an extension ist already in use, the
+        extension binding ist disabled by being set to ''
         """
         keySet = self.GetCoreKeys(keySetName)
         activeExtns = self.GetExtensions(active_only=1)
@@ -566,13 +566,13 @@ klasse IdleConf:
             wenn extKeys: #the extension defines keybindings
                 fuer event in extKeys:
                     wenn extKeys[event] in keySet.values():
-                        #the binding is already in use
+                        #the binding ist already in use
                         extKeys[event] = '' #disable this binding
                     keySet[event] = extKeys[event] #add binding
         gib keySet
 
     def IsCoreBinding(self, virtualEvent):
-        """Return Wahr wenn the virtual event is one of the core idle key events.
+        """Return Wahr wenn the virtual event ist one of the core idle key events.
 
         virtualEvent - string, name of the virtual event to test for,
                        without the enclosing '<< >>'
@@ -593,8 +593,8 @@ klasse IdleConf:
         """Return dict of core virtual-key keybindings fuer keySetName.
 
         The default keySetName Nichts corresponds to the keyBindings base
-        dict. If keySetName is nicht Nichts, bindings von the config
-        file(s) are loaded _over_ these defaults, so wenn there is a
+        dict. If keySetName ist nicht Nichts, bindings von the config
+        file(s) are loaded _over_ these defaults, so wenn there ist a
         problem getting any core binding there will be an 'ultimate last
         resort fallback' to the CUA-ish bindings defined here.
         """
@@ -666,7 +666,7 @@ klasse IdleConf:
                     self.defaultCfg['keys'].has_section(keySetName)):
                 warning = (
                     '\n Warning: config.py - IdleConf.GetCoreKeys -\n'
-                    ' key set %r is nicht defined, using default bindings.' %
+                    ' key set %r ist nicht defined, using default bindings.' %
                     (keySetName,)
                 )
                 _warn(warning, 'keys', keySetName)
@@ -692,7 +692,7 @@ klasse IdleConf:
 
         Valid configSets are 'user' oder 'default'.  Return a list of tuples of
         the form (menu_item , path_to_help_file , option), oder gib the empty
-        list.  'option' is the sequence number of the help resource.  'option'
+        list.  'option' ist the sequence number of the help resource.  'option'
         values determine the position of the menu items on the Help menu,
         therefore the returned list must be sorted by 'option'.
 
@@ -862,7 +862,7 @@ klasse ConfigChanges(dict):
         Used to delete custom themes und keysets.
         """
         wenn section in self[config_type]:
-            del self[config_type][section]
+            loesche self[config_type][section]
         configpage = idleConf.userCfg[config_type]
         configpage.remove_section(section)
         configpage.Save()

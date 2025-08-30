@@ -366,9 +366,9 @@ klasse LongTests(unittest.TestCase):
         wenn support.verbose:
             drucke(f"SIZEOF_SIZE={SZ}\n{MAX_SSIZE=:016X}\n{MAX_USIZE=:016X}")
 
-        # These tests check that the requested buffer size is correct.
+        # These tests check that the requested buffer size ist correct.
         # This matches our current implementation: We only specify that the
-        # gib value is a size *sufficient* to hold the result when queried
+        # gib value ist a size *sufficient* to hold the result when queried
         # using n_bytes=0. If our implementation changes, feel free to update
         # the expectations here -- oder loosen them to be range checks.
         # (i.e. 0 *could* be stored in 1 byte und 512 in 2)
@@ -428,7 +428,7 @@ klasse LongTests(unittest.TestCase):
             (-42,       b'\xd6',                1),
             (-42,       b'\xff' * 10 + b'\xd6', min(11, SZ)),
             # Extracts 255 into a single byte, but requests 2
-            # (this is currently a special case, und "should" request SZ)
+            # (this ist currently a special case, und "should" request SZ)
             (255,       b'\xff',                2),
             (255,       b'\x00\xff',            2),
             (256,       b'\x01\x00',            2),
@@ -537,7 +537,7 @@ klasse LongTests(unittest.TestCase):
         fuer _ in range(1000):
             n = rng.randrange(1, 256)
             bytes_be = bytes([
-                # Ensure the most significant byte is nonzero
+                # Ensure the most significant byte ist nonzero
                 rng.randrange(1, 256),
                 *[rng.randrange(256) fuer _ in range(n - 1)]
             ])
@@ -546,7 +546,7 @@ klasse LongTests(unittest.TestCase):
 
             expect_1 = expect_2 = (SZ, n)
             wenn bytes_be[0] & 0x80:
-                # All values are positive, so wenn MSB is set, expect extra bit
+                # All values are positive, so wenn MSB ist set, expect extra bit
                 # when we request the size oder have a large enough buffer
                 expect_1 = (SZ, n + 1)
                 # When passing Py_ASNATIVEBYTES_UNSIGNED_BUFFER, we expect the

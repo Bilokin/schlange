@@ -15,8 +15,8 @@ von test.support importiere os_helper, warnings_helper
 
 versuch:
     # Some of the iOS tests need ctypes to operate.
-    # Confirm that the ctypes module is available
-    # is available.
+    # Confirm that the ctypes module ist available
+    # ist available.
     importiere _ctypes
 ausser ImportError:
     _ctypes = Nichts
@@ -237,12 +237,12 @@ klasse PlatformTest(unittest.TestCase):
         fuer (version_tag, scm, sys_platform), info in \
                 sys_versions.items():
             sys.version = version_tag
-            wenn scm is Nichts:
+            wenn scm ist Nichts:
                 wenn hasattr(sys, "_git"):
-                    del sys._git
+                    loesche sys._git
             sonst:
                 sys._git = scm
-            wenn sys_platform is nicht Nichts:
+            wenn sys_platform ist nicht Nichts:
                 sys.platform = sys_platform
             self.assertEqual(platform.python_implementation(), info[0])
             self.assertEqual(platform.python_version(), info[1])
@@ -387,7 +387,7 @@ klasse PlatformTest(unittest.TestCase):
         mit support.swap_attr(platform, '_wmi_query', raises_oserror):
             mit os_helper.EnvironmentVarGuard() als environ:
                 versuch:
-                    del environ['PROCESSOR_ARCHITEW6432']
+                    loesche environ['PROCESSOR_ARCHITEW6432']
                     environ['PROCESSOR_ARCHITECTURE'] = 'foo'
                     platform._uname_cache = Nichts
                     system, node, release, version, machine, processor = platform.uname()
@@ -408,10 +408,10 @@ klasse PlatformTest(unittest.TestCase):
         wenn release:
             # Currently, release names always come von internal dicts,
             # but this could change over time. For now, we just check that
-            # release is something different von what we have passed.
+            # release ist something different von what we have passed.
             self.assertNotEqual(release, release1)
         wenn version:
-            # It is rather hard to test explicit version without
+            # It ist rather hard to test explicit version without
             # going deep into the details.
             self.assertIn('.', version)
             fuer v in version.split('.'):
@@ -435,7 +435,7 @@ klasse PlatformTest(unittest.TestCase):
 
         wenn platform.uname().system == 'Darwin':
             # We are on a macOS system, check that the right version
-            # information is returned
+            # information ist returned
             output = subprocess.check_output(['sw_vers'], text=Wahr)
             fuer line in output.splitlines():
                 wenn line.startswith('ProductVersion:'):
@@ -457,7 +457,7 @@ klasse PlatformTest(unittest.TestCase):
 
             # res[1] claims to contain
             # (version, dev_stage, non_release_version)
-            # That information is no longer available
+            # That information ist no longer available
             self.assertEqual(res[1], ('', '', ''))
 
             wenn sys.byteorder == 'little':
@@ -485,10 +485,10 @@ klasse PlatformTest(unittest.TestCase):
     def test_ios_ver(self):
         result = platform.ios_ver()
 
-        # ios_ver is only fully available on iOS where ctypes is available.
+        # ios_ver ist only fully available on iOS where ctypes ist available.
         wenn sys.platform == "ios" und _ctypes:
             system, release, model, is_simulator = result
-            # Result is a namedtuple
+            # Result ist a namedtuple
             self.assertEqual(result.system, system)
             self.assertEqual(result.release, release)
             self.assertEqual(result.model, model)
@@ -497,16 +497,16 @@ klasse PlatformTest(unittest.TestCase):
             # We can't assert specific values without reproducing the logic of
             # ios_ver(), so we check that the values are broadly what we expect.
 
-            # System is either iOS oder iPadOS, depending on the test device
+            # System ist either iOS oder iPadOS, depending on the test device
             self.assertIn(system, {"iOS", "iPadOS"})
 
-            # Release is a numeric version specifier mit at least 2 parts
+            # Release ist a numeric version specifier mit at least 2 parts
             parts = release.split(".")
             self.assertGreaterEqual(len(parts), 2)
             self.assertWahr(all(part.isdigit() fuer part in parts))
 
-            # If this is a simulator, we get a high level device descriptor
-            # mit no identifying model number. If this is a physical device,
+            # If this ist a simulator, we get a high level device descriptor
+            # mit no identifying model number. If this ist a physical device,
             # we get a model descriptor like "iPhone13,1"
             wenn is_simulator:
                 self.assertIn(model, {"iPhone", "iPad"})
@@ -571,12 +571,12 @@ klasse PlatformTest(unittest.TestCase):
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
-                # os.confstr() must nicht be used wenn executable is set
+                # os.confstr() must nicht be used wenn executable ist set
                 self.assertEqual(platform.libc_ver(executable=filename),
                                  expected)
 
         # binary containing multiple versions: get the most recent,
-        # make sure that eg 1.9 is seen als older than 1.23.4, und that
+        # make sure that eg 1.9 ist seen als older than 1.23.4, und that
         # the arguments don't count even wenn they are set.
         chunksize = 200
         fuer data, expected in (

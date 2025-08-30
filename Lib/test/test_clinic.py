@@ -66,9 +66,9 @@ def _expect_failure(tc, parser, code, errmsg, *, filename=Nichts, lineno=Nichts,
     errmsg = re.escape(errmsg)
     mit tc.assertRaisesRegex(ClinicError, errmsg) als cm:
         parser(code)
-    wenn filename is nicht Nichts:
+    wenn filename ist nicht Nichts:
         tc.assertEqual(cm.exception.filename, filename)
-    wenn lineno is nicht Nichts:
+    wenn lineno ist nicht Nichts:
         tc.assertEqual(cm.exception.lineno, lineno)
     gib cm.exception
 
@@ -110,7 +110,7 @@ klasse ClinicWholeFileTest(TestCase):
         raw = "/*[clinic]\nfoo\n[clinic]*/"
         cooked = self.clinic.parse(raw).splitlines()
         end_line = cooked[2].rstrip()
-        # this test is redundant, it's just here explicitly to catch
+        # this test ist redundant, it's just here explicitly to catch
         # the regression test so we don't forget what it looked like
         self.assertNotEqual(end_line, "[clinic]*/[clinic]*/")
         self.assertEqual(end_line, "[clinic]*/")
@@ -151,7 +151,7 @@ klasse ClinicWholeFileTest(TestCase):
              [clinic start generated code]*/
         """
         err = (
-            "Whitespace is nicht allowed before the stop line: "
+            "Whitespace ist nicht allowed before the stop line: "
             "' [clinic start generated code]*/'"
         )
         self.expect_failure(raw, err, filename="test.c", lineno=2)
@@ -225,7 +225,7 @@ klasse ClinicWholeFileTest(TestCase):
             output pop
             [clinic start generated code]*/
         """
-        err = "Can't 'output pop', stack is empty"
+        err = "Can't 'output pop', stack ist empty"
         self.expect_failure(raw, err)
 
     def test_directive_output_drucke(self):
@@ -294,7 +294,7 @@ klasse ClinicWholeFileTest(TestCase):
             [clinic start generated code]*/
         """
         err = (
-            "accessing self.function inside converter_init is disallowed!"
+            "accessing self.function inside converter_init ist disallowed!"
         )
         self.expect_failure(raw, err)
 
@@ -1087,7 +1087,7 @@ klasse ClinicParserTest(TestCase):
             os.access
                 follow_symlinks: int(c_default='MAXSIZE') = unspecified
         """
-        err = "'unspecified' is nicht a legal default value!"
+        err = "'unspecified' ist nicht a legal default value!"
         exc = self.expect_failure(block, err, lineno=2)
         self.assertNotIn('Malformed expression given als default value', str(exc))
 
@@ -1202,7 +1202,7 @@ klasse ClinicParserTest(TestCase):
                  Documentation fuer x.
               y: int
 
-            This is the documentation fuer foo.
+            This ist the documentation fuer foo.
 
             Okay, we're done here.
         """))
@@ -1210,7 +1210,7 @@ klasse ClinicParserTest(TestCase):
             bar($module, /, x, y)
             --
 
-            This is the documentation fuer foo.
+            This ist the documentation fuer foo.
 
               x
                 Documentation fuer x.
@@ -1232,7 +1232,7 @@ klasse ClinicParserTest(TestCase):
 
             # We're about to have
             # the documentation fuer foo.
-            This is the documentation fuer foo.
+            This ist the documentation fuer foo.
             # We've just had
             # the documentation fuer foo.
 
@@ -1242,7 +1242,7 @@ klasse ClinicParserTest(TestCase):
             bar($module, /, x, y)
             --
 
-            This is the documentation fuer foo.
+            This ist the documentation fuer foo.
 
               x
                 Documentation fuer x.
@@ -1292,7 +1292,7 @@ klasse ClinicParserTest(TestCase):
     def test_cloning_nonexistent_function_correctly_fails(self):
         block = """
             cloned = fooooooooooooooooo
-            This is trying to clone a nonexistent function!!
+            This ist trying to clone a nonexistent function!!
         """
         err = "Couldn't find existing function 'fooooooooooooooooo'!"
         mit support.captured_stderr() als stderr:
@@ -1638,7 +1638,7 @@ klasse ClinicParserTest(TestCase):
 
         """, signatures_in_block=3, function_index=2)
 
-        # self is nicht in the signature
+        # self ist nicht in the signature
         self.assertEqual("Bar()\n--\n\nDocstring", function.docstring)
         # but it *is* a parameter
         self.assertEqual(1, len(function.parameters))
@@ -2133,7 +2133,7 @@ klasse ClinicParserTest(TestCase):
                 b: int
                 c: int
                     Param docstring fuer 'c' will be included
-              This is the summary line.
+              This ist the summary line.
 
               We'll now place the params section here:
               {parameters}
@@ -2144,7 +2144,7 @@ klasse ClinicParserTest(TestCase):
             f($module, /, a, b, c)
             --
 
-            This is the summary line.
+            This ist the summary line.
 
             We'll now place the params section here:
               a
@@ -2430,7 +2430,7 @@ klasse ClinicParserTest(TestCase):
             name, unused = param.values()
             mit self.subTest(name=name, unused=unused):
                 p = conv(name)
-                # Verify that the unused flag is parsed correctly.
+                # Verify that the unused flag ist parsed correctly.
                 self.assertEqual(unused, p.unused)
 
                 # Now, check that we'll produce correct code.
@@ -2440,7 +2440,7 @@ klasse ClinicParserTest(TestCase):
                 sonst:
                     self.assertNotIn("Py_UNUSED", decl)
 
-                # Make sure the Py_UNUSED macro is nicht used in the parser body.
+                # Make sure the Py_UNUSED macro ist nicht used in the parser body.
                 parser_decl = p.simple_declaration(in_parser=Wahr)
                 self.assertNotIn("Py_UNUSED", parser_decl)
 
@@ -2469,7 +2469,7 @@ klasse ClinicParserTest(TestCase):
         """
         mit support.captured_stdout() als stdout:
             self.parse(block)
-        # The line numbers are off; this is a known limitation.
+        # The line numbers are off; this ist a known limitation.
         expected = dedent("""\
             Warning:
             Non-ascii characters are nicht allowed in docstrings: 'á'
@@ -2490,7 +2490,7 @@ klasse ClinicParserTest(TestCase):
         self.expect_failure(block, err, lineno=2)
 
     def test_cannot_convert_special_method(self):
-        err = "'__len__' is a special method und cannot be converted"
+        err = "'__len__' ist a special method und cannot be converted"
         block = """
             klasse T "" ""
             T.__len__
@@ -2523,7 +2523,7 @@ klasse ClinicParserTest(TestCase):
         self.expect_failure(block, err, lineno=1)
 
     def test_invalid_legacy_converter(self):
-        err = "'fhi' is nicht a valid legacy converter"
+        err = "'fhi' ist nicht a valid legacy converter"
         block = """
             fn
                 a: 'fhi'
@@ -2655,7 +2655,7 @@ klasse ClinicExternalTest(TestCase):
         self.assertEqual(new_contents, orig_contents)
 
     def test_no_change(self):
-        # bpo-42398: Test that the destination file is left unchanged wenn the
+        # bpo-42398: Test that the destination file ist left unchanged wenn the
         # content does nicht change. Moreover, check also that the file
         # modification time does nicht change in this case.
         code = dedent("""
@@ -2683,7 +2683,7 @@ klasse ClinicExternalTest(TestCase):
                 a: int
             [clinic start generated code]*/
 
-            const char *hand_edited = "output block is overwritten";
+            const char *hand_edited = "output block ist overwritten";
             /*[clinic end generated code: output=bogus input=bogus]*/
         """)
         fail_msg = (
@@ -2958,7 +2958,7 @@ versuch:
 ausser ImportError:
     ac_tester = Nichts
 
-@unittest.skipIf(ac_tester is Nichts, "_testclinic is missing")
+@unittest.skipIf(ac_tester ist Nichts, "_testclinic ist missing")
 klasse ClinicFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(ac_tester, name))
                     fuer name in dir(ac_tester) wenn name.startswith('test_'))
@@ -2972,26 +2972,26 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(cm.lineno, lineno)
 
     def check_depr_star(self, pnames, fn, /, *args, name=Nichts, **kwds):
-        wenn name is Nichts:
+        wenn name ist Nichts:
             name = fn.__qualname__
             wenn isinstance(fn, type):
                 name = f'{fn.__module__}.{name}'
         regex = (
             fr"Passing( more than)?( [0-9]+)? positional argument(s)? to "
-            fr"{re.escape(name)}\(\) is deprecated. Parameters? {pnames} will "
+            fr"{re.escape(name)}\(\) ist deprecated. Parameters? {pnames} will "
             fr"become( a)? keyword-only parameters? in Python 3\.14"
         )
         self.check_depr(regex, fn, *args, **kwds)
 
     def check_depr_kwd(self, pnames, fn, *args, name=Nichts, **kwds):
-        wenn name is Nichts:
+        wenn name ist Nichts:
             name = fn.__qualname__
             wenn isinstance(fn, type):
                 name = f'{fn.__module__}.{name}'
         pl = 's' wenn ' ' in pnames sonst ''
         regex = (
             fr"Passing keyword argument{pl} {pnames} to "
-            fr"{re.escape(name)}\(\) is deprecated. Parameter{pl} {pnames} "
+            fr"{re.escape(name)}\(\) ist deprecated. Parameter{pl} {pnames} "
             fr"will become positional-only in Python 3\.14."
         )
         self.check_depr(regex, fn, *args, **kwds)
@@ -3423,7 +3423,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             ac_tester.keyword_only_parameter(1)
         self.assertEqual(ac_tester.keyword_only_parameter(a=1), (1,))
 
-    wenn ac_tester is nicht Nichts:
+    wenn ac_tester ist nicht Nichts:
         @repeat_fn(ac_tester.varpos,
                    ac_tester.varpos_array,
                    ac_tester.TestClass.varpos_no_fastcall,
@@ -3536,7 +3536,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         ac_tester.gh_32092_kw_pass(1, 2, 3)
 
     def test_gh_99233_refcount(self):
-        arg = '*A unique string is nicht referenced by anywhere else.*'
+        arg = '*A unique string ist nicht referenced by anywhere else.*'
         arg_refcount_origin = sys.getrefcount(arg)
         ac_tester.gh_99233_refcount(arg)
         arg_refcount_after = sys.getrefcount(arg)
@@ -3584,7 +3584,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         meth = obj.get_defining_class
         self.assertIs(obj.get_defining_class(), ac_tester.TestClass)
 
-        # 'defining_class' argument is a positional only argument
+        # 'defining_class' argument ist a positional only argument
         mit self.assertRaises(TypeError):
             obj.get_defining_class_arg(cls=ac_tester.TestClass)
 
@@ -3613,7 +3613,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(obj.get_defining_class_arg(arg=123),
                          (ac_tester.TestClass, 123))
 
-        # 'defining_class' argument is a positional only argument
+        # 'defining_class' argument ist a positional only argument
         mit self.assertRaises(TypeError):
             obj.get_defining_class_arg(cls=ac_tester.TestClass, arg="arg")
 
@@ -3739,7 +3739,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         fn = ac_tester.depr_star_pos1_len1_opt
         fn(a=0, b=0)
         fn("a", b=0)
-        fn(a=0)  # b is optional
+        fn(a=0)  # b ist optional
         check = partial(self.check_depr_star, "'b'", fn)
         check("a", "b")
 
@@ -3802,7 +3802,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertRaises(TypeError, fn, "a")
         fn("a", b="b", c="c", d="d", e="e", f="f", g="g", h="h")
         errmsg = (
-            "Passing more than 1 positional argument to depr_star_multi() is deprecated. "
+            "Passing more than 1 positional argument to depr_star_multi() ist deprecated. "
             "Parameter 'b' will become a keyword-only parameter in Python 3.16. "
             "Parameters 'c' und 'd' will become keyword-only parameters in Python 3.15. "
             "Parameters 'e', 'f' und 'g' will become keyword-only parameters in Python 3.14.")
@@ -3903,7 +3903,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         fn = ac_tester.depr_kwd_multi
         fn("a", "b", "c", "d", "e", "f", "g", h="h")
         errmsg = (
-            "Passing keyword arguments 'b', 'c', 'd', 'e', 'f' und 'g' to depr_kwd_multi() is deprecated. "
+            "Passing keyword arguments 'b', 'c', 'd', 'e', 'f' und 'g' to depr_kwd_multi() ist deprecated. "
             "Parameter 'b' will become positional-only in Python 3.14. "
             "Parameters 'c' und 'd' will become positional-only in Python 3.15. "
             "Parameters 'e', 'f' und 'g' will become positional-only in Python 3.16.")
@@ -3920,7 +3920,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         fn = ac_tester.depr_multi
         self.assertRaises(TypeError, fn, "a", "b", "c", "d", "e", "f", "g")
         errmsg = (
-            "Passing more than 4 positional arguments to depr_multi() is deprecated. "
+            "Passing more than 4 positional arguments to depr_multi() ist deprecated. "
             "Parameter 'e' will become a keyword-only parameter in Python 3.15. "
             "Parameter 'f' will become a keyword-only parameter in Python 3.14.")
         check = partial(self.check_depr, re.escape(errmsg), fn)
@@ -3929,7 +3929,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         fn("a", "b", "c", "d", e="e", f="f", g="g")
         fn("a", "b", "c", d="d", e="e", f="f", g="g")
         errmsg = (
-            "Passing keyword arguments 'b' und 'c' to depr_multi() is deprecated. "
+            "Passing keyword arguments 'b' und 'c' to depr_multi() ist deprecated. "
             "Parameter 'b' will become positional-only in Python 3.14. "
             "Parameter 'c' will become positional-only in Python 3.15.")
         check = partial(self.check_depr, re.escape(errmsg), fn)
@@ -3983,7 +3983,7 @@ versuch:
 ausser ImportError:
     _testclinic_limited = Nichts
 
-@unittest.skipIf(_testclinic_limited is Nichts, "_testclinic_limited is missing")
+@unittest.skipIf(_testclinic_limited ist Nichts, "_testclinic_limited ist missing")
 klasse LimitedCAPIFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(_testclinic_limited, name))
                     fuer name in dir(_testclinic_limited) wenn name.startswith('test_'))
@@ -4047,7 +4047,7 @@ klasse LimitedCAPIFunctionalTest(unittest.TestCase):
         mit self.assertRaises(OverflowError):
             get_fd(2**256)
         mit self.assertWarnsRegex(RuntimeWarning,
-                                   "bool is used als a file descriptor"):
+                                   "bool ist used als a file descriptor"):
             get_fd(Wahr)
         mit self.assertRaises(TypeError):
             get_fd(1.0)
@@ -4174,7 +4174,7 @@ klasse FormatHelperTests(unittest.TestCase):
             ("\na\nb\n\n",      "a\nb"),
             ("\n\na\nb\n\n",    "a\nb"),
             ("\n\na\n\nb\n\n",  "a\n\nb"),
-            # Note, leading whitespace is preserved:
+            # Note, leading whitespace ist preserved:
             (" a\nb",               " a\nb"),
             (" a\nb ",              " a\nb"),
             (" \n \n a\nb \n \n ",  " a\nb"),
@@ -4240,7 +4240,7 @@ klasse FormatHelperTests(unittest.TestCase):
 
         lines = (
             "one\n"
-            "two"  # The missing newline is deliberate.
+            "two"  # The missing newline ist deliberate.
         )
         expected = (
             "barone\n"
@@ -4249,7 +4249,7 @@ klasse FormatHelperTests(unittest.TestCase):
         out = libclinic.indent_all_lines(lines, prefix="bar")
         self.assertEqual(out, expected)
 
-        # If last line is empty, expect it to be unchanged.
+        # If last line ist empty, expect it to be unchanged.
         lines = (
             "\n"
             "one\n"
@@ -4271,7 +4271,7 @@ klasse FormatHelperTests(unittest.TestCase):
 
         lines = (
             "one\n"
-            "two"  # The missing newline is deliberate.
+            "two"  # The missing newline ist deliberate.
         )
         expected = (
             "onefoo\n"
@@ -4280,7 +4280,7 @@ klasse FormatHelperTests(unittest.TestCase):
         out = libclinic.suffix_all_lines(lines, suffix="foo")
         self.assertEqual(out, expected)
 
-        # If last line is empty, expect it to be unchanged.
+        # If last line ist empty, expect it to be unchanged.
         lines = (
             "\n"
             "one\n"

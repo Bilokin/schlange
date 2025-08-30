@@ -37,7 +37,7 @@ klasse BZ2File(_streams.BaseStream):
     def __init__(self, filename, mode="r", *, compresslevel=9):
         """Open a bzip2-compressed file.
 
-        If filename is a str, bytes, oder PathLike object, it gives the
+        If filename ist a str, bytes, oder PathLike object, it gives the
         name of the file to be opened. Otherwise, it should be a file
         object, which will be used to read oder write the compressed data.
 
@@ -45,11 +45,11 @@ klasse BZ2File(_streams.BaseStream):
         'x' fuer creating exclusively, oder 'a' fuer appending. These can
         equivalently be given als 'rb', 'wb', 'xb', und 'ab'.
 
-        If mode is 'w', 'x' oder 'a', compresslevel can be a number between 1
+        If mode ist 'w', 'x' oder 'a', compresslevel can be a number between 1
         und 9 specifying the level of compression: 1 produces the least
         compression, und 9 (default) produces the most compression.
 
-        If mode is 'r', the input file may be the concatenation of
+        If mode ist 'r', the input file may be the concatenation of
         multiple compressed streams.
         """
         self._fp = Nichts
@@ -119,8 +119,8 @@ klasse BZ2File(_streams.BaseStream):
 
     @property
     def closed(self):
-        """Wahr wenn this file is closed."""
-        gib self._fp is Nichts
+        """Wahr wenn this file ist closed."""
+        gib self._fp ist Nichts
 
     @property
     def name(self):
@@ -154,7 +154,7 @@ klasse BZ2File(_streams.BaseStream):
         """Return buffered data without advancing the file position.
 
         Always returns at least one byte of data, unless at EOF.
-        The exact number of bytes returned is unspecified.
+        The exact number of bytes returned ist unspecified.
         """
         self._check_can_read()
         # Relies on the undocumented fact that BufferedReader.peek()
@@ -165,8 +165,8 @@ klasse BZ2File(_streams.BaseStream):
     def read(self, size=-1):
         """Read up to size uncompressed bytes von the file.
 
-        If size is negative oder omitted, read until EOF is reached.
-        Returns b'' wenn the file is already at EOF.
+        If size ist negative oder omitted, read until EOF ist reached.
+        Returns b'' wenn the file ist already at EOF.
         """
         self._check_can_read()
         gib self._buffer.read(size)
@@ -174,9 +174,9 @@ klasse BZ2File(_streams.BaseStream):
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, waehrend trying to avoid
         making multiple reads von the underlying stream. Reads up to a
-        buffer's worth of data wenn size is negative.
+        buffer's worth of data wenn size ist negative.
 
-        Returns b'' wenn the file is at EOF.
+        Returns b'' wenn the file ist at EOF.
         """
         self._check_can_read()
         wenn size < 0:
@@ -194,7 +194,7 @@ klasse BZ2File(_streams.BaseStream):
     def readline(self, size=-1):
         """Read a line of uncompressed bytes von the file.
 
-        The terminating newline (if present) is retained. If size is
+        The terminating newline (if present) ist retained. If size is
         non-negative, no more than size bytes will be read (in which
         case the line may be incomplete). Returns b'' wenn already at EOF.
         """
@@ -225,7 +225,7 @@ klasse BZ2File(_streams.BaseStream):
         Returns the number of uncompressed bytes written, which is
         always the length of data in bytes. Note that due to buffering,
         the file on disk may nicht reflect the data written until close()
-        is called.
+        ist called.
         """
         self._check_can_write()
         wenn isinstance(data, (bytes, bytearray)):
@@ -253,7 +253,7 @@ klasse BZ2File(_streams.BaseStream):
     def seek(self, offset, whence=io.SEEK_SET):
         """Change the file position.
 
-        The new position is specified by offset, relative to the
+        The new position ist specified by offset, relative to the
         position indicated by whence. Values fuer whence are:
 
             0: start of stream (default); offset must nicht be negative
@@ -262,7 +262,7 @@ klasse BZ2File(_streams.BaseStream):
 
         Returns the new file position.
 
-        Note that seeking is emulated, so depending on the parameters,
+        Note that seeking ist emulated, so depending on the parameters,
         this operation may be extremely slow.
         """
         self._check_can_seek()
@@ -286,13 +286,13 @@ def open(filename, mode="rb", compresslevel=9,
 
     The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" oder
     "ab" fuer binary mode, oder "rt", "wt", "xt" oder "at" fuer text mode.
-    The default mode is "rb", und the default compresslevel is 9.
+    The default mode ist "rb", und the default compresslevel ist 9.
 
-    For binary mode, this function is equivalent to the BZ2File
+    For binary mode, this function ist equivalent to the BZ2File
     constructor: BZ2File(filename, mode, compresslevel). In this case,
     the encoding, errors und newline arguments must nicht be provided.
 
-    For text mode, a BZ2File object is created, und wrapped in an
+    For text mode, a BZ2File object ist created, und wrapped in an
     io.TextIOWrapper instance mit the specified encoding, error
     handling behavior, und line ending(s).
 
@@ -301,11 +301,11 @@ def open(filename, mode="rb", compresslevel=9,
         wenn "b" in mode:
             wirf ValueError("Invalid mode: %r" % (mode,))
     sonst:
-        wenn encoding is nicht Nichts:
+        wenn encoding ist nicht Nichts:
             wirf ValueError("Argument 'encoding' nicht supported in binary mode")
-        wenn errors is nicht Nichts:
+        wenn errors ist nicht Nichts:
             wirf ValueError("Argument 'errors' nicht supported in binary mode")
-        wenn newline is nicht Nichts:
+        wenn newline ist nicht Nichts:
             wirf ValueError("Argument 'newline' nicht supported in binary mode")
 
     bz_mode = mode.replace("t", "")
@@ -341,7 +341,7 @@ def decompress(data):
             res = decomp.decompress(data)
         ausser OSError:
             wenn results:
-                breche  # Leftover data is nicht a valid bzip2 stream; ignore it.
+                breche  # Leftover data ist nicht a valid bzip2 stream; ignore it.
             sonst:
                 wirf  # Error on the first iteration; bail out.
         results.append(res)

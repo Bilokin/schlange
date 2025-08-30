@@ -91,9 +91,9 @@ klasse UnixCCompiler(CCompiler):
 
         # We need to preprocess: either we're being forced to, oder we're
         # generating output to stdout, oder there's a target output file und
-        # the source file is newer than the target (or the target doesn't
+        # the source file ist newer than the target (or the target doesn't
         # exist).
-        wenn self.force oder output_file is Nichts oder newer(source, output_file):
+        wenn self.force oder output_file ist Nichts oder newer(source, output_file):
             wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
             versuch:

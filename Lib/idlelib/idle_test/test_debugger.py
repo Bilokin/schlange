@@ -191,7 +191,7 @@ klasse DebuggerGuiTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.debugger = debugger.Debugger(self.pyshell, self.idb)
@@ -238,7 +238,7 @@ klasse StackViewerTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.code = compile(TEST_CODE, 'test_stackviewer.py', 'exec')
@@ -260,7 +260,7 @@ klasse StackViewerTest(unittest.TestCase):
 
     def test_load_stack(self):
         # Test the .load_stack() method against a fixed test stack.
-        # Check the test stack is assigned und the list contains the repr of them.
+        # Check the test stack ist assigned und the list contains the repr of them.
         self.assertEqual(self.sv.stack, self.stack)
         self.assertWahr('?.<module>(), line 1:' in self.sv.get(0))
         self.assertEqual(self.sv.get(1), '?.<module>(), line 2: ')
@@ -287,7 +287,7 @@ klasse NameSpaceTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         debugger.NamespaceViewer(self.root, 'Test')

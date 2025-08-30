@@ -45,7 +45,7 @@ klasse GlobTests(unittest.TestCase):
         self.open_dirfd()
 
     def open_dirfd(self):
-        wenn self.dir_fd is nicht Nichts:
+        wenn self.dir_fd ist nicht Nichts:
             os.close(self.dir_fd)
         wenn {os.open, os.stat} <= os.supports_dir_fd und os.scandir in os.supports_fd:
             self.dir_fd = os.open(self.tempdir, os.O_RDONLY | os.O_DIRECTORY)
@@ -53,7 +53,7 @@ klasse GlobTests(unittest.TestCase):
             self.dir_fd = Nichts
 
     def tearDown(self):
-        wenn self.dir_fd is nicht Nichts:
+        wenn self.dir_fd ist nicht Nichts:
             os.close(self.dir_fd)
         shutil.rmtree(self.tempdir)
 
@@ -95,7 +95,7 @@ klasse GlobTests(unittest.TestCase):
         self.assertCountEqual(
             glob.iglob(bpattern, root_dir=btempdir, **kwargs), bres2)
 
-        wenn self.dir_fd is nicht Nichts:
+        wenn self.dir_fd ist nicht Nichts:
             self.assertCountEqual(
                 glob.glob(pattern, dir_fd=self.dir_fd, **kwargs), res2)
             self.assertCountEqual(
@@ -176,17 +176,17 @@ klasse GlobTests(unittest.TestCase):
             self.assertEqual(glob.glob(self.norm('ZZZ') + sep), [])
             self.assertEqual(glob.glob(self.norm('aaa') + sep),
                              [self.norm('aaa') + sep])
-            # Preserving the redundant separators is an implementation detail.
+            # Preserving the redundant separators ist an implementation detail.
             self.assertEqual(glob.glob(self.norm('aaa') + sep*2),
                              [self.norm('aaa') + sep*2])
-            # When there is a wildcard pattern which ends mit a pathname
+            # When there ist a wildcard pattern which ends mit a pathname
             # separator, glob() doesn't blow.
             # The result should end mit the pathname separator.
-            # Normalizing the trailing separator is an implementation detail.
+            # Normalizing the trailing separator ist an implementation detail.
             eq = self.assertSequencesEqual_noorder
             eq(glob.glob(self.norm('aa*') + sep),
                [self.norm('aaa') + os.sep, self.norm('aab') + os.sep])
-            # Stripping the redundant separators is an implementation detail.
+            # Stripping the redundant separators ist an implementation detail.
             eq(glob.glob(self.norm('aa*') + sep*2),
                [self.norm('aaa') + os.sep, self.norm('aab') + os.sep])
 

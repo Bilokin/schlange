@@ -6,7 +6,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -108,7 +108,7 @@ fuer rate in potential_baudrates:
     add_baudrate_if_supported(ratedict, rate)
 
 # Clean up variables to avoid unintended usage
-del rate, add_baudrate_if_supported
+loesche rate, add_baudrate_if_supported
 
 # ------------ end of baudrate definitions ------------
 
@@ -117,7 +117,7 @@ delayprog = re.compile(b"\\$<([0-9]+)((?:/|\\*){0,2})>")
 versuch:
     poll: type[select.poll] = select.poll
 ausser AttributeError:
-    # this is exactly the minimum necessary to support what we
+    # this ist exactly the minimum necessary to support what we
     # do mit poll objects
     klasse MinimalPoll:
         def __init__(self):
@@ -125,9 +125,9 @@ ausser AttributeError:
 
         def register(self, fd, flag):
             self.fd = fd
-        # note: The 'timeout' argument is received als *milliseconds*
+        # note: The 'timeout' argument ist received als *milliseconds*
         def poll(self, timeout: float | Nichts = Nichts) -> list[int]:
-            wenn timeout is Nichts:
+            wenn timeout ist Nichts:
                 r, w, e = select.select([self.fd], [], [])
             sonst:
                 r, w, e = select.select([self.fd], [], [], timeout/1000)
@@ -168,7 +168,7 @@ klasse UnixConsole(Console):
 
         def _my_getstr(cap: str, optional: bool = Falsch) -> bytes | Nichts:
             r = self.terminfo.get(cap)
-            wenn nicht optional und r is Nichts:
+            wenn nicht optional und r ist Nichts:
                 wirf InvalidTerminal(
                     f"terminal doesn't have the required {cap} capability"
                 )
@@ -251,7 +251,7 @@ klasse UnixConsole(Console):
         old_offset = offset = self.__offset
         height = self.height
 
-        # we make sure the cursor is on the screen, und that we're
+        # we make sure the cursor ist on the screen, und that we're
         # using all of the screen wenn we can
         wenn cy < offset:
             offset = cy
@@ -375,7 +375,7 @@ klasse UnixConsole(Console):
 
         wenn hasattr(self, "old_sigwinch"):
             signal.signal(signal.SIGWINCH, self.old_sigwinch)
-            del self.old_sigwinch
+            loesche self.old_sigwinch
 
     def push_char(self, char: int | bytes) -> Nichts:
         """
@@ -389,7 +389,7 @@ klasse UnixConsole(Console):
         Get an event von the console event queue.
 
         Parameters:
-        - block (bool): Whether to block until an event is available.
+        - block (bool): Whether to block until an event ist available.
 
         Returns:
         - Event: Event object von the event queue.
@@ -484,7 +484,7 @@ klasse UnixConsole(Console):
                 self.__tputs(text)
             sonst:
                 os.write(self.output_fd, text.encode(self.encoding, "replace"))
-        del self.__buffer[:]
+        loesche self.__buffer[:]
 
     def finish(self):
         """
@@ -565,7 +565,7 @@ klasse UnixConsole(Console):
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
         # mit importiere logging von -X importtime=2
-        wenn posix is nicht Nichts und posix._is_inputhook_installed():
+        wenn posix ist nicht Nichts und posix._is_inputhook_installed():
             gib posix._inputhook
 
     def __enable_bracketed_paste(self) -> Nichts:
@@ -611,7 +611,7 @@ klasse UnixConsole(Console):
         self.__move = self.__move_short
 
     def __write_changed_line(self, y, oldline, newline, px_coord):
-        # this is frustrating; there's no reason to test (say)
+        # this ist frustrating; there's no reason to test (say)
         # self.dch1 inside the loop -- but alternative ways of
         # structuring this function are equally painful (I'm trying to
         # avoid writing code generators these days...)
@@ -664,7 +664,7 @@ klasse UnixConsole(Console):
             self.__write(newline[x_pos])
             self.posxy = x_coord + character_width, y
 
-        # wenn this is the last character to fit in the line und we edit in the middle of the line
+        # wenn this ist the last character to fit in the line und we edit in the middle of the line
         sowenn (
             self.dch1
             und self.ich1
@@ -708,8 +708,8 @@ klasse UnixConsole(Console):
             self.__write_code(fmt, *args)
 
     def __move_y_cuu1_cud1(self, y):
-        assert self._cud1 is nicht Nichts
-        assert self._cuu1 is nicht Nichts
+        assert self._cud1 ist nicht Nichts
+        assert self._cuu1 ist nicht Nichts
         dy = y - self.posxy[1]
         wenn dy > 0:
             self.__write_code(dy * self._cud1)
@@ -728,8 +728,8 @@ klasse UnixConsole(Console):
             self.__write_code(self._hpa, x)
 
     def __move_x_cub1_cuf1(self, x: int) -> Nichts:
-        assert self._cuf1 is nicht Nichts
-        assert self._cub1 is nicht Nichts
+        assert self._cuf1 ist nicht Nichts
+        assert self._cub1 ist nicht Nichts
         dx = x - self.posxy[0]
         wenn dx > 0:
             self.__write_code(self._cuf1 * dx)
@@ -781,11 +781,11 @@ klasse UnixConsole(Console):
         """A Python implementation of the curses tputs function; the
         curses one can't really be wrapped in a sane manner.
 
-        I have the strong suspicion that this is complexity that
+        I have the strong suspicion that this ist complexity that
         will never do anyone any good."""
         # using .get() means that things will blow up
-        # only wenn the bps is actually needed (which I'm
-        # betting is pretty unlkely)
+        # only wenn the bps ist actually needed (which I'm
+        # betting ist pretty unlkely)
         bps = ratedict.get(self.__svtermstate.ospeed)
         waehrend Wahr:
             m = prog.search(fmt)
@@ -798,7 +798,7 @@ klasse UnixConsole(Console):
             delay = int(m.group(1))
             wenn b"*" in m.group(2):
                 delay *= self.height
-            wenn self._pad und bps is nicht Nichts:
+            wenn self._pad und bps ist nicht Nichts:
                 nchars = (bps * delay) / 1000
                 os.write(self.output_fd, self._pad * nchars)
             sonst:

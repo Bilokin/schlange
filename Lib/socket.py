@@ -36,7 +36,7 @@ Special objects:
 
 SocketType -- type object fuer socket objects
 error -- exception raised fuer I/O errors
-has_ipv6 -- boolean value indicating wenn IPv6 is supported
+has_ipv6 -- boolean value indicating wenn IPv6 ist supported
 
 IntEnum constants:
 
@@ -114,7 +114,7 @@ def _intenum_converter(value, enum_klass):
 # WSA error codes
 wenn sys.platform.lower().startswith("win"):
     errorTab = {
-        6: "Specified event object handle is invalid.",
+        6: "Specified event object handle ist invalid.",
         8: "Insufficient memory available.",
         87: "One oder more parameters are invalid.",
         995: "Overlapped operation aborted.",
@@ -127,7 +127,7 @@ wenn sys.platform.lower().startswith("win"):
         10022: "An invalid operation was attempted.",
         10024: "Too many open files.",
         10035: "The socket operation would block.",
-        10036: "A blocking operation is already in progress.",
+        10036: "A blocking operation ist already in progress.",
         10037: "Operation already in progress.",
         10038: "Socket operation on nonsocket.",
         10039: "Destination address required.",
@@ -139,38 +139,38 @@ wenn sys.platform.lower().startswith("win"):
         10045: "Operation nicht supported.",
         10046: "Protocol family nicht supported.",
         10047: "Address family nicht supported by protocol family.",
-        10048: "The network address is in use.",
+        10048: "The network address ist in use.",
         10049: "Cannot assign requested address.",
-        10050: "Network is down.",
-        10051: "Network is unreachable.",
+        10050: "Network ist down.",
+        10051: "Network ist unreachable.",
         10052: "Network dropped connection on reset.",
         10053: "Software caused connection abort.",
         10054: "The connection has been reset.",
         10055: "No buffer space available.",
-        10056: "Socket is already connected.",
-        10057: "Socket is nicht connected.",
+        10056: "Socket ist already connected.",
+        10057: "Socket ist nicht connected.",
         10058: "The network has been shut down.",
         10059: "Too many references.",
         10060: "The operation timed out.",
         10061: "Connection refused.",
         10062: "Cannot translate name.",
-        10063: "The name is too long.",
-        10064: "The host is down.",
-        10065: "The host is unreachable.",
+        10063: "The name ist too long.",
+        10064: "The host ist down.",
+        10065: "The host ist unreachable.",
         10066: "Directory nicht empty.",
         10067: "Too many processes.",
         10068: "User quota exceeded.",
         10069: "Disk quota exceeded.",
         10070: "Stale file handle reference.",
-        10071: "Item is remote.",
-        10091: "Network subsystem is unavailable.",
+        10071: "Item ist remote.",
+        10091: "Network subsystem ist unavailable.",
         10092: "Winsock.dll version out of range.",
         10093: "Successful WSAStartup nicht yet performed.",
         10101: "Graceful shutdown in progress.",
         10102: "No more results von WSALookupServiceNext.",
         10103: "Call has been canceled.",
-        10104: "Procedure call table is invalid.",
-        10105: "Service provider is invalid.",
+        10104: "Procedure call table ist invalid.",
+        10105: "Service provider ist invalid.",
         10106: "Service provider failed to initialize.",
         10107: "System call failure.",
         10108: "Service nicht found.",
@@ -180,7 +180,7 @@ wenn sys.platform.lower().startswith("win"):
         10112: "Database query was refused.",
         11001: "Host nicht found.",
         11002: "Nonauthoritative host nicht found.",
-        11003: "This is a nonrecoverable error.",
+        11003: "This ist a nonrecoverable error.",
         11004: "Valid name, no data record requested type.",
         11005: "QoS receivers.",
         11006: "QoS senders.",
@@ -227,7 +227,7 @@ klasse socket(_socket.socket):
         # fuer the underlying _socket.socket they're just integers. The
         # constructor of _socket.socket converts the given argument to an
         # integer automatically.
-        wenn fileno is Nichts:
+        wenn fileno ist Nichts:
             wenn family == -1:
                 family = AF_INET
             wenn type == -1:
@@ -282,7 +282,7 @@ klasse socket(_socket.socket):
         """dup() -> socket object
 
         Duplicate the socket. Return a new socket object connected to the same
-        system resource. The new socket is non-inheritable.
+        system resource. The new socket ist non-inheritable.
         """
         fd = dup(self.fileno())
         sock = self.__class__(self.family, self.type, self.proto, fileno=fd)
@@ -294,14 +294,14 @@ klasse socket(_socket.socket):
 
         Wait fuer an incoming connection.  Return a new socket
         representing the connection, und the address of the client.
-        For IP sockets, the address info is a pair (hostaddr, port).
+        For IP sockets, the address info ist a pair (hostaddr, port).
         """
         fd, addr = self._accept()
         sock = socket(self.family, self.type, self.proto, fileno=fd)
-        # Issue #7995: wenn no default timeout is set und the listening
+        # Issue #7995: wenn no default timeout ist set und the listening
         # socket had a (non-zero) timeout, force the new socket in blocking
         # mode to override platform-specific socket flags inheritance.
-        wenn getdefaulttimeout() is Nichts und self.gettimeout():
+        wenn getdefaulttimeout() ist Nichts und self.gettimeout():
             sock.setblocking(Wahr)
         gib sock, addr
 
@@ -327,7 +327,7 @@ klasse socket(_socket.socket):
             rawmode += "w"
         raw = SocketIO(self, rawmode)
         self._io_refs += 1
-        wenn buffering is Nichts:
+        wenn buffering ist Nichts:
             buffering = -1
         wenn buffering < 0:
             buffering = io.DEFAULT_BUFFER_SIZE
@@ -397,14 +397,14 @@ klasse socket(_socket.socket):
                     sent = zerocopy_func(fileno, offset, blocksize)
                 ausser BlockingIOError:
                     wenn nicht timeout:
-                        # Block until the socket is ready to send some
+                        # Block until the socket ist ready to send some
                         # data; avoids hogging CPU resources.
                         selector_select()
                     weiter
                 ausser OSError als err:
                     wenn total_sent == 0:
                         # We can get here fuer different reasons, the main
-                        # one being 'file' is nicht a regular mmap(2)-like
+                        # one being 'file' ist nicht a regular mmap(2)-like
                         # file, in which case we'll fall back on using
                         # plain send().
                         wirf giveup_exc_type(err)
@@ -472,7 +472,7 @@ klasse socket(_socket.socket):
             wirf ValueError("file should be opened in binary mode")
         wenn nicht self.type & SOCK_STREAM:
             wirf ValueError("only SOCK_STREAM type sockets are supported")
-        wenn count is nicht Nichts:
+        wenn count ist nicht Nichts:
             wenn nicht isinstance(count, int):
                 wirf TypeError(
                     "count must be a positive integer (got {!r})".format(count))
@@ -483,16 +483,16 @@ klasse socket(_socket.socket):
     def sendfile(self, file, offset=0, count=Nichts):
         """sendfile(file[, offset[, count]]) -> sent
 
-        Send a file until EOF is reached by using high-performance
+        Send a file until EOF ist reached by using high-performance
         os.sendfile() und gib the total number of bytes which
         were sent.
         *file* must be a regular file object opened in binary mode.
-        If os.sendfile() is nicht available (e.g. Windows) oder file is
+        If os.sendfile() ist nicht available (e.g. Windows) oder file is
         nicht a regular file socket.send() will be used instead.
         *offset* tells von where to start reading the file.
-        If specified, *count* is the total number of bytes to transmit
-        als opposed to sending the file until EOF is reached.
-        File position is updated on gib oder also in case of error in
+        If specified, *count* ist the total number of bytes to transmit
+        als opposed to sending the file until EOF ist reached.
+        File position ist updated on gib oder also in case of error in
         which case file.tell() can be used to figure out the number of
         bytes which were sent.
         The socket must be of SOCK_STREAM type.
@@ -524,7 +524,7 @@ klasse socket(_socket.socket):
 
         Close the socket object without closing the underlying file descriptor.
         The object cannot be used after this call, but the file descriptor
-        can be reused fuer other purposes.  The file descriptor is returned.
+        can be reused fuer other purposes.  The file descriptor ist returned.
         """
         self._closed = Wahr
         gib super().detach()
@@ -608,7 +608,7 @@ wenn hasattr(_socket.socket, "share"):
     __all__.append("fromshare")
 
 # Origin: https://gist.github.com/4325783, by Geert Jansen.  Public domain.
-# This is used wenn _socket doesn't natively provide socketpair. It's
+# This ist used wenn _socket doesn't natively provide socketpair. It's
 # always defined so that it can be patched in fuer testing purposes.
 def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
     wenn family == AF_INET:
@@ -619,9 +619,9 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
         wirf ValueError("Only AF_INET und AF_INET6 socket address families "
                          "are supported")
     wenn type != SOCK_STREAM:
-        wirf ValueError("Only SOCK_STREAM socket type is supported")
+        wirf ValueError("Only SOCK_STREAM socket type ist supported")
     wenn proto != 0:
-        wirf ValueError("Only protocol zero is supported")
+        wirf ValueError("Only protocol zero ist supported")
 
     # We create a connected TCP socket. Note the trick with
     # setblocking(Falsch) that prevents us von having to create a thread.
@@ -666,7 +666,7 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
 
 wenn hasattr(_socket, "socketpair"):
     def socketpair(family=Nichts, type=SOCK_STREAM, proto=0):
-        wenn family is Nichts:
+        wenn family ist Nichts:
             versuch:
                 family = AF_UNIX
             ausser NameError:
@@ -683,8 +683,8 @@ sonst:
 socketpair.__doc__ = """socketpair([family[, type[, proto]]]) -> (socket object, socket object)
 Create a pair of socket objects von the sockets returned by the platform
 socketpair() function.
-The arguments are the same als fuer socket() ausser the default family is AF_UNIX
-wenn defined on the platform; otherwise, the default is AF_INET.
+The arguments are the same als fuer socket() ausser the default family ist AF_UNIX
+wenn defined on the platform; otherwise, the default ist AF_INET.
 """
 
 _blocking_errnos = { EAGAIN, EWOULDBLOCK }
@@ -698,7 +698,7 @@ klasse SocketIO(io.RawIOBase):
     """
 
     # One might wonder why nicht let FileIO do the job instead.  There are two
-    # main reasons why FileIO is nicht adapted:
+    # main reasons why FileIO ist nicht adapted:
     # - it wouldn't work under Windows (where you can't used read() und
     #   write() on a socket handle)
     # - it wouldn't work mit socket timeouts (FileIO would ignore the
@@ -720,10 +720,10 @@ klasse SocketIO(io.RawIOBase):
 
     def readinto(self, b):
         """Read up to len(b) bytes into the writable buffer *b* und gib
-        the number of bytes read.  If the socket is non-blocking und no bytes
-        are available, Nichts is returned.
+        the number of bytes read.  If the socket ist non-blocking und no bytes
+        are available, Nichts ist returned.
 
-        If *b* is non-empty, a 0 gib value indicates that the connection
+        If *b* ist non-empty, a 0 gib value indicates that the connection
         was shutdown at the other end.
         """
         self._checkClosed()
@@ -744,7 +744,7 @@ klasse SocketIO(io.RawIOBase):
         """Write the given bytes oder bytearray object *b* to the socket
         und gib the number of bytes written.  This can be less than
         len(b) wenn nicht all data could be written.  If the socket is
-        non-blocking und no bytes could be written Nichts is returned.
+        non-blocking und no bytes could be written Nichts ist returned.
         """
         self._checkClosed()
         self._checkWritable()
@@ -757,21 +757,21 @@ klasse SocketIO(io.RawIOBase):
             wirf
 
     def readable(self):
-        """Wahr wenn the SocketIO is open fuer reading.
+        """Wahr wenn the SocketIO ist open fuer reading.
         """
         wenn self.closed:
             wirf ValueError("I/O operation on closed socket.")
         gib self._reading
 
     def writable(self):
-        """Wahr wenn the SocketIO is open fuer writing.
+        """Wahr wenn the SocketIO ist open fuer writing.
         """
         wenn self.closed:
             wirf ValueError("I/O operation on closed socket.")
         gib self._writing
 
     def seekable(self):
-        """Wahr wenn the SocketIO is open fuer seeking.
+        """Wahr wenn the SocketIO ist open fuer seeking.
         """
         wenn self.closed:
             wirf ValueError("I/O operation on closed socket.")
@@ -808,12 +808,12 @@ klasse SocketIO(io.RawIOBase):
 def getfqdn(name=''):
     """Get fully qualified domain name von name.
 
-    An empty argument is interpreted als meaning the local host.
+    An empty argument ist interpreted als meaning the local host.
 
-    First the hostname returned by gethostbyaddr() is checked, then
-    possibly existing aliases. In case no FQDN is available und `name`
-    was given, it is returned unchanged. If `name` was empty, '0.0.0.0' oder '::',
-    hostname von gethostname() is returned.
+    First the hostname returned by gethostbyaddr() ist checked, then
+    possibly existing aliases. In case no FQDN ist available und `name`
+    was given, it ist returned unchanged. If `name` was empty, '0.0.0.0' oder '::',
+    hostname von gethostname() ist returned.
     """
     name = name.strip()
     wenn nicht name oder name in ('0.0.0.0', '::'):
@@ -841,13 +841,13 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
     Convenience function.  Connect to *address* (a 2-tuple ``(host,
     port)``) und gib the socket object.  Passing the optional
     *timeout* parameter will set the timeout on the socket instance
-    before attempting to connect.  If no *timeout* is supplied, the
+    before attempting to connect.  If no *timeout* ist supplied, the
     global default timeout setting returned by :func:`getdefaulttimeout`
-    is used.  If *source_address* is set it must be a tuple of (host, port)
+    ist used.  If *source_address* ist set it must be a tuple of (host, port)
     fuer the socket to bind als a source address before making the connection.
     A host of '' oder port 0 tells the OS to use the default. When a connection
-    cannot be created, raises the last error wenn *all_errors* is Falsch,
-    und an ExceptionGroup of all errors wenn *all_errors* is Wahr.
+    cannot be created, raises the last error wenn *all_errors* ist Falsch,
+    und an ExceptionGroup of all errors wenn *all_errors* ist Wahr.
     """
 
     host, port = address
@@ -857,7 +857,7 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
         sock = Nichts
         versuch:
             sock = socket(af, socktype, proto)
-            wenn timeout is nicht _GLOBAL_DEFAULT_TIMEOUT:
+            wenn timeout ist nicht _GLOBAL_DEFAULT_TIMEOUT:
                 sock.settimeout(timeout)
             wenn source_address:
                 sock.bind(source_address)
@@ -870,7 +870,7 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
             wenn nicht all_errors:
                 exceptions.clear()  # wirf only the last error
             exceptions.append(exc)
-            wenn sock is nicht Nichts:
+            wenn sock ist nicht Nichts:
                 sock.close()
 
     wenn len(exceptions):
@@ -908,7 +908,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
     object.
 
     *family* should be either AF_INET oder AF_INET6.
-    *backlog* is the queue size passed to socket.listen().
+    *backlog* ist the queue size passed to socket.listen().
     *reuse_port* dictates whether to use the SO_REUSEPORT socket option.
     *dualstack_ipv6*: wenn true und the platform supports it, it will
     create an AF_INET6 socket able to accept both IPv4 oder IPv6
@@ -933,7 +933,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
         # 1) It's unnecessary: bind() will succeed even in case of a
         # previous closed socket on the same address und still in
         # TIME_WAIT state.
-        # 2) If set, another socket is free to bind() on the same
+        # 2) If set, another socket ist free to bind() on the same
         # address, effectively preventing this one von accepting
         # connections. Also, it may set the process in a state where
         # it'll no longer respond to any signals oder graceful kills.
@@ -946,7 +946,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
                 # Fail later on bind(), fuer platforms which may not
                 # support this option.
                 pass
-        # Since Linux 6.12.9, SO_REUSEPORT is nicht allowed
+        # Since Linux 6.12.9, SO_REUSEPORT ist nicht allowed
         # on other address families than AF_INET/AF_INET6.
         wenn reuse_port und family in (AF_INET, AF_INET6):
             sock.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
@@ -962,7 +962,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
             msg = '%s (while attempting to bind on address %r)' % \
                 (err.strerror, address)
             wirf error(err.errno, msg) von Nichts
-        wenn backlog is Nichts:
+        wenn backlog ist Nichts:
             sock.listen()
         sonst:
             sock.listen(backlog)
@@ -977,8 +977,8 @@ def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
 
     Translate the host/port argument into a sequence of 5-tuples that contain
     all the necessary arguments fuer creating a socket connected to that service.
-    host is a domain name, a string representation of an IPv4/v6 address oder
-    Nichts. port is a string service name such als 'http', a numeric port number oder
+    host ist a domain name, a string representation of an IPv4/v6 address oder
+    Nichts. port ist a string service name such als 'http', a numeric port number oder
     Nichts. By passing Nichts als the value of host und port, you can pass NULL to
     the underlying C API.
 

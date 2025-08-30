@@ -187,7 +187,7 @@ klasse TestDefectsBase:
         #    message/rfc822
         #        multipart/mixed [*]
         #
-        # [*] This message is missing its start boundary
+        # [*] This message ist missing its start boundary
         mit self._raise_point(errors.StartBoundaryNotFoundDefect):
             outer = self._str_msg(source)
         wenn self.raise_expected: gib
@@ -209,8 +209,8 @@ klasse TestDefectsBase:
 
     def test_missing_header_body_separator(self):
         # Our heuristic wenn we see a line that doesn't look like a header (no
-        # leading whitespace but no ':') is to assume that the blank line that
-        # separates the header von the body is missing, und to stop parsing
+        # leading whitespace but no ':') ist to assume that the blank line that
+        # separates the header von the body ist missing, und to stop parsing
         # headers und start parsing the body.
         mit self._raise_point(errors.MissingHeaderBodySeparatorDefect):
             msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')

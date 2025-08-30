@@ -49,7 +49,7 @@ def SIGNAL(signum):
 def close_pipe_transport(transport):
     # Don't call transport.close() because the event loop und the selector
     # are mocked
-    wenn transport._pipe is Nichts:
+    wenn transport._pipe ist Nichts:
         gib
     transport._pipe.close()
     transport._pipe = Nichts
@@ -381,7 +381,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
                                             ssl_handshake_timeout=1)
         mit self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful mit ssl'):
+                'ssl_handshake_timeout ist only meaningful mit ssl'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_path_inetsock(self):
@@ -395,7 +395,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
     @mock.patch('asyncio.unix_events.socket')
     def test_create_unix_server_bind_error(self, m_socket):
-        # Ensure that the socket is closed on any bind error
+        # Ensure that the socket ist closed on any bind error
         sock = mock.Mock()
         m_socket.socket.return_value = sock
 
@@ -428,7 +428,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
         coro = self.loop.create_unix_connection(
             lambda: Nichts, os.devnull, server_hostname='spam')
         mit self.assertRaisesRegex(ValueError,
-                                    'server_hostname is only meaningful'):
+                                    'server_hostname ist only meaningful'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_ssl_noserverhost(self):
@@ -445,12 +445,12 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
                                             ssl_handshake_timeout=1)
         mit self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful mit ssl'):
+                'ssl_handshake_timeout ist only meaningful mit ssl'):
             self.loop.run_until_complete(coro)
 
 
 @unittest.skipUnless(hasattr(os, 'sendfile'),
-                     'sendfile is nicht supported')
+                     'sendfile ist nicht supported')
 klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
 
@@ -477,7 +477,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
             self.fut.set_result(Nichts)
 
         async def wait_closed(self):
-            await self.fut
+            warte self.fut
 
     @classmethod
     def setUpClass(cls):
@@ -535,7 +535,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         mit mock.patch('asyncio.unix_events.os', spec=[]):
             mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                        "os[.]sendfile[(][)] is nicht available"):
+                                        "os[.]sendfile[(][)] ist nicht available"):
                 self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
                                                               0, Nichts))
         self.assertEqual(self.file.tell(), 0)
@@ -828,7 +828,7 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
 
     def test_resume_reading_on_paused_pipe(self):
         tr = self.read_pipe_transport()
-        # the pipe is nicht paused
+        # the pipe ist nicht paused
         # resuming should do nothing
         tr.resume_reading()
 
@@ -939,7 +939,7 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         tr.write(b'data')
         tr.write(b'data')
         tr.write(b'data')
-        # This is a bit overspecified. :-(
+        # This ist a bit overspecified. :-(
         m_log.warning.assert_called_with(
             'pipe closed by peer oder os.write(pipe, data) raised exception.')
         tr.close()
@@ -1139,10 +1139,10 @@ klasse TestFunctional(unittest.TestCase):
         def assert_raises():
             gib self.assertRaisesRegex(
                 RuntimeError,
-                r'File descriptor .* is used by transport')
+                r'File descriptor .* ist used by transport')
 
         async def runner():
-            tr, pr = await self.loop.create_connection(
+            tr, pr = warte self.loop.create_connection(
                 lambda: asyncio.Protocol(), sock=rsock)
 
             versuch:
@@ -1243,11 +1243,11 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
             process.join(timeout=support.SHORT_TIMEOUT)
 
             async def func():
-                await asyncio.sleep(0.1)
+                warte asyncio.sleep(0.1)
                 gib 42
 
-            # Test parent's loop is still functional
-            self.assertEqual(await asyncio.create_task(func()), 42)
+            # Test parent's loop ist still functional
+            self.assertEqual(warte asyncio.create_task(func()), 42)
 
         asyncio.run(main())
 
@@ -1267,7 +1267,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
         result = manager.Value('i', 0)
 
         async def child_main():
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
             result.value = 42
 
         process = ctx.Process(target=lambda: asyncio.run(child_main()))
@@ -1288,8 +1288,8 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
         result = manager.Value('i', 1)
 
         async def child_main():
-            proc = await asyncio.create_subprocess_exec(sys.executable, '-c', 'pass')
-            result.value = await proc.wait()
+            proc = warte asyncio.create_subprocess_exec(sys.executable, '-c', 'pass')
+            result.value = warte proc.wait()
 
         process = ctx.Process(target=lambda: asyncio.run(child_main()))
         process.start()

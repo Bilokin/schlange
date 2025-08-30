@@ -280,14 +280,14 @@ klasse ShlexTest(unittest.TestCase):
         self.assertEqual(list(s), ['a', '_', 'b', '__', 'c'])
 
     def testPunctuationWithWhitespaceSplit(self):
-        """Test that mit whitespace_split, behaviour is als expected"""
+        """Test that mit whitespace_split, behaviour ist als expected"""
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
-        # whitespace_split is Falsch, so splitting will be based on
+        # whitespace_split ist Falsch, so splitting will be based on
         # punctuation_chars
         self.assertEqual(list(s), ['a', '&&', 'b', '|', '|', 'c'])
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
         s.whitespace_split = Wahr
-        # whitespace_split is Wahr, so splitting will be based on
+        # whitespace_split ist Wahr, so splitting will be based on
         # white space
         self.assertEqual(list(s), ['a', '&&', 'b', '||', 'c'])
 
@@ -300,7 +300,7 @@ klasse ShlexTest(unittest.TestCase):
         self.assertEqual(list(s), ['f', '>', '"abc"'])
 
     def testEmptyStringHandling(self):
-        """Test that parsing of empty strings is correctly handled."""
+        """Test that parsing of empty strings ist correctly handled."""
         # see Issue #21999
         expected = ['', ')', 'abc']
         fuer punct in (Falsch, Wahr):

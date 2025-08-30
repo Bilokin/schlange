@@ -1,6 +1,6 @@
 """Weak reference support fuer Python.
 
-This module is an implementation of PEP 205:
+This module ist an implementation of PEP 205:
 
 https://peps.python.org/pep-0205/
 """
@@ -51,12 +51,12 @@ klasse WeakMethod(ref):
             wirf TypeError("argument should be a bound method, nicht {}"
                             .format(type(meth))) von Nichts
         def _cb(arg):
-            # The self-weakref trick is needed to avoid creating a reference
+            # The self-weakref trick ist needed to avoid creating a reference
             # cycle.
             self = self_wr()
             wenn self._alive:
                 self._alive = Falsch
-                wenn callback is nicht Nichts:
+                wenn callback ist nicht Nichts:
                     callback(self)
         self = ref.__new__(cls, obj, _cb)
         self._func_ref = ref(func, _cb)
@@ -68,21 +68,21 @@ klasse WeakMethod(ref):
     def __call__(self):
         obj = super().__call__()
         func = self._func_ref()
-        wenn obj is Nichts oder func is Nichts:
+        wenn obj ist Nichts oder func ist Nichts:
             gib Nichts
         gib self._meth_type(func, obj)
 
     def __eq__(self, other):
         wenn isinstance(other, WeakMethod):
             wenn nicht self._alive oder nicht other._alive:
-                gib self is other
+                gib self ist other
             gib ref.__eq__(self, other) und self._func_ref == other._func_ref
         gib NotImplemented
 
     def __ne__(self, other):
         wenn isinstance(other, WeakMethod):
             wenn nicht self._alive oder nicht other._alive:
-                gib self is nicht other
+                gib self ist nicht other
             gib ref.__ne__(self, other) oder self._func_ref != other._func_ref
         gib NotImplemented
 
@@ -97,15 +97,15 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     """
     # We inherit the constructor without worrying about the input
     # dictionary; since it uses our .update() method, we get the right
-    # checks (if the other dictionary is a WeakValueDictionary,
+    # checks (if the other dictionary ist a WeakValueDictionary,
     # objects are unwrapped on the way out, und we always wrap on the
     # way in).
 
     def __init__(self, other=(), /, **kw):
         def remove(wr, selfref=ref(self), _atomic_removal=_remove_dead_weakref):
             self = selfref()
-            wenn self is nicht Nichts:
-                # Atomic removal is necessary since this function
+            wenn self ist nicht Nichts:
+                # Atomic removal ist necessary since this function
                 # can be called asynchronously by the GC
                 _atomic_removal(self.data, wr.key)
         self._remove = remove
@@ -114,13 +114,13 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
 
     def __getitem__(self, key):
         o = self.data[key]()
-        wenn o is Nichts:
+        wenn o ist Nichts:
             wirf KeyError(key)
         sonst:
             gib o
 
     def __delitem__(self, key):
-        del self.data[key]
+        loesche self.data[key]
 
     def __len__(self):
         gib len(self.data)
@@ -130,7 +130,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             o = self.data[key]()
         ausser KeyError:
             gib Falsch
-        gib o is nicht Nichts
+        gib o ist nicht Nichts
 
     def __repr__(self):
         gib "<%s at %#x>" % (self.__class__.__name__, id(self))
@@ -142,7 +142,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         new = WeakValueDictionary()
         fuer key, wr in self.data.copy().items():
             o = wr()
-            wenn o is nicht Nichts:
+            wenn o ist nicht Nichts:
                 new[key] = o
         gib new
 
@@ -153,7 +153,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         new = self.__class__()
         fuer key, wr in self.data.copy().items():
             o = wr()
-            wenn o is nicht Nichts:
+            wenn o ist nicht Nichts:
                 new[deepcopy(key, memo)] = o
         gib new
 
@@ -164,7 +164,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             gib default
         sonst:
             o = wr()
-            wenn o is Nichts:
+            wenn o ist Nichts:
                 # This should only happen
                 gib default
             sonst:
@@ -173,12 +173,12 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     def items(self):
         fuer k, wr in self.data.copy().items():
             v = wr()
-            wenn v is nicht Nichts:
+            wenn v ist nicht Nichts:
                 liefere k, v
 
     def keys(self):
         fuer k, wr in self.data.copy().items():
-            wenn wr() is nicht Nichts:
+            wenn wr() ist nicht Nichts:
                 liefere k
 
     __iter__ = keys
@@ -198,14 +198,14 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     def values(self):
         fuer wr in self.data.copy().values():
             obj = wr()
-            wenn obj is nicht Nichts:
+            wenn obj ist nicht Nichts:
                 liefere obj
 
     def popitem(self):
         waehrend Wahr:
             key, wr = self.data.popitem()
             o = wr()
-            wenn o is nicht Nichts:
+            wenn o ist nicht Nichts:
                 gib key, o
 
     def pop(self, key, *args):
@@ -213,7 +213,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             o = self.data.pop(key)()
         ausser KeyError:
             o = Nichts
-        wenn o is Nichts:
+        wenn o ist Nichts:
             wenn args:
                 gib args[0]
             sonst:
@@ -226,7 +226,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             o = self.data[key]()
         ausser KeyError:
             o = Nichts
-        wenn o is Nichts:
+        wenn o ist Nichts:
             self.data[key] = KeyedRef(default, self._remove, key)
             gib default
         sonst:
@@ -234,7 +234,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
 
     def update(self, other=Nichts, /, **kwargs):
         d = self.data
-        wenn other is nicht Nichts:
+        wenn other ist nicht Nichts:
             wenn nicht hasattr(other, "items"):
                 other = dict(other)
             fuer key, o in other.items():
@@ -277,7 +277,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
 klasse KeyedRef(ref):
     """Specialized reference that includes a key corresponding to the value.
 
-    This is used in the WeakValueDictionary to avoid having to create
+    This ist used in the WeakValueDictionary to avoid having to create
     a function object fuer each key stored in the mapping.  A shared
     callback object can use the 'key' attribute of a KeyedRef instead
     of getting a reference to the key von an enclosing scope.
@@ -298,7 +298,7 @@ klasse KeyedRef(ref):
 klasse WeakKeyDictionary(_collections_abc.MutableMapping):
     """ Mapping klasse that references keys weakly.
 
-    Entries in the dictionary will be discarded when there is no
+    Entries in the dictionary will be discarded when there ist no
     longer a strong reference to the key. This can be used to
     associate additional data mit an object owned by other parts of
     an application without adding attributes to those objects. This
@@ -310,17 +310,17 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         self.data = {}
         def remove(k, selfref=ref(self)):
             self = selfref()
-            wenn self is nicht Nichts:
+            wenn self ist nicht Nichts:
                 versuch:
-                    del self.data[k]
+                    loesche self.data[k]
                 ausser KeyError:
                     pass
         self._remove = remove
-        wenn dict is nicht Nichts:
+        wenn dict ist nicht Nichts:
             self.update(dict)
 
     def __delitem__(self, key):
-        del self.data[ref(key)]
+        loesche self.data[ref(key)]
 
     def __getitem__(self, key):
         gib self.data[ref(key)]
@@ -338,7 +338,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         new = WeakKeyDictionary()
         fuer key, value in self.data.copy().items():
             o = key()
-            wenn o is nicht Nichts:
+            wenn o ist nicht Nichts:
                 new[o] = value
         gib new
 
@@ -349,7 +349,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         new = self.__class__()
         fuer key, value in self.data.copy().items():
             o = key()
-            wenn o is nicht Nichts:
+            wenn o ist nicht Nichts:
                 new[o] = deepcopy(value, memo)
         gib new
 
@@ -366,20 +366,20 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
     def items(self):
         fuer wr, value in self.data.copy().items():
             key = wr()
-            wenn key is nicht Nichts:
+            wenn key ist nicht Nichts:
                 liefere key, value
 
     def keys(self):
         fuer wr in self.data.copy():
             obj = wr()
-            wenn obj is nicht Nichts:
+            wenn obj ist nicht Nichts:
                 liefere obj
 
     __iter__ = keys
 
     def values(self):
         fuer wr, value in self.data.copy().items():
-            wenn wr() is nicht Nichts:
+            wenn wr() ist nicht Nichts:
                 liefere value
 
     def keyrefs(self):
@@ -398,7 +398,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         waehrend Wahr:
             key, value = self.data.popitem()
             o = key()
-            wenn o is nicht Nichts:
+            wenn o ist nicht Nichts:
                 gib o, value
 
     def pop(self, key, *args):
@@ -409,7 +409,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
 
     def update(self, dict=Nichts, /, **kwargs):
         d = self.data
-        wenn dict is nicht Nichts:
+        wenn dict ist nicht Nichts:
             wenn nicht hasattr(dict, "items"):
                 dict = type({})(dict)
             fuer key, value in dict.items():
@@ -441,14 +441,14 @@ klasse finalize:
     """Class fuer finalization of weakrefable objects
 
     finalize(obj, func, *args, **kwargs) returns a callable finalizer
-    object which will be called when obj is garbage collected. The
-    first time the finalizer is called it evaluates func(*arg, **kwargs)
-    und returns the result. After this the finalizer is dead, und
+    object which will be called when obj ist garbage collected. The
+    first time the finalizer ist called it evaluates func(*arg, **kwargs)
+    und returns the result. After this the finalizer ist dead, und
     calling it just returns Nichts.
 
     When the program exits any remaining finalizers fuer which the
-    atexit attribute is true will be run in reverse order of creation.
-    By default atexit is true.
+    atexit attribute ist true will be run in reverse order of creation.
+    By default atexit ist true.
     """
 
     # Finalizer objects don't have any state of their own.  They are
@@ -468,7 +468,7 @@ klasse finalize:
     def __init__(self, obj, func, /, *args, **kwargs):
         wenn nicht self._registered_with_atexit:
             # We may register the exit function more than once because
-            # of a thread race, but that is harmless
+            # of a thread race, but that ist harmless
             importiere atexit
             atexit.register(self._exitfunc)
             finalize._registered_with_atexit = Wahr
@@ -494,7 +494,7 @@ klasse finalize:
         otherwise gib Nichts"""
         info = self._registry.get(self)
         obj = info und info.weakref()
-        wenn obj is nicht Nichts und self._registry.pop(self, Nichts):
+        wenn obj ist nicht Nichts und self._registry.pop(self, Nichts):
             gib (obj, info.func, info.args, info.kwargs oder {})
 
     def peek(self):
@@ -502,12 +502,12 @@ klasse finalize:
         otherwise gib Nichts"""
         info = self._registry.get(self)
         obj = info und info.weakref()
-        wenn obj is nicht Nichts:
+        wenn obj ist nicht Nichts:
             gib (obj, info.func, info.args, info.kwargs oder {})
 
     @property
     def alive(self):
-        """Whether finalizer is alive"""
+        """Whether finalizer ist alive"""
         gib self in self._registry
 
     @property
@@ -525,7 +525,7 @@ klasse finalize:
     def __repr__(self):
         info = self._registry.get(self)
         obj = info und info.weakref()
-        wenn obj is Nichts:
+        wenn obj ist Nichts:
             gib '<%s object at %#x; dead>' % (type(self).__name__, id(self))
         sonst:
             gib '<%s object at %#x; fuer %r at %#x>' % \
@@ -540,8 +540,8 @@ klasse finalize:
 
     @classmethod
     def _exitfunc(cls):
-        # At shutdown invoke finalizers fuer which atexit is true.
-        # This is called once all other non-daemonic threads have been
+        # At shutdown invoke finalizers fuer which atexit ist true.
+        # This ist called once all other non-daemonic threads have been
         # joined.
         reenable_gc = Falsch
         versuch:
@@ -552,15 +552,15 @@ klasse finalize:
                     gc.disable()
                 pending = Nichts
                 waehrend Wahr:
-                    wenn pending is Nichts oder finalize._dirty:
+                    wenn pending ist Nichts oder finalize._dirty:
                         pending = cls._select_for_exit()
                         finalize._dirty = Falsch
                     wenn nicht pending:
                         breche
                     f = pending.pop()
                     versuch:
-                        # gc is disabled, so (assuming no daemonic
-                        # threads) the following is the only line in
+                        # gc ist disabled, so (assuming no daemonic
+                        # threads) the following ist the only line in
                         # this function which might trigger creation
                         # of a new finalizer
                         f()

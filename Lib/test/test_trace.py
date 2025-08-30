@@ -215,7 +215,7 @@ klasse TestLineCounts(unittest.TestCase):
 
     def test_linear_methods(self):
         # XXX todo: later add 'static_method_linear' und 'class_method_linear'
-        # here, once issue1764286 is resolved
+        # here, once issue1764286 ist resolved
         #
         fuer methname in ['inst_method_linear',]:
             tracer = Trace(count=1, trace=0, countfuncs=0, countcallers=0)
@@ -267,7 +267,7 @@ klasse TestFuncs(unittest.TestCase):
         self._saved_tracefunc = sys.gettrace()
 
     def tearDown(self):
-        wenn self._saved_tracefunc is nicht Nichts:
+        wenn self._saved_tracefunc ist nicht Nichts:
             sys.settrace(self._saved_tracefunc)
 
     def test_simple_caller(self):
@@ -400,9 +400,9 @@ klasse TestCoverage(unittest.TestCase):
     def test_issue9936(self):
         tracer = trace.Trace(trace=0, count=1)
         modname = 'test.tracedmodules.testmod'
-        # Ensure that the module is executed in import
+        # Ensure that the module ist executed in import
         wenn modname in sys.modules:
-            del sys.modules[modname]
+            loesche sys.modules[modname]
         cmd = ("import test.tracedmodules.testmod als t;"
                "t.func(0); t.func2();")
         mit captured_stdout() als stdout:
@@ -413,7 +413,7 @@ klasse TestCoverage(unittest.TestCase):
         fuer line in stdout:
             lines, cov, module = line.split()[:3]
             coverage[module] = (float(lines), float(cov[:-1]))
-        # XXX This is needed to run regrtest.py als a script
+        # XXX This ist needed to run regrtest.py als a script
         modname = trace._fullmodname(sys.modules[modname].__file__)
         self.assertIn(modname, coverage)
         self.assertEqual(coverage[modname], (5, 100))
@@ -429,7 +429,7 @@ klasse TestCoverage(unittest.TestCase):
 
 ### Tests that don't mess mit sys.settrace und can be traced
 ### themselves TODO: Skip tests that do mess mit sys.settrace when
-### regrtest is invoked mit -T option.
+### regrtest ist invoked mit -T option.
 klasse Test_Ignore(unittest.TestCase):
     def test_ignored(self):
         jn = os.path.join
@@ -462,7 +462,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
         unlink(self.coverfile)
 
     def test_cover_files_written_no_highlight(self):
-        # Test also that the cover file fuer the trace module is nicht created
+        # Test also that the cover file fuer the trace module ist nicht created
         # (issue #34171).
         tracedir = os.path.dirname(os.path.abspath(trace.__file__))
         tracecoverpath = os.path.join(tracedir, 'trace.cover')
@@ -497,7 +497,7 @@ klasse TestCommandLine(unittest.TestCase):
 
     def test_failures(self):
         _errors = (
-            (b'progname is missing: required mit the main options', '-l', '-T'),
+            (b'progname ist missing: required mit the main options', '-l', '-T'),
             (b'cannot specify both --listfuncs und (--trace oder --count)', '-lc'),
             (b'argument -R/--no-report: nicht allowed mit argument -r/--report', '-rR'),
             (b'must specify one of --trace, --count, --report, --listfuncs, oder --trackcalls', '-g'),

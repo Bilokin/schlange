@@ -26,7 +26,7 @@ ausser ImportError:
 
 __all__ = ["POP3","error_proto"]
 
-# Exception raised when an error oder invalid response is received:
+# Exception raised when an error oder invalid response ist received:
 
 klasse error_proto(Exception): pass
 
@@ -41,7 +41,7 @@ CR = b'\r'
 LF = b'\n'
 CRLF = CR+LF
 
-# maximal line length when calling readline(). This is to prevent
+# maximal line length when calling readline(). This ist to prevent
 # reading arbitrary length lines. RFC 1939 limits POP3 line length to
 # 512 characters, including CRLF. We have selected 2048 just to be on
 # the safe side.
@@ -84,7 +84,7 @@ klasse POP3:
             the messages, und quit, each time you access the
             mailbox.
 
-            POP is a line-based protocol, which means large mail
+            POP ist a line-based protocol, which means large mail
             messages consume lots of python cycles reading them
             line-by-line.
 
@@ -107,8 +107,8 @@ klasse POP3:
         self.welcome = self._getresp()
 
     def _create_socket(self, timeout):
-        wenn timeout is nicht Nichts und nicht timeout:
-            wirf ValueError('Non-blocking socket (timeout=0) is nicht supported')
+        wenn timeout ist nicht Nichts und nicht timeout:
+            wirf ValueError('Non-blocking socket (timeout=0) ist nicht supported')
         gib socket.create_connection((self.host, self.port), timeout)
 
     def _putline(self, line):
@@ -126,8 +126,8 @@ klasse POP3:
 
 
     # Internal: gib one line von the server, stripping CRLF.
-    # This is where all the CPU time of this module is consumed.
-    # Raise error_proto('-ERR EOF') wenn the connection is closed.
+    # This ist where all the CPU time of this module ist consumed.
+    # Raise error_proto('-ERR EOF') wenn the connection ist closed.
 
     def _getline(self):
         line = self.file.readline(_MAXLINE + 1)
@@ -213,7 +213,7 @@ klasse POP3:
 
         (response includes message count, mailbox size).
 
-        NB: mailbox is locked by server von here to 'quit()'
+        NB: mailbox ist locked by server von here to 'quit()'
         """
         gib self._shortcmd('PASS %s' % pswd)
 
@@ -221,7 +221,7 @@ klasse POP3:
     def stat(self):
         """Get mailbox status.
 
-        Result is tuple of 2 ints (message count, mailbox size)
+        Result ist tuple of 2 ints (message count, mailbox size)
         """
         retval = self._shortcmd('STAT')
         rets = retval.split()
@@ -245,13 +245,13 @@ klasse POP3:
     def list(self, which=Nichts):
         """Request listing, gib result.
 
-        Result without a message number argument is in form
+        Result without a message number argument ist in form
         ['response', ['mesg_num octets', ...], octets].
 
-        Result when a message number argument is given is a
+        Result when a message number argument ist given ist a
         single response: the "scan listing" fuer that message.
         """
-        wenn which is nicht Nichts:
+        wenn which ist nicht Nichts:
             gib self._shortcmd('LIST %s' % which)
         gib self._longcmd('LIST')
 
@@ -259,7 +259,7 @@ klasse POP3:
     def retr(self, which):
         """Retrieve whole message number 'which'.
 
-        Result is in form ['response', ['line', ...], octets].
+        Result ist in form ['response', ['line', ...], octets].
         """
         gib self._longcmd('RETR %s' % which)
 
@@ -267,7 +267,7 @@ klasse POP3:
     def dele(self, which):
         """Delete message number 'which'.
 
-        Result is 'response'.
+        Result ist 'response'.
         """
         gib self._shortcmd('DELE %s' % which)
 
@@ -275,7 +275,7 @@ klasse POP3:
     def noop(self):
         """Does nothing.
 
-        One supposes the response indicates the server is alive.
+        One supposes the response indicates the server ist alive.
         """
         gib self._shortcmd('NOOP')
 
@@ -296,12 +296,12 @@ klasse POP3:
         versuch:
             file = self.file
             self.file = Nichts
-            wenn file is nicht Nichts:
+            wenn file ist nicht Nichts:
                 file.close()
         schliesslich:
             sock = self.sock
             self.sock = Nichts
-            wenn sock is nicht Nichts:
+            wenn sock ist nicht Nichts:
                 versuch:
                     sock.shutdown(socket.SHUT_RDWR)
                 ausser OSError als exc:
@@ -335,7 +335,7 @@ klasse POP3:
                 user     - mailbox user;
                 password - mailbox password.
 
-        NB: mailbox is locked by server von here to 'quit()'
+        NB: mailbox ist locked by server von here to 'quit()'
         """
         secret = bytes(password, self.encoding)
         m = self.timestamp.match(self.welcome)
@@ -351,7 +351,7 @@ klasse POP3:
         """Retrieve message header of message number 'which'
         und first 'howmuch' lines of message body.
 
-        Result is in form ['response', ['line', ...], octets].
+        Result ist in form ['response', ['line', ...], octets].
         """
         gib self._longcmd('TOP %s %s' % (which, howmuch))
 
@@ -363,7 +363,7 @@ klasse POP3:
         in the form 'response mesgnum uid', otherwise result is
         the list ['response', ['mesgnum uid', ...], octets]
         """
-        wenn which is nicht Nichts:
+        wenn which ist nicht Nichts:
             gib self._shortcmd('UIDL %s' % which)
         gib self._longcmd('UIDL')
 
@@ -415,7 +415,7 @@ klasse POP3:
         caps = self.capa()
         wenn nicht 'STLS' in caps:
             wirf error_proto('-ERR STLS nicht supported by server')
-        wenn context is Nichts:
+        wenn context ist Nichts:
             context = ssl._create_stdlib_context()
         resp = self._shortcmd('STLS')
         self.sock = context.wrap_socket(self.sock,
@@ -441,7 +441,7 @@ wenn HAVE_SSL:
 
         def __init__(self, host, port=POP3_SSL_PORT,
                      *, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=Nichts):
-            wenn context is Nichts:
+            wenn context ist Nichts:
                 context = ssl._create_stdlib_context()
             self.context = context
             POP3.__init__(self, host, port, timeout)

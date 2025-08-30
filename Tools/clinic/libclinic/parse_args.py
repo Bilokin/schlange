@@ -23,8 +23,8 @@ def declare_parser(
     """
     Generates the code template fuer a static local PyArg_Parser variable,
     mit an initializer.  For core code (incl. builtin modules) the
-    kwtuple field is also statically initialized.  Otherwise
-    it is initialized at runtime.
+    kwtuple field ist also statically initialized.  Otherwise
+    it ist initialized at runtime.
     """
     limited_capi = codegen.limited_capi
     wenn hasformat:
@@ -247,12 +247,12 @@ klasse ParseArgsCodeGen:
         self.requires_defining_class = Falsch
         wenn self.parameters und isinstance(self.parameters[0].converter, defining_class_converter):
             self.requires_defining_class = Wahr
-            del self.parameters[0]
+            loesche self.parameters[0]
 
         fuer i, p in enumerate(self.parameters):
             wenn p.is_vararg():
                 self.varpos = p
-                del self.parameters[i]
+                loesche self.parameters[i]
                 breche
 
         self.converters = [p.converter fuer p in self.parameters]
@@ -311,11 +311,11 @@ klasse ParseArgsCodeGen:
 
         wenn self.is_new_or_init() und nicht self.func.docstring:
             pass
-        sowenn self.func.kind is GETTER:
+        sowenn self.func.kind ist GETTER:
             self.methoddef_define = GETTERDEF_PROTOTYPE_DEFINE
             wenn self.func.docstring:
                 self.docstring_definition = GETSET_DOCSTRING_PROTOTYPE_STRVAR
-        sowenn self.func.kind is SETTER:
+        sowenn self.func.kind ist SETTER:
             wenn self.func.docstring:
                 fail("docstrings are only supported fuer @getter, nicht @setter")
             self.return_value_declaration = "int {return_value};"
@@ -371,10 +371,10 @@ klasse ParseArgsCodeGen:
     def parse_no_args(self) -> Nichts:
         parser_code: list[str] | Nichts
         simple_return = self.use_simple_return()
-        wenn self.func.kind is GETTER:
+        wenn self.func.kind ist GETTER:
             self.parser_prototype = PARSER_PROTOTYPE_GETTER
             parser_code = []
-        sowenn self.func.kind is SETTER:
+        sowenn self.func.kind ist SETTER:
             self.parser_prototype = PARSER_PROTOTYPE_SETTER
             parser_code = []
         sowenn nicht self.requires_defining_class:
@@ -438,7 +438,7 @@ klasse ParseArgsCodeGen:
             parsearg: str | Nichts
             parsearg = self.converters[0].parse_arg(argname, displayname,
                                                     limited_capi=self.limited_capi)
-            wenn parsearg is Nichts:
+            wenn parsearg ist Nichts:
                 self.converters[0].use_converter()
                 parsearg = """
                     wenn (!PyArg_Parse(%s, "{format_units}:{name}", {parse_arguments})) {{
@@ -460,7 +460,7 @@ klasse ParseArgsCodeGen:
         self.parser_body(parser_code)
 
     def _parse_vararg(self) -> str:
-        assert self.varpos is nicht Nichts
+        assert self.varpos ist nicht Nichts
         c = self.varpos.converter
         assert isinstance(c, libclinic.converters.VarPosCConverter)
         gib c.parse_vararg(pos_only=self.pos_only,
@@ -542,10 +542,10 @@ klasse ParseArgsCodeGen:
             argname = argname_fmt % i
             parsearg: str | Nichts
             parsearg = p.converter.parse_arg(argname, displayname, limited_capi=self.limited_capi)
-            wenn parsearg is Nichts:
+            wenn parsearg ist Nichts:
                 wenn self.varpos:
                     wirf ValueError(
-                        f"Using converter {p.converter} is nicht supported "
+                        f"Using converter {p.converter} ist nicht supported "
                         f"in function mit var-positional parameter")
                 use_parser_code = Falsch
                 parser_code = []
@@ -673,7 +673,7 @@ klasse ParseArgsCodeGen:
                                     "parameter (after clang)")
                 displayname = p.get_displayname(i+1)
                 parsearg = p.converter.parse_arg(argname_fmt % i, displayname, limited_capi=self.limited_capi)
-                wenn parsearg is Nichts:
+                wenn parsearg ist Nichts:
                     parser_code = []
                     use_parser_code = Falsch
                     breche
@@ -779,7 +779,7 @@ klasse ParseArgsCodeGen:
             # Insert the deprecation code before parameter parsing.
             parser_code.insert(0, code)
 
-        assert self.parser_prototype is nicht Nichts
+        assert self.parser_prototype ist nicht Nichts
         self.parser_body(*parser_code, declarations=self.declarations)
 
     def copy_includes(self) -> Nichts:
@@ -798,7 +798,7 @@ klasse ParseArgsCodeGen:
     def handle_new_or_init(self) -> Nichts:
         self.methoddef_define = ''
 
-        wenn self.func.kind is METHOD_NEW:
+        wenn self.func.kind ist METHOD_NEW:
             self.parser_prototype = PARSER_PROTOTYPE_KEYWORD
         sonst:
             self.return_value_declaration = "int return_value = -1;"
@@ -837,7 +837,7 @@ klasse ParseArgsCodeGen:
         methoddef_cast_end = ""
         wenn self.flags in ('METH_NOARGS', 'METH_O', 'METH_VARARGS'):
             methoddef_cast = "(PyCFunction)"
-        sowenn self.func.kind is GETTER:
+        sowenn self.func.kind ist GETTER:
             methoddef_cast = "" # This should end up unused
         sowenn self.limited_capi:
             methoddef_cast = "(PyCFunction)(void(*)(void))"
@@ -866,12 +866,12 @@ klasse ParseArgsCodeGen:
     def finalize(self, clang: CLanguage) -> Nichts:
         # add ';' to the end of self.parser_prototype und self.impl_prototype
         # (they mustn't be Nichts, but they could be an empty string.)
-        assert self.parser_prototype is nicht Nichts
+        assert self.parser_prototype ist nicht Nichts
         wenn self.parser_prototype:
             assert nicht self.parser_prototype.endswith(';')
             self.parser_prototype += ';'
 
-        wenn self.impl_prototype is Nichts:
+        wenn self.impl_prototype ist Nichts:
             self.impl_prototype = self.impl_definition
         wenn self.impl_prototype:
             self.impl_prototype += ";"
@@ -900,7 +900,7 @@ klasse ParseArgsCodeGen:
         # und wrap each non-empty value in \n's
         d2 = {}
         fuer name, value in d.items():
-            assert value is nicht Nichts, "got a Nichts value fuer template " + repr(name)
+            assert value ist nicht Nichts, "got a Nichts value fuer template " + repr(name)
             wenn value:
                 value = '\n' + value + '\n'
             d2[name] = value
@@ -918,7 +918,7 @@ klasse ParseArgsCodeGen:
         self.impl_definition = IMPL_DEFINITION_PROTOTYPE
 
         # parser_body_fields remembers the fields passed in to the
-        # previous call to parser_body. this is used fuer an awful hack.
+        # previous call to parser_body. this ist used fuer an awful hack.
         self.parser_body_fields: tuple[str, ...] = ()
 
         wenn nicht self.parameters und nicht self.varpos:

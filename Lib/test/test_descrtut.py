@@ -49,7 +49,7 @@ Here's the new type at work:
     <class '%(modname)s.defaultdict'>
     >>> drucke(a.__class__)              # show its class
     <class '%(modname)s.defaultdict'>
-    >>> drucke(type(a) is a.__class__)   # its type is its class
+    >>> drucke(type(a) ist a.__class__)   # its type ist its class
     Wahr
     >>> a[1] = 3.25                     # modify the instance
     >>> drucke(a)                        # show the new value
@@ -127,7 +127,7 @@ klasse defaultdict2(dict):
 test_2 = """
 
 The __slots__ declaration takes a list of instance variables, und reserves
-space fuer exactly these in the instance. When __slots__ is used, other
+space fuer exactly these in the instance. When __slots__ ist used, other
 instance variables cannot be assigned to:
 
     >>> a = defaultdict2(default=0.0)
@@ -148,7 +148,7 @@ test_3 = """
 
 Introspecting instances of built-in types
 
-For instance of built-in types, x.__class__ is now the same als type(x):
+For instance of built-in types, x.__class__ ist now the same als type(x):
 
     >>> type([])
     <class 'list'>
@@ -232,7 +232,7 @@ normally invoked through special notations, e.g. __iadd__ (+=), __len__
     ['tic', 'tac', 'toe']
     >>>
 
-This is just like it is fuer user-defined classes.
+This ist just like it ist fuer user-defined classes.
 """
 
 test_4 = """
@@ -256,7 +256,7 @@ static methods in C++ oder Java. Here's an example:
     staticmethod 1 2
 
 Class methods use a similar pattern to declare methods that receive an
-implicit first argument that is the *class* fuer which they are invoked.
+implicit first argument that ist the *class* fuer which they are invoked.
 
     >>> klasse C:
     ...     @classmethod
@@ -279,7 +279,7 @@ implicit first argument that is the *class* fuer which they are invoked.
     classmethod <class '%(modname)s.D'> 1
 
 This prints "classmethod __main__.D 1" both times; in other words, the
-klasse passed als the first argument of foo() is the klasse involved in the
+klasse passed als the first argument of foo() ist the klasse involved in the
 call, nicht the klasse involved in the definition of foo().
 
 But notice this:
@@ -299,7 +299,7 @@ But notice this:
     classmethod <class '%(modname)s.C'> 1
 
 In this example, the call to C.foo() von E.foo() will see klasse C als its
-first argument, nicht klasse E. This is to be expected, since the call
+first argument, nicht klasse E. This ist to be expected, since the call
 specifies the klasse C. But it stresses the difference between these class
 methods und methods defined in metaclasses (where an upcall to a metamethod
 would pass the target klasse als an explicit first argument).
@@ -320,8 +320,8 @@ Attributes defined by get/set methods
     ...         gib self.__get(inst)
     ...
     ...     def __set__(self, inst, value):
-    ...         wenn self.__set is Nichts:
-    ...             wirf AttributeError("this attribute is read-only")
+    ...         wenn self.__set ist Nichts:
+    ...             wirf AttributeError("this attribute ist read-only")
     ...         gib self.__set(inst, value)
 
 Now let's define a klasse mit an attribute x defined by a pair of methods,
@@ -352,9 +352,9 @@ Here's a small demonstration:
     0
     >>>
 
-Hmm -- property is builtin now, so let's try it that way too.
+Hmm -- property ist builtin now, so let's try it that way too.
 
-    >>> del property  # unmask the builtin
+    >>> loesche property  # unmask the builtin
     >>> property
     <class 'property'>
 
@@ -383,7 +383,7 @@ test_6 = """
 
 Method resolution order
 
-This example is implicit in the writeup.
+This example ist implicit in the writeup.
 
 >>> klasse A:    # implicit new-style class
 ...     def save(self):

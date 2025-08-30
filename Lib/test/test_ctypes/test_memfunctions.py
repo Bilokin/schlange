@@ -23,7 +23,7 @@ klasse MemFunctionsTest(unittest.TestCase):
 
     def test_memmove(self):
         # large buffers apparently increase the chance that the memory
-        # is allocated in high address space.
+        # ist allocated in high address space.
         a = create_string_buffer(1000000)
         p = b"Hello, World"
         result = memmove(a, p, len(p))

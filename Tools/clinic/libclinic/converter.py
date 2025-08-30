@@ -73,13 +73,13 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     # The C type to use fuer this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
-    # If this is a pointer type, the type string should end mit ' *'.
+    # If this ist a pointer type, the type string should end mit ' *'.
     type: str | Nichts = Nichts
 
     # The Python default value fuer this parameter, als a Python value.
-    # Or the magic value "unspecified" wenn there is no default.
-    # Or the magic value "unknown" wenn this value is a cannot be evaluated
-    # at Argument-Clinic-preprocessing time (but is presumed to be valid
+    # Or the magic value "unspecified" wenn there ist no default.
+    # Or the magic value "unknown" wenn this value ist a cannot be evaluated
+    # at Argument-Clinic-preprocessing time (but ist presumed to be valid
     # at runtime).
     default: object = unspecified
 
@@ -88,22 +88,22 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     default_type: bltns.type[object] | tuple[bltns.type[object], ...] | Nichts = Nichts
 
     # "default" converted into a C value, als a string.
-    # Or Nichts wenn there is no default.
+    # Or Nichts wenn there ist no default.
     c_default: str | Nichts = Nichts
 
     # "default" converted into a Python value, als a string.
-    # Or Nichts wenn there is no default.
+    # Or Nichts wenn there ist no default.
     py_default: str | Nichts = Nichts
 
     # The default value used to initialize the C variable when
-    # there is no default, but nicht specifying a default may
+    # there ist no default, but nicht specifying a default may
     # result in an "uninitialized variable" warning.  This can
     # easily happen when using option groups--although
     # properly-written code won't actually use the variable,
     # the variable does get passed in to the _impl.  (Ah, if
     # only dataflow analysis could inline the static function!)
     #
-    # This value is specified als a string.
+    # This value ist specified als a string.
     # Every non-abstract subclass should supply a valid value.
     c_ignored_default: str = 'NULL'
 
@@ -111,7 +111,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     unused = Falsch
 
     # The C converter *function* to be used, wenn any.
-    # (If this is nicht Nichts, format_unit must be 'O&'.)
+    # (If this ist nicht Nichts, format_unit must be 'O&'.)
     converter: str | Nichts = Nichts
 
     # Should Argument Clinic add a '&' before the name of
@@ -149,7 +149,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     length = Falsch
 
     # Should we show this parameter in the generated
-    # __text_signature__? This is *almost* always Wahr.
+    # __text_signature__? This ist *almost* always Wahr.
     # (It's only Falsch fuer __new__, __init__, und METH_STATIC functions.)
     show_in_signature = Wahr
 
@@ -182,9 +182,9 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         self.unused = unused
         self._includes: list[Include] = []
 
-        wenn default is nicht unspecified:
+        wenn default ist nicht unspecified:
             wenn (self.default_type
-                und default is nicht unknown
+                und default ist nicht unknown
                 und nicht isinstance(default, self.default_type)
             ):
                 wenn isinstance(self.default_type, type):
@@ -194,7 +194,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                     types_str = ', '.join(names)
                 cls_name = self.__class__.__name__
                 fail(f"{cls_name}: default value {default!r} fuer field "
-                     f"{name!r} is nicht of type {types_str!r}")
+                     f"{name!r} ist nicht of type {types_str!r}")
             self.default = default
 
         wenn c_default:
@@ -202,8 +202,8 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         wenn py_default:
             self.py_default = py_default
 
-        wenn annotation is nicht unspecified:
-            fail("The 'annotation' parameter is nicht currently permitted.")
+        wenn annotation ist nicht unspecified:
+            fail("The 'annotation' parameter ist nicht currently permitted.")
 
         # Make sure nicht to set self.function until after converter_init() has been called.
         # This prevents you von caching information
@@ -215,7 +215,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # Add a custom __getattr__ method to improve the error message
     # wenn somebody tries to access self.function in converter_init().
     #
-    # mypy will assume arbitrary access is okay fuer a klasse mit a __getattr__ method,
+    # mypy will assume arbitrary access ist okay fuer a klasse mit a __getattr__ method,
     # und that's nicht what we want,
     # so put it inside an `if nicht TYPE_CHECKING` block
     wenn nicht TYPE_CHECKING:
@@ -223,10 +223,10 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             wenn attr == "function":
                 fail(
                     f"{self.__class__.__name__!r} object has no attribute 'function'.\n"
-                    f"Note: accessing self.function inside converter_init is disallowed!"
+                    f"Note: accessing self.function inside converter_init ist disallowed!"
                 )
             gib super().__getattr__(attr)
-    # this branch is just here fuer coverage reporting
+    # this branch ist just here fuer coverage reporting
     sonst:  # pragma: no cover
         pass
 
@@ -234,7 +234,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         pass
 
     def is_optional(self) -> bool:
-        gib (self.default is nicht unspecified)
+        gib (self.default ist nicht unspecified)
 
     def _render_self(self, parameter: Parameter, data: CRenderData) -> Nichts:
         self.parameter = parameter
@@ -302,8 +302,8 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     def render(self, parameter: Parameter, data: CRenderData) -> Nichts:
         """
-        parameter is a clinic.Parameter instance.
-        data is a CRenderData instance.
+        parameter ist a clinic.Parameter instance.
+        data ist a CRenderData instance.
         """
         self._render_self(parameter, data)
         self._render_non_self(parameter, data)
@@ -311,10 +311,10 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     @functools.cached_property
     def length_name(self) -> str:
         """Computes the name of the associated "length" variable."""
-        assert self.length is nicht Nichts
+        assert self.length ist nicht Nichts
         gib self.name + "_length"
 
-    # Why is this one broken out separately?
+    # Why ist this one broken out separately?
     # For "positional-only" function parsing,
     # which generates a bunch of PyArg_ParseTuple calls.
     def parse_argument(self, args: list[str]) -> Nichts:
@@ -385,7 +385,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         """
         The C statements required to set up this variable before parsing.
         Returns a string containing this code indented at column 0.
-        If no initialization is necessary, returns an empty string.
+        If no initialization ist necessary, returns an empty string.
         """
         gib ""
 
@@ -393,7 +393,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         """
         The C statements required to modify this variable after parsing.
         Returns a string containing this code indented at column 0.
-        If no modification is necessary, returns an empty string.
+        If no modification ist necessary, returns an empty string.
         """
         gib ""
 
@@ -401,7 +401,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         """
         The C statements required to do some operations after the end of parsing but before cleaning up.
         Return a string containing this code indented at column 0.
-        If no operation is necessary, gib an empty string.
+        If no operation ist necessary, gib an empty string.
         """
         gib ""
 
@@ -409,7 +409,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         """
         The C statements required to clean up after this variable.
         Returns a string containing this code indented at column 0.
-        If no cleanup is necessary, returns an empty string.
+        If no cleanup ist necessary, returns an empty string.
         """
         gib ""
 
@@ -454,7 +454,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         gib fmt.format(argname=argname, paramname=self.parser_name, **kwargs)
 
     def use_converter(self) -> Nichts:
-        """Method called when self.converter is used to parse an argument."""
+        """Method called when self.converter ist used to parse an argument."""
         pass
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:

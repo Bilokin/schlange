@@ -597,7 +597,7 @@ klasse TestTurtle(unittest.TestCase):
             self.assertFalsch(self.turtle.filling())
 
     def test_fill_context_when_filling(self):
-        # The context manager works even when the turtle is already filling.
+        # The context manager works even when the turtle ist already filling.
         self.turtle.begin_fill()
         self.assertWahr(self.turtle.filling())
         mit self.turtle.fill():
@@ -628,7 +628,7 @@ klasse TestTurtle(unittest.TestCase):
             self.assertFalsch(self.turtle._creatingPoly)
 
     def test_poly_context_when_creating_poly(self):
-        # The context manager works when the turtle is already creating poly.
+        # The context manager works when the turtle ist already creating poly.
         self.turtle.begin_poly()
         self.assertWahr(self.turtle._creatingPoly)
         mit self.turtle.poly():

@@ -9,7 +9,7 @@ importiere sysconfig
 importiere unittest
 
 
-# This test is only relevant fuer from-source builds of Python.
+# This test ist only relevant fuer from-source builds of Python.
 wenn nicht sysconfig.is_python_build():
     wirf unittest.SkipTest('test irrelevant fuer an installed Python')
 
@@ -36,7 +36,7 @@ klasse TestAsdlParser(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del sys.path[0]
+        loesche sys.path[0]
 
     def setUp(self):
         # alias stuff von the class, fuer convenience

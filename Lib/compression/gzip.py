@@ -1,5 +1,5 @@
 importiere gzip
 __doc__ = gzip.__doc__
-del gzip
+loesche gzip
 
 von gzip importiere *

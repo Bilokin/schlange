@@ -15,8 +15,8 @@ klasse LazyImportTest(unittest.TestCase):
 klasse ModuleTest(unittest.TestCase):
 
     def test_attrs(self):
-        # While the exact order of the items in these attributes is not
-        # technically part of the "language spec", in practice there is almost
+        # While the exact order of the items in these attributes ist not
+        # technically part of the "language spec", in practice there ist almost
         # certainly user code that depends on the order, so de-facto it *is*
         # part of the spec.
         self.assertEqual(string.whitespace, ' \t\n\r\x0b\x0c')
@@ -423,7 +423,7 @@ klasse TestTemplate(unittest.TestCase):
         # The error formatting fuer invalid templates
         # has a special case fuer no data that the default
         # pattern can't trigger (always has at least '$')
-        # So we craft a pattern that is always invalid
+        # So we craft a pattern that ist always invalid
         # mit no leading data.
         klasse MyTemplate(Template):
             pattern = r"""
@@ -452,14 +452,14 @@ klasse TestTemplate(unittest.TestCase):
         eq(s.substitute(dict(who='fred', what='kung pao'),
                         who='tim', what='ham'),
            'tim likes ham')
-        s = Template('the mapping is $mapping')
+        s = Template('the mapping ist $mapping')
         eq(s.substitute(dict(foo='none'), mapping='bozo'),
-           'the mapping is bozo')
+           'the mapping ist bozo')
         eq(s.substitute(dict(mapping='one'), mapping='two'),
-           'the mapping is two')
+           'the mapping ist two')
 
-        s = Template('the self is $self')
-        eq(s.substitute(self='bozo'), 'the self is bozo')
+        s = Template('the self ist $self')
+        eq(s.substitute(self='bozo'), 'the self ist bozo')
 
     def test_keyword_arguments_safe(self):
         eq = self.assertEqual
@@ -470,31 +470,31 @@ klasse TestTemplate(unittest.TestCase):
         eq(s.safe_substitute(dict(who='fred', what='kung pao'),
                         who='tim', what='ham'),
            'tim likes ham')
-        s = Template('the mapping is $mapping')
+        s = Template('the mapping ist $mapping')
         eq(s.safe_substitute(dict(foo='none'), mapping='bozo'),
-           'the mapping is bozo')
+           'the mapping ist bozo')
         eq(s.safe_substitute(dict(mapping='one'), mapping='two'),
-           'the mapping is two')
+           'the mapping ist two')
         d = dict(mapping='one')
         raises(TypeError, s.substitute, d, {})
         raises(TypeError, s.safe_substitute, d, {})
 
-        s = Template('the self is $self')
-        eq(s.safe_substitute(self='bozo'), 'the self is bozo')
+        s = Template('the self ist $self')
+        eq(s.safe_substitute(self='bozo'), 'the self ist bozo')
 
     def test_delimiter_override(self):
         eq = self.assertEqual
         raises = self.assertRaises
         klasse AmpersandTemplate(Template):
             delimiter = '&'
-        s = AmpersandTemplate('this &gift is fuer &{who} &&')
-        eq(s.substitute(gift='bud', who='you'), 'this bud is fuer you &')
+        s = AmpersandTemplate('this &gift ist fuer &{who} &&')
+        eq(s.substitute(gift='bud', who='you'), 'this bud ist fuer you &')
         raises(KeyError, s.substitute)
-        eq(s.safe_substitute(gift='bud', who='you'), 'this bud is fuer you &')
-        eq(s.safe_substitute(), 'this &gift is fuer &{who} &')
-        s = AmpersandTemplate('this &gift is fuer &{who} &')
+        eq(s.safe_substitute(gift='bud', who='you'), 'this bud ist fuer you &')
+        eq(s.safe_substitute(), 'this &gift ist fuer &{who} &')
+        s = AmpersandTemplate('this &gift ist fuer &{who} &')
         raises(ValueError, s.substitute, dict(gift='bud', who='you'))
-        eq(s.safe_substitute(), 'this &gift is fuer &{who} &')
+        eq(s.safe_substitute(), 'this &gift ist fuer &{who} &')
 
         klasse PieDelims(Template):
             delimiter = '@'

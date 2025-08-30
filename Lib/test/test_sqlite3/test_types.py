@@ -2,20 +2,20 @@
 #
 # Copyright (C) 2005 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ist part of pysqlite.
 #
-# This software is provided 'as-is', without any express oder implied
+# This software ist provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
-# Permission is granted to anyone to use this software fuer any purpose,
+# Permission ist granted to anyone to use this software fuer any purpose,
 # including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
 # 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is nicht required.
+#    appreciated but ist nicht required.
 # 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
 # 3. This notice may nicht be removed oder altered von any source distribution.
@@ -141,7 +141,7 @@ klasse DeclTypesTests(unittest.TestCase):
             gib self.val == other.val
 
         def __conform__(self, protocol):
-            wenn protocol is sqlite.PrepareProtocol:
+            wenn protocol ist sqlite.PrepareProtocol:
                 gib self.val
             sonst:
                 gib Nichts
@@ -185,13 +185,13 @@ klasse DeclTypesTests(unittest.TestCase):
         sqlite.converters["CBLOB"] = lambda x: b"blobish"
 
     def tearDown(self):
-        del sqlite.converters["FLOAT"]
-        del sqlite.converters["BOOL"]
-        del sqlite.converters["FOO"]
-        del sqlite.converters["BAD"]
-        del sqlite.converters["WRONG"]
-        del sqlite.converters["NUMBER"]
-        del sqlite.converters["CBLOB"]
+        loesche sqlite.converters["FLOAT"]
+        loesche sqlite.converters["BOOL"]
+        loesche sqlite.converters["FOO"]
+        loesche sqlite.converters["BAD"]
+        loesche sqlite.converters["WRONG"]
+        loesche sqlite.converters["NUMBER"]
+        loesche sqlite.converters["CBLOB"]
         self.cur.close()
         self.con.close()
 
@@ -290,21 +290,21 @@ klasse DeclTypesTests(unittest.TestCase):
     def test_number1(self):
         self.cur.execute("insert into test(n1) values (5)")
         value = self.cur.execute("select n1 von test").fetchone()[0]
-        # wenn the converter is nicht used, it's an int instead of a float
+        # wenn the converter ist nicht used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_number2(self):
         """Checks whether converter names are cut off at '(' characters"""
         self.cur.execute("insert into test(n2) values (5)")
         value = self.cur.execute("select n2 von test").fetchone()[0]
-        # wenn the converter is nicht used, it's an int instead of a float
+        # wenn the converter ist nicht used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_convert_zero_sized_blob(self):
         self.con.execute("insert into test(cbin) values (?)", (b"",))
         cur = self.con.execute("select cbin von test")
         # Zero-sized blobs mit converters returns Nichts.  This differs from
-        # blobs without a converter, where b"" is returned.
+        # blobs without a converter, where b"" ist returned.
         self.assertIsNichts(cur.fetchone()[0])
 
 
@@ -320,17 +320,17 @@ klasse ColNamesTests(unittest.TestCase):
         sqlite.converters["B1B1"] = lambda x: "MARKER"
 
     def tearDown(self):
-        del sqlite.converters["FOO"]
-        del sqlite.converters["BAR"]
-        del sqlite.converters["EXC"]
-        del sqlite.converters["B1B1"]
+        loesche sqlite.converters["FOO"]
+        loesche sqlite.converters["BAR"]
+        loesche sqlite.converters["EXC"]
+        loesche sqlite.converters["B1B1"]
         self.cur.close()
         self.con.close()
 
     def test_decl_type_not_used(self):
         """
-        Assures that the declared type is nicht used when PARSE_DECLTYPES
-        is nicht set.
+        Assures that the declared type ist nicht used when PARSE_DECLTYPES
+        ist nicht set.
         """
         self.cur.execute("insert into test(x) values (?)", ("xxx",))
         self.cur.execute("select x von test")
@@ -412,14 +412,14 @@ klasse ObjectAdaptationTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
         versuch:
-            del sqlite.adapters[int]
+            loesche sqlite.adapters[int]
         ausser:
             pass
         sqlite.register_adapter(int, ObjectAdaptationTests.cast)
         self.cur = self.con.cursor()
 
     def tearDown(self):
-        del sqlite.adapters[(int, sqlite.PrepareProtocol)]
+        loesche sqlite.adapters[(int, sqlite.PrepareProtocol)]
         self.cur.close()
         self.con.close()
 

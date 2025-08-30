@@ -36,7 +36,7 @@ Not assignment
     >>> list((i*i fuer i in (*range(4),)))
     [0, 1, 4, 9]
 
-Make sure the induction variable is nicht exposed
+Make sure the induction variable ist nicht exposed
 
     >>> i = 20
     >>> sum(i*i fuer i in range(100))
@@ -77,7 +77,7 @@ Does it stay stopped?
     >>> list(g)
     []
 
-Test running gen when defining function is out of scope
+Test running gen when defining function ist out of scope
 
     >>> def f(n):
     ...     gib (i*i fuer i in range(n))
@@ -154,7 +154,7 @@ Verify that syntax error's are raised fuer genexps used als lvalues
     >>> (y fuer y in (1,2)) += 10
     Traceback (most recent call last):
        ...
-    SyntaxError: 'generator expression' is an illegal expression fuer augmented assignment
+    SyntaxError: 'generator expression' ist an illegal expression fuer augmented assignment
 
 
 ########### Tests borrowed von oder inspired by test_generators.py ############
@@ -191,7 +191,7 @@ Generators can call other generators:
     [0, 1, 2, 3, 4]
 
 
-Verify that a gen exp cannot be resumed waehrend it is actively running:
+Verify that a gen exp cannot be resumed waehrend it ist actively running:
 
     >>> g = (next(me) fuer i in range(10))
     >>> me = g
@@ -221,7 +221,7 @@ Verify exception propagation
         next(g)
     StopIteration
 
-Make sure that Nichts is a valid gib value
+Make sure that Nichts ist a valid gib value
 
     >>> list(Nichts fuer i in range(10))
     [Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts]
@@ -240,12 +240,12 @@ Check that generator attributes are present
     >>> isinstance(g, types.GeneratorType)
     Wahr
 
-Check the __iter__ slot is defined to gib self
+Check the __iter__ slot ist defined to gib self
 
-    >>> iter(g) is g
+    >>> iter(g) ist g
     Wahr
 
-Verify that the running flag is set properly
+Verify that the running flag ist set properly
 
     >>> g = (me.gi_running fuer i in (0,1))
     >>> me = g
@@ -261,7 +261,7 @@ Verify that genexps are weakly referencable
     >>> importiere weakref
     >>> g = (i*i fuer i in range(4))
     >>> wr = weakref.ref(g)
-    >>> wr() is g
+    >>> wr() ist g
     Wahr
     >>> p = weakref.proxy(g)
     >>> list(p)

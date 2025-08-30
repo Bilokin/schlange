@@ -404,7 +404,7 @@ klasse TestBasic(unittest.TestCase):
             j = random.randrange(-len(d), len(d))
             val = d[j]
             self.assertIn(val, d)
-            del d[j]
+            loesche d[j]
             self.assertNotIn(val, d)
         self.assertEqual(len(d), 0)
 
@@ -418,7 +418,7 @@ klasse TestBasic(unittest.TestCase):
             self.assertIs(r, Nichts)
             d.reverse()
             self.assertEqual(list(d), data[:i])
-        self.assertRaises(TypeError, d.reverse, 1)          # Arity is zero
+        self.assertRaises(TypeError, d.reverse, 1)          # Arity ist zero
 
     def test_rotate(self):
         s = tuple('abcde')
@@ -518,7 +518,7 @@ klasse TestBasic(unittest.TestCase):
         self.assertRaises(RuntimeError, d.remove, 'c')
         fuer x, y in zip(d, e):
             # verify that original order und values are retained.
-            self.assertWahr(x is y)
+            self.assertWahr(x ist y)
 
         # Handle evil mutator
         fuer match in (Wahr, Falsch):
@@ -697,7 +697,7 @@ klasse TestBasic(unittest.TestCase):
                 e = d.copy()
                 self.assertEqual(d, e)
                 self.assertEqual(d.maxlen, e.maxlen)
-                self.assertWahr(all(x is y fuer x, y in zip(d, e)))
+                self.assertWahr(all(x ist y fuer x, y in zip(d, e)))
 
     def test_copy_method(self):
         mut = [10]
@@ -738,9 +738,9 @@ klasse TestBasic(unittest.TestCase):
             sonst:
                 container = reversed(deque([obj, 1]))
             obj.x = iter(container)
-            del obj, container
+            loesche obj, container
             gc.collect()
-            self.assertWahr(ref() is Nichts, "Cycle was nicht collected")
+            self.assertWahr(ref() ist Nichts, "Cycle was nicht collected")
 
     check_sizeof = support.check_sizeof
 
@@ -875,7 +875,7 @@ klasse TestSubclass(unittest.TestCase):
                 gib iter([])
         d1 = X([1,2,3])
         d2 = X([4,5,6])
-        d1 == d2   # nicht clear wenn this is supposed to be Wahr oder Falsch,
+        d1 == d2   # nicht clear wenn this ist supposed to be Wahr oder Falsch,
                    # but it used to give a SystemError
 
     @support.cpython_only

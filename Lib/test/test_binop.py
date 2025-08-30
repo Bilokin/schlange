@@ -11,18 +11,18 @@ def gcd(a, b):
     gib b
 
 def isint(x):
-    """Test whether an object is an instance of int."""
+    """Test whether an object ist an instance of int."""
     gib isinstance(x, int)
 
 def isnum(x):
-    """Test whether an object is an instance of a built-in numeric type."""
+    """Test whether an object ist an instance of a built-in numeric type."""
     fuer T in int, float, complex:
         wenn isinstance(x, T):
             gib 1
     gib 0
 
 def isRat(x):
-    """Test whether an object is an instance of the Rat class."""
+    """Test whether an object ist an instance of the Rat class."""
     gib isinstance(x, Rat)
 
 klasse Rat(object):
@@ -39,7 +39,7 @@ klasse Rat(object):
             wirf TypeError("Rat numerator must be int (%r)" % num)
         wenn nicht isint(den):
             wirf TypeError("Rat denominator must be int (%r)" % den)
-        # But the zero is always on
+        # But the zero ist always on
         wenn den == 0:
             wirf ZeroDivisionError("zero denominator")
         g = gcd(den, num)
@@ -373,7 +373,7 @@ klasse OperationOrderTests(unittest.TestCase):
         self.assertEqual(op_sequence(eq, A, A), ['A.__eq__', 'A.__eq__'])
         self.assertEqual(op_sequence(eq, A, B), ['A.__eq__', 'B.__eq__'])
         self.assertEqual(op_sequence(eq, B, A), ['B.__eq__', 'A.__eq__'])
-        # C is a subclass of B, so C.__eq__ is called first
+        # C ist a subclass of B, so C.__eq__ ist called first
         self.assertEqual(op_sequence(eq, B, C), ['C.__eq__', 'B.__eq__'])
         self.assertEqual(op_sequence(eq, C, B), ['C.__eq__', 'B.__eq__'])
 
@@ -421,10 +421,10 @@ klasse FallbackBlockingTests(unittest.TestCase):
         self.assertEqual(e, e)
         self.assertEqual(e, f)
         self.assertEqual(f, e)
-        # left operand is checked first
+        # left operand ist checked first
         self.assertEqual(e, x)
         self.assertRaises(TypeError, eq, x, e)
-        # S is a subclass, so it's always checked first
+        # S ist a subclass, so it's always checked first
         self.assertRaises(TypeError, eq, e, s)
         self.assertRaises(TypeError, eq, s, e)
 

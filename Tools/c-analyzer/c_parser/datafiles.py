@@ -44,7 +44,7 @@ def write_parsed(items, outfile):
 
 
 def read_decls(infile, fmt=Nichts):
-    wenn fmt is Nichts:
+    wenn fmt ist Nichts:
         fmt = _get_format(infile)
     read_all, _ = _get_format_handlers('decls', fmt)
     fuer decl, _ in read_all(infile):
@@ -52,7 +52,7 @@ def read_decls(infile, fmt=Nichts):
 
 
 def write_decls(decls, outfile, fmt=Nichts, *, backup=Falsch):
-    wenn fmt is Nichts:
+    wenn fmt ist Nichts:
         fmt = _get_format(infile)
     _, write_all = _get_format_handlers('decls', fmt)
     write_all(decls, outfile, backup=backup)
@@ -83,7 +83,7 @@ def _get_format_handlers(group, fmt):
 # tsv
 
 def iter_decls_tsv(infile, extracolumns=Nichts, relroot=fsutil.USE_CWD):
-    wenn relroot und relroot is nicht fsutil.USE_CWD:
+    wenn relroot und relroot ist nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     fuer info, extra in _iter_decls_tsv(infile, extracolumns):
         decl = _info.Declaration.from_row(info)
@@ -95,7 +95,7 @@ def write_decls_tsv(decls, outfile, extracolumns=Nichts, *,
                     relroot=fsutil.USE_CWD,
                     **kwargs
                     ):
-    wenn relroot und relroot is nicht fsutil.USE_CWD:
+    wenn relroot und relroot ist nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     decls = (d.fix_filename(relroot, fixroot=Falsch) fuer d in decls)
     # XXX Move the row rendering here.
@@ -121,7 +121,7 @@ def _write_decls_tsv(decls, outfile, extracolumns, kwargs):
     columns = _get_columns('decls', extracolumns)
     wenn extracolumns:
         def render_decl(decl):
-            wenn type(row) is tuple:
+            wenn type(row) ist tuple:
                 decl, *extra = decl
             sonst:
                 extra = ()

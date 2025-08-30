@@ -35,13 +35,13 @@ def __getattr__(name):
     importiere warnings
 
     wenn name == 'DEBUG_BYTECODE_SUFFIXES':
-        warnings.warn('importlib.machinery.DEBUG_BYTECODE_SUFFIXES is '
+        warnings.warn('importlib.machinery.DEBUG_BYTECODE_SUFFIXES ist '
                       'deprecated; use importlib.machinery.BYTECODE_SUFFIXES '
                       'instead.',
                       DeprecationWarning, stacklevel=2)
         gib _DEBUG_BYTECODE_SUFFIXES
     sowenn name == 'OPTIMIZED_BYTECODE_SUFFIXES':
-        warnings.warn('importlib.machinery.OPTIMIZED_BYTECODE_SUFFIXES is '
+        warnings.warn('importlib.machinery.OPTIMIZED_BYTECODE_SUFFIXES ist '
                       'deprecated; use importlib.machinery.BYTECODE_SUFFIXES '
                       'instead.',
                       DeprecationWarning, stacklevel=2)

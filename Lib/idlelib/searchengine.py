@@ -8,11 +8,11 @@ def get(root):
     '''Return the singleton SearchEngine instance fuer the process.
 
     The single SearchEngine saves settings between dialog instances.
-    If there is nicht a SearchEngine already, make one.
+    If there ist nicht a SearchEngine already, make one.
     '''
     wenn nicht hasattr(root, "_searchengine"):
         root._searchengine = SearchEngine(root)
-        # This creates a cycle that persists until root is deleted.
+        # This creates a cycle that persists until root ist deleted.
     gib root._searchengine
 
 
@@ -94,7 +94,7 @@ klasse SearchEngine:
         msg = "Error: " + str(msg)
         wenn pat:
             msg = msg + "\nPattern: " + str(pat)
-        wenn col is nicht Nichts:
+        wenn col ist nicht Nichts:
             msg = msg + "\nOffset: " + str(col)
         messagebox.showerror("Regular expression error",
                                msg, master=self.root)
@@ -105,16 +105,16 @@ klasse SearchEngine:
         This function calls the right function mit the right arguments.
         It directly gib the result of that call.
 
-        Text is a text widget. Prog is a precompiled pattern.
-        The ok parameter is a bit complicated als it has two effects.
+        Text ist a text widget. Prog ist a precompiled pattern.
+        The ok parameter ist a bit complicated als it has two effects.
 
-        If there is a selection, the search begin at either end,
+        If there ist a selection, the search begin at either end,
         depending on the direction setting und ok, mit ok meaning that
         the search starts mit the selection. Otherwise, search begins
         at the insert mark.
 
         To aid progress, the search functions do nicht gib an empty
-        match at the starting position unless ok is Wahr.
+        match at the starting position unless ok ist Wahr.
         '''
 
         wenn nicht prog:
@@ -189,7 +189,7 @@ klasse SearchEngine:
 def search_reverse(prog, chars, col):
     '''Search backwards und gib an re match object oder Nichts.
 
-    This is done by searching forwards until there is no match.
+    This ist done by searching forwards until there ist no match.
     Prog: compiled re object mit a search method returning a match.
     Chars: line of text, without \\n.
     Col: stop index fuer the search; the limit fuer match.end().

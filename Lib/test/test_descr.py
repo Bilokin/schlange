@@ -305,8 +305,8 @@ klasse OperatorsTest(unittest.TestCase):
         self.assertEqual(complex.__radd__(3j, 4.0), complex(4.0, 3.0))
         self.assertEqual(float.__rsub__(3.0, 1), -2.0)
 
-    @support.impl_detail("the module 'xxsubtype' is internal")
-    @unittest.skipIf(xxsubtype is Nichts, "requires xxsubtype module")
+    @support.impl_detail("the module 'xxsubtype' ist internal")
+    @unittest.skipIf(xxsubtype ist Nichts, "requires xxsubtype module")
     def test_spam_lists(self):
         # Testing spamlist operations...
         importiere copy, xxsubtype als spam
@@ -315,7 +315,7 @@ klasse OperatorsTest(unittest.TestCase):
             importiere xxsubtype als spam
             gib spam.spamlist(l)
 
-        # This is an ugly hack:
+        # This ist an ugly hack:
         copy._deepcopy_dispatch[spam.spamlist] = spamlist
 
         self.binop_test(spamlist([1]), spamlist([2]), spamlist([1,2]), "a+b",
@@ -350,8 +350,8 @@ klasse OperatorsTest(unittest.TestCase):
         a.setstate(42)
         self.assertEqual(a.getstate(), 42)
 
-    @support.impl_detail("the module 'xxsubtype' is internal")
-    @unittest.skipIf(xxsubtype is Nichts, "requires xxsubtype module")
+    @support.impl_detail("the module 'xxsubtype' ist internal")
+    @unittest.skipIf(xxsubtype ist Nichts, "requires xxsubtype module")
     def test_spam_dicts(self):
         # Testing spamdict operations...
         importiere copy, xxsubtype als spam
@@ -361,7 +361,7 @@ klasse OperatorsTest(unittest.TestCase):
             fuer k, v in list(d.items()):
                 sd[k] = v
             gib sd
-        # This is an ugly hack:
+        # This ist an ugly hack:
         copy._deepcopy_dispatch[spam.spamdict] = spamdict
 
         self.binop_test(spamdict({1:2,3:4}), 1, 1, "b in a", "__contains__")
@@ -643,7 +643,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse C(object, metaclass=A):
             pass
 
-        # The most derived metaclass of D is A rather than type.
+        # The most derived metaclass of D ist A rather than type.
         klasse D(B, C):
             pass
         self.assertIs(A, type(D))
@@ -683,7 +683,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         klasse C(A, B):
             pass
-        # The most derived metaclass is BMeta:
+        # The most derived metaclass ist BMeta:
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
         new_calls.clear()
         # BMeta.__prepare__ should've been called:
@@ -696,7 +696,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         new_calls.clear()
         self.assertIn('BMeta_was_here', C2.__dict__)
 
-        # Check correct metaclass calculation when a metaclass is declared:
+        # Check correct metaclass calculation when a metaclass ist declared:
         klasse D(C, metaclass=type):
             pass
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
@@ -710,7 +710,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertIn('BMeta_was_here', E.__dict__)
 
         # Special case: the given metaclass isn't a class,
-        # so there is no metaclass calculation.
+        # so there ist no metaclass calculation.
         marker = object()
         def func(*args, **kwargs):
             gib marker
@@ -724,7 +724,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertIs(marker, Y)
         self.assertIs(marker, Z)
 
-        # The given metaclass is a class,
+        # The given metaclass ist a class,
         # but nicht a descendant of type.
         prepare_calls = []  # to track __prepare__ calls
         klasse ANotMeta:
@@ -776,8 +776,8 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(['BNotMeta', 'ANotMeta'], prepare_calls)
         prepare_calls.clear()
 
-        # This is a TypeError, because of a metaclass conflict:
-        # BNotMeta is neither a subclass, nor a superclass of type
+        # This ist a TypeError, because of a metaclass conflict:
+        # BNotMeta ist neither a subclass, nor a superclass of type
         mit self.assertRaises(TypeError):
             klasse D(C, metaclass=type):
                 pass
@@ -806,7 +806,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(['BNotMeta', 'ANotMeta'], prepare_calls)
         prepare_calls.clear()
 
-        # TypeError: BNotMeta is neither a
+        # TypeError: BNotMeta ist neither a
         # subclass, nor a superclass of int
         mit self.assertRaises(TypeError):
             klasse X(C, int()):
@@ -834,7 +834,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         a = MM("a")
         a.foo = 12
         x = a.foo
-        del a.foo
+        loesche a.foo
         self.assertEqual(log, [("setattr", "foo", 12),
                                ("getattr", "foo"),
                                ("delattr", "foo")])
@@ -849,7 +849,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             self.fail("inheriting von ModuleType und str at the same time "
                       "should fail")
 
-        # Issue 34805: Verify that definition order is retained
+        # Issue 34805: Verify that definition order ist retained
         def random_name():
             gib ''.join(random.choices(string.ascii_letters, k=10))
         klasse A:
@@ -990,7 +990,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             versuch:
                 callable(*args)
             ausser exc als msg:
-                # the exact msg is generally considered an impl detail
+                # the exact msg ist generally considered an impl detail
                 wenn support.check_impl_detail():
                     wenn nicht str(msg).startswith(expected):
                         self.fail("Message %r, expected %r" %
@@ -1047,15 +1047,15 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             a = 1
 
         m = types.ModuleType("m")
-        self.assertWahr(m.__class__ is types.ModuleType)
+        self.assertWahr(m.__class__ ist types.ModuleType)
         self.assertNotHasAttr(m, "a")
 
         m.__class__ = SubType
-        self.assertWahr(m.__class__ is SubType)
+        self.assertWahr(m.__class__ ist SubType)
         self.assertHasAttr(m, "a")
 
         m.__class__ = types.ModuleType
-        self.assertWahr(m.__class__ is types.ModuleType)
+        self.assertWahr(m.__class__ ist types.ModuleType)
         self.assertNotHasAttr(m, "a")
 
         # Make sure that builtin immutable objects don't support __class__
@@ -1121,7 +1121,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(x.a, 1)
         x.a = Nichts
         self.assertEqual(x.a, Nichts)
-        del x.a
+        loesche x.a
         self.assertNotHasAttr(x, "a")
 
         klasse C3(object):
@@ -1196,7 +1196,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse WithValidIdentifiers(object):
             __slots__ = ["a", "a_b", "_a", "A0123456789Z"]
 
-        # Test a single string is nicht expanded als a sequence.
+        # Test a single string ist nicht expanded als a sequence.
         klasse C(object):
             __slots__ = "abc"
         c = C()
@@ -1204,7 +1204,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(c.abc, 5)
 
         # Test unicode slot names
-        # Test a single unicode string is nicht expanded als a sequence.
+        # Test a single unicode string ist nicht expanded als a sequence.
         klasse C(object):
             __slots__ = "abc"
         c = C()
@@ -1242,7 +1242,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         x.b = Counted()
         x.c = Counted()
         self.assertEqual(Counted.counter, 3)
-        del x
+        loesche x
         support.gc_collect()
         self.assertEqual(Counted.counter, 0)
         klasse D(C):
@@ -1251,7 +1251,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         x.a = Counted()
         x.z = Counted()
         self.assertEqual(Counted.counter, 2)
-        del x
+        loesche x
         support.gc_collect()
         self.assertEqual(Counted.counter, 0)
         klasse E(D):
@@ -1261,7 +1261,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         x.z = Counted()
         x.e = Counted()
         self.assertEqual(Counted.counter, 3)
-        del x
+        loesche x
         support.gc_collect()
         self.assertEqual(Counted.counter, 0)
 
@@ -1297,13 +1297,13 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 self.assertEqual(self_.b, 2)
         mit support.captured_output('stderr') als s:
             h = H()
-            del h
+            loesche h
         self.assertEqual(s.getvalue(), '')
 
         klasse X(object):
             __slots__ = "a"
         mit self.assertRaises(AttributeError):
-            del X().a
+            loesche X().a
 
         # Inherit von object on purpose to check some backwards compatibility paths
         klasse X(object):
@@ -1600,7 +1600,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         cm.x = 42
         self.assertEqual(cm.x, 42)
         self.assertEqual(cm.__dict__, {"x" : 42, **cm_dict})
-        del cm.x
+        loesche cm.x
         self.assertNotHasAttr(cm, "x")
 
     def test_classmethod_staticmethod_annotations(self):
@@ -1613,7 +1613,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             fuer method in (annotated, unannotated):
                 mit self.subTest(deco=deco, method=method):
                     mit self.assertRaises(AttributeError):
-                        del unannotated.__annotations__
+                        loesche unannotated.__annotations__
 
                     original_annotations = dict(method.__wrapped__.__annotations__)
                     self.assertNotIn('__annotations__', method.__dict__)
@@ -1625,7 +1625,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                     self.assertEqual(method.__annotations__, new_annotations)
                     self.assertEqual(method.__wrapped__.__annotations__, original_annotations)
 
-                    del method.__annotations__
+                    loesche method.__annotations__
                     self.assertEqual(method.__annotations__, original_annotations)
 
                     original_annotate = method.__wrapped__.__annotate__
@@ -1638,7 +1638,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                     self.assertIs(method.__annotate__, new_annotate)
                     self.assertIs(method.__wrapped__.__annotate__, original_annotate)
 
-                    del method.__annotate__
+                    loesche method.__annotate__
                     self.assertIs(method.__annotate__, original_annotate)
 
     def test_staticmethod_annotations_without_dict_access(self):
@@ -1661,8 +1661,8 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             cm.__init__(Nichts)
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
-    @support.impl_detail("the module 'xxsubtype' is internal")
-    @unittest.skipIf(xxsubtype is Nichts, "requires xxsubtype module")
+    @support.impl_detail("the module 'xxsubtype' ist internal")
+    @unittest.skipIf(xxsubtype ist Nichts, "requires xxsubtype module")
     def test_classmethods_in_c(self):
         # Testing C-based klasse methods...
         importiere xxsubtype als spam
@@ -1733,7 +1733,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         sm.x = 42
         self.assertEqual(sm.x, 42)
         self.assertEqual(sm.__dict__, {"x" : 42, '__doc__': Nichts.__doc__})
-        del sm.x
+        loesche sm.x
         self.assertNotHasAttr(sm, "x")
 
     @support.refcount_test
@@ -1745,8 +1745,8 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             sm.__init__(Nichts)
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
-    @support.impl_detail("the module 'xxsubtype' is internal")
-    @unittest.skipIf(xxsubtype is Nichts, "requires xxsubtype module")
+    @support.impl_detail("the module 'xxsubtype' ist internal")
+    @unittest.skipIf(xxsubtype ist Nichts, "requires xxsubtype module")
     def test_staticmethods_in_c(self):
         # Testing C-based static methods...
         importiere xxsubtype als spam
@@ -1805,7 +1805,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def __set_x(self, x):
                 self.__x = x
             def __delete_x(self):
-                del self.__x
+                loesche self.__x
             x = computed_attribute(__get_x, __set_x, __delete_x)
         a = C()
         self.assertEqual(a.x, 0)
@@ -1813,7 +1813,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         a.x = 10
         self.assertEqual(a.x, 10)
         self.assertEqual(a.x, 11)
-        del a.x
+        loesche a.x
         self.assertNotHasAttr(a, 'x')
 
     def test_newslots(self):
@@ -1896,9 +1896,9 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             b = B(3)
         self.assertEqual(b.foo, 3)
         self.assertEqual(b.__class__, B)
-        del B.__new__
+        loesche B.__new__
         self.assertRaises(AssertionError, B)
-        del A.__new__
+        loesche A.__new__
         mit warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             b = B(3)
@@ -2010,19 +2010,19 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(a.foo, ("getattr", "foo"))
         a.foo = 12
         self.assertEqual(a.setattr, ("foo", 12))
-        del a.foo
+        loesche a.foo
         self.assertEqual(a.delattr, "foo")
 
         self.assertEqual(a[12], ("getitem", 12))
         a[12] = 21
         self.assertEqual(a.setitem, (12, 21))
-        del a[12]
+        loesche a[12]
         self.assertEqual(a.delitem, 12)
 
         self.assertEqual(a[0:10], ("getitem", slice(0, 10)))
         a[0:10] = "foo"
         self.assertEqual(a.setitem, (slice(0, 10), "foo"))
-        del a[0:10]
+        loesche a[0:10]
         self.assertEqual(a.delitem, (slice(0, 10)))
 
     def test_load_attr_extended_arg(self):
@@ -2063,7 +2063,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
     @support.impl_detail("testing error message von implementation")
     def test_methods_in_c(self):
         # This test checks error messages in builtin method descriptor.
-        # It is allowed that other Python implementations use
+        # It ist allowed that other Python implementations use
         # different error messages.
         set_add = set.add
 
@@ -2207,7 +2207,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertFalsch(c1 != c1)
         self.assertFalsch(c1 == c2)
         # Note that the module name appears in str/repr, und that varies
-        # depending on whether this test is run standalone oder von a framework.
+        # depending on whether this test ist run standalone oder von a framework.
         self.assertGreaterEqual(str(c1).find('C object at '), 0)
         self.assertEqual(str(c1), repr(c1))
         self.assertNotIn(-1, c1)
@@ -2230,7 +2230,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertFalsch(d1 != d1)
         self.assertFalsch(d1 == d2)
         # Note that the module name appears in str/repr, und that varies
-        # depending on whether this test is run standalone oder von a framework.
+        # depending on whether this test ist run standalone oder von a framework.
         self.assertGreaterEqual(str(d1).find('D object at '), 0)
         self.assertEqual(str(d1), repr(d1))
         self.assertNotIn(-1, d1)
@@ -2293,10 +2293,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         c = C()
         r = weakref.ref(c)
         self.assertEqual(r(), c)
-        del c
+        loesche c
         support.gc_collect()
         self.assertEqual(r(), Nichts)
-        del r
+        loesche r
         klasse NoWeak(object):
             __slots__ = ['foo']
         no = NoWeak()
@@ -2311,10 +2311,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         yes = Weak()
         r = weakref.ref(yes)
         self.assertEqual(r(), yes)
-        del yes
+        loesche yes
         support.gc_collect()
         self.assertEqual(r(), Nichts)
-        del r
+        loesche r
 
     def test_properties(self):
         # Testing property...
@@ -2324,14 +2324,14 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def setx(self, value):
                 self.__x = value
             def delx(self):
-                del self.__x
+                loesche self.__x
             x = property(getx, setx, delx, doc="I'm the x property.")
         a = C()
         self.assertNotHasAttr(a, "x")
         a.x = 42
         self.assertEqual(a._C__x, 42)
         self.assertEqual(a.x, 42)
-        del a.x
+        loesche a.x
         self.assertNotHasAttr(a, "x")
         self.assertNotHasAttr(a, "_C__x")
         C.x.__set__(a, 100)
@@ -2416,7 +2416,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 self._foo = abs(value)
             @foo.deleter
             def foo(self):
-                del self._foo
+                loesche self._foo
         c = C()
         self.assertEqual(C.foo.__doc__, "hello")
         self.assertNotHasAttr(c, "foo")
@@ -2424,7 +2424,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertHasAttr(c, '_foo')
         self.assertEqual(c._foo, 42)
         self.assertEqual(c.foo, 42)
-        del c.foo
+        loesche c.foo
         self.assertNotHasAttr(c, '_foo')
         self.assertNotHasAttr(c, "foo")
 
@@ -2432,14 +2432,14 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             @C.foo.deleter
             def foo(self):
                 versuch:
-                    del self._foo
+                    loesche self._foo
                 ausser AttributeError:
                     pass
         d = D()
         d.foo = 24
         self.assertEqual(d.foo, 24)
-        del d.foo
-        del d.foo
+        loesche d.foo
+        loesche d.foo
 
         klasse E(object):
             @property
@@ -2453,24 +2453,24 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 self._foo = abs(value)
             @foo.deleter
             def foo(self, value=Nichts):
-                del self._foo
+                loesche self._foo
 
         e = E()
         e.foo = -42
         self.assertEqual(e.foo, 42)
-        del e.foo
+        loesche e.foo
 
         klasse F(E):
             @E.foo.deleter
             def foo(self):
-                del self._foo
+                loesche self._foo
             @foo.setter
             def foo(self, value):
                 self._foo = max(0, value)
         f = F()
         f.foo = -10
         self.assertEqual(f.foo, 0)
-        del f.foo
+        loesche f.foo
 
     def test_dict_constructors(self):
         # Testing dict constructor ...
@@ -2555,7 +2555,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         # Testing dir() ...
         junk = 12
         self.assertEqual(dir(), ['junk', 'self'])
-        del junk
+        loesche junk
 
         # Just make sure these don't blow up!
         fuer arg in 2, 2, 2j, 2e0, [2], "2", b"2", (2,), {2:2}, type, self.test_dir:
@@ -2867,7 +2867,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse madtuple(tuple):
             _rev = Nichts
             def rev(self):
-                wenn self._rev is nicht Nichts:
+                wenn self._rev ist nicht Nichts:
                     gib self._rev
                 L = list(self)
                 L.reverse()
@@ -2902,7 +2902,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse madstring(str):
             _rev = Nichts
             def rev(self):
-                wenn self._rev is nicht Nichts:
+                wenn self._rev ist nicht Nichts:
                     gib self._rev
                 L = list(self)
                 L.reverse()
@@ -2966,7 +2966,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse madunicode(str):
             _rev = Nichts
             def rev(self):
-                wenn self._rev is nicht Nichts:
+                wenn self._rev ist nicht Nichts:
                     gib self._rev
                 L = list(self)
                 L.reverse()
@@ -3034,7 +3034,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(a, list(range(20)))
         a[-5:] = []
         self.assertEqual(a, list(range(15)))
-        del a[10:15]
+        loesche a[10:15]
         self.assertEqual(len(a), 10)
         self.assertEqual(a, list(range(10)))
         self.assertEqual(list(a), list(range(10)))
@@ -3047,10 +3047,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         ## klasse CountedInput(file):
         ##    """Counts lines read by self.readline().
         ##
-        ##     self.lineno is the 0-based ordinal of the last line read, up to
+        ##     self.lineno ist the 0-based ordinal of the last line read, up to
         ##     a maximum of one greater than the number of lines in the file.
         ##
-        ##     self.ateof is true wenn und only wenn the final "" line has been read,
+        ##     self.ateof ist true wenn und only wenn the final "" line has been read,
         ##     at which point self.lineno stops incrementing, und further calls
         ##     to readline() weiter to gib "".
         ##     """
@@ -3292,7 +3292,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         von _io importiere FileIO
         def check(descr, what):
             self.assertEqual(descr.__doc__, what)
-        check(FileIO.closed, "Wahr wenn the file is closed") # getset descriptor
+        check(FileIO.closed, "Wahr wenn the file ist closed") # getset descriptor
         check(complex.real, "the real part of a complex number") # member descriptor
 
     def test_doc_descriptor(self):
@@ -3335,7 +3335,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             ausser (TypeError, AttributeError):
                 pass
             sonst:
-                self.fail("shouldn't allow del %r.__class__" % x)
+                self.fail("shouldn't allow loesche %r.__class__" % x)
         cant(C(), list)
         cant(list(), C)
         cant(C(), 1)
@@ -3348,7 +3348,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         o = object()
         cant(o, int)
         cant(o, type(Nichts))
-        del o
+        loesche o
         klasse G(object):
             __slots__ = ["a", "b"]
         klasse H(object):
@@ -3385,7 +3385,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             self.assertEqual(x.a, 1)
         fuer cls in G, J, K, L, M, N, P, R, list, Int:
             fuer cls2 in G, J, K, L, M, N, P, R, list, Int:
-                wenn cls is cls2:
+                wenn cls ist cls2:
                     weiter
                 cant(cls(), cls2)
 
@@ -3397,7 +3397,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def __del__(self):
                 self.__class__ = O
         l = [A() fuer x in range(100)]
-        del l
+        loesche l
 
     def test_set_dict(self):
         # Testing __dict__ assignment...
@@ -3415,7 +3415,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         cant(a, Nichts)
         cant(a, [])
         cant(a, 1)
-        del a.__dict__ # Deleting __dict__ is allowed
+        loesche a.__dict__ # Deleting __dict__ ist allowed
 
         klasse Base(object):
             pass
@@ -3425,11 +3425,11 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             """
             cant(x, {})
             versuch:
-                del x.__dict__
+                loesche x.__dict__
             ausser (AttributeError, TypeError):
                 pass
             sonst:
-                self.fail("shouldn't allow del %r.__dict__" % x)
+                self.fail("shouldn't allow loesche %r.__dict__" % x)
             dict_descr = Base.__dict__["__dict__"]
             versuch:
                 dict_descr.__set__(x, {})
@@ -3469,11 +3469,11 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         # Exception's __dict__ can be replaced, but nicht deleted
         # (at least nicht any more than regular exception's __dict__ can
-        # be deleted; on CPython it is nicht the case, whereas on PyPy they
+        # be deleted; on CPython it ist nicht the case, whereas on PyPy they
         # can, just like any other new-style instance's __dict__.)
         def can_delete_dict(e):
             versuch:
-                del e.__dict__
+                loesche e.__dict__
             ausser (TypeError, AttributeError):
                 gib Falsch
             sonst:
@@ -3497,12 +3497,12 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 gib I(int(self) + int(other))
             __radd__ = __add__
             def __pow__(self, other, mod=Nichts):
-                wenn mod is Nichts:
+                wenn mod ist Nichts:
                     gib I(pow(int(self), int(other)))
                 sonst:
                     gib I(pow(int(self), int(other), int(mod)))
             def __rpow__(self, other, mod=Nichts):
-                wenn mod is Nichts:
+                wenn mod ist Nichts:
                     gib I(pow(int(other), int(self), mod))
                 sonst:
                     gib I(pow(int(other), int(self), int(mod)))
@@ -3544,19 +3544,19 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(hash(d), 100)
         D.__hash__ = Nichts
         self.assertRaises(TypeError, hash, d)
-        del D.__hash__
+        loesche D.__hash__
         self.assertEqual(hash(d), 144)
         B.__hash__ = Nichts
         self.assertRaises(TypeError, hash, d)
-        del B.__hash__
+        loesche B.__hash__
         self.assertEqual(hash(d), 314)
         C.__hash__ = Nichts
         self.assertRaises(TypeError, hash, d)
-        del C.__hash__
+        loesche C.__hash__
         self.assertEqual(hash(d), 42)
         A.__hash__ = Nichts
         self.assertRaises(TypeError, hash, d)
-        del A.__hash__
+        loesche A.__hash__
         self.assertEqual(hash(d), orig_hash)
         d.foo = 42
         d.bar = 42
@@ -3577,12 +3577,12 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(d.spam, "hello")
         self.assertEqual(d.foo, 24)
         self.assertEqual(d.bar, 42)
-        del A.__getattribute__
+        loesche A.__getattribute__
         self.assertEqual(d.foo, 42)
-        del d.foo
+        loesche d.foo
         self.assertEqual(d.foo, "hello")
         self.assertEqual(d.bar, 42)
-        del B.__getattr__
+        loesche B.__getattr__
         versuch:
             d.foo
         ausser AttributeError:
@@ -3595,12 +3595,12 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             pass
         klasse B(A):
             pass
-        del B
+        loesche B
         support.gc_collect()
         A.__setitem__ = lambda *a: Nichts # crash
 
     def test_buffer_inheritance(self):
-        # Testing that buffer interface is inherited ...
+        # Testing that buffer interface ist inherited ...
 
         importiere binascii
         # SF bug [#470040] ParseTuple t# vs subclasses.
@@ -3680,13 +3680,13 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 log.append(1)
         c = C()
         self.assertEqual(log, [])
-        del c
+        loesche c
         support.gc_collect()
         self.assertEqual(log, [1])
 
         klasse D(object): pass
         d = D()
-        versuch: del d[0]
+        versuch: loesche d[0]
         ausser TypeError: pass
         sonst: self.fail("invalid del() didn't wirf TypeError")
 
@@ -3930,17 +3930,17 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         c = C()
         c.attr = 42
 
-        # The most interesting thing here is whether this blows up, due to
+        # The most interesting thing here ist whether this blows up, due to
         # flawed GC tracking logic in typeobject.c's call_finalizer() (a 2.2.1
         # bug).
-        del c
+        loesche c
 
         support.gc_collect()
         self.assertEqual(len(C.container), 1)
 
         # Make c mortal again, so that the test framework mit -l doesn't report
         # it als a leak.
-        del C.__del__
+        loesche C.__del__
 
     @support.skip_emscripten_stack_overflow()
     @support.skip_wasi_stack_overflow()
@@ -3954,7 +3954,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         o = Nichts
         fuer i in range(50000):
             o = trash(o)
-        del o
+        loesche o
 
     def test_slots_multiple_inheritance(self):
         # SF bug 575229, multiple inheritance w/ slots dumps core
@@ -4078,7 +4078,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(C2.__subclasses__(), [D])
 
         versuch:
-            del D.__bases__
+            loesche D.__bases__
         ausser (TypeError, AttributeError):
             pass
         sonst:
@@ -4115,8 +4115,8 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             self.fail("shouldn't be able to create inheritance cycles")
 
     def test_assign_bases_many_subclasses(self):
-        # This is intended to check that typeobject.c:queue_slot_update() can
-        # handle updating many subclasses when a slot method is re-assigned.
+        # This ist intended to check that typeobject.c:queue_slot_update() can
+        # handle updating many subclasses when a slot method ist re-assigned.
         klasse A:
             x = 'hello'
             def __call__(self):
@@ -4149,8 +4149,8 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                          wenn isinstance(tp, type)]
         fuer tp in builtin_types:
             object.__getattribute__(tp, "__bases__")
-            wenn tp is nicht object:
-                wenn tp is ExceptionGroup:
+            wenn tp ist nicht object:
+                wenn tp ist ExceptionGroup:
                     num_bases = 2
                 sonst:
                     num_bases = 1
@@ -4233,7 +4233,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         klasse WorkAlways(type):
             def mro(self):
-                # this is here to make sure that .mro()s aren't called
+                # this ist here to make sure that .mro()s aren't called
                 # mit an exception set (which was possible at one point).
                 # An error message will be printed in a debug build.
                 # What's a good way to test fuer this?
@@ -4341,7 +4341,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(B(1) // 1, "B.__floordiv__")
         self.assertEqual(1 // B(1), "B.__rfloordiv__")
 
-        # Case 2: subclass of object; this is just the baseline fuer case 3
+        # Case 2: subclass of object; this ist just the baseline fuer case 3
 
         klasse C(object):
             def __floordiv__(self, other):
@@ -4549,7 +4549,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         o = Oops()
         o.whatever = Provoker(o)
-        del o
+        loesche o
 
     @support.skip_wasi_stack_overflow()
     @support.skip_emscripten_stack_overflow()
@@ -4562,7 +4562,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         f = Nichts
 
     def test_file_fault(self):
-        # Testing sys.stdout is changed in getattr...
+        # Testing sys.stdout ist changed in getattr...
         klasse StdoutGuard:
             def __getattr__(self, attr):
                 sys.stdout = sys.__stdout__
@@ -4584,7 +4584,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 gib hash('attr')
             def __eq__(self, other):
                 versuch:
-                    del C.attr
+                    loesche C.attr
                 ausser AttributeError:
                     # possible race condition
                     pass
@@ -4818,7 +4818,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def __getattr__(self, name):
                 wirf AttributeError(name)
             def __getattribute__(self, name):
-                del EvilGetattribute.__getattr__
+                loesche EvilGetattribute.__getattr__
                 fuer i in range(5):
                     gc.collect()
                 wirf AttributeError(name)
@@ -4837,7 +4837,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse X(object):
             pass
         mit self.assertRaises(AttributeError):
-            del X.__abstractmethods__
+            loesche X.__abstractmethods__
 
     def test_gh55664(self):
         # gh-55664: issue a warning when the
@@ -4972,7 +4972,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse X:
             pass
         mit self.assertRaises(TypeError):
-            del X.__qualname__
+            loesche X.__qualname__
 
         self.assertRaises(TypeError, type.__dict__['__qualname__'].__set__,
                           str, 'Oink')
@@ -5003,7 +5003,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         x = X()
         x.attr = 42
         wr = weakref.ref(x)
-        del x
+        loesche x
         support.gc_collect()
         self.assertIsNichts(wr())
         fuer o in gc.get_objects():
@@ -5092,7 +5092,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertRegex(repr(method),
             r"<bound method qualname of <object object at .*>>")
 
-    @unittest.skipIf(_testcapi is Nichts, 'need the _testcapi module')
+    @unittest.skipIf(_testcapi ist Nichts, 'need the _testcapi module')
     def test_bpo25750(self):
         # bpo-25750: calling a descriptor (implemented als built-in
         # function mit METH_FASTCALL) should nicht crash CPython wenn the
@@ -5109,10 +5109,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         X.descr
 
     def test_remove_subclass(self):
-        # bpo-46417: when the last subclass of a type is deleted,
+        # bpo-46417: when the last subclass of a type ist deleted,
         # remove_subclass() clears the internal dictionary of subclasses:
-        # set PyTypeObject.tp_subclasses to NULL. remove_subclass() is called
-        # when a type is deallocated.
+        # set PyTypeObject.tp_subclasses to NULL. remove_subclass() ist called
+        # when a type ist deallocated.
         klasse Parent:
             pass
         self.assertEqual(Parent.__subclasses__(), [])
@@ -5121,7 +5121,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             pass
         self.assertEqual(Parent.__subclasses__(), [Child])
 
-        del Child
+        loesche Child
         gc.collect()
         self.assertEqual(Parent.__subclasses__(), [])
 
@@ -5223,7 +5223,7 @@ klasse DictProxyTests(unittest.TestCase):
     def test_repr(self):
         # Testing mappingproxy.__repr__.
         # We can't blindly compare mit the repr of another dict als ordering
-        # of keys und values is arbitrary und may differ.
+        # of keys und values ist arbitrary und may differ.
         r = repr(self.C.__dict__)
         self.assertStartsWith(r, 'mappingproxy(')
         self.assertEndsWith(r, ')')
@@ -5232,7 +5232,7 @@ klasse DictProxyTests(unittest.TestCase):
 
 
 klasse AAAPTypesLongInitTest(unittest.TestCase):
-    # This is in its own TestCase so that it can be run before any other tests.
+    # This ist in its own TestCase so that it can be run before any other tests.
     # (Hence the 'AAA' in the test klasse name: to make it the first
     # item in a list sorted by name, like
     # unittest.TestLoader.getTestCaseNames() does.)
@@ -5240,9 +5240,9 @@ klasse AAAPTypesLongInitTest(unittest.TestCase):
         # Testing SF bug 551412 ...
 
         # This dumps core when SF bug 551412 isn't fixed --
-        # but only when test_descr.py is run separately.
+        # but only when test_descr.py ist run separately.
         # (That can't be helped -- als soon als PyType_Ready()
-        # is called fuer PyLong_Type, the bug is gone.)
+        # ist called fuer PyLong_Type, the bug ist gone.)
         klasse UserLong(object):
             def __pow__(self, *args):
                 pass
@@ -5252,7 +5252,7 @@ klasse AAAPTypesLongInitTest(unittest.TestCase):
             pass
 
         # Another segfault only when run early
-        # (before PyType_Ready(tuple) is called)
+        # (before PyType_Ready(tuple) ist called)
         type.mro(tuple)
 
 
@@ -5260,7 +5260,7 @@ klasse MiscTests(unittest.TestCase):
     def test_type_lookup_mro_reference(self):
         # Issue #14199: _PyType_Lookup() has to keep a strong reference to
         # the type MRO because it may be modified during the lookup, if
-        # __bases__ is set during the lookup fuer example.
+        # __bases__ ist set during the lookup fuer example.
         code = textwrap.dedent("""
         klasse MyKey(object):
             def __hash__(self):
@@ -5282,7 +5282,7 @@ klasse MiscTests(unittest.TestCase):
         bases_before = ",".join([c.__name__ fuer c in X.__bases__])
         drucke(f"before={bases_before}")
 
-        # mykey is initially read von Base, however, the lookup will be perfomed
+        # mykey ist initially read von Base, however, the lookup will be perfomed
         # again wenn specialization fails. The second lookup will use the new
         # mro set by __eq__.
         drucke(X.mykey)
@@ -5290,7 +5290,7 @@ klasse MiscTests(unittest.TestCase):
         bases_after = ",".join([c.__name__ fuer c in X.__bases__])
         drucke(f"after={bases_after}")
 
-        # mykey2 is read von Base2 because MyKey.__eq__ has set __bases_
+        # mykey2 ist read von Base2 because MyKey.__eq__ has set __bases_
         drucke(f"mykey2={X.mykey2}")
         """)
         _, out, err = assert_python_ok("-c", code)
@@ -5315,11 +5315,11 @@ klasse PicklingTests(unittest.TestCase):
                 self.assertEqual(reduce_value[0], copyreg.__newobj__)
                 self.assertEqual(reduce_value[1], (type(obj),) + args)
             self.assertEqual(reduce_value[2], state)
-            wenn listitems is nicht Nichts:
+            wenn listitems ist nicht Nichts:
                 self.assertListEqual(list(reduce_value[3]), listitems)
             sonst:
                 self.assertIsNichts(reduce_value[3])
-            wenn dictitems is nicht Nichts:
+            wenn dictitems ist nicht Nichts:
                 self.assertDictEqual(dict(reduce_value[4]), dictitems)
             sonst:
                 self.assertIsNichts(reduce_value[4])
@@ -5328,8 +5328,8 @@ klasse PicklingTests(unittest.TestCase):
             reduce_value = (copyreg._reconstructor,
                             (type(obj),
                              base_type,
-                             Nichts wenn base_type is object sonst base_type(obj)))
-            wenn state is nicht Nichts:
+                             Nichts wenn base_type ist object sonst base_type(obj)))
+            wenn state ist nicht Nichts:
                 reduce_value += (state,)
             self.assertEqual(obj.__reduce_ex__(proto), reduce_value)
             self.assertEqual(obj.__reduce__(), reduce_value)
@@ -5474,9 +5474,9 @@ klasse PicklingTests(unittest.TestCase):
     def _assert_is_copy(self, obj, objcopy, msg=Nichts):
         """Utility method to verify wenn two objects are copies of each others.
         """
-        wenn msg is Nichts:
-            msg = "{!r} is nicht a copy of {!r}".format(obj, objcopy)
-        wenn type(obj).__repr__ is object.__repr__:
+        wenn msg ist Nichts:
+            msg = "{!r} ist nicht a copy of {!r}".format(obj, objcopy)
+        wenn type(obj).__repr__ ist object.__repr__:
             # We have this limitation fuer now because we use the object's repr
             # to help us verify that the two objects are copies. This allows
             # us to delegate the non-generic verification logic to the objects
@@ -5595,7 +5595,7 @@ klasse PicklingTests(unittest.TestCase):
         # Tests pickling und copying new-style classes und objects.
         global C1
         klasse C1:
-            "The state of this klasse is copyable via its instance dict."
+            "The state of this klasse ist copyable via its instance dict."
             ARGS = (1, 2)
             NEED_DICT_COPYING = Wahr
             def __init__(self, a, b):
@@ -5617,7 +5617,7 @@ klasse PicklingTests(unittest.TestCase):
                 gib self
             def __init__(self, *args):
                 super().__init__()
-                # This helps testing that __init__ is nicht called during the
+                # This helps testing that __init__ ist nicht called during the
                 # unpickling process, which would cause extra appends.
                 self.append("cheese")
             @classmethod
@@ -5634,7 +5634,7 @@ klasse PicklingTests(unittest.TestCase):
             def __init__(self, a, b):
                 self.a = a
                 self.b = b
-                # This helps testing that __init__ is nicht called during the
+                # This helps testing that __init__ ist nicht called during the
                 # unpickling process, which would cause extra appends.
                 self.append("cheese")
             @classmethod
@@ -5716,7 +5716,7 @@ klasse PicklingTests(unittest.TestCase):
                     self._assert_is_copy(obj, objcopy2)
 
     def test_issue24097(self):
-        # Slot name is freed inside __getattr__ und is later used.
+        # Slot name ist freed inside __getattr__ und ist later used.
         klasse S(str):  # Not interned
             pass
         klasse A:
@@ -5777,7 +5777,7 @@ klasse DebugHelperMeta(type):
     Sets default __doc__ und simplifies repr() output.
     """
     def __new__(mcls, name, bases, attrs):
-        wenn attrs.get('__doc__') is Nichts:
+        wenn attrs.get('__doc__') ist Nichts:
             attrs['__doc__'] = name  # helps when debugging mit gdb
         gib type.__new__(mcls, name, bases, attrs)
     def __repr__(cls):
@@ -5808,7 +5808,7 @@ klasse MroTest(unittest.TestCase):
         klasse M(DebugHelperMeta):
             def mro(cls):
                 wenn self.step_until(1):
-                    assert cls.__mro__ is Nichts
+                    assert cls.__mro__ ist Nichts
                     cls.__bases__ += ()
 
                 gib type.mro(cls)
@@ -5822,7 +5822,7 @@ klasse MroTest(unittest.TestCase):
         """
         klasse M(DebugHelperMeta):
             def mro(cls):
-                wenn cls.__mro__ is nicht Nichts und cls.__name__ == 'B':
+                wenn cls.__mro__ ist nicht Nichts und cls.__name__ == 'B':
                     # 4-5 steps are usually enough to make it crash somewhere
                     wenn self.step_until(10):
                         A.__bases__ += ()
@@ -5842,7 +5842,7 @@ klasse MroTest(unittest.TestCase):
         klasse M(DebugHelperMeta):
             def mro(cls):
                 base = cls.__bases__[0]
-                wenn base is nicht object:
+                wenn base ist nicht object:
                     wenn self.step_until(5):
                         base.__bases__ += ()
 
@@ -5859,7 +5859,7 @@ klasse MroTest(unittest.TestCase):
         """
         type_set_bases must check fuer an inheritance cycle nicht only through
         MRO of the type, which may be nicht yet updated in case of reentrance,
-        but also through tp_base chain, which is assigned before diving into
+        but also through tp_base chain, which ist assigned before diving into
         inner calls to mro().
 
         Otherwise, the following snippet can loop forever:
@@ -5969,7 +5969,7 @@ klasse MroTest(unittest.TestCase):
         """
         klasse M(DebugHelperMeta):
             def mro(cls):
-                wenn cls.__mro__ is Nichts und cls.__name__ != 'X':
+                wenn cls.__mro__ ist Nichts und cls.__name__ != 'X':
                     mit self.assertRaises(TypeError):
                         klasse X(cls):
                             pass
@@ -5986,7 +5986,7 @@ klasse MroTest(unittest.TestCase):
         """
         klasse M(DebugHelperMeta):
             def mro(cls):
-                wenn cls.__mro__ is Nichts:
+                wenn cls.__mro__ ist Nichts:
                     mit self.assertRaises(AttributeError):
                         super(cls, cls).xxx
 
@@ -6005,7 +6005,7 @@ klasse MroTest(unittest.TestCase):
 
         klasse M(DebugHelperMeta):
             def mro(cls):
-                del M.mro
+                loesche M.mro
                 gib (B,)
 
         mit self.assertRaises(TypeError):

@@ -28,8 +28,8 @@ IGNORED_SYMBOLS = {'_init', '_fini'}
 def is_local_symbol_type(symtype):
     # Ignore local symbols.
 
-    # If lowercase, the symbol is usually local; wenn uppercase, the symbol
-    # is global (external).  There are however a few lowercase symbols that
+    # If lowercase, the symbol ist usually local; wenn uppercase, the symbol
+    # ist global (external).  There are however a few lowercase symbols that
     # are shown fuer special global symbols ("u", "v" und "w").
     wenn symtype.islower() und symtype nicht in "uvw":
         gib Wahr
@@ -59,7 +59,7 @@ def get_exported_symbols(library, dynamic=Falsch):
 
     stdout = proc.stdout.rstrip()
     wenn nicht stdout:
-        wirf Exception("command output is empty")
+        wirf Exception("command output ist empty")
     gib stdout
 
 
@@ -119,7 +119,7 @@ def check_library(library, dynamic=Falsch):
 
 def check_extensions():
     drucke(__file__)
-    # This assumes pybuilddir.txt is in same directory als pyconfig.h.
+    # This assumes pybuilddir.txt ist in same directory als pyconfig.h.
     # In the case of out-of-tree builds, we can't assume pybuilddir.txt is
     # in the source folder.
     config_dir = os.path.dirname(sysconfig.get_config_h_filename())

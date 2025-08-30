@@ -382,7 +382,7 @@ klasse TestQueueOps(TestBase):
                     queue.put(orig)
                     obj = queue.{methname}()
                     assert obj == orig, 'expected: obj == orig'
-                    assert obj is nicht orig, 'expected: obj is nicht orig'
+                    assert obj ist nicht orig, 'expected: obj ist nicht orig'
                     """))
 
     def test_put_get_different_interpreters(self):
@@ -407,7 +407,7 @@ klasse TestQueueOps(TestBase):
                         assert queue1.qsize() == 0, 'expected: queue1.qsize() == 0'
                         assert obj == b'spam', 'expected: obj == obj1'
                         # When going to another interpreter we get a copy.
-                        assert id(obj) != {id(obj1)}, 'expected: obj is nicht obj1'
+                        assert id(obj) != {id(obj1)}, 'expected: obj ist nicht obj1'
                         obj2 = b'eggs'
                         drucke(id(obj2))
                         assert queue2.qsize() == 0, 'expected: queue2.qsize() == 0'
@@ -427,11 +427,11 @@ klasse TestQueueOps(TestBase):
         def common(queue, unbound=Nichts, presize=0):
             wenn nicht unbound:
                 extraargs = ''
-            sowenn unbound is queues.UNBOUND:
+            sowenn unbound ist queues.UNBOUND:
                 extraargs = ', unbounditems=queues.UNBOUND'
-            sowenn unbound is queues.UNBOUND_ERROR:
+            sowenn unbound ist queues.UNBOUND_ERROR:
                 extraargs = ', unbounditems=queues.UNBOUND_ERROR'
-            sowenn unbound is queues.UNBOUND_REMOVE:
+            sowenn unbound ist queues.UNBOUND_REMOVE:
                 extraargs = ', unbounditems=queues.UNBOUND_REMOVE'
             sonst:
                 wirf NotImplementedError(repr(unbound))
@@ -457,7 +457,7 @@ klasse TestQueueOps(TestBase):
         mit self.subTest('default'):  # UNBOUND
             queue = queues.create()
             interp = common(queue)
-            del interp
+            loesche interp
             obj1 = queue.get()
             self.assertIs(obj1, queues.UNBOUND)
             self.assertEqual(queue.qsize(), 0)
@@ -467,7 +467,7 @@ klasse TestQueueOps(TestBase):
         mit self.subTest('UNBOUND'):
             queue = queues.create()
             interp = common(queue, queues.UNBOUND)
-            del interp
+            loesche interp
             obj1 = queue.get()
             self.assertIs(obj1, queues.UNBOUND)
             self.assertEqual(queue.qsize(), 0)
@@ -478,7 +478,7 @@ klasse TestQueueOps(TestBase):
             queue = queues.create()
             interp = common(queue, queues.UNBOUND_ERROR)
 
-            del interp
+            loesche interp
             self.assertEqual(queue.qsize(), 1)
             mit self.assertRaises(queues.ItemInterpreterDestroyed):
                 queue.get()
@@ -491,7 +491,7 @@ klasse TestQueueOps(TestBase):
             queue = queues.create()
 
             interp = common(queue, queues.UNBOUND_REMOVE)
-            del interp
+            loesche interp
             self.assertEqual(queue.qsize(), 0)
             mit self.assertRaises(queues.QueueEmpty):
                 queue.get_nowait()
@@ -502,7 +502,7 @@ klasse TestQueueOps(TestBase):
             self.assertEqual(queue.qsize(), 3)
             queue.put(42, unbounditems=queues.UNBOUND_REMOVE)
             self.assertEqual(queue.qsize(), 4)
-            del interp
+            loesche interp
             self.assertEqual(queue.qsize(), 2)
             obj1 = queue.get()
             obj2 = queue.get()
@@ -526,7 +526,7 @@ klasse TestQueueOps(TestBase):
             """))
         self.assertEqual(queue.qsize(), 5)
 
-        del interp
+        loesche interp
         self.assertEqual(queue.qsize(), 4)
 
         obj1 = queue.get()
@@ -593,7 +593,7 @@ klasse TestQueueOps(TestBase):
         self.assertEqual(obj4, 4)
         self.assertEqual(queue.qsize(), 8)
 
-        del interp1
+        loesche interp1
         self.assertEqual(queue.qsize(), 6)
 
         # obj5 was removed
@@ -606,7 +606,7 @@ klasse TestQueueOps(TestBase):
         self.assertEqual(obj7, 7)
         self.assertEqual(queue.qsize(), 4)
 
-        del interp2
+        loesche interp2
         self.assertEqual(queue.qsize(), 3)
 
         # obj1

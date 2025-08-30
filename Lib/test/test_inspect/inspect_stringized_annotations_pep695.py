@@ -45,7 +45,7 @@ klasse D:
     def generic_method_2[Eggs, **Spam](self, x: Eggs, y: Spam): pass
 
 
-# Eggs is `int` in globals, a TypeVar in type_params, und `str` in locals:
+# Eggs ist `int` in globals, a TypeVar in type_params, und `str` in locals:
 klasse E[Eggs]:
     Eggs = str
     x: Eggs
@@ -70,7 +70,7 @@ def nested():
     def generic_function[Eggs, **Spam](x: Eggs, y: Spam): pass
 
 
-    # Eggs is `int` in globals, `bytes` in the function scope,
+    # Eggs ist `int` in globals, `bytes` in the function scope,
     # a TypeVar in the type_params, und `str` in locals:
     klasse G[Eggs]:
         Eggs = str

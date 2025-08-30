@@ -1,6 +1,6 @@
 "Test searchbase, coverage 98%."
-# The only thing nicht covered is inconsequential --
-# testing skipping of suite when self.needwrapbutton is false.
+# The only thing nicht covered ist inconsequential --
+# testing skipping of suite when self.needwrapbutton ist false.
 
 importiere unittest
 von test.support importiere requires
@@ -34,7 +34,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.engine = se.SearchEngine(self.root)  # Nichts also seems to work
@@ -101,7 +101,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
         frame, label = self.dialog.make_frame()
         self.assertEqual(label, '')
         self.assertEqual(str(type(frame)), "<class 'tkinter.ttk.Frame'>")
-        # self.assertIsInstance(frame, Frame) fails when test is run by
+        # self.assertIsInstance(frame, Frame) fails when test ist run by
         # test_idle nicht run von IDLE editor.  See issue 33987 PR.
 
         frame, label = self.dialog.make_frame('testlabel')

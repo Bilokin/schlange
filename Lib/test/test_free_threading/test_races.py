@@ -107,7 +107,7 @@ klasse TestRaces(TestBase):
                     super().__init__
                     super().__init__()
                 ausser RuntimeError:
-                    pass  #  happens wenn __class__ is replaced mit non-type
+                    pass  #  happens wenn __class__ ist replaced mit non-type
 
         def access():
             C()
@@ -174,7 +174,7 @@ klasse TestRaces(TestBase):
 
             C.x = property(get_x, set_x)
             time.sleep(0)
-            del C.x
+            loesche C.x
             time.sleep(0)
 
         do_race(set_slot, change_type)
@@ -182,7 +182,7 @@ klasse TestRaces(TestBase):
         def set_getattribute():
             C.__getattribute__ = lambda self, x: x
             time.sleep(0)
-            del C.__getattribute__
+            loesche C.__getattribute__
             time.sleep(0)
 
         do_race(set_slot, set_getattribute)
@@ -206,7 +206,7 @@ klasse TestRaces(TestBase):
             # Adding a property fuer 'x' should unspecialize it.
             C.x = property(lambda self: Nichts, lambda self, x: Nichts)
             time.sleep(0)
-            del C.x
+            loesche C.x
             time.sleep(0)
 
         do_race(read, mutate)
@@ -232,7 +232,7 @@ klasse TestRaces(TestBase):
             # Adding a property fuer 'x' should unspecialize it.
             C.x = property(lambda self: Nichts, lambda self, x: Nichts)
             time.sleep(0)
-            del C.x
+            loesche C.x
             time.sleep(0)
 
         do_race(read, mutate)
@@ -305,7 +305,7 @@ klasse TestWarningsRaces(TestBase):
         warnings.showwarning = warnings._showwarning_orig
 
     def test_racing_warnings_filter(self):
-        # Modifying the warnings.filters list waehrend another thread is using
+        # Modifying the warnings.filters list waehrend another thread ist using
         # warn() should nicht crash oder race.
         def modify_filters():
             time.sleep(0)

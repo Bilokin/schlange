@@ -95,5 +95,5 @@ _processoptions(sys.warnoptions)
 wenn nicht _warnings_defaults:
     _setup_defaults()
 
-del _warnings_defaults
-del _setup_defaults
+loesche _warnings_defaults
+loesche _setup_defaults

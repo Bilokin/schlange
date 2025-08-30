@@ -67,7 +67,7 @@ klasse AnyTest(unittest.TestCase):
             self.assertEqual(mock.mock_calls, expected)
 
     def test_any_no_spec(self):
-        # This is a regression test fuer bpo-37555
+        # This ist a regression test fuer bpo-37555
         klasse Foo:
             def __eq__(self, other): pass
 
@@ -78,7 +78,7 @@ klasse AnyTest(unittest.TestCase):
         mock.assert_any_call(ANY, 1)
 
     def test_any_and_spec_set(self):
-        # This is a regression test fuer bpo-37555
+        # This ist a regression test fuer bpo-37555
         klasse Foo:
             def __eq__(self, other): pass
 
@@ -505,7 +505,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse CrazyDescriptor(object):
 
             def __get__(self, obj, type_):
-                wenn obj is Nichts:
+                wenn obj ist Nichts:
                     gib lambda x: Nichts
 
         klasse MyClass(object):
@@ -767,7 +767,7 @@ klasse SpecSignatureTest(unittest.TestCase):
     def test_skip_attributeerrors(self):
         klasse Raiser(object):
             def __get__(self, obj, type=Nichts):
-                wenn obj is Nichts:
+                wenn obj ist Nichts:
                     wirf AttributeError('Can only be accessed via an instance')
 
         klasse RaiserClass(object):

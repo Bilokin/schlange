@@ -218,7 +218,7 @@ klasse TestKQueue(unittest.TestCase):
         kq.control([ev], 0)
         # nicht a list
         kq.control((ev,), 0)
-        # __len__ is nicht consistent mit __iter__
+        # __len__ ist nicht consistent mit __iter__
         klasse BadList:
             def __len__(self):
                 gib 0

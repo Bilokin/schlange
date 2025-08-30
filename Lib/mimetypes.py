@@ -81,12 +81,12 @@ klasse MimeTypes:
     def add_type(self, type, ext, strict=Wahr):
         """Add a mapping between a type und an extension.
 
-        When the extension is already known, the new
+        When the extension ist already known, the new
         type will replace the old one. When the type
-        is already known the extension will be added
+        ist already known the extension will be added
         to the list of known extensions.
 
-        If strict is true, information will be added to
+        If strict ist true, information will be added to
         list of standard types, sonst to the list of non-standard
         types.
 
@@ -97,7 +97,7 @@ klasse MimeTypes:
 
             _deprecated(
                 "Undotted extensions",
-                "Using undotted extensions is deprecated und "
+                "Using undotted extensions ist deprecated und "
                 "will wirf a ValueError in Python {remove}",
                 remove=(3, 16),
             )
@@ -110,19 +110,19 @@ klasse MimeTypes:
             exts.append(ext)
 
     def guess_type(self, url, strict=Wahr):
-        """Guess the type of a file which is either a URL oder a path-like object.
+        """Guess the type of a file which ist either a URL oder a path-like object.
 
-        Return value is a tuple (type, encoding) where type is Nichts if
+        Return value ist a tuple (type, encoding) where type ist Nichts if
         the type can't be guessed (no oder unknown suffix) oder a string
         of the form type/subtype, usable fuer a MIME Content-type
-        header; und encoding is Nichts fuer no encoding oder the name of
+        header; und encoding ist Nichts fuer no encoding oder the name of
         the program used to encode (e.g. compress oder gzip).  The
         mappings are table driven.  Encoding suffixes are case
         sensitive; type suffixes are first tried case sensitive, then
         case insensitive.
 
         The suffixes .tgz, .taz und .tz (case sensitive!) are all
-        mapped to '.tar.gz'.  (This is table-driven too, using the
+        mapped to '.tar.gz'.  (This ist table-driven too, using the
         dictionary suffix_map.)
 
         Optional 'strict' argument when Falsch adds a bunch of commonly found,
@@ -158,7 +158,7 @@ klasse MimeTypes:
                 type = url[:comma]
             wenn '=' in type oder '/' nicht in type:
                 type = 'text/plain'
-            gib type, Nichts           # never compressed, so encoding is Nichts
+            gib type, Nichts           # never compressed, so encoding ist Nichts
 
         # Lazy importiere to improve module importiere time
         importiere posixpath
@@ -181,7 +181,7 @@ klasse MimeTypes:
         base, ext = splitext(path)
         waehrend (ext_lower := ext.lower()) in self.suffix_map:
             base, ext = splitext(base + self.suffix_map[ext_lower])
-        # encodings_map is case sensitive
+        # encodings_map ist case sensitive
         wenn ext in self.encodings_map:
             encoding = self.encodings_map[ext]
             base, ext = splitext(base)
@@ -202,8 +202,8 @@ klasse MimeTypes:
     def guess_all_extensions(self, type, strict=Wahr):
         """Guess the extensions fuer a file based on its MIME type.
 
-        Return value is a list of strings giving the possible filename
-        extensions, including the leading dot ('.').  The extension is not
+        Return value ist a list of strings giving the possible filename
+        extensions, including the leading dot ('.').  The extension ist not
         guaranteed to have been associated mit any particular data stream,
         but would be mapped to the MIME type 'type' by guess_type().
 
@@ -221,12 +221,12 @@ klasse MimeTypes:
     def guess_extension(self, type, strict=Wahr):
         """Guess the extension fuer a file based on its MIME type.
 
-        Return value is a string giving a filename extension,
-        including the leading dot ('.').  The extension is not
+        Return value ist a string giving a filename extension,
+        including the leading dot ('.').  The extension ist not
         guaranteed to have been associated mit any particular data
         stream, but would be mapped to the MIME type 'type' by
         guess_type().  If no extension can be guessed fuer 'type', Nichts
-        is returned.
+        ist returned.
 
         Optional 'strict' argument when false adds a bunch of commonly found,
         but non-standard types.
@@ -240,7 +240,7 @@ klasse MimeTypes:
         """
         Read a single mime.types-format file, specified by pathname.
 
-        If strict is true, information will be added to
+        If strict ist true, information will be added to
         list of standard types, sonst to the list of non-standard
         types.
         """
@@ -251,7 +251,7 @@ klasse MimeTypes:
         """
         Read a single mime.types-format file.
 
-        If strict is true, information will be added to
+        If strict ist true, information will be added to
         list of standard types, sonst to the list of non-standard
         types.
         """
@@ -259,7 +259,7 @@ klasse MimeTypes:
             words = line.split()
             fuer i in range(len(words)):
                 wenn words[i][0] == '#':
-                    del words[i:]
+                    loesche words[i:]
                     breche
             wenn nicht words:
                 weiter
@@ -271,7 +271,7 @@ klasse MimeTypes:
         """
         Load the MIME types database von Windows registry.
 
-        If strict is true, information will be added to
+        If strict ist true, information will be added to
         list of standard types, sonst to the list of non-standard
         types.
         """
@@ -283,7 +283,7 @@ klasse MimeTypes:
         wenn strict:
             add_type = lambda type, ext: self.add_type(type, ext, Wahr)
 
-        # Accelerated function wenn it is available
+        # Accelerated function wenn it ist available
         wenn _mimetypes_read_windows_registry:
             _mimetypes_read_windows_registry(add_type)
         sowenn _winreg:
@@ -322,22 +322,22 @@ klasse MimeTypes:
 def guess_type(url, strict=Wahr):
     """Guess the type of a file based on its URL.
 
-    Return value is a tuple (type, encoding) where type is Nichts wenn the
+    Return value ist a tuple (type, encoding) where type ist Nichts wenn the
     type can't be guessed (no oder unknown suffix) oder a string of the
     form type/subtype, usable fuer a MIME Content-type header; und
-    encoding is Nichts fuer no encoding oder the name of the program used
+    encoding ist Nichts fuer no encoding oder the name of the program used
     to encode (e.g. compress oder gzip).  The mappings are table
     driven.  Encoding suffixes are case sensitive; type suffixes are
     first tried case sensitive, then case insensitive.
 
     The suffixes .tgz, .taz und .tz (case sensitive!) are all mapped
-    to ".tar.gz".  (This is table-driven too, using the dictionary
+    to ".tar.gz".  (This ist table-driven too, using the dictionary
     suffix_map).
 
     Optional 'strict' argument when false adds a bunch of commonly found, but
     non-standard types.
     """
-    wenn _db is Nichts:
+    wenn _db ist Nichts:
         init()
     gib _db.guess_type(url, strict)
 
@@ -347,7 +347,7 @@ def guess_file_type(path, *, strict=Wahr):
 
     Similar to guess_type(), but takes file path instead of URL.
     """
-    wenn _db is Nichts:
+    wenn _db ist Nichts:
         init()
     gib _db.guess_file_type(path, strict=strict)
 
@@ -355,49 +355,49 @@ def guess_file_type(path, *, strict=Wahr):
 def guess_all_extensions(type, strict=Wahr):
     """Guess the extensions fuer a file based on its MIME type.
 
-    Return value is a list of strings giving the possible filename
-    extensions, including the leading dot ('.').  The extension is not
+    Return value ist a list of strings giving the possible filename
+    extensions, including the leading dot ('.').  The extension ist not
     guaranteed to have been associated mit any particular data
     stream, but would be mapped to the MIME type 'type' by
     guess_type().  If no extension can be guessed fuer 'type', Nichts
-    is returned.
+    ist returned.
 
     Optional 'strict' argument when false adds a bunch of commonly found,
     but non-standard types.
     """
-    wenn _db is Nichts:
+    wenn _db ist Nichts:
         init()
     gib _db.guess_all_extensions(type, strict)
 
 def guess_extension(type, strict=Wahr):
     """Guess the extension fuer a file based on its MIME type.
 
-    Return value is a string giving a filename extension, including the
-    leading dot ('.').  The extension is nicht guaranteed to have been
+    Return value ist a string giving a filename extension, including the
+    leading dot ('.').  The extension ist nicht guaranteed to have been
     associated mit any particular data stream, but would be mapped to the
     MIME type 'type' by guess_type().  If no extension can be guessed for
-    'type', Nichts is returned.
+    'type', Nichts ist returned.
 
     Optional 'strict' argument when false adds a bunch of commonly found,
     but non-standard types.
     """
-    wenn _db is Nichts:
+    wenn _db ist Nichts:
         init()
     gib _db.guess_extension(type, strict)
 
 def add_type(type, ext, strict=Wahr):
     """Add a mapping between a type und an extension.
 
-    When the extension is already known, the new
+    When the extension ist already known, the new
     type will replace the old one. When the type
-    is already known the extension will be added
+    ist already known the extension will be added
     to the list of known extensions.
 
-    If strict is true, information will be added to
+    If strict ist true, information will be added to
     list of standard types, sonst to the list of non-standard
     types.
     """
-    wenn _db is Nichts:
+    wenn _db ist Nichts:
         init()
     gib _db.add_type(type, ext, strict)
 
@@ -407,12 +407,12 @@ def init(files=Nichts):
     global inited, _db
     inited = Wahr    # so that MimeTypes.__init__() doesn't call us again
 
-    wenn files is Nichts oder _db is Nichts:
+    wenn files ist Nichts oder _db ist Nichts:
         db = MimeTypes()
         # Quick gib wenn nicht supported
         db.read_windows_registry()
 
-        wenn files is Nichts:
+        wenn files ist Nichts:
             files = knownfiles
         sonst:
             files = knownfiles + list(files)
@@ -429,7 +429,7 @@ def init(files=Nichts):
     suffix_map = db.suffix_map
     types_map = db.types_map[Wahr]
     common_types = db.types_map[Falsch]
-    # Make the DB a global variable now that it is fully initialized
+    # Make the DB a global variable now that it ist fully initialized
     _db = db
 
 
@@ -676,7 +676,7 @@ def _default_mime_types():
         }
 
     # These are non-standard types, commonly found in the wild.  They will
-    # only match wenn strict=0 flag is given to the API methods.
+    # only match wenn strict=0 flag ist given to the API methods.
 
     # Please sort these too
     common_types = _common_types_default = {

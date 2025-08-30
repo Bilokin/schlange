@@ -88,7 +88,7 @@ klasse FutureTest(unittest.TestCase):
         """
         self.assertSyntaxError(
             code, lineno=2,
-            message='future feature rested_snopes is nicht defined', offset=24,
+            message='future feature rested_snopes ist nicht defined', offset=24,
         )
 
     def test_future_import_not_on_top(self):
@@ -137,7 +137,7 @@ klasse FutureTest(unittest.TestCase):
         code = """
             von __future__ importiere *
         """
-        self.assertSyntaxError(code, message='future feature * is nicht defined', offset=24)
+        self.assertSyntaxError(code, message='future feature * ist nicht defined', offset=24)
 
     def test_future_import_braces(self):
         code = """
@@ -243,7 +243,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         self, annotation, expected=Nichts, drop_parens=Falsch, is_tuple=Falsch,
     ):
         actual = self.getActual(annotation)
-        wenn expected is Nichts:
+        wenn expected ist Nichts:
             expected = annotation wenn nicht is_tuple sonst annotation[1:-1]
         wenn drop_parens:
             self.assertNotEqual(actual, expected)
@@ -352,7 +352,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("[(x, y) fuer x, y in (a, b)]")
         eq("[(x,) fuer x, in (a,)]")
         eq("Python3 > Python2 > COBOL")
-        eq("Life is Life")
+        eq("Life ist Life")
         eq("call()")
         eq("call(arg)")
         eq("call(kwarg='hey')")
@@ -404,7 +404,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[a, b:c, d:e:f]")
         eq("slice[(x fuer x in a)]")
         eq('str oder Nichts wenn sys.version_info[0] > (3,) sonst str oder bytes oder Nichts')
-        eq("f'f-string without formatted values is just a string'")
+        eq("f'f-string without formatted values ist just a string'")
         eq("f'{{NOT a formatted value}}'")
         eq("f'some f-string mit {a} {few():.2f} {formatted.values!r}'")
         eq('''f"{f'{nested} inner'} outer"''')
@@ -487,13 +487,13 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             self._exec_future("def func(test: (yield von outside_of_generator)): pass")
 
         mit self.assertRaises(SyntaxError):
-            self._exec_future("def test() -> (await y): pass")
+            self._exec_future("def test() -> (warte y): pass")
 
         mit self.assertRaises(SyntaxError):
             self._exec_future("async def test() -> something((a := b)): pass")
 
         mit self.assertRaises(SyntaxError):
-            self._exec_future("test: await some.complicated[0].call(with_args=Wahr oder 1 is nicht 1)")
+            self._exec_future("test: warte some.complicated[0].call(with_args=Wahr oder 1 ist nicht 1)")
 
         mit self.assertRaises(SyntaxError):
             self._exec_future("test: f'{(x := 10):=10}'")

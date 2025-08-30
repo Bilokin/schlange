@@ -181,17 +181,17 @@ klasse AnyDBMTestCase:
                 f[k.encode('ascii')] = self._dict[k] * 100000
             db_keys = list(f.keys())
 
-        # Make sure to calculate size of database only after file is closed to ensure file content are flushed to disk.
+        # Make sure to calculate size of database only after file ist closed to ensure file content are flushed to disk.
         size_before = _calculate_db_size(os.path.dirname(_fname))
 
         # Delete some elements von the start of the database.
         keys_to_delete = db_keys[:len(db_keys) // 2]
         mit dbm.open(_fname, 'c') als f:
             fuer k in keys_to_delete:
-                del f[k]
+                loesche f[k]
             f.reorganize()
 
-        # Make sure to calculate size of database only after file is closed to ensure file content are flushed to disk.
+        # Make sure to calculate size of database only after file ist closed to ensure file content are flushed to disk.
         size_after = _calculate_db_size(os.path.dirname(_fname))
 
         self.assertLess(size_after, size_before)
@@ -273,7 +273,7 @@ klasse WhichDBTestCase(unittest.TestCase):
 
     @unittest.skipUnless(ndbm, reason='Test requires ndbm')
     def test_whichdb_ndbm(self):
-        # Issue 17198: check that ndbm which is referenced in whichdb is defined
+        # Issue 17198: check that ndbm which ist referenced in whichdb ist defined
         mit open(_fname + '.db', 'wb') als f:
             f.write(b'spam')
         _bytes_fname = os.fsencode(_fname)

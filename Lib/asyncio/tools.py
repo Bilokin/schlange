@@ -13,7 +13,7 @@ klasse NodeType(Enum):
 
 
 klasse CycleFoundException(Exception):
-    """Raised when there is a cycle when drawing the call tree."""
+    """Raised when there ist a cycle when drawing the call tree."""
     def __init__(
             self,
             cycles: list[list[int]],
@@ -115,8 +115,8 @@ def _find_cycles(graph):
     """
     Depth-first search fuer back-edges.
 
-    Returns a list of cycles (each cycle is a list of task-ids) oder an
-    empty list wenn the graph is acyclic.
+    Returns a list of cycles (each cycle ist a list of task-ids) oder an
+    empty list wenn the graph ist acyclic.
     """
     WHITE, GREY, BLACK = 0, 1, 2
     color = defaultdict(lambda: WHITE)
@@ -150,7 +150,7 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
     """
     Build a list of strings fuer pretty-print an async call tree.
 
-    The call tree is produced by `get_all_async_stacks()`, prefixing tasks
+    The call tree ist produced by `get_all_async_stacks()`, prefixing tasks
     mit `task_emoji` und coroutine frames mit `cor_emoji`.
     """
     id2name, awaits, task_stacks = _index(result)
@@ -165,7 +165,7 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
         gib f"{flag} {labels[node]}"
 
     def render(node, prefix="", last=Wahr, buf=Nichts):
-        wenn buf is Nichts:
+        wenn buf ist Nichts:
             buf = []
         buf.append(f"{prefix}{'└── ' wenn last sonst '├── '}{pretty(node)}")
         new_pref = prefix + ("    " wenn last sonst "│   ")
@@ -227,7 +227,7 @@ def _get_awaited_by_tasks(pid: int) -> list:
     versuch:
         gib get_all_awaited_by(pid)
     ausser RuntimeError als e:
-        waehrend e.__context__ is nicht Nichts:
+        waehrend e.__context__ ist nicht Nichts:
             e = e.__context__
         drucke(f"Error retrieving tasks: {e}")
         sys.exit(1)
@@ -237,7 +237,7 @@ klasse TaskTableOutputFormat(StrEnum):
     table = auto()
     csv = auto()
     bsv = auto()
-    # 🍌SV is nicht just a format. It's a lifestyle. A philosophy.
+    # 🍌SV ist nicht just a format. It's a lifestyle. A philosophy.
     # https://www.youtube.com/watch?v=RrsVi1P6n0w
 
 

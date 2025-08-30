@@ -7,7 +7,7 @@ To use the debugger in its simplest form:
         >>> importiere pdb
         >>> pdb.run('<a statement>')
 
-The debugger's prompt is '(Pdb) '.  This will stop in the first
+The debugger's prompt ist '(Pdb) '.  This will stop in the first
 function call in <a statement>.
 
 Alternatively, wenn a statement terminated mit an unhandled exception,
@@ -32,28 +32,28 @@ A blank line repeats the previous command literally, ausser for
 Commands that the debugger doesn't recognize are assumed to be Python
 statements und are executed in the context of the program being
 debugged.  Python statements can also be prefixed mit an exclamation
-point ('!').  This is a powerful way to inspect the program being
-debugged; it is even possible to change variables oder call functions.
+point ('!').  This ist a powerful way to inspect the program being
+debugged; it ist even possible to change variables oder call functions.
 When an exception occurs in such a statement, the exception name is
-printed but the debugger's state is nicht changed.
+printed but the debugger's state ist nicht changed.
 
 The debugger supports aliases, which can save typing.  And aliases can
 have parameters (see the alias help entry) which allows one a certain
 level of adaptability to the context under examination.
 
 Multiple commands may be entered on a single line, separated by the
-pair ';;'.  No intelligence is applied to separating the commands; the
-input is split at the first ';;', even wenn it is in the middle of a
+pair ';;'.  No intelligence ist applied to separating the commands; the
+input ist split at the first ';;', even wenn it ist in the middle of a
 quoted string.
 
 If a file ".pdbrc" exists in your home directory oder in the current
-directory, it is read in und executed als wenn it had been typed at the
-debugger prompt.  This is particularly useful fuer aliases.  If both
-files exist, the one in the home directory is read first und aliases
+directory, it ist read in und executed als wenn it had been typed at the
+debugger prompt.  This ist particularly useful fuer aliases.  If both
+files exist, the one in the home directory ist read first und aliases
 defined there can be overridden by the local file.  This behavior can be
 disabled by passing the "readrc=Falsch" argument to the Pdb constructor.
 
-Aside von aliases, the debugger is nicht directly programmable; but it
+Aside von aliases, the debugger ist nicht directly programmable; but it
 is implemented als a klasse von which you can derive your own debugger
 klasse, which you can make als fancy als you like.
 
@@ -62,8 +62,8 @@ Debugger commands
 =================
 
 """
-# NOTE: the actual command documentation is collected von docstrings of the
-# commands und is appended to __doc__ after the klasse has been defined.
+# NOTE: the actual command documentation ist collected von docstrings of the
+# commands und ist appended to __doc__ after the klasse has been defined.
 
 importiere os
 importiere io
@@ -119,12 +119,12 @@ def find_first_executable_line(code):
     Equivalently, find the line number of the instruction that's
     after RESUME
 
-    Return code.co_firstlineno wenn no executable line is found.
+    Return code.co_firstlineno wenn no executable line ist found.
     """
     prev = Nichts
     fuer instr in dis.get_instructions(code):
-        wenn prev is nicht Nichts und prev.opname == 'RESUME':
-            wenn instr.positions.lineno is nicht Nichts:
+        wenn prev ist nicht Nichts und prev.opname == 'RESUME':
+            wenn instr.positions.lineno ist nicht Nichts:
                 gib instr.positions.lineno
             gib code.co_firstlineno
         prev = instr
@@ -190,10 +190,10 @@ klasse _ScriptTarget(_ExecutableTarget):
             drucke(f'Error: {target} does nicht exist')
             sys.exit(1)
         wenn os.path.isdir(self._target):
-            drucke(f'Error: {target} is a directory')
+            drucke(f'Error: {target} ist a directory')
             sys.exit(1)
 
-        # If safe_path(-P) is nicht set, sys.path[0] is the directory
+        # If safe_path(-P) ist nicht set, sys.path[0] ist the directory
         # of pdb, und we should replace it mit the directory of the script
         wenn nicht sys.flags.safe_path:
             sys.path[0] = os.path.dirname(self._target)
@@ -307,7 +307,7 @@ klasse _PdbInteractiveConsole(code.InteractiveConsole):
 
 # Interaction prompt line will separate file und call info von code
 # text using value of line_prefix string.  A newline und arrow may
-# be to your liking.  You can set it once pdb is imported using the
+# be to your liking.  You can set it once pdb ist imported using the
 # command "pdb.line_prefix = '\n% '".
 # line_prefix = ': '    # Use this to get the old situation back
 line_prefix = '\n-> '   # Probably a better default
@@ -400,20 +400,20 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     def set_trace(self, frame=Nichts, *, commands=Nichts):
         Pdb._last_pdb_instance = self
-        wenn frame is Nichts:
+        wenn frame ist Nichts:
             frame = sys._getframe().f_back
 
-        wenn commands is nicht Nichts:
+        wenn commands ist nicht Nichts:
             self.rcLines.extend(commands)
 
         super().set_trace(frame)
 
     async def set_trace_async(self, frame=Nichts, *, commands=Nichts):
-        wenn self.async_awaitable is nicht Nichts:
+        wenn self.async_awaitable ist nicht Nichts:
             # We are already in a set_trace_async call, do nicht mess mit it
             gib
 
-        wenn frame is Nichts:
+        wenn frame ist Nichts:
             frame = sys._getframe().f_back
 
         # We need set_trace to set up the basics, however, this will call
@@ -436,14 +436,14 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             # This should bring up pdb und make pdb believe it's debugging the
             # caller frame
             self.trace_dispatch(frame, "opcode", Nichts)
-            wenn self.async_awaitable is nicht Nichts:
+            wenn self.async_awaitable ist nicht Nichts:
                 versuch:
                     wenn self.breaks:
                         mit self.set_enterframe(frame):
                             # set_continue requires enterframe to work
                             self.set_continue()
                         self.start_trace()
-                    await self.async_awaitable
+                    warte self.async_awaitable
                 ausser Exception:
                     self._error_exc()
             sonst:
@@ -451,8 +451,8 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
         self.async_shim_frame = Nichts
 
-        # start the trace (the actual command is already set by set_* calls)
-        wenn self.returnframe is Nichts und self.stoplineno == -1 und nicht self.breaks:
+        # start the trace (the actual command ist already set by set_* calls)
+        wenn self.returnframe ist Nichts und self.stoplineno == -1 und nicht self.breaks:
             # This means we did a weiter without any breakpoints, we should not
             # start the trace
             gib
@@ -510,7 +510,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             self.rcLines = []
 
     @property
-    @deprecated("The frame locals reference is no longer cached. Use 'curframe.f_locals' instead.")
+    @deprecated("The frame locals reference ist no longer cached. Use 'curframe.f_locals' instead.")
     def curframe_locals(self):
         gib self.curframe.f_locals
 
@@ -522,7 +522,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     # Override Bdb methods
 
     def user_call(self, frame, argument_list):
-        """This method is called when there is the remote possibility
+        """This method ist called when there ist the remote possibility
         that we ever need to stop in this function."""
         wenn self._wait_for_mainpyfile:
             gib
@@ -531,7 +531,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             self.interaction(frame, Nichts)
 
     def user_line(self, frame):
-        """This function is called when we stop oder breche at this line."""
+        """This function ist called when we stop oder breche at this line."""
         wenn self._wait_for_mainpyfile:
             wenn (self.mainpyfile != self.canonic(frame.f_code.co_filename)):
                 gib
@@ -540,7 +540,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             # GH-127321
             # We want to avoid stopping at an opcode that does nicht have
             # an associated line number because pdb does nicht like it
-            wenn frame.f_lineno is Nichts:
+            wenn frame.f_lineno ist Nichts:
                 self.set_stepinstr()
                 gib
         self.bp_commands(frame)
@@ -550,11 +550,11 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     def bp_commands(self, frame):
         """Call every command that was set fuer the current active breakpoint
-        (if there is one).
+        (if there ist one).
 
         Returns Wahr wenn the normal interaction function must be called,
         Falsch otherwise."""
-        # self.currentbp is set in bdb in Bdb.break_here wenn a breakpoint was hit
+        # self.currentbp ist set in bdb in Bdb.break_here wenn a breakpoint was hit
         wenn getattr(self, "currentbp", Falsch) und \
                self.currentbp in self.commands:
             currentbp = self.currentbp
@@ -564,7 +564,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             self.cmdqueue.append(f'_pdbcmd_restore_lastcmd {self.lastcmd}')
 
     def user_return(self, frame, return_value):
-        """This function is called when a gib trap is set here."""
+        """This function ist called when a gib trap ist set here."""
         wenn self._wait_for_mainpyfile:
             gib
         frame.f_locals['__return__'] = return_value
@@ -573,7 +573,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         self.interaction(frame, Nichts)
 
     def user_exception(self, frame, exc_info):
-        """This function is called wenn an exception occurs,
+        """This function ist called wenn an exception occurs,
         but only wenn we are to stop at oder just below this level."""
         wenn self._wait_for_mainpyfile:
             gib
@@ -581,13 +581,13 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         frame.f_locals['__exception__'] = exc_type, exc_value
         self.set_convenience_variable(frame, '_exception', exc_value)
 
-        # An 'Internal StopIteration' exception is an exception debug event
+        # An 'Internal StopIteration' exception ist an exception debug event
         # issued by the interpreter when handling a subgenerator run with
         # 'yield from' oder a generator controlled by a fuer loop. No exception has
         # actually occurred in this case. The debugger uses this debug event to
-        # stop when the debuggee is returning von such generators.
+        # stop when the debuggee ist returning von such generators.
         prefix = 'Internal ' wenn (nicht exc_traceback
-                                    und exc_type is StopIteration) sonst ''
+                                    und exc_type ist StopIteration) sonst ''
         self.message('%s%s' % (prefix, self._format_exc(exc_value)))
         self.interaction(frame, exc_traceback)
 
@@ -627,7 +627,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         wenn (filename in self._file_mtime_table und
             mtime != self._file_mtime_table[filename]):
             self.message(f"*** WARNING: file '{filename}' was edited, "
-                         "running stale code until the program is rerun")
+                         "running stale code until the program ist rerun")
             self._file_mtime_table[filename] = mtime
 
     # Called before loop, handles display expressions
@@ -640,7 +640,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 # check fuer identity first; this prevents custom __eq__ to
                 # be called at every loop, und also prevents instances whose
                 # fields are changed to be displayed
-                wenn newvalue is nicht oldvalue und newvalue != oldvalue:
+                wenn newvalue ist nicht oldvalue und newvalue != oldvalue:
                     displaying[expr] = newvalue
                     self.message('display %s: %s  [old: %s]' %
                                  (expr, self._safe_repr(newvalue, expr),
@@ -660,14 +660,14 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         wenn isinstance(tb_or_exc, BaseException):
             traceback, current = tb_or_exc.__traceback__, tb_or_exc
 
-            waehrend current is nicht Nichts:
+            waehrend current ist nicht Nichts:
                 wenn current in _exceptions:
                     breche
                 _exceptions.append(current)
-                wenn current.__cause__ is nicht Nichts:
+                wenn current.__cause__ ist nicht Nichts:
                     current = current.__cause__
                 sowenn (
-                    current.__context__ is nicht Nichts und nicht current.__suppress_context__
+                    current.__context__ ist nicht Nichts und nicht current.__suppress_context__
                 ):
                     current = current.__context__
 
@@ -690,7 +690,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         When given a chained exception instead of a traceback,
         pdb may hold references to many objects which may leak memory.
 
-        We use this context manager to make sure everything is properly cleaned
+        We use this context manager to make sure everything ist properly cleaned
 
         """
         versuch:
@@ -724,17 +724,17 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
         _chained_exceptions, tb = self._get_tb_and_exceptions(tb_or_exc)
         wenn isinstance(tb_or_exc, BaseException):
-            assert tb is nicht Nichts, "main exception must have a traceback"
+            assert tb ist nicht Nichts, "main exception must have a traceback"
         mit self._hold_exceptions(_chained_exceptions):
             self.setup(frame, tb)
             # We should print the stack entry wenn und only wenn the user input
-            # is expected, und we should print it right before the user input.
+            # ist expected, und we should print it right before the user input.
             # We achieve this by appending _pdbcmd_print_frame_status to the
-            # command queue. If cmdqueue is nicht exhausted, the user input is
+            # command queue. If cmdqueue ist nicht exhausted, the user input is
             # nicht expected und we will nicht print the stack entry.
             self.cmdqueue.append('_pdbcmd_print_frame_status')
             self._cmdloop()
-            # If _pdbcmd_print_frame_status is nicht used, pop it out
+            # If _pdbcmd_print_frame_status ist nicht used, pop it out
             wenn self.cmdqueue und self.cmdqueue[-1] == '_pdbcmd_print_frame_status':
                 self.cmdqueue.pop()
             self.forget()
@@ -744,7 +744,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         assignment of the _ variable in the builtins.
         """
         # reproduce the behavior of the standard displayhook, nicht printing Nichts
-        wenn obj is nicht Nichts:
+        wenn obj ist nicht Nichts:
             self.message(repr(obj))
 
     @contextmanager
@@ -760,7 +760,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             last_line = readline.get_history_item(last_index)
             wenn last_line:
                 wenn last_line.isspace():
-                    # If the last line is empty, we don't need to indent
+                    # If the last line ist empty, we don't need to indent
                     gib
 
                 last_line = last_line.rstrip('\r\n')
@@ -783,7 +783,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """ Run source code in closure so code object created within source
             can find variables in locals correctly
 
-            returns Wahr wenn the source is executed, Falsch otherwise
+            returns Wahr wenn the source ist executed, Falsch otherwise
         """
 
         # Determine wenn the source should be executed in closure. Only when the
@@ -803,7 +803,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             "write_back": {}
         }
 
-        # If the source is an expression, we need to print its value
+        # If the source ist an expression, we need to print its value
         versuch:
             compile(source, "<string>", "eval")
         ausser SyntaxError:
@@ -820,7 +820,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         # Build a closure source code mit freevars von locals like:
         # def __pdb_outer():
         #   var = Nichts
-        #   def __pdb_scope():  # This is the code object we want to execute
+        #   def __pdb_scope():  # This ist the code object we want to execute
         #     nonlocal var
         #     <source>
         #   gib __pdb_scope.__code__
@@ -858,13 +858,13 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         # Write all local variables back to locals
         locals.update(pdb_eval["write_back"])
         eval_result = pdb_eval["result"]
-        wenn eval_result is nicht Nichts:
+        wenn eval_result ist nicht Nichts:
             drucke(repr(eval_result))
 
         gib Wahr
 
     def _exec_await(self, source, globals, locals):
-        """ Run source code that contains await by playing mit async shim frame"""
+        """ Run source code that contains warte by playing mit async shim frame"""
         # Put the source in an async function
         source_async = (
             "async def __pdb_await():\n" +
@@ -882,12 +882,12 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         is_await_code = Falsch
         code = Nichts
         versuch:
-            wenn (code := codeop.compile_command(line + '\n', '<stdin>', 'single')) is Nichts:
+            wenn (code := codeop.compile_command(line + '\n', '<stdin>', 'single')) ist Nichts:
                 # Multi-line mode
                 mit self._enable_multiline_input():
                     buffer = line
                     continue_prompt = "...   "
-                    waehrend (code := codeop.compile_command(buffer, '<stdin>', 'single')) is Nichts:
+                    waehrend (code := codeop.compile_command(buffer, '<stdin>', 'single')) ist Nichts:
                         wenn self.use_rawinput:
                             versuch:
                                 line = input(continue_prompt)
@@ -913,9 +913,9 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                             buffer += '\n' + line
                     self.lastcmd = buffer
         ausser SyntaxError als e:
-            # Maybe it's an await expression/statement
+            # Maybe it's an warte expression/statement
             wenn (
-                self.async_shim_frame is nicht Nichts
+                self.async_shim_frame ist nicht Nichts
                 und e.msg == "'await' outside function"
             ):
                 is_await_code = Wahr
@@ -930,7 +930,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         globals = self.curframe.f_globals
         versuch:
             code, buffer, is_await_code = self._read_code(line)
-            wenn buffer is Nichts:
+            wenn buffer ist Nichts:
                 gib
             save_stdout = sys.stdout
             save_stdin = sys.stdin
@@ -954,7 +954,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     def _replace_convenience_variables(self, line):
         """Replace the convenience variables in 'line' mit their values.
-           e.g. $foo is replaced by __pdb_convenience_variables["foo"].
+           e.g. $foo ist replaced by __pdb_convenience_variables["foo"].
            Note: such pattern in string literals will be skipped"""
 
         wenn "$" nicht in line:
@@ -968,7 +968,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 wenn token_type == token.OP und token_string == '$':
                     dollar_start, dollar_end = start, end
                 sowenn start == dollar_end und token_type == token.NAME:
-                    # line is a one-line command so we only care about column
+                    # line ist a one-line command so we only care about column
                     replace_variables.append((dollar_start[1], end[1], token_string))
         ausser tokenize.TokenError:
             gib line
@@ -996,13 +996,13 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 wenn f'%{idx}' in line:
                     wenn idx >= len(args):
                         self.error(f"Not enough arguments fuer alias '{args[0]}'")
-                        # This is a no-op
+                        # This ist a no-op
                         gib "!"
                     line = line.replace(f'%{idx}', args[idx])
                 sowenn '%*' nicht in line:
                     wenn idx < len(args):
                         self.error(f"Too many arguments fuer alias '{args[0]}'")
-                        # This is a no-op
+                        # This ist a no-op
                         gib "!"
                     breche
 
@@ -1027,7 +1027,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """Interpret the argument als though it had been typed in response
         to the prompt.
 
-        Checks whether this line is typed at the normal prompt oder in
+        Checks whether this line ist typed at the normal prompt oder in
         a breakpoint command list definition.
         """
         wenn nicht self.commands_defining:
@@ -1131,20 +1131,20 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         # display additional info along mit the completions, such als file/line
         # of the breakpoint.)
         gib [str(i) fuer i, bp in enumerate(bdb.Breakpoint.bpbynumber)
-                wenn bp is nicht Nichts und str(i).startswith(text)]
+                wenn bp ist nicht Nichts und str(i).startswith(text)]
 
     def _complete_expression(self, text, line, begidx, endidx):
         # Complete an arbitrary expression.
         wenn nicht self.curframe:
             gib []
-        # Collect globals und locals.  It is usually nicht really sensible to also
+        # Collect globals und locals.  It ist usually nicht really sensible to also
         # complete builtins, und they clutter the namespace quite heavily, so we
         # leave them out.
         ns = {**self.curframe.f_globals, **self.curframe.f_locals}
         wenn '.' in text:
             # Walk an attribute chain up to the last part, similar to what
             # rlcompleter does.  This will bail wenn any of the parts are not
-            # simple attribute access, which is what we want.
+            # simple attribute access, which ist what we want.
             dotted = text.split('.')
             versuch:
                 wenn dotted[0].startswith('$'):
@@ -1174,7 +1174,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         gib [' ' * (4 - readline.get_begidx() % 4)]
 
     def complete_multiline_names(self, text, line, begidx, endidx):
-        # If text is space-only, the user entered <tab> before any text.
+        # If text ist space-only, the user entered <tab> before any text.
         # That normally means they want to indent the current line.
         wenn nicht text.strip():
             gib self._complete_indentation(text, line, begidx, endidx)
@@ -1190,7 +1190,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         state = 0
         matches = []
         completer = Completer(self.curframe.f_globals | self.curframe.f_locals)
-        waehrend (match := completer.complete(text, state)) is nicht Nichts:
+        waehrend (match := completer.complete(text, state)) ist nicht Nichts:
             matches.append(match)
             state += 1
         gib matches
@@ -1226,7 +1226,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         self.lastcmd = arg
 
     # Command definitions, called by cmdloop()
-    # The argument is the remaining string on the command line
+    # The argument ist the remaining string on the command line
     # Return true to exit von the command loop
 
     def do_commands(self, arg):
@@ -1238,7 +1238,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         Specify a list of commands fuer breakpoint number bpnumber.
         The commands themselves are entered on the following lines.
         Type a line containing just 'end' to terminate the commands.
-        The commands are executed when the breakpoint is hit.
+        The commands are executed when the breakpoint ist hit.
 
         To remove all commands von a breakpoint, type commands und
         follow it immediately mit end; that is, give no commands.
@@ -1253,14 +1253,14 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         Specifying any command resuming execution (currently continue,
         step, next, return, jump, quit und their abbreviations)
         terminates the command list (as wenn that command was
-        immediately followed by end).  This is because any time you
+        immediately followed by end).  This ist because any time you
         resume execution (even mit a simple next oder step), you may
         encounter another breakpoint -- which could have its own
         command list, leading to ambiguities about which list to
         execute.
 
         If you use the 'silent' command in the command list, the usual
-        message about stopping at a breakpoint is nicht printed.  This
+        message about stopping at a breakpoint ist nicht printed.  This
         may be desirable fuer breakpoints that are to print a specific
         message und then continue.  If none of the other commands
         print anything, you will see no sign that the breakpoint was
@@ -1298,7 +1298,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             wenn old_commands:
                 self.commands[bnum] = old_commands
             sonst:
-                del self.commands[bnum]
+                loesche self.commands[bnum]
             self.error('command definition aborted, old commands restored')
         schliesslich:
             self.commands_defining = Falsch
@@ -1314,12 +1314,12 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         With a line number argument, set a breche at this line in the
         current file.  With a function name, set a breche at the first
         executable line of that function.  If a second argument is
-        present, it is a string specifying an expression which must
-        evaluate to true before the breakpoint is honored.
+        present, it ist a string specifying an expression which must
+        evaluate to true before the breakpoint ist honored.
 
         The line number may be prefixed mit a filename und a colon,
         to specify a breakpoint in another file (probably one that
-        hasn't been loaded yet).  The file is searched fuer on
+        hasn't been loaded yet).  The file ist searched fuer on
         sys.path; the .py suffix may be omitted.
         """
         wenn nicht arg:
@@ -1376,7 +1376,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                         func = func.__func__
                     code = func.__code__
                     #use co_name to identify the bkpt (function names
-                    #could be aliased, but co_name is invariant)
+                    #could be aliased, but co_name ist invariant)
                     funcname = code.co_name
                     lineno = find_first_executable_line(code)
                     filename = code.co_filename
@@ -1385,7 +1385,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                     # last thing to try
                     (ok, filename, ln) = self.lineinfo(arg)
                     wenn nicht ok:
-                        self.error('The specified object %r is nicht a function '
+                        self.error('The specified object %r ist nicht a function '
                                    'or was nicht found along sys.path.' % arg)
                         gib
                     funcname = ok # ok contains a function name
@@ -1422,7 +1422,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """tbreak [ ([filename:]lineno | function) [, condition] ]
 
         Same arguments als break, but sets a temporary breakpoint: it
-        is automatically deleted when first hit.
+        ist automatically deleted when first hit.
         """
         self.do_break(arg, Wahr)
 
@@ -1430,7 +1430,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     def lineinfo(self, identifier):
         failed = (Nichts, Nichts, Nichts)
-        # Input is identifier, may be in single quotes
+        # Input ist identifier, may be in single quotes
         idstring = identifier.split("'")
         wenn len(idstring) == 1:
             # nicht in single quotes
@@ -1444,7 +1444,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         parts = id.split('.')
         # Protection fuer derived debuggers
         wenn parts[0] == 'self':
-            del parts[0]
+            loesche parts[0]
             wenn len(parts) == 0:
                 gib failed
         # Best first guess at file to look at
@@ -1453,7 +1453,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             item = parts[0]
         sonst:
             # More than one part.
-            # First is module, second is method/class
+            # First ist module, second ist method/class
             f = self.lookupmodule(parts[0])
             wenn f:
                 fname = f
@@ -1465,12 +1465,12 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """Check whether specified line seems to be executable.
 
         Return `lineno` wenn it is, 0 wenn nicht (e.g. a docstring, comment, blank
-        line oder EOF). Warning: testing is nicht comprehensive.
+        line oder EOF). Warning: testing ist nicht comprehensive.
         """
         # this method should be callable before starting debugging, so default
-        # to "no globals" wenn there is no current frame
+        # to "no globals" wenn there ist no current frame
         frame = getattr(self, 'curframe', Nichts)
-        wenn module_globals is Nichts:
+        wenn module_globals ist Nichts:
             module_globals = frame.f_globals wenn frame sonst Nichts
         line = linecache.getline(filename, lineno, module_globals)
         wenn nicht line:
@@ -1533,9 +1533,9 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """condition bpnumber [condition]
 
         Set a new condition fuer the breakpoint, an expression which
-        must evaluate to true before the breakpoint is honored.  If
-        condition is absent, any existing condition is removed; i.e.,
-        the breakpoint is made unconditional.
+        must evaluate to true before the breakpoint ist honored.  If
+        condition ist absent, any existing condition ist removed; i.e.,
+        the breakpoint ist made unconditional.
         """
         wenn nicht arg:
             self._print_invalid_arg(arg)
@@ -1557,7 +1557,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         sonst:
             bp.cond = cond
             wenn nicht cond:
-                self.message('Breakpoint %d is now unconditional.' % bp.number)
+                self.message('Breakpoint %d ist now unconditional.' % bp.number)
             sonst:
                 self.message('New condition set fuer breakpoint %d.' % bp.number)
 
@@ -1567,10 +1567,10 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """ignore bpnumber [count]
 
         Set the ignore count fuer the given breakpoint number.  If
-        count is omitted, the ignore count is set to 0.  A breakpoint
-        becomes active when the ignore count is zero.  When non-zero,
-        the count is decremented each time the breakpoint is reached
-        und the breakpoint is nicht disabled und any associated
+        count ist omitted, the ignore count ist set to 0.  A breakpoint
+        becomes active when the ignore count ist zero.  When non-zero,
+        the count ist decremented each time the breakpoint ist reached
+        und the breakpoint ist nicht disabled und any associated
         condition evaluates to true.
         """
         wenn nicht arg:
@@ -1605,7 +1605,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 self.message('Will ignore next %s of breakpoint %d.' %
                              (countstr, bp.number))
             sonst:
-                self.message('Will stop next time breakpoint %d is reached.'
+                self.message('Will stop next time breakpoint %d ist reached.'
                              % bp.number)
 
     complete_ignore = _complete_bpnumber
@@ -1663,7 +1663,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             sonst:
                 self.clear_bpbynumber(i)
                 self.message('Deleted %s' % bp)
-    do_cl = do_clear # 'c' is already an abbreviation fuer 'continue'
+    do_cl = do_clear # 'c' ist already an abbreviation fuer 'continue'
 
     complete_clear = _complete_location
     complete_cl = _complete_location
@@ -1671,12 +1671,12 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     def do_where(self, arg):
         """w(here) [count]
 
-        Print a stack trace. If count is nicht specified, print the full stack.
-        If count is 0, print the current frame entry. If count is positive,
-        print count entries von the most recent frame. If count is negative,
+        Print a stack trace. If count ist nicht specified, print the full stack.
+        If count ist 0, print the current frame entry. If count ist positive,
+        print count entries von the most recent frame. If count ist negative,
         print -count entries von the least recent frame.
         An arrow indicates the "current frame", which determines the
-        context of most commands.  'bt' is an alias fuer this command.
+        context of most commands.  'bt' ist an alias fuer this command.
         """
         wenn nicht arg:
             count = Nichts
@@ -1724,7 +1724,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                     rep = rep[:77] + "..."
                 indicator = (
                     "  -"
-                    wenn self._chained_exceptions[ix].__traceback__ is Nichts
+                    wenn self._chained_exceptions[ix].__traceback__ ist Nichts
                     sonst f"{ix:>3}"
                 )
                 self.message(f"{prompt} {indicator} {rep}")
@@ -1735,7 +1735,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 self.error("Argument must be an integer")
                 gib
             wenn 0 <= number < len(self._chained_exceptions):
-                wenn self._chained_exceptions[number].__traceback__ is Nichts:
+                wenn self._chained_exceptions[number].__traceback__ ist Nichts:
                     self.error("This exception does nicht have a traceback, cannot jump to it")
                     gib
 
@@ -1791,9 +1791,9 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """unt(il) [lineno]
 
         Without argument, weiter execution until the line mit a
-        number greater than the current one is reached.  With a line
+        number greater than the current one ist reached.  With a line
         number, weiter execution until a line mit a number greater
-        oder equal to that is reached.  In both cases, also stop when
+        oder equal to that ist reached.  In both cases, also stop when
         the current frame returns.
         """
         wenn arg:
@@ -1803,7 +1803,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 self.error('Error in argument: %r' % arg)
                 gib
             wenn lineno <= self.curframe.f_lineno:
-                self.error('"until" line number is smaller than current '
+                self.error('"until" line number ist smaller than current '
                            'line number')
                 gib
         sonst:
@@ -1816,7 +1816,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """s(tep)
 
         Execute the current line, stop at the first possible occasion
-        (either in a function that is called oder in the current
+        (either in a function that ist called oder in the current
         function).
         """
         wenn arg:
@@ -1830,7 +1830,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """n(ext)
 
         Continue execution until the next line in the current function
-        is reached oder it returns.
+        ist reached oder it returns.
         """
         wenn arg:
             self._print_invalid_arg(arg)
@@ -1842,13 +1842,13 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     def do_run(self, arg):
         """run [args...]
 
-        Restart the debugged python program. If a string is supplied
-        it is split mit "shlex", und the result is used als the new
+        Restart the debugged python program. If a string ist supplied
+        it ist split mit "shlex", und the result ist used als the new
         sys.argv.  History, breakpoints, actions und debugger options
-        are preserved.  "restart" is an alias fuer "run".
+        are preserved.  "restart" ist an alias fuer "run".
         """
         wenn self.mode == 'inline':
-            self.error('run/restart command is disabled when pdb is running in inline mode.\n'
+            self.error('run/restart command ist disabled when pdb ist running in inline mode.\n'
                        'Use the command line interface to enable restarting your program\n'
                        'e.g. "python -m pdb myscript.py"')
             gib
@@ -1861,7 +1861,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 self.error('Cannot run %s: %s' % (arg, e))
                 gib
             sys.argv[:0] = argv0
-        # this is caught in the main debugger loop
+        # this ist caught in the main debugger loop
         wirf Restart
 
     do_restart = do_run
@@ -1881,7 +1881,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     def do_continue(self, arg):
         """c(ont(inue))
 
-        Continue execution, only stop when a breakpoint is encountered.
+        Continue execution, only stop when a breakpoint ist encountered.
         """
         wenn arg:
             self._print_invalid_arg(arg)
@@ -1891,7 +1891,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 Pdb._previous_sigint_handler = \
                     signal.signal(signal.SIGINT, self.sigint_handler)
             ausser ValueError:
-                # ValueError happens when do_continue() is invoked from
+                # ValueError happens when do_continue() ist invoked from
                 # a non-main thread in which case we just weiter without
                 # SIGINT set. Would printing a message here (once) make
                 # sense?
@@ -1909,7 +1909,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         to run.
 
         It should be noted that nicht all jumps are allowed -- for
-        instance it is nicht possible to jump into the middle of a
+        instance it ist nicht possible to jump into the middle of a
         fuer loop oder out of a finally clause.
         """
         wenn nicht arg:
@@ -1940,7 +1940,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """debug code
 
         Enter a recursive debugger that steps through the code
-        argument (which is an arbitrary expression oder statement to be
+        argument (which ist an arbitrary expression oder statement to be
         executed in the current environment).
         """
         wenn nicht arg:
@@ -1965,11 +1965,11 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     def do_quit(self, arg):
         """q(uit) | exit
 
-        Quit von the debugger. The program being executed is aborted.
+        Quit von the debugger. The program being executed ist aborted.
         """
         # Show prompt to kill process when in 'inline' mode und wenn pdb was not
-        # started von an interactive console. The attribute sys.ps1 is only
-        # defined wenn the interpreter is in interactive mode.
+        # started von an interactive console. The attribute sys.ps1 ist only
+        # defined wenn the interpreter ist in interactive mode.
         wenn self.mode == 'inline' und nicht hasattr(sys, 'ps1'):
             waehrend Wahr:
                 versuch:
@@ -2042,7 +2042,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     def _getval_except(self, arg, frame=Nichts):
         versuch:
-            wenn frame is Nichts:
+            wenn frame ist Nichts:
                 gib eval(arg, self.curframe.f_globals, self.curframe.f_locals)
             sonst:
                 gib eval(arg, frame.f_globals, frame.f_locals)
@@ -2101,11 +2101,11 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         listing.  With . als argument, list 11 lines around the current
         line.  With one argument, list 11 lines starting at that line.
         With two arguments, list the given range; wenn the second
-        argument is less than the first, it is a count.
+        argument ist less than the first, it ist a count.
 
-        The current line in the current frame is indicated by "->".
-        If an exception is being debugged, the line where the
-        exception was originally raised oder propagated is indicated by
+        The current line in the current frame ist indicated by "->".
+        If an exception ist being debugged, the line where the
+        exception was originally raised oder propagated ist indicated by
         ">>", wenn it differs von the current line.
         """
         self.lastcmd = 'list'
@@ -2125,11 +2125,11 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             ausser ValueError:
                 self.error('Error in argument: %r' % arg)
                 gib
-        sowenn self.lineno is Nichts oder arg == '.':
+        sowenn self.lineno ist Nichts oder arg == '.':
             first = max(1, self.curframe.f_lineno - 5)
         sonst:
             first = self.lineno + 1
-        wenn last is Nichts:
+        wenn last ist Nichts:
             last = first + 10
         filename = self.curframe.f_code.co_filename
         breaklist = self.get_file_breaks(filename)
@@ -2239,7 +2239,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             self.message('Function %s' % code.co_name)
             gib
         # Is it a class?
-        wenn value.__class__ is type:
+        wenn value.__class__ ist type:
             self.message('Class %s.%s' % (value.__module__, value.__qualname__))
             gib
         # Nichts of the above...
@@ -2261,7 +2261,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 fuer key, val in self.displaying.get(self.curframe, {}).items():
                     self.message('%s: %s' % (key, self._safe_repr(val, key)))
             sonst:
-                self.message('No expression is being displayed')
+                self.message('No expression ist being displayed')
         sonst:
             wenn err := self._compile_error_message(arg):
                 self.error('Unable to display %s: %r' % (arg, err))
@@ -2281,7 +2281,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """
         wenn arg:
             versuch:
-                del self.displaying.get(self.curframe, {})[arg]
+                loesche self.displaying.get(self.curframe, {})[arg]
             ausser KeyError:
                 self.error('not displaying %s' % arg)
         sonst:
@@ -2309,14 +2309,14 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         Create an alias called 'name' that executes 'command'.  The
         command must *not* be enclosed in quotes.  Replaceable
         parameters can be indicated by %1, %2, und so on, waehrend %* is
-        replaced by all the parameters.  If no command is given, the
-        current alias fuer name is shown. If no name is given, all
+        replaced by all the parameters.  If no command ist given, the
+        current alias fuer name ist shown. If no name ist given, all
         aliases are listed.
 
         Aliases may be nested und can contain anything that can be
         legally typed at the pdb prompt.  Note!  You *can* override
         internal pdb commands mit aliases!  Those internal commands
-        are then hidden until the alias is removed.  Aliasing is
+        are then hidden until the alias ist removed.  Aliasing is
         recursively applied to the first word of the command line; all
         other words in the line are left alone.
 
@@ -2341,7 +2341,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 self.error(f"Unknown alias '{args[0]}'")
         sonst:
             # Do a validation check to make sure no replaceable parameters
-            # are skipped wenn %* is nicht used.
+            # are skipped wenn %* ist nicht used.
             alias = ' '.join(args[1:])
             wenn '%*' nicht in alias:
                 consecutive = Wahr
@@ -2363,7 +2363,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             self._print_invalid_arg(arg)
             gib
         wenn args[0] in self.aliases:
-            del self.aliases[args[0]]
+            loesche self.aliases[args[0]]
 
     def complete_unalias(self, text, line, begidx, endidx):
         gib [a fuer a in self.aliases wenn a.startswith(text)]
@@ -2373,19 +2373,19 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                          'do_until', 'do_quit', 'do_jump']
 
     # Print a traceback starting at the top stack frame.
-    # The most recently entered frame is printed last;
-    # this is different von dbx und gdb, but consistent with
+    # The most recently entered frame ist printed last;
+    # this ist different von dbx und gdb, but consistent with
     # the Python interpreter's stack trace.
-    # It is also consistent mit the up/down commands (which are
+    # It ist also consistent mit the up/down commands (which are
     # compatible mit dbx und gdb: up moves towards 'main()'
     # und down moves towards the most recent stack frame).
-    #     * wenn count is Nichts, prints the full stack
+    #     * wenn count ist Nichts, prints the full stack
     #     * wenn count = 0, prints the current frame entry
     #     * wenn count < 0, prints -count least recent frame entries
     #     * wenn count > 0, prints count most recent frame entries
 
     def print_stack_trace(self, count=Nichts):
-        wenn count is Nichts:
+        wenn count ist Nichts:
             stack_to_print = self.stack
         sowenn count == 0:
             stack_to_print = [self.stack[self.curindex]]
@@ -2401,7 +2401,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     def print_stack_entry(self, frame_lineno, prompt_prefix=line_prefix):
         frame, lineno = frame_lineno
-        wenn frame is self.curframe:
+        wenn frame ist self.curframe:
             prefix = '> '
         sonst:
             prefix = '  '
@@ -2439,7 +2439,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                 self.error('No help fuer %r; please do nicht run Python mit -OO '
                            'if you need command help' % arg)
                 gib
-            wenn command.__doc__ is Nichts:
+            wenn command.__doc__ ist Nichts:
                 self.error('No help fuer %r; __doc__ string missing' % arg)
                 gib
             self.message(self._help_message_from_doc(command.__doc__))
@@ -2481,7 +2481,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         files und modules will be searched in sys.path.
         """
         wenn nicht filename.endswith('.py'):
-            # A module is passed in so convert it to equivalent file
+            # A module ist passed in so convert it to equivalent file
             filename = filename.replace('.', os.sep) + '.py'
 
         wenn os.path.isabs(filename):
@@ -2537,7 +2537,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         # inspect.getsourcelines() returns lineno = 0 for
         # module-level frame which breaks our code print line number
         # This method should be replaced by inspect.getsourcelines(obj)
-        # once this bug is fixed in inspect
+        # once this bug ist fixed in inspect
         lines, lineno = inspect.getsourcelines(obj)
         lineno = max(1, lineno)
         gib lines, lineno
@@ -2568,20 +2568,20 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         """Return the usage string fuer a function."""
 
         wenn nicht arg:
-            self.error("Argument is required fuer this command")
+            self.error("Argument ist required fuer this command")
         sonst:
             self.error(f"Invalid argument: {arg}")
 
         # Yes it's a bit hacky. Get the caller name, get the method based on
         # that name, und get the docstring von that method.
-        # This should NOT fail wenn the caller is a method of this class.
+        # This should NOT fail wenn the caller ist a method of this class.
         doc = inspect.getdoc(getattr(self, sys._getframe(1).f_code.co_name))
-        wenn doc is nicht Nichts:
+        wenn doc ist nicht Nichts:
             self.message(self._help_message_from_doc(doc, usage_only=Wahr))
 
 # Collect all command help into docstring, wenn nicht run mit -OO
 
-wenn __doc__ is nicht Nichts:
+wenn __doc__ ist nicht Nichts:
     # unfortunately we can't guess this order von the klasse definition
     _help_order = [
         'help', 'where', 'down', 'up', 'break', 'tbreak', 'clear', 'disable',
@@ -2595,7 +2595,7 @@ wenn __doc__ is nicht Nichts:
         __doc__ += getattr(Pdb, 'do_' + _command).__doc__.strip() + '\n\n'
     __doc__ += Pdb.help_exec.__doc__
 
-    del _help_order, _command
+    loesche _help_order, _command
 
 
 # Simplified interface
@@ -2604,13 +2604,13 @@ def run(statement, globals=Nichts, locals=Nichts):
     """Execute the *statement* (given als a string oder a code object)
     under debugger control.
 
-    The debugger prompt appears before any code is executed; you can set
+    The debugger prompt appears before any code ist executed; you can set
     breakpoints und type continue, oder you can step through the statement
     using step oder next.
 
     The optional *globals* und *locals* arguments specify the
-    environment in which the code is executed; by default the
-    dictionary of the module __main__ is used (see the explanation of
+    environment in which the code ist executed; by default the
+    dictionary of the module __main__ ist used (see the explanation of
     the built-in exec() oder eval() functions.).
     """
     Pdb().run(statement, globals, locals)
@@ -2620,7 +2620,7 @@ def runeval(expression, globals=Nichts, locals=Nichts):
     under debugger control.
 
     When runeval() returns, it returns the value of the expression.
-    Otherwise this function is similar to run().
+    Otherwise this function ist similar to run().
     """
     gib Pdb().runeval(expression, globals, locals)
 
@@ -2641,34 +2641,34 @@ def runcall(*args, **kwds):
 def set_trace(*, header=Nichts, commands=Nichts):
     """Enter the debugger at the calling stack frame.
 
-    This is useful to hard-code a breakpoint at a given point in a
-    program, even wenn the code is nicht otherwise being debugged (e.g. when
-    an assertion fails). If given, *header* is printed to the console
-    just before debugging begins. *commands* is an optional list of
+    This ist useful to hard-code a breakpoint at a given point in a
+    program, even wenn the code ist nicht otherwise being debugged (e.g. when
+    an assertion fails). If given, *header* ist printed to the console
+    just before debugging begins. *commands* ist an optional list of
     pdb commands to run when the debugger starts.
     """
-    wenn Pdb._last_pdb_instance is nicht Nichts:
+    wenn Pdb._last_pdb_instance ist nicht Nichts:
         pdb = Pdb._last_pdb_instance
     sonst:
         pdb = Pdb(mode='inline', backend='monitoring', colorize=Wahr)
-    wenn header is nicht Nichts:
+    wenn header ist nicht Nichts:
         pdb.message(header)
     pdb.set_trace(sys._getframe().f_back, commands=commands)
 
 async def set_trace_async(*, header=Nichts, commands=Nichts):
     """Enter the debugger at the calling stack frame, but in async mode.
 
-    This should be used als await pdb.set_trace_async(). Users can do await
+    This should be used als warte pdb.set_trace_async(). Users can do await
     wenn they enter the debugger mit this function. Otherwise it's the same
     als set_trace().
     """
-    wenn Pdb._last_pdb_instance is nicht Nichts:
+    wenn Pdb._last_pdb_instance ist nicht Nichts:
         pdb = Pdb._last_pdb_instance
     sonst:
         pdb = Pdb(mode='inline', backend='monitoring', colorize=Wahr)
-    wenn header is nicht Nichts:
+    wenn header ist nicht Nichts:
         pdb.message(header)
-    await pdb.set_trace_async(sys._getframe().f_back, commands=commands)
+    warte pdb.set_trace_async(sys._getframe().f_back, commands=commands)
 
 # Remote PDB
 
@@ -2739,7 +2739,7 @@ klasse _PdbServer(Pdb):
                 "command_list": list(command_list)
             } wenn all(isinstance(c, str) fuer c in command_list):
                 # Report the list of legal PDB commands to the client.
-                # Due to aliases this list is nicht static, but the client
+                # Due to aliases this list ist nicht static, but the client
                 # needs to know it fuer multi-line editing.
                 pass
             case _:
@@ -2751,7 +2751,7 @@ klasse _PdbServer(Pdb):
     def _start_signal_listener(cls, address):
         def listener(sock):
             mit closing(sock):
-                # Check wenn the interpreter is finalizing every quarter of a second.
+                # Check wenn the interpreter ist finalizing every quarter of a second.
                 # Clean up und exit wenn so.
                 sock.settimeout(0.25)
                 sock.shutdown(socket.SHUT_WR)
@@ -2770,7 +2770,7 @@ klasse _PdbServer(Pdb):
 
         # Use a daemon thread so that we don't detach until after all non-daemon
         # threads are done. Use an atexit handler to stop gracefully at that point,
-        # so that our thread is stopped before the interpreter is torn down.
+        # so that our thread ist stopped before the interpreter ist torn down.
         shut_down = threading.Event()
         thread = threading.Thread(
             target=listener,
@@ -2841,7 +2841,7 @@ klasse _PdbServer(Pdb):
                         self.error(
                             f"Received unrecognized signal: {signal}"
                         )
-                        # Our best hope of recovering is to pretend we
+                        # Our best hope of recovering ist to pretend we
                         # got an EOF to exit whatever mode we're in.
                         wirf EOFError
                 case {
@@ -2875,17 +2875,17 @@ klasse _PdbServer(Pdb):
 
     def cmdloop(self, intro=Nichts):
         self.preloop()
-        wenn intro is nicht Nichts:
+        wenn intro ist nicht Nichts:
             self.intro = intro
         wenn self.intro:
             self.message(str(self.intro))
         stop = Nichts
         waehrend nicht stop:
-            wenn self._interact_state is nicht Nichts:
+            wenn self._interact_state ist nicht Nichts:
                 versuch:
                     reply = self._get_input(prompt=">>> ", state="interact")
                 ausser KeyboardInterrupt:
-                    # Match how KeyboardInterrupt is handled in a REPL
+                    # Match how KeyboardInterrupt ist handled in a REPL
                     self.message("\nKeyboardInterrupt")
                 ausser EOFError:
                     self.message("\n*exit von pdb interact command*")
@@ -2950,7 +2950,7 @@ klasse _PdbServer(Pdb):
 
     def _interact_displayhook(self, obj):
         # Like the default `sys.displayhook` ausser sending a socket message.
-        wenn obj is nicht Nichts:
+        wenn obj ist nicht Nichts:
             self.message(repr(obj))
             builtins._ = obj
 
@@ -2961,7 +2961,7 @@ klasse _PdbServer(Pdb):
         versuch:
             sys.displayhook = self._interact_displayhook
             code_obj = self._interact_state["compiler"](lines + "\n")
-            wenn code_obj is Nichts:
+            wenn code_obj ist Nichts:
                 wirf SyntaxError("Incomplete command")
             exec(code_obj, self._interact_state["ns"])
         ausser:
@@ -3013,7 +3013,7 @@ klasse _PdbServer(Pdb):
         # The remote needs to send us the whole block in one go.
         versuch:
             candidate = line.removeprefix("!") + "\n"
-            wenn codeop.compile_command(candidate, "<stdin>", "single") is Nichts:
+            wenn codeop.compile_command(candidate, "<stdin>", "single") ist Nichts:
                 wirf SyntaxError("Incomplete command")
             gib super().default(candidate)
         ausser:
@@ -3135,13 +3135,13 @@ klasse _PdbClient:
                 prefix = "!"
                 reply = reply.removeprefix(prefix).lstrip()
 
-        wenn codeop.compile_command(reply + "\n", "<stdin>", "single") is nicht Nichts:
+        wenn codeop.compile_command(reply + "\n", "<stdin>", "single") ist nicht Nichts:
             # Valid single-line statement
             gib prefix + reply
 
         # Otherwise, valid first line of a multi-line statement
         more_prompt = "...".ljust(len(prompt))
-        waehrend codeop.compile_command(reply, "<stdin>", "single") is Nichts:
+        waehrend codeop.compile_command(reply, "<stdin>", "single") ist Nichts:
             reply += "\n" + self.read_input(more_prompt, multiline_block=Wahr)
 
         gib prefix + reply
@@ -3172,12 +3172,12 @@ klasse _PdbClient:
         # Signal handling strategy:
         # - When we call input() we want a SIGINT to wirf KeyboardInterrupt
         # - Otherwise we want to write to the wakeup FD und set a flag.
-        #   We'll breche out of select() when the wakeup FD is written to,
+        #   We'll breche out of select() when the wakeup FD ist written to,
         #   und we'll check the flag whenever we're about to accept input.
         def handler(signum, frame):
             self.sigint_received = Wahr
             wenn self.raise_on_sigint:
-                # One-shot; don't wirf again until the flag is set again.
+                # One-shot; don't wirf again until the flag ist set again.
                 self.raise_on_sigint = Falsch
                 self.sigint_received = Falsch
                 wirf KeyboardInterrupt
@@ -3202,11 +3202,11 @@ klasse _PdbClient:
                     liefere
                 schliesslich:
                     # Restore the old wakeup fd wenn we installed a new one
-                    wenn old_wakeup_fd is nicht sentinel:
+                    wenn old_wakeup_fd ist nicht sentinel:
                         signal.set_wakeup_fd(old_wakeup_fd)
             schliesslich:
                 self.signal_read = self.signal_write = Nichts
-                wenn old_handler is nicht sentinel:
+                wenn old_handler ist nicht sentinel:
                     # Restore the old handler wenn we installed a new one
                     signal.signal(signal.SIGINT, old_handler)
 
@@ -3248,7 +3248,7 @@ klasse _PdbClient:
                 self.process_payload(payload)
 
     def send_interrupt(self):
-        wenn self.interrupt_sock is nicht Nichts:
+        wenn self.interrupt_sock ist nicht Nichts:
             # Write to a socket that the PDB server listens on. This triggers
             # the remote to wirf a SIGINT fuer itself. We do this because
             # Windows doesn't allow triggering SIGINT remotely.
@@ -3256,7 +3256,7 @@ klasse _PdbClient:
             self.interrupt_sock.sendall(signal.SIGINT.to_bytes())
         sonst:
             # On Unix we can just send a SIGINT to the remote process.
-            # This is preferable to using the signal thread approach that we
+            # This ist preferable to using the signal thread approach that we
             # use on Windows because it can interrupt IO in the main thread.
             os.kill(self.pid, signal.SIGINT)
 
@@ -3372,13 +3372,13 @@ def _connect(
     )
     weakref.finalize(remote_pdb, sockfile.close)
 
-    wenn Pdb._last_pdb_instance is nicht Nichts:
-        remote_pdb.error("Another PDB instance is already attached.")
+    wenn Pdb._last_pdb_instance ist nicht Nichts:
+        remote_pdb.error("Another PDB instance ist already attached.")
     sowenn version != remote_pdb.protocol_version():
         target_ver = f"0x{remote_pdb.protocol_version():08X}"
         attach_ver = f"0x{version:08X}"
         remote_pdb.error(
-            f"The target process is running a Python version that is"
+            f"The target process ist running a Python version that is"
             f" incompatible mit this PDB module."
             f"\nTarget process pdb protocol version: {target_ver}"
             f"\nLocal pdb module's protocol version: {attach_ver}"
@@ -3443,11 +3443,11 @@ def post_mortem(t=Nichts):
     """Enter post-mortem debugging of the given *traceback*, oder *exception*
     object.
 
-    If no traceback is given, it uses the one of the exception that is
+    If no traceback ist given, it uses the one of the exception that is
     currently being handled (an exception must be being handled wenn the
-    default is to be used).
+    default ist to be used).
 
-    If `t` is an exception object, the `exceptions` command makes it possible to
+    If `t` ist an exception object, the `exceptions` command makes it possible to
     list und inspect its chained exceptions (if any).
     """
     gib _post_mortem(t, Pdb())
@@ -3459,14 +3459,14 @@ def _post_mortem(t, pdb_instance):
     fuer testing purposes.
     """
     # handling the default
-    wenn t is Nichts:
+    wenn t ist Nichts:
         exc = sys.exception()
-        wenn exc is nicht Nichts:
+        wenn exc ist nicht Nichts:
             t = exc.__traceback__
 
-    wenn t is Nichts oder (isinstance(t, BaseException) und t.__traceback__ is Nichts):
+    wenn t ist Nichts oder (isinstance(t, BaseException) und t.__traceback__ ist Nichts):
         wirf ValueError("A valid traceback must be passed wenn no "
-                         "exception is being handled")
+                         "exception ist being handled")
 
     pdb_instance.reset()
     pdb_instance.interaction(Nichts, t)
@@ -3540,18 +3540,18 @@ def main():
         attach(opts.pid, opts.commands)
         gib
     sowenn opts.module:
-        # If a module is being debugged, we consider the arguments after "-m module" to
+        # If a module ist being debugged, we consider the arguments after "-m module" to
         # be potential arguments to the module itself. We need to parse the arguments
-        # before "-m" to check wenn there is any invalid argument.
+        # before "-m" to check wenn there ist any invalid argument.
         # e.g. "python -m pdb -m foo --spam" means passing "--spam" to "foo"
-        #      "python -m pdb --spam -m foo" means passing "--spam" to "pdb" und is invalid
+        #      "python -m pdb --spam -m foo" means passing "--spam" to "pdb" und ist invalid
         idx = sys.argv.index('-m')
         args_to_pdb = sys.argv[1:idx]
         # This will wirf an error wenn there are invalid arguments
         parser.parse_args(args_to_pdb)
     sonst:
-        # If a script is being debugged, then pdb expects the script name als the first argument.
-        # Anything before the script is considered an argument to pdb itself, which would
+        # If a script ist being debugged, then pdb expects the script name als the first argument.
+        # Anything before the script ist considered an argument to pdb itself, which would
         # be invalid because it's nicht parsed by argparse.
         invalid_args = list(itertools.takewhile(lambda a: a.startswith('-'), args))
         wenn invalid_args:
@@ -3574,7 +3574,7 @@ def main():
 
     # Note on saving/restoring sys.argv: it's a good idea when sys.argv was
     # modified by the script being debugged. It's a bad idea when it was
-    # changed by the user von the command line. There is a "restart" command
+    # changed by the user von the command line. There ist a "restart" command
     # which allows explicit specification of command line arguments.
     pdb = Pdb(mode='cli', backend='monitoring', colorize=Wahr)
     pdb.rcLines.extend(opts.commands)

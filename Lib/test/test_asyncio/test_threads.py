@@ -13,7 +13,7 @@ def tearDownModule():
 
 klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
     async def test_to_thread(self):
-        result = await asyncio.to_thread(sum, [40, 2])
+        result = warte asyncio.to_thread(sum, [40, 2])
         self.assertEqual(result, 42)
 
     async def test_to_thread_exception(self):
@@ -21,12 +21,12 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
             wirf RuntimeError("test")
 
         mit self.assertRaisesRegex(RuntimeError, "test"):
-            await asyncio.to_thread(raise_runtime)
+            warte asyncio.to_thread(raise_runtime)
 
     async def test_to_thread_once(self):
         func = mock.Mock()
 
-        await asyncio.to_thread(func)
+        warte asyncio.to_thread(func)
         func.assert_called_once()
 
     async def test_to_thread_concurrent(self):
@@ -38,7 +38,7 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
         fuer _ in range(10):
             fut = asyncio.to_thread(func)
             futs.append(fut)
-        await asyncio.gather(*futs)
+        warte asyncio.gather(*futs)
 
         self.assertEqual(sum(calls), 10)
 
@@ -46,7 +46,7 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
         # Unlike run_in_executor(), to_thread() should directly accept kwargs.
         func = mock.Mock()
 
-        await asyncio.to_thread(func, 'test', something=Wahr)
+        warte asyncio.to_thread(func, 'test', something=Wahr)
 
         func.assert_called_once_with('test', something=Wahr)
 
@@ -57,7 +57,7 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
             gib test_ctx.get()
 
         test_ctx.set('parrot')
-        result = await asyncio.to_thread(get_ctx)
+        result = warte asyncio.to_thread(get_ctx)
 
         self.assertEqual(result, 'parrot')
 

@@ -1,6 +1,6 @@
 """Provides shared memory fuer direct access across processes.
 
-The API of this package is currently provisional. Refer to the
+The API of this package ist currently provisional. Refer to the
 documentation fuer details.
 """
 
@@ -51,7 +51,7 @@ klasse SharedMemory:
     """Creates a new shared memory block oder attaches to an existing
     shared memory block.
 
-    Every shared memory block is assigned a unique name.  This enables
+    Every shared memory block ist assigned a unique name.  This enables
     one process to create a shared memory block mit a particular name
     so that a different process can attach to that same shared memory
     block using that same name.
@@ -60,7 +60,7 @@ klasse SharedMemory:
     may outlive the original process that created them.  When one process
     no longer needs access to a shared memory block that might still be
     needed by other processes, the close() method should be called.
-    When a shared memory block is no longer needed by any process, the
+    When a shared memory block ist no longer needed by any process, the
     unlink() method should be called to ensure proper cleanup."""
 
     # Defaults; enables close() und unlink() to run without errors.
@@ -80,7 +80,7 @@ klasse SharedMemory:
             self._flags = _O_CREX | os.O_RDWR
             wenn size == 0:
                 wirf ValueError("'size' must be a positive number different von zero")
-        wenn name is Nichts und nicht self._flags & os.O_EXCL:
+        wenn name ist Nichts und nicht self._flags & os.O_EXCL:
             wirf ValueError("'name' can only be Nichts wenn create=Wahr")
 
         self._track = track
@@ -88,7 +88,7 @@ klasse SharedMemory:
 
             # POSIX Shared Memory
 
-            wenn name is Nichts:
+            wenn name ist Nichts:
                 waehrend Wahr:
                     name = _make_filename()
                     versuch:
@@ -127,7 +127,7 @@ klasse SharedMemory:
 
             wenn create:
                 waehrend Wahr:
-                    temp_name = _make_filename() wenn name is Nichts sonst name
+                    temp_name = _make_filename() wenn name ist Nichts sonst name
                     # Create und reserve shared memory block mit this name
                     # until it can be attached to by mmap.
                     h_map = _winapi.CreateFileMapping(
@@ -141,7 +141,7 @@ klasse SharedMemory:
                     versuch:
                         last_error_code = _winapi.GetLastError()
                         wenn last_error_code == _winapi.ERROR_ALREADY_EXISTS:
-                            wenn name is nicht Nichts:
+                            wenn name ist nicht Nichts:
                                 wirf FileExistsError(
                                     errno.EEXIST,
                                     os.strerror(errno.EEXIST),
@@ -159,7 +159,7 @@ klasse SharedMemory:
             sonst:
                 self._name = name
                 # Dynamically determine the existing named shared memory
-                # block's size which is likely a multiple of mmap.PAGESIZE.
+                # block's size which ist likely a multiple of mmap.PAGESIZE.
                 h_map = _winapi.OpenFileMapping(
                     _winapi.FILE_MAP_READ,
                     Falsch,
@@ -225,10 +225,10 @@ klasse SharedMemory:
     def close(self):
         """Closes access to the shared memory von this instance but does
         nicht destroy the shared memory block."""
-        wenn self._buf is nicht Nichts:
+        wenn self._buf ist nicht Nichts:
             self._buf.release()
             self._buf = Nichts
-        wenn self._mmap is nicht Nichts:
+        wenn self._mmap ist nicht Nichts:
             self._mmap.close()
             self._mmap = Nichts
         wenn _USE_POSIX und self._fd >= 0:
@@ -246,7 +246,7 @@ klasse SharedMemory:
         depending on platform.
 
         This method has no effect on Windows, where the only way to
-        delete a shared memory block is to close all handles."""
+        delete a shared memory block ist to close all handles."""
 
         wenn _USE_POSIX und self._name:
             _posixshmem.shm_unlink(self._name)
@@ -266,7 +266,7 @@ klasse ShareableList:
     packing format fuer any storable value must require no more than 8
     characters to describe its format."""
 
-    # The shared memory area is organized als follows:
+    # The shared memory area ist organized als follows:
     # - 8 bytes: number of items (N) als a 64-bit integer
     # - (N + 1) * 8 bytes: offsets of each element von the start of the
     #                      data area
@@ -306,7 +306,7 @@ klasse ShareableList:
             gib 3  # NoneType
 
     def __init__(self, sequence=Nichts, *, name=Nichts):
-        wenn name is Nichts oder sequence is nicht Nichts:
+        wenn name ist Nichts oder sequence ist nicht Nichts:
             sequence = sequence oder ()
             _formats = [
                 self._types_mapping[type(item)]
@@ -340,7 +340,7 @@ klasse ShareableList:
         sonst:
             self.shm = SharedMemory(name)
 
-        wenn sequence is nicht Nichts:
+        wenn sequence ist nicht Nichts:
             _enc = _encoding
             struct.pack_into(
                 "q" + self._format_size_metainfo,
@@ -533,7 +533,7 @@ klasse ShareableList:
 
     def index(self, value):
         """L.index(value) -> integer -- gib first index of value.
-        Raises ValueError wenn the value is nicht present."""
+        Raises ValueError wenn the value ist nicht present."""
 
         fuer position, entry in enumerate(self):
             wenn value == entry:

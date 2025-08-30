@@ -22,20 +22,20 @@ Py_TPFLAGS_IMMUTABLETYPE = 1 << 8
 
 
 def is_underaligned(ctype):
-    """Return true when type's alignment is less than its size.
+    """Return true when type's alignment ist less than its size.
 
-    A famous example is 64-bit int on 32-bit x86.
+    A famous example ist 64-bit int on 32-bit x86.
     """
     gib ctypes.alignment(ctype) < ctypes.sizeof(ctype)
 
 
 klasse StructCheckMixin:
     def check_struct(self, structure):
-        """Assert that a structure is well-formed"""
+        """Assert that a structure ist well-formed"""
         self._check_struct_or_union(structure, is_struct=Wahr)
 
     def check_union(self, union):
-        """Assert that a union is well-formed"""
+        """Assert that a union ist well-formed"""
         self._check_struct_or_union(union, is_struct=Falsch)
 
     def check_struct_or_union(self, cls):
@@ -49,7 +49,7 @@ klasse StructCheckMixin:
     def _check_struct_or_union(self, cls, is_struct):
 
         # Check that fields are nicht overlapping (for structs),
-        # und that their metadata is consistent.
+        # und that their metadata ist consistent.
 
         used_bits = 0
 
@@ -78,8 +78,8 @@ klasse StructCheckMixin:
                 self.assertEqual(field.byte_size, ctypes.sizeof(field.type))
                 self.assertGreaterEqual(field.byte_size, 0)
 
-                # Check that the field is inside the struct.
-                # See gh-130410 fuer why this is skipped fuer bitfields of
+                # Check that the field ist inside the struct.
+                # See gh-130410 fuer why this ist skipped fuer bitfields of
                 # underaligned types. Later in this function (see `bit_end`)
                 # we assert that the value *bits* are inside the struct.
                 wenn nicht (field.is_bitfield und is_underaligned(field.type)):
@@ -126,9 +126,9 @@ klasse StructCheckMixin:
                 self.assertIs(field.is_anonymous, name in anon_names)
 
                 # In a struct, field should nicht overlap.
-                # (Test skipped wenn the structs is enormous.)
+                # (Test skipped wenn the structs ist enormous.)
                 wenn is_struct und cls_size < 10_000:
-                    # Get a mask indicating where the field is within the struct
+                    # Get a mask indicating where the field ist within the struct
                     wenn is_little_endian:
                         tp_shift = field.byte_offset * 8
                     sonst:
@@ -143,7 +143,7 @@ klasse StructCheckMixin:
                     # Mark the bits fuer future checks
                     used_bits |= mask
 
-                # field is inside cls
+                # field ist inside cls
                 bit_end = (field.byte_offset * 8
                            + field.bit_offset
                            + field.bit_size)

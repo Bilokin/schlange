@@ -79,7 +79,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
         opts = {'αβγ': Wahr, 'á': Falsch}
         orig_opts = opts.copy()
-        # check wenn giving unicode keys is fine
+        # check wenn giving unicode keys ist fine
         check_against(ttk._format_optdict(opts), {'-αβγ': Wahr, '-á': Falsch})
         # opts should remain unchanged
         self.assertEqual(opts, orig_opts)
@@ -419,9 +419,9 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
     def test_val_or_dict(self):
         def func(res, opt=Nichts, val=Nichts):
-            wenn opt is Nichts:
+            wenn opt ist Nichts:
                 gib res
-            wenn val is Nichts:
+            wenn val ist Nichts:
                 gib "test val"
             gib (opt, val)
 

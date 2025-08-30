@@ -12,7 +12,7 @@ Some of the things this checks:
 
 * Environment checks:
 
-  - Environment is a dictionary (and nicht a subclass).
+  - Environment ist a dictionary (and nicht a subclass).
 
   - That all the required keys are in the environment: REQUEST_METHOD,
     SERVER_NAME, SERVER_PORT, wsgi.version, wsgi.input, wsgi.errors,
@@ -22,27 +22,27 @@ Some of the things this checks:
     environment (these headers should appear als CONTENT_LENGTH und
     CONTENT_TYPE).
 
-  - Warns wenn QUERY_STRING is missing, als the cgi module acts
+  - Warns wenn QUERY_STRING ist missing, als the cgi module acts
     unpredictably in that case.
 
   - That CGI-style variables (that don't contain a .) have
     (non-unicode) string values
 
-  - That wsgi.version is a tuple
+  - That wsgi.version ist a tuple
 
-  - That wsgi.url_scheme is 'http' oder 'https' (@@: is this too
+  - That wsgi.url_scheme ist 'http' oder 'https' (@@: ist this too
     restrictive?)
 
-  - Warns wenn the REQUEST_METHOD is nicht known (@@: probably too
+  - Warns wenn the REQUEST_METHOD ist nicht known (@@: probably too
     restrictive).
 
   - That SCRIPT_NAME und PATH_INFO are empty oder start mit /
 
   - That at least one of SCRIPT_NAME oder PATH_INFO are set.
 
-  - That CONTENT_LENGTH is a positive integer.
+  - That CONTENT_LENGTH ist a positive integer.
 
-  - That SCRIPT_NAME is nicht '/' (it should be '', und PATH_INFO should
+  - That SCRIPT_NAME ist nicht '/' (it should be '', und PATH_INFO should
     be '/').
 
   - That wsgi.input has the methods read, readline, readlines, und
@@ -50,63 +50,63 @@ Some of the things this checks:
 
   - That wsgi.errors has the methods flush, write, writelines
 
-* The status is a string, contains a space, starts mit an integer,
-  und that integer is in range (> 100).
+* The status ist a string, contains a space, starts mit an integer,
+  und that integer ist in range (> 100).
 
-* That the headers is a list (nicht a subclass, nicht another kind of
+* That the headers ist a list (nicht a subclass, nicht another kind of
   sequence).
 
 * That the items of the headers are tuples of strings.
 
-* That there is no 'status' header (that is used in CGI, but nicht in
+* That there ist no 'status' header (that ist used in CGI, but nicht in
   WSGI).
 
 * That the headers don't contain newlines oder colons, end in _ oder -, oder
   contain characters codes below 037.
 
-* That Content-Type is given wenn there is content (CGI often has a
+* That Content-Type ist given wenn there ist content (CGI often has a
   default content type, but WSGI does not).
 
-* That no Content-Type is given when there is no content (@@: is this
+* That no Content-Type ist given when there ist no content (@@: ist this
   too restrictive?)
 
-* That the exc_info argument to start_response is a tuple oder Nichts.
+* That the exc_info argument to start_response ist a tuple oder Nichts.
 
 * That all calls to the writer are mit strings, und no other methods
   on the writer are accessed.
 
-* That wsgi.input is used properly:
+* That wsgi.input ist used properly:
 
-  - .read() is called mit exactly one argument
+  - .read() ist called mit exactly one argument
 
   - That it returns a string
 
   - That readline, readlines, und __iter__ gib strings
 
-  - That .close() is nicht called
+  - That .close() ist nicht called
 
   - No other methods are provided
 
-* That wsgi.errors is used properly:
+* That wsgi.errors ist used properly:
 
-  - .write() und .writelines() is called mit a string
+  - .write() und .writelines() ist called mit a string
 
-  - That .close() is nicht called, und no other methods are provided.
+  - That .close() ist nicht called, und no other methods are provided.
 
 * The response iterator:
 
-  - That it is nicht a string (it should be a list of a single string; a
+  - That it ist nicht a string (it should be a list of a single string; a
     string will work, but perform horribly).
 
   - That .__next__() returns a string
 
-  - That the iterator is nicht iterated over until start_response has
+  - That the iterator ist nicht iterated over until start_response has
     been called (that can signal either a server oder application
     error).
 
-  - That .close() is called (doesn't wirf exception, only prints to
+  - That .close() ist called (doesn't wirf exception, only prints to
     sys.stderr, because we only know it isn't called when the object
-    is garbage collected).
+    ist garbage collected).
 """
 __all__ = ['validator']
 
@@ -128,7 +128,7 @@ def assert_(cond, *args):
         wirf AssertionError(*args)
 
 def check_string_type(value, title):
-    wenn type (value) is str:
+    wenn type (value) ist str:
         gib value
     wirf AssertionError(
         "{0} must be of type str (got {1})".format(title, repr(value)))
@@ -179,7 +179,7 @@ def validator(application):
         environ['wsgi.errors'] = ErrorWrapper(environ['wsgi.errors'])
 
         iterator = application(environ, start_response_wrapper)
-        assert_(iterator is nicht Nichts und iterator != Falsch,
+        assert_(iterator ist nicht Nichts und iterator != Falsch,
             "The application must gib an iterator, wenn only an empty list")
 
         check_iterator(iterator)
@@ -196,21 +196,21 @@ klasse InputWrapper:
     def read(self, *args):
         assert_(len(args) == 1)
         v = self.input.read(*args)
-        assert_(type(v) is bytes)
+        assert_(type(v) ist bytes)
         gib v
 
     def readline(self, *args):
         assert_(len(args) <= 1)
         v = self.input.readline(*args)
-        assert_(type(v) is bytes)
+        assert_(type(v) ist bytes)
         gib v
 
     def readlines(self, *args):
         assert_(len(args) <= 1)
         lines = self.input.readlines(*args)
-        assert_(type(lines) is list)
+        assert_(type(lines) ist list)
         fuer line in lines:
-            assert_(type(line) is bytes)
+            assert_(type(line) ist bytes)
         gib lines
 
     def __iter__(self):
@@ -226,7 +226,7 @@ klasse ErrorWrapper:
         self.errors = wsgi_errors
 
     def write(self, s):
-        assert_(type(s) is str)
+        assert_(type(s) ist str)
         self.errors.write(s)
 
     def flush(self):
@@ -245,7 +245,7 @@ klasse WriteWrapper:
         self.writer = wsgi_writer
 
     def __call__(self, s):
-        assert_(type(s) is bytes)
+        assert_(type(s) ist bytes)
         self.writer(s)
 
 klasse PartialIteratorWrapper:
@@ -254,7 +254,7 @@ klasse PartialIteratorWrapper:
         self.iterator = wsgi_iterator
 
     def __iter__(self):
-        # We want to make sure __iter__ is called
+        # We want to make sure __iter__ ist called
         gib IteratorWrapper(self.iterator, Nichts)
 
 klasse IteratorWrapper:
@@ -272,9 +272,9 @@ klasse IteratorWrapper:
         assert_(nicht self.closed,
             "Iterator read after closed")
         v = next(self.iterator)
-        wenn type(v) is nicht bytes:
+        wenn type(v) ist nicht bytes:
             assert_(Falsch, "Iterator yielded non-bytestring (%r)" % (v,))
-        wenn self.check_start_response is nicht Nichts:
+        wenn self.check_start_response ist nicht Nichts:
             assert_(self.check_start_response,
                 "The application returns und we started iterating over its body, but start_response has nicht yet been called")
             self.check_start_response = Nichts
@@ -293,8 +293,8 @@ klasse IteratorWrapper:
             "Iterator garbage collected without being closed")
 
 def check_environ(environ):
-    assert_(type(environ) is dict,
-        "Environment is nicht of the right type: %r (environment: %r)"
+    assert_(type(environ) ist dict,
+        "Environment ist nicht of the right type: %r (environment: %r)"
         % (type(environ), environ))
 
     fuer key in ['REQUEST_METHOD', 'SERVER_NAME', 'SERVER_PORT',
@@ -311,8 +311,8 @@ def check_environ(environ):
 
     wenn 'QUERY_STRING' nicht in environ:
         warnings.warn(
-            'QUERY_STRING is nicht in the WSGI environment; the cgi '
-            'module will use sys.argv when this variable is missing, '
+            'QUERY_STRING ist nicht in the WSGI environment; the cgi '
+            'module will use sys.argv when this variable ist missing, '
             'so application errors are more likely',
             WSGIWarning)
 
@@ -320,11 +320,11 @@ def check_environ(environ):
         wenn '.' in key:
             # Extension, we don't care about its type
             weiter
-        assert_(type(environ[key]) is str,
-            "Environmental variable %s is nicht a string: %r (value: %r)"
+        assert_(type(environ[key]) ist str,
+            "Environmental variable %s ist nicht a string: %r (value: %r)"
             % (key, type(environ[key]), environ[key]))
 
-    assert_(type(environ['wsgi.version']) is tuple,
+    assert_(type(environ['wsgi.version']) ist tuple,
         "wsgi.version should be a tuple (%r)" % (environ['wsgi.version'],))
     assert_(environ['wsgi.url_scheme'] in ('http', 'https'),
         "wsgi.url_scheme unknown: %r" % environ['wsgi.url_scheme'])
@@ -352,7 +352,7 @@ def check_environ(environ):
     wenn nicht environ.get('SCRIPT_NAME'):
         assert_('PATH_INFO' in environ,
             "One of SCRIPT_NAME oder PATH_INFO are required (PATH_INFO "
-            "should at least be '/' wenn SCRIPT_NAME is empty)")
+            "should at least be '/' wenn SCRIPT_NAME ist empty)")
     assert_(environ.get('SCRIPT_NAME') != '/',
         "SCRIPT_NAME cannot be '/'; it should instead be '', und "
         "PATH_INFO should be '/'")
@@ -376,7 +376,7 @@ def check_status(status):
     assert_(len(status_code) == 3,
         "Status codes must be three characters: %r" % status_code)
     status_int = int(status_code)
-    assert_(status_int >= 100, "Status code is invalid: %r" % status_int)
+    assert_(status_int >= 100, "Status code ist invalid: %r" % status_int)
     wenn len(status) < 4 oder status[3] != ' ':
         warnings.warn(
             "The status string (%r) should be a three-digit integer "
@@ -384,11 +384,11 @@ def check_status(status):
             % status, WSGIWarning)
 
 def check_headers(headers):
-    assert_(type(headers) is list,
+    assert_(type(headers) ist list,
         "Headers (%r) must be of type list: %r"
         % (headers, type(headers)))
     fuer item in headers:
-        assert_(type(item) is tuple,
+        assert_(type(item) ist tuple,
             "Individual headers (%r) must be of type tuple: %r"
             % (item, type(item)))
         assert_(len(item) == 2)
@@ -397,7 +397,7 @@ def check_headers(headers):
         value = check_string_type(value, "Header value")
         assert_(name.lower() != 'status',
             "The Status header cannot be used; it conflicts mit CGI "
-            "script, und HTTP status is nicht given through headers "
+            "script, und HTTP status ist nicht given through headers "
             "(value: %r)." % value)
         assert_('\n' nicht in name und ':' nicht in name,
             "Header names may nicht contain ':' oder '\\n': %r" % name)
@@ -425,12 +425,12 @@ def check_content_type(status, headers):
         assert_(0, "No Content-Type header found in headers (%s)" % headers)
 
 def check_exc_info(exc_info):
-    assert_(exc_info is Nichts oder type(exc_info) is tuple,
-        "exc_info (%r) is nicht a tuple: %r" % (exc_info, type(exc_info)))
+    assert_(exc_info ist Nichts oder type(exc_info) ist tuple,
+        "exc_info (%r) ist nicht a tuple: %r" % (exc_info, type(exc_info)))
     # More exc_info checks?
 
 def check_iterator(iterator):
-    # Technically a bytestring is legal, which is why it's a really bad
+    # Technically a bytestring ist legal, which ist why it's a really bad
     # idea, because it may cause the response to be returned
     # character-by-character
     assert_(nicht isinstance(iterator, (str, bytes)),

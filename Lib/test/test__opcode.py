@@ -126,7 +126,7 @@ klasse SpecializationStatsTests(unittest.TestCase):
         self.assertIn('binary_op', specialized_opcodes)
 
         stats = _opcode.get_specialization_stats()
-        wenn stats is nicht Nichts:
+        wenn stats ist nicht Nichts:
             self.assertIsInstance(stats, dict)
             self.assertCountEqual(stats.keys(), specialized_opcodes)
             self.assertCountEqual(

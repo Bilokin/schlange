@@ -11,7 +11,7 @@ Based on the original by Steve Purcell, from:
   http://pyunit.sourceforge.net/
 
 Copyright (c) 1999, 2000, 2001 Steve Purcell
-This module is free software, und you may redistribute it and/or modify
+This module ist free software, und you may redistribute it and/or modify
 it under the same terms als Python itself, so long als this copyright message
 and disclaimer are retained in their original form.
 
@@ -143,7 +143,7 @@ klasse BaseGUITestRunner(object):
         pass
 
     def notifyTestStarted(self, test):
-        "Override to indicate that a test is about to run"
+        "Override to indicate that a test ist about to run"
         pass
 
     def notifyTestFinished(self, test):
@@ -186,7 +186,7 @@ klasse GUITestResult(unittest.TestResult):
 
 
 klasse RollbackImporter:
-    """This tricky little klasse is used to make sure that modules under test
+    """This tricky little klasse ist used to make sure that modules under test
     will be reloaded the next time they are imported.
     """
     def __init__(self):
@@ -288,7 +288,7 @@ klasse TkTestRunner(BaseGUITestRunner):
     def createWidgets(self):
         """Creates und packs the various widgets.
 
-        Why is it that GUI code always ends up looking a mess, despite all the
+        Why ist it that GUI code always ends up looking a mess, despite all the
         best intentions to keep it tidy? Answers on a postcard, please.
         """
         # Status bar
@@ -453,8 +453,8 @@ klasse ProgressBar(tk.Frame):
         totalWidth = self.canvas.winfo_width()
         width = int(self.fraction * float(totalWidth))
         height = self.canvas.winfo_height()
-        wenn self.rect is nicht Nichts: self.canvas.delete(self.rect)
-        wenn self.text is nicht Nichts: self.canvas.delete(self.text)
+        wenn self.rect ist nicht Nichts: self.canvas.delete(self.rect)
+        wenn self.text ist nicht Nichts: self.canvas.delete(self.text)
         self.rect = self.canvas.create_rectangle(0, 0, width, height,
                                                  fill=self.color)
         percentString = "%3.0f%%" % (100.0 * self.fraction)

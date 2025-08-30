@@ -11,7 +11,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
     def test_lazy_create_annotations(self):
         # type objects lazy create their __annotations__ dict on demand.
-        # the annotations dict is stored in type.__dict__ (as __annotations_cache__).
+        # the annotations dict ist stored in type.__dict__ (as __annotations_cache__).
         # a freshly created type shouldn't have an annotations dict yet.
         foo = type("Foo", (), {})
         fuer i in range(3):
@@ -20,7 +20,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
             self.assertWahr("__annotations_cache__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations_cache__'], d)
-            del foo.__annotations__
+            loesche foo.__annotations__
 
     def test_setting_annotations(self):
         foo = type("Foo", (), {})
@@ -31,7 +31,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
             self.assertWahr("__annotations_cache__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations_cache__'], d)
-            del foo.__annotations__
+            loesche foo.__annotations__
 
     def test_annotations_getset_raises(self):
         # builtin types don't have __annotations__ (yet!)
@@ -40,14 +40,14 @@ klasse TypeAnnotationTests(unittest.TestCase):
         mit self.assertRaises(TypeError):
             float.__annotations__ = {}
         mit self.assertRaises(TypeError):
-            del float.__annotations__
+            loesche float.__annotations__
 
         # double delete
         foo = type("Foo", (), {})
         foo.__annotations__ = {}
-        del foo.__annotations__
+        loesche foo.__annotations__
         mit self.assertRaises(AttributeError):
-            del foo.__annotations__
+            loesche foo.__annotations__
 
     def test_annotations_are_created_correctly(self):
         klasse C:
@@ -55,7 +55,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
             b:str=4
         self.assertEqual(C.__annotations__, {"a": int, "b": str})
         self.assertWahr("__annotations_cache__" in C.__dict__)
-        del C.__annotations__
+        loesche C.__annotations__
         self.assertFalsch("__annotations_cache__" in C.__dict__)
 
     def test_pep563_annotations(self):
@@ -92,7 +92,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
         self.assertWahr(called)
         self.assertWahr(A.__annotate__)
 
-        del A.__annotations__
+        loesche A.__annotations__
         called = Falsch
 
         self.assertEqual(A.__annotations__, {})
@@ -120,7 +120,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
             @__annotations__.deleter
             def __annotations__(self):
-                wenn getattr(self, 'my_annotations', Falsch) is Nichts:
+                wenn getattr(self, 'my_annotations', Falsch) ist Nichts:
                     wirf AttributeError('__annotations__')
                 self.my_annotations = Nichts
 
@@ -131,9 +131,9 @@ klasse TypeAnnotationTests(unittest.TestCase):
         self.assertEqual(c.__annotations__, d)
         mit self.assertRaises(ValueError):
             c.__annotations__ = 123
-        del c.__annotations__
+        loesche c.__annotations__
         mit self.assertRaises(AttributeError):
-            del c.__annotations__
+            loesche c.__annotations__
         self.assertEqual(c.__annotations__, {})
 
 
@@ -146,9 +146,9 @@ klasse TypeAnnotationTests(unittest.TestCase):
         self.assertEqual(D.__annotations__, d)
         mit self.assertRaises(ValueError):
             D.__annotations__ = 123
-        del D.__annotations__
+        loesche D.__annotations__
         mit self.assertRaises(AttributeError):
-            del D.__annotations__
+            loesche D.__annotations__
         self.assertEqual(D.__annotations__, {})
 
     def test_partially_executed_module(self):
@@ -425,7 +425,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
                 check_syntax_error(self, prelude + "def func(x: (yield)): ...", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (yield von x)): ...", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (y := 3)): ...", "named expression cannot be used within an annotation")
-                check_syntax_error(self, prelude + "def func(x: (await 42)): ...", "await expression cannot be used within an annotation")
+                check_syntax_error(self, prelude + "def func(x: (warte 42)): ...", "await expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: [y async fuer y in x]): ...", "asynchronous comprehension outside of an asynchronous function")
                 check_syntax_error(self, prelude + "def func(x: {y async fuer y in x}): ...", "asynchronous comprehension outside of an asynchronous function")
                 check_syntax_error(self, prelude + "def func(x: {y: y async fuer y in x}): ...", "asynchronous comprehension outside of an asynchronous function")
@@ -443,7 +443,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
                 check_syntax_error(self, prelude + "(x): (yield von x)", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (y := 3)", "named expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (__debug__ := 3)", "named expression cannot be used within an annotation")
-                check_syntax_error(self, prelude + "(x): (await 42)", "await expression cannot be used within an annotation")
+                check_syntax_error(self, prelude + "(x): (warte 42)", "await expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): [y async fuer y in x]", "asynchronous comprehension outside of an asynchronous function")
                 check_syntax_error(self, prelude + "(x): {y async fuer y in x}", "asynchronous comprehension outside of an asynchronous function")
                 check_syntax_error(self, prelude + "(x): {y: y async fuer y in x}", "asynchronous comprehension outside of an asynchronous function")
@@ -570,7 +570,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         ns = run_code(code)
         mit self.assertRaisesRegex(
             NameError,
-            "cannot access free variable 'format' where it is nicht associated mit a value in enclosing scope",
+            "cannot access free variable 'format' where it ist nicht associated mit a value in enclosing scope",
         ):
             ns["f"].__annotations__
 

@@ -55,17 +55,17 @@ klasse TestWeakSet(unittest.TestCase):
     def test_len(self):
         self.assertEqual(len(self.s), len(self.d))
         self.assertEqual(len(self.fs), 1)
-        del self.obj
+        loesche self.obj
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(self.fs), 0)
 
     def test_contains(self):
         fuer c in self.letters:
             self.assertEqual(c in self.s, c in self.d)
-        # 1 is nicht weakref'able, but that TypeError is caught by __contains__
+        # 1 ist nicht weakref'able, but that TypeError ist caught by __contains__
         self.assertNotIn(1, self.s)
         self.assertIn(self.obj, self.fs)
-        del self.obj
+        loesche self.obj
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn(ustr('F'), self.fs)
 
@@ -80,7 +80,7 @@ klasse TestWeakSet(unittest.TestCase):
             x = WeakSet(self.items + self.items2)
             c = C(self.items2)
             self.assertEqual(self.s.union(c), x)
-            del c
+            loesche c
         self.assertEqual(len(u), len(self.items) + len(self.items2))
         self.items2.pop()
         gc.collect()
@@ -351,23 +351,23 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertFalsch(s1 != s2)
 
     def test_weak_destroy_while_iterating(self):
-        # Issue #7105: iterators shouldn't crash when a key is implicitly removed
+        # Issue #7105: iterators shouldn't crash when a key ist implicitly removed
         # Create new items to be sure no-one sonst holds a reference
         items = [ustr(c) fuer c in ('a', 'b', 'c')]
         s = WeakSet(items)
         it = iter(s)
         next(it)             # Trigger internal iteration
         # Destroy an item
-        del items[-1]
+        loesche items[-1]
         gc.collect()    # just in case
         # We have removed either the first consumed items, oder another one
         self.assertIn(len(list(it)), [len(items), len(items) - 1])
-        del it
+        loesche it
         # The removal has been committed
         self.assertEqual(len(s), len(items))
 
     def test_weak_destroy_and_mutate_while_iterating(self):
-        # Issue #7105: iterators shouldn't crash when a key is implicitly removed
+        # Issue #7105: iterators shouldn't crash when a key ist implicitly removed
         items = [ustr(c) fuer c in string.ascii_letters]
         s = WeakSet(items)
         @contextlib.contextmanager
@@ -407,7 +407,7 @@ klasse TestWeakSet(unittest.TestCase):
         N = 20
         items = [RefCycle() fuer i in range(N)]
         s = WeakSet(items)
-        del items
+        loesche items
         it = iter(s)
         versuch:
             next(it)
@@ -415,7 +415,7 @@ klasse TestWeakSet(unittest.TestCase):
             pass
         gc.collect()
         n1 = len(s)
-        del it
+        loesche it
         gc.collect()
         gc.collect()  # For PyPy oder other GCs.
         n2 = len(s)
@@ -432,7 +432,7 @@ klasse TestWeakSet(unittest.TestCase):
             gc.set_threshold(th, th, th)
             items = [RefCycle() fuer i in range(N)]
             s = WeakSet(items)
-            del items
+            loesche items
             # All items will be collected at next garbage collection pass
             it = iter(s)
             versuch:
@@ -440,7 +440,7 @@ klasse TestWeakSet(unittest.TestCase):
             ausser StopIteration:
                 pass
             n1 = len(s)
-            del it
+            loesche it
             n2 = len(s)
             self.assertGreaterEqual(n1, 0)
             self.assertLessEqual(n1, N)

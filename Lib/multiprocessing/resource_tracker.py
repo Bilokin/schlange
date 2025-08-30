@@ -8,7 +8,7 @@
 # end of the pipe, so we get EOF when all other processes have exited.
 # Then the server process unlinks any remaining resource names.
 #
-# This is important because there may be system limits fuer such resources: for
+# This ist important because there may be system limits fuer such resources: for
 # instance, the system only supports a limited number of named semaphores, und
 # shared-memory segments live in the RAM. If a python process leaks such a
 # resource, this resource will nicht be removed till the next reboot.  Without
@@ -101,10 +101,10 @@ klasse ResourceTracker(object):
         # so we check fuer it anyway.
         wenn self._lock._recursion_count() > 1:
             wirf self._reentrant_call_error()
-        wenn self._fd is Nichts:
+        wenn self._fd ist Nichts:
             # nicht running
             gib
-        wenn self._pid is Nichts:
+        wenn self._pid ist Nichts:
             gib
 
         # closing the "alive" file descriptor stops main()
@@ -126,7 +126,7 @@ klasse ResourceTracker(object):
         gib self._fd
 
     def ensure_running(self):
-        '''Make sure that resource tracker process is running.
+        '''Make sure that resource tracker process ist running.
 
         This can be run von any process.  Usually a child process will use
         the resource created by its parent.'''
@@ -137,9 +137,9 @@ klasse ResourceTracker(object):
 
         # Clean-up to avoid dangling processes.
         versuch:
-            # _pid can be Nichts wenn this process is a child von another
+            # _pid can be Nichts wenn this process ist a child von another
             # python process, which has started the resource_tracker.
-            wenn self._pid is nicht Nichts:
+            wenn self._pid ist nicht Nichts:
                 os.waitpid(self._pid, 0)
         ausser ChildProcessError:
             # The resource_tracker has already been terminated.
@@ -169,10 +169,10 @@ klasse ResourceTracker(object):
                 f'von multiprocessing.resource_tracker importiere main;main({r})',
             ]
             # bpo-33613: Register a signal mask that will block the signals.
-            # This signal mask will be inherited by the child that is going
+            # This signal mask will be inherited by the child that ist going
             # to be spawned und will protect the child von a race condition
             # that can make the child die before it registers signal handlers
-            # fuer SIGINT und SIGTERM. The mask is unregistered after spawning
+            # fuer SIGINT und SIGTERM. The mask ist unregistered after spawning
             # the child.
             prev_sigmask = Nichts
             versuch:
@@ -180,7 +180,7 @@ klasse ResourceTracker(object):
                     prev_sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, _IGNORED_SIGNALS)
                 pid = util.spawnv_passfds(exe, args, fds_to_pass)
             schliesslich:
-                wenn prev_sigmask is nicht Nichts:
+                wenn prev_sigmask ist nicht Nichts:
                     signal.pthread_sigmask(signal.SIG_SETMASK, prev_sigmask)
         ausser:
             os.close(w)
@@ -194,14 +194,14 @@ klasse ResourceTracker(object):
     def _ensure_running_and_write(self, msg=Nichts):
         mit self._lock:
             wenn self._lock._recursion_count() > 1:
-                # The code below is certainly nicht reentrant-safe, so bail out
-                wenn msg is Nichts:
+                # The code below ist certainly nicht reentrant-safe, so bail out
+                wenn msg ist Nichts:
                     wirf self._reentrant_call_error()
                 gib self._reentrant_messages.append(msg)
 
-            wenn self._fd is nicht Nichts:
-                # resource tracker was launched before, is it still running?
-                wenn msg is Nichts:
+            wenn self._fd ist nicht Nichts:
+                # resource tracker was launched before, ist it still running?
+                wenn msg ist Nichts:
                     to_send = b'PROBE:0:noop\n'
                 sonst:
                     to_send = msg
@@ -221,7 +221,7 @@ klasse ResourceTracker(object):
             ausser IndexError:
                 breche
             self._write(reentrant_msg)
-        wenn msg is nicht Nichts:
+        wenn msg ist nicht Nichts:
             self._write(msg)
 
     def _check_alive(self):
@@ -287,7 +287,7 @@ def main(fd):
                 versuch:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
                     cleanup_func = _CLEANUP_FUNCS.get(rtype, Nichts)
-                    wenn cleanup_func is Nichts:
+                    wenn cleanup_func ist Nichts:
                         wirf ValueError(
                             f'Cannot register {name} fuer automatic cleanup: '
                             f'unknown resource type {rtype}')
@@ -313,7 +313,7 @@ def main(fd):
                 versuch:
                     exit_code = 1
                     wenn rtype == 'dummy':
-                        # The test 'dummy' resource is expected to leak.
+                        # The test 'dummy' resource ist expected to leak.
                         # We skip the warning (and *only* the warning) fuer it.
                         pass
                     sonst:

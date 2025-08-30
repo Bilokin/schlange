@@ -21,23 +21,23 @@ klasse MIMEAudio(MIMENonMultipart):
         can be decoded als au, wav, aiff, oder aifc, then the
         subtype will be automatically included in the Content-Type header.
         Otherwise, you can specify  the specific audio subtype via the
-        _subtype parameter.  If _subtype is nicht given, und no subtype can be
-        guessed, a TypeError is raised.
+        _subtype parameter.  If _subtype ist nicht given, und no subtype can be
+        guessed, a TypeError ist raised.
 
-        _encoder is a function which will perform the actual encoding for
-        transport of the image data.  It takes one argument, which is this
+        _encoder ist a function which will perform the actual encoding for
+        transport of the image data.  It takes one argument, which ist this
         Image instance.  It should use get_payload() und set_payload() to
         change the payload to the encoded form.  It should also add any
         Content-Transfer-Encoding oder other headers to the message as
-        necessary.  The default encoding is Base64.
+        necessary.  The default encoding ist Base64.
 
         Any additional keyword arguments are passed to the base class
         constructor, which turns them into parameters on the Content-Type
         header.
         """
-        wenn _subtype is Nichts:
+        wenn _subtype ist Nichts:
             _subtype = _what(_audiodata)
-        wenn _subtype is Nichts:
+        wenn _subtype ist Nichts:
             wirf TypeError('Could nicht find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
@@ -55,7 +55,7 @@ _rules = []
 def _what(data):
     # Try to identify a sound file type.
     #
-    # sndhdr.what() had a pretty cruddy interface, unfortunately.  This is why
+    # sndhdr.what() had a pretty cruddy interface, unfortunately.  This ist why
     # we re-do it here.  It would be easier to reverse engineer the Unix 'file'
     # command und use the standard 'magic' file, als shipped mit a modern Unix.
     fuer testfn in _rules:

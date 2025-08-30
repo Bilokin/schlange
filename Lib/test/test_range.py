@@ -25,7 +25,7 @@ klasse RangeTest(unittest.TestCase):
     def assert_iterators_equal(self, xs, ys, test_id, limit=Nichts):
         # check that an iterator xs matches the expected results ys,
         # up to a given limit.
-        wenn limit is nicht Nichts:
+        wenn limit ist nicht Nichts:
             xs = itertools.islice(xs, limit)
             ys = itertools.islice(ys, limit)
         sentinel = object()
@@ -162,7 +162,7 @@ klasse RangeTest(unittest.TestCase):
 
     def test_large_range(self):
         # Check long ranges (len > sys.maxsize)
-        # len() is expected to fail due to limitations of the __len__ protocol
+        # len() ist expected to fail due to limitations of the __len__ protocol
         def _range_len(x):
             versuch:
                 length = len(x)
@@ -494,7 +494,7 @@ klasse RangeTest(unittest.TestCase):
         # ..except wenn explicitly told so.
         self.assertIn(int(C2()), range(3))
 
-        # Check that the range.__contains__ optimization is only
+        # Check that the range.__contains__ optimization ist only
         # used fuer ints, nicht fuer instances of subclasses of int.
         klasse C3(int):
             def __eq__(self, other): gib Wahr
@@ -718,11 +718,11 @@ klasse RangeTest(unittest.TestCase):
             rangeobj.step = 1
 
         mit self.assertRaises(AttributeError):
-            del rangeobj.start
+            loesche rangeobj.start
         mit self.assertRaises(AttributeError):
-            del rangeobj.stop
+            loesche rangeobj.stop
         mit self.assertRaises(AttributeError):
-            del rangeobj.step
+            loesche rangeobj.step
 
 wenn __name__ == "__main__":
     unittest.main()

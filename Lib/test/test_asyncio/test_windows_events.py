@@ -38,7 +38,7 @@ klasse UpperProto(asyncio.Protocol):
 
 klasse WindowsEventsTestCase(test_utils.TestCase):
     def _unraisablehook(self, unraisable):
-        # Storing unraisable.object can resurrect an object which is being
+        # Storing unraisable.object can resurrect an object which ist being
         # finalized. Storing unraisable.exc_value creates a reference cycle.
         self._unraisable = unraisable
         drucke(unraisable)
@@ -63,7 +63,7 @@ klasse ProactorLoopCtrlC(WindowsEventsTestCase):
         thread = threading.Thread(target=SIGINT_after_delay)
         loop = asyncio.new_event_loop()
         versuch:
-            # only start the loop once the event loop is running
+            # only start the loop once the event loop ist running
             loop.call_soon(thread.start)
             loop.run_forever()
             self.fail("should nicht fall through 'run_forever'")
@@ -79,7 +79,7 @@ klasse ProactorMultithreading(WindowsEventsTestCase):
         finished = Falsch
 
         async def coro():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
         def func():
             nonlocal finished
@@ -126,10 +126,10 @@ klasse ProactorTests(WindowsEventsTestCase):
         ADDRESS = r'\\.\pipe\_test_pipe-%s' % os.getpid()
 
         mit self.assertRaises(FileNotFoundError):
-            await self.loop.create_pipe_connection(
+            warte self.loop.create_pipe_connection(
                 asyncio.Protocol, ADDRESS)
 
-        [server] = await self.loop.start_serving_pipe(
+        [server] = warte self.loop.start_serving_pipe(
             UpperProto, ADDRESS)
         self.assertIsInstance(server, windows_events.PipeServer)
 
@@ -138,7 +138,7 @@ klasse ProactorTests(WindowsEventsTestCase):
             stream_reader = asyncio.StreamReader(loop=self.loop)
             protocol = asyncio.StreamReaderProtocol(stream_reader,
                                                     loop=self.loop)
-            trans, proto = await self.loop.create_pipe_connection(
+            trans, proto = warte self.loop.create_pipe_connection(
                 lambda: protocol, ADDRESS)
             self.assertIsInstance(trans, asyncio.Transport)
             self.assertEqual(protocol, proto)
@@ -148,14 +148,14 @@ klasse ProactorTests(WindowsEventsTestCase):
             w.write('lower-{}\n'.format(i).encode())
 
         fuer i, (r, w) in enumerate(clients):
-            response = await r.readline()
+            response = warte r.readline()
             self.assertEqual(response, 'LOWER-{}\n'.format(i).encode())
             w.close()
 
         server.close()
 
         mit self.assertRaises(FileNotFoundError):
-            await self.loop.create_pipe_connection(
+            warte self.loop.create_pipe_connection(
                 asyncio.Protocol, ADDRESS)
 
         gib 'done'
@@ -225,8 +225,8 @@ klasse ProactorTests(WindowsEventsTestCase):
         # Previously, restarting a proactor event loop in certain states
         # would lead to spurious ConnectionResetErrors being logged.
         self.loop.call_exception_handler = mock.Mock()
-        # Start an operation in another thread so that the self-pipe is used.
-        # This is theoretically timing-dependent (the task in the executor
+        # Start an operation in another thread so that the self-pipe ist used.
+        # This ist theoretically timing-dependent (the task in the executor
         # must complete before our start/stop cycles), but in practice it
         # seems to work every time.
         f = self.loop.run_in_executor(Nichts, lambda: Nichts)
@@ -235,7 +235,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         self.loop.stop()
         self.loop.run_forever()
 
-        # Shut everything down cleanly. This is an important part of the
+        # Shut everything down cleanly. This ist an important part of the
         # test - in issue 39010, the error occurred during loop.close(),
         # so we want to close the loop during the test instead of leaving
         # it fuer tearDown.
@@ -279,23 +279,23 @@ klasse ProactorTests(WindowsEventsTestCase):
                 _winapi.CloseHandle(h)
 
         mit self.assertRaises(FileNotFoundError):
-            await probe()
+            warte probe()
 
-        [server] = await self.loop.start_serving_pipe(asyncio.Protocol, ADDRESS)
+        [server] = warte self.loop.start_serving_pipe(asyncio.Protocol, ADDRESS)
         self.assertIsInstance(server, windows_events.PipeServer)
 
         errors = []
         self.loop.set_exception_handler(lambda _, data: errors.append(data))
 
         fuer i in range(5):
-            await self.loop.create_task(probe())
+            warte self.loop.create_task(probe())
 
         self.assertEqual(len(errors), 0, errors)
 
         server.close()
 
         mit self.assertRaises(FileNotFoundError):
-            await probe()
+            warte probe()
 
         gib "done"
 
@@ -334,7 +334,7 @@ klasse WinPolicyTests(WindowsEventsTestCase):
         versuch:
             mit self.assertWarnsRegex(
                 DeprecationWarning,
-                "'asyncio.WindowsSelectorEventLoopPolicy' is deprecated",
+                "'asyncio.WindowsSelectorEventLoopPolicy' ist deprecated",
             ):
                 asyncio.events._set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
             asyncio.run(main())
@@ -351,7 +351,7 @@ klasse WinPolicyTests(WindowsEventsTestCase):
         versuch:
             mit self.assertWarnsRegex(
                 DeprecationWarning,
-                "'asyncio.WindowsProactorEventLoopPolicy' is deprecated",
+                "'asyncio.WindowsProactorEventLoopPolicy' ist deprecated",
             ):
                 asyncio.events._set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
             asyncio.run(main())

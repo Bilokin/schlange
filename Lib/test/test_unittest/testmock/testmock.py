@@ -61,7 +61,7 @@ def something(a): pass
 klasse MockTest(unittest.TestCase):
 
     def test_all(self):
-        # wenn __all__ is badly defined then importiere * will wirf an error
+        # wenn __all__ ist badly defined then importiere * will wirf an error
         # We have to exec it because you can't importiere * inside a method
         # in Python 3
         exec("from unittest.mock importiere *")
@@ -218,7 +218,7 @@ klasse MockTest(unittest.TestCase):
         mock.side_effect = [1, 2, 3]
         self.assertEqual([mock(), mock(), mock()], [1, 2, 3],
                           "side effect nicht used correctly in create_autospec")
-        # Test where side effect is a callable
+        # Test where side effect ist a callable
         results = [1, 2, 3]
         mock = create_autospec(f)
         mock.side_effect = effect
@@ -264,7 +264,7 @@ klasse MockTest(unittest.TestCase):
                 mock.mock_open()  # should still be valid mit open() mocked
 
     def test_create_autospec_wraps_class(self):
-        """Autospec a klasse mit wraps & test wenn the call is passed to the
+        """Autospec a klasse mit wraps & test wenn the call ist passed to the
         wrapped object."""
         result = "real result"
 
@@ -273,21 +273,21 @@ klasse MockTest(unittest.TestCase):
                 gib result
         class_mock = create_autospec(spec=Result, wraps=Result)
         # Have to reassign the return_value to DEFAULT to gib the real
-        # result (actual instance of "Result") when the mock is called.
+        # result (actual instance of "Result") when the mock ist called.
         class_mock.return_value = mock.DEFAULT
         self.assertEqual(class_mock().get_result(), result)
         # Autospec should also wrap child attributes of parent.
         self.assertEqual(class_mock.get_result._mock_wraps, Result.get_result)
 
     def test_create_autospec_instance_wraps_class(self):
-        """Autospec a klasse instance mit wraps & test wenn the call is passed
+        """Autospec a klasse instance mit wraps & test wenn the call ist passed
         to the wrapped object."""
         result = "real result"
 
         klasse Result:
             @staticmethod
             def get_result():
-                """This is a static method because when the mocked instance of
+                """This ist a static method because when the mocked instance of
                 'Result' will call this method, it won't be able to consume
                 'self' argument."""
                 gib result
@@ -313,7 +313,7 @@ klasse MockTest(unittest.TestCase):
 
     def test_explicit_return_value_even_if_mock_wraps_object(self):
         """If the mock has an explicit return_value set then calls are not
-        passed to the wrapped object und the return_value is returned instead.
+        passed to the wrapped object und the return_value ist returned instead.
         """
         def my_func():
             gib Nichts  # pragma: no cover
@@ -444,7 +444,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_calls_equal_with_any(self):
-        # Check that equality und non-equality is consistent even when
+        # Check that equality und non-equality ist consistent even when
         # comparing mit mock.ANY
         mm = mock.MagicMock()
         self.assertWahr(mm == mm)
@@ -704,7 +704,7 @@ klasse MockTest(unittest.TestCase):
         # trigger its descriptor ("NonCallableMock.__set_return_value") so
         # the default "return_value" should always be "sentinel.DEFAULT".
         self.assertEqual(mock.return_value, DEFAULT)
-        # It will nicht be "sentinel.DEFAULT" wenn the mock is nicht wrapping any
+        # It will nicht be "sentinel.DEFAULT" wenn the mock ist nicht wrapping any
         # object.
         self.assertNotEqual(real.return_value, DEFAULT)
         self.assertEqual(mock(), real())
@@ -867,11 +867,11 @@ klasse MockTest(unittest.TestCase):
         # __contains__ method has a default value of Falsch
         self.assertFalsch('foo' in wrapped_dict)
 
-        # return_value is non-sentinel und takes precedence over wrapped value.
+        # return_value ist non-sentinel und takes precedence over wrapped value.
         wrapped_dict.get.return_value = 'return_value'
         self.assertEqual(wrapped_dict.get('foo'), 'return_value')
 
-        # return_value is sentinel und hence wrapped value is returned.
+        # return_value ist sentinel und hence wrapped value ist returned.
         wrapped_dict.get.return_value = sentinel.DEFAULT
         self.assertEqual(wrapped_dict.get('foo'), 'bar')
 
@@ -884,7 +884,7 @@ klasse MockTest(unittest.TestCase):
         self.assertIsInstance(wrapped_dict['baz'], MagicMock)
         self.assertFalsch('bar' in wrapped_dict)
 
-        del data['baz']
+        loesche data['baz']
         self.assertEqual(wrapped_dict.get('baz'), Nichts)
 
 
@@ -1105,7 +1105,7 @@ klasse MockTest(unittest.TestCase):
         mock.child.return_value = 1
 
         self.assertIn('child', dir(mock))
-        del mock.child
+        loesche mock.child
         self.assertNotIn('child', dir(mock))
 
 
@@ -2217,10 +2217,10 @@ klasse MockTest(unittest.TestCase):
                      NonCallableMock()):
             self.assertHasAttr(mock, 'm')
 
-            del mock.m
+            loesche mock.m
             self.assertNotHasAttr(mock, 'm')
 
-            del mock.f
+            loesche mock.f
             self.assertNotHasAttr(mock, 'f')
             self.assertRaises(AttributeError, getattr, mock, 'f')
 
@@ -2233,23 +2233,23 @@ klasse MockTest(unittest.TestCase):
             self.assertHasAttr(mock, 'foo')
             self.assertEqual(mock.foo, 3)
 
-            del mock.foo
+            loesche mock.foo
             self.assertNotHasAttr(mock, 'foo')
 
             mock.foo = 4
             self.assertHasAttr(mock, 'foo')
             self.assertEqual(mock.foo, 4)
 
-            del mock.foo
+            loesche mock.foo
             self.assertNotHasAttr(mock, 'foo')
 
 
     def test_mock_raises_when_deleting_nonexistent_attribute(self):
         fuer mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
-            del mock.foo
+            loesche mock.foo
             mit self.assertRaises(AttributeError):
-                del mock.foo
+                loesche mock.foo
 
 
     def test_reset_mock_does_not_raise_on_attr_deletion(self):
@@ -2257,7 +2257,7 @@ klasse MockTest(unittest.TestCase):
         # were deleted in a mock instance
         mock = Mock()
         mock.child = Wahr
-        del mock.child
+        loesche mock.child
         mock.reset_mock()
         self.assertNotHasAttr(mock, 'child')
 
@@ -2311,7 +2311,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_isinstance_under_settrace(self):
-        # bpo-36593 : __class__ is nicht set fuer a klasse that has __class__
+        # bpo-36593 : __class__ ist nicht set fuer a klasse that has __class__
         # property defined when it's used mit sys.settrace(trace) set.
         # Delete the module to force reimport mit tracing function set
         # restore the old reference later since there are other tests that are
@@ -2323,12 +2323,12 @@ klasse MockTest(unittest.TestCase):
 
         # Directly using __setattr__ on unittest.mock causes current imported
         # reference to be updated. Use a lambda so that during cleanup the
-        # re-imported new reference is updated.
+        # re-imported new reference ist updated.
         self.addCleanup(lambda patch: setattr(unittest.mock, 'patch', patch),
                         old_patch)
 
         mit patch.dict('sys.modules'):
-            del sys.modules['unittest.mock']
+            loesche sys.modules['unittest.mock']
 
             # This trace will stop coverage being measured ;-)
             def trace(frame, event, arg):  # pragma: no cover

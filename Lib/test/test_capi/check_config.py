@@ -1,4 +1,4 @@
-# This script is used by test_misc.
+# This script ist used by test_misc.
 
 importiere _imp
 importiere _testinternalcapi
@@ -15,7 +15,7 @@ def import_singlephase():
         sys.modules.pop('_testsinglephase', Nichts)
         gib Falsch
     sonst:
-        del sys.modules['_testsinglephase']
+        loesche sys.modules['_testsinglephase']
         gib Wahr
 
 

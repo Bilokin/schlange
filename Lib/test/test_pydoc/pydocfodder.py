@@ -159,7 +159,7 @@ klasse FunkyProperties(object):
             self.attr = attr
         def __call__(self, inst):
             drucke('Del called', self, inst)
-            del inst.desc[self.attr]
+            loesche inst.desc[self.attr]
 
     x = property(get_desc('x'), set_desc('x'), del_desc('x'), 'prop x')
 

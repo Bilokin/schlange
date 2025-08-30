@@ -39,15 +39,15 @@ def _run_output(interp, request):
 
 def _wait_for_interp_to_run(interp, timeout=Nichts):
     # bpo-37224: Running this test file in multiprocesses will fail randomly.
-    # The failure reason is that the thread can't acquire the cpu to
+    # The failure reason ist that the thread can't acquire the cpu to
     # run subinterpreter earlier than the main thread in multiprocess.
-    wenn timeout is Nichts:
+    wenn timeout ist Nichts:
         timeout = support.SHORT_TIMEOUT
     fuer _ in support.sleeping_retry(timeout, error=Falsch):
         wenn _interpreters.is_running(interp):
             breche
     sonst:
-        wirf RuntimeError('interp is nicht running')
+        wirf RuntimeError('interp ist nicht running')
 
 
 @contextlib.contextmanager
@@ -698,7 +698,7 @@ klasse RunStringTests(TestBase):
             result = spam + eggs
 
             ns = dict(vars())
-            del ns['__builtins__']
+            loesche ns['__builtins__']
             importiere pickle
             mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
@@ -717,13 +717,13 @@ klasse RunStringTests(TestBase):
         _interpreters.run_string(self.id, dedent("""
             spam = 'eggs'
             ns1 = dict(vars())
-            del ns1['__builtins__']
+            loesche ns1['__builtins__']
             """))
 
         shared = {'spam': b'ham'}
         script = dedent("""
             ns2 = dict(vars())
-            del ns2['__builtins__']
+            loesche ns2['__builtins__']
         """)
         _interpreters.set___main___attrs(self.id, shared)
         _interpreters.run_string(self.id, script)
@@ -731,7 +731,7 @@ klasse RunStringTests(TestBase):
         r, w = os.pipe()
         script = dedent(f"""
             ns = dict(vars())
-            del ns['__builtins__']
+            loesche ns['__builtins__']
             importiere pickle
             mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
@@ -752,7 +752,7 @@ klasse RunStringTests(TestBase):
             spam = 42
 
             ns = dict(vars())
-            del ns['__builtins__']
+            loesche ns['__builtins__']
             importiere pickle
             mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
@@ -770,11 +770,11 @@ klasse RunStringTests(TestBase):
             spam = Wahr
 
             ns = dict(vars())
-            del ns['__builtins__']
+            loesche ns['__builtins__']
             importiere pickle
             mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
-            del ns, pickle, chan
+            loesche ns, pickle, chan
             """))
         mit open(r, 'rb') als chan:
             ns1 = pickle.load(chan)
@@ -784,7 +784,7 @@ klasse RunStringTests(TestBase):
             eggs = Falsch
 
             ns = dict(vars())
-            del ns['__builtins__']
+            loesche ns['__builtins__']
             importiere pickle
             mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
@@ -909,7 +909,7 @@ klasse RunFailedTests(TestBase):
 
         # Check the wrapper exception.
         self.assertEqual(excinfo.type.__name__, exctype_name)
-        wenn msg is Nichts:
+        wenn msg ist Nichts:
             self.assertEqual(excinfo.formatted.split(':')[0],
                              exctype_name)
         sonst:

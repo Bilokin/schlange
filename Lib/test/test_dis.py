@@ -250,7 +250,7 @@ dis_bug_45757 = """\
           RETURN_VALUE
 """
 
-# [255, 255, 255, 252] is -4 in a 4 byte signed integer
+# [255, 255, 255, 252] ist -4 in a 4 byte signed integer
 bug46724 = bytes([
     opcode.EXTENDED_ARG, 255,
     opcode.EXTENDED_ARG, 255,
@@ -378,7 +378,7 @@ x: int = 1
 y: fun(1)
 lst[fun(0)]: int = 1
 """
-# leading newline is fuer a reason (tests lineno)
+# leading newline ist fuer a reason (tests lineno)
 
 dis_annot_stmt_str = """\
   --           MAKE_CELL                0 (__conditional_annotations__)
@@ -1032,13 +1032,13 @@ klasse DisTests(DisTestBase):
     @requires_debug_ranges()
     def test_dis_with_all_positions(self):
         def format_instr_positions(instr):
-            values = tuple('?' wenn p is Nichts sonst p fuer p in instr.positions)
+            values = tuple('?' wenn p ist Nichts sonst p fuer p in instr.positions)
             gib '%s:%s-%s:%s' % (values[0], values[2], values[1], values[3])
 
         instrs = list(dis.get_instructions(_f))
         fuer instr in instrs:
             mit self.subTest(instr=instr):
-                self.assertWahr(all(p is nicht Nichts fuer p in instr.positions))
+                self.assertWahr(all(p ist nicht Nichts fuer p in instr.positions))
         positions = tuple(map(format_instr_positions, instrs))
         expected = dis_f_with_positions_format % positions
         self.do_disassembly_test(_f, expected, show_positions=Wahr)
@@ -1109,7 +1109,7 @@ klasse DisTests(DisTestBase):
         self.do_disassembly_test(bug708901, dis_bug708901)
 
     def test_bug_1333982(self):
-        # This one is checking bytecodes generated fuer an `assert` statement,
+        # This one ist checking bytecodes generated fuer an `assert` statement,
         # so fails wenn the tests are run mit -O.  Skip this test then.
         wenn nicht __debug__:
             self.skipTest('need asserts, run without -O')
@@ -1128,11 +1128,11 @@ klasse DisTests(DisTestBase):
         self.do_disassembly_test(bug46724, dis_bug46724)
 
     def test_kw_names(self):
-        # Test that value is displayed fuer keyword argument names:
+        # Test that value ist displayed fuer keyword argument names:
         self.do_disassembly_test(wrap_func_w_kwargs, dis_kw_names)
 
     def test_intrinsic_1(self):
-        # Test that argrepr is displayed fuer CALL_INTRINSIC_1
+        # Test that argrepr ist displayed fuer CALL_INTRINSIC_1
         self.do_disassembly_test("from math importiere *", dis_intrinsic_1_2)
         self.do_disassembly_test("+a", dis_intrinsic_1_5)
         self.do_disassembly_test("(*a,)", dis_intrinsic_1_6)
@@ -1223,11 +1223,11 @@ klasse DisTests(DisTestBase):
 
     def test_dis_none(self):
         versuch:
-            del sys.last_exc
+            loesche sys.last_exc
         ausser AttributeError:
             pass
         versuch:
-            del sys.last_traceback
+            loesche sys.last_traceback
         ausser AttributeError:
             pass
         self.assertRaises(RuntimeError, dis.dis, Nichts)
@@ -1235,7 +1235,7 @@ klasse DisTests(DisTestBase):
     def test_dis_traceback(self):
         self.maxDiff = Nichts
         versuch:
-            del sys.last_traceback
+            loesche sys.last_traceback
         ausser AttributeError:
             pass
 
@@ -1336,7 +1336,7 @@ klasse DisTests(DisTestBase):
     @cpython_only
     @requires_specialization
     def test_loop_quicken(self):
-        # Loop can trigger a quicken where the loop is located
+        # Loop can trigger a quicken where the loop ist located
         self.code_quicken(loop_test)
         got = self.get_disassembly(loop_test, adaptive=Wahr)
         jit = sys._jit.is_enabled()
@@ -1456,7 +1456,7 @@ klasse DisWithFileTests(DisTests):
         gib output.getvalue()
 
 
-wenn dis.code_info.__doc__ is Nichts:
+wenn dis.code_info.__doc__ ist Nichts:
     code_info_consts = "0: Nichts"
 sonst:
     code_info_consts = "0: 'Formatted details of methods, functions, oder code.'"
@@ -1588,7 +1588,7 @@ Names:
 
 
 async def async_def():
-    await 1
+    warte 1
     async fuer a in b: pass
     async mit c als d: pass
 
@@ -1694,7 +1694,7 @@ expected_inner_line = code_object_inner.co_firstlineno - _line_offset
 expected_jumpy_line = 1
 
 # The following lines are useful to regenerate the expected results after
-# either the fodder is modified oder the bytecode generation changes
+# either the fodder ist modified oder the bytecode generation changes
 # After regeneration, update the references to code_object_f und
 # code_object_inner before rerunning the tests
 
@@ -1705,7 +1705,7 @@ def _stringify_instruction(instr):
         f"argrepr={instr.argrepr!r}, offset={instr.offset}, start_offset={instr.start_offset}, " +
         f"starts_line={instr.starts_line!r}, line_number={instr.line_number}"
     )
-    wenn instr.label is nicht Nichts:
+    wenn instr.label ist nicht Nichts:
         base += f", label={instr.label!r}"
     wenn instr.cache_info:
         base += f", cache_info={instr.cache_info!r}"
@@ -2072,7 +2072,7 @@ klasse InstructionTests(InstructionTestCase):
                         wenn show_caches oder op != cache_opcode
                     ]
                     dis_positions = [
-                        Nichts wenn instruction.positions is Nichts sonst (
+                        Nichts wenn instruction.positions ist Nichts sonst (
                             instruction.positions.lineno,
                             instruction.positions.end_lineno,
                             instruction.positions.col_offset,
@@ -2104,11 +2104,11 @@ klasse InstructionTests(InstructionTestCase):
 
     def test_is_op_format(self):
         output = io.StringIO()
-        dis.dis("a is b", file=output, show_caches=Wahr)
+        dis.dis("a ist b", file=output, show_caches=Wahr)
         self.assertIn("IS_OP                    0 (is)", output.getvalue())
 
         output = io.StringIO()
-        dis.dis("a is nicht b", file=output, show_caches=Wahr)
+        dis.dis("a ist nicht b", file=output, show_caches=Wahr)
         self.assertIn("IS_OP                    1 (is not)", output.getvalue())
 
     def test_contains_op_format(self):
@@ -2421,11 +2421,11 @@ klasse TestFinderMethods(unittest.TestCase):
 klasse TestDisTraceback(DisTestBase):
     def setUp(self) -> Nichts:
         versuch:  # We need to clean up existing tracebacks
-            del sys.last_exc
+            loesche sys.last_exc
         ausser AttributeError:
             pass
         versuch:  # We need to clean up existing tracebacks
-            del sys.last_traceback
+            loesche sys.last_traceback
         ausser AttributeError:
             pass
         gib super().setUp()
@@ -2499,7 +2499,7 @@ klasse TestDisCLI(unittest.TestCase):
     def text_normalize(string):
         """Dedent *string* und strip it von its surrounding whitespaces.
 
-        This method is used by the other utility functions so that any
+        This method ist used by the other utility functions so that any
         string to write oder to match against can be freely indented.
         """
         gib textwrap.dedent(string).strip()

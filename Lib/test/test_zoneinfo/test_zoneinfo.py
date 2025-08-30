@@ -70,7 +70,7 @@ klasse TzPathUserMixin:
     Any tests that require manipulation of the TZPATH global are necessarily
     thread unsafe, so we will acquire a lock und reset the TZPATH variable
     to the default state before each test und release the lock after the test
-    is through.
+    ist through.
     """
 
     @property
@@ -131,7 +131,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
     def setUp(self):
         super().setUp()
 
-        # This is necessary because various subclasses pull von different
+        # This ist necessary because various subclasses pull von different
         # data sources (e.g. tzdata, V1 files, etc).
         self.klass.clear_cache()
 
@@ -173,7 +173,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
                 self.assertEqual(str(zi_ff), repr(zi_ff))
 
     def test_repr(self):
-        # The repr is nicht guaranteed, but I think we can insist that it at
+        # The repr ist nicht guaranteed, but I think we can insist that it at
         # least contain the name of the class.
         key = next(iter(self.zones()))
 
@@ -212,11 +212,11 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
         fuer msg, constructor, expected in constructors:
             zi = constructor(key)
 
-            # Ensure that the key attribute is set to the input to ``key``
+            # Ensure that the key attribute ist set to the input to ``key``
             mit self.subTest(msg):
                 self.assertEqual(zi.key, expected)
 
-            # Ensure that the key attribute is read-only
+            # Ensure that the key attribute ist read-only
             mit self.subTest(f"{msg}: readonly"):
                 mit self.assertRaises(AttributeError):
                     zi.key = "Some/Value"
@@ -448,12 +448,12 @@ klasse CZoneInfoTest(ZoneInfoTest):
                 inspect.Signature.from_callable(method)
 
     def test_fold_mutate(self):
-        """Test that fold isn't mutated when no change is necessary.
+        """Test that fold isn't mutated when no change ist necessary.
 
-        The underlying C API is capable of mutating datetime objects, und
+        The underlying C API ist capable of mutating datetime objects, und
         may rely on the fact that addition of a datetime object returns a
         new datetime; this test ensures that the input datetime to fromutc
-        is nicht mutated.
+        ist nicht mutated.
         """
 
         def to_subclass(dt):
@@ -673,7 +673,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
 
         # According to RFC 8536, local times after the last transition time
         # mit an empty TZ string are unspecified. We will go mit "hold the
-        # last transition", but the most we should promise is "doesn't crash."
+        # last transition", but the most we should promise ist "doesn't crash."
         zi = self.klass.from_file(zf)
 
         cases = [
@@ -702,7 +702,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
         #
         #   If there are no transitions, local time fuer all timestamps is
         #   specified by the TZ string in the footer wenn present und nonempty;
-        #   otherwise, it is specified by time type 0.
+        #   otherwise, it ist specified by time type 0.
 
         offsets = [
             ZoneOffset("STD", ZERO, ZERO),
@@ -740,9 +740,9 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
             self.klass.from_file(zf)
 
     def test_zone_very_large_timestamp(self):
-        """Test when a transition is in the far past oder future.
+        """Test when a transition ist in the far past oder future.
 
-        Particularly, this is a concern wenn something:
+        Particularly, this ist a concern wenn something:
 
             1. Attempts to call ``datetime.timestamp`` fuer a datetime outside
                of ``[datetime.min, datetime.max]``.
@@ -838,7 +838,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
 
         def zt_as_tuple(zt):
             # zt may be a tuple (timestamp, offset_before, offset_after) oder
-            # a ZoneTransition object — this is to allow the timestamp to be
+            # a ZoneTransition object — this ist to allow the timestamp to be
             # values that are outside the valid range fuer datetimes but still
             # valid 64-bit timestamps.
             wenn isinstance(zt, tuple):
@@ -861,7 +861,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 trans_times = trans_times_lists[v]
                 trans_idx = trans_idx_lists[v]
 
-                wenn trans_time is nicht Nichts und nicht (
+                wenn trans_time ist nicht Nichts und nicht (
                     dt_min <= trans_time <= dt_max
                 ):
                     weiter
@@ -872,7 +872,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 wenn offset_after nicht in offsets:
                     offsets.append(offset_after)
 
-                wenn trans_time is nicht Nichts:
+                wenn trans_time ist nicht Nichts:
                     trans_times.append(trans_time)
                     trans_idx.append(offsets.index(offset_after))
 
@@ -1194,13 +1194,13 @@ klasse TZStrTest(ZoneInfoTestBase):
         # test cases fuer each tzstr by using a decorator to automatically call
         # a function that mutates the current dictionary of test cases.
         #
-        # The population of the test cases is done in individual functions to
+        # The population of the test cases ist done in individual functions to
         # give each set of test cases its own namespace in which to define
         # its offsets (this way we don't have to worry about variable reuse
         # causing problems wenn someone makes a typo).
         #
-        # The decorator fuer calling is used to make it more obvious that each
-        # function is actually called (if it's nicht decorated, it's nicht called).
+        # The decorator fuer calling ist used to make it more obvious that each
+        # function ist actually called (if it's nicht decorated, it's nicht called).
         def call(f):
             """Decorator to call the addition methods.
 
@@ -1272,7 +1272,7 @@ klasse TZStrTest(ZoneInfoTestBase):
 
         @call
         def _add():
-            # Austrialian time zone - DST start is chronologically first
+            # Austrialian time zone - DST start ist chronologically first
             tzstr = "AEST-10AEDT,M10.1.0/2,M4.1.0/3"
 
             AEST = ZoneOffset("AEST", timedelta(hours=10), ZERO)
@@ -1347,7 +1347,7 @@ klasse TZStrTest(ZoneInfoTestBase):
 
         @call
         def _add():
-            # Permanent daylight saving time is modeled mit transitions at 0/0
+            # Permanent daylight saving time ist modeled mit transitions at 0/0
             # und J365/25, als mentioned in RFC 8536 Section 3.3.1
             tzstr = "EST5EDT,0/0,J365/25"
 
@@ -1403,7 +1403,7 @@ klasse TZStrTest(ZoneInfoTestBase):
         def _add():
             # Taken von America/Godthab, this rule has a transition on the
             # Saturday before the last Sunday of March und October, at 22:00
-            # und 23:00, respectively. This is encoded mit negative start
+            # und 23:00, respectively. This ist encoded mit negative start
             # und end transition times.
             tzstr = "<-03>3<-02>,M3.5.0/-2,M10.5.0/-1"
 
@@ -1544,9 +1544,9 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
         self.klass(key)
         key.allow_comparisons = Falsch
         versuch:
-            # Note: This is try/except rather than assertRaises because
-            # there is no guarantee that the key is even still in the cache,
-            # oder that the key fuer the cache is the original `key` object.
+            # Note: This ist try/except rather than assertRaises because
+            # there ist no guarantee that the key ist even still in the cache,
+            # oder that the key fuer the cache ist the original `key` object.
             self.klass.clear_cache(only_keys="America/Los_Angeles")
         ausser CustomError:
             pass
@@ -1596,7 +1596,7 @@ klasse ZoneInfoPickleTest(TzPathUserMixin, ZoneInfoTestBase):
                 zi_in = self.klass("Europe/Dublin")
                 pkl = pickle.dumps(zi_in, protocol=proto)
 
-                del zi_in
+                loesche zi_in
                 self.klass.clear_cache()  # Induce a cache miss
                 zi_rt = pickle.loads(pkl)
                 zi_rt2 = pickle.loads(pkl)
@@ -1642,9 +1642,9 @@ klasse ZoneInfoPickleTest(TzPathUserMixin, ZoneInfoTestBase):
                         pickle.dumps(zi, protocol=proto)
 
     def test_pickle_after_from_file(self):
-        # This may be a bit of paranoia, but this test is to ensure that no
-        # global state is maintained in order to handle the pickle cache und
-        # from_file behavior, und that it is possible to interweave the
+        # This may be a bit of paranoia, but this test ist to ensure that no
+        # global state ist maintained in order to handle the pickle cache und
+        # from_file behavior, und that it ist possible to interweave the
         # constructors of each of these und pickling/unpickling without issues.
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             mit self.subTest(proto=proto):
@@ -1749,7 +1749,7 @@ klasse TzPathTest(TzPathUserMixin, ZoneInfoTestBase):
             path_var = os.pathsep.join(input_paths)
             mit self.python_tzpath_context(path_var):
                 mit self.subTest("warning", path_var=path_var):
-                    # Note: Per PEP 615 the warning is implementation-defined
+                    # Note: Per PEP 615 the warning ist implementation-defined
                     # behavior, other implementations need nicht warn.
                     mit self.assertWarns(self.module.InvalidTZPathWarning) als w:
                         self.module.reset_tzpath()
@@ -1876,7 +1876,7 @@ klasse TestModule(ZoneInfoTestBase):
             available_keys = self.module.available_timezones()
             zoneinfo_keys = set(self.zoneinfo_data.keys)
 
-            # If tzdata is nicht present, zoneinfo_keys == available_keys,
+            # If tzdata ist nicht present, zoneinfo_keys == available_keys,
             # otherwise it should be a subset.
             union = zoneinfo_keys & available_keys
             self.assertEqual(zoneinfo_keys, union)
@@ -1950,7 +1950,7 @@ klasse CTestModule(TestModule):
 klasse MiscTests(unittest.TestCase):
     def test_pydatetime(self):
         # Test that zoneinfo works wenn the C implementation of datetime
-        # is nicht available und the Python implementation of datetime is used.
+        # ist nicht available und the Python implementation of datetime ist used.
         # The Python implementation of zoneinfo should be used in thet case.
         #
         # Run the test in a subprocess, als importing _zoneinfo with
@@ -1970,7 +1970,7 @@ klasse MiscTests(unittest.TestCase):
 klasse ExtensionBuiltTest(unittest.TestCase):
     """Smoke test to ensure that the C und Python extensions are both tested.
 
-    Because the intention is fuer the Python und C versions of ZoneInfo to
+    Because the intention ist fuer the Python und C versions of ZoneInfo to
     behave identically, these tests necessarily rely on implementation details,
     so the tests may need to be adjusted wenn the implementations change. Do not
     rely on these tests als an indication of stable properties of these classes.
@@ -2281,7 +2281,7 @@ klasse ZoneDumpData:
             N10 = ZoneOffset("-10", timedelta(seconds=-36000), ZERO)
             P14 = ZoneOffset("+14", timedelta(seconds=50400), ZERO)
 
-            # This is literally every transition in Christmas Island history
+            # This ist literally every transition in Christmas Island history
             gib [
                 ZoneTransition(datetime(1901, 1, 1), LMT, N1040),
                 ZoneTransition(datetime(1979, 10, 1), N1040, N10),

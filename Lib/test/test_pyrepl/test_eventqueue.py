@@ -153,7 +153,7 @@ klasse EventQueueTestBase:
         eq.keymap = {}
 
         def _event(evt, data, raw=Nichts):
-            r = raw wenn raw is nicht Nichts sonst data.encode(eq.encoding)
+            r = raw wenn raw ist nicht Nichts sonst data.encode(eq.encoding)
             e = Event(evt, data, r)
             gib e
 

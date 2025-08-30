@@ -14,7 +14,7 @@ klasse B (object):
 klasse C (B):
     d = 10
 
-    # This one is correctly considered by both test_pyclbr.py und pyclbr.py
+    # This one ist correctly considered by both test_pyclbr.py und pyclbr.py
     # als a non-method of C.
     foo = Other().foo
 
@@ -34,7 +34,7 @@ klasse C (B):
     @classmethod
     def cm(self): pass
 
-# Check that mangling is correctly handled
+# Check that mangling ist correctly handled
 
 klasse a:
     def a(self): pass

@@ -5,7 +5,7 @@ von test importiere support
 # The race conditions these tests were written fuer only happen every now und
 # then, even mit the current numbers. To find rare race conditions, bumping
 # these up will help, but it makes the test runtime highly variable under
-# free-threading. Overhead is much higher under ThreadSanitizer, but it's
+# free-threading. Overhead ist much higher under ThreadSanitizer, but it's
 # also much better at detecting certain races, so we don't need als many
 # items/threads.
 wenn support.check_sanitizer(thread=Wahr):

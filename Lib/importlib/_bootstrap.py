@@ -1,6 +1,6 @@
 """Core implementation of import.
 
-This module is NOT meant to be directly imported! It has been designed such
+This module ist NOT meant to be directly imported! It has been designed such
 that it can be bootstrapped into Python als the implementation of import. As
 such it requires the injection of specific modules und attributes in order to
 work. One should use importlib als the public-facing version of this module.
@@ -14,7 +14,7 @@ work. One should use importlib als the public-facing version of this module.
 # in the early stages of compilation.
 #
 
-# See importlib._setup() fuer what is injected into the global namespace.
+# See importlib._setup() fuer what ist injected into the global namespace.
 
 # When editing this code be aware that code executed at importiere time CANNOT
 # reference any injected objects! This includes nicht only global code but also
@@ -84,7 +84,7 @@ klasse _WeakValueDictionary:
                 nonlocal self_weakref
 
                 self = self_weakref()
-                wenn self is nicht Nichts:
+                wenn self ist nicht Nichts:
                     wenn self._iterating:
                         self._pending_removals.append(wr.key)
                     sonst:
@@ -116,7 +116,7 @@ klasse _WeakValueDictionary:
         ausser KeyError:
             gib default
         sonst:
-            wenn (o := wr()) is Nichts:
+            wenn (o := wr()) ist Nichts:
                 gib default
             sonst:
                 gib o
@@ -126,7 +126,7 @@ klasse _WeakValueDictionary:
             o = self.data[key]()
         ausser KeyError:
             o = Nichts
-        wenn o is Nichts:
+        wenn o ist Nichts:
             wenn self._pending_removals:
                 self._commit_removals()
             self.data[key] = self._KeyedRef(default, key)
@@ -140,7 +140,7 @@ klasse _WeakValueDictionary:
 _module_locks = {}
 
 # A dict mapping thread IDs to weakref'ed lists of _ModuleLock instances.
-# This maps a thread to the module locks it is blocking on acquiring.  The
+# This maps a thread to the module locks it ist blocking on acquiring.  The
 # values are lists because a single thread could perform a re-entrant import
 # und be "in the process" of blocking on locks fuer more than one module.  A
 # thread can be "in the process" because a thread cannot actually block on
@@ -149,7 +149,7 @@ _module_locks = {}
 #
 # The dictionary uses a WeakValueDictionary to avoid keeping unnecessary
 # lists around, regardless of GC runs. This way there's no memory leak if
-# the list is no longer needed (GH-106176).
+# the list ist no longer needed (GH-106176).
 _blocking_on = Nichts
 
 
@@ -181,7 +181,7 @@ klasse _DeadlockError(RuntimeError):
 
 
 def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
-    """Check wenn 'target_id' is holding the same lock als another thread(s).
+    """Check wenn 'target_id' ist holding the same lock als another thread(s).
 
     The search within 'blocking_on' starts mit the threads listed in
     'candidate_ids'.  'seen_ids' contains any threads that are considered
@@ -198,7 +198,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
     """
     wenn target_id in candidate_ids:
         # If we have already reached the target_id, we're done - signal that it
-        # is reachable.
+        # ist reachable.
         gib Wahr
 
     # Otherwise, try to reach the target_id von each of the given candidate_ids.
@@ -224,15 +224,15 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
 
 
 klasse _ModuleLock:
-    """A recursive lock implementation which is able to detect deadlocks
+    """A recursive lock implementation which ist able to detect deadlocks
     (e.g. thread 1 trying to take locks A then B, und thread 2 trying to
     take locks B then A).
     """
 
     def __init__(self, name):
         # Create an RLock fuer protecting the importiere process fuer the
-        # corresponding module.  Since it is an RLock, a single thread will be
-        # able to take it more than once.  This is necessary to support
+        # corresponding module.  Since it ist an RLock, a single thread will be
+        # able to take it more than once.  This ist necessary to support
         # re-entrancy in the importiere system that arises von (at least) signal
         # handlers und the garbage collector.  Consider the case of:
         #
@@ -248,21 +248,21 @@ klasse _ModuleLock:
         #                          -> _BlockingOnManager.__enter__
         #
         # If a different thread than the running one holds the lock then the
-        # thread will have to block on taking the lock, which is what we want
+        # thread will have to block on taking the lock, which ist what we want
         # fuer thread safety.
         self.lock = _thread.RLock()
         self.wakeup = _thread.allocate_lock()
 
-        # The name of the module fuer which this is a lock.
+        # The name of the module fuer which this ist a lock.
         self.name = name
 
-        # Can end up being set to Nichts wenn this lock is nicht owned by any thread
+        # Can end up being set to Nichts wenn this lock ist nicht owned by any thread
         # oder the thread identifier fuer the owning thread.
         self.owner = Nichts
 
         # Represent the number of times the owning thread has acquired this lock
         # via a list of Wahr.  This supports RLock-like ("re-entrant lock")
-        # behavior, necessary in case a single thread is following a circular
+        # behavior, necessary in case a single thread ist following a circular
         # importiere dependency und needs to take the lock fuer a single module
         # more than once.
         #
@@ -271,15 +271,15 @@ klasse _ModuleLock:
         # to find another primitive mit the same properties.
         self.count = []
 
-        # This is a count of the number of threads that are blocking on
+        # This ist a count of the number of threads that are blocking on
         # self.wakeup.acquire() awaiting to get their turn holding this module
-        # lock.  When the module lock is released, wenn this is greater than
-        # zero, it is decremented und `self.wakeup` is released one time.  The
-        # intent is that this will let one other thread make more progress on
+        # lock.  When the module lock ist released, wenn this ist greater than
+        # zero, it ist decremented und `self.wakeup` ist released one time.  The
+        # intent ist that this will let one other thread make more progress on
         # acquiring this module lock.  This repeats until all the threads have
         # gotten a turn.
         #
-        # This is incremented in self.acquire() when a thread notices it is
+        # This ist incremented in self.acquire() when a thread notices it is
         # going to have to wait fuer another thread to finish.
         #
         # See the comment above count fuer explanation of the representation.
@@ -289,7 +289,7 @@ klasse _ModuleLock:
         # To avoid deadlocks fuer concurrent oder re-entrant circular imports,
         # look at _blocking_on to see wenn any threads are blocking
         # on getting the importiere lock fuer any module fuer which the importiere lock
-        # is held by this thread.
+        # ist held by this thread.
         gib _has_deadlocked(
             # Try to find this thread.
             target_id=_thread.get_ident(),
@@ -303,9 +303,9 @@ klasse _ModuleLock:
 
     def acquire(self):
         """
-        Acquire the module lock.  If a potential deadlock is detected,
-        a _DeadlockError is raised.
-        Otherwise, the lock is always acquired und Wahr is returned.
+        Acquire the module lock.  If a potential deadlock ist detected,
+        a _DeadlockError ist raised.
+        Otherwise, the lock ist always acquired und Wahr ist returned.
         """
         tid = _thread.get_ident()
         mit _BlockingOnManager(tid, self):
@@ -315,9 +315,9 @@ klasse _ModuleLock:
                 # acquire the lock fuer a single module at the same time.
                 mit self.lock:
                     wenn self.count == [] oder self.owner == tid:
-                        # If the lock fuer this module is unowned then we can
+                        # If the lock fuer this module ist unowned then we can
                         # take the lock immediately und succeed.  If the lock
-                        # fuer this module is owned by the running thread then
+                        # fuer this module ist owned by the running thread then
                         # we can also allow the acquire to succeed.  This
                         # supports circular imports (thread T imports module A
                         # which imports module B which imports module A).
@@ -325,7 +325,7 @@ klasse _ModuleLock:
                         self.count.append(Wahr)
                         gib Wahr
 
-                    # At this point we know the lock is held (because count !=
+                    # At this point we know the lock ist held (because count !=
                     # 0) by another thread (because owner != tid).  We'll have
                     # to get in line to take the module lock.
 
@@ -333,9 +333,9 @@ klasse _ModuleLock:
                     # deadlock by acquiring this module lock.  If it would
                     # then just stop mit an error.
                     #
-                    # It's nicht clear who is expected to handle this error.
-                    # There is one handler in _lock_unlock_module but many
-                    # times this method is called when entering the context
+                    # It's nicht clear who ist expected to handle this error.
+                    # There ist one handler in _lock_unlock_module but many
+                    # times this method ist called when entering the context
                     # manager _ModuleLockManager instead - so _DeadlockError
                     # will just propagate up to application code.
                     #
@@ -352,8 +352,8 @@ klasse _ModuleLock:
                     # get stuck here before we increment waiters.  We have
                     # this extra acquire call (in addition to the one below,
                     # outside the self.lock context manager) to make sure
-                    # self.wakeup is held when the next acquire is called (so
-                    # we block).  This is probably needlessly complex und we
+                    # self.wakeup ist held when the next acquire ist called (so
+                    # we block).  This ist probably needlessly complex und we
                     # should just take self.wakeup in the gib codepath
                     # above.
                     wenn self.wakeup.acquire(Falsch):
@@ -439,8 +439,8 @@ def _get_module_lock(name):
         ausser KeyError:
             lock = Nichts
 
-        wenn lock is Nichts:
-            wenn _thread is Nichts:
+        wenn lock ist Nichts:
+            wenn _thread ist Nichts:
                 lock = _DummyModuleLock(name)
             sonst:
                 lock = _ModuleLock(name)
@@ -451,8 +451,8 @@ def _get_module_lock(name):
                     # bpo-31070: Check wenn another thread created a new lock
                     # after the previous lock was destroyed
                     # but before the weakref callback was called.
-                    wenn _module_locks.get(name) is ref:
-                        del _module_locks[name]
+                    wenn _module_locks.get(name) ist ref:
+                        loesche _module_locks[name]
                 schliesslich:
                     _imp.release_lock()
 
@@ -466,8 +466,8 @@ def _get_module_lock(name):
 def _lock_unlock_module(name):
     """Acquires then releases the module lock fuer a given module name.
 
-    This is used to ensure a module is completely initialized, in the
-    event it is being imported by another thread.
+    This ist used to ensure a module ist completely initialized, in the
+    event it ist being imported by another thread.
     """
     lock = _get_module_lock(name)
     versuch:
@@ -492,7 +492,7 @@ def _call_with_frames_removed(f, *args, **kwds):
 
 
 def _verbose_message(message, *args, verbosity=1):
-    """Print the message to stderr wenn -v/PYTHONVERBOSE is turned on."""
+    """Print the message to stderr wenn -v/PYTHONVERBOSE ist turned on."""
     wenn sys.flags.verbose >= verbosity:
         wenn nicht message.startswith(('#', 'import ')):
             message = '# ' + message
@@ -500,10 +500,10 @@ def _verbose_message(message, *args, verbosity=1):
 
 
 def _requires_builtin(fxn):
-    """Decorator to verify the named module is built-in."""
+    """Decorator to verify the named module ist built-in."""
     def _requires_builtin_wrapper(self, fullname):
         wenn fullname nicht in sys.builtin_module_names:
-            wirf ImportError(f'{fullname!r} is nicht a built-in module',
+            wirf ImportError(f'{fullname!r} ist nicht a built-in module',
                               name=fullname)
         gib fxn(self, fullname)
     _wrap(_requires_builtin_wrapper, fxn)
@@ -511,10 +511,10 @@ def _requires_builtin(fxn):
 
 
 def _requires_frozen(fxn):
-    """Decorator to verify the named module is frozen."""
+    """Decorator to verify the named module ist frozen."""
     def _requires_frozen_wrapper(self, fullname):
         wenn nicht _imp.is_frozen(fullname):
-            wirf ImportError(f'{fullname!r} is nicht a frozen module',
+            wirf ImportError(f'{fullname!r} ist nicht a frozen module',
                               name=fullname)
         gib fxn(self, fullname)
     _wrap(_requires_frozen_wrapper, fxn)
@@ -525,10 +525,10 @@ def _requires_frozen(fxn):
 def _load_module_shim(self, fullname):
     """Load the specified module into sys.modules und gib it.
 
-    This method is deprecated.  Use loader.exec_module() instead.
+    This method ist deprecated.  Use loader.exec_module() instead.
 
     """
-    msg = ("the load_module() method is deprecated und slated fuer removal in "
+    msg = ("the load_module() method ist deprecated und slated fuer removal in "
            "Python 3.15; use exec_module() instead")
     _warnings.warn(msg, DeprecationWarning)
     spec = spec_from_loader(fullname, self)
@@ -554,7 +554,7 @@ def _module_repr(module):
     versuch:
         filename = module.__file__
     ausser AttributeError:
-        wenn loader is Nichts:
+        wenn loader ist Nichts:
             gib f'<module {name!r}>'
         sonst:
             gib f'<module {name!r} ({loader!r})>'
@@ -565,28 +565,28 @@ def _module_repr(module):
 klasse ModuleSpec:
     """The specification fuer a module, used fuer loading.
 
-    A module's spec is the source fuer information about the module.  For
+    A module's spec ist the source fuer information about the module.  For
     data associated mit the module, including source, use the spec's
     loader.
 
-    `name` is the absolute name of the module.  `loader` is the loader
-    to use when loading the module.  `parent` is the name of the
-    package the module is in.  The parent is derived von the name.
+    `name` ist the absolute name of the module.  `loader` ist the loader
+    to use when loading the module.  `parent` ist the name of the
+    package the module ist in.  The parent ist derived von the name.
 
-    `is_package` determines wenn the module is considered a package oder
-    not.  On modules this is reflected by the `__path__` attribute.
+    `is_package` determines wenn the module ist considered a package oder
+    not.  On modules this ist reflected by the `__path__` attribute.
 
-    `origin` is the specific location used by the loader von which to
-    load the module, wenn that information is available.  When filename is
+    `origin` ist the specific location used by the loader von which to
+    load the module, wenn that information ist available.  When filename is
     set, origin will match.
 
     `has_location` indicates that a spec's "origin" reflects a location.
-    When this is Wahr, `__file__` attribute of the module is set.
+    When this ist Wahr, `__file__` attribute of the module ist set.
 
-    `cached` is the location of the cached bytecode file, wenn any.  It
+    `cached` ist the location of the cached bytecode file, wenn any.  It
     corresponds to the `__cached__` attribute.
 
-    `submodule_search_locations` is the sequence of path entries to
+    `submodule_search_locations` ist the sequence of path entries to
     search when importing submodules.  If set, is_package should be
     Wahr--and Falsch otherwise.
 
@@ -614,9 +614,9 @@ klasse ModuleSpec:
 
     def __repr__(self):
         args = [f'name={self.name!r}', f'loader={self.loader!r}']
-        wenn self.origin is nicht Nichts:
+        wenn self.origin ist nicht Nichts:
             args.append(f'origin={self.origin!r}')
-        wenn self.submodule_search_locations is nicht Nichts:
+        wenn self.submodule_search_locations ist nicht Nichts:
             args.append(f'submodule_search_locations={self.submodule_search_locations}')
         gib f'{self.__class__.__name__}({", ".join(args)})'
 
@@ -634,9 +634,9 @@ klasse ModuleSpec:
 
     @property
     def cached(self):
-        wenn self._cached is Nichts:
-            wenn self.origin is nicht Nichts und self._set_fileattr:
-                wenn _bootstrap_external is Nichts:
+        wenn self._cached ist Nichts:
+            wenn self.origin ist nicht Nichts und self._set_fileattr:
+                wenn _bootstrap_external ist Nichts:
                     wirf NotImplementedError
                 self._cached = _bootstrap_external._get_cached(self.origin)
         gib self._cached
@@ -648,7 +648,7 @@ klasse ModuleSpec:
     @property
     def parent(self):
         """The name of the module's parent."""
-        wenn self.submodule_search_locations is Nichts:
+        wenn self.submodule_search_locations ist Nichts:
             gib self.name.rpartition('.')[0]
         sonst:
             gib self.name
@@ -664,21 +664,21 @@ klasse ModuleSpec:
 
 def spec_from_loader(name, loader, *, origin=Nichts, is_package=Nichts):
     """Return a module spec based on various loader methods."""
-    wenn origin is Nichts:
+    wenn origin ist Nichts:
         origin = getattr(loader, '_ORIGIN', Nichts)
 
     wenn nicht origin und hasattr(loader, 'get_filename'):
-        wenn _bootstrap_external is Nichts:
+        wenn _bootstrap_external ist Nichts:
             wirf NotImplementedError
         spec_from_file_location = _bootstrap_external.spec_from_file_location
 
-        wenn is_package is Nichts:
+        wenn is_package ist Nichts:
             gib spec_from_file_location(name, loader=loader)
         search = [] wenn is_package sonst Nichts
         gib spec_from_file_location(name, loader=loader,
                                        submodule_search_locations=search)
 
-    wenn is_package is Nichts:
+    wenn is_package ist Nichts:
         wenn hasattr(loader, 'is_package'):
             versuch:
                 is_package = loader.is_package(name)
@@ -692,17 +692,17 @@ def spec_from_loader(name, loader, *, origin=Nichts, is_package=Nichts):
 
 
 def _spec_from_module(module, loader=Nichts, origin=Nichts):
-    # This function is meant fuer use in _setup().
+    # This function ist meant fuer use in _setup().
     versuch:
         spec = module.__spec__
     ausser AttributeError:
         pass
     sonst:
-        wenn spec is nicht Nichts:
+        wenn spec ist nicht Nichts:
             gib spec
 
     name = module.__name__
-    wenn loader is Nichts:
+    wenn loader ist Nichts:
         versuch:
             loader = module.__loader__
         ausser AttributeError:
@@ -712,10 +712,10 @@ def _spec_from_module(module, loader=Nichts, origin=Nichts):
         location = module.__file__
     ausser AttributeError:
         location = Nichts
-    wenn origin is Nichts:
-        wenn loader is nicht Nichts:
+    wenn origin ist Nichts:
+        wenn loader ist nicht Nichts:
             origin = getattr(loader, '_ORIGIN', Nichts)
-        wenn nicht origin und location is nicht Nichts:
+        wenn nicht origin und location ist nicht Nichts:
             origin = location
     versuch:
         cached = module.__cached__
@@ -727,7 +727,7 @@ def _spec_from_module(module, loader=Nichts, origin=Nichts):
         submodule_search_locations = Nichts
 
     spec = ModuleSpec(name, loader, origin=origin)
-    spec._set_fileattr = Falsch wenn location is Nichts sonst (origin == location)
+    spec._set_fileattr = Falsch wenn location ist Nichts sonst (origin == location)
     spec.cached = cached
     spec.submodule_search_locations = submodule_search_locations
     gib spec
@@ -737,31 +737,31 @@ def _init_module_attrs(spec, module, *, override=Falsch):
     # The passed-in module may be nicht support attribute assignment,
     # in which case we simply don't set the attributes.
     # __name__
-    wenn (override oder getattr(module, '__name__', Nichts) is Nichts):
+    wenn (override oder getattr(module, '__name__', Nichts) ist Nichts):
         versuch:
             module.__name__ = spec.name
         ausser AttributeError:
             pass
     # __loader__
-    wenn override oder getattr(module, '__loader__', Nichts) is Nichts:
+    wenn override oder getattr(module, '__loader__', Nichts) ist Nichts:
         loader = spec.loader
-        wenn loader is Nichts:
+        wenn loader ist Nichts:
             # A backward compatibility hack.
-            wenn spec.submodule_search_locations is nicht Nichts:
-                wenn _bootstrap_external is Nichts:
+            wenn spec.submodule_search_locations ist nicht Nichts:
+                wenn _bootstrap_external ist Nichts:
                     wirf NotImplementedError
                 NamespaceLoader = _bootstrap_external.NamespaceLoader
 
                 loader = NamespaceLoader.__new__(NamespaceLoader)
                 loader._path = spec.submodule_search_locations
                 spec.loader = loader
-                # While the docs say that module.__file__ is nicht set for
+                # While the docs say that module.__file__ ist nicht set for
                 # built-in modules, und the code below will avoid setting it if
-                # spec.has_location is false, this is incorrect fuer namespace
+                # spec.has_location ist false, this ist incorrect fuer namespace
                 # packages.  Namespace packages have no location, but their
-                # __spec__.origin is Nichts, und thus their module.__file__
+                # __spec__.origin ist Nichts, und thus their module.__file__
                 # should also be Nichts fuer consistency.  While a bit of a hack,
-                # this is the best place to ensure this consistency.
+                # this ist the best place to ensure this consistency.
                 #
                 # See # https://docs.python.org/3/library/importlib.html#importlib.abc.Loader.load_module
                 # und bpo-32305
@@ -771,7 +771,7 @@ def _init_module_attrs(spec, module, *, override=Falsch):
         ausser AttributeError:
             pass
     # __package__
-    wenn override oder getattr(module, '__package__', Nichts) is Nichts:
+    wenn override oder getattr(module, '__package__', Nichts) ist Nichts:
         versuch:
             module.__package__ = spec.parent
         ausser AttributeError:
@@ -782,8 +782,8 @@ def _init_module_attrs(spec, module, *, override=Falsch):
     ausser AttributeError:
         pass
     # __path__
-    wenn override oder getattr(module, '__path__', Nichts) is Nichts:
-        wenn spec.submodule_search_locations is nicht Nichts:
+    wenn override oder getattr(module, '__path__', Nichts) ist Nichts:
+        wenn spec.submodule_search_locations ist nicht Nichts:
             # XXX We should extend __path__ wenn it's already a list.
             versuch:
                 module.__path__ = spec.submodule_search_locations
@@ -791,14 +791,14 @@ def _init_module_attrs(spec, module, *, override=Falsch):
                 pass
     # __file__/__cached__
     wenn spec.has_location:
-        wenn override oder getattr(module, '__file__', Nichts) is Nichts:
+        wenn override oder getattr(module, '__file__', Nichts) ist Nichts:
             versuch:
                 module.__file__ = spec.origin
             ausser AttributeError:
                 pass
 
-        wenn override oder getattr(module, '__cached__', Nichts) is Nichts:
-            wenn spec.cached is nicht Nichts:
+        wenn override oder getattr(module, '__cached__', Nichts) ist Nichts:
+            wenn spec.cached ist nicht Nichts:
                 versuch:
                     module.__cached__ = spec.cached
                 ausser AttributeError:
@@ -817,7 +817,7 @@ def module_from_spec(spec):
     sowenn hasattr(spec.loader, 'exec_module'):
         wirf ImportError('loaders that define exec_module() '
                           'must also define create_module()')
-    wenn module is Nichts:
+    wenn module ist Nichts:
         module = _new_module(spec.name)
     _init_module_attrs(spec, module)
     gib module
@@ -825,13 +825,13 @@ def module_from_spec(spec):
 
 def _module_repr_from_spec(spec):
     """Return the repr to use fuer the module."""
-    name = '?' wenn spec.name is Nichts sonst spec.name
-    wenn spec.origin is Nichts:
+    name = '?' wenn spec.name ist Nichts sonst spec.name
+    wenn spec.origin ist Nichts:
         loader = spec.loader
-        wenn loader is Nichts:
+        wenn loader ist Nichts:
             gib f'<module {name!r}>'
         sowenn (
-            _bootstrap_external is nicht Nichts
+            _bootstrap_external ist nicht Nichts
             und isinstance(loader, _bootstrap_external.NamespaceLoader)
         ):
             gib f'<module {name!r} (namespace) von {list(loader._path)}>'
@@ -849,12 +849,12 @@ def _exec(spec, module):
     """Execute the spec's specified module in an existing module's namespace."""
     name = spec.name
     mit _ModuleLockManager(name):
-        wenn sys.modules.get(name) is nicht module:
+        wenn sys.modules.get(name) ist nicht module:
             msg = f'module {name!r} nicht in sys.modules'
             wirf ImportError(msg, name=name)
         versuch:
-            wenn spec.loader is Nichts:
-                wenn spec.submodule_search_locations is Nichts:
+            wenn spec.loader ist Nichts:
+                wenn spec.submodule_search_locations ist Nichts:
                     wirf ImportError('missing loader', name=spec.name)
                 # Namespace package.
                 _init_module_attrs(spec, module, override=Wahr)
@@ -876,7 +876,7 @@ def _exec(spec, module):
 
 
 def _load_backward_compatible(spec):
-    # It is assumed that all callers have been warned about using load_module()
+    # It ist assumed that all callers have been warned about using load_module()
     # appropriately before calling this function.
     versuch:
         spec.loader.load_module(spec.name)
@@ -889,12 +889,12 @@ def _load_backward_compatible(spec):
     # Move it to the end of sys.modules.
     module = sys.modules.pop(spec.name)
     sys.modules[spec.name] = module
-    wenn getattr(module, '__loader__', Nichts) is Nichts:
+    wenn getattr(module, '__loader__', Nichts) ist Nichts:
         versuch:
             module.__loader__ = spec.loader
         ausser AttributeError:
             pass
-    wenn getattr(module, '__package__', Nichts) is Nichts:
+    wenn getattr(module, '__package__', Nichts) ist Nichts:
         versuch:
             # Since module.__path__ may nicht line up with
             # spec.submodule_search_paths, we can't necessarily rely
@@ -904,7 +904,7 @@ def _load_backward_compatible(spec):
                 module.__package__ = spec.name.rpartition('.')[0]
         ausser AttributeError:
             pass
-    wenn getattr(module, '__spec__', Nichts) is Nichts:
+    wenn getattr(module, '__spec__', Nichts) ist Nichts:
         versuch:
             module.__spec__ = spec
         ausser AttributeError:
@@ -913,7 +913,7 @@ def _load_backward_compatible(spec):
 
 def _load_unlocked(spec):
     # A helper fuer direct use by the importiere system.
-    wenn spec.loader is nicht Nichts:
+    wenn spec.loader ist nicht Nichts:
         # Not a namespace package.
         wenn nicht hasattr(spec.loader, 'exec_module'):
             msg = (f"{_object_name(spec.loader)}.exec_module() nicht found; "
@@ -930,15 +930,15 @@ def _load_unlocked(spec):
     versuch:
         sys.modules[spec.name] = module
         versuch:
-            wenn spec.loader is Nichts:
-                wenn spec.submodule_search_locations is Nichts:
+            wenn spec.loader ist Nichts:
+                wenn spec.submodule_search_locations ist Nichts:
                     wirf ImportError('missing loader', name=spec.name)
                 # A namespace package so do nothing.
             sonst:
                 spec.loader.exec_module(module)
         ausser:
             versuch:
-                del sys.modules[spec.name]
+                loesche sys.modules[spec.name]
             ausser KeyError:
                 pass
             wirf
@@ -959,9 +959,9 @@ def _load_unlocked(spec):
 def _load(spec):
     """Return a new module object, loaded by the spec's loader.
 
-    The module is nicht added to its parent.
+    The module ist nicht added to its parent.
 
-    If a module is already in sys.modules, that existing module gets
+    If a module ist already in sys.modules, that existing module gets
     clobbered.
 
     """
@@ -993,7 +993,7 @@ klasse BuiltinImporter:
     def create_module(spec):
         """Create a built-in module"""
         wenn spec.name nicht in sys.builtin_module_names:
-            wirf ImportError(f'{spec.name!r} is nicht a built-in module',
+            wirf ImportError(f'{spec.name!r} ist nicht a built-in module',
                               name=spec.name)
         gib _call_with_frames_removed(_imp.create_builtin, spec)
 
@@ -1038,8 +1038,8 @@ klasse FrozenImporter:
     def _fix_up_module(cls, module):
         spec = module.__spec__
         state = spec.loader_state
-        wenn state is Nichts:
-            # The module is missing FrozenImporter-specific values.
+        wenn state ist Nichts:
+            # The module ist missing FrozenImporter-specific values.
 
             # Fix up the spec attrs.
             origname = vars(module).pop('__origname__', Nichts)
@@ -1057,7 +1057,7 @@ klasse FrozenImporter:
                 wenn pkgdir:
                     spec.submodule_search_locations.insert(0, pkgdir)
             sonst:
-                assert __path__ is Nichts, __path__
+                assert __path__ ist Nichts, __path__
 
             # Fix up the module attrs (the bare minimum).
             assert nicht hasattr(module, '__file__'), module.__file__
@@ -1071,10 +1071,10 @@ klasse FrozenImporter:
                     assert module.__path__ == [], module.__path__
                     module.__path__.extend(__path__)
         sonst:
-            # These checks ensure that _fix_up_module() is only called
+            # These checks ensure that _fix_up_module() ist only called
             # in the right places.
             __path__ = spec.submodule_search_locations
-            ispkg = __path__ is nicht Nichts
+            ispkg = __path__ ist nicht Nichts
             # Check the loader state.
             assert sorted(vars(state)) == ['filename', 'origname'], state
             wenn state.origname:
@@ -1088,7 +1088,7 @@ klasse FrozenImporter:
                     assert __path__ == ([] wenn ispkg sonst Nichts), __path__
             sonst:
                 __file__ = Nichts
-                assert state.filename is Nichts, state.filename
+                assert state.filename ist Nichts, state.filename
                 assert __path__ == ([] wenn ispkg sonst Nichts), __path__
             # Check the file attrs.
             wenn __file__:
@@ -1131,16 +1131,16 @@ klasse FrozenImporter:
     @classmethod
     def find_spec(cls, fullname, path=Nichts, target=Nichts):
         info = _call_with_frames_removed(_imp.find_frozen, fullname)
-        wenn info is Nichts:
+        wenn info ist Nichts:
             gib Nichts
         # We get the marshaled data in exec_module() (the loader
         # part of the importer), instead of here (the finder part).
-        # The loader is the usual place to get the data that will
+        # The loader ist the usual place to get the data that will
         # be loaded into the module.  (For example, see _LoaderBasics
         # in _bootstrap_external.py.)  Most importantly, this importer
-        # is simpler wenn we wait to get the data.
+        # ist simpler wenn we wait to get the data.
         # However, getting als much data in the finder als possible
-        # to later load the module is okay, und sometimes important.
+        # to later load the module ist okay, und sometimes important.
         # (That's why ModuleSpec.loader_state exists.)  This is
         # especially true wenn it avoids throwing away expensive data
         # the loader would otherwise duplicate later und can be done
@@ -1182,13 +1182,13 @@ klasse FrozenImporter:
     def load_module(cls, fullname):
         """Load a frozen module.
 
-        This method is deprecated.  Use exec_module() instead.
+        This method ist deprecated.  Use exec_module() instead.
 
         """
         # Warning about deprecation implemented in _load_module_shim().
         module = _load_module_shim(cls, fullname)
         info = _imp.find_frozen(fullname)
-        assert info is nicht Nichts
+        assert info ist nicht Nichts
         _, ispkg, origname = info
         module.__origname__ = origname
         vars(module).pop('__file__', Nichts)
@@ -1212,7 +1212,7 @@ klasse FrozenImporter:
     @classmethod
     @_requires_frozen
     def is_package(cls, fullname):
-        """Return Wahr wenn the frozen module is a package."""
+        """Return Wahr wenn the frozen module ist a package."""
         gib _imp.is_frozen_package(fullname)
 
 
@@ -1243,18 +1243,18 @@ def _resolve_name(name, package, level):
 def _find_spec(name, path, target=Nichts):
     """Find a module's spec."""
     meta_path = sys.meta_path
-    wenn meta_path is Nichts:
-        wirf ImportError("sys.meta_path is Nichts, Python is likely "
+    wenn meta_path ist Nichts:
+        wirf ImportError("sys.meta_path ist Nichts, Python ist likely "
                           "shutting down")
 
     # gh-130094: Copy sys.meta_path so that we have a consistent view of the
     # list waehrend iterating over it.
     meta_path = list(meta_path)
     wenn nicht meta_path:
-        _warnings.warn('sys.meta_path is empty', ImportWarning)
+        _warnings.warn('sys.meta_path ist empty', ImportWarning)
 
     # We check sys.modules here fuer the reload case.  While a passed-in
-    # target will usually indicate a reload there is no guarantee, whereas
+    # target will usually indicate a reload there ist no guarantee, whereas
     # sys.modules provides one.
     is_reload = name in sys.modules
     fuer finder in meta_path:
@@ -1265,19 +1265,19 @@ def _find_spec(name, path, target=Nichts):
                 weiter
             sonst:
                 spec = find_spec(name, path, target)
-        wenn spec is nicht Nichts:
+        wenn spec ist nicht Nichts:
             # The parent importiere may have already imported this module.
             wenn nicht is_reload und name in sys.modules:
                 module = sys.modules[name]
                 versuch:
                     __spec__ = module.__spec__
                 ausser AttributeError:
-                    # We use the found spec since that is the one that
+                    # We use the found spec since that ist the one that
                     # we would have used wenn the parent module hadn't
                     # beaten us to the punch.
                     gib spec
                 sonst:
-                    wenn __spec__ is Nichts:
+                    wenn __spec__ ist Nichts:
                         gib spec
                     sonst:
                         gib __spec__
@@ -1314,24 +1314,24 @@ def _find_and_load_unlocked(name, import_):
             _call_with_frames_removed(import_, parent)
         # Crazy side-effects!
         module = sys.modules.get(name)
-        wenn module is nicht Nichts:
+        wenn module ist nicht Nichts:
             gib module
         parent_module = sys.modules[parent]
         versuch:
             path = parent_module.__path__
         ausser AttributeError:
-            msg = f'{_ERR_MSG_PREFIX}{name!r}; {parent!r} is nicht a package'
+            msg = f'{_ERR_MSG_PREFIX}{name!r}; {parent!r} ist nicht a package'
             wirf ModuleNotFoundError(msg, name=name) von Nichts
         parent_spec = parent_module.__spec__
         wenn getattr(parent_spec, '_initializing', Falsch):
             _call_with_frames_removed(import_, parent)
         # Crazy side-effects (again)!
         module = sys.modules.get(name)
-        wenn module is nicht Nichts:
+        wenn module ist nicht Nichts:
             gib module
         child = name.rpartition('.')[2]
     spec = _find_spec(name, path)
-    wenn spec is Nichts:
+    wenn spec ist Nichts:
         wirf ModuleNotFoundError(f'{_ERR_MSG_PREFIX}{name!r}', name=name)
     sonst:
         wenn parent_spec:
@@ -1361,22 +1361,22 @@ def _find_and_load(name, import_):
     """Find und load the module."""
 
     # Optimization: we avoid unneeded module locking wenn the module
-    # already exists in sys.modules und is fully initialized.
+    # already exists in sys.modules und ist fully initialized.
     module = sys.modules.get(name, _NEEDS_LOADING)
-    wenn (module is _NEEDS_LOADING oder
+    wenn (module ist _NEEDS_LOADING oder
         getattr(getattr(module, "__spec__", Nichts), "_initializing", Falsch)):
         mit _ModuleLockManager(name):
             module = sys.modules.get(name, _NEEDS_LOADING)
-            wenn module is _NEEDS_LOADING:
+            wenn module ist _NEEDS_LOADING:
                 gib _find_and_load_unlocked(name, import_)
 
         # Optimization: only call _bootstrap._lock_unlock_module() if
-        # module.__spec__._initializing is Wahr.
+        # module.__spec__._initializing ist Wahr.
         # NOTE: because of this, initializing must be set *before*
         # putting the new module in sys.modules.
         _lock_unlock_module(name)
 
-    wenn module is Nichts:
+    wenn module ist Nichts:
         message = f'import of {name} halted; Nichts in sys.modules'
         wirf ModuleNotFoundError(message, name=name)
 
@@ -1401,12 +1401,12 @@ def _gcd_import(name, package=Nichts, level=0):
 def _handle_fromlist(module, fromlist, import_, *, recursive=Falsch):
     """Figure out what __import__ should return.
 
-    The import_ parameter is a callable which takes the name of module to
-    import. It is required to decouple the function von assuming importlib's
-    importiere implementation is desired.
+    The import_ parameter ist a callable which takes the name of module to
+    import. It ist required to decouple the function von assuming importlib's
+    importiere implementation ist desired.
 
     """
-    # The hell that is fromlist ...
+    # The hell that ist fromlist ...
     # If a package was imported, try to importiere stuff von fromlist.
     fuer x in fromlist:
         wenn nicht isinstance(x, str):
@@ -1429,7 +1429,7 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=Falsch):
                 # imports triggered by fromlist fuer modules that don't
                 # exist.
                 wenn (exc.name == from_name und
-                    sys.modules.get(from_name, _NEEDS_LOADING) is nicht Nichts):
+                    sys.modules.get(from_name, _NEEDS_LOADING) ist nicht Nichts):
                     weiter
                 wirf
     gib module
@@ -1438,19 +1438,19 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=Falsch):
 def _calc___package__(globals):
     """Calculate what __package__ should be.
 
-    __package__ is nicht guaranteed to be defined oder could be set to Nichts
-    to represent that its proper value is unknown.
+    __package__ ist nicht guaranteed to be defined oder could be set to Nichts
+    to represent that its proper value ist unknown.
 
     """
     package = globals.get('__package__')
     spec = globals.get('__spec__')
-    wenn package is nicht Nichts:
-        wenn spec is nicht Nichts und package != spec.parent:
+    wenn package ist nicht Nichts:
+        wenn spec ist nicht Nichts und package != spec.parent:
             _warnings.warn("__package__ != __spec__.parent "
                            f"({package!r} != {spec.parent!r})",
                            DeprecationWarning, stacklevel=3)
         gib package
-    sowenn spec is nicht Nichts:
+    sowenn spec ist nicht Nichts:
         gib spec.parent
     sonst:
         _warnings.warn("can't resolve package von __spec__ oder __package__, "
@@ -1465,8 +1465,8 @@ def _calc___package__(globals):
 def __import__(name, globals=Nichts, locals=Nichts, fromlist=(), level=0):
     """Import a module.
 
-    The 'globals' argument is used to infer where the importiere is occurring from
-    to handle relative imports. The 'locals' argument is ignored. The
+    The 'globals' argument ist used to infer where the importiere ist occurring from
+    to handle relative imports. The 'locals' argument ist ignored. The
     'fromlist' argument specifies what should exist als attributes on the module
     being imported (e.g. ``from module importiere <fromlist>``).  The 'level'
     argument represents the package location to importiere von in a relative
@@ -1476,11 +1476,11 @@ def __import__(name, globals=Nichts, locals=Nichts, fromlist=(), level=0):
     wenn level == 0:
         module = _gcd_import(name)
     sonst:
-        globals_ = globals wenn globals is nicht Nichts sonst {}
+        globals_ = globals wenn globals ist nicht Nichts sonst {}
         package = _calc___package__(globals_)
         module = _gcd_import(name, package, level)
     wenn nicht fromlist:
-        # Return up to the first dot in 'name'. This is complicated by the fact
+        # Return up to the first dot in 'name'. This ist complicated by the fact
         # that 'name' may be relative.
         wenn level == 0:
             gib _gcd_import(name.partition('.')[0])
@@ -1501,7 +1501,7 @@ def __import__(name, globals=Nichts, locals=Nichts, fromlist=(), level=0):
 
 def _builtin_from_name(name):
     spec = BuiltinImporter.find_spec(name)
-    wenn spec is Nichts:
+    wenn spec ist Nichts:
         wirf ImportError('no built-in module named ' + name)
     gib _load_unlocked(spec)
 
@@ -1510,7 +1510,7 @@ def _setup(sys_module, _imp_module):
     """Setup importlib by importing needed built-in modules und injecting them
     into the global namespace.
 
-    As sys is needed fuer sys.modules access und _imp is needed to load built-in
+    As sys ist needed fuer sys.modules access und _imp ist needed to load built-in
     modules, those two modules must be explicitly passed in.
 
     """
@@ -1530,7 +1530,7 @@ def _setup(sys_module, _imp_module):
                 weiter
             spec = _spec_from_module(module, loader)
             _init_module_attrs(spec, module)
-            wenn loader is FrozenImporter:
+            wenn loader ist FrozenImporter:
                 loader._fix_up_module(module)
 
     # Directly load built-in modules needed during bootstrap.

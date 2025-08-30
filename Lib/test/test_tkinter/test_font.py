@@ -42,7 +42,7 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
         ausser tkinter.TclError:
             f = font.Font(root=self.root, family=family, exists=Falsch)
         self.assertEqual(f.cget('family'), family)
-        del f
+        loesche f
         gc_collect()
 
     def test_actual(self):

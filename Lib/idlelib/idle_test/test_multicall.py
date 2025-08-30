@@ -17,12 +17,12 @@ klasse MultiCallTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.mc
+        loesche cls.mc
         cls.root.update_idletasks()
 ##        fuer id in cls.root.tk.call('after', 'info'):
 ##            cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_creator(self):
         mc = self.mc

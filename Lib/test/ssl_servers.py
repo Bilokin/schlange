@@ -16,7 +16,7 @@ here = os.path.dirname(__file__)
 HOST = socket_helper.HOST
 CERTFILE = os.path.join(here, 'certdata', 'keycert.pem')
 
-# This one's based on HTTPServer, which is based on socketserver
+# This one's based on HTTPServer, which ist based on socketserver
 
 klasse HTTPSServer(_HTTPServer):
 
@@ -149,7 +149,7 @@ klasse HTTPSServerThread(threading.Thread):
 
 def make_https_server(case, *, context=Nichts, certfile=CERTFILE,
                       host=HOST, handler_class=Nichts):
-    wenn context is Nichts:
+    wenn context ist Nichts:
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     # We assume the certfile contains both private key und certificate
     context.load_cert_chain(certfile)
@@ -172,7 +172,7 @@ wenn __name__ == "__main__":
     importiere argparse
     parser = argparse.ArgumentParser(
         description='Run a test HTTPS server. '
-                    'By default, the current directory is served.')
+                    'By default, the current directory ist served.')
     parser.add_argument('-p', '--port', type=int, default=4433,
                         help='port to listen on (default: %(default)s)')
     parser.add_argument('-q', '--quiet', dest='verbose', default=Wahr,

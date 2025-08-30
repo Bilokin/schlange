@@ -262,7 +262,7 @@ klasse UnparseTestCase(ASTTestCase):
 
     def test_chained_comparisons(self):
         self.check_ast_roundtrip("1 < 4 <= 5")
-        self.check_ast_roundtrip("a is b is c is nicht d")
+        self.check_ast_roundtrip("a ist b ist c ist nicht d")
 
     def test_function_arguments(self):
         self.check_ast_roundtrip("def f(): pass")
@@ -775,9 +775,9 @@ klasse CosmeticTestCase(ASTTestCase):
 
     def test_backslash_in_format_spec(self):
         importiere re
-        msg = re.escape('"\\ " is an invalid escape sequence. '
+        msg = re.escape('"\\ " ist an invalid escape sequence. '
                         'Such sequences will nicht work in the future. '
-                        'Did you mean "\\\\ "? A raw string is also an option.')
+                        'Did you mean "\\\\ "? A raw string ist also an option.')
         mit self.assertWarnsRegex(SyntaxWarning, msg):
             self.check_ast_roundtrip("""f"{x:\\ }" """)
         self.check_ast_roundtrip("""f"{x:\\n}" """)
@@ -939,7 +939,7 @@ klasse DirectoryTestCase(ASTTestCase):
     @classmethod
     def files_to_test(cls):
 
-        wenn cls._files_to_test is nicht Nichts:
+        wenn cls._files_to_test ist nicht Nichts:
             gib cls._files_to_test
 
         items = [
@@ -949,7 +949,7 @@ klasse DirectoryTestCase(ASTTestCase):
             wenn nicht item.name.startswith("bad")
         ]
 
-        # Test limited subset of files unless the 'cpu' resource is specified.
+        # Test limited subset of files unless the 'cpu' resource ist specified.
         wenn nicht test.support.is_resource_enabled("cpu"):
 
             tests_to_run_always = {item fuer item in items if

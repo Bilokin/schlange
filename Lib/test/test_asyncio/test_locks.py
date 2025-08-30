@@ -30,7 +30,7 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         self.assertEndsWith(repr(lock), '[unlocked]>')
         self.assertWahr(RGX_REPR.match(repr(lock)))
 
-        await lock.acquire()
+        warte lock.acquire()
         self.assertEndsWith(repr(lock), '[locked]>')
         self.assertWahr(RGX_REPR.match(repr(lock)))
 
@@ -41,7 +41,7 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
             TypeError,
             "'Lock' object can't be awaited"
         ):
-            await lock
+            warte lock
 
         self.assertFalsch(lock.locked())
 
@@ -73,13 +73,13 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         ]
 
         fuer lock in primitives:
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             self.assertFalsch(lock.locked())
             mit self.assertRaisesRegex(
                 TypeError,
                 r"'\w+' object can't be awaited"
             ):
-                mit await lock:
+                mit warte lock:
                     pass
             self.assertFalsch(lock.locked())
 
@@ -87,44 +87,44 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         lock = asyncio.Lock()
         result = []
 
-        self.assertWahr(await lock.acquire())
+        self.assertWahr(warte lock.acquire())
 
         async def c1(result):
-            wenn await lock.acquire():
+            wenn warte lock.acquire():
                 result.append(1)
             gib Wahr
 
         async def c2(result):
-            wenn await lock.acquire():
+            wenn warte lock.acquire():
                 result.append(2)
             gib Wahr
 
         async def c3(result):
-            wenn await lock.acquire():
+            wenn warte lock.acquire():
                 result.append(3)
             gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
 
         lock.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
 
         t3 = asyncio.create_task(c3(result))
 
         lock.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1, 2], result)
 
         lock.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1, 2, 3], result)
 
         self.assertWahr(t1.done())
@@ -136,25 +136,25 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_acquire_cancel(self):
         lock = asyncio.Lock()
-        self.assertWahr(await lock.acquire())
+        self.assertWahr(warte lock.acquire())
 
         task = asyncio.create_task(lock.acquire())
         asyncio.get_running_loop().call_soon(task.cancel)
         mit self.assertRaises(asyncio.CancelledError):
-            await task
+            warte task
         self.assertFalsch(lock._waiters)
 
     async def test_cancel_race(self):
         # Several tasks:
         # - A acquires the lock
-        # - B is blocked in acquire()
-        # - C is blocked in acquire()
+        # - B ist blocked in acquire()
+        # - C ist blocked in acquire()
         #
         # Now, concurrently:
-        # - B is cancelled
+        # - B ist cancelled
         # - A releases the lock
         #
-        # If B's waiter is marked cancelled but nicht yet removed from
+        # If B's waiter ist marked cancelled but nicht yet removed from
         # _waiters, A's release() call will crash when trying to set
         # B's waiter; instead, it should move on to C's waiter.
 
@@ -162,22 +162,22 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         lock = asyncio.Lock()
 
         async def lockit(name, blocker):
-            await lock.acquire()
+            warte lock.acquire()
             versuch:
-                wenn blocker is nicht Nichts:
-                    await blocker
+                wenn blocker ist nicht Nichts:
+                    warte blocker
             schliesslich:
                 lock.release()
 
         fa = asyncio.get_running_loop().create_future()
         ta = asyncio.create_task(lockit('A', fa))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(lock.locked())
         tb = asyncio.create_task(lockit('B', Nichts))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(len(lock._waiters), 1)
         tc = asyncio.create_task(lockit('C', Nichts))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(len(lock._waiters), 2)
 
         # Create the race und check.
@@ -185,11 +185,11 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         fa.set_result(Nichts)
         tb.cancel()
         self.assertWahr(lock._waiters[0].cancelled())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(lock.locked())
         self.assertWahr(ta.done())
         self.assertWahr(tb.cancelled())
-        await tc
+        warte tc
 
     async def test_cancel_release_race(self):
         # Issue 32734
@@ -204,26 +204,26 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
             nonlocal lock_count
             nonlocal call_count
             call_count += 1
-            await lock.acquire()
+            warte lock.acquire()
             lock_count += 1
 
         def trigger():
             t1.cancel()
             lock.release()
 
-        await lock.acquire()
+        warte lock.acquire()
 
         t1 = asyncio.create_task(lockit())
         t2 = asyncio.create_task(lockit())
         t3 = asyncio.create_task(lockit())
 
         # Start scheduled tasks
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         loop.call_soon(trigger)
         mit self.assertRaises(asyncio.CancelledError):
             # Wait fuer cancellation
-            await t1
+            warte t1
 
         # Make sure only one lock was taken
         self.assertEqual(lock_count, 1)
@@ -231,19 +231,19 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(call_count, 3)
         self.assertWahr(t1.cancelled() und t2.done())
 
-        # Cleanup the task that is stuck on acquire.
+        # Cleanup the task that ist stuck on acquire.
         t3.cancel()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(t3.cancelled())
 
     async def test_finished_waiter_cancelled(self):
         lock = asyncio.Lock()
 
-        await lock.acquire()
+        warte lock.acquire()
         self.assertWahr(lock.locked())
 
         tb = asyncio.create_task(lock.acquire())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(len(lock._waiters), 1)
 
         # Create a second waiter, wake up the first, und cancel it.
@@ -251,13 +251,13 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         tc = asyncio.create_task(lock.acquire())
         tb.cancel()
         lock.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         self.assertWahr(lock.locked())
         self.assertWahr(tb.cancelled())
 
         # Cleanup
-        await tc
+        warte tc
 
     async def test_release_not_acquired(self):
         lock = asyncio.Lock()
@@ -266,7 +266,7 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_release_no_waiters(self):
         lock = asyncio.Lock()
-        await lock.acquire()
+        warte lock.acquire()
         self.assertWahr(lock.locked())
 
         lock.release()
@@ -305,27 +305,27 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            wenn await ev.wait():
+            wenn warte ev.wait():
                 result.append(1)
 
         async def c2(result):
-            wenn await ev.wait():
+            wenn warte ev.wait():
                 result.append(2)
 
         async def c3(result):
-            wenn await ev.wait():
+            wenn warte ev.wait():
                 result.append(3)
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
 
         t3 = asyncio.create_task(c3(result))
 
         ev.set()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([3, 1, 2], result)
 
         self.assertWahr(t1.done())
@@ -339,7 +339,7 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         ev = asyncio.Event()
         ev.set()
 
-        res = await ev.wait()
+        res = warte ev.wait()
         self.assertWahr(res)
 
     async def test_wait_cancel(self):
@@ -348,7 +348,7 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         wait = asyncio.create_task(ev.wait())
         asyncio.get_running_loop().call_soon(wait.cancel)
         mit self.assertRaises(asyncio.CancelledError):
-            await wait
+            warte wait
         self.assertFalsch(ev._waiters)
 
     async def test_clear(self):
@@ -366,12 +366,12 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            wenn await ev.wait():
+            wenn warte ev.wait():
                 result.append(1)
             gib Wahr
 
         t = asyncio.create_task(c1(result))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
 
         ev.set()
@@ -382,7 +382,7 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         ev.set()
         self.assertEqual(1, len(ev._waiters))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
         self.assertEqual(0, len(ev._waiters))
 
@@ -397,20 +397,20 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(1)
             gib Wahr
 
         async def c2(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(2)
             gib Wahr
 
         async def c3(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(3)
             gib Wahr
 
@@ -418,33 +418,33 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         t2 = asyncio.create_task(c2(result))
         t3 = asyncio.create_task(c3(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
         self.assertFalsch(cond.locked())
 
-        self.assertWahr(await cond.acquire())
+        self.assertWahr(warte cond.acquire())
         cond.notify()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
         self.assertWahr(cond.locked())
 
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
         self.assertWahr(cond.locked())
 
         cond.notify(2)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
         self.assertWahr(cond.locked())
 
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1, 2], result)
         self.assertWahr(cond.locked())
 
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1, 2, 3], result)
         self.assertWahr(cond.locked())
 
@@ -457,34 +457,34 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_wait_cancel(self):
         cond = asyncio.Condition()
-        await cond.acquire()
+        warte cond.acquire()
 
         wait = asyncio.create_task(cond.wait())
         asyncio.get_running_loop().call_soon(wait.cancel)
         mit self.assertRaises(asyncio.CancelledError):
-            await wait
+            warte wait
         self.assertFalsch(cond._waiters)
         self.assertWahr(cond.locked())
 
     async def test_wait_cancel_contested(self):
         cond = asyncio.Condition()
 
-        await cond.acquire()
+        warte cond.acquire()
         self.assertWahr(cond.locked())
 
         wait_task = asyncio.create_task(cond.wait())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertFalsch(cond.locked())
 
         # Notify, but contest the lock before cancelling
-        await cond.acquire()
+        warte cond.acquire()
         self.assertWahr(cond.locked())
         cond.notify()
         asyncio.get_running_loop().call_soon(wait_task.cancel)
         asyncio.get_running_loop().call_soon(cond.release)
 
         versuch:
-            await wait_task
+            warte wait_task
         ausser asyncio.CancelledError:
             # Should nicht happen, since no cancellation points
             pass
@@ -501,18 +501,18 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             nonlocal waited
             async mit cond:
                 waited = Wahr  # Make sure this area was reached
-                await cond.wait()
+                warte cond.wait()
 
         waiter = asyncio.create_task(wait_on_cond())
-        await asyncio.sleep(0)  # Start waiting
+        warte asyncio.sleep(0)  # Start waiting
 
-        await cond.acquire()
+        warte cond.acquire()
         cond.notify()
-        await asyncio.sleep(0)  # Get to acquire()
+        warte asyncio.sleep(0)  # Get to acquire()
         waiter.cancel()
-        await asyncio.sleep(0)  # Activate cancellation
+        warte asyncio.sleep(0)  # Activate cancellation
         cond.release()
-        await asyncio.sleep(0)  # Cancellation should occur
+        warte asyncio.sleep(0)  # Cancellation should occur
 
         self.assertWahr(waiter.cancelled())
         self.assertWahr(waited)
@@ -520,7 +520,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
     async def test_wait_unacquired(self):
         cond = asyncio.Condition()
         mit self.assertRaises(RuntimeError):
-            await cond.wait()
+            warte cond.wait()
 
     async def test_wait_for(self):
         cond = asyncio.Condition()
@@ -532,28 +532,28 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            await cond.acquire()
-            wenn await cond.wait_for(predicate):
+            warte cond.acquire()
+            wenn warte cond.wait_for(predicate):
                 result.append(1)
                 cond.release()
             gib Wahr
 
         t = asyncio.create_task(c1(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
 
-        await cond.acquire()
+        warte cond.acquire()
         cond.notify()
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
 
         presult = Wahr
-        await cond.acquire()
+        warte cond.acquire()
         cond.notify()
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
 
         self.assertWahr(t.done())
@@ -563,33 +563,33 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         cond = asyncio.Condition()
 
         # predicate can gib true immediately
-        res = await cond.wait_for(lambda: [1, 2, 3])
+        res = warte cond.wait_for(lambda: [1, 2, 3])
         self.assertEqual([1, 2, 3], res)
 
         mit self.assertRaises(RuntimeError):
-            await cond.wait_for(lambda: Falsch)
+            warte cond.wait_for(lambda: Falsch)
 
     async def test_notify(self):
         cond = asyncio.Condition()
         result = []
 
         async def c1(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(1)
                 cond.release()
             gib Wahr
 
         async def c2(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(2)
                 cond.release()
             gib Wahr
 
         async def c3(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(3)
                 cond.release()
             gib Wahr
@@ -598,20 +598,20 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         t2 = asyncio.create_task(c2(result))
         t3 = asyncio.create_task(c3(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
 
-        await cond.acquire()
+        warte cond.acquire()
         cond.notify(1)
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
 
-        await cond.acquire()
+        warte cond.acquire()
         cond.notify(1)
         cond.notify(2048)
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1, 2, 3], result)
 
         self.assertWahr(t1.done())
@@ -627,15 +627,15 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(1)
                 cond.release()
             gib Wahr
 
         async def c2(result):
-            await cond.acquire()
-            wenn await cond.wait():
+            warte cond.acquire()
+            wenn warte cond.wait():
                 result.append(2)
                 cond.release()
             gib Wahr
@@ -643,13 +643,13 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([], result)
 
-        await cond.acquire()
+        warte cond.acquire()
         cond.notify_all()
         cond.release()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1, 2], result)
 
         self.assertWahr(t1.done())
@@ -670,7 +670,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         self.assertWahr('unlocked' in repr(cond))
         self.assertWahr(RGX_REPR.match(repr(cond)))
 
-        await cond.acquire()
+        warte cond.acquire()
         self.assertWahr('locked' in repr(cond))
 
         cond._waiters.append(mock.Mock())
@@ -690,9 +690,9 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_explicit_lock(self):
         async def f(lock=Nichts, cond=Nichts):
-            wenn lock is Nichts:
+            wenn lock ist Nichts:
                 lock = asyncio.Lock()
-            wenn cond is Nichts:
+            wenn cond ist Nichts:
                 cond = asyncio.Condition(lock)
             self.assertIs(cond._lock, lock)
             self.assertFalsch(lock.locked())
@@ -709,10 +709,10 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalsch(cond.locked())
 
         # All should work in the same way.
-        await f()
-        await f(asyncio.Lock())
+        warte f()
+        warte f(asyncio.Lock())
         lock = asyncio.Lock()
-        await f(lock, asyncio.Condition(lock))
+        warte f(lock, asyncio.Condition(lock))
 
     async def test_ambiguous_loops(self):
         loop = asyncio.new_event_loop()
@@ -733,7 +733,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
                     RuntimeError,
                     "is bound to a different event loop",
                 ):
-                    await cond.acquire()
+                    warte cond.acquire()
 
         async def wrong_loop_in_cond():
             # Same analogy here mit the condition's loop.
@@ -747,16 +747,16 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
                     RuntimeError,
                     "is bound to a different event loop",
                 ):
-                    await cond.wait()
+                    warte cond.wait()
 
-        await wrong_loop_in_lock()
-        await wrong_loop_in_cond()
+        warte wrong_loop_in_lock()
+        warte wrong_loop_in_cond()
 
     async def test_timeout_in_block(self):
         condition = asyncio.Condition()
         async mit condition:
             mit self.assertRaises(asyncio.TimeoutError):
-                await asyncio.wait_for(condition.wait(), timeout=0.5)
+                warte asyncio.wait_for(condition.wait(), timeout=0.5)
 
     async def test_cancelled_error_wakeup(self):
         # Test that a cancelled error, received when awaiting wakeup,
@@ -769,16 +769,16 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             nonlocal raised
             async mit cond:
                 mit self.assertRaises(asyncio.CancelledError) als err:
-                    await cond.wait_for(lambda: wake)
+                    warte cond.wait_for(lambda: wake)
                 raised = err.exception
                 wirf raised
 
         task = asyncio.create_task(func())
-        await asyncio.sleep(0)
-        # Task is waiting on the condition, cancel it there.
+        warte asyncio.sleep(0)
+        # Task ist waiting on the condition, cancel it there.
         task.cancel(msg="foo")
         mit self.assertRaises(asyncio.CancelledError) als err:
-            await task
+            warte task
         self.assertEqual(err.exception.args, ("foo",))
         # We should have got the _same_ exception instance als the one
         # originally raised.
@@ -795,31 +795,31 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             nonlocal raised
             async mit cond:
                 mit self.assertRaises(asyncio.CancelledError) als err:
-                    await cond.wait_for(lambda: wake)
+                    warte cond.wait_for(lambda: wake)
                 raised = err.exception
                 wirf raised
 
         task = asyncio.create_task(func())
-        await asyncio.sleep(0)
-        # Task is waiting on the condition
-        await cond.acquire()
+        warte asyncio.sleep(0)
+        # Task ist waiting on the condition
+        warte cond.acquire()
         wake = Wahr
         cond.notify()
-        await asyncio.sleep(0)
-        # Task is now trying to re-acquire the lock, cancel it there.
+        warte asyncio.sleep(0)
+        # Task ist now trying to re-acquire the lock, cancel it there.
         task.cancel(msg="foo")
         cond.release()
         mit self.assertRaises(asyncio.CancelledError) als err:
-            await task
+            warte task
         self.assertEqual(err.exception.args, ("foo",))
         # We should have got the _same_ exception instance als the one
         # originally raised.
         self.assertIs(err.exception, raised)
 
     async def test_cancelled_wakeup(self):
-        # Test that a task cancelled at the "same" time als it is woken
+        # Test that a task cancelled at the "same" time als it ist woken
         # up als part of a Condition.notify() does nicht result in a lost wakeup.
-        # This test simulates a cancel waehrend the target task is awaiting initial
+        # This test simulates a cancel waehrend the target task ist awaiting initial
         # wakeup on the wakeup queue.
         condition = asyncio.Condition()
         state = 0
@@ -827,7 +827,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             nonlocal state
             async mit condition:
                 waehrend Wahr:
-                    await condition.wait_for(lambda: state != 0)
+                    warte condition.wait_for(lambda: state != 0)
                     wenn state < 0:
                         gib
                     state -= 1
@@ -835,13 +835,13 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         # create two consumers
         c = [asyncio.create_task(consumer()) fuer _ in range(2)]
         # wait fuer them to settle
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         async mit condition:
             # produce one item und wake up one
             state += 1
             condition.notify(1)
 
-            # Cancel it waehrend it is awaiting to be run.
+            # Cancel it waehrend it ist awaiting to be run.
             # This cancellation could come von the outside
             c[0].cancel()
 
@@ -850,7 +850,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             # because it raced mit a cancel()
             versuch:
                 async mit asyncio.timeout(0.01):
-                    await condition.wait_for(lambda: state == 0)
+                    warte condition.wait_for(lambda: state == 0)
             ausser TimeoutError:
                 pass
             self.assertEqual(state, 0)
@@ -858,12 +858,12 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             # clean up
             state = -1
             condition.notify_all()
-        await c[1]
+        warte c[1]
 
     async def test_cancelled_wakeup_relock(self):
-        # Test that a task cancelled at the "same" time als it is woken
+        # Test that a task cancelled at the "same" time als it ist woken
         # up als part of a Condition.notify() does nicht result in a lost wakeup.
-        # This test simulates a cancel waehrend the target task is acquiring the lock
+        # This test simulates a cancel waehrend the target task ist acquiring the lock
         # again.
         condition = asyncio.Condition()
         state = 0
@@ -871,7 +871,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             nonlocal state
             async mit condition:
                 waehrend Wahr:
-                    await condition.wait_for(lambda: state != 0)
+                    warte condition.wait_for(lambda: state != 0)
                     wenn state < 0:
                         gib
                     state -= 1
@@ -879,7 +879,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         # create two consumers
         c = [asyncio.create_task(consumer()) fuer _ in range(2)]
         # wait fuer them to settle
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         async mit condition:
             # produce one item und wake up one
             state += 1
@@ -887,7 +887,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
             # now we sleep fuer a bit.  This allows the target task to wake up und
             # settle on re-aquiring the lock
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
             # Cancel it waehrend awaiting the lock
             # This cancel could come the outside.
@@ -898,7 +898,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             # because it raced mit a cancel()
             versuch:
                 async mit asyncio.timeout(0.01):
-                    await condition.wait_for(lambda: state == 0)
+                    warte condition.wait_for(lambda: state == 0)
             ausser TimeoutError:
                 pass
             self.assertEqual(state, 0)
@@ -906,7 +906,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             # clean up
             state = -1
             condition.notify_all()
-        await c[1]
+        warte c[1]
 
 klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
@@ -919,12 +919,12 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         self.assertEndsWith(repr(sem), '[unlocked, value:1]>')
         self.assertWahr(RGX_REPR.match(repr(sem)))
 
-        await sem.acquire()
+        warte sem.acquire()
         self.assertEndsWith(repr(sem), '[locked]>')
         self.assertWahr('waiters' nicht in repr(sem))
         self.assertWahr(RGX_REPR.match(repr(sem)))
 
-        wenn sem._waiters is Nichts:
+        wenn sem._waiters ist Nichts:
             sem._waiters = collections.deque()
 
         sem._waiters.append(mock.Mock())
@@ -943,7 +943,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
             TypeError,
             "'Semaphore' object can't be awaited",
         ):
-            await sem
+            warte sem
 
         self.assertFalsch(sem.locked())
         self.assertEqual(1, sem._value)
@@ -955,27 +955,27 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         sem = asyncio.Semaphore(3)
         result = []
 
-        self.assertWahr(await sem.acquire())
-        self.assertWahr(await sem.acquire())
+        self.assertWahr(warte sem.acquire())
+        self.assertWahr(warte sem.acquire())
         self.assertFalsch(sem.locked())
 
         async def c1(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(1)
             gib Wahr
 
         async def c2(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(2)
             gib Wahr
 
         async def c3(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(3)
             gib Wahr
 
         async def c4(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(4)
             gib Wahr
 
@@ -983,7 +983,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         t2 = asyncio.create_task(c2(result))
         t3 = asyncio.create_task(c3(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual([1], result)
         self.assertWahr(sem.locked())
         self.assertEqual(2, len(sem._waiters))
@@ -995,7 +995,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         sem.release()
         self.assertEqual(0, sem._value)
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(0, sem._value)
         self.assertEqual(3, len(result))
         self.assertWahr(sem.locked())
@@ -1010,16 +1010,16 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
         # cleanup locked semaphore
         sem.release()
-        await asyncio.gather(*race_tasks)
+        warte asyncio.gather(*race_tasks)
 
     async def test_acquire_cancel(self):
         sem = asyncio.Semaphore()
-        await sem.acquire()
+        warte sem.acquire()
 
         acquire = asyncio.create_task(sem.acquire())
         asyncio.get_running_loop().call_soon(acquire.cancel)
         mit self.assertRaises(asyncio.CancelledError):
-            await acquire
+            warte acquire
         self.assertWahr((nicht sem._waiters) oder
                         all(waiter.done() fuer waiter in sem._waiters))
 
@@ -1031,14 +1031,14 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         t3 = asyncio.create_task(sem.acquire())
         t4 = asyncio.create_task(sem.acquire())
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         t1.cancel()
         t2.cancel()
         sem.release()
 
-        await asyncio.sleep(0)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
+        warte asyncio.sleep(0)
         num_done = sum(t.done() fuer t in [t3, t4])
         self.assertEqual(num_done, 1)
         self.assertWahr(t3.done())
@@ -1046,19 +1046,19 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
         t3.cancel()
         t4.cancel()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
     async def test_acquire_hang(self):
         sem = asyncio.Semaphore(value=0)
 
         t1 = asyncio.create_task(sem.acquire())
         t2 = asyncio.create_task(sem.acquire())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         t1.cancel()
         sem.release()
-        await asyncio.sleep(0)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertWahr(sem.locked())
         self.assertWahr(t2.done())
 
@@ -1068,7 +1068,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
         async def c1():
             async mit sem:
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
             t2.cancel()
 
         async def c2():
@@ -1078,11 +1078,11 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         t1 = asyncio.create_task(c1())
         t2 = asyncio.create_task(c2())
 
-        r1, r2 = await asyncio.gather(t1, t2, return_exceptions=Wahr)
-        self.assertWahr(r1 is Nichts)
+        r1, r2 = warte asyncio.gather(t1, t2, return_exceptions=Wahr)
+        self.assertWahr(r1 ist Nichts)
         self.assertWahr(isinstance(r2, asyncio.CancelledError))
 
-        await asyncio.wait_for(sem.acquire(), timeout=1.0)
+        warte asyncio.wait_for(sem.acquire(), timeout=1.0)
 
     def test_release_not_acquired(self):
         sem = asyncio.BoundedSemaphore()
@@ -1091,7 +1091,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_release_no_waiters(self):
         sem = asyncio.Semaphore()
-        await sem.acquire()
+        warte sem.acquire()
         self.assertWahr(sem.locked())
 
         sem.release()
@@ -1102,14 +1102,14 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def coro(tag):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(f'{tag}_1')
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             sem.release()
 
-            await sem.acquire()
+            warte sem.acquire()
             result.append(f'{tag}_2')
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             sem.release()
 
         async mit asyncio.TaskGroup() als tg:
@@ -1127,20 +1127,20 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(1)
             gib Wahr
 
         async def c2(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(2)
             sem.release()
-            await sem.acquire()
+            warte sem.acquire()
             result.append(4)
             gib Wahr
 
         async def c3(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(3)
             gib Wahr
 
@@ -1148,13 +1148,13 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         t2 = asyncio.create_task(c2(result))
         t3 = asyncio.create_task(c3(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         sem.release()
         sem.release()
 
         tasks = [t1, t2, t3]
-        await asyncio.gather(*tasks)
+        warte asyncio.gather(*tasks)
         self.assertEqual([1, 2, 3, 4], result)
 
     async def test_acquire_fifo_order_3(self):
@@ -1162,17 +1162,17 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         result = []
 
         async def c1(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(1)
             gib Wahr
 
         async def c2(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(2)
             gib Wahr
 
         async def c3(result):
-            await sem.acquire()
+            warte sem.acquire()
             result.append(3)
             gib Wahr
 
@@ -1180,17 +1180,17 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         t2 = asyncio.create_task(c2(result))
         t3 = asyncio.create_task(c3(result))
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         t1.cancel()
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         sem.release()
         sem.release()
 
         tasks = [t1, t2, t3]
-        await asyncio.gather(*tasks, return_exceptions=Wahr)
+        warte asyncio.gather(*tasks, return_exceptions=Wahr)
         self.assertEqual([2, 3], result)
 
     async def test_acquire_fifo_order_4(self):
@@ -1203,7 +1203,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         async def c1(result):
             # First task immediately waits fuer semaphore.  It will be awoken by c2.
             self.assertEqual(sem._value, 0)
-            await sem.acquire()
+            warte sem.acquire()
             # We should have woken up all waiting tasks now.
             self.assertEqual(sem._value, 0)
             # Create a fourth task.  It should run after c3, nicht c2.
@@ -1219,14 +1219,14 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
             sem.release()
             sem.release()
             self.assertEqual(sem._value, 2)
-            # It is locked, because c1 hasn't woken up yet.
+            # It ist locked, because c1 hasn't woken up yet.
             self.assertWahr(sem.locked())
-            await sem.acquire()
+            warte sem.acquire()
             result.append(2)
             gib Wahr
 
         async def c3(result):
-            await sem.acquire()
+            warte sem.acquire()
             self.assertWahr(sem.locked())
             result.append(3)
             gib Wahr
@@ -1240,20 +1240,20 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         t3 = asyncio.create_task(c3(result))
         t4 = Nichts
 
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         # Three tasks are in the queue, the first hasn't woken up yet.
         self.assertEqual(sem._value, 2)
         self.assertEqual(len(sem._waiters), 3)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         tasks = [t1, t2, t3, t4]
-        await asyncio.gather(*tasks)
+        warte asyncio.gather(*tasks)
         self.assertEqual([1, 2, 3, 4], result)
 
 klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self):
-        await super().asyncSetUp()
+        warte super().asyncSetUp()
         self.N = 5
 
     def make_tasks(self, n, coro):
@@ -1262,7 +1262,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
     async def gather_tasks(self, n, coro):
         tasks = self.make_tasks(n, coro)
-        res = await asyncio.gather(*tasks)
+        res = warte asyncio.gather(*tasks)
         gib res, tasks
 
     async def test_barrier(self):
@@ -1272,7 +1272,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             TypeError,
             "'Barrier' object can't be awaited",
         ):
-            await barrier
+            warte barrier
 
         self.assertIn("filling", repr(barrier))
 
@@ -1284,12 +1284,12 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         waiters = []
         async def wait(barrier):
-            await barrier.wait()
+            warte barrier.wait()
 
         incr = 2
         fuer i in range(incr):
             waiters.append(asyncio.create_task(wait(barrier)))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         self.assertWahr(RGX_REPR.match(repr(barrier)))
         self.assertWahr(f"waiters:{incr}/{self.N}" in repr(barrier))
@@ -1298,7 +1298,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         # create missing waiters
         fuer i in range(barrier.parties - barrier.n_waiting):
             waiters.append(asyncio.create_task(wait(barrier)))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         self.assertWahr(RGX_REPR.match(repr(barrier)))
         self.assertIn("draining", repr(barrier))
@@ -1306,9 +1306,9 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         # add a part of waiters
         fuer i in range(incr):
             waiters.append(asyncio.create_task(wait(barrier)))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         # und reset
-        await barrier.reset()
+        warte barrier.reset()
 
         self.assertWahr(RGX_REPR.match(repr(barrier)))
         self.assertIn("resetting", repr(barrier))
@@ -1316,16 +1316,16 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         # add a part of waiters again
         fuer i in range(incr):
             waiters.append(asyncio.create_task(wait(barrier)))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         # und abort
-        await barrier.abort()
+        warte barrier.abort()
 
         self.assertWahr(RGX_REPR.match(repr(barrier)))
         self.assertIn("broken", repr(barrier))
         self.assertWahr(barrier.broken)
 
         # suppress unhandled exceptions
-        await asyncio.gather(*waiters, return_exceptions=Wahr)
+        warte asyncio.gather(*waiters, return_exceptions=Wahr)
 
     async def test_barrier_parties(self):
         self.assertRaises(ValueError, lambda: asyncio.Barrier(0))
@@ -1342,7 +1342,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             async mit barrier als i:
                 results.append(i)
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertListEqual(sorted(results), list(range(self.N)))
         self.assertEqual(barrier.n_waiting, 0)
@@ -1355,7 +1355,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             async mit barrier als i:
                 gib Wahr
 
-        ret = await f()
+        ret = warte f()
 
         self.assertWahr(ret)
         self.assertEqual(barrier.n_waiting, 0)
@@ -1365,11 +1365,11 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         barrier = asyncio.Barrier(1)
 
         t1 = asyncio.create_task(barrier.wait())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(barrier.n_waiting, 0)
 
         t2 = asyncio.create_task(barrier.wait())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         self.assertEqual(t1.result(), t2.result())
         self.assertEqual(t1.done(), t2.done())
@@ -1382,19 +1382,19 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         barrier = asyncio.Barrier(self.N)
 
         t1 = asyncio.create_task(barrier.wait())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(barrier.n_waiting, 1)
         self.assertIn("filling", repr(barrier))
 
         t2 = asyncio.create_task(barrier.wait())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(barrier.n_waiting, 2)
         self.assertIn("filling", repr(barrier))
 
         t3 = asyncio.create_task(barrier.wait())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
-        await asyncio.wait([t1, t2, t3])
+        warte asyncio.wait([t1, t2, t3])
 
         self.assertEqual(barrier.n_waiting, 0)
         self.assertFalsch(barrier.broken)
@@ -1410,7 +1410,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
                 async mit barrier:
                     results.append(Falsch)
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertEqual(len(results), self.N*2)
         self.assertEqual(results.count(Wahr), self.N)
@@ -1432,7 +1432,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
                     results2.append(Wahr)
                     gib i
 
-        res, _ = await self.gather_tasks(self.N, coro)
+        res, _ = warte self.gather_tasks(self.N, coro)
 
         self.assertEqual(len(results1), self.N)
         self.assertWahr(all(results1))
@@ -1452,7 +1452,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
                 # barrier state change to filling fuer the last task release
                 results.append("draining" in repr(barrier))
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertEqual(len(results), self.N)
         self.assertEqual(results[-1], Falsch)
@@ -1473,22 +1473,22 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             nonlocal rewait_n
 
             # first time waiting
-            await barrier.wait()
+            warte barrier.wait()
 
             # after waiting once fuer all tasks
             wenn rewait_n > 0:
                 rewait_n -= 1
                 # wait again only fuer rewait tasks
-                await barrier.wait()
+                warte barrier.wait()
             sonst:
                 # wait fuer end of draining state
-                await barrier_nowaiting.wait()
+                warte barrier_nowaiting.wait()
                 # wait fuer other waiting tasks
-                await barrier.wait()
+                warte barrier.wait()
 
         # a success means that barrier_nowaiting
         # was waited fuer exactly N-rewait=3 times
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
     async def test_filling_tasks_cancel_one(self):
         self.N = 3
@@ -1496,30 +1496,30 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         results = []
 
         async def coro():
-            await barrier.wait()
+            warte barrier.wait()
             results.append(Wahr)
 
         t1 = asyncio.create_task(coro())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(barrier.n_waiting, 1)
 
         t2 = asyncio.create_task(coro())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(barrier.n_waiting, 2)
 
         t1.cancel()
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(barrier.n_waiting, 1)
         mit self.assertRaises(asyncio.CancelledError):
-            await t1
+            warte t1
         self.assertWahr(t1.cancelled())
 
         t3 = asyncio.create_task(coro())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(barrier.n_waiting, 2)
 
         t4 = asyncio.create_task(coro())
-        await asyncio.gather(t2, t3, t4)
+        warte asyncio.gather(t2, t3, t4)
 
         self.assertEqual(len(results), self.N)
         self.assertWahr(all(results))
@@ -1531,7 +1531,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         barrier = asyncio.Barrier(1)
 
         asyncio.create_task(barrier.reset())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         self.assertEqual(barrier.n_waiting, 0)
         self.assertFalsch(barrier.broken)
@@ -1542,20 +1542,20 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro():
             versuch:
-                await barrier.wait()
+                warte barrier.wait()
             ausser asyncio.BrokenBarrierError:
                 results.append(Wahr)
 
         async def coro_reset():
-            await barrier.reset()
+            warte barrier.reset()
 
         # N-1 tasks waiting on barrier mit N parties
         tasks  = self.make_tasks(self.N-1, coro)
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         # reset the barrier
         asyncio.create_task(coro_reset())
-        await asyncio.gather(*tasks)
+        warte asyncio.gather(*tasks)
 
         self.assertEqual(len(results), self.N-1)
         self.assertWahr(all(results))
@@ -1570,7 +1570,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro():
             versuch:
-                await barrier.wait()
+                warte barrier.wait()
             ausser asyncio.BrokenBarrierError:
                 # catch here waiting tasks
                 results1.append(Wahr)
@@ -1578,9 +1578,9 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
                 # here drained task outside the barrier
                 wenn rest_of_tasks == barrier._count:
                     # tasks outside the barrier
-                    await barrier.reset()
+                    warte barrier.reset()
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertEqual(results1, [Wahr]*rest_of_tasks)
         self.assertEqual(barrier.n_waiting, 0)
@@ -1597,29 +1597,29 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         async def coro():
             nonlocal count
             versuch:
-                await barrier.wait()
+                warte barrier.wait()
             ausser asyncio.BrokenBarrierError:
                 # here catch still waiting tasks
                 results1.append(Wahr)
 
                 # so now waiting again to reach nb_parties
-                await barrier.wait()
+                warte barrier.wait()
             sonst:
                 count += 1
                 wenn count > blocking_tasks:
                     # reset now: wirf asyncio.BrokenBarrierError fuer waiting tasks
-                    await barrier.reset()
+                    warte barrier.reset()
 
                     # so now waiting again to reach nb_parties
-                    await barrier.wait()
+                    warte barrier.wait()
                 sonst:
                     versuch:
-                        await barrier.wait()
+                        warte barrier.wait()
                     ausser asyncio.BrokenBarrierError:
                         # here no catch - blocked tasks go to wait
                         results2.append(Wahr)
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertEqual(results1, [Wahr]*blocking_tasks)
         self.assertEqual(results2, [])
@@ -1634,11 +1634,11 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro1():
             versuch:
-                await barrier.wait()
+                warte barrier.wait()
             ausser asyncio.BrokenBarrierError:
                 results1.append(Wahr)
             schliesslich:
-                await barrier.wait()
+                warte barrier.wait()
                 results2.append(Wahr)
 
         async def coro2():
@@ -1649,12 +1649,12 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         # reset barrier, N-1 waiting tasks wirf an BrokenBarrierError
         asyncio.create_task(barrier.reset())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         # complete waiting tasks in the `finally`
         asyncio.create_task(coro2())
 
-        await asyncio.gather(*tasks)
+        warte asyncio.gather(*tasks)
 
         self.assertFalsch(barrier.broken)
         self.assertEqual(len(results1), self.N-1)
@@ -1675,18 +1675,18 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         async def coro():
             nonlocal count
 
-            i = await barrier.wait()
+            i = warte barrier.wait()
             count += 1
             wenn count == self.N:
                 # last task exited von barrier
-                await barrier.reset()
+                warte barrier.reset()
 
                 # wait here to reach the `parties`
-                await barrier.wait()
+                warte barrier.wait()
             sonst:
                 versuch:
                     # second waiting
-                    await barrier.wait()
+                    warte barrier.wait()
 
                     # N-1 tasks here
                     results1.append(Wahr)
@@ -1696,10 +1696,10 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
             # Now, pass the barrier again
             # last wait, must be completed
-            k = await barrier.wait()
+            k = warte barrier.wait()
             results3.append(Wahr)
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertFalsch(barrier.broken)
         self.assertWahr(all(results1))
@@ -1714,7 +1714,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         barrier = asyncio.Barrier(1)
 
         asyncio.create_task(barrier.abort())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
 
         self.assertEqual(barrier.n_waiting, 0)
         self.assertWahr(barrier.broken)
@@ -1729,7 +1729,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         async def coro():
             nonlocal count
             versuch:
-                await barrier.wait()
+                warte barrier.wait()
             ausser asyncio.BrokenBarrierError:
                 # here catch tasks waiting to drain
                 results1.append(Wahr)
@@ -1737,15 +1737,15 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
                 count += 1
                 wenn count > blocking_tasks:
                     # abort now: wirf asyncio.BrokenBarrierError fuer all tasks
-                    await barrier.abort()
+                    warte barrier.abort()
                 sonst:
                     versuch:
-                        await barrier.wait()
+                        warte barrier.wait()
                     ausser asyncio.BrokenBarrierError:
                         # here catch blocked tasks (already drained)
                         results2.append(Wahr)
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertWahr(barrier.broken)
         self.assertEqual(results1, [Wahr]*blocking_tasks)
@@ -1769,9 +1769,9 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             ausser asyncio.BrokenBarrierError:
                 results2.append(Wahr)
             ausser RuntimeError:
-                await barrier.abort()
+                warte barrier.abort()
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertWahr(barrier.broken)
         self.assertEqual(len(results1), 0)
@@ -1789,27 +1789,27 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro():
             versuch:
-                i = await barrier1.wait()
+                i = warte barrier1.wait()
                 wenn i == self.N//2:
                     wirf RuntimeError
-                await barrier1.wait()
+                warte barrier1.wait()
                 results1.append(Wahr)
             ausser asyncio.BrokenBarrierError:
                 results2.append(Wahr)
             ausser RuntimeError:
-                await barrier1.abort()
+                warte barrier1.abort()
 
             # Synchronize und reset the barrier.  Must synchronize first so
             # that everyone has left it when we reset, und after so that no
             # one enters it before the reset.
-            i = await barrier2.wait()
+            i = warte barrier2.wait()
             wenn  i == self.N//2:
-                await barrier1.reset()
-            await barrier2.wait()
-            await barrier1.wait()
+                warte barrier1.reset()
+            warte barrier2.wait()
+            warte barrier1.wait()
             results3.append(Wahr)
 
-        await self.gather_tasks(self.N, coro)
+        warte self.gather_tasks(self.N, coro)
 
         self.assertFalsch(barrier1.broken)
         self.assertEqual(len(results1), 0)

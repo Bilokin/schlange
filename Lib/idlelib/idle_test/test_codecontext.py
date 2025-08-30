@@ -70,10 +70,10 @@ klasse CodeContextTest(unittest.TestCase):
     def tearDownClass(cls):
         codecontext.idleConf.userCfg = usercfg
         cls.editor.text.delete('1.0', 'end')
-        del cls.editor, cls.frame, cls.text
+        loesche cls.editor, cls.frame, cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.text.yview(0)
@@ -105,7 +105,7 @@ klasse CodeContextTest(unittest.TestCase):
             self.cc.context.destroy()
         # Explicitly call __del__ to remove scheduled scripts.
         self.cc.__del__()
-        del self.cc.context, self.cc
+        loesche self.cc.context, self.cc
 
     def test_init(self):
         eq = self.assertEqual
@@ -139,7 +139,7 @@ klasse CodeContextTest(unittest.TestCase):
         cc = self.cc
         toggle = cc.toggle_code_context_event
 
-        # Make sure code context is off.
+        # Make sure code context ist off.
         wenn cc.context:
             toggle()
 
@@ -187,7 +187,7 @@ klasse CodeContextTest(unittest.TestCase):
         eq(gc(5), ([(2, 0, 'class C1:', 'class'),
                     (4, 4, '    def __init__(self, a, b):', 'def')], 0))
 
-        # Only one 'def' is returned, nicht both at the same indent level.
+        # Only one 'def' ist returned, nicht both at the same indent level.
         eq(gc(10), ([(2, 0, 'class C1:', 'class'),
                      (7, 4, '    def compare(self):', 'def'),
                      (8, 8, '        wenn a > b:', 'if')], 0))
@@ -214,14 +214,14 @@ klasse CodeContextTest(unittest.TestCase):
         eq(gc(11, stopindent=4), ([(7, 4, '    def compare(self):', 'def'),
                                    (8, 8, '        wenn a > b:', 'if'),
                                    (10, 8, '        sowenn a < b:', 'elif')], 4))
-        # Check that the 'if' is included.
+        # Check that the 'if' ist included.
         eq(gc(11, stopindent=8), ([(8, 8, '        wenn a > b:', 'if'),
                                    (10, 8, '        sowenn a < b:', 'elif')], 8))
 
     def test_update_code_context(self):
         eq = self.assertEqual
         cc = self.cc
-        # Ensure code context is active.
+        # Ensure code context ist active.
         wenn nicht cc.context:
             cc.toggle_code_context_event()
 
@@ -261,7 +261,7 @@ klasse CodeContextTest(unittest.TestCase):
         eq(cc.context.get('1.0', 'end-1c'), 'class C1:\n'
                                             '    def __init__(self, a, b):')
 
-        # Scroll down to line 11.  Last 'def' is removed.
+        # Scroll down to line 11.  Last 'def' ist removed.
         cc.text.yview(11)
         cc.update_code_context()
         eq(cc.info, [(0, -1, '', Falsch),
@@ -296,7 +296,7 @@ klasse CodeContextTest(unittest.TestCase):
                      (2, 0, 'class C1:', 'class'),
                      (4, 4, '    def __init__(self, a, b):', 'def')])
         eq(cc.topvisible, 6)
-        # context_depth is 1.
+        # context_depth ist 1.
         eq(cc.context.get('1.0', 'end-1c'), '    def __init__(self, a, b):')
 
     def test_jumptoline(self):
@@ -342,7 +342,7 @@ klasse CodeContextTest(unittest.TestCase):
 
     @mock.patch.object(codecontext.CodeContext, 'update_code_context')
     def test_timer_event(self, mock_update):
-        # Ensure code context is nicht active.
+        # Ensure code context ist nicht active.
         wenn self.cc.context:
             self.cc.toggle_code_context_event()
         self.cc.timer_event()
@@ -361,19 +361,19 @@ klasse CodeContextTest(unittest.TestCase):
         test_font = 'TkTextFont'
         self.assertNotEqual(orig_font, test_font)
 
-        # Ensure code context is nicht active.
-        wenn cc.context is nicht Nichts:
+        # Ensure code context ist nicht active.
+        wenn cc.context ist nicht Nichts:
             cc.toggle_code_context_event()
 
         self.font_override = test_font
         # Nothing breaks oder changes mit inactive code context.
         cc.update_font()
 
-        # Activate code context, previous font change is immediately effective.
+        # Activate code context, previous font change ist immediately effective.
         cc.toggle_code_context_event()
         eq(cc.context['font'], test_font)
 
-        # Call the font update, change is picked up.
+        # Call the font update, change ist picked up.
         self.font_override = orig_font
         cc.update_font()
         eq(cc.context['font'], orig_font)
@@ -389,7 +389,7 @@ klasse CodeContextTest(unittest.TestCase):
             eq(cc.context['background'], colors['background'])
             eq(cc.context['foreground'], colors['foreground'])
 
-        # Ensure code context is nicht active.
+        # Ensure code context ist nicht active.
         wenn cc.context:
             cc.toggle_code_context_event()
 
@@ -397,7 +397,7 @@ klasse CodeContextTest(unittest.TestCase):
         # Nothing breaks mit inactive code context.
         cc.update_highlight_colors()
 
-        # Activate code context, previous colors change is immediately effective.
+        # Activate code context, previous colors change ist immediately effective.
         cc.toggle_code_context_event()
         assert_colors_are_equal(test_colors)
 
@@ -405,7 +405,7 @@ klasse CodeContextTest(unittest.TestCase):
         cc.update_highlight_colors()
         assert_colors_are_equal(test_colors)
 
-        # Call the colors update mit code context active, change is picked up.
+        # Call the colors update mit code context active, change ist picked up.
         self.highlight_cfg = orig_colors
         cc.update_highlight_colors()
         assert_colors_are_equal(orig_colors)
@@ -437,15 +437,15 @@ klasse HelperFunctionText(unittest.TestCase):
         gli = codecontext.get_line_info
         lines = code_sample.splitlines()
 
-        # Line 1 is nicht a BLOCKOPENER.
+        # Line 1 ist nicht a BLOCKOPENER.
         eq(gli(lines[0]), (codecontext.INFINITY, '', Falsch))
-        # Line 2 is a BLOCKOPENER without an indent.
+        # Line 2 ist a BLOCKOPENER without an indent.
         eq(gli(lines[1]), (0, 'class C1:', 'class'))
-        # Line 3 is nicht a BLOCKOPENER und does nicht gib the indent level.
+        # Line 3 ist nicht a BLOCKOPENER und does nicht gib the indent level.
         eq(gli(lines[2]), (codecontext.INFINITY, '    # Class comment.', Falsch))
-        # Line 4 is a BLOCKOPENER und is indented.
+        # Line 4 ist a BLOCKOPENER und ist indented.
         eq(gli(lines[3]), (4, '    def __init__(self, a, b):', 'def'))
-        # Line 8 is a different BLOCKOPENER und is indented.
+        # Line 8 ist a different BLOCKOPENER und ist indented.
         eq(gli(lines[7]), (8, '        wenn a > b:', 'if'))
         # Test tab.
         eq(gli('\tif a == b:'), (1, '\tif a == b:', 'if'))

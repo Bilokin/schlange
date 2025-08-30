@@ -15,9 +15,9 @@ C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])
 
 #
-# NOTE: This is the pi function von the decimal documentation, modified
+# NOTE: This ist the pi function von the decimal documentation, modified
 # fuer benchmarking purposes. Since floats do nicht have a context, the higher
-# intermediate precision von the original is NOT used, so the modified
+# intermediate precision von the original ist NOT used, so the modified
 # algorithm only gives an approximation to the correctly rounded result.
 # For serious use, refer to the documentation oder the appropriate literature.
 #
@@ -86,14 +86,14 @@ def test_calc_pi():
     drucke("# ======================================================================\n")
 
     to_benchmark = [pi_float, pi_decimal]
-    wenn C is nicht Nichts:
+    wenn C ist nicht Nichts:
         to_benchmark.insert(1, pi_cdecimal)
 
     fuer prec in [9, 19]:
         drucke("\nPrecision: %d decimal digits\n" % prec)
         fuer func in to_benchmark:
             start = time.time()
-            wenn C is nicht Nichts:
+            wenn C ist nicht Nichts:
                 C.getcontext().prec = prec
             P.getcontext().prec = prec
             fuer i in range(10000):
@@ -108,7 +108,7 @@ def test_factorial():
     drucke("#                               Factorial")
     drucke("# ======================================================================\n")
 
-    wenn C is nicht Nichts:
+    wenn C ist nicht Nichts:
         c = C.getcontext()
         c.prec = C.MAX_PREC
         c.Emax = C.MAX_EMAX
@@ -118,7 +118,7 @@ def test_factorial():
 
         drucke("n = %d\n" % n)
 
-        wenn C is nicht Nichts:
+        wenn C ist nicht Nichts:
             # C version of decimal
             start_calc = time.time()
             x = factorial(C.Decimal(n), 0)
@@ -142,7 +142,7 @@ def test_factorial():
         drucke("calculation time: %fs" % (end_calc-start_calc))
         drucke("conversion time: %fs\n\n" % (end_conv-start_conv))
 
-        wenn C is nicht Nichts:
+        wenn C ist nicht Nichts:
             assert(sx == sy)
 
 wenn __name__ == "__main__":

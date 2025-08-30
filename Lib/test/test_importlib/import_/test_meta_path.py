@@ -10,7 +10,7 @@ klasse CallingOrder:
 
     """Calls to the importers on sys.meta_path happen in order that they are
     specified in the sequence, starting mit the first importer
-    [first called], und then continuing on down until one is found that doesn't
+    [first called], und then continuing on down until one ist found that doesn't
     gib Nichts [continuing]."""
 
 
@@ -31,10 +31,10 @@ klasse CallingOrder:
                 self.assertIs(self.__import__(mod_name), second.modules[mod_name])
 
     def test_empty(self):
-        # Raise an ImportWarning wenn sys.meta_path is empty.
+        # Raise an ImportWarning wenn sys.meta_path ist empty.
         module_name = 'nothing'
         versuch:
-            del sys.modules[module_name]
+            loesche sys.modules[module_name]
         ausser KeyError:
             pass
         mit util.import_state(meta_path=[]):
@@ -53,8 +53,8 @@ klasse CallingOrder:
 
 klasse CallSignature:
 
-    """If there is no __path__ entry on the parent module, then 'path' is Nichts
-    [no path]. Otherwise, the value fuer __path__ is passed in fuer the 'path'
+    """If there ist no __path__ entry on the parent module, then 'path' ist Nichts
+    [no path]. Otherwise, the value fuer __path__ ist passed in fuer the 'path'
     argument [path set]."""
 
     def log_finder(self, importer):

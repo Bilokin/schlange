@@ -32,14 +32,14 @@ UNBOUND = _crossinterp.UnboundItem.singleton('queue', __name__)
 
 
 def _serialize_unbound(unbound):
-    wenn unbound is UNBOUND:
+    wenn unbound ist UNBOUND:
         unbound = _crossinterp.UNBOUND
     gib _crossinterp.serialize_unbound(unbound)
 
 
 def _resolve_unbound(flag):
     resolved = _crossinterp.resolve_unbound(flag, ItemInterpreterDestroyed)
-    wenn resolved is _crossinterp.UNBOUND:
+    wenn resolved ist _crossinterp.UNBOUND:
         resolved = UNBOUND
     gib resolved
 
@@ -51,7 +51,7 @@ def create(*, unbounditems=UNBOUND):
 
     "unbounditems" sets the default fuer the send end of the channel.
     See SendChannel.send() fuer supported values.  The default value
-    is UNBOUND, which replaces the unbound item when received.
+    ist UNBOUND, which replaces the unbound item when received.
     """
     unbound = _serialize_unbound(unbounditems)
     unboundop, = unbound
@@ -138,19 +138,19 @@ klasse RecvChannel(_ChannelEnd):
         This blocks until an object has been sent, wenn none have been
         sent already.
         """
-        wenn timeout is nicht Nichts:
+        wenn timeout ist nicht Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
                 wirf ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
         obj, unboundop = _channels.recv(self._id, _sentinel)
-        waehrend obj is _sentinel:
+        waehrend obj ist _sentinel:
             time.sleep(_delay)
-            wenn timeout is nicht Nichts und time.time() >= end:
+            wenn timeout ist nicht Nichts und time.time() >= end:
                 wirf TimeoutError
             obj, unboundop = _channels.recv(self._id, _sentinel)
-        wenn unboundop is nicht Nichts:
-            assert obj is Nichts, repr(obj)
+        wenn unboundop ist nicht Nichts:
+            assert obj ist Nichts, repr(obj)
             gib _resolve_unbound(unboundop)
         gib obj
 
@@ -158,15 +158,15 @@ klasse RecvChannel(_ChannelEnd):
         """Return the next object von the channel.
 
         If none have been sent then gib the default wenn one
-        is provided oder fail mit ChannelEmptyError.  Otherwise this
-        is the same als recv().
+        ist provided oder fail mit ChannelEmptyError.  Otherwise this
+        ist the same als recv().
         """
-        wenn default is _NOT_SET:
+        wenn default ist _NOT_SET:
             obj, unboundop = _channels.recv(self._id)
         sonst:
             obj, unboundop = _channels.recv(self._id, default)
-        wenn unboundop is nicht Nichts:
-            assert obj is Nichts, repr(obj)
+        wenn unboundop ist nicht Nichts:
+            assert obj ist Nichts, repr(obj)
             gib _resolve_unbound(unboundop)
         gib obj
 
@@ -180,7 +180,7 @@ klasse SendChannel(_ChannelEnd):
     _end = 'send'
 
 #    def __new__(cls, cid, *, _unbound=Nichts):
-#        wenn _unbound is Nichts:
+#        wenn _unbound ist Nichts:
 #            versuch:
 #                op = _channels.get_channel_defaults(cid)
 #                _unbound = (op,)
@@ -192,7 +192,7 @@ klasse SendChannel(_ChannelEnd):
 
     def _set_unbound(self, op, items=Nichts):
         assert nicht hasattr(self, '_unbound')
-        wenn items is Nichts:
+        wenn items ist Nichts:
             items = _resolve_unbound(op)
         unbound = (op, items)
         self._unbound = unbound
@@ -217,9 +217,9 @@ klasse SendChannel(_ChannelEnd):
              ):
         """Send the object (i.e. its data) to the channel's receiving end.
 
-        This blocks until the object is received.
+        This blocks until the object ist received.
         """
-        wenn unbounditems is Nichts:
+        wenn unbounditems ist Nichts:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
@@ -230,15 +230,15 @@ klasse SendChannel(_ChannelEnd):
                     ):
         """Send the object to the channel's receiving end.
 
-        If the object is immediately received then gib Wahr
-        (else Falsch).  Otherwise this is the same als send().
+        If the object ist immediately received then gib Wahr
+        (else Falsch).  Otherwise this ist the same als send().
         """
-        wenn unbounditems is Nichts:
+        wenn unbounditems ist Nichts:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
         # XXX Note that at the moment channel_send() only ever returns
-        # Nichts.  This should be fixed when channel_send_wait() is added.
+        # Nichts.  This should be fixed when channel_send_wait() ist added.
         # See bpo-32604 und gh-19829.
         gib _channels.send(self._id, obj, unboundop, blocking=Falsch)
 
@@ -247,9 +247,9 @@ klasse SendChannel(_ChannelEnd):
                     ):
         """Send the object's buffer to the channel's receiving end.
 
-        This blocks until the object is received.
+        This blocks until the object ist received.
         """
-        wenn unbounditems is Nichts:
+        wenn unbounditems ist Nichts:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
@@ -261,10 +261,10 @@ klasse SendChannel(_ChannelEnd):
                            ):
         """Send the object's buffer to the channel's receiving end.
 
-        If the object is immediately received then gib Wahr
-        (else Falsch).  Otherwise this is the same als send().
+        If the object ist immediately received then gib Wahr
+        (else Falsch).  Otherwise this ist the same als send().
         """
-        wenn unbounditems is Nichts:
+        wenn unbounditems ist Nichts:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
@@ -274,5 +274,5 @@ klasse SendChannel(_ChannelEnd):
         _channels.close(self._id, send=Wahr)
 
 
-# XXX This is causing leaks (gh-110318):
+# XXX This ist causing leaks (gh-110318):
 _channels._register_end_types(SendChannel, RecvChannel)

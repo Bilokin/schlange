@@ -59,7 +59,7 @@ klasse TestIndent:
 
         # indent=0 should emit newlines
         check(0, '{\n"3": 1\n}')
-        # indent=Nichts is more compact
+        # indent=Nichts ist more compact
         check(Nichts, '{"3": 1}')
 
 

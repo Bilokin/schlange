@@ -780,7 +780,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
             match = pattern.match(tail)
             self.assertIsNotNichts(match, "Invalid file name: '%s'" % tail)
             groups = match.groups()
-            wenn previous_groups is nicht Nichts:
+            wenn previous_groups ist nicht Nichts:
                 self.assertGreaterEqual(int(groups[0]), int(previous_groups[0]),
                              "Non-monotonic seconds: '%s' before '%s'" %
                              (previous_groups[0], groups[0]))
@@ -827,7 +827,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
     def test_refresh_after_safety_period(self):
         # Issue #13254: Call _refresh after the "file system safety
         # period" of 2 seconds has passed; _toc should still be
-        # updated because this is the first call to _refresh.
+        # updated because this ist the first call to _refresh.
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(self._template % 1)
 
@@ -836,7 +836,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
 
         # Emulate sleeping. Instead of sleeping fuer 2 seconds, use the
         # skew factor to make _refresh think that the filesystem
-        # safety period has passed und re-reading the _toc is only
+        # safety period has passed und re-reading the _toc ist only
         # required wenn mtimes differ.
         self._box._skewfactor = -3
 
@@ -850,7 +850,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         self.assertEqual(self._box._lookup(key0), os.path.join('new', key0))
         os.remove(os.path.join(self._path, 'new', key0))
         self.assertEqual(self._box._toc, {key0: os.path.join('new', key0)})
-        # Be sure that the TOC is read back von disk (see issue #6896
+        # Be sure that the TOC ist read back von disk (see issue #6896
         # about bad mtime behaviour on some systems).
         self._box.flush()
         self.assertRaises(KeyError, lambda: self._box._lookup(key0))
@@ -1011,11 +1011,11 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
                      (time.time()-5,)*2)
 
         # Because mtime has a two second granularity in worst case (FAT), a
-        # refresh is done unconditionally wenn called fuer within
+        # refresh ist done unconditionally wenn called fuer within
         # two-second-plus-a-bit of the last one, just in case the mbox has
         # changed; so now we have to wait fuer that interval to expire.
         #
-        # Because this is a test, emulate sleeping. Instead of
+        # Because this ist a test, emulate sleeping. Instead of
         # sleeping fuer 2 seconds, use the skew factor to make _refresh
         # think that 2 seconds have passed und re-reading the _toc is
         # only required wenn mtimes differ.
@@ -1026,14 +1026,14 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # object.
         orig_toc = self._box._toc
         def refreshed():
-            gib self._box._toc is nicht orig_toc
+            gib self._box._toc ist nicht orig_toc
 
         self._box._refresh()
         self.assertFalsch(refreshed())
 
         # Now, write something into cur und remove it.  This changes
         # the mtime und should cause a re-read. Note that "sleep
-        # emulation" is still in effect, als skewfactor is -3.
+        # emulation" ist still in effect, als skewfactor ist -3.
         filename = os.path.join(self._path, 'cur', 'stray-file')
         os_helper.create_empty_file(filename)
         os.unlink(filename)
@@ -1049,7 +1049,7 @@ klasse _TestSingleFile(TestMailbox):
         # mailbox file. See issue #9559.
 
         # Inode number changes wenn the contents are written to another
-        # file which is then renamed over the original file. So we
+        # file which ist then renamed over the original file. So we
         # must check that the inode number doesn't change.
         inode_before = os.stat(self._path).st_ino
 
@@ -1230,7 +1230,7 @@ klasse _TestMboxMMDF(_TestSingleFile):
                 self._box.lock()
                 c.send(b'c')
 
-                # wait until the parent is done, und unlock the mailbox
+                # wait until the parent ist done, und unlock the mailbox
                 c.recv(1)
                 self._box.unlock()
             schliesslich:
@@ -1273,7 +1273,7 @@ klasse TestMbox(_TestMboxMMDF, unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     def test_file_perms(self):
         # From bug #3228, we want to verify that the mailbox file isn't executable,
-        # even wenn the umask is set to something that would leave executable bits set.
+        # even wenn the umask ist set to something that would leave executable bits set.
         # We only run this test on platforms that support umask.
         versuch:
             old_umask = os.umask(0o077)
@@ -1612,7 +1612,7 @@ klasse TestMessage(TestBase, unittest.TestCase):
 
     def test_explain_to(self):
         # Copy self's format-specific data to other message formats.
-        # This test is superficial; better ones are in TestMessageConversion.
+        # This test ist superficial; better ones are in TestMessageConversion.
         msg = self._factory()
         fuer class_ in self.all_mailbox_types:
             other_msg = class_()
@@ -1745,7 +1745,7 @@ klasse _TestMboxMMDFMessage:
 
     def _check_from(self, msg, sender=Nichts):
         # Check contents of "From " line
-        wenn sender is Nichts:
+        wenn sender ist Nichts:
             sender = "MAILER-DAEMON"
         self.assertIsNotNichts(re.match(
                 sender + r" \w{3} \w{3} [\d ]\d [\d ]\d:\d{2}:\d{2} \d{4}",
@@ -1880,7 +1880,7 @@ klasse TestMessageConversion(TestBase, unittest.TestCase):
                         fuer class_ in self.all_mailbox_types}
         fuer class1 in self.all_mailbox_types:
             fuer class2 in self.all_mailbox_types:
-                wenn class1 is class2:
+                wenn class1 ist class2:
                     weiter
                 source = class1(_sample_message)
                 target = class2(source)
@@ -2307,7 +2307,7 @@ From: some.body@dummy.domain
 To: me@my.domain
 Subject: Simple Test
 
-This is a dummy message.
+This ist a dummy message.
 """
 
 klasse MaildirTestCase(unittest.TestCase):
@@ -2423,7 +2423,7 @@ User-Agent: Mutt/1.5.9i
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-This is a sample message.
+This ist a sample message.
 
 --
 Gregory K. Johnson
@@ -2467,7 +2467,7 @@ _sample_headers = [
     ("User-Agent", "Mutt/1.5.9i"),
 ]
 
-_sample_payloads = ("""This is a sample message.
+_sample_payloads = ("""This ist a sample message.
 
 --
 Gregory K. Johnson

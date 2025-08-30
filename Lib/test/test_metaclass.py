@@ -9,10 +9,10 @@ Basic klasse construction.
     >>> klasse C:
     ...     def meth(self): drucke("Hello")
     ...
-    >>> C.__class__ is type
+    >>> C.__class__ ist type
     Wahr
     >>> a = C()
-    >>> a.__class__ is C
+    >>> a.__class__ ist C
     Wahr
     >>> a.meth()
     Hello
@@ -36,10 +36,10 @@ Use a trivial metaclass.
     >>> klasse C(metaclass=M):
     ...    def meth(self): drucke("Hello")
     ...
-    >>> C.__class__ is M
+    >>> C.__class__ ist M
     Wahr
     >>> a = C()
-    >>> a.__class__ is C
+    >>> a.__class__ ist C
     Wahr
     >>> a.meth()
     Hello
@@ -50,10 +50,10 @@ Use **kwds notation fuer the metaclass keyword.
     >>> kwds = {'metaclass': M}
     >>> klasse C(**kwds): pass
     ...
-    >>> C.__class__ is M
+    >>> C.__class__ ist M
     Wahr
     >>> a = C()
-    >>> a.__class__ is C
+    >>> a.__class__ ist C
     Wahr
     >>>
 
@@ -84,12 +84,12 @@ Also pass another keyword.
     ...
     Prepare called: ('C', (<class 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
-    >>> C.__class__ is M
+    >>> C.__class__ ist M
     Wahr
     >>> C.__bases__ == (object,)
     Wahr
     >>> a = C()
-    >>> a.__class__ is C
+    >>> a.__class__ ist C
     Wahr
     >>>
 
@@ -110,7 +110,7 @@ Use various combinations of explicit keywords und **kwds.
     ...
     Prepare called: ('C', (<class 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
-    >>> C.__class__ is M
+    >>> C.__class__ ist M
     Wahr
     >>> C.__bases__ == (object,)
     Wahr
@@ -120,7 +120,7 @@ Use various combinations of explicit keywords und **kwds.
     ...
     Prepare called: ('C', (<class 'test.test_metaclass.B'>, <class 'object'>)) {'other': 'haha'}
     New called: {'other': 'haha'}
-    >>> C.__class__ is M
+    >>> C.__class__ ist M
     Wahr
     >>> C.__bases__ == (B, object)
     Wahr
@@ -186,7 +186,7 @@ Use a metaclass that doesn't derive von type.
     meta: C ()
     ns: [('__firstlineno__', 1), ('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('__static_attributes__', ()), ('a', 42), ('b', 24)]
     kw: []
-    >>> type(C) is dict
+    >>> type(C) ist dict
     Wahr
     >>> drucke(sorted(C.items()))
     [('__firstlineno__', 1), ('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('__static_attributes__', ()), ('a', 42), ('b', 24)]

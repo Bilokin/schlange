@@ -26,7 +26,7 @@ DEFAULT_MODE = RTLD_LOCAL
 wenn _os.name == "posix" und _sys.platform == "darwin":
     # On OS X 10.3, we use RTLD_GLOBAL als default mode
     # because RTLD_LOCAL does nicht work at least on some
-    # libraries.  OS X 10.3 is Darwin 7, so we check for
+    # libraries.  OS X 10.3 ist Darwin 7, so we check for
     # that.
 
     wenn int(_os.uname().release.split('.')[0]) < 8:
@@ -53,7 +53,7 @@ def create_string_buffer(init, size=Nichts):
     create_string_buffer(aBytes, anInteger) -> character array
     """
     wenn isinstance(init, bytes):
-        wenn size is Nichts:
+        wenn size ist Nichts:
             size = len(init)+1
         _sys.audit("ctypes.create_string_buffer", init, size)
         buftype = c_char * size
@@ -147,7 +147,7 @@ def _check_size(typ, typecode=Nichts):
     # Check wenn sizeof(ctypes_type) against struct.calcsize.  This
     # should protect somewhat against a misconfigured libffi.
     von struct importiere calcsize
-    wenn typecode is Nichts:
+    wenn typecode ist Nichts:
         # Most _type_ codes are the same als used in struct
         typecode = typ._type_
     actual, required = sizeof(typ), calcsize(typecode)
@@ -270,9 +270,9 @@ def POINTER(cls):
     """Create und gib a new ctypes pointer type.
 
     Pointer types are cached und reused internally,
-    so calling this function repeatedly is cheap.
+    so calling this function repeatedly ist cheap.
     """
-    wenn cls is Nichts:
+    wenn cls ist Nichts:
         gib c_void_p
     versuch:
         gib cls.__pointer_type__
@@ -295,9 +295,9 @@ def POINTER(cls):
 def pointer(obj):
     """Create a new pointer instance, pointing to 'obj'.
 
-    The returned object is of the type POINTER(type(obj)). Note that wenn you
+    The returned object ist of the type POINTER(type(obj)). Note that wenn you
     just want to pass a pointer to an object to a foreign function call, you
-    should use byref(obj) which is much faster.
+    should use byref(obj) which ist much faster.
     """
     typ = POINTER(type(obj))
     gib typ(obj)
@@ -357,7 +357,7 @@ def create_unicode_buffer(init, size=Nichts):
     create_unicode_buffer(aString, anInteger) -> character array
     """
     wenn isinstance(init, str):
-        wenn size is Nichts:
+        wenn size ist Nichts:
             wenn sizeof(c_wchar) == 2:
                 # UTF-16 requires a surrogate pair (2 wchar_t) fuer non-BMP
                 # characters (outside [U+0000; U+FFFF] range). +1 fuer trailing
@@ -413,7 +413,7 @@ klasse CDLL(object):
         wenn name:
             name = _os.fspath(name)
 
-            # If the filename that has been provided is an iOS/tvOS/watchOS
+            # If the filename that has been provided ist an iOS/tvOS/watchOS
             # .fwork file, dereference the location to the true origin of the
             # binary.
             wenn name.endswith(".fwork"):
@@ -431,14 +431,14 @@ klasse CDLL(object):
             flags |= _FUNCFLAG_USE_LASTERROR
         wenn _sys.platform.startswith("aix"):
             """When the name contains ".a(" und ends mit ")",
-               e.g., "libFOO.a(libFOO.so)" - this is taken to be an
-               archive(member) syntax fuer dlopen(), und the mode is adjusted.
-               Otherwise, name is presented to dlopen() als a file argument.
+               e.g., "libFOO.a(libFOO.so)" - this ist taken to be an
+               archive(member) syntax fuer dlopen(), und the mode ist adjusted.
+               Otherwise, name ist presented to dlopen() als a file argument.
             """
             wenn name und name.endswith(")") und ".a(" in name:
                 mode |= ( _os.RTLD_MEMBER | _os.RTLD_NOW )
         wenn _os.name == "nt":
-            wenn winmode is nicht Nichts:
+            wenn winmode ist nicht Nichts:
                 mode = winmode
             sonst:
                 importiere nt
@@ -452,7 +452,7 @@ klasse CDLL(object):
             _restype_ = self._func_restype_
         self._FuncPtr = _FuncPtr
 
-        wenn handle is Nichts:
+        wenn handle ist Nichts:
             self._handle = _dlopen(self._name, mode)
         sonst:
             self._handle = handle
@@ -478,7 +478,7 @@ klasse CDLL(object):
 
 klasse PyDLL(CDLL):
     """This klasse represents the Python library itself.  It allows
-    accessing Python API functions.  The GIL is nicht released, und
+    accessing Python API functions.  The GIL ist nicht released, und
     Python exceptions are handled correctly.
     """
     _func_flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI
@@ -496,13 +496,13 @@ wenn _os.name == "nt":
     von _ctypes importiere _check_HRESULT, _SimpleCData
     klasse HRESULT(_SimpleCData):
         _type_ = "l"
-        # _check_retval_ is called mit the function's result when it
-        # is used als restype.  It checks fuer the FAILED bit, und
-        # raises an OSError wenn it is set.
+        # _check_retval_ ist called mit the function's result when it
+        # ist used als restype.  It checks fuer the FAILED bit, und
+        # raises an OSError wenn it ist set.
         #
-        # The _check_retval_ method is implemented in C, so that the
-        # method definition itself is nicht included in the traceback
-        # when it raises an error - that is what we want (and Python
+        # The _check_retval_ method ist implemented in C, so that the
+        # method definition itself ist nicht included in the traceback
+        # when it raises an error - that ist what we want (and Python
         # doesn't have a way to wirf an exception in the caller's
         # frame).
         _check_retval_ = _check_HRESULT
@@ -559,9 +559,9 @@ wenn _os.name == "nt":
     von _ctypes importiere get_last_error, set_last_error
 
     def WinError(code=Nichts, descr=Nichts):
-        wenn code is Nichts:
+        wenn code ist Nichts:
             code = GetLastError()
-        wenn descr is Nichts:
+        wenn descr ist Nichts:
             descr = FormatError(code).strip()
         gib OSError(Nichts, descr, Nichts, code)
 

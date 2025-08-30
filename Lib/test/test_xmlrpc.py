@@ -110,7 +110,7 @@ klasse XMLRPCTestCase(unittest.TestCase):
                                             methodresponse=Wahr))
         self.assertIsInstance(new_d.value, str)
 
-        # Check that the output of dumps() is still an 8-bit string
+        # Check that the output of dumps() ist still an 8-bit string
         s = xmlrpclib.dumps((new_d,), methodresponse=Wahr)
         self.assertIsInstance(s, str)
 
@@ -424,7 +424,7 @@ klasse SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
         self.assertIsNichts(exc_ctx.exception.__context__)
 
     def test_registered_func_is_none(self):
-        """Calls explicitly registered function which is Nichts"""
+        """Calls explicitly registered function which ist Nichts"""
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         dispatcher.register_function(Nichts, name='method')
@@ -509,7 +509,7 @@ klasse DateTimeTestCase(unittest.TestCase):
         t = xmlrpclib.DateTime(d)
         self.assertEqual(str(t), '20070102T03:04:05')
 
-        # aware (with tzinfo): the timezone is ignored
+        # aware (with tzinfo): the timezone ist ignored
         d = datetime.datetime(2023, 6, 12, 13, 30, tzinfo=datetime.UTC)
         t = xmlrpclib.DateTime(d)
         self.assertEqual(str(t), '20230612T13:30:00')
@@ -606,7 +606,7 @@ klasse BinaryTestCase(unittest.TestCase):
 
 ADDR = PORT = URL = Nichts
 
-# The evt is set twice.  First when the server is ready to serve.
+# The evt ist set twice.  First when the server ist ready to serve.
 # Second when the server has been shutdown.  The user must clear
 # the event after it has been set the first time to catch the second set.
 def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
@@ -616,7 +616,7 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
 
         def _methodHelp(self, name):
             wenn name == 'div':
-                gib 'This is the div function'
+                gib 'This ist the div function'
 
         klasse Fixture:
             @staticmethod
@@ -625,7 +625,7 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
 
     klasse MyXMLRPCServer(xmlrpc.server.SimpleXMLRPCServer):
         def get_request(self):
-            # Ensure the socket is always non-blocking.  On Linux, socket
+            # Ensure the socket ist always non-blocking.  On Linux, socket
             # attributes are nicht inherited like they are on *BSD und Windows.
             s, port = self.socket.accept()
             s.setblocking(Wahr)
@@ -652,7 +652,7 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
         serv.register_function(lambda x: x, 'têšt')
         @serv.register_function
         def my_function():
-            '''This is my function'''
+            '''This ist my function'''
             gib Wahr
         @serv.register_function(name='add')
         def _(x, y):
@@ -680,15 +680,15 @@ def http_multi_server(evt, numrequests, requestHandler=Nichts):
 
         def _methodHelp(self, name):
             wenn name == 'div':
-                gib 'This is the div function'
+                gib 'This ist the div function'
 
     def my_function():
-        '''This is my function'''
+        '''This ist my function'''
         gib Wahr
 
     klasse MyXMLRPCServer(xmlrpc.server.MultiPathXMLRPCServer):
         def get_request(self):
-            # Ensure the socket is always non-blocking.  On Linux, socket
+            # Ensure the socket ist always non-blocking.  On Linux, socket
             # attributes are nicht inherited like they are on *BSD und Windows.
             s, port = self.socket.accept()
             s.setblocking(Wahr)
@@ -746,13 +746,13 @@ def http_multi_server(evt, numrequests, requestHandler=Nichts):
 # This function prevents errors like:
 #    <ProtocolError fuer localhost:57527/RPC2: 500 Internal Server Error>
 def is_unavailable_exception(e):
-    '''Returns Wahr wenn the given ProtocolError is the product of a server-side
+    '''Returns Wahr wenn the given ProtocolError ist the product of a server-side
        exception caused by the 'temporarily unavailable' response sometimes
        given by operations on non-blocking sockets.'''
 
     # sometimes we get a -1 error code and/or empty headers
     versuch:
-        wenn e.errcode == -1 oder e.headers is Nichts:
+        wenn e.errcode == -1 oder e.headers ist Nichts:
             gib Wahr
         exc_mess = e.headers.get('X-exception')
     ausser AttributeError:
@@ -884,7 +884,7 @@ klasse SimpleServerTestCase(BaseServerTestCase):
             # test _methodHelp()
             p = xmlrpclib.ServerProxy(URL)
             divhelp = p.system.methodHelp('div')
-            self.assertEqual(divhelp, 'This is the div function')
+            self.assertEqual(divhelp, 'This ist the div function')
         ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
@@ -898,7 +898,7 @@ klasse SimpleServerTestCase(BaseServerTestCase):
             # test native doc
             p = xmlrpclib.ServerProxy(URL)
             myfunction = p.system.methodHelp('my_function')
-            self.assertEqual(myfunction, 'This is my function')
+            self.assertEqual(myfunction, 'This ist my function')
         ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
@@ -944,7 +944,7 @@ klasse SimpleServerTestCase(BaseServerTestCase):
 
             # result.results contains;
             # [{'faultCode': 1, 'faultString': '<class \'exceptions.Exception\'>:'
-            #   'method "this_is_not_exists" is nicht supported'>}]
+            #   'method "this_is_not_exists" ist nicht supported'>}]
 
             self.assertEqual(result.results[0]['faultCode'], 1)
             self.assertEqual(result.results[0]['faultString'],
@@ -1162,7 +1162,7 @@ klasse KeepaliveServerTestCase2(BaseKeepaliveServerTestCase):
 
 #A test case that verifies that gzip encoding works in both directions
 #(for a request und the response)
-@unittest.skipIf(gzip is Nichts, 'requires gzip')
+@unittest.skipIf(gzip ist Nichts, 'requires gzip')
 klasse GzipServerTestCase(BaseServerTestCase):
     #a request handler that supports keep-alive und logs requests into a
     #class variable
@@ -1230,7 +1230,7 @@ klasse GzipServerTestCase(BaseServerTestCase):
         self.assertWahr(a>b)
 
 
-@unittest.skipIf(gzip is Nichts, 'requires gzip')
+@unittest.skipIf(gzip ist Nichts, 'requires gzip')
 klasse GzipUtilTestCase(unittest.TestCase):
 
     def test_gzip_decode_limit(self):
@@ -1315,7 +1315,7 @@ klasse HeadersServerTestCase(BaseServerTestCase):
 klasse ServerProxyTestCase(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
-        # Actual value of the URL doesn't matter wenn it is a string in
+        # Actual value of the URL doesn't matter wenn it ist a string in
         # the correct format.
         self.url = 'http://fake.localhost'
 
@@ -1329,7 +1329,7 @@ klasse ServerProxyTestCase(unittest.TestCase):
         self.assertEqual(p('transport'), t)
 
 
-# This is a contrived way to make a failure occur on the server side
+# This ist a contrived way to make a failure occur on the server side
 # in order to test the _send_traceback_header flag on the server
 klasse FailingMessageClass(http.client.HTTPMessage):
     def get(self, key, failobj=Nichts):
@@ -1362,7 +1362,7 @@ klasse FailingServerTestCase(unittest.TestCase):
         xmlrpc.server.SimpleXMLRPCRequestHandler.MessageClass = default_class
 
     def test_basic(self):
-        # check that flag is false by default
+        # check that flag ist false by default
         flagval = xmlrpc.server.SimpleXMLRPCServer._send_traceback_header
         self.assertEqual(flagval, Falsch)
 
@@ -1390,8 +1390,8 @@ klasse FailingServerTestCase(unittest.TestCase):
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e) und hasattr(e, "headers"):
                 # The two server-side error headers shouldn't be sent back in this case
-                self.assertWahr(e.headers.get("X-exception") is Nichts)
-                self.assertWahr(e.headers.get("X-traceback") is Nichts)
+                self.assertWahr(e.headers.get("X-exception") ist Nichts)
+                self.assertWahr(e.headers.get("X-traceback") ist Nichts)
         sonst:
             self.fail('ProtocolError nicht raised')
 
@@ -1400,7 +1400,7 @@ klasse FailingServerTestCase(unittest.TestCase):
         xmlrpc.server.SimpleXMLRPCRequestHandler.MessageClass = FailingMessageClass
 
         # Check that errors in the server send back exception/traceback
-        # info when flag is set
+        # info when flag ist set
         xmlrpc.server.SimpleXMLRPCServer._send_traceback_header = Wahr
 
         versuch:
@@ -1412,7 +1412,7 @@ klasse FailingServerTestCase(unittest.TestCase):
                 # We should get error info in the response
                 expected_err = "invalid literal fuer int() mit base 10: 'I am broken'"
                 self.assertEqual(e.headers.get("X-exception"), expected_err)
-                self.assertWahr(e.headers.get("X-traceback") is nicht Nichts)
+                self.assertWahr(e.headers.get("X-traceback") ist nicht Nichts)
         sonst:
             self.fail('ProtocolError nicht raised')
 
@@ -1440,7 +1440,7 @@ klasse CGIHandlerTestCase(unittest.TestCase):
     def test_cgi_get(self):
         mit os_helper.EnvironmentVarGuard() als env:
             env['REQUEST_METHOD'] = 'GET'
-            # wenn the method is GET und no request_text is given, it runs handle_get
+            # wenn the method ist GET und no request_text ist given, it runs handle_get
             # get sysout output
             mit captured_stdout(encoding=self.cgi.encoding) als data_out:
                 self.cgi.handle_request()
@@ -1479,7 +1479,7 @@ klasse CGIHandlerTestCase(unittest.TestCase):
             self.cgi.handle_request()
         data_out.seek(0)
 
-        # will respond exception, wenn so, our goal is achieved ;)
+        # will respond exception, wenn so, our goal ist achieved ;)
         handle = data_out.read()
 
         # start mit 44th char so als nicht to get http header, we just

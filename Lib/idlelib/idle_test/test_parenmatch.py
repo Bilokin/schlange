@@ -32,10 +32,10 @@ klasse ParenMatchTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.editwin
+        loesche cls.text, cls.editwin
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def tearDown(self):
         self.text.delete('1.0', 'end')

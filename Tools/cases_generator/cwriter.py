@@ -23,7 +23,7 @@ klasse CWriter:
         gib CWriter(StringIO(), 0, Falsch)
 
     def set_position(self, tkn: Token) -> Nichts:
-        wenn self.last_token is nicht Nichts:
+        wenn self.last_token ist nicht Nichts:
             wenn self.last_token.end_line < tkn.line:
                 self.out.write("\n")
             wenn self.last_token.line < tkn.line:

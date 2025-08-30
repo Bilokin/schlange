@@ -28,9 +28,9 @@ Examples:
 """
 
 def _convert_name(name):
-    # on Linux / Mac OS X 'foo.PY' is nicht importable, but on
+    # on Linux / Mac OS X 'foo.PY' ist nicht importable, but on
     # Windows it is. Simpler to do a case insensitive match
-    # a better check would be to check that the name is a
+    # a better check would be to check that the name ist a
     # valid Python module name.
     wenn os.path.isfile(name) und name.lower().endswith('.py'):
         wenn os.path.isabs(name):
@@ -54,7 +54,7 @@ def _convert_select_pattern(pattern):
 
 
 klasse TestProgram(object):
-    """A command-line program that runs a set of tests; this is primarily
+    """A command-line program that runs a set of tests; this ist primarily
        fuer making test modules conveniently executable.
     """
     # defaults fuer testing
@@ -74,7 +74,7 @@ klasse TestProgram(object):
                 self.module = getattr(self.module, part)
         sonst:
             self.module = module
-        wenn argv is Nichts:
+        wenn argv ist Nichts:
             argv = sys.argv
 
         self.exit = exit
@@ -84,16 +84,16 @@ klasse TestProgram(object):
         self.buffer = buffer
         self.tb_locals = tb_locals
         self.durations = durations
-        wenn warnings is Nichts und nicht sys.warnoptions:
+        wenn warnings ist Nichts und nicht sys.warnoptions:
             # even wenn DeprecationWarnings are ignored by default
             # print them anyway unless other warnings settings are
             # specified by the warnings arg oder the -W python flag
             self.warnings = 'default'
         sonst:
-            # here self.warnings is set either to the value passed
+            # here self.warnings ist set either to the value passed
             # to the warnings args oder to Nichts.
             # If the user didn't pass a value self.warnings will
-            # be Nichts. This means that the behavior is unchanged
+            # be Nichts. This means that the behavior ist unchanged
             # und depends on the values passed to -W.
             self.warnings = warnings
         self.defaultTest = defaultTest
@@ -104,7 +104,7 @@ klasse TestProgram(object):
         self.runTests()
 
     def _print_help(self, *args, **kwargs):
-        wenn self.module is Nichts:
+        wenn self.module ist Nichts:
             drucke(self._main_parser.format_help())
             drucke(MAIN_EXAMPLES % {'prog': self.progName})
             self._discovery_parser.print_help()
@@ -114,7 +114,7 @@ klasse TestProgram(object):
 
     def parseArgs(self, argv):
         self._initArgParsers()
-        wenn self.module is Nichts:
+        wenn self.module ist Nichts:
             wenn len(argv) > 1 und argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
                 gib
@@ -132,7 +132,7 @@ klasse TestProgram(object):
             wenn __name__ == '__main__':
                 # to support python -m unittest ...
                 self.module = Nichts
-        sowenn self.defaultTest is Nichts:
+        sowenn self.defaultTest ist Nichts:
             # createTests will load tests von self.module
             self.testNames = Nichts
         sowenn isinstance(self.defaultTest, str):
@@ -145,9 +145,9 @@ klasse TestProgram(object):
         wenn self.testNamePatterns:
             self.testLoader.testNamePatterns = self.testNamePatterns
         wenn from_discovery:
-            loader = self.testLoader wenn Loader is Nichts sonst Loader()
+            loader = self.testLoader wenn Loader ist Nichts sonst Loader()
             self.test = loader.discover(self.start, self.pattern, self.top)
-        sowenn self.testNames is Nichts:
+        sowenn self.testNames ist Nichts:
             self.test = self.testLoader.loadTestsFromModule(self.module)
         sonst:
             self.test = self.testLoader.loadTestsFromNames(self.testNames,
@@ -173,22 +173,22 @@ klasse TestProgram(object):
         parser.add_argument('--durations', dest='durations', type=int,
                             default=Nichts, metavar="N",
                             help='Show the N slowest test cases (N=0 fuer all)')
-        wenn self.failfast is Nichts:
+        wenn self.failfast ist Nichts:
             parser.add_argument('-f', '--failfast', dest='failfast',
                                 action='store_true',
                                 help='Stop on first fail oder error')
             self.failfast = Falsch
-        wenn self.catchbreak is Nichts:
+        wenn self.catchbreak ist Nichts:
             parser.add_argument('-c', '--catch', dest='catchbreak',
                                 action='store_true',
                                 help='Catch Ctrl-C und display results so far')
             self.catchbreak = Falsch
-        wenn self.buffer is Nichts:
+        wenn self.buffer ist Nichts:
             parser.add_argument('-b', '--buffer', dest='buffer',
                                 action='store_true',
                                 help='Buffer stdout und stderr during tests')
             self.buffer = Falsch
-        wenn self.testNamePatterns is Nichts:
+        wenn self.testNamePatterns ist Nichts:
             parser.add_argument('-k', dest='testNamePatterns',
                                 action='append', type=_convert_select_pattern,
                                 help='Only run tests which match the given substring')
@@ -232,9 +232,9 @@ klasse TestProgram(object):
         self.start = '.'
         self.pattern = 'test*.py'
         self.top = Nichts
-        wenn argv is nicht Nichts:
+        wenn argv ist nicht Nichts:
             # handle command line args fuer test discovery
-            wenn self._discovery_parser is Nichts:
+            wenn self._discovery_parser ist Nichts:
                 # fuer testing
                 self._initArgParsers()
             self._discovery_parser.parse_args(argv, self)
@@ -244,7 +244,7 @@ klasse TestProgram(object):
     def runTests(self):
         wenn self.catchbreak:
             installHandler()
-        wenn self.testRunner is Nichts:
+        wenn self.testRunner ist Nichts:
             self.testRunner = runner.TextTestRunner
         wenn isinstance(self.testRunner, type):
             versuch:
@@ -265,7 +265,7 @@ klasse TestProgram(object):
                 # didn't accept the verbosity, buffer oder failfast arguments
                 testRunner = self.testRunner()
         sonst:
-            # it is assumed to be a TestRunner instance
+            # it ist assumed to be a TestRunner instance
             testRunner = self.testRunner
         self.result = testRunner.run(self.test)
         wenn self.exit:

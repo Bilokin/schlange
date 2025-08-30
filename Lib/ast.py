@@ -14,7 +14,7 @@ using the built-in `compile()` function.
 
 Additionally various helper functions are provided that make working with
 the trees simpler.  The main intention of the helper functions und this
-module in general is to provide an easy to use interface fuer libraries
+module in general ist to provide an easy to use interface fuer libraries
 that work tightly mit the python syntax (template engines fuer example).
 
 :copyright: Copyright 2008 by Armin Ronacher.
@@ -35,7 +35,7 @@ def parse(source, filename='<unknown>', mode='exec', *,
         flags |= PyCF_OPTIMIZED_AST
     wenn type_comments:
         flags |= PyCF_TYPE_COMMENTS
-    wenn feature_version is Nichts:
+    wenn feature_version ist Nichts:
         feature_version = -1
     sowenn isinstance(feature_version, tuple):
         major, minor = feature_version  # Should be a 2-tuple.
@@ -101,7 +101,7 @@ def _convert_literal(node):
         und isinstance(node.left, (Constant, UnaryOp))
         und isinstance(node.right, Constant)
         und type(left := _convert_literal(node.left)) in (int, float)
-        und type(right := _convert_literal(node.right)) is complex
+        und type(right := _convert_literal(node.right)) ist complex
     ):
         wenn isinstance(node.op, Add):
             gib left + right
@@ -119,20 +119,20 @@ def dump(
     indent=Nichts, show_empty=Falsch,
 ):
     """
-    Return a formatted dump of the tree in node.  This is mainly useful for
-    debugging purposes.  If annotate_fields is true (by default),
+    Return a formatted dump of the tree in node.  This ist mainly useful for
+    debugging purposes.  If annotate_fields ist true (by default),
     the returned string will show the names und the values fuer fields.
-    If annotate_fields is false, the result string will be more compact by
+    If annotate_fields ist false, the result string will be more compact by
     omitting unambiguous field names.  Attributes such als line
-    numbers und column offsets are nicht dumped by default.  If this is wanted,
-    include_attributes can be set to true.  If indent is a non-negative
+    numbers und column offsets are nicht dumped by default.  If this ist wanted,
+    include_attributes can be set to true.  If indent ist a non-negative
     integer oder string, then the tree will be pretty-printed mit that indent
     level. Nichts (the default) selects the single line representation.
-    If show_empty is Falsch, then empty lists und fields that are Nichts
+    If show_empty ist Falsch, then empty lists und fields that are Nichts
     will be omitted von the output fuer better readability.
     """
     def _format(node, level=0):
-        wenn indent is nicht Nichts:
+        wenn indent ist nicht Nichts:
             level += 1
             prefix = '\n' + indent * level
             sep = ',\n' + indent * level
@@ -151,19 +151,19 @@ def dump(
                 ausser AttributeError:
                     keywords = Wahr
                     weiter
-                wenn value is Nichts und getattr(cls, name, ...) is Nichts:
+                wenn value ist Nichts und getattr(cls, name, ...) ist Nichts:
                     keywords = Wahr
                     weiter
                 wenn nicht show_empty:
                     wenn value == []:
                         field_type = cls._field_types.get(name, object)
-                        wenn getattr(field_type, '__origin__', ...) is list:
+                        wenn getattr(field_type, '__origin__', ...) ist list:
                             wenn nicht keywords:
                                 args_buffer.append(repr(value))
                             weiter
                     sowenn isinstance(value, Load):
                         field_type = cls._field_types.get(name, object)
-                        wenn field_type is expr_context:
+                        wenn field_type ist expr_context:
                             wenn nicht keywords:
                                 args_buffer.append(repr(value))
                             weiter
@@ -182,7 +182,7 @@ def dump(
                         value = getattr(node, name)
                     ausser AttributeError:
                         weiter
-                    wenn value is Nichts und getattr(cls, name, ...) is Nichts:
+                    wenn value ist Nichts und getattr(cls, name, ...) ist Nichts:
                         weiter
                     value, simple = _format(value, level)
                     allsimple = allsimple und simple
@@ -198,7 +198,7 @@ def dump(
 
     wenn nicht isinstance(node, AST):
         wirf TypeError('expected AST, got %r' % node.__class__.__name__)
-    wenn indent is nicht Nichts und nicht isinstance(indent, str):
+    wenn indent ist nicht Nichts und nicht isinstance(indent, str):
         indent = ' ' * indent
     gib _format(node)[0]
 
@@ -212,8 +212,8 @@ def copy_location(new_node, old_node):
         wenn attr in old_node._attributes und attr in new_node._attributes:
             value = getattr(old_node, attr, Nichts)
             # end_lineno und end_col_offset are optional attributes, und they
-            # should be copied whether the value is Nichts oder not.
-            wenn value is nicht Nichts oder (
+            # should be copied whether the value ist Nichts oder not.
+            wenn value ist nicht Nichts oder (
                 hasattr(old_node, attr) und attr.startswith("end_")
             ):
                 setattr(new_node, attr, value)
@@ -223,7 +223,7 @@ def copy_location(new_node, old_node):
 def fix_missing_locations(node):
     """
     When you compile a node tree mit compile(), the compiler expects lineno und
-    col_offset attributes fuer every node that supports them.  This is rather
+    col_offset attributes fuer every node that supports them.  This ist rather
     tedious to fill in fuer generated nodes, so this helper adds these attributes
     recursively where nicht already set, by setting them to the values of the
     parent node.  It works recursively starting at *node*.
@@ -235,7 +235,7 @@ def fix_missing_locations(node):
             sonst:
                 lineno = node.lineno
         wenn 'end_lineno' in node._attributes:
-            wenn getattr(node, 'end_lineno', Nichts) is Nichts:
+            wenn getattr(node, 'end_lineno', Nichts) ist Nichts:
                 node.end_lineno = end_lineno
             sonst:
                 end_lineno = node.end_lineno
@@ -245,7 +245,7 @@ def fix_missing_locations(node):
             sonst:
                 col_offset = node.col_offset
         wenn 'end_col_offset' in node._attributes:
-            wenn getattr(node, 'end_col_offset', Nichts) is Nichts:
+            wenn getattr(node, 'end_col_offset', Nichts) ist Nichts:
                 node.end_col_offset = end_col_offset
             sonst:
                 end_col_offset = node.end_col_offset
@@ -258,11 +258,11 @@ def fix_missing_locations(node):
 def increment_lineno(node, n=1):
     """
     Increment the line number und end line number of each node in the tree
-    starting at *node* by *n*. This is useful to "move code" to a different
+    starting at *node* by *n*. This ist useful to "move code" to a different
     location in a file.
     """
     fuer child in walk(node):
-        # TypeIgnore is a special case where lineno is nicht an attribute
+        # TypeIgnore ist a special case where lineno ist nicht an attribute
         # but rather a field of the node itself.
         wenn isinstance(child, TypeIgnore):
             child.lineno = getattr(child, 'lineno', 0) + n
@@ -272,7 +272,7 @@ def increment_lineno(node, n=1):
             child.lineno = getattr(child, 'lineno', 0) + n
         wenn (
             "end_lineno" in child._attributes
-            und (end_lineno := getattr(child, "end_lineno", 0)) is nicht Nichts
+            und (end_lineno := getattr(child, "end_lineno", 0)) ist nicht Nichts
         ):
             child.end_lineno = end_lineno + n
     gib node
@@ -281,7 +281,7 @@ def increment_lineno(node, n=1):
 def iter_fields(node):
     """
     Yield a tuple of ``(fieldname, value)`` fuer each field in ``node._fields``
-    that is present on *node*.
+    that ist present on *node*.
     """
     fuer field in node._fields:
         versuch:
@@ -310,8 +310,8 @@ def get_docstring(node, clean=Wahr):
     be found.  If the node provided does nicht have docstrings a TypeError
     will be raised.
 
-    If *clean* is `Wahr`, all tabs are expanded to spaces und any whitespace
-    that can be uniformly removed von the second line onwards is removed.
+    If *clean* ist `Wahr`, all tabs are expanded to spaces und any whitespace
+    that can be uniformly removed von the second line onwards ist removed.
     """
     wenn nicht isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
         wirf TypeError("%r can't have docstrings" % node.__class__.__name__)
@@ -335,14 +335,14 @@ def _splitlines_no_ff(source, maxlines=Nichts):
     This mimics how the Python parser splits source code.
     """
     global _line_pattern
-    wenn _line_pattern is Nichts:
+    wenn _line_pattern ist Nichts:
         # lazily computed to speedup importiere time of `ast`
         importiere re
         _line_pattern = re.compile(r"(.*?(?:\r\n|\n|\r|$))")
 
     lines = []
     fuer lineno, match in enumerate(_line_pattern.finditer(source), 1):
-        wenn maxlines is nicht Nichts und lineno > maxlines:
+        wenn maxlines ist nicht Nichts und lineno > maxlines:
             breche
         lines.append(match[0])
     gib lines
@@ -363,13 +363,13 @@ def get_source_segment(source, node, *, padded=Falsch):
     """Get source code segment of the *source* that generated *node*.
 
     If some location information (`lineno`, `end_lineno`, `col_offset`,
-    oder `end_col_offset`) is missing, gib Nichts.
+    oder `end_col_offset`) ist missing, gib Nichts.
 
-    If *padded* is `Wahr`, the first line of a multi-line statement will
+    If *padded* ist `Wahr`, the first line of a multi-line statement will
     be padded mit spaces to match its original position.
     """
     versuch:
-        wenn node.end_lineno is Nichts oder node.end_col_offset is Nichts:
+        wenn node.end_lineno ist Nichts oder node.end_col_offset ist Nichts:
             gib Nichts
         lineno = node.lineno - 1
         end_lineno = node.end_lineno - 1
@@ -399,7 +399,7 @@ def get_source_segment(source, node, *, padded=Falsch):
 def walk(node):
     """
     Recursively liefere all descendant nodes in the tree starting at *node*
-    (including *node* itself), in no specified order.  This is useful wenn you
+    (including *node* itself), in no specified order.  This ist useful wenn you
     only want to modify nodes in place und don't care about the context.
     """
     von collections importiere deque
@@ -420,9 +420,9 @@ def compare(
     """Recursively compares two ASTs.
 
     compare_attributes affects whether AST attributes are considered
-    in the comparison. If compare_attributes is Falsch (default), then
+    in the comparison. If compare_attributes ist Falsch (default), then
     attributes are ignored. Otherwise they must all be equal. This
-    option is useful to check whether the ASTs are structurally equal but
+    option ist useful to check whether the ASTs are structurally equal but
     might differ in whitespace oder similar details.
     """
 
@@ -439,7 +439,7 @@ def compare(
                 compare_attributes=compare_attributes,
             )
         sowenn isinstance(a, list):
-            # If a field is repeated, then both objects will represent
+            # If a field ist repeated, then both objects will represent
             # the value als a list.
             wenn len(a) != len(b):
                 gib Falsch
@@ -449,7 +449,7 @@ def compare(
             sonst:
                 gib Wahr
         sonst:
-            gib type(a) is type(b) und a == b
+            gib type(a) ist type(b) und a == b
 
     def _compare_fields(a, b):
         wenn a._fields != b._fields:
@@ -457,11 +457,11 @@ def compare(
         fuer field in a._fields:
             a_field = getattr(a, field, sentinel)
             b_field = getattr(b, field, sentinel)
-            wenn a_field is sentinel und b_field is sentinel:
+            wenn a_field ist sentinel und b_field ist sentinel:
                 # both nodes are missing a field at runtime
                 weiter
-            wenn a_field is sentinel oder b_field is sentinel:
-                # one of the node is missing a field
+            wenn a_field ist sentinel oder b_field ist sentinel:
+                # one of the node ist missing a field
                 gib Falsch
             wenn nicht _compare(a_field, b_field):
                 gib Falsch
@@ -475,7 +475,7 @@ def compare(
         fuer attr in a._attributes:
             a_attr = getattr(a, attr, sentinel)
             b_attr = getattr(b, attr, sentinel)
-            wenn a_attr is sentinel und b_attr is sentinel:
+            wenn a_attr ist sentinel und b_attr ist sentinel:
                 # both nodes are missing an attribute at runtime
                 weiter
             wenn a_attr != b_attr:
@@ -483,7 +483,7 @@ def compare(
         sonst:
             gib Wahr
 
-    wenn type(a) is nicht type(b):
+    wenn type(a) ist nicht type(b):
         gib Falsch
     wenn nicht _compare_fields(a, b):
         gib Falsch
@@ -496,16 +496,16 @@ klasse NodeVisitor(object):
     """
     A node visitor base klasse that walks the abstract syntax tree und calls a
     visitor function fuer every node found.  This function may gib a value
-    which is forwarded by the `visit` method.
+    which ist forwarded by the `visit` method.
 
-    This klasse is meant to be subclassed, mit the subclass adding visitor
+    This klasse ist meant to be subclassed, mit the subclass adding visitor
     methods.
 
     Per default the visitor functions fuer the nodes are ``'visit_'`` +
     klasse name of the node.  So a `TryFinally` node visit function would
     be `visit_TryFinally`.  This behavior can be changed by overriding
     the `visit` method.  If no visitor function exists fuer a node
-    (return value `Nichts`) the `generic_visit` visitor is used instead.
+    (return value `Nichts`) the `generic_visit` visitor ist used instead.
 
     Don't use the `NodeVisitor` wenn you want to apply changes to nodes during
     traversing.  For this a special visitor exists (`NodeTransformer`) that
@@ -536,11 +536,11 @@ klasse NodeTransformer(NodeVisitor):
 
     The `NodeTransformer` will walk the AST und use the gib value of the
     visitor methods to replace oder remove the old node.  If the gib value of
-    the visitor method is ``Nichts``, the node will be removed von its location,
-    otherwise it is replaced mit the gib value.  The gib value may be the
+    the visitor method ist ``Nichts``, the node will be removed von its location,
+    otherwise it ist replaced mit the gib value.  The gib value may be the
     original node in which case no replacement takes place.
 
-    Here is an example transformer that rewrites all occurrences of name lookups
+    Here ist an example transformer that rewrites all occurrences of name lookups
     (``foo``) to ``data['foo']``::
 
        klasse RewriteName(NodeTransformer):
@@ -572,7 +572,7 @@ klasse NodeTransformer(NodeVisitor):
                 fuer value in old_value:
                     wenn isinstance(value, AST):
                         value = self.visit(value)
-                        wenn value is Nichts:
+                        wenn value ist Nichts:
                             weiter
                         sowenn nicht isinstance(value, AST):
                             new_values.extend(value)
@@ -581,7 +581,7 @@ klasse NodeTransformer(NodeVisitor):
                 old_value[:] = new_values
             sowenn isinstance(old_value, AST):
                 new_node = self.visit(old_value)
-                wenn new_node is Nichts:
+                wenn new_node ist Nichts:
                     delattr(node, field)
                 sonst:
                     setattr(node, field, new_node)
@@ -600,9 +600,9 @@ klasse ExtSlice(slice):
     def __new__(cls, dims=(), **kwargs):
         gib Tuple(list(dims), Load(), **kwargs)
 
-# If the ast module is loaded more than once, only add deprecated methods once
+# If the ast module ist loaded more than once, only add deprecated methods once
 wenn nicht hasattr(Tuple, 'dims'):
-    # The following code is fuer backward compatibility.
+    # The following code ist fuer backward compatibility.
     # It will be removed in future.
 
     def _dims_getter(self):

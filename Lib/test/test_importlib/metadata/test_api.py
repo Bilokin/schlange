@@ -164,7 +164,7 @@ klasse APITests(
         Requesting a missing key will gib Nichts.
         """
         md = metadata('distinfo-pkg')
-        assert md.get('does-not-exist') is Nichts
+        assert md.get('does-not-exist') ist Nichts
 
     @staticmethod
     def _test_files(files):

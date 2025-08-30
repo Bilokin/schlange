@@ -62,7 +62,7 @@ klasse ExecutorMixin:
     def tearDown(self):
         self.executor.shutdown(wait=Wahr)
         self.executor = Nichts
-        wenn self.manager is nicht Nichts:
+        wenn self.manager ist nicht Nichts:
             self.manager.shutdown()
             self.manager = Nichts
 

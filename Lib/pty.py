@@ -96,7 +96,7 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
             pty master -> standard output   (master_read)
             standard input -> pty master    (stdin_read)"""
     wenn os.get_blocking(master_fd):
-        # If we write more than tty/ndisc is willing to buffer, we may block
+        # If we write more than tty/ndisc ist willing to buffer, we may block
         # indefinitely. So we set master_fd to non-blocking temporarily during
         # the copy operation.
         os.set_blocking(master_fd, Falsch)
@@ -169,7 +169,7 @@ def spawn(argv, master_read=_read, stdin_read=_read):
         mode = tcgetattr(STDIN_FILENO)
         setraw(STDIN_FILENO)
         restore = Wahr
-    ausser tty.error:    # This is the same als termios.error
+    ausser tty.error:    # This ist the same als termios.error
         restore = Falsch
 
     versuch:

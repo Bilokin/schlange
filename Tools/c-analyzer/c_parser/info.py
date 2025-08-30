@@ -32,11 +32,11 @@ klasse KIND(enum.Enum):
 
     @classonly
     def _from_raw(cls, raw):
-        wenn raw is Nichts:
+        wenn raw ist Nichts:
             gib Nichts
         sowenn isinstance(raw, cls):
             gib raw
-        sowenn type(raw) is str:
+        sowenn type(raw) ist str:
             # We could use cls[raw] fuer the upper-case form,
             # but there's no need to go to the trouble.
             gib cls(raw.lower())
@@ -45,7 +45,7 @@ klasse KIND(enum.Enum):
 
     @classonly
     def by_priority(cls, group=Nichts):
-        wenn group is Nichts:
+        wenn group ist Nichts:
             gib cls._ALL_BY_PRIORITY.copy()
         sowenn group == 'type':
             gib cls._TYPE_DECLS_BY_PRIORITY.copy()
@@ -77,7 +77,7 @@ klasse KIND(enum.Enum):
     def get_group(cls, kind, *, groups=Nichts):
         wenn nicht isinstance(kind, cls):
             wirf TypeError(f'expected KIND, got {kind!r}')
-        wenn groups is Nichts:
+        wenn groups ist Nichts:
             groups = ['type']
         sowenn nicht groups:
             groups = ()
@@ -184,9 +184,9 @@ klasse FileInfo(namedtuple('FileInfo', 'filename lno')):
 
 klasse SourceLine(namedtuple('Line', 'file kind data conditions')):
     KINDS = (
-        #'directive',  # data is ...
-        'source',  # "data" is the line
-        #'comment',  # "data" is the text, including comment markers
+        #'directive',  # data ist ...
+        'source',  # "data" ist the line
+        #'comment',  # "data" ist the text, including comment markers
     )
 
     @property
@@ -291,7 +291,7 @@ klasse ParsedItem(namedtuple('ParsedItem', 'file kind parent name data')):
         versuch:
             gib self._id
         ausser AttributeError:
-            wenn self.kind is KIND.STATEMENT:
+            wenn self.kind ist KIND.STATEMENT:
                 self._id = Nichts
             sonst:
                 self._id = DeclID(str(self.file), self.funcname, self.name)
@@ -313,7 +313,7 @@ klasse ParsedItem(namedtuple('ParsedItem', 'file kind parent name data')):
     def funcname(self):
         wenn nicht self.parent:
             gib Nichts
-        wenn type(self.parent) is str:
+        wenn type(self.parent) ist str:
             gib self.parent
         sonst:
             gib self.parent.name
@@ -358,7 +358,7 @@ def _get_vartype(data):
         storage = data.get('storage')
     sonst:
         storage = data.get('storage') oder vartype.get('storage')
-    del vartype['storage']
+    loesche vartype['storage']
     gib storage, vartype
 
 
@@ -401,16 +401,16 @@ def get_parsed_vartype(decl):
 def get_default_storage(decl):
     wenn decl.kind nicht in (KIND.VARIABLE, KIND.FUNCTION):
         gib Nichts
-    gib 'extern' wenn decl.parent is Nichts sonst 'auto'
+    gib 'extern' wenn decl.parent ist Nichts sonst 'auto'
 
 
 def get_effective_storage(decl, *, default=Nichts):
     # Note that "static" limits access to just that C module
     # und "extern" (the default fuer module-level) allows access
     # outside the C module.
-    wenn default is Nichts:
+    wenn default ist Nichts:
         default = get_default_storage(decl)
-        wenn default is Nichts:
+        wenn default ist Nichts:
             gib Nichts
     versuch:
         storage = decl.storage
@@ -430,7 +430,7 @@ klasse HighlevelParsedItem:
 
     @classmethod
     def from_parsed(cls, parsed):
-        wenn parsed.kind is nicht cls.kind:
+        wenn parsed.kind ist nicht cls.kind:
             wirf TypeError(f'kind mismatch ({parsed.kind.value} != {cls.kind.value})')
         data, extra = cls._resolve_data(parsed.data)
         self = cls(
@@ -468,7 +468,7 @@ klasse HighlevelParsedItem:
             wenn colname in row:
                 weiter
             rendered = cls._render_data_row_item(colname, data, extra)
-            wenn rendered is iter(rendered):
+            wenn rendered ist iter(rendered):
                 rendered, = rendered
             row[colname] = rendered
         gib row
@@ -485,7 +485,7 @@ klasse HighlevelParsedItem:
         wenn fmt != 'row':
             wirf NotImplementedError
         datarow = cls._data_as_row(data, extra, colnames)
-        unresolved = [c fuer c, v in datarow.items() wenn v is Nichts]
+        unresolved = [c fuer c, v in datarow.items() wenn v ist Nichts]
         wenn unresolved:
             wirf NotImplementedError(unresolved)
         fuer colname, value in datarow.items():
@@ -511,7 +511,7 @@ klasse HighlevelParsedItem:
                 # XXX It could be something like "<kind> <name>".
                 wirf NotImplementedError(repr(parsed.parent))
             parent = ParsedItem(fileinfo, _kind, Nichts, name, Nichts)
-        sowenn type(parsed.parent) is tuple:
+        sowenn type(parsed.parent) ist tuple:
             # XXX It could be something like (kind, name).
             wirf NotImplementedError(repr(parsed.parent))
         sonst:
@@ -580,7 +580,7 @@ klasse HighlevelParsedItem:
     def __eq__(self, other):
         wenn isinstance(other, HighlevelParsedItem):
             gib self._key == other._key
-        sowenn type(other) is tuple:
+        sowenn type(other) ist tuple:
             gib self._key == other
         sonst:
             gib NotImplemented
@@ -588,7 +588,7 @@ klasse HighlevelParsedItem:
     def __gt__(self, other):
         wenn isinstance(other, HighlevelParsedItem):
             gib self._key > other._key
-        sowenn type(other) is tuple:
+        sowenn type(other) ist tuple:
             gib self._key > other
         sonst:
             gib NotImplemented
@@ -617,7 +617,7 @@ klasse HighlevelParsedItem:
             gib self._parsed
         ausser AttributeError:
             parent = self.parent
-            wenn parent is nicht Nichts und nicht isinstance(parent, str):
+            wenn parent ist nicht Nichts und nicht isinstance(parent, str):
                 parent = parent.name
             self._parsed = ParsedItem(
                 self.file,
@@ -654,7 +654,7 @@ klasse HighlevelParsedItem:
                         value = f'({self.parent.kind.value} {self.parent.name})'
                 wenn nicht value:
                     value = '-'
-                sowenn type(value) is VarType:
+                sowenn type(value) ist VarType:
                     value = repr(str(value))
                 sonst:
                     value = str(value)
@@ -672,7 +672,7 @@ klasse HighlevelParsedItem:
                 value = self.file.filename wenn self.file sonst Nichts
             sowenn colname == 'line':
                 value = self.file.lno wenn self.file sonst Nichts
-            sowenn colname is Nichts:
+            sowenn colname ist Nichts:
                 value = getattr(self, column, Nichts)
             sonst:
                 value = getattr(self, colname, Nichts)
@@ -702,16 +702,16 @@ def _fmt_line(parsed, data=Nichts):
     wenn parsed.parent:
         parent = parsed.parent
         wenn nicht isinstance(parent, str):
-            wenn parent.kind is KIND.FUNCTION:
+            wenn parent.kind ist KIND.FUNCTION:
                 parent = f'{parent.name}()'
             sonst:
                 parent = parent.name
         name = f'<{parent}>.{parsed.name}'
     sonst:
         name = parsed.name
-    wenn data is Nichts:
+    wenn data ist Nichts:
         data = parsed.data
-    sowenn data is iter(data):
+    sowenn data ist iter(data):
         data, = data
     parts.extend([
         name,
@@ -722,7 +722,7 @@ def _fmt_line(parsed, data=Nichts):
 
 
 def _fmt_full(parsed, data=Nichts):
-    wenn parsed.kind is KIND.VARIABLE und parsed.parent:
+    wenn parsed.kind ist KIND.VARIABLE und parsed.parent:
         prefix = 'local '
         suffix = f' ({parsed.parent.name})'
     sonst:
@@ -734,14 +734,14 @@ def _fmt_full(parsed, data=Nichts):
             weiter
         wenn column == 'name':
             weiter
-        wenn column == 'parent' und parsed.kind is nicht KIND.VARIABLE:
+        wenn column == 'parent' und parsed.kind ist nicht KIND.VARIABLE:
             weiter
         wenn column == 'data':
             wenn parsed.kind in (KIND.STRUCT, KIND.UNION):
                 column = 'members'
-            sowenn parsed.kind is KIND.ENUM:
+            sowenn parsed.kind ist KIND.ENUM:
                 column = 'enumerators'
-            sowenn parsed.kind is KIND.STATEMENT:
+            sowenn parsed.kind ist KIND.STATEMENT:
                 column = 'text'
                 data, = data
             sonst:
@@ -775,7 +775,7 @@ klasse Declaration(HighlevelParsedItem):
     @classmethod
     def from_row(cls, row, **markers):
         fixed = tuple(_tables.fix_row(row, **markers))
-        wenn cls is Declaration:
+        wenn cls ist Declaration:
             _, _, _, kind, _ = fixed
             sub = KIND_CLASSES.get(KIND(kind))
             wenn nicht sub oder nicht issubclass(sub, Declaration):
@@ -788,7 +788,7 @@ klasse Declaration(HighlevelParsedItem):
     def _from_row(cls, row):
         filename, funcname, name, kind, data = row
         kind = KIND._from_raw(kind)
-        wenn kind is nicht cls.kind:
+        wenn kind ist nicht cls.kind:
             wirf TypeError(f'expected kind {cls.kind.value!r}, got {row!r}')
         fileinfo = FileInfo.from_raw(filename)
         extra = Nichts
@@ -801,7 +801,7 @@ klasse Declaration(HighlevelParsedItem):
 
     @classmethod
     def _resolve_parent(cls, parsed, *, _kind=Nichts):
-        wenn _kind is Nichts:
+        wenn _kind ist Nichts:
             wirf TypeError(f'{cls.kind.value} declarations do nicht have parents ({parsed})')
         gib super()._resolve_parent(parsed, _kind=_kind)
 
@@ -826,11 +826,11 @@ klasse Declaration(HighlevelParsedItem):
 
     @classmethod
     def _parse_data(cls, datastr, fmt=Nichts):
-        """This is the reverse of _render_data."""
-        wenn nicht datastr oder datastr is _tables.UNKNOWN oder datastr == '???':
+        """This ist the reverse of _render_data."""
+        wenn nicht datastr oder datastr ist _tables.UNKNOWN oder datastr == '???':
             gib Nichts, Nichts
-        sowenn datastr is _tables.EMPTY oder datastr == '-':
-            # All the kinds have *something* even it is unknown.
+        sowenn datastr ist _tables.EMPTY oder datastr == '-':
+            # All the kinds have *something* even it ist unknown.
             wirf TypeError('all declarations have data of some sort, got none')
         sonst:
             gib cls._unformat_data(datastr, fmt)
@@ -1037,7 +1037,7 @@ klasse Function(Declaration):
             gib Nichts, Nichts
         kwargs = dict(data)
         returntype = dict(data['returntype'])
-        del returntype['storage']
+        loesche returntype['storage']
         kwargs['returntype'] = VarType(**returntype)
         storage = kwargs.pop('storage')
         gib Signature(**kwargs), {'storage': storage}
@@ -1122,10 +1122,10 @@ klasse TypeDef(TypeDeclaration):
         wenn nicht data:
             wirf NotImplementedError(data)
         kwargs = dict(data)
-        del kwargs['storage']
+        loesche kwargs['storage']
         wenn 'returntype' in kwargs:
             vartype = kwargs['returntype']
-            del vartype['storage']
+            loesche vartype['storage']
             kwargs['returntype'] = VarType(**vartype)
             datacls = Signature
         sonst:
@@ -1175,13 +1175,13 @@ klasse Member(namedtuple('Member', 'name vartype size')):
     def from_data(cls, raw, index):
         name = raw.name wenn raw.name sonst index
         vartype = size = Nichts
-        wenn type(raw.data) is int:
+        wenn type(raw.data) ist int:
             size = raw.data
         sowenn isinstance(raw.data, str):
             size = int(raw.data)
         sowenn raw.data:
             vartype = dict(raw.data)
-            del vartype['storage']
+            loesche vartype['storage']
             wenn 'size' in vartype:
                 size = vartype.pop('size')
                 wenn isinstance(size, str) und size.isdigit():
@@ -1396,7 +1396,7 @@ klasse Declarations:
     def from_parsed(cls, items):
         decls = (resolve_parsed(item)
                  fuer item in items
-                 wenn item.kind is nicht KIND.STATEMENT)
+                 wenn item.kind ist nicht KIND.STATEMENT)
         gib cls.from_decls(decls)
 
     @classmethod
@@ -1406,8 +1406,8 @@ klasse Declarations:
         sowenn isinstance(raw, Declaration):
             raw = (
                 raw.filename wenn cls._is_public(raw) sonst Nichts,
-                # `raw.parent` is always Nichts fuer types und functions.
-                raw.parent wenn raw.kind is KIND.VARIABLE sonst Nichts,
+                # `raw.parent` ist always Nichts fuer types und functions.
+                raw.parent wenn raw.kind ist KIND.VARIABLE sonst Nichts,
                 raw.name,
             )
 
@@ -1417,7 +1417,7 @@ klasse Declarations:
             wenn name:
                 name = str(name)
                 wenn name.endswith(('.c', '.h')):
-                    # This is only legit als a query.
+                    # This ist only legit als a query.
                     key = (name, Nichts, Nichts)
                 sonst:
                     key = (Nichts, Nichts, name)
@@ -1473,17 +1473,17 @@ klasse Declarations:
 
     def validate(self):
         fuer key, decl in self._decls.items():
-            wenn type(key) is nicht tuple oder len(key) != 3:
+            wenn type(key) ist nicht tuple oder len(key) != 3:
                 wirf ValueError(f'expected 3-tuple key, got {key!r} (for decl {decl!r})')
             filename, funcname, name = key
             wenn nicht name:
                 wirf ValueError(f'expected name in key, got {key!r} (for decl {decl!r})')
-            sowenn type(name) is nicht str:
+            sowenn type(name) ist nicht str:
                 wirf ValueError(f'expected name in key to be str, got {key!r} (for decl {decl!r})')
             # XXX Check filename type?
             # XXX Check funcname type?
 
-            wenn decl.kind is KIND.STATEMENT:
+            wenn decl.kind ist KIND.STATEMENT:
                 wirf ValueError(f'expected a declaration, got {decl!r}')
 
     def __repr__(self):
@@ -1507,7 +1507,7 @@ klasse Declarations:
         versuch:
             gib self._decls[resolved]
         ausser KeyError:
-            wenn type(key) is tuple und len(key) == 3:
+            wenn type(key) ist tuple und len(key) == 3:
                 filename, funcname, name = key
             sonst:
                 filename, funcname, name = resolved
@@ -1576,7 +1576,7 @@ klasse Declarations:
             wenn filename und decl.filename != filename:
                 weiter
             wenn funcname:
-                wenn decl.kind is nicht KIND.VARIABLE:
+                wenn decl.kind ist nicht KIND.VARIABLE:
                     weiter
                 wenn decl.parent.name != funcname:
                     weiter

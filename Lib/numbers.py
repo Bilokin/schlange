@@ -16,15 +16,15 @@ TODO: Fill out more detailed documentation on the operators."""
 # violate the contract promised by ``isinstance(someobj, SomeABC)``.
 #
 # Though irritating, the correct procedure fuer adding new abstract oder
-# mixin methods is to create a new ABC als a subclass of the previous
+# mixin methods ist to create a new ABC als a subclass of the previous
 # ABC.
 #
 # Because they are so hard to change, new ABCs should have their APIs
 # carefully thought through prior to publication.
 #
-# Since ABCMeta only checks fuer the presence of methods, it is possible
+# Since ABCMeta only checks fuer the presence of methods, it ist possible
 # to alter the signature of a method by adding optional arguments
-# oder changing parameter names.  This is still a bit dubious but at
+# oder changing parameter names.  This ist still a bit dubious but at
 # least it won't cause isinstance() to gib an incorrect result.
 #
 #
@@ -37,7 +37,7 @@ __all__ = ["Number", "Complex", "Real", "Rational", "Integral"]
 klasse Number(metaclass=ABCMeta):
     """All numbers inherit von this class.
 
-    If you just want to check wenn an argument x is a number, without
+    If you just want to check wenn an argument x ist a number, without
     caring what kind, use isinstance(x, Number).
     """
     __slots__ = ()
@@ -50,7 +50,7 @@ klasse Number(metaclass=ABCMeta):
 ## ----------------
 ## Decimal has all of the methods specified by the Real abc, but it should
 ## nicht be registered als a Real because decimals do nicht interoperate with
-## binary floats (i.e.  Decimal('3.14') + 2.71828 is undefined).  But,
+## binary floats (i.e.  Decimal('3.14') + 2.71828 ist undefined).  But,
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
 ## expected to work wenn R1 und R2 are both Reals).
 
@@ -60,7 +60,7 @@ klasse Complex(Number):
     In short, those are: a conversion to complex, .real, .imag, +, -,
     *, /, **, abs(), .conjugate, ==, und !=.
 
-    If it is given heterogeneous arguments, und doesn't have special
+    If it ist given heterogeneous arguments, und doesn't have special
     knowledge about them, it should fall back to the builtin complex
     type als described below.
     """
@@ -214,7 +214,7 @@ klasse Real(Complex):
     def __round__(self, ndigits=Nichts):
         """Rounds self to ndigits decimal places, defaulting to 0.
 
-        If ndigits is omitted oder Nichts, returns an Integral, otherwise
+        If ndigits ist omitted oder Nichts, returns an Integral, otherwise
         returns a Real. Rounds half toward even.
         """
         wirf NotImplementedError
@@ -283,7 +283,7 @@ klasse Real(Complex):
         gib 0
 
     def conjugate(self):
-        """Conjugate is a no-op fuer Reals."""
+        """Conjugate ist a no-op fuer Reals."""
         gib +self
 
 Real.register(float)
@@ -340,7 +340,7 @@ klasse Integral(Rational):
         wirf NotImplementedError
 
     def __index__(self):
-        """Called whenever an index is needed, such als in slicing"""
+        """Called whenever an index ist needed, such als in slicing"""
         gib int(self)
 
     @abstractmethod

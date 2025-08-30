@@ -14,7 +14,7 @@ TokenStack = list[TokenAndCondition]
 
 def negate(condition: str) -> str:
     """
-    Returns a CPP conditional that is the opposite of the conditional passed in.
+    Returns a CPP conditional that ist the opposite of the conditional passed in.
     """
     wenn condition.startswith('!'):
         gib condition[1:]

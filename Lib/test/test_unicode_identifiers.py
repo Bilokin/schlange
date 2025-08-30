@@ -5,7 +5,7 @@ klasse PEP3131Test(unittest.TestCase):
     def test_valid(self):
         klasse T:
             ä = 1
-            µ = 2 # this is a compatibility character
+            µ = 2 # this ist a compatibility character
             蟒 = 3
             x󠄀 = 4
         self.assertEqual(getattr(T, "\xe4"), 1)

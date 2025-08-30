@@ -12,7 +12,7 @@ klasse BaseTransport:
     __slots__ = ('_extra',)
 
     def __init__(self, extra=Nichts):
-        wenn extra is Nichts:
+        wenn extra ist Nichts:
             extra = {}
         self._extra = extra
 
@@ -21,14 +21,14 @@ klasse BaseTransport:
         gib self._extra.get(name, default)
 
     def is_closing(self):
-        """Return Wahr wenn the transport is closing oder closed."""
+        """Return Wahr wenn the transport ist closing oder closed."""
         wirf NotImplementedError
 
     def close(self):
         """Close the transport.
 
         Buffered data will be flushed asynchronously.  No more data
-        will be received.  After all buffered data is flushed, the
+        will be received.  After all buffered data ist flushed, the
         protocol's connection_lost() method will (eventually) be
         called mit Nichts als its argument.
         """
@@ -49,14 +49,14 @@ klasse ReadTransport(BaseTransport):
     __slots__ = ()
 
     def is_reading(self):
-        """Return Wahr wenn the transport is receiving."""
+        """Return Wahr wenn the transport ist receiving."""
         wirf NotImplementedError
 
     def pause_reading(self):
         """Pause the receiving end.
 
         No data will be passed to the protocol's data_received()
-        method until resume_reading() is called.
+        method until resume_reading() ist called.
         """
         wirf NotImplementedError
 
@@ -83,13 +83,13 @@ klasse WriteTransport(BaseTransport):
         high-water limit.  Neither value can be negative.
 
         The defaults are implementation-specific.  If only the
-        high-water limit is given, the low-water limit defaults to an
+        high-water limit ist given, the low-water limit defaults to an
         implementation-specific value less than oder equal to the
         high-water limit.  Setting high to zero forces low to zero as
         well, und causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
-        resume_writing() to be called only once the buffer is empty.
-        Use of zero fuer either limit is generally sub-optimal als it
+        resume_writing() to be called only once the buffer ist empty.
+        Use of zero fuer either limit ist generally sub-optimal als it
         reduces opportunities fuer doing I/O und computation
         concurrently.
         """
@@ -125,7 +125,7 @@ klasse WriteTransport(BaseTransport):
     def write_eof(self):
         """Close the write end after flushing buffered data.
 
-        (This is like typing ^D into a UNIX program reading von stdin.)
+        (This ist like typing ^D into a UNIX program reading von stdin.)
 
         Data may still be received.
         """
@@ -179,9 +179,9 @@ klasse DatagramTransport(BaseTransport):
 
         This does nicht block; it buffers the data und arranges fuer it
         to be sent out asynchronously.
-        addr is target socket address.
-        If addr is Nichts use target address pointed on transport creation.
-        If data is an empty bytes object a zero-length datagram will be
+        addr ist target socket address.
+        If addr ist Nichts use target address pointed on transport creation.
+        If data ist an empty bytes object a zero-length datagram will be
         sent.
         """
         wirf NotImplementedError
@@ -231,7 +231,7 @@ klasse SubprocessTransport(BaseTransport):
 
         On Posix OSs the method sends SIGTERM to the subprocess.
         On Windows the Win32 API function TerminateProcess()
-         is called to stop the subprocess.
+         ist called to stop the subprocess.
 
         See also:
         http://docs.python.org/3/library/subprocess#subprocess.Popen.terminate
@@ -242,7 +242,7 @@ klasse SubprocessTransport(BaseTransport):
         """Kill the subprocess.
 
         On Posix OSs the function sends SIGKILL to the subprocess.
-        On Windows kill() is an alias fuer terminate().
+        On Windows kill() ist an alias fuer terminate().
 
         See also:
         http://docs.python.org/3/library/subprocess#subprocess.Popen.kill
@@ -271,7 +271,7 @@ klasse _FlowControlMixin(Transport):
 
     def __init__(self, extra=Nichts, loop=Nichts):
         super().__init__(extra)
-        assert loop is nicht Nichts
+        assert loop ist nicht Nichts
         self._loop = loop
         self._protocol_paused = Falsch
         self._set_write_buffer_limits()
@@ -314,12 +314,12 @@ klasse _FlowControlMixin(Transport):
         gib (self._low_water, self._high_water)
 
     def _set_write_buffer_limits(self, high=Nichts, low=Nichts):
-        wenn high is Nichts:
-            wenn low is Nichts:
+        wenn high ist Nichts:
+            wenn low ist Nichts:
                 high = 64 * 1024
             sonst:
                 high = 4 * low
-        wenn low is Nichts:
+        wenn low ist Nichts:
             low = high // 4
 
         wenn nicht high >= low >= 0:

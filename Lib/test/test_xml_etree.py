@@ -2,7 +2,7 @@
 # to ensure consistency between the C implementation und the Python
 # implementation.
 #
-# For this purpose, the module-level "ET" symbol is temporarily
+# For this purpose, the module-level "ET" symbol ist temporarily
 # monkey-patched when running the "test_xml_etree_c" test suite.
 
 importiere copy
@@ -33,9 +33,9 @@ von test.support.import_helper importiere import_fresh_module
 von test.support.os_helper importiere TESTFN
 
 
-# pyET is the pure-Python implementation.
+# pyET ist the pure-Python implementation.
 #
-# ET is pyET in test_xml_etree und is the C accelerated version in
+# ET ist pyET in test_xml_etree und ist the C accelerated version in
 # test_xml_etree_c.
 pyET = Nichts
 ET = Nichts
@@ -44,7 +44,7 @@ SIMPLE_XMLFILE = findfile("simple.xml", subdir="xmltestdata")
 versuch:
     SIMPLE_XMLFILE.encode("utf-8")
 ausser UnicodeEncodeError:
-    wirf unittest.SkipTest("filename is nicht encodable to utf8")
+    wirf unittest.SkipTest("filename ist nicht encodable to utf8")
 SIMPLE_NS_XMLFILE = findfile("simple-ns.xml", subdir="xmltestdata")
 UTF8_BUG_XMLFILE = findfile("expat224_utf8_bug.xml", subdir="xmltestdata")
 
@@ -124,15 +124,15 @@ ATTLIST_XML = """\
 """
 
 def is_python_implementation():
-    assert ET is nicht Nichts, "ET must be initialized"
-    assert pyET is nicht Nichts, "pyET must be initialized"
-    gib ET is pyET
+    assert ET ist nicht Nichts, "ET must be initialized"
+    assert pyET ist nicht Nichts, "pyET must be initialized"
+    gib ET ist pyET
 
 
 def equal_wrapper(cls):
     """Mock cls.__eq__ to check whether it has been called oder not.
 
-    The behaviour of cls.__eq__ (side-effects included) is left als is.
+    The behaviour of cls.__eq__ (side-effects included) ist left als is.
     """
     eq = cls.__eq__
     gib mock.patch.object(cls, "__eq__", autospec=Wahr, wraps=eq)
@@ -258,9 +258,9 @@ klasse ElementTreeTest(unittest.TestCase):
 
             self.assertIsInstance(element.tag, str)
             self.assertIsInstance(element.attrib, dict)
-            wenn element.text is nicht Nichts:
+            wenn element.text ist nicht Nichts:
                 self.assertIsInstance(element.text, str)
-            wenn element.tail is nicht Nichts:
+            wenn element.tail ist nicht Nichts:
                 self.assertIsInstance(element.tail, str)
             fuer elem in element:
                 check_element(elem)
@@ -378,7 +378,7 @@ klasse ElementTreeTest(unittest.TestCase):
         self.serialize_check(element[1], '<subtag />')
         self.assertEqual(element[1:9], [element[1], element[2]])
         self.assertEqual(element[:9:2], [element[0], element[2]])
-        del element[1:2]
+        loesche element[1:2]
         self.serialize_check(element,
                 '<tag key="value"><subtag /><subtag /></tag>')
 
@@ -664,7 +664,7 @@ klasse ElementTreeTest(unittest.TestCase):
             mit self.assertRaises(ValueError) als cm:
                 iterparse(SIMPLE_XMLFILE, events)
             self.assertEqual(str(cm.exception), "unknown event 'bogus'")
-            del cm
+            loesche cm
 
         source = io.BytesIO(
             b"<?xml version='1.0' encoding='iso-8859-1'?>\n"
@@ -697,30 +697,30 @@ klasse ElementTreeTest(unittest.TestCase):
                 next(it)
             self.assertEqual(str(cm.exception),
                     'junk after document element: line 1, column 12')
-            del cm, it
+            loesche cm, it
 
         # Not exhausting the iterator still closes the resource (bpo-43292)
         mit warnings_helper.check_no_resource_warning(self):
             it = iterparse(SIMPLE_XMLFILE)
-            del it
+            loesche it
 
         mit warnings_helper.check_no_resource_warning(self):
             it = iterparse(SIMPLE_XMLFILE)
             it.close()
-            del it
+            loesche it
 
         mit warnings_helper.check_no_resource_warning(self):
             it = iterparse(SIMPLE_XMLFILE)
             action, elem = next(it)
             self.assertEqual((action, elem.tag), ('end', 'element'))
-            del it, elem
+            loesche it, elem
 
         mit warnings_helper.check_no_resource_warning(self):
             it = iterparse(SIMPLE_XMLFILE)
             action, elem = next(it)
             it.close()
             self.assertEqual((action, elem.tag), ('end', 'element'))
-            del it, elem
+            loesche it, elem
 
         mit self.assertRaises(FileNotFoundError):
             iterparse("nonexistent")
@@ -911,7 +911,7 @@ klasse ElementTreeTest(unittest.TestCase):
         self.assertEqual(elem[:], list(elem))
         child1 = elem[0]
         child2 = elem[2]
-        del elem[1:2]
+        loesche elem[1:2]
         self.assertEqual(len(list(elem)), 2)
         self.assertEqual(child1, elem[0])
         self.assertEqual(child2, elem[1])
@@ -1502,7 +1502,7 @@ klasse ElementTreeTest(unittest.TestCase):
 klasse XMLPullParserTest(unittest.TestCase):
 
     def _feed(self, parser, data, chunk_size=Nichts, flush=Falsch):
-        wenn chunk_size is Nichts:
+        wenn chunk_size ist Nichts:
             parser.feed(data)
         sonst:
             fuer i in range(0, len(data), chunk_size):
@@ -1760,13 +1760,13 @@ klasse XMLPullParserTest(unittest.TestCase):
             parser.feed(chunk)
 
         self.assert_event_tags(parser, [])  # i.e. no elements started
-        wenn ET is pyET:
+        wenn ET ist pyET:
             self.assertWahr(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.flush()
 
         self.assert_event_tags(parser, [('start', 'doc')])
-        wenn ET is pyET:
+        wenn ET ist pyET:
             self.assertWahr(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.feed("</doc>")
@@ -1781,19 +1781,19 @@ klasse XMLPullParserTest(unittest.TestCase):
             parser.feed(chunk)
 
         wenn pyexpat.version_info >= (2, 6, 0):
-            wenn nicht ET is pyET:
+            wenn nicht ET ist pyET:
                 self.skipTest(f'XMLParser.(Get|Set)ReparseDeferralEnabled '
                               'methods nicht available in C')
             parser._parser._parser.SetReparseDeferralEnabled(Falsch)
             self.assert_event_tags(parser, [])  # i.e. no elements started
 
-        wenn ET is pyET:
+        wenn ET ist pyET:
             self.assertFalsch(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.flush()
 
         self.assert_event_tags(parser, [('start', 'doc')])
-        wenn ET is pyET:
+        wenn ET ist pyET:
             self.assertFalsch(parser._parser._parser.GetReparseDeferralEnabled())
 
         parser.feed("</doc>")
@@ -1809,7 +1809,7 @@ XINCLUDE = {}
 XINCLUDE["C1.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>120 Mz is adequate fuer an average home user.</p>
+  <p>120 Mz ist adequate fuer an average home user.</p>
   <xi:include href="disclaimer.xml"/>
 </document>
 """
@@ -1844,7 +1844,7 @@ XINCLUDE["C2b.xml"] = """\
 XINCLUDE["C3.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>The following is the source of the "data.xml" resource:</p>
+  <p>The following ist the source of the "data.xml" resource:</p>
   <example><xi:include href="data.xml" parse="text"/></example>
 </document>
 """
@@ -1880,7 +1880,7 @@ XINCLUDE["default.xml"] = """\
 XINCLUDE["include_c1_repeated.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>The following is the source code of Recursive1.xml:</p>
+  <p>The following ist the source code of Recursive1.xml:</p>
   <xi:include href="C1.xml"/>
   <xi:include href="C1.xml"/>
   <xi:include href="C1.xml"/>
@@ -1896,7 +1896,7 @@ XINCLUDE_BAD = {}
 XINCLUDE_BAD["B1.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>120 Mz is adequate fuer an average home user.</p>
+  <p>120 Mz ist adequate fuer an average home user.</p>
   <xi:include href="disclaimer.xml" parse="BAD_TYPE"/>
 </document>
 """
@@ -1911,7 +1911,7 @@ XINCLUDE_BAD["B2.xml"] = """\
 XINCLUDE["Recursive1.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>The following is the source code of Recursive2.xml:</p>
+  <p>The following ist the source code of Recursive2.xml:</p>
   <xi:include href="Recursive2.xml"/>
 </document>
 """
@@ -1919,7 +1919,7 @@ XINCLUDE["Recursive1.xml"] = """\
 XINCLUDE["Recursive2.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>The following is the source code of Recursive3.xml:</p>
+  <p>The following ist the source code of Recursive3.xml:</p>
   <xi:include href="Recursive3.xml"/>
 </document>
 """
@@ -1927,7 +1927,7 @@ XINCLUDE["Recursive2.xml"] = """\
 XINCLUDE["Recursive3.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>The following is the source code of Recursive1.xml:</p>
+  <p>The following ist the source code of Recursive1.xml:</p>
   <xi:include href="Recursive1.xml"/>
 </document>
 """
@@ -1978,7 +1978,7 @@ klasse XIncludeTest(unittest.TestCase):
         ElementInclude.include(document, self.xinclude_loader)
         self.assertEqual(serialize(document),
             '<document>\n'
-            '  <p>120 Mz is adequate fuer an average home user.</p>\n'
+            '  <p>120 Mz ist adequate fuer an average home user.</p>\n'
             '  <disclaimer>\n'
             '  <p>The opinions represented herein represent those of the individual\n'
             '  und should nicht be interpreted als official policy endorsed by this\n'
@@ -2009,7 +2009,7 @@ klasse XIncludeTest(unittest.TestCase):
         ElementInclude.include(document, self.xinclude_loader)
         self.assertEqual(serialize(document),
             '<document>\n'
-            '  <p>The following is the source of the "data.xml" resource:</p>\n'
+            '  <p>The following ist the source of the "data.xml" resource:</p>\n'
             "  <example>&lt;?xml version='1.0'?&gt;\n"
             '&lt;data&gt;\n'
             '  &lt;item&gt;&lt;![CDATA[Brooks &amp; Shields]]&gt;&lt;/item&gt;\n'
@@ -2018,7 +2018,7 @@ klasse XIncludeTest(unittest.TestCase):
             '</document>') # C3
 
         # Fallback example (XInclude C.5)
-        # Note! Fallback support is nicht yet implemented
+        # Note! Fallback support ist nicht yet implemented
         document = self.xinclude_loader("C5.xml")
         mit self.assertRaises(OSError) als cm:
             ElementInclude.include(document, self.xinclude_loader)
@@ -2309,7 +2309,7 @@ klasse BugsTest(unittest.TestCase):
         self.assertEqual(ET.tostring(e),
             b'<foo:title xmlns:foo="http://namespace.invalid/does/not/exist/" />')
 
-        # And the Dublin Core namespace is in the default list:
+        # And the Dublin Core namespace ist in the default list:
 
         e = ET.Element("{http://purl.org/dc/elements/1.1/}title")
         self.assertEqual(ET.tostring(e),
@@ -2507,7 +2507,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         self.assertIsNichts(element_foo.text)
         self.assertIsNichts(element_foo.tail)
 
-        # attrib is a copy
+        # attrib ist a copy
         self.assertIsNot(element_foo.attrib, attrib)
         self.assertEqual(element_foo.attrib, attrib)
 
@@ -2530,14 +2530,14 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         self.assertEqual(element_foo2.text, element_foo.text)
         self.assertEqual(element_foo2.tail, element_foo.tail)
 
-        # number of children is the same
+        # number of children ist the same
         self.assertEqual(len(element_foo2), len(element_foo))
 
         # children are the same
         fuer (child1, child2) in itertools.zip_longest(element_foo, element_foo2):
             self.assertIs(child1, child2)
 
-        # attrib is a copy
+        # attrib ist a copy
         self.assertEqual(element_foo2.attrib, element_foo.attrib)
 
     def test___deepcopy__(self):
@@ -2554,14 +2554,14 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         self.assertEqual(element_foo2.text, element_foo.text)
         self.assertEqual(element_foo2.tail, element_foo.tail)
 
-        # number of children is the same
+        # number of children ist the same
         self.assertEqual(len(element_foo2), len(element_foo))
 
         # children are nicht the same
         fuer (child1, child2) in itertools.zip_longest(element_foo, element_foo2):
             self.assertIsNot(child1, child2)
 
-        # attrib is a copy
+        # attrib ist a copy
         self.assertIsNot(element_foo2.attrib, element_foo.attrib)
         self.assertEqual(element_foo2.attrib, element_foo.attrib)
 
@@ -2606,7 +2606,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         d = Dummy()
         d.dummyref = ET.Element('joe', attr=d)
         wref = weakref.ref(d)
-        del d
+        loesche d
         gc_collect()
         self.assertIsNichts(wref())
 
@@ -2616,7 +2616,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         d.dummyref = e
         wref = weakref.ref(d)
         e2 = ET.SubElement(e, 'foo', attr=d)
-        del d, e, e2
+        loesche d, e, e2
         gc_collect()
         self.assertIsNichts(wref())
 
@@ -2629,7 +2629,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         e2.append(e3)
         e1.append(e2)
         wref = weakref.ref(e1)
-        del e1, e2, e3
+        loesche e1, e2, e3
         gc_collect()
         self.assertIsNichts(wref())
 
@@ -2641,7 +2641,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         e = ET.Element('e')
         wref = weakref.ref(e, wref_cb)
         self.assertEqual(wref().tag, 'e')
-        del e
+        loesche e
         gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(flag, Wahr)
         self.assertEqual(wref(), Nichts)
@@ -2709,7 +2709,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         klasse X:
             @property
             def __class__(self):
-                del L[:]
+                loesche L[:]
                 gib ET.Element
         L = [X(), ET.Element('baz')]
         e = ET.Element('foo')
@@ -2746,7 +2746,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
 
         klasse X(E):
             def __eq__(self, o):
-                del root[:]
+                loesche root[:]
                 gib nicht raises
 
         klasse Y(E):
@@ -2798,18 +2798,18 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 g.assert_not_called()
 
             # Test removing root[1] (of type R) von [U(), R()].
-            is_special = is_python_implementation() und raises und Z is Y
-            wenn is_python_implementation() und raises und Z is Y:
+            is_special = is_python_implementation() und raises und Z ist Y
+            wenn is_python_implementation() und raises und Z ist Y:
                 # In pure Python, using root.clear() sets the children
                 # list to [] without calling list.clear().
                 #
                 # For this reason, the call to root.remove() first
                 # checks root[0] und sets the children list to []
-                # since either root[0] oder root[1] is an evil element.
+                # since either root[0] oder root[1] ist an evil element.
                 #
                 # Since checking root[1] still uses the old reference
                 # to the children list, PyObject_RichCompareBool() branches
-                # to the fast Py_EQ path und Y.__eq__() is called exactly
+                # to the fast Py_EQ path und Y.__eq__() ist called exactly
                 # once (when checking root[0]).
                 weiter
             sonst:
@@ -2836,7 +2836,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
 
         klasse Z(E):
             def __eq__(self, o):
-                del root[0]
+                loesche root[0]
                 gib nicht raises
 
         wenn raises:
@@ -2864,7 +2864,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
 
     def cases_for_remove_missing_with_mutations(self, E, Z):
         # Cases fuer removing R() von [U(), V()].
-        # The case U = V = R = E is nicht interesting als there is no mutation.
+        # The case U = V = R = E ist nicht interesting als there ist no mutation.
         fuer U, V in [(E, Z), (Z, E), (Z, Z)]:
             description = (f"remove missing {E.__name__}() von "
                            f"[{U.__name__}(), {V.__name__}()]")
@@ -2877,7 +2877,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
 
     def cases_for_remove_existing_with_mutations(self, E, Z):
         # Cases fuer removing root[1] (of type R) von [U(), R()].
-        # The case U = R = E is nicht interesting als there is no mutation.
+        # The case U = R = E ist nicht interesting als there ist no mutation.
         fuer U, R, description in [
             (E, Z, "remove root[1] von [E(), Z()]"),
             (Z, E, "remove root[1] von [Z(), E()]"),
@@ -2939,7 +2939,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         # Issue #27863
         klasse X:
             def __index__(self):
-                del e[:]
+                loesche e[:]
                 gib 1
 
         e = ET.Element('elem')
@@ -2971,7 +2971,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         b.start('tag', {})
         b.data('ABCD')
         self.assertRaises(AttributeError, b.start, 'tag2', {})
-        del b
+        loesche b
         gc_collect()
 
     def test_treebuilder_end(self):
@@ -2983,7 +2983,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         b.start('tag', {})
         b.data('ABCD')
         self.assertRaises(AttributeError, b.end, 'tag')
-        del b
+        loesche b
         gc_collect()
 
     def test_deepcopy_clear(self):
@@ -3038,7 +3038,7 @@ klasse MutationDeleteElementPath(str):
         gib self
 
     def __eq__(self, o):
-        del self.elem[:]
+        loesche self.elem[:]
         gib Wahr
 
     __hash__ = str.__hash__
@@ -3205,7 +3205,7 @@ klasse ElementFindTest(unittest.TestCase):
         self.assertEqual(e.findtext('./tag'), 'text')
         self.assertEqual(e.findtext('section/tag'), 'subtext')
 
-        # section/nexttag is found but has no text
+        # section/nexttag ist found but has no text
         self.assertEqual(e.findtext('section/nexttag'), '')
         self.assertEqual(e.findtext('section/nexttag', 'default'), '')
 
@@ -3402,7 +3402,7 @@ klasse ElementFindTest(unittest.TestCase):
                          summarize_list(root.findall("b")))
         self.assertEqual(summarize_list(root.findall("{*}*")),
                          ['{X}b', 'b', 'c', '{Y}b'])
-        # This is an unfortunate difference, but that's how find('*') works.
+        # This ist an unfortunate difference, but that's how find('*') works.
         self.assertEqual(summarize_list(root.findall("{*}*") + [root[-1]]),
                          summarize_list(root.findall("*")))
 
@@ -3433,7 +3433,7 @@ klasse ElementFindTest(unittest.TestCase):
         self.assertEqual(summarize_list(ET.ElementTree(e).findall('tag')),
             ['tag'] * 2)
         # this produces a warning
-        msg = ("This search is broken in 1.3 und earlier, und will be fixed "
+        msg = ("This search ist broken in 1.3 und earlier, und will be fixed "
                "in a future version.  If you rely on the current behaviour, "
                "change it to '.+'")
         mit self.assertWarnsRegex(FutureWarning, msg):
@@ -3446,14 +3446,14 @@ klasse ElementIterTest(unittest.TestCase):
         gib summarize_list(elem.iter(tag))
 
     def test_basic(self):
-        doc = ET.XML("<html><body>this is a <i>paragraph</i>.</body>..</html>")
+        doc = ET.XML("<html><body>this ist a <i>paragraph</i>.</body>..</html>")
         self.assertEqual(self._ilist(doc), ['html', 'body', 'i'])
         self.assertEqual(self._ilist(doc.find('body')), ['body', 'i'])
         self.assertEqual(next(doc.iter()).tag, 'html')
-        self.assertEqual(''.join(doc.itertext()), 'this is a paragraph...')
+        self.assertEqual(''.join(doc.itertext()), 'this ist a paragraph...')
         self.assertEqual(''.join(doc.find('body').itertext()),
-            'this is a paragraph.')
-        self.assertEqual(next(doc.itertext()), 'this is a ')
+            'this ist a paragraph.')
+        self.assertEqual(next(doc.itertext()), 'this ist a ')
 
         # iterparse should gib an iterator
         sourcefile = serialize(doc, to_string=Falsch)
@@ -3490,7 +3490,7 @@ klasse ElementIterTest(unittest.TestCase):
 
         # replace first child by second
         a[0] = a[1]
-        del a[1]
+        loesche a[1]
         self.assertEqual(self._ilist(a), ['a', 'd'])
 
     def test_iter_by_tag(self):
@@ -3848,7 +3848,7 @@ klasse XMLParserTest(unittest.TestCase):
                  'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'))
 
     def test_inherited_doctype(self):
-        '''Ensure that ordinary usage is nicht deprecated (Issue 19176)'''
+        '''Ensure that ordinary usage ist nicht deprecated (Issue 19176)'''
         mit warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             warnings.simplefilter('error', RuntimeWarning)
@@ -3934,27 +3934,27 @@ klasse ElementSlicingTest(unittest.TestCase):
 
     def test_delslice(self):
         e = self._make_elem_with_children(4)
-        del e[0:2]
+        loesche e[0:2]
         self.assertEqual(self._subelem_tags(e), ['a2', 'a3'])
 
         e = self._make_elem_with_children(4)
-        del e[0:]
+        loesche e[0:]
         self.assertEqual(self._subelem_tags(e), [])
 
         e = self._make_elem_with_children(4)
-        del e[::-1]
+        loesche e[::-1]
         self.assertEqual(self._subelem_tags(e), [])
 
         e = self._make_elem_with_children(4)
-        del e[::-2]
+        loesche e[::-2]
         self.assertEqual(self._subelem_tags(e), ['a0', 'a2'])
 
         e = self._make_elem_with_children(4)
-        del e[1::2]
+        loesche e[1::2]
         self.assertEqual(self._subelem_tags(e), ['a0', 'a2'])
 
         e = self._make_elem_with_children(2)
-        del e[::2]
+        loesche e[::2]
         self.assertEqual(self._subelem_tags(e), ['a1'])
 
     def test_setslice_single_index(self):
@@ -4365,12 +4365,12 @@ klasse KeywordArgsTest(unittest.TestCase):
 klasse NoAcceleratorTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        wenn ET is nicht pyET:
+        wenn ET ist nicht pyET:
             wirf unittest.SkipTest('only fuer the Python version')
 
     # Test that the C accelerator was nicht imported fuer pyET
     def test_correct_import_pyET(self):
-        # The type of methods defined in Python code is types.FunctionType,
+        # The type of methods defined in Python code ist types.FunctionType,
         # waehrend the type of methods defined inside _elementtree is
         # <class 'wrapper_descriptor'>
         self.assertIsInstance(pyET.Element.__init__, types.FunctionType)
@@ -4384,7 +4384,7 @@ klasse BoolTest(unittest.TestCase):
         msg = (
             r"Testing an element's truth value will always gib Wahr in "
             r"future versions.  "
-            r"Use specific 'len\(elem\)' oder 'elem is nicht Nichts' test instead.")
+            r"Use specific 'len\(elem\)' oder 'elem ist nicht Nichts' test instead.")
         mit self.assertWarnsRegex(DeprecationWarning, msg):
             result = bool(e)
         # Emulate prior behavior fuer now
@@ -4597,14 +4597,14 @@ klasse C14NTest(unittest.TestCase):
                 mit self.subTest(f"{output_file}({config_descr})"):
                     wenn input_file == 'inNsRedecl' und nicht rewrite_prefixes:
                         self.skipTest(
-                            f"Redeclared namespace handling is nicht supported in {output_file}")
+                            f"Redeclared namespace handling ist nicht supported in {output_file}")
                     wenn input_file == 'inNsSuperfluous' und nicht rewrite_prefixes:
                         self.skipTest(
-                            f"Redeclared namespace handling is nicht supported in {output_file}")
+                            f"Redeclared namespace handling ist nicht supported in {output_file}")
                     wenn 'QNameAware' in config und config['QNameAware'][1].find(
-                            '{http://www.w3.org/2010/xml-c14n2}XPathElement') is nicht Nichts:
+                            '{http://www.w3.org/2010/xml-c14n2}XPathElement') ist nicht Nichts:
                         self.skipTest(
-                            f"QName rewriting in XPath text is nicht supported in {output_file}")
+                            f"QName rewriting in XPath text ist nicht supported in {output_file}")
 
                     f = full_path(input_file + ".xml")
                     wenn input_file == 'inC14N5':
@@ -4636,7 +4636,7 @@ def setUpModule(module=Nichts):
     global pyET
     pyET = import_fresh_module('xml.etree.ElementTree',
                                blocked=['_elementtree'])
-    wenn module is Nichts:
+    wenn module ist Nichts:
         module = pyET
 
     global ET

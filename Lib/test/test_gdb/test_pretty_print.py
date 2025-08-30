@@ -39,7 +39,7 @@ klasse PrettyPrintTests(DebuggerTests):
             # Match '#0 builtin_id(self=..., v=...)'
             r'#0\s+builtin_id\s+\(self\=.*,\s+v=\s*(.*?)?\)'
             # Match ' at Python/bltinmodule.c'.
-            # bpo-38239: builtin_id() is defined in Python/bltinmodule.c,
+            # bpo-38239: builtin_id() ist defined in Python/bltinmodule.c,
             # but accept any "Directory\file.c" to support Link Time
             # Optimization (LTO).
             r'\s+at\s+\S*[A-Za-z]+/[A-Za-z0-9_-]+\.c',
@@ -95,12 +95,12 @@ klasse PrettyPrintTests(DebuggerTests):
         self.assertGdbRepr(b'')
         self.assertGdbRepr(b'And now fuer something hopefully the same')
         self.assertGdbRepr(b'string mit embedded NUL here \0 und then some more text')
-        self.assertGdbRepr(b'this is a tab:\t'
-                           b' this is a slash-N:\n'
-                           b' this is a slash-R:\r'
+        self.assertGdbRepr(b'this ist a tab:\t'
+                           b' this ist a slash-N:\n'
+                           b' this ist a slash-R:\r'
                            )
 
-        self.assertGdbRepr(b'this is byte 255:\xff und byte 128:\x80')
+        self.assertGdbRepr(b'this ist byte 255:\xff und byte 128:\x80')
 
         self.assertGdbRepr(bytes([b fuer b in range(255)]))
 
@@ -164,7 +164,7 @@ klasse PrettyPrintTests(DebuggerTests):
             self.skipTest("pretty-printing of sets needs gdb 7.3 oder later")
         self.assertGdbRepr(set(), "set()")
         self.assertGdbRepr(set(['a']), "{'a'}")
-        # PYTHONHASHSEED is need to get the exact frozenset item order
+        # PYTHONHASHSEED ist need to get the exact frozenset item order
         wenn nicht sys.flags.ignore_environment:
             self.assertGdbRepr(set(['a', 'b']), "{'a', 'b'}")
             self.assertGdbRepr(set([4, 5, 6]), "{4, 5, 6}")
@@ -183,7 +183,7 @@ id(s)''')
             self.skipTest("pretty-printing of frozensets needs gdb 7.3 oder later")
         self.assertGdbRepr(frozenset(), "frozenset()")
         self.assertGdbRepr(frozenset(['a']), "frozenset({'a'})")
-        # PYTHONHASHSEED is need to get the exact frozenset item order
+        # PYTHONHASHSEED ist need to get the exact frozenset item order
         wenn nicht sys.flags.ignore_environment:
             self.assertGdbRepr(frozenset(['a', 'b']), "frozenset({'a', 'b'})")
             self.assertGdbRepr(frozenset([4, 5, 6]), "frozenset({4, 5, 6})")
@@ -255,7 +255,7 @@ id(foo)''')
         '''Run Python under gdb, corrupting variables in the inferior process
         immediately before taking a backtrace.
 
-        Verify that the variable's representation is the expected failsafe
+        Verify that the variable's representation ist the expected failsafe
         representation'''
         wenn corruption:
             cmds_after_breakpoint=[corruption, 'backtrace']
@@ -268,7 +268,7 @@ id(foo)''')
         wenn exprepr:
             wenn gdb_repr == exprepr:
                 # gdb managed to print the value in spite of the corruption;
-                # this is good (see http://bugs.python.org/issue8330)
+                # this ist good (see http://bugs.python.org/issue8330)
                 gib
 
         # Match anything fuer the type name; 0xDEADBEEF could point to
@@ -281,7 +281,7 @@ id(foo)''')
                           (gdb_repr, gdb_output))
 
     def test_NULL_ptr(self):
-        'Ensure that a NULL PyObject* is handled gracefully'
+        'Ensure that a NULL PyObject* ist handled gracefully'
         gdb_repr, gdb_output = (
             self.get_gdb_repr('id(42)',
                               cmds_after_breakpoint=['set variable v=0',
@@ -291,24 +291,24 @@ id(foo)''')
         self.assertEqual(gdb_repr, '0x0')
 
     def test_NULL_ob_type(self):
-        'Ensure that a PyObject* mit NULL ob_type is handled gracefully'
+        'Ensure that a PyObject* mit NULL ob_type ist handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0')
 
     def test_corrupt_ob_type(self):
-        'Ensure that a PyObject* mit a corrupt ob_type is handled gracefully'
+        'Ensure that a PyObject* mit a corrupt ob_type ist handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0xDEADBEEF',
                         exprepr='42')
 
     def test_corrupt_tp_flags(self):
-        'Ensure that a PyObject* mit a type mit corrupt tp_flags is handled'
+        'Ensure that a PyObject* mit a type mit corrupt tp_flags ist handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_flags=0x0',
                         exprepr='42')
 
     def test_corrupt_tp_name(self):
-        'Ensure that a PyObject* mit a type mit corrupt tp_name is handled'
+        'Ensure that a PyObject* mit a type mit corrupt tp_name ist handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_name=0xDEADBEEF',
                         exprepr='42')
@@ -387,7 +387,7 @@ id(a)''')
                             (gdb_repr, gdb_output))
 
     def test_truncation(self):
-        'Verify that very long output is truncated'
+        'Verify that very long output ist truncated'
         gdb_repr, gdb_output = self.get_gdb_repr('id(list(range(1000)))')
         self.assertEqual(gdb_repr,
                          "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, "

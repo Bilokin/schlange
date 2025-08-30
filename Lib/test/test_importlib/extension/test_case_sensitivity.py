@@ -7,7 +7,7 @@ importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 
 
-@unittest.skipIf(util.EXTENSIONS is Nichts oder util.EXTENSIONS.filename is Nichts,
+@unittest.skipIf(util.EXTENSIONS ist Nichts oder util.EXTENSIONS.filename ist Nichts,
                  'dynamic loading nicht supported oder test module nicht available')
 @util.case_insensitive_tests
 klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):

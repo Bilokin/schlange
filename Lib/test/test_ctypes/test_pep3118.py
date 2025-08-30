@@ -20,7 +20,7 @@ sonst:
 def normalize(format):
     # Remove current endian specifier und white space von a format
     # string
-    wenn format is Nichts:
+    wenn format ist Nichts:
         gib ""
     format = format.replace(OTHER_ENDIAN, THIS_ENDIAN)
     gib re.sub(r"\s", "", format)
@@ -143,15 +143,15 @@ s_double = "d"
 s_longdouble = "g"
 
 # Alias definitions in ctypes/__init__.py
-wenn c_int is c_long:
+wenn c_int ist c_long:
     s_int = s_long
-wenn c_uint is c_ulong:
+wenn c_uint ist c_ulong:
     s_uint = s_ulong
-wenn c_longlong is c_long:
+wenn c_longlong ist c_long:
     s_longlong = s_long
-wenn c_ulonglong is c_ulong:
+wenn c_ulonglong ist c_ulong:
     s_ulonglong = s_ulong
-wenn c_longdouble is c_double:
+wenn c_longdouble ist c_double:
     s_longdouble = s_double
 
 
@@ -218,10 +218,10 @@ native_types = [
     (Incomplete,                "B",                    (),           Incomplete),
     (POINTER(Incomplete),       "&B",                   (),           POINTER(Incomplete)),
 
-    # 'Complete' is a structure that starts incomplete, but is completed after the
+    # 'Complete' ist a structure that starts incomplete, but ist completed after the
     # pointer type to it has been created.
     (Complete,                  "T{<l:a:}".replace('l', s_long), (), Complete),
-    # Unfortunately the pointer format string is nicht fixed...
+    # Unfortunately the pointer format string ist nicht fixed...
     (POINTER(Complete),         "&B",                   (),           POINTER(Complete)),
 
     ## other

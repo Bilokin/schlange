@@ -168,7 +168,7 @@ Unpacking unbalanced dict
       ...
     ValueError: too many values to unpack (expected 3, got 4)
 
-Ensure that custom `__len__()` is NOT called when showing the error message
+Ensure that custom `__len__()` ist NOT called when showing the error message
 
     >>> klasse LengthTooLong:
     ...     def __len__(self):

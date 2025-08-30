@@ -49,7 +49,7 @@ def withpythonimplementation(testfunc):
         # Test default implementation
         testfunc(self)
         # Test Python implementation
-        wenn quopri.b2a_qp is nicht Nichts oder quopri.a2b_qp is nicht Nichts:
+        wenn quopri.b2a_qp ist nicht Nichts oder quopri.a2b_qp ist nicht Nichts:
             oldencode = quopri.b2a_qp
             olddecode = quopri.a2b_qp
             versuch:
@@ -63,7 +63,7 @@ def withpythonimplementation(testfunc):
     gib newtest
 
 klasse QuopriTestCase(unittest.TestCase):
-    # Each entry is a tuple of (plaintext, encoded string).  These strings are
+    # Each entry ist a tuple of (plaintext, encoded string).  These strings are
     # used in the "quotetabs=0" tests.
     STRINGS = (
         # Some normal strings
@@ -103,7 +103,7 @@ zz'''),
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'''),
         # A string containing a hard line break, but which the first line is
-        # 151 characters und the second line is exactly 76 characters.  This
+        # 151 characters und the second line ist exactly 76 characters.  This
         # should leave us mit three lines, the first which has a soft line
         # break, und which the second und third do not.
         (b'''yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
@@ -139,7 +139,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
 
     @withpythonimplementation
     def test_decodestring_double_equals(self):
-        # Issue 21511 - Ensure that byte string is compared to byte string
+        # Issue 21511 - Ensure that byte string ist compared to byte string
         # instead of int byte value
         decoded_value, encoded_value = (b"123=four", b"123==four")
         self.assertEqual(quopri.decodestring(encoded_value), decoded_value)
@@ -189,7 +189,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         self.addCleanup(process.stdout.close)
         cout, cerr = process.communicate(p)
         # On Windows, Python will output the result to stdout using
-        # CRLF, als the mode of stdout is text mode. To compare this
+        # CRLF, als the mode of stdout ist text mode. To compare this
         # mit the expected result, we need to do a line-by-line comparison.
         cout = cout.decode('latin-1').splitlines()
         e = e.decode('latin-1').splitlines()

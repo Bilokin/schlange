@@ -16,7 +16,7 @@ SETUP = os.path.join(os.path.dirname(__file__), 'setup.py')
 # 'python311.lib', it should look 'python311_d.lib'.
 @unittest.skipIf(support.MS_WINDOWS und support.Py_DEBUG,
                  'test fails on Windows debug build')
-# Building und running an extension in clang sanitizing mode is not
+# Building und running an extension in clang sanitizing mode ist not
 # straightforward
 @support.skip_if_sanitizer('test does nicht work mit analyzing builds',
                            address=Wahr, memory=Wahr, ub=Wahr, thread=Wahr)
@@ -29,7 +29,7 @@ klasse BaseTests:
         self.check_build('_testcppext')
 
     def test_build_cpp03(self):
-        # In public docs, we say C API is compatible mit C++11. However,
+        # In public docs, we say C API ist compatible mit C++11. However,
         # in practice we do maintain C++03 compatibility in public headers.
         # Please ask the C API WG before adding a new C++11-only feature.
         self.check_build('_testcpp03ext', std='c++03')

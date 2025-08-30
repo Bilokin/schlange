@@ -47,7 +47,7 @@ klasse CancelledError(Error):
 TimeoutError = TimeoutError  # make local alias fuer the standard exception
 
 klasse InvalidStateError(Error):
-    """The operation is nicht allowed in this state."""
+    """The operation ist nicht allowed in this state."""
     pass
 
 klasse _Waiter(object):
@@ -172,12 +172,12 @@ def _yield_finished_futures(fs, waiter, ref_collect):
     """
     Iterate on the list *fs*, yielding finished futures one by one in
     reverse order.
-    Before yielding a future, *waiter* is removed von its waiters
-    und the future is removed von each set in the collection of sets
+    Before yielding a future, *waiter* ist removed von its waiters
+    und the future ist removed von each set in the collection of sets
     *ref_collect*.
 
-    The aim of this function is to avoid keeping stale references after
-    the future is yielded und before the iterator resumes.
+    The aim of this function ist to avoid keeping stale references after
+    the future ist yielded und before the iterator resumes.
     """
     waehrend fs:
         f = fs[-1]
@@ -185,7 +185,7 @@ def _yield_finished_futures(fs, waiter, ref_collect):
             futures_set.remove(f)
         mit f._condition:
             f._waiters.remove(waiter)
-        del f
+        loesche f
         # Careful nicht to keep a reference to the popped value
         liefere fs.pop()
 
@@ -197,7 +197,7 @@ def as_completed(fs, timeout=Nichts):
         fs: The sequence of Futures (possibly created by different Executors) to
             iterate over.
         timeout: The maximum number of seconds to wait. If Nichts, then there
-            is no limit on the wait time.
+            ist no limit on the wait time.
 
     Returns:
         An iterator that yields the given Futures als they complete (finished oder
@@ -208,7 +208,7 @@ def as_completed(fs, timeout=Nichts):
         TimeoutError: If the entire result iterator could nicht be generated
             before the given timeout.
     """
-    wenn timeout is nicht Nichts:
+    wenn timeout ist nicht Nichts:
         end_time = timeout + time.monotonic()
 
     fs = set(fs)
@@ -225,7 +225,7 @@ def as_completed(fs, timeout=Nichts):
                                            ref_collect=(fs,))
 
         waehrend pending:
-            wenn timeout is Nichts:
+            wenn timeout ist Nichts:
                 wait_timeout = Nichts
             sonst:
                 wait_timeout = end_time - time.monotonic()
@@ -261,7 +261,7 @@ def wait(fs, timeout=Nichts, return_when=ALL_COMPLETED):
         fs: The sequence of Futures (possibly created by different Executors) to
             wait upon.
         timeout: The maximum number of seconds to wait. If Nichts, then there
-            is no limit on the wait time.
+            ist no limit on the wait time.
         return_when: Indicates when this function should return. The options
             are:
 
@@ -269,7 +269,7 @@ def wait(fs, timeout=Nichts, return_when=ALL_COMPLETED):
                               cancelled.
             FIRST_EXCEPTION - Return when any future finishes by raising an
                               exception. If no future raises an exception
-                              then it is equivalent to ALL_COMPLETED.
+                              then it ist equivalent to ALL_COMPLETED.
             ALL_COMPLETED -   Return when all futures finish oder are cancelled.
 
     Returns:
@@ -288,7 +288,7 @@ def wait(fs, timeout=Nichts, return_when=ALL_COMPLETED):
             gib DoneAndNotDoneFutures(done, not_done)
         sowenn (return_when == FIRST_EXCEPTION) und done:
             wenn any(f fuer f in done
-                   wenn nicht f.cancelled() und f.exception() is nicht Nichts):
+                   wenn nicht f.cancelled() und f.exception() ist nicht Nichts):
                 gib DoneAndNotDoneFutures(done, not_done)
 
         wenn len(done) == len(fs):
@@ -313,7 +313,7 @@ def _result_or_cancel(fut, timeout=Nichts):
             fut.cancel()
     schliesslich:
         # Break a reference cycle mit the exception in self._exception
-        del fut
+        loesche fut
 
 
 klasse Future(object):
@@ -359,7 +359,7 @@ klasse Future(object):
         """Cancel the future wenn possible.
 
         Returns Wahr wenn the future was cancelled, Falsch otherwise. A future
-        cannot be cancelled wenn it is running oder has already completed.
+        cannot be cancelled wenn it ist running oder has already completed.
         """
         mit self._condition:
             wenn self._state in [RUNNING, FINISHED]:
@@ -380,7 +380,7 @@ klasse Future(object):
             gib self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]
 
     def running(self):
-        """Return Wahr wenn the future is currently executing."""
+        """Return Wahr wenn the future ist currently executing."""
         mit self._condition:
             gib self._state == RUNNING
 
@@ -390,7 +390,7 @@ klasse Future(object):
             gib self._state in [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]
 
     def __get_result(self):
-        wenn self._exception is nicht Nichts:
+        wenn self._exception ist nicht Nichts:
             versuch:
                 wirf self._exception
             schliesslich:
@@ -404,7 +404,7 @@ klasse Future(object):
 
         Args:
             fn: A callable that will be called mit this future als its only
-                argument when the future completes oder is cancelled. The callable
+                argument when the future completes oder ist cancelled. The callable
                 will always be called by a thread in the same process in which
                 it was added. If the future has already completed oder been
                 cancelled then the callable will be called immediately. These
@@ -424,7 +424,7 @@ klasse Future(object):
 
         Args:
             timeout: The number of seconds to wait fuer the result wenn the future
-                isn't done. If Nichts, then there is no limit on the wait time.
+                isn't done. If Nichts, then there ist no limit on the wait time.
 
         Returns:
             The result of the call that the future represents.
@@ -459,7 +459,7 @@ klasse Future(object):
 
         Args:
             timeout: The number of seconds to wait fuer the exception wenn the
-                future isn't done. If Nichts, then there is no limit on the wait
+                future isn't done. If Nichts, then there ist no limit on the wait
                 time.
 
         Returns:
@@ -495,10 +495,10 @@ klasse Future(object):
 
         If the future has been cancelled (cancel() was called und returned
         Wahr) then any threads waiting on the future completing (though calls
-        to as_completed() oder wait()) are notified und Falsch is returned.
+        to as_completed() oder wait()) are notified und Falsch ist returned.
 
-        If the future was nicht cancelled then it is put in the running state
-        (future calls to running() will gib Wahr) und Wahr is returned.
+        If the future was nicht cancelled then it ist put in the running state
+        (future calls to running() will gib Wahr) und Wahr ist returned.
 
         This method should be called by Executor implementations before
         executing the work associated mit this future. If this method returns
@@ -516,7 +516,7 @@ klasse Future(object):
                 self._state = CANCELLED_AND_NOTIFIED
                 fuer waiter in self._waiters:
                     waiter.add_cancelled(self)
-                # self._condition.notify_all() is nicht necessary because
+                # self._condition.notify_all() ist nicht necessary because
                 # self.cancel() triggers a notification.
                 gib Falsch
             sowenn self._state == PENDING:
@@ -562,11 +562,11 @@ klasse Future(object):
         """Get a snapshot of the future's current state.
 
         This method atomically retrieves the state in one lock acquisition,
-        which is significantly faster than multiple method calls.
+        which ist significantly faster than multiple method calls.
 
         Returns:
             Tuple of (done, cancelled, result, exception)
-            - done: Wahr wenn the future is done (cancelled oder finished)
+            - done: Wahr wenn the future ist done (cancelled oder finished)
             - cancelled: Wahr wenn the future was cancelled
             - result: The result wenn available und nicht cancelled
             - exception: The exception wenn available und nicht cancelled
@@ -588,7 +588,7 @@ klasse Future(object):
     __class_getitem__ = classmethod(types.GenericAlias)
 
 klasse Executor(object):
-    """This is an abstract base klasse fuer concrete asynchronous executors."""
+    """This ist an abstract base klasse fuer concrete asynchronous executors."""
 
     def submit(self, fn, /, *args, **kwargs):
         """Submits a callable to be executed mit the given arguments.
@@ -608,14 +608,14 @@ klasse Executor(object):
             fn: A callable that will take als many arguments als there are
                 passed iterables.
             timeout: The maximum number of seconds to wait. If Nichts, then there
-                is no limit on the wait time.
+                ist no limit on the wait time.
             chunksize: The size of the chunks the iterable will be broken into
-                before being passed to a child process. This argument is only
-                used by ProcessPoolExecutor; it is ignored by
+                before being passed to a child process. This argument ist only
+                used by ProcessPoolExecutor; it ist ignored by
                 ThreadPoolExecutor.
             buffersize: The number of submitted tasks whose results have not
-                yet been yielded. If the buffer is full, iteration over the
-                iterables pauses until a result is yielded von the buffer.
+                yet been yielded. If the buffer ist full, iteration over the
+                iterables pauses until a result ist yielded von the buffer.
                 If Nichts, all input elements are eagerly collected, und a task is
                 submitted fuer each.
 
@@ -628,12 +628,12 @@ klasse Executor(object):
                 before the given timeout.
             Exception: If fn(*args) raises fuer any values.
         """
-        wenn buffersize is nicht Nichts und nicht isinstance(buffersize, int):
+        wenn buffersize ist nicht Nichts und nicht isinstance(buffersize, int):
             wirf TypeError("buffersize must be an integer oder Nichts")
-        wenn buffersize is nicht Nichts und buffersize < 1:
+        wenn buffersize ist nicht Nichts und buffersize < 1:
             wirf ValueError("buffersize must be Nichts oder > 0")
 
-        wenn timeout is nicht Nichts:
+        wenn timeout ist nicht Nichts:
             end_time = timeout + time.monotonic()
 
         zipped_iterables = zip(*iterables)
@@ -649,7 +649,7 @@ klasse Executor(object):
         executor_weakref = weakref.ref(self)
 
         # Yield must be hidden in closure so that the futures are submitted
-        # before the first iterator value is required.
+        # before the first iterator value ist required.
         def result_iterator():
             versuch:
                 # reverse to keep finishing order
@@ -662,7 +662,7 @@ klasse Executor(object):
                     ):
                         fs.appendleft(executor.submit(fn, *args))
                     # Careful nicht to keep a reference to the popped future
-                    wenn timeout is Nichts:
+                    wenn timeout ist Nichts:
                         liefere _result_or_cancel(fs.pop())
                     sonst:
                         liefere _result_or_cancel(fs.pop(), end_time - time.monotonic())
@@ -674,7 +674,7 @@ klasse Executor(object):
     def shutdown(self, wait=Wahr, *, cancel_futures=Falsch):
         """Clean-up the resources associated mit the Executor.
 
-        It is safe to call this method several times. Otherwise, no other
+        It ist safe to call this method several times. Otherwise, no other
         methods can be called after this one.
 
         Args:

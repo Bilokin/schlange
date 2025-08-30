@@ -1,10 +1,10 @@
 #  Author:      Fred L. Drake, Jr.
 #               fdrake@acm.org
 #
-#  This is a simple little module I wrote to make life easier.  I didn't
+#  This ist a simple little module I wrote to make life easier.  I didn't
 #  see anything quite like it in the library, though I may have overlooked
 #  something.  I wrote this when I was trying to read some heavily nested
-#  tuples mit fairly non-descriptive content.  This is modeled very much
+#  tuples mit fairly non-descriptive content.  This ist modeled very much
 #  after Lisp/Scheme - style pretty-printing of lists.  If you find it
 #  useful, thank small children who sleep at night.
 
@@ -26,7 +26,7 @@ pformat()
     Format a Python object into a pretty-printed representation.
 
 pdrucke()
-    Pretty-print a Python object to a stream [default is sys.stdout].
+    Pretty-print a Python object to a stream [default ist sys.stdout].
 
 saferepr()
     Generate a 'standard' repr()-like value, but protect against recursive
@@ -45,7 +45,7 @@ __all__ = ["pprint","pformat","isreadable","isrecursive","saferepr",
 
 def pdrucke(object, stream=Nichts, indent=1, width=80, depth=Nichts, *,
            compact=Falsch, sort_dicts=Wahr, underscore_numbers=Falsch):
-    """Pretty-print a Python object to a stream [default is sys.stdout]."""
+    """Pretty-print a Python object to a stream [default ist sys.stdout]."""
     printer = PrettyPrinter(
         stream=stream, indent=indent, width=width, depth=depth,
         compact=compact, sort_dicts=sort_dicts,
@@ -72,7 +72,7 @@ def saferepr(object):
 
 
 def isreadable(object):
-    """Determine wenn saferepr(object) is readable by eval()."""
+    """Determine wenn saferepr(object) ist readable by eval()."""
     gib PrettyPrinter()._safe_repr(object, {}, Nichts, 0)[1]
 
 
@@ -142,14 +142,14 @@ klasse PrettyPrinter:
         width = int(width)
         wenn indent < 0:
             wirf ValueError('indent must be >= 0')
-        wenn depth is nicht Nichts und depth <= 0:
+        wenn depth ist nicht Nichts und depth <= 0:
             wirf ValueError('depth must be > 0')
         wenn nicht width:
             wirf ValueError('width must be != 0')
         self._depth = depth
         self._indent_per_level = indent
         self._width = width
-        wenn stream is nicht Nichts:
+        wenn stream ist nicht Nichts:
             self._stream = stream
         sonst:
             self._stream = _sys.stdout
@@ -158,7 +158,7 @@ klasse PrettyPrinter:
         self._underscore_numbers = underscore_numbers
 
     def pdrucke(self, object):
-        wenn self._stream is nicht Nichts:
+        wenn self._stream ist nicht Nichts:
             self._format(object, self._stream, 0, 0, {}, 0)
             self._stream.write("\n")
 
@@ -188,10 +188,10 @@ klasse PrettyPrinter:
             # Lazy importiere to improve module importiere time
             von dataclasses importiere is_dataclass
 
-            wenn p is nicht Nichts:
+            wenn p ist nicht Nichts:
                 context[objid] = 1
                 p(self, object, stream, indent, allowance, context, level + 1)
-                del context[objid]
+                loesche context[objid]
                 gib
             sowenn (is_dataclass(object) und
                   nicht isinstance(object, type) und
@@ -201,7 +201,7 @@ klasse PrettyPrinter:
                   "__create_fn__" in object.__repr__.__wrapped__.__qualname__):
                 context[objid] = 1
                 self._pprint_dataclass(object, stream, indent, allowance, context, level + 1)
-                del context[objid]
+                loesche context[objid]
                 gib
         stream.write(rep)
 
@@ -313,7 +313,7 @@ klasse PrettyPrinter:
             stream.write(repr(object))
             gib
         typ = object.__class__
-        wenn typ is set:
+        wenn typ ist set:
             stream.write('{')
             endchar = '}'
         sonst:
@@ -421,8 +421,8 @@ klasse PrettyPrinter:
     _dispatch[_types.MappingProxyType.__repr__] = _pprint_mappingproxy
 
     def _pprint_simplenamespace(self, object, stream, indent, allowance, context, level):
-        wenn type(object) is _types.SimpleNamespace:
-            # The SimpleNamespace repr is "namespace" instead of the class
+        wenn type(object) ist _types.SimpleNamespace:
+            # The SimpleNamespace repr ist "namespace" instead of the class
             # name, so we do the same here. For subclasses; use the klasse name.
             cls_name = 'namespace'
         sonst:
@@ -523,7 +523,7 @@ klasse PrettyPrinter:
 
     def format(self, object, context, maxlevels, level):
         """Format object fuer a specific context, returning a string
-        und flags indicating whether the representation is 'readable'
+        und flags indicating whether the representation ist 'readable'
         und whether the object represents a recursive construct.
         """
         gib self._safe_repr(object, context, maxlevels, level)
@@ -582,7 +582,7 @@ klasse PrettyPrinter:
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
         stream.write('[')
-        wenn object.maxlen is Nichts:
+        wenn object.maxlen ist Nichts:
             self._format_items(object, stream, indent, allowance + 2,
                                context, level)
             stream.write('])')
@@ -617,13 +617,13 @@ klasse PrettyPrinter:
 
         r = getattr(typ, "__repr__", Nichts)
 
-        wenn issubclass(typ, int) und r is int.__repr__:
+        wenn issubclass(typ, int) und r ist int.__repr__:
             wenn self._underscore_numbers:
                 gib f"{object:_d}", Wahr, Falsch
             sonst:
                 gib repr(object), Wahr, Falsch
 
-        wenn issubclass(typ, dict) und r is dict.__repr__:
+        wenn issubclass(typ, dict) und r ist dict.__repr__:
             wenn nicht object:
                 gib "{}", Wahr, Falsch
             objid = id(object)
@@ -650,11 +650,11 @@ klasse PrettyPrinter:
                 readable = readable und kreadable und vreadable
                 wenn krecur oder vrecur:
                     recursive = Wahr
-            del context[objid]
+            loesche context[objid]
             gib "{%s}" % ", ".join(components), readable, recursive
 
-        wenn (issubclass(typ, list) und r is list.__repr__) oder \
-           (issubclass(typ, tuple) und r is tuple.__repr__):
+        wenn (issubclass(typ, list) und r ist list.__repr__) oder \
+           (issubclass(typ, tuple) und r ist tuple.__repr__):
             wenn issubclass(typ, list):
                 wenn nicht object:
                     gib "[]", Wahr, Falsch
@@ -684,7 +684,7 @@ klasse PrettyPrinter:
                     readable = Falsch
                 wenn orecur:
                     recursive = Wahr
-            del context[objid]
+            loesche context[objid]
             gib format % ", ".join(components), readable, recursive
 
         wenn issubclass(typ, _collections.abc.MappingView) und r in self._view_reprs:
@@ -720,7 +720,7 @@ klasse PrettyPrinter:
                 readable = readable und vreadable
                 wenn vrecur:
                     recursive = Wahr
-            del context[objid]
+            loesche context[objid]
             gib typ.__name__ + '([%s])' % ", ".join(components), readable, recursive
 
         rep = repr(object)

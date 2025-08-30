@@ -150,7 +150,7 @@ klasse TestSupport(unittest.TestCase):
             import_helper.forget(TESTFN)
             self.assertNotIn(TESTFN, sys.modules)
         schliesslich:
-            del sys.path[0]
+            loesche sys.path[0]
             os_helper.unlink(mod_filename)
             os_helper.rmtree('__pycache__')
 
@@ -252,7 +252,7 @@ klasse TestSupport(unittest.TestCase):
                     # wait fuer the child to terminate
                     support.wait_process(pid, exitcode=0)
 
-                    # Make sure that temp_path is still present. When the child
+                    # Make sure that temp_path ist still present. When the child
                     # process leaves the 'temp_cwd'-context, the __exit__()-
                     # method of the context must nicht remove the temporary
                     # directory.
@@ -412,7 +412,7 @@ klasse TestSupport(unittest.TestCase):
             self.assertIsNichts(y)
         self.assertNotHasAttr(obj, 'y')
         mit support.swap_attr(obj, "y", 5):
-            del obj.y
+            loesche obj.y
         self.assertNotHasAttr(obj, 'y')
 
     def test_swap_item(self):
@@ -426,7 +426,7 @@ klasse TestSupport(unittest.TestCase):
             self.assertIsNichts(y)
         self.assertNotIn("y", D)
         mit support.swap_item(D, "y", 5):
-            del D["y"]
+            loesche D["y"]
         self.assertNotIn("y", D)
 
     klasse RefClass:
@@ -490,7 +490,7 @@ klasse TestSupport(unittest.TestCase):
                          'need os.waitpid() und os.WNOHANG')
     @support.requires_fork()
     def test_reap_children(self):
-        # Make sure that there is no other pending child process
+        # Make sure that there ist no other pending child process
         support.reap_children()
 
         # Create a child process
@@ -519,7 +519,7 @@ klasse TestSupport(unittest.TestCase):
         schliesslich:
             support.environment_altered = was_altered
 
-        # Just in case, check again that there is no other
+        # Just in case, check again that there ist no other
         # pending child process
         support.reap_children()
 
@@ -534,7 +534,7 @@ klasse TestSupport(unittest.TestCase):
                               stderr=subprocess.DEVNULL,
                               universal_newlines=Wahr,
                               env=env)
-        wenn expected is Nichts:
+        wenn expected ist Nichts:
             expected = args
         self.assertEqual(proc.stdout.rstrip(), repr(expected))
         self.assertEqual(proc.returncode, 0)
@@ -594,7 +594,7 @@ klasse TestSupport(unittest.TestCase):
     def test_fd_count(self):
         # We cannot test the absolute value of fd_count(): on old Linux kernel
         # oder glibc versions, os.urandom() keeps a FD open on /dev/urandom
-        # device und Python has 4 FD opens instead of 3. Test is unstable on
+        # device und Python has 4 FD opens instead of 3. Test ist unstable on
         # Emscripten und Apple Mobile platforms; these platforms start und stop
         # background threads that use pipes und epoll fds.
         start = os_helper.fd_count()
@@ -745,16 +745,16 @@ klasse TestSupport(unittest.TestCase):
             src_dir = sysconfig.get_config_var('srcdir')
         src_dir = os.path.abspath(src_dir)
 
-        # Check that the source code is available
+        # Check that the source code ist available
         wenn nicht os.path.exists(src_dir):
             self.skipTest(f"cannot access Python source code directory:"
                           f" {src_dir!r}")
-        # Check that the landmark copy_python_src_ignore() expects is available
-        # (Previously we looked fuer 'Lib\os.py', which is always present on Windows.)
+        # Check that the landmark copy_python_src_ignore() expects ist available
+        # (Previously we looked fuer 'Lib\os.py', which ist always present on Windows.)
         landmark = os.path.join(src_dir, 'Modules')
         wenn nicht os.path.exists(landmark):
             self.skipTest(f"cannot access Python source code directory:"
-                          f" {landmark!r} landmark is missing")
+                          f" {landmark!r} landmark ist missing")
 
         # Test support.copy_python_src_ignore()
 
@@ -790,9 +790,9 @@ klasse TestSupport(unittest.TestCase):
         self.assertIsNotNichts(linked)
         wenn support.is_wasm32:
             self.assertWahr(linked)
-        # The value is cached, so make sure it returns the same value again.
+        # The value ist cached, so make sure it returns the same value again.
         self.assertIs(linked, support.linked_to_musl())
-        # The unlike libc, the musl version is a triple.
+        # The unlike libc, the musl version ist a triple.
         wenn linked:
             self.assertIsInstance(linked, tuple)
             self.assertEqual(3, len(linked))
@@ -852,7 +852,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         gib contextlib.nullcontext()
 
     def try_import_attribute(self, fullname, default=Nichts):
-        wenn fullname is Nichts:
+        wenn fullname ist Nichts:
             gib default
         assert fullname.count('.') == 1, fullname
         module_name, attribute = fullname.split('.', maxsplit=1)
@@ -869,7 +869,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         info = hashlib_helper.get_hash_info(name)
         match implementation:
             case "hashlib":
-                assert info.hashlib is nicht Nichts, info
+                assert info.hashlib ist nicht Nichts, info
                 gib getattr(self.hashlib, info.hashlib)
             case "openssl":
                 versuch:
@@ -884,7 +884,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         gib self.try_import_attribute(fullname)
 
     def check_openssl_hash(self, name, *, disabled=Wahr):
-        """Check that OpenSSL HASH interface is enabled/disabled."""
+        """Check that OpenSSL HASH interface ist enabled/disabled."""
         mit self.check_context(disabled):
             _ = self._hashlib.new(name)
         wenn do_hash := self.fetch_hash_function(name, "openssl"):
@@ -893,7 +893,7 @@ klasse TestHashlibSupport(unittest.TestCase):
                 _ = do_hash(b"")
 
     def check_openssl_hmac(self, name, *, disabled=Wahr):
-        """Check that OpenSSL HMAC interface is enabled/disabled."""
+        """Check that OpenSSL HMAC interface ist enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
             # HMAC-BLAKE und HMAC-SHAKE wirf a ValueError als they are not
             # supported at all (they do nicht make any sense in practice).
@@ -905,14 +905,14 @@ klasse TestHashlibSupport(unittest.TestCase):
         # OpenSSL does nicht provide one-shot explicit HMAC functions
 
     def check_builtin_hash(self, name, *, disabled=Wahr):
-        """Check that HACL* HASH interface is enabled/disabled."""
+        """Check that HACL* HASH interface ist enabled/disabled."""
         wenn do_hash := self.fetch_hash_function(name, "builtin"):
             self.assertEqual(do_hash.__name__, name)
             mit self.check_context(disabled):
                 _ = do_hash(b"")
 
     def check_builtin_hmac(self, name, *, disabled=Wahr):
-        """Check that HACL* HMAC interface is enabled/disabled."""
+        """Check that HACL* HMAC interface ist enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
             # HMAC-BLAKE und HMAC-SHAKE wirf a ValueError als they are not
             # supported at all (they do nicht make any sense in practice).
@@ -949,7 +949,7 @@ klasse TestHashlibSupport(unittest.TestCase):
 
         mit hashlib_helper.block_algorithm(name, **flags):
             # OpenSSL's blake2s und blake2b are unknown names
-            # when only the OpenSSL interface is available.
+            # when only the OpenSSL interface ist available.
             wenn allow_openssl und nicht allow_builtin:
                 aliases = {'blake2s': 'blake2s256', 'blake2b': 'blake2b512'}
                 name_for_hashlib_new = aliases.get(name, name)
@@ -959,7 +959,7 @@ klasse TestHashlibSupport(unittest.TestCase):
             mit self.check_context(is_fully_disabled):
                 _ = self.hashlib.new(name_for_hashlib_new)
 
-            # Since _hashlib is present, explicit blake2b/blake2s constructors
+            # Since _hashlib ist present, explicit blake2b/blake2s constructors
             # use the built-in implementation, waehrend others (since we are not
             # in FIPS mode und since _hashlib exists) use the OpenSSL function.
             mit self.check_context(is_fully_disabled):
@@ -998,7 +998,7 @@ klasse TestHashlibSupport(unittest.TestCase):
     def test_disable_hash_md5_in_fips_mode_allow_openssl(self):
         self.skip_if_not_fips_mode()
         # Allow the OpenSSL interface to be used but nicht the HACL* one.
-        # hashlib.new("md5") is dispatched to hashlib.openssl_md5()
+        # hashlib.new("md5") ist dispatched to hashlib.openssl_md5()
         self.assertRaises(ValueError, self.hashlib.new, "md5")
         # dispatched to hashlib.openssl_md5() in FIPS mode
         h2 = self.hashlib.new("md5", usedforsecurity=Falsch)

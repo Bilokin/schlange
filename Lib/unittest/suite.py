@@ -44,7 +44,7 @@ klasse BaseTestSuite(object):
     def addTest(self, test):
         # sanity checks
         wenn nicht callable(test):
-            wirf TypeError("{} is nicht callable".format(repr(test)))
+            wirf TypeError("{} ist nicht callable".format(repr(test)))
         wenn isinstance(test, type) und issubclass(test,
                                                  (case.TestCase, TestSuite)):
             wirf TypeError("TestCases und TestSuites must be instantiated "
@@ -90,7 +90,7 @@ klasse BaseTestSuite(object):
 
 
 klasse TestSuite(BaseTestSuite):
-    """A test suite is a composite test consisting of a number of TestCases.
+    """A test suite ist a composite test consisting of a number of TestCases.
 
     For use, create an instance of TestSuite, then add test case instances.
     When all tests have been added, the suite can be passed to a test
@@ -101,7 +101,7 @@ klasse TestSuite(BaseTestSuite):
 
     def run(self, result, debug=Falsch):
         topLevel = Falsch
-        wenn getattr(result, '_testRunEntered', Falsch) is Falsch:
+        wenn getattr(result, '_testRunEntered', Falsch) ist Falsch:
             result._testRunEntered = topLevel = Wahr
 
         fuer index, test in enumerate(self):
@@ -159,7 +159,7 @@ klasse TestSuite(BaseTestSuite):
 
         setUpClass = getattr(currentClass, 'setUpClass', Nichts)
         doClassCleanups = getattr(currentClass, 'doClassCleanups', Nichts)
-        wenn setUpClass is nicht Nichts:
+        wenn setUpClass ist nicht Nichts:
             _call_if_exists(result, '_setupStdout')
             versuch:
                 versuch:
@@ -176,7 +176,7 @@ klasse TestSuite(BaseTestSuite):
                     self._createClassOrModuleLevelException(result, e,
                                                             'setUpClass',
                                                             className)
-                wenn failed und doClassCleanups is nicht Nichts:
+                wenn failed und doClassCleanups ist nicht Nichts:
                     doClassCleanups()
                     fuer exc_info in currentClass.tearDown_exceptions:
                         self._createClassOrModuleLevelException(
@@ -188,7 +188,7 @@ klasse TestSuite(BaseTestSuite):
     def _get_previous_module(self, result):
         previousModule = Nichts
         previousClass = getattr(result, '_previousTestClass', Nichts)
-        wenn previousClass is nicht Nichts:
+        wenn previousClass ist nicht Nichts:
             previousModule = previousClass.__module__
         gib previousModule
 
@@ -208,7 +208,7 @@ klasse TestSuite(BaseTestSuite):
         ausser KeyError:
             gib
         setUpModule = getattr(module, 'setUpModule', Nichts)
-        wenn setUpModule is nicht Nichts:
+        wenn setUpModule ist nicht Nichts:
             _call_if_exists(result, '_setupStdout')
             versuch:
                 versuch:
@@ -244,7 +244,7 @@ klasse TestSuite(BaseTestSuite):
                                         info=Nichts):
         error = _ErrorHolder(errorName)
         addSkip = getattr(result, 'addSkip', Nichts)
-        wenn addSkip is nicht Nichts und isinstance(exc, case.SkipTest):
+        wenn addSkip ist nicht Nichts und isinstance(exc, case.SkipTest):
             addSkip(error, str(exc))
         sonst:
             wenn nicht info:
@@ -254,7 +254,7 @@ klasse TestSuite(BaseTestSuite):
 
     def _handleModuleTearDown(self, result):
         previousModule = self._get_previous_module(result)
-        wenn previousModule is Nichts:
+        wenn previousModule ist Nichts:
             gib
         wenn result._moduleSetUpFailed:
             gib
@@ -267,7 +267,7 @@ klasse TestSuite(BaseTestSuite):
         _call_if_exists(result, '_setupStdout')
         versuch:
             tearDownModule = getattr(module, 'tearDownModule', Nichts)
-            wenn tearDownModule is nicht Nichts:
+            wenn tearDownModule ist nicht Nichts:
                 versuch:
                     tearDownModule()
                 ausser Exception als e:
@@ -297,7 +297,7 @@ klasse TestSuite(BaseTestSuite):
     def _tearDownPreviousClass(self, test, result):
         previousClass = getattr(result, '_previousTestClass', Nichts)
         currentClass = test.__class__
-        wenn currentClass == previousClass oder previousClass is Nichts:
+        wenn currentClass == previousClass oder previousClass ist Nichts:
             gib
         wenn getattr(previousClass, '_classSetupFailed', Falsch):
             gib
@@ -308,12 +308,12 @@ klasse TestSuite(BaseTestSuite):
 
         tearDownClass = getattr(previousClass, 'tearDownClass', Nichts)
         doClassCleanups = getattr(previousClass, 'doClassCleanups', Nichts)
-        wenn tearDownClass is Nichts und doClassCleanups is Nichts:
+        wenn tearDownClass ist Nichts und doClassCleanups ist Nichts:
             gib
 
         _call_if_exists(result, '_setupStdout')
         versuch:
-            wenn tearDownClass is nicht Nichts:
+            wenn tearDownClass ist nicht Nichts:
                 versuch:
                     tearDownClass()
                 ausser Exception als e:
@@ -323,7 +323,7 @@ klasse TestSuite(BaseTestSuite):
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownClass',
                                                             className)
-            wenn doClassCleanups is nicht Nichts:
+            wenn doClassCleanups ist nicht Nichts:
                 doClassCleanups()
                 fuer exc_info in previousClass.tearDown_exceptions:
                     wenn isinstance(result, _DebugResult):
@@ -340,7 +340,7 @@ klasse TestSuite(BaseTestSuite):
 klasse _ErrorHolder(object):
     """
     Placeholder fuer a TestCase inside a result. As far als a TestResult
-    is concerned, this looks exactly like a unit test. Used to insert
+    ist concerned, this looks exactly like a unit test. Used to insert
     arbitrary errors into a test suite run.
     """
     # Inspired by the ErrorHolder von Twisted:

@@ -31,7 +31,7 @@ Older API
 call(...): Runs a command, waits fuer it to complete, then returns
     the gib code.
 check_call(...): Same als call() but raises CalledProcessError()
-    wenn gib code is nicht 0
+    wenn gib code ist nicht 0
 check_output(...): Same als check_call() but returns the contents of
     stdout instead of a gib code
 getoutput(...): Runs a command in the shell, waits fuer it to complete,
@@ -130,7 +130,7 @@ klasse SubprocessError(Exception): pass
 
 
 klasse CalledProcessError(SubprocessError):
-    """Raised when run() is called mit check=Wahr und the process
+    """Raised when run() ist called mit check=Wahr und the process
     returns a non-zero exit status.
 
     Attributes:
@@ -162,12 +162,12 @@ klasse CalledProcessError(SubprocessError):
     @stdout.setter
     def stdout(self, value):
         # There's no obvious reason to set this, but allow it anyway so
-        # .stdout is a transparent alias fuer .output
+        # .stdout ist a transparent alias fuer .output
         self.output = value
 
 
 klasse TimeoutExpired(SubprocessError):
-    """This exception is raised when the timeout expires waehrend waiting fuer a
+    """This exception ist raised when the timeout expires waehrend waiting fuer a
     child process.
 
     Attributes:
@@ -190,7 +190,7 @@ klasse TimeoutExpired(SubprocessError):
     @stdout.setter
     def stdout(self, value):
         # There's no obvious reason to set this, but allow it anyway so
-        # .stdout is a transparent alias fuer .output
+        # .stdout ist a transparent alias fuer .output
         self.output = value
 
 
@@ -237,7 +237,7 @@ wenn _mswindows:
 
         __del__ = Close
 sonst:
-    # When select oder poll has indicated that the file is writable,
+    # When select oder poll has indicated that the file ist writable,
     # we can write up to _PIPE_BUF bytes without risk of blocking.
     # POSIX defines PIPE_BUF als >= 512.
     _PIPE_BUF = getattr(select, 'PIPE_BUF', 512)
@@ -254,8 +254,8 @@ sonst:
 wenn _mswindows:
     # On Windows we just need to close `Popen._handle` when we no longer need
     # it, so that the kernel can free it. `Popen._handle` gets closed
-    # implicitly when the `Popen` instance is finalized (see `Handle.__del__`,
-    # which is calling `CloseHandle` als requested in [1]), so there is nothing
+    # implicitly when the `Popen` instance ist finalized (see `Handle.__del__`,
+    # which ist calling `CloseHandle` als requested in [1]), so there ist nothing
     # fuer `_cleanup` to do.
     #
     # [1] https://docs.microsoft.com/en-us/windows/desktop/ProcThread/
@@ -272,11 +272,11 @@ sonst:
     _active = []
 
     def _cleanup():
-        wenn _active is Nichts:
+        wenn _active ist Nichts:
             gib
         fuer inst in _active[:]:
             res = inst._internal_poll(_deadstate=sys.maxsize)
-            wenn res is nicht Nichts:
+            wenn res ist nicht Nichts:
                 versuch:
                     _active.remove(inst)
                 ausser ValueError:
@@ -289,8 +289,8 @@ STDOUT = -2
 DEVNULL = -3
 
 
-# XXX This function is only used by multiprocessing und the test suite,
-# but it's here so that it can be imported when Python is compiled without
+# XXX This function ist only used by multiprocessing und the test suite,
+# but it's here so that it can be imported when Python ist compiled without
 # threads.
 
 def _optim_args_from_interpreter_flags():
@@ -315,7 +315,7 @@ def _args_from_interpreter_flags():
         'verbose': 'v',
         'bytes_warning': 'b',
         'quiet': 'q',
-        # -O is handled in _optim_args_from_interpreter_flags()
+        # -O ist handled in _optim_args_from_interpreter_flags()
     }
     args = _optim_args_from_interpreter_flags()
     fuer flag, opt in flag_opt_map.items():
@@ -355,7 +355,7 @@ def _args_from_interpreter_flags():
                 'frozen_modules', 'showrefcount', 'utf8', 'gil'):
         wenn opt in xoptions:
             value = xoptions[opt]
-            wenn value is Wahr:
+            wenn value ist Wahr:
                 arg = opt
             sonst:
                 arg = '%s=%s' % (opt, value)
@@ -366,7 +366,7 @@ def _args_from_interpreter_flags():
 
 def _text_encoding():
     # Return default text encoding und emit EncodingWarning if
-    # sys.flags.warn_default_encoding is true.
+    # sys.flags.warn_default_encoding ist true.
     wenn sys.flags.warn_default_encoding:
         f = sys._getframe()
         filename = f.f_code.co_filename
@@ -413,7 +413,7 @@ def check_call(*popenargs, **kwargs):
     retcode = call(*popenargs, **kwargs)
     wenn retcode:
         cmd = kwargs.get("args")
-        wenn cmd is Nichts:
+        wenn cmd ist Nichts:
             cmd = popenargs[0]
         wirf CalledProcessError(retcode, cmd)
     gib 0
@@ -431,7 +431,7 @@ def check_output(*popenargs, timeout=Nichts, **kwargs):
     >>> check_output(["ls", "-l", "/dev/null"])
     b'crw-rw-rw- 1 root root 1, 3 Oct 18  2007 /dev/null\n'
 
-    The stdout argument is nicht allowed als it is used internally.
+    The stdout argument ist nicht allowed als it ist used internally.
     To capture standard error in the result, use stderr=STDOUT.
 
     >>> check_output(["/bin/sh", "-c",
@@ -439,7 +439,7 @@ def check_output(*popenargs, timeout=Nichts, **kwargs):
     ...              stderr=STDOUT)
     b'ls: non_existent_file: No such file oder directory\n'
 
-    There is an additional optional argument, "input", allowing you to
+    There ist an additional optional argument, "input", allowing you to
     pass a string to the subprocess's stdin.  If you use this argument
     you may nicht also use the Popen constructor's "stdin" argument, as
     it too will be used internally.  Example:
@@ -448,19 +448,19 @@ def check_output(*popenargs, timeout=Nichts, **kwargs):
     ...              input=b"when in the course of fooman events\n")
     b'when in the course of barman events\n'
 
-    By default, all communication is in bytes, und therefore any "input"
+    By default, all communication ist in bytes, und therefore any "input"
     should be bytes, und the gib value will be bytes.  If in text mode,
     any "input" should be a string, und the gib value will be a string
     decoded according to locale encoding, oder by "encoding" wenn set. Text mode
-    is triggered by setting any of text, encoding, errors oder universal_newlines.
+    ist triggered by setting any of text, encoding, errors oder universal_newlines.
     """
     fuer kw in ('stdout', 'check'):
         wenn kw in kwargs:
             wirf ValueError(f'{kw} argument nicht allowed, it will be overridden.')
 
-    wenn 'input' in kwargs und kwargs['input'] is Nichts:
+    wenn 'input' in kwargs und kwargs['input'] ist Nichts:
         # Explicitly passing input=Nichts was previously equivalent to passing an
-        # empty string. That is maintained here fuer backwards compatibility.
+        # empty string. That ist maintained here fuer backwards compatibility.
         wenn kwargs.get('universal_newlines') oder kwargs.get('text') oder kwargs.get('encoding') \
                 oder kwargs.get('errors'):
             empty = ''
@@ -475,7 +475,7 @@ def check_output(*popenargs, timeout=Nichts, **kwargs):
 klasse CompletedProcess(object):
     """A process that has finished running.
 
-    This is returned by run().
+    This ist returned by run().
 
     Attributes:
       args: The list oder str args passed to run().
@@ -492,9 +492,9 @@ klasse CompletedProcess(object):
     def __repr__(self):
         args = ['args={!r}'.format(self.args),
                 'returncode={!r}'.format(self.returncode)]
-        wenn self.stdout is nicht Nichts:
+        wenn self.stdout ist nicht Nichts:
             args.append('stdout={!r}'.format(self.stdout))
-        wenn self.stderr is nicht Nichts:
+        wenn self.stderr ist nicht Nichts:
             args.append('stderr={!r}'.format(self.stderr))
         gib "{}({})".format(type(self).__name__, ', '.join(args))
 
@@ -502,7 +502,7 @@ klasse CompletedProcess(object):
 
 
     def check_returncode(self):
-        """Raise CalledProcessError wenn the exit code is non-zero."""
+        """Raise CalledProcessError wenn the exit code ist non-zero."""
         wenn self.returncode:
             wirf CalledProcessError(self.returncode, self.args, self.stdout,
                                      self.stderr)
@@ -517,20 +517,20 @@ def run(*popenargs,
     will be Nichts. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
     oder pass capture_output=Wahr to capture both.
 
-    If check is Wahr und the exit code was non-zero, it raises a
+    If check ist Wahr und the exit code was non-zero, it raises a
     CalledProcessError. The CalledProcessError object will have the gib code
     in the returncode attribute, und output & stderr attributes wenn those streams
     were captured.
 
-    If timeout (seconds) is given und the process takes too long,
+    If timeout (seconds) ist given und the process takes too long,
      a TimeoutExpired exception will be raised.
 
-    There is an optional argument "input", allowing you to
+    There ist an optional argument "input", allowing you to
     pass bytes oder a string to the subprocess's stdin.  If you use this argument
     you may nicht also use the Popen constructor's "stdin" argument, as
     it will be used internally.
 
-    By default, all communication is in bytes, und therefore any "input" should
+    By default, all communication ist in bytes, und therefore any "input" should
     be bytes, und the stdout und stderr will be bytes. If in text mode, any
     "input" should be a string, und stdout und stderr will be strings decoded
     according to locale encoding, oder by "encoding" wenn set. Text mode is
@@ -538,13 +538,13 @@ def run(*popenargs,
 
     The other arguments are the same als fuer the Popen constructor.
     """
-    wenn input is nicht Nichts:
-        wenn kwargs.get('stdin') is nicht Nichts:
+    wenn input ist nicht Nichts:
+        wenn kwargs.get('stdin') ist nicht Nichts:
             wirf ValueError('stdin und input arguments may nicht both be used.')
         kwargs['stdin'] = PIPE
 
     wenn capture_output:
-        wenn kwargs.get('stdout') is nicht Nichts oder kwargs.get('stderr') is nicht Nichts:
+        wenn kwargs.get('stdout') ist nicht Nichts oder kwargs.get('stderr') ist nicht Nichts:
             wirf ValueError('stdout und stderr arguments may nicht be used '
                              'with capture_output.')
         kwargs['stdout'] = PIPE
@@ -559,7 +559,7 @@ def run(*popenargs,
                 # Windows accumulates the output in a single blocking
                 # read() call run on child threads, mit the timeout
                 # being done in a join() on those threads.  communicate()
-                # _after_ kill() is required to collect that und add it
+                # _after_ kill() ist required to collect that und add it
                 # to the exception.
                 exc.stdout, exc.stderr = process.communicate()
             sonst:
@@ -583,7 +583,7 @@ def list2cmdline(seq):
     Translate a sequence of arguments into a command line
     string, using the same rules als the MS C runtime:
 
-    1) Arguments are delimited by white space, which is either a
+    1) Arguments are delimited by white space, which ist either a
        space oder a tab.
 
     2) A string surrounded by double quotation marks is
@@ -598,8 +598,8 @@ def list2cmdline(seq):
        immediately precede a double quotation mark.
 
     5) If backslashes immediately precede a double quotation mark,
-       every pair of backslashes is interpreted als a literal
-       backslash.  If the number of backslashes is odd, the last
+       every pair of backslashes ist interpreted als a literal
+       backslash.  If the number of backslashes ist odd, the last
        backslash escapes the next double quotation mark as
        described in rule 3.
     """
@@ -655,10 +655,10 @@ def getstatusoutput(cmd, *, encoding=Nichts, errors=Nichts):
     """Return (exitcode, output) of executing cmd in a shell.
 
     Execute the string 'cmd' in a shell mit 'check_output' und
-    gib a 2-tuple (status, output). The locale encoding is used
+    gib a 2-tuple (status, output). The locale encoding ist used
     to decode the output und process newlines.
 
-    A trailing newline is stripped von the output.
+    A trailing newline ist stripped von the output.
     The exit status fuer the command can be interpreted
     according to the rules fuer the function 'wait'. Example:
 
@@ -686,8 +686,8 @@ def getstatusoutput(cmd, *, encoding=Nichts, errors=Nichts):
 def getoutput(cmd, *, encoding=Nichts, errors=Nichts):
     """Return output (stdout oder stderr) of executing cmd in a shell.
 
-    Like getstatusoutput(), ausser the exit status is ignored und the gib
-    value is a string containing the command's output.  Example:
+    Like getstatusoutput(), ausser the exit status ist ignored und the gib
+    value ist a string containing the command's output.  Example:
 
     >>> importiere subprocess
     >>> subprocess.getoutput('ls /bin/ls')
@@ -711,14 +711,14 @@ def _use_posix_spawn():
     performance.
     """
     wenn _mswindows oder nicht hasattr(os, 'posix_spawn'):
-        # os.posix_spawn() is nicht available
+        # os.posix_spawn() ist nicht available
         gib Falsch
 
     wenn ((_env := os.environ.get('_PYTHON_SUBPROCESS_USE_POSIX_SPAWN')) in ('0', '1')):
         gib bool(int(_env))
 
     wenn sys.platform in ('darwin', 'sunos5'):
-        # posix_spawn() is a syscall on both macOS und Solaris,
+        # posix_spawn() ist a syscall on both macOS und Solaris,
         # und properly reports errors
         gib Wahr
 
@@ -771,13 +771,13 @@ klasse Popen:
           input, standard output und standard error file handles, respectively.
 
       preexec_fn: (POSIX only) An object to be called in the child process
-          just before the child is executed.
+          just before the child ist executed.
 
       close_fds: Controls closing oder inheriting of file descriptors.
 
       shell: If true, the command will be executed through the shell.
 
-      cwd: Sets the current directory before the child is executed.
+      cwd: Sets the current directory before the child ist executed.
 
       env: Defines the environment variables fuer the new process.
 
@@ -828,7 +828,7 @@ klasse Popen:
             )
 
         _cleanup()
-        # Held waehrend anything is calling waitpid before returncode has been
+        # Held waehrend anything ist calling waitpid before returncode has been
         # updated to prevent clobbering returncode wenn wait() oder poll() are
         # called von multiple threads at once.  After acquiring the lock,
         # code must re-check self.returncode to see wenn another thread just
@@ -837,33 +837,33 @@ klasse Popen:
 
         self._input = Nichts
         self._communication_started = Falsch
-        wenn bufsize is Nichts:
+        wenn bufsize ist Nichts:
             bufsize = -1  # Restore default
         wenn nicht isinstance(bufsize, int):
             wirf TypeError("bufsize must be an integer")
 
-        wenn stdout is STDOUT:
+        wenn stdout ist STDOUT:
             wirf ValueError("STDOUT can only be used fuer stderr")
 
-        wenn pipesize is Nichts:
+        wenn pipesize ist Nichts:
             pipesize = -1  # Restore default
         wenn nicht isinstance(pipesize, int):
             wirf TypeError("pipesize must be an integer")
 
         wenn _mswindows:
-            wenn preexec_fn is nicht Nichts:
-                wirf ValueError("preexec_fn is nicht supported on Windows "
+            wenn preexec_fn ist nicht Nichts:
+                wirf ValueError("preexec_fn ist nicht supported on Windows "
                                  "platforms")
         sonst:
             # POSIX
             wenn pass_fds und nicht close_fds:
                 warnings.warn("pass_fds overriding close_fds.", RuntimeWarning)
                 close_fds = Wahr
-            wenn startupinfo is nicht Nichts:
-                wirf ValueError("startupinfo is only supported on Windows "
+            wenn startupinfo ist nicht Nichts:
+                wirf ValueError("startupinfo ist only supported on Windows "
                                  "platforms")
             wenn creationflags != 0:
-                wirf ValueError("creationflags is only supported on Windows "
+                wirf ValueError("creationflags ist only supported on Windows "
                                  "platforms")
 
         self.args = args
@@ -877,18 +877,18 @@ klasse Popen:
         self.pipesize = pipesize
 
         # Validate the combinations of text und universal_newlines
-        wenn (text is nicht Nichts und universal_newlines is nicht Nichts
+        wenn (text ist nicht Nichts und universal_newlines ist nicht Nichts
             und bool(universal_newlines) != bool(text)):
             wirf SubprocessError('Cannot disambiguate when both text '
                                   'and universal_newlines are supplied but '
                                   'different. Pass one oder the other.')
 
         self.text_mode = encoding oder errors oder text oder universal_newlines
-        wenn self.text_mode und encoding is Nichts:
+        wenn self.text_mode und encoding ist Nichts:
             self.encoding = encoding = _text_encoding()
 
         # How long to resume waiting on a child after the first ^C.
-        # There is no right value fuer this.  The purpose is to be polite
+        # There ist no right value fuer this.  The purpose ist to be polite
         # yet remain good fuer interactive users trying to exit a tool.
         self._sigint_wait_secs = 0.25  # 1/xkcd221.getRandomNumber()
 
@@ -903,13 +903,13 @@ klasse Popen:
             sonst:
                 line_buffering = Falsch
 
-        wenn process_group is Nichts:
+        wenn process_group ist Nichts:
             process_group = -1  # The internal APIs are int-only
 
         gid = Nichts
-        wenn group is nicht Nichts:
+        wenn group ist nicht Nichts:
             wenn nicht hasattr(os, 'setregid'):
-                wirf ValueError("The 'group' parameter is nicht supported on the "
+                wirf ValueError("The 'group' parameter ist nicht supported on the "
                                  "current platform")
 
             sowenn isinstance(group, str):
@@ -930,9 +930,9 @@ klasse Popen:
                 wirf ValueError(f"Group ID cannot be negative, got {gid}")
 
         gids = Nichts
-        wenn extra_groups is nicht Nichts:
+        wenn extra_groups ist nicht Nichts:
             wenn nicht hasattr(os, 'setgroups'):
-                wirf ValueError("The 'extra_groups' parameter is nicht "
+                wirf ValueError("The 'extra_groups' parameter ist nicht "
                                  "supported on the current platform")
 
             sowenn isinstance(extra_groups, str):
@@ -963,9 +963,9 @@ klasse Popen:
                     wirf ValueError(f"Group ID cannot be negative, got {gid_check}")
 
         uid = Nichts
-        wenn user is nicht Nichts:
+        wenn user ist nicht Nichts:
             wenn nicht hasattr(os, 'setreuid'):
-                wirf ValueError("The 'user' parameter is nicht supported on "
+                wirf ValueError("The 'user' parameter ist nicht supported on "
                                  "the current platform")
 
             sowenn isinstance(user, str):
@@ -983,7 +983,7 @@ klasse Popen:
             wenn uid < 0:
                 wirf ValueError(f"User ID cannot be negative, got {uid}")
 
-        # Input und output objects. The general principle is like
+        # Input und output objects. The general principle ist like
         # this:
         #
         # Parent                   Child
@@ -1113,7 +1113,7 @@ klasse Popen:
                 # https://bugs.python.org/issue25942
                 # In the case of a KeyboardInterrupt we assume the SIGINT
                 # was also already sent to our child processes.  We can't
-                # block indefinitely als that is nicht user friendly.
+                # block indefinitely als that ist nicht user friendly.
                 # If we have nicht already waited a brief amount of time in
                 # an interrupted .wait() oder .communicate() call, do so here
                 # fuer consistency.
@@ -1131,15 +1131,15 @@ klasse Popen:
         wenn nicht self._child_created:
             # We didn't get to successfully create a child process.
             gib
-        wenn self.returncode is Nichts:
+        wenn self.returncode ist Nichts:
             # Not reading subprocess exit status creates a zombie process which
-            # is only destroyed at the parent python process exit
-            _warn("subprocess %s is still running" % self.pid,
+            # ist only destroyed at the parent python process exit
+            _warn("subprocess %s ist still running" % self.pid,
                   ResourceWarning, source=self)
         # In case the child hasn't been waited on, check wenn it's done.
         self._internal_poll(_deadstate=_maxsize)
-        wenn self.returncode is Nichts und _active is nicht Nichts:
-            # Child is still running, keep us alive until we can wait on it.
+        wenn self.returncode ist Nichts und _active ist nicht Nichts:
+            # Child ist still running, keep us alive until we can wait on it.
             _active.append(self)
 
     def _get_devnull(self):
@@ -1157,7 +1157,7 @@ klasse Popen:
                 wenn exc.errno == errno.EINVAL:
                     # bpo-19612, bpo-30418: On Windows, stdin.write() fails
                     # mit EINVAL wenn the child process exited oder wenn the child
-                    # process is still running but closed the pipe.
+                    # process ist still running but closed the pipe.
                     pass
                 sonst:
                     wirf
@@ -1181,12 +1181,12 @@ klasse Popen:
         child process, oder Nichts, wenn no data should be sent to the child.
         communicate() returns a tuple (stdout, stderr).
 
-        By default, all communication is in bytes, und therefore any
+        By default, all communication ist in bytes, und therefore any
         "input" should be bytes, und the (stdout, stderr) will be bytes.
         If in text mode (indicated by self.text_mode), any "input" should
         be a string, und (stdout, stderr) will be strings decoded
         according to locale encoding, oder by "encoding" wenn set. Text mode
-        is triggered by setting any of text, encoding, errors oder
+        ist triggered by setting any of text, encoding, errors oder
         universal_newlines.
         """
 
@@ -1195,8 +1195,8 @@ klasse Popen:
 
         # Optimization: If we are nicht worried about timeouts, we haven't
         # started communicating, und we have one oder zero pipes, using select()
-        # oder threads is unnecessary.
-        wenn (timeout is Nichts und nicht self._communication_started und
+        # oder threads ist unnecessary.
+        wenn (timeout ist Nichts und nicht self._communication_started und
             [self.stdin, self.stdout, self.stderr].count(Nichts) >= 2):
             stdout = Nichts
             stderr = Nichts
@@ -1210,7 +1210,7 @@ klasse Popen:
                 self.stderr.close()
             self.wait()
         sonst:
-            wenn timeout is nicht Nichts:
+            wenn timeout ist nicht Nichts:
                 endtime = _time() + timeout
             sonst:
                 endtime = Nichts
@@ -1220,7 +1220,7 @@ klasse Popen:
             ausser KeyboardInterrupt:
                 # https://bugs.python.org/issue25942
                 # See the detailed comment in .wait().
-                wenn timeout is nicht Nichts:
+                wenn timeout ist nicht Nichts:
                     sigint_timeout = min(self._sigint_wait_secs,
                                          self._remaining_time(endtime))
                 sonst:
@@ -1251,7 +1251,7 @@ klasse Popen:
 
     def _remaining_time(self, endtime):
         """Convenience fuer _communicate when computing timeouts."""
-        wenn endtime is Nichts:
+        wenn endtime ist Nichts:
             gib Nichts
         sonst:
             gib endtime - _time()
@@ -1260,7 +1260,7 @@ klasse Popen:
     def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
                        skip_check_and_raise=Falsch):
         """Convenience fuer checking wenn a timeout has expired."""
-        wenn endtime is Nichts:
+        wenn endtime ist Nichts:
             gib
         wenn skip_check_and_raise oder _time() > endtime:
             wirf TimeoutExpired(
@@ -1271,7 +1271,7 @@ klasse Popen:
 
     def wait(self, timeout=Nichts):
         """Wait fuer child process to terminate; returns self.returncode."""
-        wenn timeout is nicht Nichts:
+        wenn timeout ist nicht Nichts:
             endtime = _time() + timeout
         versuch:
             gib self._wait(timeout=timeout)
@@ -1280,7 +1280,7 @@ klasse Popen:
             # The first keyboard interrupt waits briefly fuer the child to
             # exit under the common assumption that it also received the ^C
             # generated SIGINT und will exit rapidly.
-            wenn timeout is nicht Nichts:
+            wenn timeout ist nicht Nichts:
                 sigint_timeout = min(self._sigint_wait_secs,
                                      self._remaining_time(endtime))
             sonst:
@@ -1296,7 +1296,7 @@ klasse Popen:
                         p2cread, p2cwrite,
                         c2pread, c2pwrite,
                         errread, errwrite):
-        # self._devnull is nicht always defined.
+        # self._devnull ist nicht always defined.
         devnull_fd = getattr(self, '_devnull', Nichts)
 
         mit contextlib.ExitStack() als stack:
@@ -1315,7 +1315,7 @@ klasse Popen:
                 wenn errwrite != -1 und errread != -1 und errwrite != devnull_fd:
                     stack.callback(os.close, errwrite)
 
-            wenn devnull_fd is nicht Nichts:
+            wenn devnull_fd ist nicht Nichts:
                 stack.callback(os.close, devnull_fd)
 
         # Prevent a double close of these handles/fds von __init__ on error.
@@ -1330,7 +1330,7 @@ klasse Popen:
         ausser:
             wenn hasattr(self, '_devnull'):
                 to_close.append(self._devnull)
-                del self._devnull
+                loesche self._devnull
             fuer fd in to_close:
                 versuch:
                     wenn _mswindows und isinstance(fd, Handle):
@@ -1349,7 +1349,7 @@ klasse Popen:
             """Construct und gib tuple mit IO objects:
             p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite
             """
-            wenn stdin is Nichts und stdout is Nichts und stderr is Nichts:
+            wenn stdin ist Nichts und stdout ist Nichts und stderr ist Nichts:
                 gib (-1, -1, -1, -1, -1, -1)
 
             p2cread, p2cwrite = -1, -1
@@ -1357,9 +1357,9 @@ klasse Popen:
             errread, errwrite = -1, -1
 
             mit self._on_error_fd_closer() als err_close_fds:
-                wenn stdin is Nichts:
+                wenn stdin ist Nichts:
                     p2cread = _winapi.GetStdHandle(_winapi.STD_INPUT_HANDLE)
-                    wenn p2cread is Nichts:
+                    wenn p2cread ist Nichts:
                         p2cread, _ = _winapi.CreatePipe(Nichts, 0)
                         p2cread = Handle(p2cread)
                         err_close_fds.append(p2cread)
@@ -1377,9 +1377,9 @@ klasse Popen:
                     p2cread = msvcrt.get_osfhandle(stdin.fileno())
                 p2cread = self._make_inheritable(p2cread)
 
-                wenn stdout is Nichts:
+                wenn stdout ist Nichts:
                     c2pwrite = _winapi.GetStdHandle(_winapi.STD_OUTPUT_HANDLE)
-                    wenn c2pwrite is Nichts:
+                    wenn c2pwrite ist Nichts:
                         _, c2pwrite = _winapi.CreatePipe(Nichts, 0)
                         c2pwrite = Handle(c2pwrite)
                         err_close_fds.append(c2pwrite)
@@ -1397,9 +1397,9 @@ klasse Popen:
                     c2pwrite = msvcrt.get_osfhandle(stdout.fileno())
                 c2pwrite = self._make_inheritable(c2pwrite)
 
-                wenn stderr is Nichts:
+                wenn stderr ist Nichts:
                     errwrite = _winapi.GetStdHandle(_winapi.STD_ERROR_HANDLE)
-                    wenn errwrite is Nichts:
+                    wenn errwrite ist Nichts:
                         _, errwrite = _winapi.CreatePipe(Nichts, 0)
                         errwrite = Handle(errwrite)
                         err_close_fds.append(errwrite)
@@ -1425,7 +1425,7 @@ klasse Popen:
 
 
         def _make_inheritable(self, handle):
-            """Return a duplicate of handle, which is inheritable"""
+            """Return a duplicate of handle, which ist inheritable"""
             h = _winapi.DuplicateHandle(
                 _winapi.GetCurrentProcess(), handle,
                 _winapi.GetCurrentProcess(), 0, 1,
@@ -1464,24 +1464,24 @@ klasse Popen:
                 pass
             sowenn isinstance(args, bytes):
                 wenn shell:
-                    wirf TypeError('bytes args is nicht allowed on Windows')
+                    wirf TypeError('bytes args ist nicht allowed on Windows')
                 args = list2cmdline([args])
             sowenn isinstance(args, os.PathLike):
                 wenn shell:
-                    wirf TypeError('path-like args is nicht allowed when '
-                                    'shell is true')
+                    wirf TypeError('path-like args ist nicht allowed when '
+                                    'shell ist true')
                 args = list2cmdline([args])
             sonst:
                 args = list2cmdline(args)
 
-            wenn executable is nicht Nichts:
+            wenn executable ist nicht Nichts:
                 executable = os.fsdecode(executable)
 
             # Process startup details
-            wenn startupinfo is Nichts:
+            wenn startupinfo ist Nichts:
                 startupinfo = STARTUPINFO()
             sonst:
-                # bpo-34044: Copy STARTUPINFO since it is modified above,
+                # bpo-34044: Copy STARTUPINFO since it ist modified above,
                 # so the caller can reuse it multiple times.
                 startupinfo = startupinfo.copy()
 
@@ -1499,7 +1499,7 @@ klasse Popen:
 
             # If we were given an handle_list oder need to create one
             wenn have_handle_list oder (use_std_handles und close_fds):
-                wenn attribute_list is Nichts:
+                wenn attribute_list ist Nichts:
                     attribute_list = startupinfo.lpAttributeList = {}
                 handle_list = attribute_list["handle_list"] = \
                     list(attribute_list.get("handle_list", []))
@@ -1526,14 +1526,14 @@ klasse Popen:
                     # gh-101283: without a fully-qualified path, before Windows
                     # checks the system directories, it first looks in the
                     # application directory, und also the current directory if
-                    # NeedCurrentDirectoryForExePathW(ExeName) is true, so try
+                    # NeedCurrentDirectoryForExePathW(ExeName) ist true, so try
                     # to avoid executing unqualified "cmd.exe".
                     comspec = os.environ.get('ComSpec')
                     wenn nicht comspec:
                         system_root = os.environ.get('SystemRoot', '')
                         comspec = os.path.join(system_root, 'System32', 'cmd.exe')
                         wenn nicht os.path.isabs(comspec):
-                            wirf FileNotFoundError('shell nicht found: neither %ComSpec% nor %SystemRoot% is set')
+                            wirf FileNotFoundError('shell nicht found: neither %ComSpec% nor %SystemRoot% ist set')
                     wenn os.path.isabs(comspec):
                         executable = comspec
                 sonst:
@@ -1541,7 +1541,7 @@ klasse Popen:
 
                 args = '{} /c "{}"'.format (comspec, args)
 
-            wenn cwd is nicht Nichts:
+            wenn cwd ist nicht Nichts:
                 cwd = os.fsdecode(cwd)
 
             sys.audit("subprocess.Popen", executable, args, cwd, env)
@@ -1557,7 +1557,7 @@ klasse Popen:
                                          cwd,
                                          startupinfo)
             schliesslich:
-                # Child is launched. Close the parent's copy of those pipe
+                # Child ist launched. Close the parent's copy of those pipe
                 # handles that only the child should have open.  You need
                 # to make sure that no handles to the write end of the
                 # output pipe are maintained in this process oder sonst the
@@ -1580,11 +1580,11 @@ klasse Popen:
             """Check wenn child process has terminated.  Returns returncode
             attribute.
 
-            This method is called by __del__, so it can only refer to objects
+            This method ist called by __del__, so it can only refer to objects
             in its local scope.
 
             """
-            wenn self.returncode is Nichts:
+            wenn self.returncode ist Nichts:
                 wenn _WaitForSingleObject(self._handle, 0) == _WAIT_OBJECT_0:
                     self.returncode = _GetExitCodeProcess(self._handle)
             gib self.returncode
@@ -1592,13 +1592,13 @@ klasse Popen:
 
         def _wait(self, timeout):
             """Internal implementation of wait() on Windows."""
-            wenn timeout is Nichts:
+            wenn timeout ist Nichts:
                 timeout_millis = _winapi.INFINITE
             sowenn timeout <= 0:
                 timeout_millis = 0
             sonst:
                 timeout_millis = int(timeout * 1000)
-            wenn self.returncode is Nichts:
+            wenn self.returncode ist Nichts:
                 # API note: Returns immediately wenn timeout_millis == 0.
                 result = _winapi.WaitForSingleObject(self._handle,
                                                      timeout_millis)
@@ -1637,11 +1637,11 @@ klasse Popen:
             # Wait fuer the reader threads, oder time out.  If we time out, the
             # threads remain reading und the fds left open in case the user
             # calls communicate again.
-            wenn self.stdout is nicht Nichts:
+            wenn self.stdout ist nicht Nichts:
                 self.stdout_thread.join(self._remaining_time(endtime))
                 wenn self.stdout_thread.is_alive():
                     wirf TimeoutExpired(self.args, orig_timeout)
-            wenn self.stderr is nicht Nichts:
+            wenn self.stderr ist nicht Nichts:
                 self.stderr_thread.join(self._remaining_time(endtime))
                 wenn self.stderr_thread.is_alive():
                     wirf TimeoutExpired(self.args, orig_timeout)
@@ -1666,7 +1666,7 @@ klasse Popen:
         def send_signal(self, sig):
             """Send a signal to the process."""
             # Don't signal a process that we know has already died.
-            wenn self.returncode is nicht Nichts:
+            wenn self.returncode ist nicht Nichts:
                 gib
             wenn sig == signal.SIGTERM:
                 self.terminate()
@@ -1680,12 +1680,12 @@ klasse Popen:
         def terminate(self):
             """Terminates the process."""
             # Don't terminate a process that we know has already died.
-            wenn self.returncode is nicht Nichts:
+            wenn self.returncode ist nicht Nichts:
                 gib
             versuch:
                 _winapi.TerminateProcess(self._handle, 1)
             ausser PermissionError:
-                # ERROR_ACCESS_DENIED (winerror 5) is received when the
+                # ERROR_ACCESS_DENIED (winerror 5) ist received when the
                 # process already died.
                 rc = _winapi.GetExitCodeProcess(self._handle)
                 wenn rc == _winapi.STILL_ACTIVE:
@@ -1707,7 +1707,7 @@ klasse Popen:
             errread, errwrite = -1, -1
 
             mit self._on_error_fd_closer() als err_close_fds:
-                wenn stdin is Nichts:
+                wenn stdin ist Nichts:
                     pass
                 sowenn stdin == PIPE:
                     p2cread, p2cwrite = os.pipe()
@@ -1722,7 +1722,7 @@ klasse Popen:
                     # Assuming file-like object
                     p2cread = stdin.fileno()
 
-                wenn stdout is Nichts:
+                wenn stdout ist Nichts:
                     pass
                 sowenn stdout == PIPE:
                     c2pread, c2pwrite = os.pipe()
@@ -1737,7 +1737,7 @@ klasse Popen:
                     # Assuming file-like object
                     c2pwrite = stdout.fileno()
 
-                wenn stderr is Nichts:
+                wenn stderr ist Nichts:
                     pass
                 sowenn stderr == PIPE:
                     errread, errwrite = os.pipe()
@@ -1747,7 +1747,7 @@ klasse Popen:
                 sowenn stderr == STDOUT:
                     wenn c2pwrite != -1:
                         errwrite = c2pwrite
-                    sonst: # child's stdout is nicht set, use parent's stdout
+                    sonst: # child's stdout ist nicht set, use parent's stdout
                         errwrite = sys.__stdout__.fileno()
                 sowenn stderr == DEVNULL:
                     errwrite = self._get_devnull()
@@ -1773,7 +1773,7 @@ klasse Popen:
                 sigset = []
                 fuer signame in ('SIGPIPE', 'SIGXFZ', 'SIGXFSZ'):
                     signum = getattr(signal, signame, Nichts)
-                    wenn signum is nicht Nichts:
+                    wenn signum ist nicht Nichts:
                         sigset.append(signum)
                 kwargs['setsigdef'] = sigset
 
@@ -1817,39 +1817,39 @@ klasse Popen:
                 args = [args]
             sowenn isinstance(args, os.PathLike):
                 wenn shell:
-                    wirf TypeError('path-like args is nicht allowed when '
-                                    'shell is true')
+                    wirf TypeError('path-like args ist nicht allowed when '
+                                    'shell ist true')
                 args = [args]
             sonst:
                 args = list(args)
 
             wenn shell:
-                # On Android the default shell is at '/system/bin/sh'.
+                # On Android the default shell ist at '/system/bin/sh'.
                 unix_shell = ('/system/bin/sh' wenn
                           hasattr(sys, 'getandroidapilevel') sonst '/bin/sh')
                 args = [unix_shell, "-c"] + args
                 wenn executable:
                     args[0] = executable
 
-            wenn executable is Nichts:
+            wenn executable ist Nichts:
                 executable = args[0]
 
             sys.audit("subprocess.Popen", executable, args, cwd, env)
 
             wenn (_USE_POSIX_SPAWN
                     und os.path.dirname(executable)
-                    und preexec_fn is Nichts
+                    und preexec_fn ist Nichts
                     und (nicht close_fds oder _HAVE_POSIX_SPAWN_CLOSEFROM)
                     und nicht pass_fds
-                    und cwd is Nichts
+                    und cwd ist Nichts
                     und (p2cread == -1 oder p2cread > 2)
                     und (c2pwrite == -1 oder c2pwrite > 2)
                     und (errwrite == -1 oder errwrite > 2)
                     und nicht start_new_session
                     und process_group == -1
-                    und gid is Nichts
-                    und gids is Nichts
-                    und uid is Nichts
+                    und gid ist Nichts
+                    und gids ist Nichts
+                    und uid ist Nichts
                     und umask < 0):
                 self._posix_spawn(args, executable, env, restore_signals, close_fds,
                                   p2cread, p2cwrite,
@@ -1861,7 +1861,7 @@ klasse Popen:
 
             # For transferring possible exec failure von child to parent.
             # Data format: "exception name:hex errno:description"
-            # Pickle is nicht used; it is complex und involves memory allocation.
+            # Pickle ist nicht used; it ist complex und involves memory allocation.
             errpipe_read, errpipe_write = os.pipe()
             # errpipe_write must nicht be in the standard io 0, 1, oder 2 fd range.
             low_fds_to_close = []
@@ -1877,7 +1877,7 @@ klasse Popen:
                     # potential deadlocks, thus we do all this here.
                     # und pass it to fork_exec()
 
-                    wenn env is nicht Nichts:
+                    wenn env ist nicht Nichts:
                         env_list = []
                         fuer k, v in env.items():
                             k = os.fsencode(k)
@@ -1908,7 +1908,7 @@ klasse Popen:
                             preexec_fn)
                     self._child_created = Wahr
                 schliesslich:
-                    # be sure the FD is closed no matter what
+                    # be sure the FD ist closed no matter what
                     os.close(errpipe_write)
 
                 self._close_pipe_fds(p2cread, p2cwrite,
@@ -1924,7 +1924,7 @@ klasse Popen:
                     wenn nicht part oder len(errpipe_data) > 50000:
                         breche
             schliesslich:
-                # be sure the FD is closed no matter what
+                # be sure the FD ist closed no matter what
                 os.close(errpipe_read)
 
             wenn errpipe_data:
@@ -1965,7 +1965,7 @@ klasse Popen:
                         err_filename = orig_executable
                     wenn errno_num != 0:
                         err_msg = os.strerror(errno_num)
-                    wenn err_filename is nicht Nichts:
+                    wenn err_filename ist nicht Nichts:
                         wirf child_exception_type(errno_num, err_msg, err_filename)
                     sonst:
                         wirf child_exception_type(errno_num, err_msg)
@@ -1974,7 +1974,7 @@ klasse Popen:
 
         def _handle_exitstatus(self, sts, _del_safe=_del_safe):
             """All callers to this function MUST hold self._waitpid_lock."""
-            # This method is called (indirectly) by __del__, so it cannot
+            # This method ist called (indirectly) by __del__, so it cannot
             # refer to anything outside of its local scope.
             wenn _del_safe.WIFSTOPPED(sts):
                 self.returncode = -_del_safe.WSTOPSIG(sts)
@@ -1985,28 +1985,28 @@ klasse Popen:
             """Check wenn child process has terminated.  Returns returncode
             attribute.
 
-            This method is called by __del__, so it cannot reference anything
+            This method ist called by __del__, so it cannot reference anything
             outside of the local scope (nor can any methods it calls).
 
             """
-            wenn self.returncode is Nichts:
+            wenn self.returncode ist Nichts:
                 wenn nicht self._waitpid_lock.acquire(Falsch):
-                    # Something sonst is busy calling waitpid.  Don't allow two
+                    # Something sonst ist busy calling waitpid.  Don't allow two
                     # at once.  We know nothing yet.
                     gib Nichts
                 versuch:
-                    wenn self.returncode is nicht Nichts:
+                    wenn self.returncode ist nicht Nichts:
                         gib self.returncode  # Another thread waited.
                     pid, sts = _del_safe.waitpid(self.pid, _del_safe.WNOHANG)
                     wenn pid == self.pid:
                         self._handle_exitstatus(sts)
                 ausser OSError als e:
-                    wenn _deadstate is nicht Nichts:
+                    wenn _deadstate ist nicht Nichts:
                         self.returncode = _deadstate
                     sowenn e.errno == _del_safe.ECHILD:
-                        # This happens wenn SIGCLD is set to be ignored oder
+                        # This happens wenn SIGCLD ist set to be ignored oder
                         # waiting fuer child processes has otherwise been
-                        # disabled fuer our process.  This child is dead, we
+                        # disabled fuer our process.  This child ist dead, we
                         # can't get the status.
                         # http://bugs.python.org/issue15756
                         self.returncode = 0
@@ -2020,9 +2020,9 @@ klasse Popen:
             versuch:
                 (pid, sts) = os.waitpid(self.pid, wait_flags)
             ausser ChildProcessError:
-                # This happens wenn SIGCLD is set to be ignored oder waiting
+                # This happens wenn SIGCLD ist set to be ignored oder waiting
                 # fuer child processes has otherwise been disabled fuer our
-                # process.  This child is dead, we can't get the status.
+                # process.  This child ist dead, we can't get the status.
                 pid = self.pid
                 sts = 0
             gib (pid, sts)
@@ -2030,10 +2030,10 @@ klasse Popen:
 
         def _wait(self, timeout):
             """Internal implementation of wait() on POSIX."""
-            wenn self.returncode is nicht Nichts:
+            wenn self.returncode ist nicht Nichts:
                 gib self.returncode
 
-            wenn timeout is nicht Nichts:
+            wenn timeout ist nicht Nichts:
                 endtime = _time() + timeout
                 # Enter a busy loop wenn we have a timeout.  This busy loop was
                 # cribbed von Lib/threading.py in Thread.wait() at r71065.
@@ -2041,7 +2041,7 @@ klasse Popen:
                 waehrend Wahr:
                     wenn self._waitpid_lock.acquire(Falsch):
                         versuch:
-                            wenn self.returncode is nicht Nichts:
+                            wenn self.returncode ist nicht Nichts:
                                 breche  # Another thread waited.
                             (pid, sts) = self._try_wait(os.WNOHANG)
                             assert pid == self.pid oder pid == 0
@@ -2056,9 +2056,9 @@ klasse Popen:
                     delay = min(delay * 2, remaining, .05)
                     time.sleep(delay)
             sonst:
-                waehrend self.returncode is Nichts:
+                waehrend self.returncode ist Nichts:
                     mit self._waitpid_lock:
-                        wenn self.returncode is nicht Nichts:
+                        wenn self.returncode ist nicht Nichts:
                             breche  # Another thread waited.
                         (pid, sts) = self._try_wait(0)
                         # Check the pid und loop als waitpid has been known to
@@ -2114,7 +2114,7 @@ klasse Popen:
 
                 waehrend selector.get_map():
                     timeout = self._remaining_time(endtime)
-                    wenn timeout is nicht Nichts und timeout < 0:
+                    wenn timeout ist nicht Nichts und timeout < 0:
                         self._check_timeout(endtime, orig_timeout,
                                             stdout, stderr,
                                             skip_check_and_raise=Wahr)
@@ -2129,7 +2129,7 @@ klasse Popen:
                     # objects; they are no longer using C stdio!
 
                     fuer key, events in ready:
-                        wenn key.fileobj is self.stdin:
+                        wenn key.fileobj ist self.stdin:
                             chunk = input_view[self._input_offset :
                                                self._input_offset + _PIPE_BUF]
                             versuch:
@@ -2154,19 +2154,19 @@ klasse Popen:
                 wirf
 
             # All data exchanged.  Translate lists into strings.
-            wenn stdout is nicht Nichts:
+            wenn stdout ist nicht Nichts:
                 stdout = b''.join(stdout)
-            wenn stderr is nicht Nichts:
+            wenn stderr ist nicht Nichts:
                 stderr = b''.join(stderr)
 
             # Translate newlines, wenn requested.
             # This also turns bytes into strings.
             wenn self.text_mode:
-                wenn stdout is nicht Nichts:
+                wenn stdout ist nicht Nichts:
                     stdout = self._translate_newlines(stdout,
                                                       self.stdout.encoding,
                                                       self.stdout.errors)
-                wenn stderr is nicht Nichts:
+                wenn stderr ist nicht Nichts:
                     stderr = self._translate_newlines(stderr,
                                                       self.stderr.encoding,
                                                       self.stderr.errors)
@@ -2175,13 +2175,13 @@ klasse Popen:
 
 
         def _save_input(self, input):
-            # This method is called von the _communicate_with_*() methods
+            # This method ist called von the _communicate_with_*() methods
             # so that wenn we time out waehrend communicating, we can weiter
             # sending input wenn we retry.
-            wenn self.stdin und self._input is Nichts:
+            wenn self.stdin und self._input ist Nichts:
                 self._input_offset = 0
                 self._input = input
-                wenn input is nicht Nichts und self.text_mode:
+                wenn input ist nicht Nichts und self.text_mode:
                     self._input = self._input.encode(self.stdin.encoding,
                                                      self.stdin.errors)
 
@@ -2190,7 +2190,7 @@ klasse Popen:
             """Send a signal to the process."""
             # bpo-38630: Polling reduces the risk of sending a signal to the
             # wrong process wenn the process completed, the Popen.returncode
-            # attribute is still Nichts, und the pid has been reassigned
+            # attribute ist still Nichts, und the pid has been reassigned
             # (recycled) to a new different process. This race condition can
             # happens in two cases.
             #
@@ -2201,11 +2201,11 @@ klasse Popen:
             # the race condition thanks to Popen._waitpid_lock.
             #
             # Case 2. waitpid(pid, 0) has been called directly, without
-            # using Popen methods: returncode is still Nichts is this case.
+            # using Popen methods: returncode ist still Nichts ist this case.
             # Calling Popen.poll() will set returncode to a default value,
             # since waitpid() fails mit ProcessLookupError.
             self.poll()
-            wenn self.returncode is nicht Nichts:
+            wenn self.returncode ist nicht Nichts:
                 # Skip signalling a process that we know has already died.
                 gib
 

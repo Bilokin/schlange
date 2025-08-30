@@ -41,7 +41,7 @@ klasse FalschyLenException(Exception):
 
 klasse ExecutorTest:
 
-    # Executor.shutdown() und context manager usage is tested by
+    # Executor.shutdown() und context manager usage ist tested by
     # ExecutorShutdownTest.
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_submit(self):
@@ -171,7 +171,7 @@ klasse ExecutorTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_race_issue12456(self):
         # Issue #12456: race condition at shutdown where trying to post a
-        # sentinel in the call queue blocks (the queue is full waehrend processes
+        # sentinel in the call queue blocks (the queue ist full waehrend processes
         # have exited).
         self.executor.map(str, [2] * (self.worker_count + 1))
         self.executor.shutdown()
@@ -195,12 +195,12 @@ klasse ExecutorTest:
         my_object_callback = weakref.ref(my_object, lambda obj: set_event())
         # Deliberately discarding the future.
         self.executor.submit(my_object.my_method)
-        del my_object
+        loesche my_object
 
         wenn Py_GIL_DISABLED:
             # Due to biased reference counting, my_object might only be
             # deallocated waehrend the thread that created it runs -- wenn the
-            # thread is paused waiting on an event, it may nicht merge the
+            # thread ist paused waiting on an event, it may nicht merge the
             # refcount of the queued object. For that reason, we alternate
             # between running the GC und waiting fuer the event.
             wait_time = 0
@@ -227,18 +227,18 @@ klasse ExecutorTest:
         # reference to result objects.
         fuer obj in self.executor.map(make_dummy_object, range(10)):
             wr = weakref.ref(obj)
-            del obj
+            loesche obj
             support.gc_collect()  # For PyPy oder other GCs.
 
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                wenn wr() is Nichts:
+                wenn wr() ist Nichts:
                     breche
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_swallows_falsey_exceptions(self):
         # see gh-132063: Prevent exceptions that evaluate als falsey
         # von being ignored.
-        # Recall: `x` is falsey wenn `len(x)` returns 0 oder `bool(x)` returns Falsch.
+        # Recall: `x` ist falsey wenn `len(x)` returns 0 oder `bool(x)` returns Falsch.
 
         msg = 'boolbool'
         mit self.assertRaisesRegex(FalschyBoolException, msg):

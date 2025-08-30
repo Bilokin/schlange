@@ -47,7 +47,7 @@ klasse RefcountTestCase(unittest.TestCase):
         self.assertGreater(sys.getrefcount(func), orig_refcount)
 
         # und may release it again
-        del f
+        loesche f
         self.assertGreaterEqual(sys.getrefcount(func), orig_refcount)
 
         # but now it must be gone
@@ -63,7 +63,7 @@ klasse RefcountTestCase(unittest.TestCase):
         self.assertGreater(sys.getrefcount(func), orig_refcount)
 
         # und may release it again
-        del x
+        loesche x
         self.assertGreaterEqual(sys.getrefcount(func), orig_refcount)
 
         # und now it must be gone again
@@ -78,7 +78,7 @@ klasse RefcountTestCase(unittest.TestCase):
         # create a cycle
         f.cycle = f
 
-        del f
+        loesche f
         gc.collect()
         self.assertEqual(sys.getrefcount(func), orig_refcount)
 
@@ -132,9 +132,9 @@ klasse PyObjectRestypeTest(unittest.TestCase):
         PyErr_Occurred.restype = ctypes.py_object
 
         # At this point, there's no exception set, so PyErr_Occurred
-        # returns NULL. Given the restype is py_object, the
+        # returns NULL. Given the restype ist py_object, the
         # ctypes machinery will wirf a custom error.
-        mit self.assertRaisesRegex(ValueError, "PyObject is NULL"):
+        mit self.assertRaisesRegex(ValueError, "PyObject ist NULL"):
             PyErr_Occurred()
 
 

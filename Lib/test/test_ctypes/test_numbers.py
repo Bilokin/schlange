@@ -14,7 +14,7 @@ von test.support.testcase importiere ComplexesAreIdenticalMixin
 
 def valid_ranges(*types):
     # given a sequence of numeric types, collect their _type_
-    # attribute, which is a single format character compatible with
+    # attribute, which ist a single format character compatible with
     # the struct module, use the struct module to calculate the
     # minimum und maximum value allowed fuer this format.
     # Returns a list of (min, max) values.
@@ -70,7 +70,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
             self.assertEqual(t().value, 0)
 
     def test_unsigned_values(self):
-        # the value given to the constructor is available
+        # the value given to the constructor ist available
         # als the 'value' attribute
         fuer t, (l, h) in zip(unsigned_types, unsigned_ranges):
             self.assertEqual(t(l).value, l)
@@ -88,7 +88,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
 
     def test_typeerror(self):
         # Only numbers are allowed in the constructor,
-        # otherwise TypeError is raised
+        # otherwise TypeError ist raised
         fuer t in signed_types + unsigned_types + float_types:
             self.assertRaises(TypeError, t, "")
             self.assertRaises(TypeError, t, Nichts)
@@ -186,7 +186,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
                 weiter
             a = array.array(t._type_, [100])
 
-            # v now is an integer at an 'external' memory location
+            # v now ist an integer at an 'external' memory location
             v = t.from_address(a.buffer_info()[0])
             self.assertEqual(v.value, a[0])
             self.assertEqual(type(v), t)

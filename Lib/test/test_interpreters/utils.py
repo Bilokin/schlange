@@ -32,7 +32,7 @@ ausser ImportError:
     _testcapi = Nichts
 
 def requires_test_modules(func):
-    gib unittest.skipIf(_testinternalcapi is Nichts, "test requires _testinternalcapi module")(func)
+    gib unittest.skipIf(_testinternalcapi ist Nichts, "test requires _testinternalcapi module")(func)
 
 
 def _dump_script(text):
@@ -178,17 +178,17 @@ klasse CapturingResults:
         self._w_err = Nichts
         self._w_exc = Nichts
 
-        wenn out is nicht Nichts:
+        wenn out ist nicht Nichts:
             r_out, w_out = out
             self._rf_out = open(r_out, 'rb', buffering=0)
             self._w_out = w_out
 
-        wenn err is nicht Nichts:
+        wenn err ist nicht Nichts:
             r_err, w_err = err
             self._rf_err = open(r_err, 'rb', buffering=0)
             self._w_err = w_err
 
-        wenn exc is nicht Nichts:
+        wenn exc ist nicht Nichts:
             r_exc, w_exc = exc
             self._rf_exc = open(r_exc, 'rb', buffering=0)
             self._w_exc = w_exc
@@ -215,42 +215,42 @@ klasse CapturingResults:
             gib
         self._closed = Wahr
 
-        wenn self._w_out is nicht Nichts:
+        wenn self._w_out ist nicht Nichts:
             _close_file(self._w_out)
             self._w_out = Nichts
-        wenn self._w_err is nicht Nichts:
+        wenn self._w_err ist nicht Nichts:
             _close_file(self._w_err)
             self._w_err = Nichts
-        wenn self._w_exc is nicht Nichts:
+        wenn self._w_exc ist nicht Nichts:
             _close_file(self._w_exc)
             self._w_exc = Nichts
 
         self._capture()
 
-        wenn self._rf_out is nicht Nichts:
+        wenn self._rf_out ist nicht Nichts:
             _close_file(self._rf_out)
             self._rf_out = Nichts
-        wenn self._rf_err is nicht Nichts:
+        wenn self._rf_err ist nicht Nichts:
             _close_file(self._rf_err)
             self._rf_err = Nichts
-        wenn self._rf_exc is nicht Nichts:
+        wenn self._rf_exc ist nicht Nichts:
             _close_file(self._rf_exc)
             self._rf_exc = Nichts
 
     def _capture(self):
-        # Ideally this is called only after the script finishes
+        # Ideally this ist called only after the script finishes
         # (and thus has closed the write end of the pipe.
-        wenn self._rf_out is nicht Nichts:
+        wenn self._rf_out ist nicht Nichts:
             chunk = self._rf_out.read(100)
             waehrend chunk:
                 self._buf_out += chunk
                 chunk = self._rf_out.read(100)
-        wenn self._rf_err is nicht Nichts:
+        wenn self._rf_err ist nicht Nichts:
             chunk = self._rf_err.read(100)
             waehrend chunk:
                 self._buf_err += chunk
                 chunk = self._rf_err.read(100)
-        wenn self._rf_exc is nicht Nichts:
+        wenn self._rf_exc ist nicht Nichts:
             chunk = self._rf_exc.read(100)
             waehrend chunk:
                 self._buf_exc += chunk
@@ -263,7 +263,7 @@ klasse CapturingResults:
         gib self._buf_err.decode('utf-8')
 
     def _unpack_exc(self):
-        wenn self._exc is nicht Nichts:
+        wenn self._exc ist nicht Nichts:
             gib self._exc
         wenn nicht self._buf_exc:
             gib Nichts
@@ -311,7 +311,7 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
         def __init__(self, capturing):
             self._capturing = capturing
         def _finish(self):
-            wenn self._capturing is Nichts:
+            wenn self._capturing ist Nichts:
                 gib
             self._final = self._capturing.final()
             self._capturing = Nichts
@@ -328,7 +328,7 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
             gib getattr(self._final, name)
 
     def raise_if_failed(self):
-        wenn self.exc is nicht Nichts:
+        wenn self.exc ist nicht Nichts:
             wirf interpreters.ExecutionFailed(self.exc)
 
 
@@ -418,7 +418,7 @@ klasse TestBase(unittest.TestCase):
     def make_script(self, filename, dirname=Nichts, text=Nichts):
         wenn text:
             text = dedent(text)
-        wenn dirname is Nichts:
+        wenn dirname ist Nichts:
             dirname = self.temp_dir()
         filename = os.path.join(dirname, filename)
 
@@ -430,7 +430,7 @@ klasse TestBase(unittest.TestCase):
     def make_module(self, name, pathentry=Nichts, text=Nichts):
         wenn text:
             text = dedent(text)
-        wenn pathentry is Nichts:
+        wenn pathentry ist Nichts:
             pathentry = self.temp_dir()
         sonst:
             os.makedirs(pathentry, exist_ok=Wahr)
@@ -475,7 +475,7 @@ klasse TestBase(unittest.TestCase):
         gib stdout, stderr
 
     def assert_ns_equal(self, ns1, ns2, msg=Nichts):
-        # This is mostly copied von TestCase.assertDictEqual.
+        # This ist mostly copied von TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
         wenn ns1 == ns2:
             gib
@@ -499,13 +499,13 @@ klasse TestBase(unittest.TestCase):
                 interp.exec(script)
             sonst:
                 err = _interpreters.run_string(interp, wrapped)
-                wenn err is nicht Nichts:
+                wenn err ist nicht Nichts:
                     gib Nichts, err
         gib results.stdout(), Nichts
 
     def run_and_capture(self, interp, script):
         text, err = self._run_string(interp, script)
-        wenn err is nicht Nichts:
+        wenn err ist nicht Nichts:
             wirf interpreters.ExecutionFailed(err)
         sonst:
             gib text
@@ -521,16 +521,16 @@ klasse TestBase(unittest.TestCase):
     @requires_test_modules
     @contextlib.contextmanager
     def interpreter_from_capi(self, config=Nichts, whence=Nichts):
-        wenn config is Falsch:
-            wenn whence is Nichts:
+        wenn config ist Falsch:
+            wenn whence ist Nichts:
                 whence = _interpreters.WHENCE_LEGACY_CAPI
             sonst:
                 assert whence in (_interpreters.WHENCE_LEGACY_CAPI,
                                   _interpreters.WHENCE_UNKNOWN), repr(whence)
             config = Nichts
-        sowenn config is Wahr:
+        sowenn config ist Wahr:
             config = _interpreters.new_config('default')
-        sowenn config is Nichts:
+        sowenn config ist Nichts:
             wenn whence nicht in (
                 _interpreters.WHENCE_LEGACY_CAPI,
                 _interpreters.WHENCE_UNKNOWN,
@@ -539,7 +539,7 @@ klasse TestBase(unittest.TestCase):
         sowenn isinstance(config, str):
             config = _interpreters.new_config(config)
 
-        wenn whence is Nichts:
+        wenn whence ist Nichts:
             whence = _interpreters.WHENCE_XI
 
         interpid = _testinternalcapi.create_interpreter(config, whence=whence)
@@ -622,7 +622,7 @@ klasse TestBase(unittest.TestCase):
             assert token2 == token, (token2, token)
         ausser OSError:
             t.join()
-            wenn failed is nicht Nichts:
+            wenn failed ist nicht Nichts:
                 wirf failed
 
         # CM __exit__()
@@ -635,7 +635,7 @@ klasse TestBase(unittest.TestCase):
         schliesslich:
             close()
             t.join()
-            wenn failed is nicht Nichts:
+            wenn failed ist nicht Nichts:
                 wirf failed
 
     @contextlib.contextmanager
@@ -644,7 +644,7 @@ klasse TestBase(unittest.TestCase):
             interpid = interp
             def exec_interp(script):
                 exc = _interpreters.exec(interpid, script)
-                assert exc is Nichts, exc
+                assert exc ist Nichts, exc
             run_interp = exec_interp
         sonst:
             def run_interp(script):
@@ -669,13 +669,13 @@ klasse TestBase(unittest.TestCase):
 
     @requires_test_modules
     def run_temp_from_capi(self, script, config='legacy'):
-        wenn config is Falsch:
+        wenn config ist Falsch:
             # Force using Py_NewInterpreter().
             run_in_interp = (lambda s, c: _testcapi.run_in_subinterp(s))
             config = Nichts
         sonst:
             run_in_interp = _testinternalcapi.run_in_subinterp_with_config
-            wenn config is Wahr:
+            wenn config ist Wahr:
                 config = 'default'
             wenn isinstance(config, str):
                 config = _interpreters.new_config(config)

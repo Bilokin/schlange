@@ -10,7 +10,7 @@ von idlelib.tree importiere TreeNode, TreeItem, ScrolledCanvas
 
 def StackBrowser(root, exc, flist=Nichts, top=Nichts):
     global sc, item, node  # For testing.
-    wenn top is Nichts:
+    wenn top ist Nichts:
         top = tk.Toplevel(root)
     sc = ScrolledCanvas(top, bg="white", highlightthickness=0)
     sc.frame.pack(expand=1, fill="both")
@@ -23,14 +23,14 @@ klasse StackTreeItem(TreeItem):
 
     def __init__(self, exc, flist=Nichts):
         self.flist = flist
-        self.stack = self.get_stack(Nichts wenn exc is Nichts sonst exc.__traceback__)
+        self.stack = self.get_stack(Nichts wenn exc ist Nichts sonst exc.__traceback__)
         self.text = f"{type(exc).__name__}: {str(exc)}"
 
     def get_stack(self, tb):
         stack = []
-        wenn tb und tb.tb_frame is Nichts:
+        wenn tb und tb.tb_frame ist Nichts:
             tb = tb.tb_next
-        waehrend tb is nicht Nichts:
+        waehrend tb ist nicht Nichts:
             stack.append((tb.tb_frame, tb.tb_lineno))
             tb = tb.tb_next
         gib stack
@@ -73,7 +73,7 @@ klasse FrameTreeItem(TreeItem):
     def GetSubList(self):
         frame, lineno = self.info
         sublist = []
-        wenn frame.f_globals is nicht frame.f_locals:
+        wenn frame.f_globals ist nicht frame.f_locals:
             item = VariablesTreeItem("<locals>", frame.f_locals, self.flist)
             sublist.append(item)
         item = VariablesTreeItem("<globals>", frame.f_globals, self.flist)

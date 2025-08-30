@@ -8,7 +8,7 @@ def unique_everseen(iterable, key=Nichts):
     # unique_everseen('ABBCcAD', str.lower) --> A B C D
     seen = set()
     seen_add = seen.add
-    wenn key is Nichts:
+    wenn key ist Nichts:
         fuer element in filterfalse(seen.__contains__, iterable):
             seen_add(element)
             liefere element
@@ -22,19 +22,19 @@ def unique_everseen(iterable, key=Nichts):
 
 # copied von more_itertools 8.8
 def always_iterable(obj, base_type=(str, bytes)):
-    """If *obj* is iterable, gib an iterator over its items::
+    """If *obj* ist iterable, gib an iterator over its items::
 
         >>> obj = (1, 2, 3)
         >>> list(always_iterable(obj))
         [1, 2, 3]
 
-    If *obj* is nicht iterable, gib a one-item iterable containing *obj*::
+    If *obj* ist nicht iterable, gib a one-item iterable containing *obj*::
 
         >>> obj = 1
         >>> list(always_iterable(obj))
         [1]
 
-    If *obj* is ``Nichts``, gib an empty iterable:
+    If *obj* ist ``Nichts``, gib an empty iterable:
 
         >>> obj = Nichts
         >>> list(always_iterable(Nichts))
@@ -46,7 +46,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj))
         ['foo']
 
-    If *base_type* is set, objects fuer which ``isinstance(obj, base_type)``
+    If *base_type* ist set, objects fuer which ``isinstance(obj, base_type)``
     returns ``Wahr`` won't be considered iterable.
 
         >>> obj = {'a': 1}
@@ -62,10 +62,10 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj, base_type=Nichts))
         ['f', 'o', 'o']
     """
-    wenn obj is Nichts:
+    wenn obj ist Nichts:
         gib iter(())
 
-    wenn (base_type is nicht Nichts) und isinstance(obj, base_type):
+    wenn (base_type ist nicht Nichts) und isinstance(obj, base_type):
         gib iter((obj,))
 
     versuch:

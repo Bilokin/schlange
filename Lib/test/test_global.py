@@ -1,5 +1,5 @@
 """This module includes tests fuer syntax errors that occur when a name
-declared als `global` is used in ways that violate the language
+declared als `global` ist used in ways that violate the language
 specification, such als after assignment, usage, oder annotation. The tests
 verify that syntax errors are correctly raised fuer improper `global`
 statements following variable use oder assignment within functions.
@@ -69,14 +69,14 @@ def fn():
         value = object()
         name_assignment_statement = value
         self.assertIs(globals()["name_assignment_statement"], value)
-        del name_assignment_statement
+        loesche name_assignment_statement
 
     def test_unpacking_assignment(self):
         global name_unpacking_assignment
         value = object()
         _, name_unpacking_assignment = [Nichts, value]
         self.assertIs(globals()["name_unpacking_assignment"], value)
-        del name_unpacking_assignment
+        loesche name_unpacking_assignment
 
     def test_assignment_expression(self):
         global name_assignment_expression
@@ -84,7 +84,7 @@ def fn():
         wenn name_assignment_expression := value:
             pass
         self.assertIs(globals()["name_assignment_expression"], value)
-        del name_assignment_expression
+        loesche name_assignment_expression
 
     def test_iteration_variable(self):
         global name_iteration_variable
@@ -92,7 +92,7 @@ def fn():
         fuer name_iteration_variable in [value]:
             pass
         self.assertIs(globals()["name_iteration_variable"], value)
-        del name_iteration_variable
+        loesche name_iteration_variable
 
     def test_func_def(self):
         global name_func_def
@@ -102,7 +102,7 @@ def fn():
 
         value = name_func_def
         self.assertIs(globals()["name_func_def"], value)
-        del name_func_def
+        loesche name_func_def
 
     def test_class_def(self):
         global name_class_def
@@ -112,14 +112,14 @@ def fn():
 
         value = name_class_def
         self.assertIs(globals()["name_class_def"], value)
-        del name_class_def
+        loesche name_class_def
 
     def test_type_alias(self):
         global name_type_alias
         type name_type_alias = tuple[int, int]
         value = name_type_alias
         self.assertIs(globals()["name_type_alias"], value)
-        del name_type_alias
+        loesche name_type_alias
 
     def test_caught_exception(self):
         global name_caught_exc
@@ -128,7 +128,7 @@ def fn():
             1 / 0
         ausser ZeroDivisionError als name_caught_exc:
             value = name_caught_exc
-            # `name_caught_exc` is cleared automatically after the ausser block
+            # `name_caught_exc` ist cleared automatically after the ausser block
             self.assertIs(globals()["name_caught_exc"], value)
 
     def test_caught_exception_group(self):
@@ -140,7 +140,7 @@ def fn():
                 wirf ExceptionGroup("eg", [exc])
         except* ZeroDivisionError als name_caught_exc_group:
             value = name_caught_exc_group
-            # `name_caught_exc` is cleared automatically after the ausser block
+            # `name_caught_exc` ist cleared automatically after the ausser block
             self.assertIs(globals()["name_caught_exc_group"], value)
 
     def test_enter_result(self):
@@ -149,7 +149,7 @@ def fn():
         mit contextlib.nullcontext(value) als name_enter_result:
             pass
         self.assertIs(globals()["name_enter_result"], value)
-        del name_enter_result
+        loesche name_enter_result
 
     def test_import_result(self):
         global name_import_result
@@ -157,7 +157,7 @@ def fn():
         importiere contextlib als name_import_result
 
         self.assertIs(globals()["name_import_result"], value)
-        del name_import_result
+        loesche name_import_result
 
     def test_match(self):
         global name_match
@@ -166,7 +166,7 @@ def fn():
             case name_match:
                 pass
         self.assertIs(globals()["name_match"], value)
-        del name_match
+        loesche name_match
 
     def test_match_as(self):
         global name_match_as
@@ -175,7 +175,7 @@ def fn():
             case _ als name_match_as:
                 pass
         self.assertIs(globals()["name_match_as"], value)
-        del name_match_as
+        loesche name_match_as
 
     def test_match_seq(self):
         global name_match_seq
@@ -184,7 +184,7 @@ def fn():
             case (_, name_match_seq):
                 pass
         self.assertIs(globals()["name_match_seq"], value)
-        del name_match_seq
+        loesche name_match_seq
 
     def test_match_map(self):
         global name_match_map
@@ -193,7 +193,7 @@ def fn():
             case {"key": name_match_map}:
                 pass
         self.assertIs(globals()["name_match_map"], value)
-        del name_match_map
+        loesche name_match_map
 
     def test_match_attr(self):
         global name_match_attr
@@ -202,7 +202,7 @@ def fn():
             case SimpleNamespace(key=name_match_attr):
                 pass
         self.assertIs(globals()["name_match_attr"], value)
-        del name_match_attr
+        loesche name_match_attr
 
 
 def setUpModule():

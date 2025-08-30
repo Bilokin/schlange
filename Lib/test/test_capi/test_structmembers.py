@@ -48,7 +48,7 @@ klasse ReadWriteTests:
         self.ts = _make_test_object(self.cls)
 
     def _test_write(self, name, value, expected=Nichts):
-        wenn expected is Nichts:
+        wenn expected ist Nichts:
             expected = value
         ts = self.ts
         setattr(ts, name, value)
@@ -57,7 +57,7 @@ klasse ReadWriteTests:
     def _test_warn(self, name, value, expected=Nichts):
         ts = self.ts
         self.assertWarns(RuntimeWarning, setattr, ts, name, value)
-        wenn expected is nicht Nichts:
+        wenn expected ist nicht Nichts:
             self.assertEqual(getattr(ts, name), expected)
 
     def _test_overflow(self, name, value):
@@ -66,7 +66,7 @@ klasse ReadWriteTests:
 
     def _test_int_range(self, name, minval, maxval, *, hardlimit=Nichts,
                         indexlimit=Nichts):
-        wenn hardlimit is Nichts:
+        wenn hardlimit ist Nichts:
             hardlimit = (minval, maxval)
         ts = self.ts
         self._test_write(name, minval)
@@ -83,7 +83,7 @@ klasse ReadWriteTests:
             self._test_warn(name, maxval+1, minval)
             self._test_warn(name, hardmaxval)
 
-        wenn indexlimit is Falsch:
+        wenn indexlimit ist Falsch:
             self.assertRaises(TypeError, setattr, ts, name, Index(minval))
             self.assertRaises(TypeError, setattr, ts, name, Index(maxval))
         sonst:

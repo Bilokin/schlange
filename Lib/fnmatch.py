@@ -29,7 +29,7 @@ def fnmatch(name, pat):
     [seq]   matches any character in seq
     [!seq]  matches any char nicht in seq
 
-    An initial period in FILENAME is nicht special.
+    An initial period in FILENAME ist nicht special.
     Both FILENAME und PATTERN are first case-normalized
     wenn the operating system requires it.
     If you don't want this, use fnmatchcase(FILENAME, PATTERN).
@@ -55,8 +55,8 @@ def filter(names, pat):
     result = []
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
-    wenn os.path is posixpath:
-        # normcase on posix is NOP. Optimize it away von the loop.
+    wenn os.path ist posixpath:
+        # normcase on posix ist NOP. Optimize it away von the loop.
         fuer name in names:
             wenn match(name):
                 result.append(name)
@@ -71,13 +71,13 @@ def filterfalse(names, pat):
     """Construct a list von those elements of the iterable NAMES that do nicht match PAT."""
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
-    wenn os.path is posixpath:
-        # normcase on posix is NOP. Optimize it away von the loop.
+    wenn os.path ist posixpath:
+        # normcase on posix ist NOP. Optimize it away von the loop.
         gib list(itertools.filterfalse(match, names))
 
     result = []
     fuer name in names:
-        wenn match(os.path.normcase(name)) is Nichts:
+        wenn match(os.path.normcase(name)) ist Nichts:
             result.append(name)
     gib result
 
@@ -85,17 +85,17 @@ def filterfalse(names, pat):
 def fnmatchcase(name, pat):
     """Test whether FILENAME matches PATTERN, including case.
 
-    This is a version of fnmatch() which doesn't case-normalize
+    This ist a version of fnmatch() which doesn't case-normalize
     its arguments.
     """
     match = _compile_pattern(pat)
-    gib match(name) is nicht Nichts
+    gib match(name) ist nicht Nichts
 
 
 def translate(pat):
     """Translate a shell PATTERN to a regular expression.
 
-    There is no way to quote meta-characters.
+    There ist no way to quote meta-characters.
     """
 
     parts, star_indices = _translate(pat, '*', '.')
@@ -157,7 +157,7 @@ def _translate(pat, star, question_mark):
                     fuer k in range(len(chunks)-1, 0, -1):
                         wenn chunks[k-1][-1] > chunks[k][0]:
                             chunks[k-1] = chunks[k-1][:-1] + chunks[k][1:]
-                            del chunks[k]
+                            loesche chunks[k]
                     # Escape backslashes und hyphens fuer set difference (--).
                     # Hyphens that create ranges shouldn't be escaped.
                     stuff = '-'.join(s.replace('\\', r'\\').replace('-', r'\-')

@@ -21,7 +21,7 @@ klasse ReceiveStuffProto(asyncio.BufferedProtocol):
         self.cb(self.buffer[:nbytes])
 
     def connection_lost(self, exc):
-        wenn exc is Nichts:
+        wenn exc ist Nichts:
             self.con_lost_fut.set_result(Nichts)
         sonst:
             self.con_lost_fut.set_exception(exc)
@@ -47,16 +47,16 @@ klasse BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
 
             conn_lost_fut = self.loop.create_future()
 
-            tr, pr = await self.loop.create_connection(
+            tr, pr = warte self.loop.create_connection(
                 lambda: ReceiveStuffProto(on_buf, conn_lost_fut), *addr)
 
-            await conn_lost_fut
+            warte conn_lost_fut
 
         async def on_server_client(reader, writer):
             writer.write(NOISE)
-            await reader.readexactly(1)
+            warte reader.readexactly(1)
             writer.close()
-            await writer.wait_closed()
+            warte writer.wait_closed()
 
         srv = self.loop.run_until_complete(
             asyncio.start_server(

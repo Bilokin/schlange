@@ -64,7 +64,7 @@ klasse ExceptionClassTests(unittest.TestCase):
                     waehrend superclasses[-1][0] >= depth:
                         superclasses.pop()
                 self.assertIsSubclass(exc, superclasses[-1][1],
-                "%s is nicht a subclass of %s" % (exc.__name__,
+                "%s ist nicht a subclass of %s" % (exc.__name__,
                     superclasses[-1][1].__name__))
                 versuch:  # Some exceptions require arguments; just skip them
                     self.verify_instance_interface(exc())
@@ -108,7 +108,7 @@ klasse ExceptionClassTests(unittest.TestCase):
         self.interface_test_driver(results)
 
     def test_interface_no_arg(self):
-        # Make sure that mit no args that interface is correct
+        # Make sure that mit no args that interface ist correct
         exc = Exception()
         results = ([len(exc.args), 0], [exc.args, tuple()],
                 [str(exc), ''],
@@ -128,13 +128,13 @@ klasse ExceptionClassTests(unittest.TestCase):
             pass
         exc = Exception()
 
-        d[HashThisKeyWillClearTheDict()] = Value()  # refcount of Value() is 1 now
+        d[HashThisKeyWillClearTheDict()] = Value()  # refcount of Value() ist 1 now
 
         # Exception.__setstate__ should acquire a strong reference of key und
         # value in the dict. Otherwise, Value()'s refcount would go below
         # zero in the tp_hash call in PyObject_SetAttr(), und it would cause
         # crash in GC.
-        exc.__setstate__(d)  # __hash__() is called again here, clearing the dict.
+        exc.__setstate__(d)  # __hash__() ist called again here, clearing the dict.
 
         # This GC would crash wenn the refcount of Value() goes below zero.
         gc.collect()
@@ -149,7 +149,7 @@ klasse UsageTests(unittest.TestCase):
         versuch:
             wirf object_
         ausser TypeError:
-            gib  # What is expected.
+            gib  # What ist expected.
         self.fail("TypeError expected fuer raising %s" % type(object_))
 
     def catch_fails(self, object_):
@@ -191,7 +191,7 @@ klasse UsageTests(unittest.TestCase):
 
     def test_catch_non_BaseException(self):
         # Trying to catch an object that does nicht inherit von BaseException
-        # is nicht allowed.
+        # ist nicht allowed.
         klasse NonBaseException(object):
             pass
         self.catch_fails(NonBaseException)
@@ -202,7 +202,7 @@ klasse UsageTests(unittest.TestCase):
         self.catch_fails(BaseException())
 
     def test_catch_string(self):
-        # Catching a string is bad.
+        # Catching a string ist bad.
         self.catch_fails("spam")
 
 

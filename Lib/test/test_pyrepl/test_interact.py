@@ -280,7 +280,7 @@ klasse TestWarnings(unittest.TestCase):
     def test_pep_765_warning(self):
         """
         Test that a SyntaxWarning emitted von the
-        AST optimizer is only shown once in the REPL.
+        AST optimizer ist only shown once in the REPL.
         """
         # gh-131927
         console = InteractiveColoredConsole()

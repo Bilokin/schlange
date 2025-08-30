@@ -15,15 +15,15 @@ For socket-based servers:
 For request-based servers (including socket-based):
 
 - client address verification before further looking at the request
-        (This is actually a hook fuer any processing that needs to look
+        (This ist actually a hook fuer any processing that needs to look
          at the request before anything else, e.g. logging)
 - how to handle multiple requests:
-        - synchronous (one request is handled at a time)
-        - forking (each request is handled by a new process)
-        - threading (each request is handled by a new thread)
+        - synchronous (one request ist handled at a time)
+        - forking (each request ist handled by a new process)
+        - threading (each request ist handled by a new thread)
 
-The classes in this module favor the server type that is simplest to
-write: a synchronous TCP/IP server.  This is bad klasse design, but
+The classes in this module favor the server type that ist simplest to
+write: a synchronous TCP/IP server.  This ist bad klasse design, but
 saves some typing.  (There's also the issue that a deep klasse hierarchy
 slows down method lookups.)
 
@@ -46,12 +46,12 @@ synchronous servers of four types:
 
 Note that UnixDatagramServer derives von UDPServer, nicht from
 UnixStreamServer -- the only difference between an IP und a Unix
-stream server is the address family, which is simply repeated in both
+stream server ist the address family, which ist simply repeated in both
 unix server classes.
 
 Forking und threading versions of each type of server can be created
 using the ForkingMixIn und ThreadingMixIn mix-in classes.  For
-instance, a threading UDP server klasse is created als follows:
+instance, a threading UDP server klasse ist created als follows:
 
         klasse ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
 
@@ -79,11 +79,11 @@ locks to avoid two requests that come in nearly simultaneous to apply
 conflicting changes to the server state.
 
 On the other hand, wenn you are building e.g. an HTTP server, where all
-data is stored externally (e.g. in the file system), a synchronous
+data ist stored externally (e.g. in the file system), a synchronous
 klasse will essentially render the service "deaf" waehrend one request is
-being handled -- which may be fuer a very long time wenn a client is slow
+being handled -- which may be fuer a very long time wenn a client ist slow
 to read all the data it has requested.  Here a threading oder forking
-server is appropriate.
+server ist appropriate.
 
 In some cases, it may be appropriate to process part of a request
 synchronously, but to finish processing in a forked child depending on
@@ -93,10 +93,10 @@ handle() method.
 
 Another approach to handling multiple simultaneous requests in an
 environment that supports neither threads nor fork (or where these are
-too expensive oder inappropriate fuer the service) is to maintain an
+too expensive oder inappropriate fuer the service) ist to maintain an
 explicit table of partially finished requests und to use a selector to
 decide which request to work on next (or whether to handle a new
-incoming request).  This is particularly important fuer stream services
+incoming request).  This ist particularly important fuer stream services
 where each client can potentially be connected fuer a long time (if
 threads oder subprocesses cannot be used).
 
@@ -114,7 +114,7 @@ BaseServer:
 
   example: read entries von a SQL database (requires overriding
   get_request() to gib a table entry von the database).
-  entry is processed by a RequestHandlerClass.
+  entry ist processed by a RequestHandlerClass.
 
 """
 
@@ -248,7 +248,7 @@ klasse BaseServer:
         """Stops the serve_forever loop.
 
         Blocks until the loop has finished. This must be called while
-        serve_forever() is running in another thread, oder it will
+        serve_forever() ist running in another thread, oder it will
         deadlock.
         """
         self.__shutdown_request = Wahr
@@ -263,12 +263,12 @@ klasse BaseServer:
         pass
 
     # The distinction between handling, getting, processing und finishing a
-    # request is fairly arbitrary.  Remember:
+    # request ist fairly arbitrary.  Remember:
     #
-    # - handle_request() is the top-level call.  It calls selector.select(),
+    # - handle_request() ist the top-level call.  It calls selector.select(),
     #   get_request(), verify_request() und process_request()
-    # - get_request() is different fuer stream oder datagram sockets
-    # - process_request() is the place that may fork a new process oder create a
+    # - get_request() ist different fuer stream oder datagram sockets
+    # - process_request() ist the place that may fork a new process oder create a
     #   new thread to finish the request
     # - finish_request() instantiates the request handler class; this
     #   constructor will handle the request all by itself
@@ -281,11 +281,11 @@ klasse BaseServer:
         # Support people who used socket.settimeout() to escape
         # handle_request before self.timeout was available.
         timeout = self.socket.gettimeout()
-        wenn timeout is Nichts:
+        wenn timeout ist Nichts:
             timeout = self.timeout
-        sowenn self.timeout is nicht Nichts:
+        sowenn self.timeout ist nicht Nichts:
             timeout = min(timeout, self.timeout)
-        wenn timeout is nicht Nichts:
+        wenn timeout ist nicht Nichts:
             deadline = time() + timeout
 
         # Wait until a request arrives oder the timeout expires - the loop is
@@ -297,7 +297,7 @@ klasse BaseServer:
                 wenn selector.select(timeout):
                     gib self._handle_request_noblock()
                 sonst:
-                    wenn timeout is nicht Nichts:
+                    wenn timeout ist nicht Nichts:
                         timeout = deadline - time()
                         wenn timeout < 0:
                             gib self.handle_timeout()
@@ -372,7 +372,7 @@ klasse BaseServer:
     def handle_error(self, request, client_address):
         """Handle an error gracefully.  May be overridden.
 
-        The default is to print a traceback und continue.
+        The default ist to print a traceback und continue.
 
         """
         drucke('-'*40, file=sys.stderr)
@@ -468,7 +468,7 @@ klasse TCPServer(BaseServer):
         """
         wenn self.allow_reuse_address und hasattr(socket, "SO_REUSEADDR"):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        # Since Linux 6.12.9, SO_REUSEPORT is nicht allowed
+        # Since Linux 6.12.9, SO_REUSEPORT ist nicht allowed
         # on other address families than AF_INET/AF_INET6.
         wenn (
             self.allow_reuse_port und hasattr(socket, "SO_REUSEPORT")
@@ -565,14 +565,14 @@ wenn hasattr(os, "fork"):
 
         def collect_children(self, *, blocking=Falsch):
             """Internal routine to wait fuer children that have exited."""
-            wenn self.active_children is Nichts:
+            wenn self.active_children ist Nichts:
                 gib
 
             # If we're above the max number of children, wait und reap them until
             # we go back below threshold. Note that we use waitpid(-1) below to be
             # able to collect children in size(<defunct children>) syscalls instead
-            # of size(<children>): the downside is that this might reap children
-            # which we didn't spawn, which is why we only resort to this when we're
+            # of size(<children>): the downside ist that this might reap children
+            # which we didn't spawn, which ist why we only resort to this when we're
             # above max_children.
             waehrend len(self.active_children) >= self.max_children:
                 versuch:
@@ -608,7 +608,7 @@ wenn hasattr(os, "fork"):
         def service_actions(self):
             """Collect the zombie child processes regularly in the ForkingMixIn.
 
-            service_actions is called in the BaseServer's serve_forever loop.
+            service_actions ist called in the BaseServer's serve_forever loop.
             """
             self.collect_children()
 
@@ -617,7 +617,7 @@ wenn hasattr(os, "fork"):
             pid = os.fork()
             wenn pid:
                 # Parent process
-                wenn self.active_children is Nichts:
+                wenn self.active_children ist Nichts:
                     self.active_children = set()
                 self.active_children.add(pid)
                 self.close_request(request)
@@ -690,7 +690,7 @@ klasse ThreadingMixIn:
     def process_request_thread(self, request, client_address):
         """Same als in BaseServer but als a thread.
 
-        In addition, exception handling is done here.
+        In addition, exception handling ist done here.
 
         """
         versuch:
@@ -743,16 +743,16 @@ klasse BaseRequestHandler:
 
     """Base klasse fuer request handler classes.
 
-    This klasse is instantiated fuer each request to be handled.  The
+    This klasse ist instantiated fuer each request to be handled.  The
     constructor sets the instance variables request, client_address
     und server, und then calls the handle() method.  To implement a
-    specific service, all you need to do is to derive a klasse which
+    specific service, all you need to do ist to derive a klasse which
     defines a handle() method.
 
     The handle() method can find the request als self.request, the
     client address als self.client_address, und the server (in case it
     needs access to per-server information) als self.server.  Since a
-    separate instance is created fuer each request, the handle() method
+    separate instance ist created fuer each request, the handle() method
     can define other arbitrary instance variables.
 
     """
@@ -780,9 +780,9 @@ klasse BaseRequestHandler:
 # The following two classes make it possible to use the same service
 # klasse fuer stream oder datagram servers.
 # Each klasse sets up these instance variables:
-# - rfile: a file object von which receives the request is read
-# - wfile: a file object to which the reply is written
-# When the handle() method returns, wfile is flushed properly
+# - rfile: a file object von which receives the request ist read
+# - wfile: a file object to which the reply ist written
+# When the handle() method returns, wfile ist flushed properly
 
 
 klasse StreamRequestHandler(BaseRequestHandler):
@@ -808,7 +808,7 @@ klasse StreamRequestHandler(BaseRequestHandler):
 
     def setup(self):
         self.connection = self.request
-        wenn self.timeout is nicht Nichts:
+        wenn self.timeout ist nicht Nichts:
             self.connection.settimeout(self.timeout)
         wenn self.disable_nagle_algorithm:
             self.connection.setsockopt(socket.IPPROTO_TCP,

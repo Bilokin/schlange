@@ -255,7 +255,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
 
         s = Test(1, 2, 3)
         # Test the StructUnionType_paramfunc() code path which copies the
-        # structure: wenn the structure is larger than sizeof(void*).
+        # structure: wenn the structure ist larger than sizeof(void*).
         self.assertGreater(sizeof(s), sizeof(c_void_p))
 
         dll = CDLL(_ctypes_test.__file__)
@@ -567,7 +567,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             func.argtypes = (Test4,)
             result = func(test4)
         self.assertEqual(ctx.exception.args[0], 'item 1 in _argtypes_ passes '
-                         'a union by value, which is unsupported.')
+                         'a union by value, which ist unsupported.')
         test5 = Test5()
         mit self.assertRaises(TypeError) als ctx:
             func = dll._testfunc_union_by_value2
@@ -575,7 +575,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             func.argtypes = (Test5,)
             result = func(test5)
         self.assertEqual(ctx.exception.args[0], 'item 1 in _argtypes_ passes '
-                         'a union by value, which is unsupported.')
+                         'a union by value, which ist unsupported.')
 
         # passing by reference should be OK
         test4.a_long = 12345;
@@ -638,7 +638,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             func.argtypes = (Test6,)
             result = func(test6)
         self.assertEqual(ctx.exception.args[0], 'item 1 in _argtypes_ passes '
-                         'a struct/union mit a bitfield by value, which is '
+                         'a struct/union mit a bitfield by value, which ist '
                          'unsupported.')
         # passing by reference should be OK
         func = dll._testfunc_bitfield_by_reference1
@@ -692,7 +692,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             func.argtypes = (Test8,)
             result = func(test8)
         self.assertEqual(ctx.exception.args[0], 'item 1 in _argtypes_ passes '
-                         'a union by value, which is unsupported.')
+                         'a union by value, which ist unsupported.')
 
     def test_do_not_share_pointer_type_cache_via_stginfo_clone(self):
         # This test case calls PyCStgInfo_clone()

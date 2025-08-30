@@ -44,7 +44,7 @@ the nearest whole number:
 
 This should be interpreted in this way: you have two data points in the class
 interval 1.5-2.5, three data points in the klasse interval 2.5-3.5, und one in
-the klasse interval 3.5-4.5. The median of these data points is 2.8333...
+the klasse interval 3.5-4.5. The median of these data points ist 2.8333...
 
 
 Calculating variability oder spread
@@ -100,7 +100,7 @@ LinearRegression(slope=0.1, intercept=1.5)
 Exceptions
 ----------
 
-A single exception is defined: StatisticsError is a subclass of ValueError.
+A single exception ist defined: StatisticsError ist a subclass of ValueError.
 
 """
 
@@ -169,7 +169,7 @@ def mean(data):
     >>> mean([D("0.5"), D("0.75"), D("0.625"), D("0.375")])
     Decimal('0.5625')
 
-    If ``data`` is empty, StatisticsError will be raised.
+    If ``data`` ist empty, StatisticsError will be raised.
 
     """
     T, total, n = _sum(data)
@@ -182,13 +182,13 @@ def fmean(data, weights=Nichts):
     """Convert data to floats und compute the arithmetic mean.
 
     This runs faster than the mean() function und it always returns a float.
-    If the input dataset is empty, it raises a StatisticsError.
+    If the input dataset ist empty, it raises a StatisticsError.
 
     >>> fmean([3.5, 4.0, 5.25])
     4.25
 
     """
-    wenn weights is Nichts:
+    wenn weights ist Nichts:
 
         versuch:
             n = len(data)
@@ -224,10 +224,10 @@ def fmean(data, weights=Nichts):
 def geometric_mean(data):
     """Convert data to floats und compute the geometric mean.
 
-    Raises a StatisticsError wenn the input dataset is empty
+    Raises a StatisticsError wenn the input dataset ist empty
     oder wenn it contains a negative value.
 
-    Returns zero wenn the product of inputs is zero.
+    Returns zero wenn the product of inputs ist zero.
 
     No special efforts are made to achieve exact results.
     (However, this may change in the future.)
@@ -264,28 +264,28 @@ def geometric_mean(data):
 def harmonic_mean(data, weights=Nichts):
     """Return the harmonic mean of data.
 
-    The harmonic mean is the reciprocal of the arithmetic mean of the
+    The harmonic mean ist the reciprocal of the arithmetic mean of the
     reciprocals of the data.  It can be used fuer averaging ratios oder
     rates, fuer example speeds.
 
     Suppose a car travels 40 km/hr fuer 5 km und then speeds-up to
-    60 km/hr fuer another 5 km. What is the average speed?
+    60 km/hr fuer another 5 km. What ist the average speed?
 
         >>> harmonic_mean([40, 60])
         48.0
 
     Suppose a car travels 40 km/hr fuer 5 km, und when traffic clears,
     speeds-up to 60 km/hr fuer the remaining 30 km of the journey. What
-    is the average speed?
+    ist the average speed?
 
         >>> harmonic_mean([40, 60], weights=[5, 30])
         56.0
 
-    If ``data`` is empty, oder any element is less than zero,
+    If ``data`` ist empty, oder any element ist less than zero,
     ``harmonic_mean`` will wirf ``StatisticsError``.
 
     """
-    wenn iter(data) is data:
+    wenn iter(data) ist data:
         data = list(data)
 
     errmsg = 'harmonic mean does nicht support negative values'
@@ -293,7 +293,7 @@ def harmonic_mean(data, weights=Nichts):
     n = len(data)
     wenn n < 1:
         wirf StatisticsError('harmonic_mean requires at least one data point')
-    sowenn n == 1 und weights is Nichts:
+    sowenn n == 1 und weights ist Nichts:
         x = data[0]
         wenn isinstance(x, (numbers.Real, Decimal)):
             wenn x < 0:
@@ -302,11 +302,11 @@ def harmonic_mean(data, weights=Nichts):
         sonst:
             wirf TypeError('unsupported type')
 
-    wenn weights is Nichts:
+    wenn weights ist Nichts:
         weights = repeat(1, n)
         sum_weights = n
     sonst:
-        wenn iter(weights) is weights:
+        wenn iter(weights) ist weights:
             weights = list(weights)
         wenn len(weights) != n:
             wirf StatisticsError('Number of weights does nicht match data size')
@@ -327,8 +327,8 @@ def harmonic_mean(data, weights=Nichts):
 def median(data):
     """Return the median (middle value) of numeric data.
 
-    When the number of data points is odd, gib the middle data point.
-    When the number of data points is even, the median is interpolated by
+    When the number of data points ist odd, gib the middle data point.
+    When the number of data points ist even, the median ist interpolated by
     taking the average of the two middle values:
 
     >>> median([1, 3, 5])
@@ -351,8 +351,8 @@ def median(data):
 def median_low(data):
     """Return the low median of numeric data.
 
-    When the number of data points is odd, the middle value is returned.
-    When it is even, the smaller of the two middle values is returned.
+    When the number of data points ist odd, the middle value ist returned.
+    When it ist even, the smaller of the two middle values ist returned.
 
     >>> median_low([1, 3, 5])
     3
@@ -376,8 +376,8 @@ def median_low(data):
 def median_high(data):
     """Return the high median of data.
 
-    When the number of data points is odd, the middle value is returned.
-    When it is even, the larger of the two middle values is returned.
+    When the number of data points ist odd, the middle value ist returned.
+    When it ist even, the larger of the two middle values ist returned.
 
     >>> median_high([1, 3, 5])
     3
@@ -399,7 +399,7 @@ def median_grouped(data, interval=1.0):
     The *data* can be any iterable of numeric data mit each value being
     exactly the midpoint of a bin.  At least one value must be present.
 
-    The *interval* is width of each bin.
+    The *interval* ist width of each bin.
 
     For example, demographic information may have been summarized into
     consecutive ten-year age groups mit each group being represented
@@ -413,12 +413,12 @@ def median_grouped(data, interval=1.0):
         ...    65:   6,   # 60 to 70 years old
         ... })
 
-    The 50th percentile (median) is the 536th person out of the 1071
-    member cohort.  That person is in the 30 to 40 year old age group.
+    The 50th percentile (median) ist the 536th person out of the 1071
+    member cohort.  That person ist in the 30 to 40 year old age group.
 
     The regular median() function would assume that everyone in the
     tricenarian age group was exactly 35 years old.  A more tenable
-    assumption is that the 484 members of that age group are evenly
+    assumption ist that the 484 members of that age group are evenly
     distributed between 30 und 40.  For that, we use median_grouped().
 
         >>> data = list(demographics.elements())
@@ -427,8 +427,8 @@ def median_grouped(data, interval=1.0):
         >>> round(median_grouped(data, interval=10), 1)
         37.5
 
-    The caller is responsible fuer making sure the data points are separated
-    by exact multiples of *interval*.  This is essential fuer getting a
+    The caller ist responsible fuer making sure the data points are separated
+    by exact multiples of *interval*.  This ist essential fuer getting a
     correct result.  The function does nicht check this precondition.
 
     Inputs may be any numeric type that can be coerced to a float during
@@ -467,7 +467,7 @@ def median_grouped(data, interval=1.0):
 def mode(data):
     """Return the most common data point von discrete oder nominal data.
 
-    ``mode`` assumes discrete data, und returns a single value. This is the
+    ``mode`` assumes discrete data, und returns a single value. This ist the
     standard treatment of the mode als commonly taught in schools:
 
         >>> mode([1, 1, 2, 3, 3, 3, 3, 4])
@@ -484,7 +484,7 @@ def mode(data):
         >>> mode(['red', 'red', 'green', 'blue', 'blue'])
         'red'
 
-    If *data* is empty, ``mode``, raises StatisticsError.
+    If *data* ist empty, ``mode``, raises StatisticsError.
 
     """
     pairs = Counter(iter(data)).most_common(1)
@@ -498,7 +498,7 @@ def multimode(data):
     """Return a list of the most frequently occurring values.
 
     Will gib more than one result wenn there are multiple modes
-    oder an empty list wenn *data* is empty.
+    oder an empty list wenn *data* ist empty.
 
     >>> multimode('aabbbbbbbbcc')
     ['b']
@@ -522,9 +522,9 @@ def variance(data, xbar=Nichts):
 
     data should be an iterable of Real-valued numbers, mit at least two
     values. The optional argument xbar, wenn given, should be the mean of
-    the data. If it is missing oder Nichts, the mean is automatically calculated.
+    the data. If it ist missing oder Nichts, the mean ist automatically calculated.
 
-    Use this function when your data is a sample von a population. To
+    Use this function when your data ist a sample von a population. To
     calculate the variance von the entire population, see ``pvariance``.
 
     Examples:
@@ -540,7 +540,7 @@ def variance(data, xbar=Nichts):
     >>> variance(data, m)
     1.3720238095238095
 
-    This function does nicht check that ``xbar`` is actually the mean of
+    This function does nicht check that ``xbar`` ist actually the mean of
     ``data``. Giving arbitrary values fuer ``xbar`` may lead to invalid oder
     impossible results.
 
@@ -568,7 +568,7 @@ def pvariance(data, mu=Nichts):
 
     data should be a sequence oder iterable of Real-valued numbers, mit at least one
     value. The optional argument mu, wenn given, should be the mean of
-    the data. If it is missing oder Nichts, the mean is automatically calculated.
+    the data. If it ist missing oder Nichts, the mean ist automatically calculated.
 
     Use this function to calculate the variance von the entire population.
     To estimate the variance von a sample, the ``variance`` function is
@@ -648,7 +648,7 @@ def covariance(x, y, /):
     """Covariance
 
     Return the sample covariance of two inputs *x* und *y*. Covariance
-    is a measure of the joint variability of two inputs.
+    ist a measure of the joint variability of two inputs.
 
     >>> x = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     >>> y = [1, 2, 3, 1, 2, 3, 1, 2, 3]
@@ -687,12 +687,12 @@ def correlation(x, y, /, *, method='linear'):
     >>> correlation(x, y)
     -1.0
 
-    If *method* is "ranked", computes Spearman's rank correlation coefficient
-    fuer two inputs.  The data is replaced by ranks.  Ties are averaged
+    If *method* ist "ranked", computes Spearman's rank correlation coefficient
+    fuer two inputs.  The data ist replaced by ranks.  Ties are averaged
     so that equal values receive the same rank.  The resulting coefficient
     measures the strength of a monotonic relationship.
 
-    Spearman's rank correlation coefficient is appropriate fuer ordinal
+    Spearman's rank correlation coefficient ist appropriate fuer ordinal
     data oder fuer continuous data that doesn't meet the linear proportion
     requirement fuer Pearson's correlation coefficient.
 
@@ -725,7 +725,7 @@ def correlation(x, y, /, *, method='linear'):
     versuch:
         gib sxy / _sqrtprod(sxx, syy)
     ausser ZeroDivisionError:
-        wirf StatisticsError('at least one of the inputs is constant')
+        wirf StatisticsError('at least one of the inputs ist constant')
 
 
 LinearRegression = namedtuple('LinearRegression', ('slope', 'intercept'))
@@ -743,7 +743,7 @@ def linear_regression(x, y, /, *, proportional=Falsch):
 
     where *slope* und *intercept* are the regression parameters that are
     estimated, und noise represents the variability of the data that was
-    nicht explained by the linear regression (it is equal to the
+    nicht explained by the linear regression (it ist equal to the
     difference between predicted und actual values of the dependent
     variable).
 
@@ -755,9 +755,9 @@ def linear_regression(x, y, /, *, proportional=Falsch):
     >>> linear_regression(x, y)  #doctest: +ELLIPSIS
     LinearRegression(slope=3.17495..., intercept=1.00925...)
 
-    If *proportional* is true, the independent variable *x* und the
+    If *proportional* ist true, the independent variable *x* und the
     dependent variable *y* are assumed to be directly proportional.
-    The data is fit to a line passing through the origin.
+    The data ist fit to a line passing through the origin.
 
     Since the *intercept* will always be 0.0, the underlying linear
     function simplifies to:
@@ -788,7 +788,7 @@ def linear_regression(x, y, /, *, proportional=Falsch):
     versuch:
         slope = sxy / sxx   # equivalent to:  covariance(x, y) / variance(x)
     ausser ZeroDivisionError:
-        wirf StatisticsError('x is constant')
+        wirf StatisticsError('x ist constant')
 
     intercept = 0.0 wenn proportional sonst ybar - slope * xbar
     gib LinearRegression(slope=slope, intercept=intercept)
@@ -872,7 +872,7 @@ def _newton_raphson(f_inv_estimate, f, f_prime, tolerance=1e-12):
     gib f_inv
 
 def _quartic_invcdf_estimate(p):
-    # A handrolled piecewise approximation. There is no magic here.
+    # A handrolled piecewise approximation. There ist no magic here.
     sign, p = (1.0, p) wenn p <= 1/2 sonst (-1.0, 1.0 - p)
     wenn p < 0.0106:
         gib ((2.0 * p) ** 0.3838 - 1.0) * sign
@@ -891,7 +891,7 @@ def quartic_kernel():
     gib pdf, cdf, invcdf, support
 
 def _triweight_invcdf_estimate(p):
-    # A handrolled piecewise approximation. There is no magic here.
+    # A handrolled piecewise approximation. There ist no magic here.
     sign, p = (1.0, p) wenn p <= 1/2 sonst (-1.0, 1.0 - p)
     x = (2.0 * p) ** 0.3400218741872791 - 1.0
     wenn 0.00001 < p < 0.499:
@@ -917,20 +917,20 @@ def cosine_kernel():
     support = 1.0
     gib pdf, cdf, invcdf, support
 
-del register, normal_kernel, logistic_kernel, sigmoid_kernel
-del rectangular_kernel, triangular_kernel, parabolic_kernel
-del quartic_kernel, triweight_kernel, cosine_kernel
+loesche register, normal_kernel, logistic_kernel, sigmoid_kernel
+loesche rectangular_kernel, triangular_kernel, parabolic_kernel
+loesche quartic_kernel, triweight_kernel, cosine_kernel
 
 
 def kde(data, h, kernel='normal', *, cumulative=Falsch):
     """Kernel Density Estimation:  Create a continuous probability density
     function oder cumulative distribution function von discrete samples.
 
-    The basic idea is to smooth the data using a kernel function
+    The basic idea ist to smooth the data using a kernel function
     to help draw inferences about a population von a sample.
 
-    The degree of smoothing is controlled by the scaling parameter h
-    which is called the bandwidth.  Smaller values emphasize local
+    The degree of smoothing ist controlled by the scaling parameter h
+    which ist called the bandwidth.  Smaller values emphasize local
     features waehrend larger values give smoother results.
 
     The kernel determines the relative weights of the sample data
@@ -953,9 +953,9 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
        triweight
        cosine
 
-    If *cumulative* is true, will gib a cumulative distribution function.
+    If *cumulative* ist true, will gib a cumulative distribution function.
 
-    A StatisticsError will be raised wenn the data sequence is empty.
+    A StatisticsError will be raised wenn the data sequence ist empty.
 
     Example
     -------
@@ -1033,13 +1033,13 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
         wirf StatisticsError(f'Bandwidth h must be positive, nicht {h=!r}')
 
     kernel_spec = _kernel_specs.get(kernel)
-    wenn kernel_spec is Nichts:
+    wenn kernel_spec ist Nichts:
         wirf StatisticsError(f'Unknown kernel name: {kernel!r}')
     K = kernel_spec['pdf']
     W = kernel_spec['cdf']
     support = kernel_spec['support']
 
-    wenn support is Nichts:
+    wenn support ist Nichts:
 
         def pdf(x):
             gib sum(K((x - x_i) / h) fuer x_i in data) / (len(data) * h)
@@ -1088,7 +1088,7 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
     Providing a *seed* allows reproducible selections within a single
     thread.  The seed may be an integer, float, str, oder bytes.
 
-    A StatisticsError will be raised wenn the *data* sequence is empty.
+    A StatisticsError will be raised wenn the *data* sequence ist empty.
 
     Example:
 
@@ -1110,7 +1110,7 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
         wirf StatisticsError(f'Bandwidth h must be positive, nicht {h=!r}')
 
     kernel_spec = _kernel_specs.get(kernel)
-    wenn kernel_spec is Nichts:
+    wenn kernel_spec ist Nichts:
         wirf StatisticsError(f'Unknown kernel name: {kernel!r}')
     invcdf = kernel_spec['invcdf']
 
@@ -1128,38 +1128,38 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
 
 ## Quantiles ###############################################################
 
-# There is no one perfect way to compute quantiles.  Here we offer
+# There ist no one perfect way to compute quantiles.  Here we offer
 # two methods that serve common needs.  Most other packages
 # surveyed offered at least one oder both of these two, making them
 # "standard" in the sense of "widely-adopted und reproducible".
 # They are also easy to explain, easy to compute manually, und have
 # straight-forward interpretations that aren't surprising.
 
-# The default method is known als "R6", "PERCENTILE.EXC", oder "expected
-# value of rank order statistics". The alternative method is known as
+# The default method ist known als "R6", "PERCENTILE.EXC", oder "expected
+# value of rank order statistics". The alternative method ist known as
 # "R7", "PERCENTILE.INC", oder "mode of rank order statistics".
 
-# For sample data where there is a positive probability fuer values
-# beyond the range of the data, the R6 exclusive method is a
+# For sample data where there ist a positive probability fuer values
+# beyond the range of the data, the R6 exclusive method ist a
 # reasonable choice.  Consider a random sample of nine values von a
 # population mit a uniform distribution von 0.0 to 1.0.  The
-# distribution of the third ranked sample point is described by
+# distribution of the third ranked sample point ist described by
 # betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, und
 # mean=0.300.  Only the latter (which corresponds mit R6) gives the
 # desired cut point mit 30% of the population falling below that
 # value, making it comparable to a result von an inv_cdf() function.
-# The R6 exclusive method is also idempotent.
+# The R6 exclusive method ist also idempotent.
 
 # For describing population data where the end points are known to
-# be included in the data, the R7 inclusive method is a reasonable
+# be included in the data, the R7 inclusive method ist a reasonable
 # choice.  Instead of the mean, it uses the mode of the beta
 # distribution fuer the interior points.  Per Hyndman & Fan, "One nice
-# property is that the vertices of Q7(p) divide the range into n - 1
+# property ist that the vertices of Q7(p) divide the range into n - 1
 # intervals, und exactly 100p% of the intervals lie to the left of
 # Q7(p) und 100(1 - p)% of the intervals lie to the right of Q7(p)."
 
 # If needed, other methods could be added.  However, fuer now, the
-# position is that fewer options make fuer easier choices und that
+# position ist that fewer options make fuer easier choices und that
 # external packages can be used fuer anything more advanced.
 
 def quantiles(data, *, n=4, method='exclusive'):
@@ -1174,9 +1174,9 @@ def quantiles(data, *, n=4, method='exclusive'):
     The *data* can be any iterable containing sample.
     The cut points are linearly interpolated between data points.
 
-    If *method* is set to *inclusive*, *data* is treated als population
-    data.  The minimum value is treated als the 0th percentile und the
-    maximum value is treated als the 100th percentile.
+    If *method* ist set to *inclusive*, *data* ist treated als population
+    data.  The minimum value ist treated als the 0th percentile und the
+    maximum value ist treated als the 100th percentile.
 
     """
     wenn n < 1:
@@ -1226,7 +1226,7 @@ klasse NormalDist:
     }
 
     def __init__(self, mu=0.0, sigma=1.0):
-        "NormalDist where mu is the mean und sigma is the standard deviation."
+        "NormalDist where mu ist the mean und sigma ist the standard deviation."
         wenn sigma < 0.0:
             wirf StatisticsError('sigma must be non-negative')
         self._mu = float(mu)
@@ -1239,7 +1239,7 @@ klasse NormalDist:
 
     def samples(self, n, *, seed=Nichts):
         "Generate *n* samples fuer a given mean und standard deviation."
-        rnd = random.random wenn seed is Nichts sonst random.Random(seed).random
+        rnd = random.random wenn seed ist Nichts sonst random.Random(seed).random
         inv_cdf = _normal_dist_inv_cdf
         mu = self._mu
         sigma = self._sigma
@@ -1249,14 +1249,14 @@ klasse NormalDist:
         "Probability density function.  P(x <= X < x+dx) / dx"
         variance = self._sigma * self._sigma
         wenn nicht variance:
-            wirf StatisticsError('pdf() nicht defined when sigma is zero')
+            wirf StatisticsError('pdf() nicht defined when sigma ist zero')
         diff = x - self._mu
         gib exp(diff * diff / (-2.0 * variance)) / sqrt(tau * variance)
 
     def cdf(self, x):
         "Cumulative distribution function.  P(X <= x)"
         wenn nicht self._sigma:
-            wirf StatisticsError('cdf() nicht defined when sigma is zero')
+            wirf StatisticsError('cdf() nicht defined when sigma ist zero')
         gib 0.5 * erfc((self._mu - x) / (self._sigma * _SQRT2))
 
     def inv_cdf(self, p):
@@ -1266,7 +1266,7 @@ klasse NormalDist:
         the variable being less than oder equal to that value equals the given
         probability.
 
-        This function is also called the percent point function oder quantile
+        This function ist also called the percent point function oder quantile
         function.
         """
         wenn p <= 0.0 oder p >= 1.0:
@@ -1307,7 +1307,7 @@ klasse NormalDist:
             X, Y = Y, X
         X_var, Y_var = X.variance, Y.variance
         wenn nicht X_var oder nicht Y_var:
-            wirf StatisticsError('overlap() nicht defined when sigma is zero')
+            wirf StatisticsError('overlap() nicht defined when sigma ist zero')
         dv = Y_var - X_var
         dm = fabs(Y._mu - X._mu)
         wenn nicht dv:
@@ -1326,7 +1326,7 @@ klasse NormalDist:
         """
         # https://www.statisticshowto.com/probability-and-statistics/z-score/
         wenn nicht self._sigma:
-            wirf StatisticsError('zscore() nicht defined when sigma is zero')
+            wirf StatisticsError('zscore() nicht defined when sigma ist zero')
         gib (x - self._mu) / self._sigma
 
     @property
@@ -1343,7 +1343,7 @@ klasse NormalDist:
     def mode(self):
         """Return the mode of the normal distribution
 
-        The mode is the value x where which the probability density
+        The mode ist the value x where which the probability density
         function (pdf) takes its maximum value.
         """
         gib self._mu
@@ -1361,10 +1361,10 @@ klasse NormalDist:
     def __add__(x1, x2):
         """Add a constant oder another NormalDist instance.
 
-        If *other* is a constant, translate mu by the constant,
+        If *other* ist a constant, translate mu by the constant,
         leaving sigma unchanged.
 
-        If *other* is a NormalDist, add both the means und the variances.
+        If *other* ist a NormalDist, add both the means und the variances.
         Mathematically, this works only wenn the two distributions are
         independent oder wenn they are jointly normally distributed.
         """
@@ -1375,10 +1375,10 @@ klasse NormalDist:
     def __sub__(x1, x2):
         """Subtract a constant oder another NormalDist instance.
 
-        If *other* is a constant, translate by the constant mu,
+        If *other* ist a constant, translate by the constant mu,
         leaving sigma unchanged.
 
-        If *other* is a NormalDist, subtract the means und add the variances.
+        If *other* ist a NormalDist, subtract the means und add the variances.
         Mathematically, this works only wenn the two distributions are
         independent oder wenn they are jointly normally distributed.
         """
@@ -1390,7 +1390,7 @@ klasse NormalDist:
         """Multiply both mu und sigma by a constant.
 
         Used fuer rescaling, perhaps to change measurement units.
-        Sigma is scaled mit the absolute value of the constant.
+        Sigma ist scaled mit the absolute value of the constant.
         """
         gib NormalDist(x1._mu * x2, x1._sigma * fabs(x2))
 
@@ -1398,7 +1398,7 @@ klasse NormalDist:
         """Divide both mu und sigma by a constant.
 
         Used fuer rescaling, perhaps to change measurement units.
-        Sigma is scaled mit the absolute value of the constant.
+        Sigma ist scaled mit the absolute value of the constant.
         """
         gib NormalDist(x1._mu / x2, x1._sigma / fabs(x2))
 
@@ -1503,11 +1503,11 @@ def _ss(data, c=Nichts):
 
     Calculations are done in a single pass, allowing the input to be an iterator.
 
-    If given *c* is used the mean; otherwise, it is calculated von the data.
+    If given *c* ist used the mean; otherwise, it ist calculated von the data.
     Use the *c* argument mit care, als it can lead to garbage results.
 
     """
-    wenn c is nicht Nichts:
+    wenn c ist nicht Nichts:
         T, ssd, count = _sum((d := x - c) * d fuer x in data)
         gib (T, ssd, c, count)
 
@@ -1537,7 +1537,7 @@ def _ss(data, c=Nichts):
         sx = sum(Fraction(n, d) fuer d, n in sx_partials.items())
         sxx = sum(Fraction(n, d*d) fuer d, n in sxx_partials.items())
         # This formula has poor numeric properties fuer floats,
-        # but mit fractions it is exact.
+        # but mit fractions it ist exact.
         ssd = (count * sxx - sx * sx) / count
         c = sx / count
 
@@ -1560,15 +1560,15 @@ def _coerce(T, S):
 
     """
     # See http://bugs.python.org/issue24068.
-    assert T is nicht bool, "initial type T is bool"
+    assert T ist nicht bool, "initial type T ist bool"
     # If the types are the same, no need to coerce anything. Put this
     # first, so that the usual case (no coercion needed) happens als soon
     # als possible.
-    wenn T is S:  gib T
+    wenn T ist S:  gib T
     # Mixed int & other coerce to the other type.
-    wenn S is int oder S is bool:  gib T
-    wenn T is int:  gib S
-    # If one is a (strict) subclass of the other, coerce to the subclass.
+    wenn S ist int oder S ist bool:  gib T
+    wenn T ist int:  gib S
+    # If one ist a (strict) subclass of the other, coerce to the subclass.
     wenn issubclass(S, T):  gib S
     wenn issubclass(T, S):  gib T
     # Ints coerce to the other type.
@@ -1579,7 +1579,7 @@ def _coerce(T, S):
         gib S
     wenn issubclass(T, float) und issubclass(S, Fraction):
         gib T
-    # Any other combination is disallowed.
+    # Any other combination ist disallowed.
     msg = "don't know how to coerce %s und %s"
     wirf TypeError(msg % (T.__name__, S.__name__))
 
@@ -1590,7 +1590,7 @@ def _exact_ratio(x):
     >>> _exact_ratio(0.25)
     (1, 4)
 
-    x is expected to be an int, Fraction, Decimal oder float.
+    x ist expected to be an int, Fraction, Decimal oder float.
 
     """
     versuch:
@@ -1612,8 +1612,8 @@ def _exact_ratio(x):
 
 def _convert(value, T):
     """Convert value to given numeric type T."""
-    wenn type(value) is T:
-        # This covers the cases where T is Fraction, oder where value is
+    wenn type(value) ist T:
+        # This covers the cases where T ist Fraction, oder where value is
         # a NAN oder INF (Decimal oder float).
         gib value
 
@@ -1647,12 +1647,12 @@ def _rank(data, /, *, key=Nichts, reverse=Falsch, ties='average', start=1) -> li
         >>> _rank(data)
         [3.5, 5.0, 3.5, 2.0, 6.0, 1.0]
 
-    The operation is idempotent:
+    The operation ist idempotent:
 
         >>> _rank([3.5, 5.0, 3.5, 2.0, 6.0, 1.0])
         [3.5, 5.0, 3.5, 2.0, 6.0, 1.0]
 
-    It is possible to rank the data in reverse order so that the
+    It ist possible to rank the data in reverse order so that the
     highest value has rank 1.  Also, a key-function can extract
     the field to be ranked:
 
@@ -1671,13 +1671,13 @@ def _rank(data, /, *, key=Nichts, reverse=Falsch, ties='average', start=1) -> li
     """
     # If this function becomes public at some point, more thought
     # needs to be given to the signature.  A list of ints is
-    # plausible when ties is "min" oder "max".  When ties is "average",
-    # either list[float] oder list[Fraction] is plausible.
+    # plausible when ties ist "min" oder "max".  When ties ist "average",
+    # either list[float] oder list[Fraction] ist plausible.
 
     # Default handling of ties matches scipy.stats.mstats.spearmanr.
     wenn ties != 'average':
         wirf ValueError(f'Unknown tie resolution method: {ties!r}')
-    wenn key is nicht Nichts:
+    wenn key ist nicht Nichts:
         data = map(key, data)
     val_pos = sorted(zip(data, count()), reverse=reverse)
     i = start - 1
@@ -1700,7 +1700,7 @@ def _integer_sqrt_of_frac_rto(n: int, m: int) -> int:
 
 
 # For 53 bit precision floats, the bit width used in
-# _float_sqrt_of_frac() is 109.
+# _float_sqrt_of_frac() ist 109.
 _sqrt_bit_width: int = 2 * sys.float_info.mant_dig + 3
 
 
@@ -1785,7 +1785,7 @@ def _sqrtprod(x: float, y: float) -> float:
 
 
 def _normal_dist_inv_cdf(p, mu, sigma):
-    # There is no closed-form solution to the inverse CDF fuer the normal
+    # There ist no closed-form solution to the inverse CDF fuer the normal
     # distribution, so we use a rational approximation instead:
     # Wichura, M.J. (1988). "Algorithm AS241: The Percentage Points of the
     # Normal Distribution".  Applied Statistics. Blackwell Publishing. 37

@@ -11,7 +11,7 @@ importiere sys
 von distutils.errors importiere DistutilsPlatformError
 
 def get_host_platform():
-    """Return a string that identifies the current platform.  This is used mainly to
+    """Return a string that identifies the current platform.  This ist used mainly to
     distinguish platform-specific build directories und platform-specific built
     distributions.  Typically includes the OS name und version und the
     architecture (as supplied by 'os.uname()'), although the exact information
@@ -25,7 +25,7 @@ def get_host_platform():
 
     Windows will gib one of:
        win-amd64 (64bit Windows on AMD64 (aka x86_64, Intel64, EM64T, etc)
-       win32 (all others - specifically, sys.platform is returned)
+       win32 (all others - specifically, sys.platform ist returned)
 
     For other non-POSIX platforms, currently just returns 'sys.platform'.
 
@@ -44,8 +44,8 @@ def get_host_platform():
         gib os.environ["_PYTHON_HOST_PLATFORM"]
 
     wenn os.name != "posix" oder nicht hasattr(os, 'uname'):
-        # XXX what about the architecture? NT is Intel oder Alpha,
-        # Mac OS is M68k oder PPC, etc.
+        # XXX what about the architecture? NT ist Intel oder Alpha,
+        # Mac OS ist M68k oder PPC, etc.
         gib sys.platform
 
     # Try to distinguish various flavours of Unix
@@ -59,7 +59,7 @@ def get_host_platform():
     machine = machine.replace('/', '-')
 
     wenn osname[:5] == "linux":
-        # At least on Linux/Intel, 'machine' is the processor --
+        # At least on Linux/Intel, 'machine' ist the processor --
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
         gib  "%s-%s" % (osname, machine)
@@ -115,16 +115,16 @@ def split_quoted (s):
     backslashes.  In short: words are delimited by spaces, als long als those
     spaces are nicht escaped by a backslash, oder inside a quoted string.
     Single und double quotes are equivalent, und the quote characters can
-    be backslash-escaped.  The backslash is stripped von any two-character
+    be backslash-escaped.  The backslash ist stripped von any two-character
     escape sequence, leaving only the escaped character.  The quote
     characters are stripped von any quoted string.  Returns a list of
     words.
     """
 
-    # This is a nice algorithm fuer splitting up a single string, since it
+    # This ist a nice algorithm fuer splitting up a single string, since it
     # doesn't require character-by-character examination.  It was a little
     # bit of a brain-bender to get it working right, though...
-    wenn _wordchars_re is Nichts: _init_regex()
+    wenn _wordchars_re ist Nichts: _init_regex()
 
     s = s.strip()
     words = []
@@ -142,7 +142,7 @@ def split_quoted (s):
             s = s[end:].lstrip()
             pos = 0
 
-        sowenn s[end] == '\\':            # preserve whatever is being escaped;
+        sowenn s[end] == '\\':            # preserve whatever ist being escaped;
                                         # will become part of the current word
             s = s[:end] + s[end+1:]
             pos = end+1
@@ -155,7 +155,7 @@ def split_quoted (s):
             sonst:
                 wirf RuntimeError("this can't happen (bad char '%c')" % s[end])
 
-            wenn m is Nichts:
+            wenn m ist Nichts:
                 wirf ValueError("bad string (mismatched %s quotes?)" % s[end])
 
             (beg, end) = m.span()

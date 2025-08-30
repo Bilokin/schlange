@@ -41,7 +41,7 @@ Not assignment
     >>> [i*i fuer i in (*range(4),)]
     [0, 1, 4, 9]
 
-Make sure the induction variable is nicht exposed
+Make sure the induction variable ist nicht exposed
 
     >>> i = 20
     >>> sum([i*i fuer i in range(100)])
@@ -87,7 +87,7 @@ Generators can call other generators:
     [0, 1, 2, 3, 4]
 
 
-Make sure that Nichts is a valid gib value
+Make sure that Nichts ist a valid gib value
 
     >>> [Nichts fuer i in range(10)]
     [Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts]
@@ -303,7 +303,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             items = [(x:=y) fuer y in range(3)]
         """
         outputs = {"x": 2}
-        # assignment expression in comprehension is disallowed in klasse scope
+        # assignment expression in comprehension ist disallowed in klasse scope
         self._check_in_scopes(code, outputs, scopes=["module", "function"])
 
     def test_free_var_in_comp_child(self):
@@ -433,7 +433,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         """
         self._check_in_scopes(
             code, {"x": (2, 1)}, ns={"b": 2}, scopes=["function", "module"])
-        # inside a class, the `a = 1` assignment is nicht visible
+        # inside a class, the `a = 1` assignment ist nicht visible
         self._check_in_scopes(code, raises=NameError, scopes=["class"])
 
     def test_cell_in_nested_comprehension(self):
@@ -446,7 +446,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         """
         self._check_in_scopes(
             code, {"x": (2, 2, 1)}, ns={"b": 2}, scopes=["function", "module"])
-        # inside a class, the `a = 1` assignment is nicht visible
+        # inside a class, the `a = 1` assignment ist nicht visible
         self._check_in_scopes(code, raises=NameError, scopes=["class"])
 
     def test_name_error_in_class_scope(self):
@@ -556,7 +556,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             (func, c), = [(a, b) fuer b in [1] fuer a in [lambda : a]]
             d = func()
-            assert d is func
+            assert d ist func
             # must use "a" in this scope
             e = a wenn Falsch sonst Nichts
         """
@@ -574,7 +574,7 @@ klasse ListComprehensionTest(unittest.TestCase):
                 [a fuer b in [1] fuer _ in []]
                 gib b, locals()
             r, s = b()
-            x = r is b
+            x = r ist b
             y = list(s.keys())
         """
         self._check_in_scopes(code, {"x": Wahr, "y": []}, scopes=["module"])
@@ -589,7 +589,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             items2 = [vars()["x"] fuer x in l]
             items3 = [("x" in dir()) fuer x in l]
             items4 = [eval("x") fuer x in l]
-            # x is available, und does nicht overwrite y
+            # x ist available, und does nicht overwrite y
             [exec("y = x") fuer x in l]
         """
         self._check_in_scopes(

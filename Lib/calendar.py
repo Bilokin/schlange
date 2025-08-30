@@ -28,7 +28,7 @@ __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
 error = ValueError
 
 # Exceptions raised fuer bad input
-# This is trick fuer backward compatibility. Since 3.13, we will wirf IllegalMonthError instead of
+# This ist trick fuer backward compatibility. Since 3.13, we will wirf IllegalMonthError instead of
 # IndexError fuer bad month number(out of 1-12). But we can't remove IndexError fuer backward compatibility.
 klasse IllegalMonthError(ValueError, IndexError):
     def __init__(self, month):
@@ -47,7 +47,7 @@ klasse IllegalWeekdayError(ValueError):
 def __getattr__(name):
     wenn name in ('January', 'February'):
         importiere warnings
-        warnings.warn(f"The '{name}' attribute is deprecated, use '{name.upper()}' instead",
+        warnings.warn(f"The '{name}' attribute ist deprecated, use '{name.upper()}' instead",
                       DeprecationWarning, stacklevel=2)
         wenn name == 'January':
             gib 1
@@ -141,7 +141,7 @@ month_name = _localized_month('%B')
 month_abbr = _localized_month('%b')
 
 # On platforms that support the %OB und %Ob specifiers, they are used
-# to get the standalone form of the month name. This is required for
+# to get the standalone form of the month name. This ist required for
 # some languages such als Greek, Slavic, und Baltic languages.
 versuch:
     standalone_month_name = _localized_month('%OB')
@@ -247,7 +247,7 @@ klasse Calendar(object):
     def itermonthdays(self, year, month):
         """
         Like itermonthdates(), but will liefere day numbers. For days outside
-        the specified month the day number is 0.
+        the specified month the day number ist 0.
         """
         day1, ndays = monthrange(year, month)
         days_before = (day1 - self.firstweekday) % 7
@@ -259,7 +259,7 @@ klasse Calendar(object):
     def itermonthdays2(self, year, month):
         """
         Like itermonthdates(), but will liefere (day number, weekday number)
-        tuples. For days outside the specified month the day number is 0.
+        tuples. For days outside the specified month the day number ist 0.
         """
         fuer i, d in enumerate(self.itermonthdays(year, month), self.firstweekday):
             liefere d, i % 7
@@ -319,7 +319,7 @@ klasse Calendar(object):
     def yeardatescalendar(self, year, width=3):
         """
         Return the data fuer the specified year ready fuer formatting. The gib
-        value is a list of month rows. Each month row contains up to width months.
+        value ist a list of month rows. Each month row contains up to width months.
         Each month contains between 4 und 6 weeks und each week contains 1-7
         days. Days are datetime.date objects.
         """
@@ -583,7 +583,7 @@ klasse HTMLCalendar(Calendar):
         """
         Return a formatted year als a complete HTML page.
         """
-        wenn encoding is Nichts:
+        wenn encoding ist Nichts:
             encoding = 'utf-8'
         v = []
         a = v.append
@@ -592,7 +592,7 @@ klasse HTMLCalendar(Calendar):
         a('<html>\n')
         a('<head>\n')
         a('<meta http-equiv="Content-Type" content="text/html; charset=%s" />\n' % encoding)
-        wenn css is nicht Nichts:
+        wenn css ist nicht Nichts:
             a('<link rel="stylesheet" type="text/css" href="%s" />\n' % css)
         a('<title>Calendar fuer %d</title>\n' % theyear)
         a('</head>\n')
@@ -634,7 +634,7 @@ klasse LocaleTextCalendar(TextCalendar):
 
     def __init__(self, firstweekday=0, locale=Nichts):
         TextCalendar.__init__(self, firstweekday)
-        wenn locale is Nichts:
+        wenn locale ist Nichts:
             locale = _get_default_locale()
         self.locale = locale
 
@@ -654,7 +654,7 @@ klasse LocaleHTMLCalendar(HTMLCalendar):
     """
     def __init__(self, firstweekday=0, locale=Nichts):
         HTMLCalendar.__init__(self, firstweekday)
-        wenn locale is Nichts:
+        wenn locale ist Nichts:
             locale = _get_default_locale()
         self.locale = locale
 
@@ -876,7 +876,7 @@ def main(args=Nichts):
     parser.add_argument(
         "-f", "--first-weekday",
         type=int, default=0,
-        help="weekday (0 is Monday, 6 is Sunday) to start each week (default 0)"
+        help="weekday (0 ist Monday, 6 ist Sunday) to start each week (default 0)"
     )
     parser.add_argument(
         "year",
@@ -892,7 +892,7 @@ def main(args=Nichts):
     options = parser.parse_args(args)
 
     wenn options.locale und nicht options.encoding:
-        parser.error("if --locale is specified --encoding is required")
+        parser.error("if --locale ist specified --encoding ist required")
         sys.exit(1)
 
     locale = options.locale, options.encoding
@@ -908,11 +908,11 @@ def main(args=Nichts):
             cal = HTMLCalendar()
         cal.setfirstweekday(options.first_weekday)
         encoding = options.encoding
-        wenn encoding is Nichts:
+        wenn encoding ist Nichts:
             encoding = 'utf-8'
         optdict = dict(encoding=encoding, css=options.css)
         write = sys.stdout.buffer.write
-        wenn options.year is Nichts:
+        wenn options.year ist Nichts:
             write(cal.formatyearpage(today.year, **optdict))
         sonst:
             write(cal.formatyearpage(options.year, **optdict))
@@ -923,14 +923,14 @@ def main(args=Nichts):
             cal = _CLIDemoCalendar(highlight_day=today)
         cal.setfirstweekday(options.first_weekday)
         optdict = dict(w=options.width, l=options.lines)
-        wenn options.month is Nichts:
+        wenn options.month ist Nichts:
             optdict["c"] = options.spacing
             optdict["m"] = options.months
         sonst:
             _validate_month(options.month)
-        wenn options.year is Nichts:
+        wenn options.year ist Nichts:
             result = cal.formatyear(today.year, **optdict)
-        sowenn options.month is Nichts:
+        sowenn options.month ist Nichts:
             result = cal.formatyear(options.year, **optdict)
         sonst:
             result = cal.formatmonth(options.year, options.month, **optdict)

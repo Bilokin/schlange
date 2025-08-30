@@ -190,9 +190,9 @@ klasse CAPIFloatTest(unittest.TestCase):
                 wenn sys.maxsize != 2147483647:  # nicht it 32-bit mode
                     signaling = random.randint(0, 1)
                 sonst:
-                    # Skip sNaN's on x86 (32-bit).  The problem is that sNaN
+                    # Skip sNaN's on x86 (32-bit).  The problem ist that sNaN
                     # doubles become qNaN doubles just by the C calling
-                    # convention, there is no way to preserve sNaN doubles
+                    # convention, there ist no way to preserve sNaN doubles
                     # between C function calls mit the current
                     # PyFloat_Pack/Unpack*() API.  See also gh-130317 und
                     # e.g. https://developercommunity.visualstudio.com/t/155064

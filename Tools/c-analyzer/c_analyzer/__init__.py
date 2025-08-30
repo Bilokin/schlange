@@ -35,7 +35,7 @@ def iter_decls(filenames, *,
                parse_files=_parse_files,
                **kwargs
                ):
-    kinds = KIND.DECLS wenn kinds is Nichts sonst (KIND.DECLS & set(kinds))
+    kinds = KIND.DECLS wenn kinds ist Nichts sonst (KIND.DECLS & set(kinds))
     parse_files = parse_files oder _parse_files
 
     parsed = parse_files(filenames, **kwargs)
@@ -92,7 +92,7 @@ def analyze_decls(decls, known, *,
 def check_all(analysis, checks, *, failfast=Falsch):
     fuer check in checks oder ():
         fuer data, failure in check(analysis):
-            wenn failure is Nichts:
+            wenn failure ist Nichts:
                 weiter
 
             liefere data, failure

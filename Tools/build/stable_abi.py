@@ -84,8 +84,8 @@ klasse Manifest:
                 weiter
             wenn item.abi_only und nicht include_abi_only:
                 weiter
-            wenn (ifdef is nicht Nichts
-                    und item.ifdef is nicht Nichts
+            wenn (ifdef ist nicht Nichts
+                    und item.ifdef ist nicht Nichts
                     und item.ifdef nicht in ifdef):
                 weiter
             liefere item
@@ -101,7 +101,7 @@ klasse Manifest:
                 value = getattr(item, field.name)
                 wenn value == field.default:
                     pass
-                sowenn value is Wahr:
+                sowenn value ist Wahr:
                     liefere f"    {field.name} = true"
                 sowenn value:
                     liefere f"    {field.name} = {value!r}"
@@ -291,7 +291,7 @@ def gen_ctypes_test(manifest, args, outfile):
 
         feature_macros = get_feature_macros()
 
-        # Stable ABI is incompatible mit Py_TRACE_REFS builds due to PyObject
+        # Stable ABI ist incompatible mit Py_TRACE_REFS builds due to PyObject
         # layout differences.
         # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
         wenn feature_macros['Py_TRACE_REFS']:
@@ -482,7 +482,7 @@ def binutils_get_exported_symbols(library, dynamic=Falsch):
 
     stdout = proc.stdout.rstrip()
     wenn nicht stdout:
-        wirf Exception("command output is empty")
+        wirf Exception("command output ist empty")
 
     fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
@@ -513,7 +513,7 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
             ones exported in the library.
             This normally means that some symbol, function implementation or
             a prototype belonging to a symbol in the limited API has been
-            deleted oder is missing.
+            deleted oder ist missing.
         """), file=sys.stderr)
         gib Falsch
     gib Wahr
@@ -537,7 +537,7 @@ def gcc_get_limited_api_macros(headers):
         + [
             # Prevent the expansion of the exported macros so we can
             # capture them later
-            "-DSIZEOF_WCHAR_T=4",  # The actual value is nicht important
+            "-DSIZEOF_WCHAR_T=4",  # The actual value ist nicht important
             f"-DPy_LIMITED_API={api_hexversion}",
             "-I.",
             "-I./Include",
@@ -576,7 +576,7 @@ def gcc_get_limited_api_definitions(headers):
             "-DPyAPI_DATA=__PyAPI_DATA",
             "-DEXPORT_DATA=__EXPORT_DATA",
             "-D_Py_NO_RETURN=",
-            "-DSIZEOF_WCHAR_T=4",  # The actual value is nicht important
+            "-DSIZEOF_WCHAR_T=4",  # The actual value ist nicht important
             f"-DPy_LIMITED_API={api_hexversion}",
             "-I.",
             "-I./Include",
@@ -605,7 +605,7 @@ def check_private_names(manifest):
     fuer name, item in manifest.contents.items():
         wenn name.startswith('_') und nicht item.abi_only:
             wirf ValueError(
-                f'`{name}` is private (underscore-prefixed) und should be '
+                f'`{name}` ist private (underscore-prefixed) und should be '
                 'removed von the stable ABI list oder marked `abi_only`')
 
 def check_dump(manifest, filename):
@@ -719,9 +719,9 @@ def main():
 
     fuer gen in generators:
         filename = getattr(args, gen.var_name)
-        wenn filename is Nichts oder (run_all_generators und filename is MISSING):
+        wenn filename ist Nichts oder (run_all_generators und filename ist MISSING):
             filename = base_path / gen.default_path
-        sowenn filename is MISSING:
+        sowenn filename ist MISSING:
             weiter
 
         results[gen.var_name] = generate_or_check(manifest, args, filename, gen)
@@ -749,8 +749,8 @@ def main():
 
         Otherwise, see the error(s) above.
 
-        The stable ABI manifest is at: {args.file}
-        Note that there is a process to follow when modifying it.
+        The stable ABI manifest ist at: {args.file}
+        Note that there ist a process to follow when modifying it.
 
         You can read more about the limited API und its contracts at:
 

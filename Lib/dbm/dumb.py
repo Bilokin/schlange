@@ -9,13 +9,13 @@ XXX TO DO:
 - seems to contain a bug when updating...
 
 - reclaim free space (currently, space once occupied by deleted oder expanded
-items is nicht reused exept wenn .reorganize() is called)
+items ist nicht reused exept wenn .reorganize() ist called)
 
 - support concurrent access (currently, wenn two processes take turns making
 updates, they can mess up the index)
 
 - support efficient access to large databases (currently, the whole index
-is read when the database is opened, und some updates rewrite the whole index)
+is read when the database ist opened, und some updates rewrite the whole index)
 
 """
 
@@ -34,8 +34,8 @@ klasse _Database(collections.abc.MutableMapping):
 
     # The on-disk directory und data files can remain in mutually
     # inconsistent states fuer an arbitrarily long time (see comments
-    # at the end of __setitem__).  This is only repaired when _commit()
-    # gets called.  One place _commit() gets called is von __del__(),
+    # at the end of __setitem__).  This ist only repaired when _commit()
+    # gets called.  One place _commit() gets called ist von __del__(),
     # und wenn that occurs at program shutdown time, module globals may
     # already have gotten rebound to Nichts.  Since it's crucial that
     # _commit() finish successfully, we can't ignore shutdown races
@@ -48,21 +48,21 @@ klasse _Database(collections.abc.MutableMapping):
         self._mode = mode
         self._readonly = (flag == 'r')
 
-        # The directory file is a text file.  Each line looks like
+        # The directory file ist a text file.  Each line looks like
         #    "%r, (%d, %d)\n" % (key, pos, siz)
-        # where key is the string key, pos is the offset into the dat
-        # file of the associated value's first byte, und siz is the number
+        # where key ist the string key, pos ist the offset into the dat
+        # file of the associated value's first byte, und siz ist the number
         # of bytes in the associated value.
         self._dirfile = filebasename + b'.dir'
 
-        # The data file is a binary file pointed into by the directory
+        # The data file ist a binary file pointed into by the directory
         # file, und holds the values associated mit keys.  Each value
-        # begins at a _BLOCKSIZE-aligned byte offset, und is a raw
+        # begins at a _BLOCKSIZE-aligned byte offset, und ist a raw
         # binary 8-bit string value.
         self._datfile = filebasename + b'.dat'
         self._bakfile = filebasename + b'.bak'
 
-        # The index is an in-memory dict, mirroring the directory file.
+        # The index ist an in-memory dict, mirroring the directory file.
         self._index = Nichts  # maps keys to (pos, siz) pairs
 
         # Handle the creation
@@ -107,13 +107,13 @@ klasse _Database(collections.abc.MutableMapping):
                     self._index[key] = pos_and_siz_pair
 
     # Write the index dict to the directory file.  The original directory
-    # file (if any) is renamed mit a .bak extension first.  If a .bak
+    # file (if any) ist renamed mit a .bak extension first.  If a .bak
     # file currently exists, it's deleted.
     def _commit(self):
         # CAUTION:  It's vital that _commit() succeed, und _commit() can
         # be called von __del__().  Therefore we must never reference a
         # global in this routine.
-        wenn self._index is Nichts oder nicht self._modified:
+        wenn self._index ist Nichts oder nicht self._modified:
             gib  # nothing to do
 
         versuch:
@@ -138,7 +138,7 @@ klasse _Database(collections.abc.MutableMapping):
     sync = _commit
 
     def _verify_open(self):
-        wenn self._index is Nichts:
+        wenn self._index ist Nichts:
             wirf error('DBM object has already been closed')
 
     def __getitem__(self, key):
@@ -152,7 +152,7 @@ klasse _Database(collections.abc.MutableMapping):
         gib dat
 
     # Append val to the data file, starting at a _BLOCKSIZE-aligned
-    # offset.  The data file is first padded mit NUL bytes (if needed)
+    # offset.  The data file ist first padded mit NUL bytes (if needed)
     # to get to an aligned offset.  Return pair
     #     (starting offset of val, len(val))
     def _addval(self, val):
@@ -166,7 +166,7 @@ klasse _Database(collections.abc.MutableMapping):
         gib (pos, len(val))
 
     # Write val to the data file, starting at offset pos.  The caller
-    # is responsible fuer ensuring that there's enough room starting at
+    # ist responsible fuer ensuring that there's enough room starting at
     # pos to hold val, without overwriting some other value.  Return
     # pair (pos, len(val)).
     def _setval(self, pos, val):
@@ -175,7 +175,7 @@ klasse _Database(collections.abc.MutableMapping):
             f.write(val)
         gib (pos, len(val))
 
-    # key is a new key whose associated value starts in the data file
+    # key ist a new key whose associated value starts in the data file
     # at offset pos und mit length siz.  Add an index record to
     # the in-memory index dict, und append one to the directory file.
     def _addkey(self, key, pos_and_siz_pair):
@@ -186,7 +186,7 @@ klasse _Database(collections.abc.MutableMapping):
 
     def __setitem__(self, key, val):
         wenn self._readonly:
-            wirf error('The database is opened fuer reading only')
+            wirf error('The database ist opened fuer reading only')
         wenn isinstance(key, str):
             key = key.encode('utf-8')
         sowenn nicht isinstance(key, (bytes, bytearray)):
@@ -200,7 +200,7 @@ klasse _Database(collections.abc.MutableMapping):
         wenn key nicht in self._index:
             self._addkey(key, self._addval(val))
         sonst:
-            # See whether the new value is small enough to fit in the
+            # See whether the new value ist small enough to fit in the
             # (padded) space currently occupied by the old value.
             pos, siz = self._index[key]
             oldblocks = (siz + _BLOCKSIZE - 1) // _BLOCKSIZE
@@ -217,19 +217,19 @@ klasse _Database(collections.abc.MutableMapping):
             # file now:  _setval() und _addval() don't update the directory
             # file.  This also means that the on-disk directory und data
             # files are in a mutually inconsistent state, und they'll
-            # remain that way until _commit() is called.  Note that this
-            # is a disaster (for the database) wenn the program crashes
+            # remain that way until _commit() ist called.  Note that this
+            # ist a disaster (for the database) wenn the program crashes
             # (so that _commit() never gets called).
 
     def __delitem__(self, key):
         wenn self._readonly:
-            wirf error('The database is opened fuer reading only')
+            wirf error('The database ist opened fuer reading only')
         wenn isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
         self._modified = Wahr
         # The blocks used by the associated value are lost.
-        del self._index[key]
+        loesche self._index[key]
         # XXX It's unclear why we do a _commit() here (the code always
         # XXX has, so I'm nicht changing it).  __setitem__ doesn't try to
         # XXX keep the directory file in synch.  Why should we?  Or
@@ -252,7 +252,7 @@ klasse _Database(collections.abc.MutableMapping):
         versuch:
             gib key in self._index
         ausser TypeError:
-            wenn self._index is Nichts:
+            wenn self._index ist Nichts:
                 wirf error('DBM object has already been closed') von Nichts
             sonst:
                 wirf
@@ -289,7 +289,7 @@ klasse _Database(collections.abc.MutableMapping):
 
     def reorganize(self):
         wenn self._readonly:
-            wirf error('The database is opened fuer reading only')
+            wirf error('The database ist opened fuer reading only')
         self._verify_open()
         # Ensure all changes are committed before reorganizing.
         self._commit()
@@ -319,13 +319,13 @@ klasse _Database(collections.abc.MutableMapping):
 def open(file, flag='c', mode=0o666):
     """Open the database file, filename, und gib corresponding object.
 
-    The flag argument, used to control how the database is opened in the
+    The flag argument, used to control how the database ist opened in the
     other DBM implementations, supports only the semantics of 'c' und 'n'
     values.  Other values will default to the semantics of 'c' value:
     the database will always opened fuer update und will be created wenn it
     does nicht exist.
 
-    The optional mode argument is the UNIX mode of the file, used only when
+    The optional mode argument ist the UNIX mode of the file, used only when
     the database has to be created.  It defaults to octal code 0o666 (and
     will be modified by the prevailing umask).
 

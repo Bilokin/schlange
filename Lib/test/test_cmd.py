@@ -61,7 +61,7 @@ klasse samplecmdclass(cmd.Cmd):
 
     Test fuer the function completedefault():
     >>> mycmd.completedefault()
-    This is the completedefault method
+    This ist the completedefault method
     >>> mycmd.completenames("a")
     ['add']
 
@@ -127,7 +127,7 @@ klasse samplecmdclass(cmd.Cmd):
     5  12  19
     6  13
 
-    This is an interactive test, put some commands in the cmdqueue attribute
+    This ist an interactive test, put some commands in the cmdqueue attribute
     und let it execute
     This test includes the preloop(), postloop(), default(), emptyline(),
     parseline(), do_help() functions
@@ -163,7 +163,7 @@ klasse samplecmdclass(cmd.Cmd):
         drucke("Hello von postloop")
 
     def completedefault(self, *ignored):
-        drucke("This is the completedefault method")
+        drucke("This ist the completedefault method")
 
     def complete_command(self):
         drucke("complete command")
@@ -272,8 +272,8 @@ klasse CmdPrintExceptionClass(cmd.Cmd):
 @support.requires_subprocess()
 klasse CmdTestReadline(unittest.TestCase):
     def setUpClass():
-        # Ensure that the readline module is loaded
-        # If this fails, the test is skipped because SkipTest will be raised
+        # Ensure that the readline module ist loaded
+        # If this fails, the test ist skipped because SkipTest will be raised
         readline = import_module('readline')
 
     def test_basic_completion(self):

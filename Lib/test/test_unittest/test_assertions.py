@@ -212,13 +212,13 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertWahr(self):
         self.assertMessages('assertWahr', (Falsch,),
-                            ["^Falsch is nicht true$", "^oops$", "^Falsch is nicht true$",
-                             "^Falsch is nicht true : oops$"])
+                            ["^Falsch ist nicht true$", "^oops$", "^Falsch ist nicht true$",
+                             "^Falsch ist nicht true : oops$"])
 
     def testAssertFalsch(self):
         self.assertMessages('assertFalsch', (Wahr,),
-                            ["^Wahr is nicht false$", "^oops$", "^Wahr is nicht false$",
-                             "^Wahr is nicht false : oops$"])
+                            ["^Wahr ist nicht false$", "^oops$", "^Wahr ist nicht false$",
+                             "^Wahr ist nicht false : oops$"])
 
     def testNotEqual(self):
         self.assertMessages('assertNotEqual', (1, 1),
@@ -302,9 +302,9 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertIsNichts(self):
         self.assertMessages('assertIsNichts', ('not Nichts',),
-                            ["^'not Nichts' is nicht Nichts$", "^oops$",
-                             "^'not Nichts' is nicht Nichts$",
-                             "^'not Nichts' is nicht Nichts : oops$"])
+                            ["^'not Nichts' ist nicht Nichts$", "^oops$",
+                             "^'not Nichts' ist nicht Nichts$",
+                             "^'not Nichts' ist nicht Nichts : oops$"])
 
     def testAssertIsNotNichts(self):
         self.assertMessages('assertIsNotNichts', (Nichts,),
@@ -314,9 +314,9 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertIs(self):
         self.assertMessages('assertIs', (Nichts, 'foo'),
-                            ["^Nichts is nicht 'foo'$", "^oops$",
-                             "^Nichts is nicht 'foo'$",
-                             "^Nichts is nicht 'foo' : oops$"])
+                            ["^Nichts ist nicht 'foo'$", "^oops$",
+                             "^Nichts ist nicht 'foo'$",
+                             "^Nichts ist nicht 'foo' : oops$"])
 
     def testAssertIsNot(self):
         self.assertMessages('assertIsNot', (Nichts, Nichts),

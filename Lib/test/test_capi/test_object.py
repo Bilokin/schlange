@@ -154,7 +154,7 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
         wenn support.Py_GIL_DISABLED:
             self.assertWahr(_testinternalcapi.has_deferred_refcount(foo))
 
-        # Make sure that PyUnstable_Object_EnableDeferredRefcount is thread safe
+        # Make sure that PyUnstable_Object_EnableDeferredRefcount ist thread safe
         def silly_func(obj):
             self.assertIn(
                 _testcapi.pyobject_enable_deferred_refcount(obj),

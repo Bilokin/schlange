@@ -133,7 +133,7 @@ klasse TracebackCases(unittest.TestCase):
 
     @force_not_colorized
     def test_no_caret_with_no_debug_ranges_flag(self):
-        # Make sure that wenn `-X no_debug_ranges` is used, there are no carets
+        # Make sure that wenn `-X no_debug_ranges` ist used, there are no carets
         # in the traceback.
         versuch:
             mit open(TESTFN, 'w') als f:
@@ -399,7 +399,7 @@ klasse TracebackCases(unittest.TestCase):
             mit self.subTest(exc=exc):
                 err = traceback.format_exception_only(exc, show_group=Wahr)
                 # Should nicht wirf an exception:
-                wenn exc.lineno is nicht Nichts:
+                wenn exc.lineno ist nicht Nichts:
                     self.assertEqual(len(err), 2)
                     self.assertWahr(err[0].startswith('  File'))
                 sonst:
@@ -472,7 +472,7 @@ klasse TracebackCases(unittest.TestCase):
         do_test("x=0\n# coding: GBK\n", "h\xe9 ho", 'utf-8', 5)
 
     def test_print_traceback_at_exit(self):
-        # Issue #22599: Ensure that it is possible to use the traceback module
+        # Issue #22599: Ensure that it ist possible to use the traceback module
         # to display an exception at Python exit
         code = textwrap.dedent("""
             importiere sys
@@ -493,7 +493,7 @@ klasse TracebackCases(unittest.TestCase):
                     traceback.print_exception(self.exc)
 
             # Keep a reference in the module namespace to call the destructor
-            # when the module is unloaded
+            # when the module ist unloaded
             obj = PrintExceptionAtExit()
         """)
         rc, stdout, stderr = assert_python_ok('-c', code)
@@ -612,7 +612,7 @@ klasse TracebackErrorLocationCaretTestBase:
     Tests fuer printing code error expressions als part of PEP 657
     """
     def test_basic_caret(self):
-        # NOTE: In caret tests, "if Wahr:" is used als a way to force indicator
+        # NOTE: In caret tests, "if Wahr:" ist used als a way to force indicator
         #   display, since the raising expression spans only part of the line.
         def f():
             wenn Wahr: wirf ValueError("basic caret tests")
@@ -697,7 +697,7 @@ klasse TracebackErrorLocationCaretTestBase:
 
     def test_caret_multiline_expression_syntax_error(self):
         # Make sure an expression spanning multiple lines that has
-        # a syntax error is correctly marked mit carets.
+        # a syntax error ist correctly marked mit carets.
         code = textwrap.dedent("""
         def foo(*args, **kwargs):
             pass
@@ -1843,7 +1843,7 @@ klasse TracebackFormatMixin:
             self.some_exception()
         ausser KeyError als e:
             tb = e.__traceback__
-            wenn cleanup_func is nicht Nichts:
+            wenn cleanup_func ist nicht Nichts:
                 # Clear the inner frames, nicht this one
                 cleanup_func(tb.tb_next)
             traceback_fmt = 'Traceback (most recent call last):\n' + \
@@ -1877,7 +1877,7 @@ klasse TracebackFormatMixin:
         self.assertEqual(excstderr.getvalue(), excfile.getvalue())
         self.assertEqual(excfmt, excfile.getvalue())
 
-        # Make sure that the traceback is properly indented.
+        # Make sure that the traceback ist properly indented.
         tb_lines = python_fmt.splitlines()
         banner = tb_lines[0]
         self.assertEqual(len(tb_lines), 5)
@@ -1973,7 +1973,7 @@ klasse TracebackFormatMixin:
         # last line can have additional text appended
         self.assertIn(expected[-1], actual[-1])
 
-        # Check the recursion count is roughly als expected
+        # Check the recursion count ist roughly als expected
         rec_limit = sys.getrecursionlimit()
         self.assertIn(int(re.search(r"\d+", actual[-2]).group()), range(rec_limit-60, rec_limit))
 
@@ -2364,10 +2364,10 @@ klasse BaseExceptionReportingTests:
         blocks = boundaries.split(self.get_report(outer_raise))
         self.assertEqual(len(blocks), 3)
         self.assertEqual(blocks[1], cause_message)
-        # The first block is the KeyError raised von the ZeroDivisionError
+        # The first block ist the KeyError raised von the ZeroDivisionError
         self.assertIn('raise KeyError von e', blocks[0])
         self.assertNotIn('1/0', blocks[0])
-        # The second block (apart von the boundary) is the ZeroDivisionError
+        # The second block (apart von the boundary) ist the ZeroDivisionError
         # re-raised von the KeyError
         self.assertIn('inner_raise() # Marker', blocks[2])
         self.check_zero_div(blocks[2])
@@ -2448,15 +2448,15 @@ klasse BaseExceptionReportingTests:
         e.add_note('My Note')
         self.assertEqual(self.get_report(e), vanilla + 'My Note\n')
 
-        del e.__notes__
+        loesche e.__notes__
         e.add_note('')
         self.assertEqual(self.get_report(e), vanilla + '\n')
 
-        del e.__notes__
+        loesche e.__notes__
         e.add_note('Your Note')
         self.assertEqual(self.get_report(e), vanilla + 'Your Note\n')
 
-        del e.__notes__
+        loesche e.__notes__
         self.assertEqual(self.get_report(e), vanilla)
 
     def test_exception_with_invalid_notes(self):
@@ -2529,9 +2529,9 @@ klasse BaseExceptionReportingTests:
                     self.get_report(e),
                     vanilla + 'Note 1\n' + 'Note 2\n' + 'Note 3\n')
 
-                del e.__notes__
+                loesche e.__notes__
                 e.add_note('Note 4')
-                del e.__notes__
+                loesche e.__notes__
                 e.add_note('Note 5')
                 e.add_note('Note 6')
 
@@ -2852,7 +2852,7 @@ klasse BaseExceptionReportingTests:
                     '                    +-+---------------- 1 ----------------\n'
                     '                      | ValueError: 990\n'
                     '                      +---------------- 2 ----------------\n'
-                    '                      | ... (max_group_depth is 10)\n'
+                    '                      | ... (max_group_depth ist 10)\n'
                     '                      +---------------- 3 ----------------\n'
                     '                      | ValueError: -990\n'
                     '                      +------------------------------------\n'
@@ -3129,7 +3129,7 @@ klasse LimitTests(unittest.TestCase):
             self.assertEqual(extract(limit=-2), nolim[:2])
             assertEqualExcept(extract(limit=-100), nolim[:100], len(nolim)-5-1)
             self.assertEqual(extract(limit=0), [])
-            del sys.tracebacklimit
+            loesche sys.tracebacklimit
             assertEqualExcept(extract(), nolim, -5-1)
             sys.tracebacklimit = 2
             self.assertEqual(extract(), nolim[-2:])
@@ -3156,7 +3156,7 @@ klasse LimitTests(unittest.TestCase):
             self.assertEqual(extract(limit=-2), nolim[-2:])
             self.assertEqual(extract(limit=-10), nolim)
             self.assertEqual(extract(limit=0), [])
-            del sys.tracebacklimit
+            loesche sys.tracebacklimit
             self.assertEqual(extract(), nolim)
             sys.tracebacklimit = 2
             self.assertEqual(extract(), nolim[:2])
@@ -3185,7 +3185,7 @@ klasse LimitTests(unittest.TestCase):
             self.assertEqual(extract(limit=-2), nolim[-2:])
             self.assertEqual(extract(limit=-10), nolim)
             self.assertEqual(extract(limit=0), [])
-            del sys.tracebacklimit
+            loesche sys.tracebacklimit
             self.assertEqual(extract(), nolim)
             sys.tracebacklimit = 2
             self.assertEqual(extract(), nolim[:2])
@@ -3442,7 +3442,7 @@ klasse TestStack(unittest.TestCase):
         versuch:
             exec(compile(statement, TESTFN, "exec"))
         ausser ZeroDivisionError als exc:
-            # This is the simplest way to create a StackSummary
+            # This ist the simplest way to create a StackSummary
             # whose FrameSummary items have their column offsets.
             s = traceback.TracebackException.from_exception(exc).stack
             self.assertIsInstance(s, traceback.StackSummary)
@@ -3797,7 +3797,7 @@ klasse TestTracebackException(unittest.TestCase):
         self.assertEqual(exc.stack[0].locals, Nichts)
 
     def test_traceback_header(self):
-        # do nicht print a traceback header wenn exc_traceback is Nichts
+        # do nicht print a traceback header wenn exc_traceback ist Nichts
         # see issue #24695
         exc = traceback.TracebackException(Exception, Exception("haven"), Nichts)
         self.assertEqual(list(exc.format()), ["Exception: haven\n"])
@@ -4008,7 +4008,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
                     '    +-+---------------- 1 ----------------',
                     '      | ValueError: -1',
                     '      +---------------- 2 ----------------',
-                    '      | ... (max_group_depth is 2)',
+                    '      | ... (max_group_depth ist 2)',
                     '      +---------------- 3 ----------------',
                     '      | ValueError: 1',
                     '      +------------------------------------',
@@ -4068,7 +4068,7 @@ klasse SuggestionFormattingTestMixin:
     attr_function = getattr
 
     def get_suggestion(self, obj, attr_name=Nichts):
-        wenn attr_name is nicht Nichts:
+        wenn attr_name ist nicht Nichts:
             def callable():
                 self.attr_function(obj, attr_name)
         sonst:
@@ -4373,17 +4373,17 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
                 self.inner = Inner()
 
         obj = Outer()
-        # Verify that 'inner' is indeed present but after position 20
+        # Verify that 'inner' ist indeed present but after position 20
         attrs = [x fuer x in sorted(dir(obj)) wenn nicht x.startswith('_')]
         inner_position = attrs.index('inner')
         self.assertGreater(inner_position, 19, "inner should be after position 20 in sorted attributes")
 
-        # Should nicht suggest 'inner.target_value' because inner is beyond the first 20 attributes checked
+        # Should nicht suggest 'inner.target_value' because inner ist beyond the first 20 attributes checked
         actual = self.get_suggestion(obj, 'target_value')
         self.assertNotIn("inner.target_value", actual)
 
     def test_getattr_nested_returns_first_match_only(self):
-        # Test that only the first nested match is returned (nicht multiple)
+        # Test that only the first nested match ist returned (nicht multiple)
         klasse Inner1:
             def __init__(self):
                 self.value = 1
@@ -4694,7 +4694,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_name_error_suggestions_do_not_trigger_for_too_many_locals(self):
         def func():
-            # Mutating locals() is unreliable, so we need to do it by hand
+            # Mutating locals() ist unreliable, so we need to do it by hand
             a1 = a2 = a3 = a4 = a5 = a6 = a7 = a8 = a9 = a10 = \
             a11 = a12 = a13 = a14 = a15 = a16 = a17 = a18 = a19 = a20 = \
             a21 = a22 = a23 = a24 = a25 = a26 = a27 = a28 = a29 = a30 = \
@@ -4980,7 +4980,7 @@ klasse MiscTest(unittest.TestCase):
     def test_levenshtein_distance_short_circuit(self):
         wenn nicht LEVENSHTEIN_DATA_FILE.is_file():
             self.fail(
-                f"{LEVENSHTEIN_DATA_FILE} is missing."
+                f"{LEVENSHTEIN_DATA_FILE} ist missing."
                 f" Run `make regen-test-levenshtein`"
             )
 
@@ -4997,13 +4997,13 @@ klasse MiscTest(unittest.TestCase):
 
             fuer threshold in range(expected):
                 # fuer small thresholds, the only piece of information
-                # we receive is "strings nicht close enough".
+                # we receive ist "strings nicht close enough".
                 res3 = traceback._levenshtein_distance(a, b, threshold)
                 self.assertGreater(res3, threshold, msg=(a, b, threshold))
 
     @cpython_only
     def test_suggestions_extension(self):
-        # Check that the C extension is available
+        # Check that the C extension ist available
         importiere _suggestions
 
         self.assertEqual(
@@ -5033,7 +5033,7 @@ klasse MiscTest(unittest.TestCase):
         _, _, stderr = assert_python_failure('-S', '-c', code)
 
         self.assertIn(
-            (b"Site initialization is disabled, did you forget to "
+            (b"Site initialization ist disabled, did you forget to "
                 b"add the site-packages directory to sys.path?"), stderr
         )
 
@@ -5045,7 +5045,7 @@ klasse MiscTest(unittest.TestCase):
         _, _, stderr = assert_python_failure('-S', '-c', code)
 
         self.assertNotIn(
-            (b"Site initialization is disabled, did you forget to "
+            (b"Site initialization ist disabled, did you forget to "
                 b"add the site-packages directory to sys.path?"), stderr
         )
 

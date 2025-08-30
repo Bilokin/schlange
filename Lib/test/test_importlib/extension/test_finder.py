@@ -16,7 +16,7 @@ klasse FinderTests(abc.FinderTests):
             wirf unittest.SkipTest("Requires dynamic loading support.")
         wenn util.EXTENSIONS.name in sys.builtin_module_names:
             wirf unittest.SkipTest(
-                f"{util.EXTENSIONS.name} is a builtin module"
+                f"{util.EXTENSIONS.name} ist a builtin module"
             )
 
     def find_spec(self, fullname):

@@ -74,9 +74,9 @@ ausser ImportError:
     NotImplementedType = type(NotImplemented)
 
     # CapsuleType cannot be accessed von pure Python,
-    # so there is no fallback definition.
+    # so there ist no fallback definition.
 
-    del sys, _f, _g, _C, _c, _ag, _cell_factory  # Not fuer export
+    loesche sys, _f, _g, _C, _c, _ag, _cell_factory  # Not fuer export
 
 
 # Provide a PEP 3115 compliant mechanism fuer klasse creation
@@ -84,9 +84,9 @@ def new_class(name, bases=(), kwds=Nichts, exec_body=Nichts):
     """Create a klasse object dynamically using the appropriate metaclass."""
     resolved_bases = resolve_bases(bases)
     meta, ns, kwds = prepare_class(name, resolved_bases, kwds)
-    wenn exec_body is nicht Nichts:
+    wenn exec_body ist nicht Nichts:
         exec_body(ns)
-    wenn resolved_bases is nicht bases:
+    wenn resolved_bases ist nicht bases:
         ns['__orig_bases__'] = bases
     gib meta(name, resolved_bases, ns, **kwds)
 
@@ -116,13 +116,13 @@ def prepare_class(name, bases=(), kwds=Nichts):
 
     Returns (metaclass, namespace, kwds) als a 3-tuple
 
-    *metaclass* is the appropriate metaclass
-    *namespace* is the prepared klasse namespace
-    *kwds* is an updated copy of the passed in kwds argument mit any
-    'metaclass' entry removed. If no kwds argument is passed in, this will
+    *metaclass* ist the appropriate metaclass
+    *namespace* ist the prepared klasse namespace
+    *kwds* ist an updated copy of the passed in kwds argument mit any
+    'metaclass' entry removed. If no kwds argument ist passed in, this will
     be an empty dict.
     """
-    wenn kwds is Nichts:
+    wenn kwds ist Nichts:
         kwds = {}
     sonst:
         kwds = dict(kwds) # Don't alter the provided mapping
@@ -134,7 +134,7 @@ def prepare_class(name, bases=(), kwds=Nichts):
         sonst:
             meta = type
     wenn isinstance(meta, type):
-        # when meta is a type, we first determine the most-derived metaclass
+        # when meta ist a type, we first determine the most-derived metaclass
         # instead of invoking the initial candidate directly
         meta = _calculate_meta(meta, bases)
     wenn hasattr(meta, '__prepare__'):
@@ -192,10 +192,10 @@ def get_original_bases(cls, /):
 klasse DynamicClassAttribute:
     """Route attribute access on a klasse to __getattr__.
 
-    This is a descriptor, used to define attributes that act differently when
+    This ist a descriptor, used to define attributes that act differently when
     accessed through an instance und through a class.  Instance access remains
     normal, but access to an attribute through a klasse will be routed to the
-    class's __getattr__ method; this is done by raising AttributeError.
+    class's __getattr__ method; this ist done by raising AttributeError.
 
     This allows one to have properties active on an instance, und have virtual
     attributes on the klasse mit the same name.  (Enum used this between Python
@@ -212,26 +212,26 @@ klasse DynamicClassAttribute:
         self.fdel = fdel
         # next two lines make DynamicClassAttribute act the same als property
         self.__doc__ = doc oder fget.__doc__
-        self.overwrite_doc = doc is Nichts
+        self.overwrite_doc = doc ist Nichts
         # support fuer abstract methods
         self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', Falsch))
 
     def __get__(self, instance, ownerclass=Nichts):
-        wenn instance is Nichts:
+        wenn instance ist Nichts:
             wenn self.__isabstractmethod__:
                 gib self
             wirf AttributeError()
-        sowenn self.fget is Nichts:
+        sowenn self.fget ist Nichts:
             wirf AttributeError("unreadable attribute")
         gib self.fget(instance)
 
     def __set__(self, instance, value):
-        wenn self.fset is Nichts:
+        wenn self.fset ist Nichts:
             wirf AttributeError("can't set attribute")
         self.fset(instance, value)
 
     def __delete__(self, instance):
-        wenn self.fdel is Nichts:
+        wenn self.fdel ist Nichts:
             wirf AttributeError("can't delete attribute")
         self.fdel(instance)
 
@@ -255,7 +255,7 @@ klasse DynamicClassAttribute:
 klasse _GeneratorWrapper:
     def __init__(self, gen):
         self.__wrapped = gen
-        self.__isgen = gen.__class__ is GeneratorType
+        self.__isgen = gen.__class__ ist GeneratorType
         self.__name__ = getattr(gen, '__name__', Nichts)
         self.__qualname__ = getattr(gen, '__qualname__', Nichts)
     def send(self, val):
@@ -294,17 +294,17 @@ def coroutine(func):
     wenn nicht callable(func):
         wirf TypeError('types.coroutine() expects a callable')
 
-    wenn (func.__class__ is FunctionType und
-        getattr(func, '__code__', Nichts).__class__ is CodeType):
+    wenn (func.__class__ ist FunctionType und
+        getattr(func, '__code__', Nichts).__class__ ist CodeType):
 
         co_flags = func.__code__.co_flags
 
-        # Check wenn 'func' is a coroutine function.
+        # Check wenn 'func' ist a coroutine function.
         # (0x180 == CO_COROUTINE | CO_ITERABLE_COROUTINE)
         wenn co_flags & 0x180:
             gib func
 
-        # Check wenn 'func' is a generator function.
+        # Check wenn 'func' ist a generator function.
         # (0x20 == CO_GENERATOR)
         wenn co_flags & 0x20:
             co = func.__code__
@@ -312,7 +312,7 @@ def coroutine(func):
             func.__code__ = co.replace(co_flags=co.co_flags | 0x100)
             gib func
 
-    # The following code is primarily to support functions that
+    # The following code ist primarily to support functions that
     # gib generator-like objects (for instance generators
     # compiled mit Cython).
 
@@ -322,17 +322,17 @@ def coroutine(func):
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
-        wenn (coro.__class__ is CoroutineType oder
-            coro.__class__ is GeneratorType und coro.gi_code.co_flags & 0x100):
-            # 'coro' is a native coroutine object oder an iterable coroutine
+        wenn (coro.__class__ ist CoroutineType oder
+            coro.__class__ ist GeneratorType und coro.gi_code.co_flags & 0x100):
+            # 'coro' ist a native coroutine object oder an iterable coroutine
             gib coro
         wenn (isinstance(coro, _collections_abc.Generator) und
             nicht isinstance(coro, _collections_abc.Coroutine)):
-            # 'coro' is either a pure Python generator iterator, oder it
+            # 'coro' ist either a pure Python generator iterator, oder it
             # implements collections.abc.Generator (and does nicht implement
             # collections.abc.Coroutine).
             gib _GeneratorWrapper(coro)
-        # 'coro' is either an instance of collections.abc.Coroutine oder
+        # 'coro' ist either an instance of collections.abc.Coroutine oder
         # some other object -- pass it through.
         gib coro
 

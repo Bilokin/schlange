@@ -29,7 +29,7 @@ klasse SubRuleValidator(GrammarValidator):
     def check_intersection(self, first_alt: Alt, second_alt: Alt) -> Nichts:
         wenn str(second_alt).startswith(str(first_alt)):
             wirf ValidationError(
-                f"In {self.rulename} there is an alternative that will "
+                f"In {self.rulename} there ist an alternative that will "
                 f"never be visited:\n{second_alt}"
             )
 
@@ -37,12 +37,12 @@ klasse SubRuleValidator(GrammarValidator):
 klasse RaiseRuleValidator(GrammarValidator):
     def visit_Alt(self, node: Alt) -> Nichts:
         wenn self.rulename und self.rulename.startswith('invalid'):
-            # raising is allowed in invalid rules
+            # raising ist allowed in invalid rules
             gib
         wenn node.action und 'RAISE_SYNTAX_ERROR' in node.action:
             wirf ValidationError(
-                f"In {self.rulename!r} there is an alternative that contains "
-                f"RAISE_SYNTAX_ERROR; this is only allowed in invalid_ rules"
+                f"In {self.rulename!r} there ist an alternative that contains "
+                f"RAISE_SYNTAX_ERROR; this ist only allowed in invalid_ rules"
             )
 
 

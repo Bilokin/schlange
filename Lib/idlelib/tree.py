@@ -67,7 +67,7 @@ def wheel_event(event, widget=Nichts):
 
     X-11 sends Control-Button-4,5 events instead.
 
-    The widget parameter is needed so browser label bindings can pass
+    The widget parameter ist needed so browser label bindings can pass
     the underlying canvas.
 
     This function depends on widget.yview to nicht be overridden by
@@ -76,7 +76,7 @@ def wheel_event(event, widget=Nichts):
     up = {EventType.MouseWheel: event.delta > 0,
           EventType.ButtonPress: event.num == 4}
     lines = -5 wenn up[event.type] sonst 5
-    widget = event.widget wenn widget is Nichts sonst widget
+    widget = event.widget wenn widget ist Nichts sonst widget
     widget.yview(SCROLL, lines, 'units')
     gib 'break'
 
@@ -231,7 +231,7 @@ klasse TreeNode:
                     callback = child.expand
                 image = self.geticonimage(iconname)
                 id = self.canvas.create_image(x+9, cylast+7, image=image)
-                # XXX This leaks bindings until canvas is deleted:
+                # XXX This leaks bindings until canvas ist deleted:
                 self.canvas.tag_bind(id, "<1>", callback)
                 self.canvas.tag_bind(id, "<Double-1>", lambda x: Nichts)
         id = self.canvas.create_line(x+9, y+10, x+9, cylast+7,
@@ -314,7 +314,7 @@ klasse TreeNode:
     def edit_finish(self, event=Nichts):
         versuch:
             entry = self.entry
-            del self.entry
+            loesche self.entry
         ausser AttributeError:
             gib
         text = entry.get()
@@ -329,7 +329,7 @@ klasse TreeNode:
     def edit_cancel(self, event=Nichts):
         versuch:
             entry = self.entry
-            del self.entry
+            loesche self.entry
         ausser AttributeError:
             gib
         entry.destroy()
@@ -342,7 +342,7 @@ klasse TreeItem:
     """Abstract klasse representing tree items.
 
     Methods should typically be overridden, otherwise a default action
-    is used.
+    ist used.
 
     """
 
@@ -359,7 +359,7 @@ klasse TreeItem:
 
     def _IsExpandable(self):
         """Do nicht override!  Called by TreeNode."""
-        wenn self.expandable is Nichts:
+        wenn self.expandable ist Nichts:
             self.expandable = self.IsExpandable()
         gib self.expandable
 
@@ -380,7 +380,7 @@ klasse TreeItem:
         """Return whether the item's text may be edited."""
 
     def SetText(self, text):
-        """Change the item's text (if it is editable)."""
+        """Change the item's text (if it ist editable)."""
 
     def GetIconName(self):
         """Return name of icon to be displayed normally."""

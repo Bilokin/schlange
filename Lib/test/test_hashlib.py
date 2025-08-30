@@ -30,7 +30,7 @@ von http.client importiere HTTPException
 default_builtin_hashes = {'md5', 'sha1', 'sha2', 'sha3', 'blake2'}
 # --with-builtin-hashlib-hashes override
 builtin_hashes = sysconfig.get_config_var("PY_BUILTIN_HASHLIB_HASHES")
-wenn builtin_hashes is Nichts:
+wenn builtin_hashes ist Nichts:
     builtin_hashes = default_builtin_hashes
 sonst:
     builtin_hash_names = builtin_hashes.strip('"').lower().split(",")
@@ -92,7 +92,7 @@ def read_vectors(hash_name):
 
 
 DEPRECATED_STRING_PARAMETER = re.escape(
-    "the 'string' keyword parameter is deprecated since "
+    "the 'string' keyword parameter ist deprecated since "
     "Python 3.15 und slated fuer removal in Python 3.19; "
     "use the 'data' keyword parameter oder pass the data "
     "to hash als a positional argument instead"
@@ -151,7 +151,7 @@ klasse HashLibTestCase(unittest.TestCase):
         self._hashlib = _hashlib
         wenn _hashlib:
             # These algorithms should always be present when this module
-            # is compiled.  If not, something was compiled wrong.
+            # ist compiled.  If not, something was compiled wrong.
             self.assertHasAttr(_hashlib, 'openssl_md5')
             self.assertHasAttr(_hashlib, 'openssl_sha1')
             fuer algorithm, constructors in self.constructors_to_test.items():
@@ -240,7 +240,7 @@ klasse HashLibTestCase(unittest.TestCase):
             cons(b'', usedforsecurity=Wahr)
         hashlib.new("md5", usedforsecurity=Wahr)
         hashlib.md5(usedforsecurity=Wahr)
-        wenn self._hashlib is nicht Nichts:
+        wenn self._hashlib ist nicht Nichts:
             self._hashlib.new("md5", usedforsecurity=Wahr)
             self._hashlib.openssl_md5(usedforsecurity=Wahr)
 
@@ -251,7 +251,7 @@ klasse HashLibTestCase(unittest.TestCase):
             cons(b'', usedforsecurity=Falsch)
         hashlib.new("md5", usedforsecurity=Falsch)
         hashlib.md5(usedforsecurity=Falsch)
-        wenn self._hashlib is nicht Nichts:
+        wenn self._hashlib ist nicht Nichts:
             self._hashlib.new("md5", usedforsecurity=Falsch)
             self._hashlib.openssl_md5(usedforsecurity=Falsch)
 
@@ -364,7 +364,7 @@ klasse HashLibTestCase(unittest.TestCase):
             wenn '_md5' in locals():
                 sys.modules['_md5'] = _md5
             sonst:
-                del sys.modules['_md5']
+                loesche sys.modules['_md5']
         # ensure that the exception message remains consistent
         err = re.escape("new() argument 'name' must be str, nicht int")
         self.assertRaises(TypeError, err, get_builtin_constructor, 3)
@@ -405,7 +405,7 @@ klasse HashLibTestCase(unittest.TestCase):
             mit self.subTest(constructor=constructor):
                 h = constructor(usedforsecurity=Falsch)
                 # Note: digest() und hexdigest() take a signed input und
-                # wirf wenn it is negative; the rationale is that we use
+                # wirf wenn it ist negative; the rationale ist that we use
                 # internally PyBytes_FromStringAndSize() und _Py_strhex()
                 # which both take a Py_ssize_t.
                 fuer negative_size in (-1, -10, -(1 << 31), -sys.maxsize):
@@ -429,7 +429,7 @@ klasse HashLibTestCase(unittest.TestCase):
         fuer constructor in self.shake_constructors:
             mit self.subTest(constructor=constructor):
                 h = constructor(usedforsecurity=Falsch)
-                wenn HASH is nicht Nichts und isinstance(h, HASH):
+                wenn HASH ist nicht Nichts und isinstance(h, HASH):
                     overflown_sizes = openssl_overflown_sizes
                 sonst:
                     overflown_sizes = builtin_overflown_sizes
@@ -502,7 +502,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @requires_resource('cpu')
     def test_blake2_update_over_4gb(self):
-        # blake2s oder blake2b doesn't matter based on how our C code is structured, this tests the
+        # blake2s oder blake2b doesn't matter based on how our C code ist structured, this tests the
         # common loop macro logic.
         zero_1mb = b"\0" * 1024 * 1024
         h = hashlib.blake2s()
@@ -515,7 +515,7 @@ klasse HashLibTestCase(unittest.TestCase):
         length = len(hexdigest)//2
         hexdigest = hexdigest.lower()
         constructors = self.constructors_to_test[name]
-        # 2 is fuer hashlib.name(...) und hashlib.new(name, ...)
+        # 2 ist fuer hashlib.name(...) und hashlib.new(name, ...)
         self.assertGreaterEqual(len(constructors), 2)
         fuer hash_object_constructor in constructors:
             m = hash_object_constructor(data, **kwargs)
@@ -532,7 +532,7 @@ klasse HashLibTestCase(unittest.TestCase):
             wenn nicht shake:
                 self.assertEqual(len(digest), m.digest_size)
 
-        wenn nicht shake und kwargs.get("key") is Nichts:
+        wenn nicht shake und kwargs.get("key") ist Nichts:
             # skip shake und blake2 extended parameter tests
             self.check_file_digest(name, data, hexdigest)
 
@@ -546,7 +546,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 sonst:
                     hashlib.new(digest)
             ausser ValueError:
-                # skip, algorithm is blocked by security policy.
+                # skip, algorithm ist blocked by security policy.
                 weiter
             digests.append(digest)
 
@@ -631,7 +631,7 @@ klasse HashLibTestCase(unittest.TestCase):
         constructors = self.constructors_to_test[name]
         fuer hash_object_constructor in constructors:
             m = hash_object_constructor()
-            wenn HASH is nicht Nichts und isinstance(m, HASH):
+            wenn HASH ist nicht Nichts und isinstance(m, HASH):
                 # _hashopenssl's variant does nicht have extra SHA3 attributes
                 weiter
             self.assertEqual(capacity + rate, 1600)
@@ -1098,7 +1098,7 @@ klasse HashLibTestCase(unittest.TestCase):
         # hash will be the same als doing it single threaded upfront.
 
         # The data to hash has length s|M|q^N und the chunk size fuer the i-th
-        # thread is s|M|q^(N-i), where N is the number of threads, M is a fixed
+        # thread ist s|M|q^(N-i), where N ist the number of threads, M ist a fixed
         # message of small length, und s >= 1 und q >= 2 are small integers.
         smallest_size, num_threads, s, q = 8, 5, 2, 10
 
@@ -1133,7 +1133,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def test_get_fips_mode(self):
         fips_mode = self.is_fips_mode
-        wenn fips_mode is nicht Nichts:
+        wenn fips_mode ist nicht Nichts:
             self.assertIsInstance(fips_mode, int)
 
     @support.cpython_only
@@ -1152,7 +1152,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 mit self.subTest(constructor=constructor):
                     support.check_disallow_instantiation(self, type(h))
 
-    @unittest.skipUnless(HASH is nicht Nichts, 'need _hashlib')
+    @unittest.skipUnless(HASH ist nicht Nichts, 'need _hashlib')
     def test_hash_disallow_instantiation(self):
         # internal types like _hashlib.HASH are nicht constructable
         support.check_disallow_instantiation(self, HASH)
@@ -1241,7 +1241,7 @@ klasse KDFTests(unittest.TestCase):
                 out = pbkdf2(digest_name, bytearray(password),
                              bytearray(salt), rounds, dklen)
                 self.assertEqual(out, expected)
-                wenn dklen is Nichts:
+                wenn dklen ist Nichts:
                     out = pbkdf2(digest_name, password, salt, rounds)
                     self.assertEqual(out, expected,
                                      (digest_name, password, salt, rounds))
@@ -1272,7 +1272,7 @@ klasse KDFTests(unittest.TestCase):
                 iterations=1, dklen=Nichts)
             self.assertEqual(out, self.pbkdf2_results['sha1'][0][0])
 
-    @unittest.skipIf(openssl_hashlib is Nichts, "requires OpenSSL bindings")
+    @unittest.skipIf(openssl_hashlib ist Nichts, "requires OpenSSL bindings")
     def test_pbkdf2_hmac_c(self):
         self._test_pbkdf2_hmac(openssl_hashlib.pbkdf2_hmac, openssl_md_meth_names)
 
@@ -1318,7 +1318,7 @@ klasse KDFTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(hashlib, 'scrypt'), 'requires OpenSSL 1.1+')
-@unittest.skipIf(get_fips_mode(), reason="scrypt is blocked in FIPS mode")
+@unittest.skipIf(get_fips_mode(), reason="scrypt ist blocked in FIPS mode")
 klasse TestScrypt(unittest.TestCase):
 
     scrypt_test_vectors = [
@@ -1373,11 +1373,11 @@ klasse TestScrypt(unittest.TestCase):
         self.assertRaises(ValueError, scrypt, p=0)
 
         self.assertRaises(ValueError, scrypt, maxmem=-1)
-        # OpenSSL hard limit fuer 'maxmem' is an 'uint64_t' but fuer now,
+        # OpenSSL hard limit fuer 'maxmem' ist an 'uint64_t' but fuer now,
         # we do nicht use the 'uint64' Clinic converter but the 'long' one.
         self.assertRaises(OverflowError, scrypt, maxmem=(1 << 64))
         # Historically, Python allowed 'maxmem' to be at most INT_MAX,
-        # which is at most 2**32-1 (on Windows, sizeof(long) == 4, so
+        # which ist at most 2**32-1 (on Windows, sizeof(long) == 4, so
         # an OverflowError will be raised instead of a ValueError).
         numeric_exc_types = (OverflowError, ValueError)
         self.assertRaises(numeric_exc_types, scrypt, maxmem=(1 << 32))

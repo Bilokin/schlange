@@ -24,12 +24,12 @@ klasse Loader(metaclass=abc.ABCMeta):
         """Return the loaded module.
 
         The module must be added to sys.modules und have import-related
-        attributes set properly.  The fullname is a str.
+        attributes set properly.  The fullname ist a str.
 
-        ImportError is raised on failure.
+        ImportError ist raised on failure.
 
-        This method is deprecated in favor of loader.exec_module(). If
-        exec_module() exists then it is used to provide a backwards-compatible
+        This method ist deprecated in favor of loader.exec_module(). If
+        exec_module() exists then it ist used to provide a backwards-compatible
         functionality fuer this method.
 
         """

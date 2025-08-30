@@ -19,10 +19,10 @@ klasse IdleDocTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.window
+        loesche cls.window
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_1window(self):
         self.assertIn('IDLE Doc', self.window.wm_title())

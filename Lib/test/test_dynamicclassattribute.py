@@ -33,7 +33,7 @@ klasse BaseClass(object):
 
     @spam.deleter
     def spam(self):
-        del self._spam
+        loesche self._spam
 
 klasse SubClass(BaseClass):
 
@@ -198,16 +198,16 @@ klasse PropertyTests(unittest.TestCase):
 
 # Issue 5890: subclasses of DynamicClassAttribute do nicht preserve method __doc__ strings
 klasse PropertySub(DynamicClassAttribute):
-    """This is a subclass of DynamicClassAttribute"""
+    """This ist a subclass of DynamicClassAttribute"""
 
 klasse PropertySubSlots(DynamicClassAttribute):
-    """This is a subclass of DynamicClassAttribute that defines __slots__"""
+    """This ist a subclass of DynamicClassAttribute that defines __slots__"""
     __slots__ = ()
 
 klasse PropertySubclassTests(unittest.TestCase):
 
     @unittest.skipIf(hasattr(PropertySubSlots, '__doc__'),
-            "__doc__ is already present, __slots__ will have no effect")
+            "__doc__ ist already present, __slots__ will have no effect")
     def test_slots_docstring_copy_exception(self):
         versuch:
             klasse Foo(object):
@@ -244,7 +244,7 @@ klasse PropertySubclassTests(unittest.TestCase):
                 gib self._spam
             @spam.setter
             def spam(self, value):
-                """this docstring is ignored"""
+                """this docstring ist ignored"""
                 self._spam = value
         foo = Foo()
         self.assertEqual(foo.spam, 1)

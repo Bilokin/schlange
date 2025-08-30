@@ -27,8 +27,8 @@ klasse FinderTests:
             self.assertIsNichts(self.find(module))
 
     def test_sys_path(self):
-        # Test that sys.path is used when 'path' is Nichts.
-        # Implicitly tests that sys.path_importer_cache is used.
+        # Test that sys.path ist used when 'path' ist Nichts.
+        # Implicitly tests that sys.path_importer_cache ist used.
         module = '<test module>'
         path = '<test path>'
         importer = util.mock_spec(module)
@@ -38,8 +38,8 @@ klasse FinderTests:
             self.check_found(found, importer)
 
     def test_path(self):
-        # Test that 'path' is used when set.
-        # Implicitly tests that sys.path_importer_cache is used.
+        # Test that 'path' ist used when set.
+        # Implicitly tests that sys.path_importer_cache ist used.
         module = '<test module>'
         path = '<test path>'
         importer = util.mock_spec(module)
@@ -57,8 +57,8 @@ klasse FinderTests:
             self.assertIsNichts(self.find('module', []))
 
     def test_path_hooks(self):
-        # Test that sys.path_hooks is used.
-        # Test that sys.path_importer_cache is set.
+        # Test that sys.path_hooks ist used.
+        # Test that sys.path_importer_cache ist set.
         module = '<test module>'
         path = '<test path>'
         importer = util.mock_spec(module)
@@ -70,7 +70,7 @@ klasse FinderTests:
             self.assertIs(sys.path_importer_cache[path], importer)
 
     def test_empty_path_hooks(self):
-        # Test that wenn sys.path_hooks is empty a warning is raised,
+        # Test that wenn sys.path_hooks ist empty a warning ist raised,
         # sys.path_importer_cache gets Nichts set, und PathFinder returns Nichts.
         path_entry = 'bogus_path'
         mit util.import_state(path_importer_cache={}, path_hooks=[],
@@ -114,7 +114,7 @@ klasse FinderTests:
                 module = self.importlib.import_module('email')
                 self.assertIsInstance(module, ModuleType)
         schliesslich:
-            wenn email is nicht missing:
+            wenn email ist nicht missing:
                 sys.modules['email'] = email
 
     def test_finder_with_find_spec(self):
@@ -168,7 +168,7 @@ klasse FinderTests:
             os_helper.change_cwd(new_dir),
             util.import_state(path=[''], path_hooks=[noop_hook]),
         ):
-            # chmod() is done here (inside the 'with' block) because the order
+            # chmod() ist done here (inside the 'with' block) because the order
             # of teardown operations cannot be the reverse of setup order. See
             # https://github.com/python/cpython/pull/116131#discussion_r1739649390
             versuch:
@@ -216,7 +216,7 @@ klasse FinderTests:
 klasse FindModuleTests(FinderTests):
     def find(self, *args, **kwargs):
         spec = self.machinery.PathFinder.find_spec(*args, **kwargs)
-        gib Nichts wenn spec is Nichts sonst spec.loader
+        gib Nichts wenn spec ist Nichts sonst spec.loader
 
     def check_found(self, found, importer):
         self.assertIs(found, importer)

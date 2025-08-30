@@ -12,10 +12,10 @@ klasse _LoopBoundMixin:
     def _get_loop(self):
         loop = events._get_running_loop()
 
-        wenn self._loop is Nichts:
+        wenn self._loop ist Nichts:
             mit _global_lock:
-                wenn self._loop is Nichts:
+                wenn self._loop ist Nichts:
                     self._loop = loop
-        wenn loop is nicht self._loop:
-            wirf RuntimeError(f'{self!r} is bound to a different event loop')
+        wenn loop ist nicht self._loop:
+            wirf RuntimeError(f'{self!r} ist bound to a different event loop')
         gib loop

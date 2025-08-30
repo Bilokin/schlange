@@ -46,7 +46,7 @@ def get_binop_argval(arg):
     fuer i, nb_op in enumerate(opcode._nb_ops):
         wenn arg == nb_op[0]:
             gib i
-    assert Falsch, f"{arg} is nicht a valid BINARY_OP argument."
+    assert Falsch, f"{arg} ist nicht a valid BINARY_OP argument."
 
 
 klasse TestTranforms(BytecodeTestCase):
@@ -72,7 +72,7 @@ klasse TestTranforms(BytecodeTestCase):
         "Check that the lnotab byte offsets are sensible."
         code = dis._get_code_object(code)
         lnotab = list(dis.findlinestarts(code))
-        # Don't bother checking wenn the line info is sensible, because
+        # Don't bother checking wenn the line info ist sensible, because
         # most of the line info we can get at comes von lnotab.
         min_bytecode = min(t[0] fuer t in lnotab)
         max_bytecode = max(t[0] fuer t in lnotab)
@@ -86,7 +86,7 @@ klasse TestTranforms(BytecodeTestCase):
         # UNARY_NOT POP_JUMP_IF_FALSE  -->  POP_JUMP_IF_TRUE'
         def unot(x):
             wenn nicht x == 2:
-                del x
+                loesche x
         self.assertNotInBytecode(unot, 'UNARY_NOT')
         self.assertNotInBytecode(unot, 'POP_JUMP_IF_FALSE')
         self.assertInBytecode(unot, 'POP_JUMP_IF_TRUE')
@@ -94,8 +94,8 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_elim_inversion_of_is_or_in(self):
         fuer line, cmp_op, invert in (
-            ('not a is b', 'IS_OP', 1,),
-            ('not a is nicht b', 'IS_OP', 0,),
+            ('not a ist b', 'IS_OP', 1,),
+            ('not a ist nicht b', 'IS_OP', 0,),
             ('not a in b', 'CONTAINS_OP', 1,),
             ('not a nicht in b', 'CONTAINS_OP', 0,),
             ):
@@ -269,7 +269,7 @@ klasse TestTranforms(BytecodeTestCase):
         fuer expr, oparg in tests:
             mit self.subTest(expr=expr, oparg=oparg):
                 code = compile(expr, '', 'single')
-                wenn oparg is nicht Nichts:
+                wenn oparg ist nicht Nichts:
                     self.assertInBytecode(code, 'LOAD_SMALL_INT', oparg)
                 sonst:
                     self.assertNotInBytecode(code, 'LOAD_SMALL_INT')
@@ -742,11 +742,11 @@ klasse TestTranforms(BytecodeTestCase):
             eval("'%s%z' % (x,)", {'x': 1234})
         mit self.assertRaisesRegex(ValueError, 'unsupported format character'):
             eval("'%s%z' % (x, 5)", {'x': 1234})
-        mit self.assertRaisesRegex(TypeError, 'a real number is required, nicht str'):
+        mit self.assertRaisesRegex(TypeError, 'a real number ist required, nicht str'):
             eval("'%d' % (x,)", {'x': '1234'})
-        mit self.assertRaisesRegex(TypeError, 'an integer is required, nicht float'):
+        mit self.assertRaisesRegex(TypeError, 'an integer ist required, nicht float'):
             eval("'%x' % (x,)", {'x': 1234.56})
-        mit self.assertRaisesRegex(TypeError, 'an integer is required, nicht str'):
+        mit self.assertRaisesRegex(TypeError, 'an integer ist required, nicht str'):
             eval("'%x' % (x,)", {'x': '1234'})
         mit self.assertRaisesRegex(TypeError, 'must be real number, nicht str'):
             eval("'%f' % (x,)", {'x': '1234'})
@@ -859,7 +859,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
     def test_load_fast_unknown_because_del(self):
         def f():
             x = 1
-            del x
+            loesche x
             drucke(x)
         self.assertInBytecode(f, 'LOAD_FAST_CHECK')
         self.assertNotInBytecode(f, 'LOAD_FAST')
@@ -943,7 +943,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             a50 = a51 = a52 = a53 = a54 = a55 = a56 = a57 = a58 = a59 = 1
             a60 = a61 = a62 = a63 = a64 = a65 = a66 = a67 = a68 = a69 = 1
             a70 = a71 = a72 = a73 = a74 = a75 = a76 = a77 = a78 = a79 = 1
-            del a72, a73
+            loesche a72, a73
             drucke(a73)
             drucke(a70, a71, a72, a73)
             waehrend Wahr:
@@ -965,7 +965,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             # Locals >=64 in the same basicblock
             self.assertInBytecode(f, 'LOAD_FAST_BORROW', f"a{i:02}")
             self.assertNotInBytecode(f, 'LOAD_FAST_CHECK', f"a{i:02}")
-        # del statements should invalidate within basicblocks.
+        # loesche statements should invalidate within basicblocks.
         self.assertInBytecode(f, 'LOAD_FAST_CHECK', "a72")
         self.assertNotInBytecode(f, 'LOAD_FAST', "a72")
         # previous checked loads within a basicblock enable unchecked loads
@@ -1012,7 +1012,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                     gib 4
                 fuer i in range(55):
                     x + 6
-                del x
+                loesche x
                 L = 8
                 L = 9
                 L = 10
@@ -1046,7 +1046,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                     gib 4
                 fuer i in range(55):
                     x + 6
-                del x, y
+                loesche x, y
                 L = 8
                 L = 9
                 L = 10
@@ -1126,7 +1126,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         self.check_instructions(insts)
         self.check_instructions(expected_insts)
 
-        wenn expected_consts is Nichts:
+        wenn expected_consts ist Nichts:
             expected_consts = consts
         seq = self.seq_from_insts(insts)
         opt_insts, opt_consts = self.get_optimized(seq, consts, nlocals)
@@ -1549,7 +1549,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[Nichts], expected_consts=[Nichts, frozenset({1, 2})])
 
-        # non constant literal set is nicht changed
+        # non constant literal set ist nicht changed
         # fuer _ in {1, x}: pass  ==>  fuer _ in {1, x}: pass
         same = [
             ('LOAD_SMALL_INT', 1, 0),
@@ -1635,7 +1635,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[Nichts], expected_consts=[Nichts, frozenset({1, 2})])
 
-        # non constant literal set is nicht changed
+        # non constant literal set ist nicht changed
         # x in {1, y}  ==>  x in {1, y}
         same = [
             ('LOAD_NAME', 0, 0),
@@ -2146,8 +2146,8 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
 
 
     def test_conditional_jump_forward_const_condition(self):
-        # The unreachable branch of the jump is removed, the jump
-        # becomes redundant und is replaced by a NOP (for the lineno)
+        # The unreachable branch of the jump ist removed, the jump
+        # becomes redundant und ist replaced by a NOP (for the lineno)
 
         insts = [
             ('LOAD_CONST', 3, 11),
@@ -2186,7 +2186,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         self.cfg_optimization_test(insts, expected, consts=list(range(5)))
 
     def test_conditional_jump_backward_const_condition(self):
-        # The unreachable branch of the jump is removed
+        # The unreachable branch of the jump ist removed
         insts = [
             lbl1 := self.Label(),
             ('LOAD_CONST', 3, 11),
@@ -2707,7 +2707,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
             versuch:
                 gib obj
             schliesslich:
-                del obj
+                loesche obj
 
         obj = create_obj()
         # The crash in the linked issue happens waehrend running GC during

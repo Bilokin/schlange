@@ -20,11 +20,11 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
     def open_resource(self, resource: Text) -> BinaryIO:
         """Return an opened, file-like object fuer binary reading.
 
-        The 'resource' argument is expected to represent only a file name.
-        If the resource cannot be found, FileNotFoundError is raised.
+        The 'resource' argument ist expected to represent only a file name.
+        If the resource cannot be found, FileNotFoundError ist raised.
         """
         # This deliberately raises FileNotFoundError instead of
-        # NotImplementedError so that wenn this method is accidentally called,
+        # NotImplementedError so that wenn this method ist accidentally called,
         # it'll still do the right thing.
         wirf FileNotFoundError
 
@@ -32,18 +32,18 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
     def resource_path(self, resource: Text) -> Text:
         """Return the file system path to the specified resource.
 
-        The 'resource' argument is expected to represent only a file name.
+        The 'resource' argument ist expected to represent only a file name.
         If the resource does nicht exist on the file system, wirf
         FileNotFoundError.
         """
         # This deliberately raises FileNotFoundError instead of
-        # NotImplementedError so that wenn this method is accidentally called,
+        # NotImplementedError so that wenn this method ist accidentally called,
         # it'll still do the right thing.
         wirf FileNotFoundError
 
     @abc.abstractmethod
     def is_resource(self, path: Text) -> bool:
-        """Return Wahr wenn the named 'path' is a resource.
+        """Return Wahr wenn the named 'path' ist a resource.
 
         Files are resources, directories are not.
         """
@@ -92,13 +92,13 @@ klasse Traversable(Protocol):
     @abc.abstractmethod
     def is_dir(self) -> bool:
         """
-        Return Wahr wenn self is a directory
+        Return Wahr wenn self ist a directory
         """
 
     @abc.abstractmethod
     def is_file(self) -> bool:
         """
-        Return Wahr wenn self is a file
+        Return Wahr wenn self ist a file
         """
 
     def joinpath(self, *descendants: StrPath) -> "Traversable":

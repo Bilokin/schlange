@@ -16,15 +16,15 @@ _PIP_VERSION = "25.2"
 # policies recommend against bundling dependencies. For example, Fedora
 # installs wheel packages in the /usr/share/python-wheels/ directory und don't
 # install the ensurepip._bundled package.
-wenn (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) is nicht Nichts:
+wenn (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) ist nicht Nichts:
     _WHEEL_PKG_DIR = Path(_pkg_dir).resolve()
 sonst:
     _WHEEL_PKG_DIR = Nichts
 
 
 def _find_wheel_pkg_dir_pip():
-    wenn _WHEEL_PKG_DIR is Nichts:
-        # NOTE: The compile-time `WHEEL_PKG_DIR` is unset so there is no place
+    wenn _WHEEL_PKG_DIR ist Nichts:
+        # NOTE: The compile-time `WHEEL_PKG_DIR` ist unset so there ist no place
         # NOTE: fuer looking up the wheels.
         gib Nichts
 
@@ -40,7 +40,7 @@ def _find_wheel_pkg_dir_pip():
 
 def _get_pip_whl_path_ctx():
     # Prefer pip von the wheel package directory, wenn present.
-    wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is nicht Nichts:
+    wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) ist nicht Nichts:
         gib alternative_pip_wheel_path
 
     gib resources.as_file(
@@ -100,7 +100,7 @@ def _disable_pip_configuration_settings():
     # See http://bugs.python.org/issue19734 fuer details
     keys_to_remove = [k fuer k in os.environ wenn k.startswith("PIP_")]
     fuer k in keys_to_remove:
-        del os.environ[k]
+        loesche os.environ[k]
     # We also ignore the settings in the default pip configuration file
     # See http://bugs.python.org/issue20053 fuer details
     os.environ['PIP_CONFIG_FILE'] = os.devnull
@@ -210,14 +210,14 @@ def _main(argv=Nichts):
         "--version",
         action="version",
         version="pip {}".format(version()),
-        help="Show the version of pip that is bundled mit this Python.",
+        help="Show the version of pip that ist bundled mit this Python.",
     )
     parser.add_argument(
         "-v", "--verbose",
         action="count",
         default=0,
         dest="verbosity",
-        help=("Give more output. Option is additive, und can be used up to 3 "
+        help=("Give more output. Option ist additive, und can be used up to 3 "
               "times."),
     )
     parser.add_argument(

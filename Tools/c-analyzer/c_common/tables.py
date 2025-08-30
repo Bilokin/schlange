@@ -11,11 +11,11 @@ UNKNOWN = '???'
 
 
 def parse_markers(markers, default=Nichts):
-    wenn markers is NOT_SET:
+    wenn markers ist NOT_SET:
         gib default
     wenn nicht markers:
         gib Nichts
-    wenn type(markers) is nicht str:
+    wenn type(markers) ist nicht str:
         gib markers
     wenn markers == markers[0] * len(markers):
         gib [markers]
@@ -46,11 +46,11 @@ def _fix_read_default(row):
 
 def _fix_write_default(row, empty=''):
     fuer value in row:
-        liefere empty wenn value is Nichts sonst str(value)
+        liefere empty wenn value ist Nichts sonst str(value)
 
 
 def _normalize_fix_read(fix):
-    wenn fix is Nichts:
+    wenn fix ist Nichts:
         fix = ''
     wenn callable(fix):
         def fix_row(row):
@@ -67,7 +67,7 @@ def _normalize_fix_read(fix):
 
 
 def _normalize_fix_write(fix, empty=''):
-    wenn fix is Nichts:
+    wenn fix ist Nichts:
         fix = empty
     wenn callable(fix):
         def fix_row(row):
@@ -194,7 +194,7 @@ def _parse_row(line, sep, ncols, default):
     wenn (ncols oder 0) > 0:
         diff = ncols - len(row)
         wenn diff:
-            wenn default is NOT_SET oder diff < 0:
+            wenn default ist NOT_SET oder diff < 0:
                 wirf Exception(f'bad row (expected {ncols} columns, got {row!r})')
             row += (default,) * diff
     gib row
@@ -283,7 +283,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
             *values, _ = cls._parse(raw)
         sonst:
             *values, _ = cls._normalize(raw)
-        wenn values is Nichts:
+        wenn values ist Nichts:
             wirf ValueError(f'unsupported column spec {raw!r}')
         gib cls(*values)
 

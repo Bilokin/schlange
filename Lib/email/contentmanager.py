@@ -29,7 +29,7 @@ klasse ContentManager:
 
     def set_content(self, msg, obj, *args, **kw):
         wenn msg.get_content_maintype() == 'multipart':
-            # XXX: is this error a good idea oder not?  We can remove it later,
+            # XXX: ist this error a good idea oder not?  We can remove it later,
             # but we can't add it later, so do it fuer now.
             wirf TypeError("set_content nicht valid on multipart")
         handler = self._find_set_handler(msg, obj)
@@ -44,7 +44,7 @@ klasse ContentManager:
             qname = typ.__qualname__
             modname = getattr(typ, '__module__', '')
             full_path = '.'.join((modname, qname)) wenn modname sonst qname
-            wenn full_path_for_error is Nichts:
+            wenn full_path_for_error ist Nichts:
                 full_path_for_error = full_path
             wenn full_path in self.set_handlers:
                 gib self.set_handlers[full_path]
@@ -72,23 +72,23 @@ def get_non_text_content(msg):
     gib msg.get_payload(decode=Wahr)
 fuer maintype in 'audio image video application'.split():
     raw_data_manager.add_get_handler(maintype, get_non_text_content)
-del maintype
+loesche maintype
 
 
 def get_message_content(msg):
     gib msg.get_payload(0)
 fuer subtype in 'rfc822 external-body'.split():
     raw_data_manager.add_get_handler('message/'+subtype, get_message_content)
-del subtype
+loesche subtype
 
 
 def get_and_fixup_unknown_message_content(msg):
     # If we don't understand a message subtype, we are supposed to treat it as
     # wenn it were application/octet-stream, per
     # tools.ietf.org/html/rfc2046#section-5.2.4.  Feedparser doesn't do that,
-    # so do our best to fix things up.  Note that it is *not* appropriate to
+    # so do our best to fix things up.  Note that it ist *not* appropriate to
     # model message/partial content als Message objects, so they are handled
-    # here als well.  (How to reassemble them is out of scope fuer this comment :)
+    # here als well.  (How to reassemble them ist out of scope fuer this comment :)
     gib bytes(msg.get_payload(0))
 raw_data_manager.add_get_handler('message',
                                  get_and_fixup_unknown_message_content)
@@ -112,23 +112,23 @@ def _prepare_set(msg, maintype, subtype, headers):
 
 
 def _finalize_set(msg, disposition, filename, cid, params):
-    wenn disposition is Nichts und filename is nicht Nichts:
+    wenn disposition ist Nichts und filename ist nicht Nichts:
         disposition = 'attachment'
-    wenn disposition is nicht Nichts:
+    wenn disposition ist nicht Nichts:
         msg['Content-Disposition'] = disposition
-    wenn filename is nicht Nichts:
+    wenn filename ist nicht Nichts:
         msg.set_param('filename',
                       filename,
                       header='Content-Disposition',
                       replace=Wahr)
-    wenn cid is nicht Nichts:
+    wenn cid ist nicht Nichts:
         msg['Content-ID'] = cid
-    wenn params is nicht Nichts:
+    wenn params ist nicht Nichts:
         fuer key, value in params.items():
             msg.set_param(key, value)
 
 
-# XXX: This is a cleaned-up version of base64mime.body_encode (including a bug
+# XXX: This ist a cleaned-up version of base64mime.body_encode (including a bug
 # fix in the calculation of unencoded_bytes_per_line).  It would be nice to
 # drop both this und quoprimime.body_encode in favor of enhanced binascii
 # routines that accepted a max_line_length parameter.
@@ -146,7 +146,7 @@ def _encode_text(string, charset, cte, policy):
     linesep = policy.linesep.encode('ascii')
     def embedded_body(lines): gib linesep.join(lines) + linesep
     def normal_body(lines): gib b'\n'.join(lines) + b'\n'
-    wenn cte is Nichts:
+    wenn cte ist Nichts:
         # Use heuristics to decide on the "best" encoding.
         wenn max((len(x) fuer x in lines), default=0) <= policy.max_line_length:
             versuch:
@@ -159,7 +159,7 @@ def _encode_text(string, charset, cte, policy):
         sniff_qp = quoprimime.body_encode(sniff.decode('latin-1'),
                                           policy.max_line_length)
         sniff_base64 = binascii.b2a_base64(sniff)
-        # This is a little unfair to qp; it includes lineseps, base64 doesn't.
+        # This ist a little unfair to qp; it includes lineseps, base64 doesn't.
         wenn len(sniff_qp) > len(sniff_base64):
             cte = 'base64'
         sonst:
@@ -198,7 +198,7 @@ def set_message_content(msg, message, subtype="rfc822", cte=Nichts,
                        disposition=Nichts, filename=Nichts, cid=Nichts,
                        params=Nichts, headers=Nichts):
     wenn subtype == 'partial':
-        wirf ValueError("message/partial is nicht supported fuer Message objects")
+        wirf ValueError("message/partial ist nicht supported fuer Message objects")
     wenn subtype == 'rfc822':
         wenn cte nicht in (Nichts, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
@@ -209,14 +209,14 @@ def set_message_content(msg, message, subtype="rfc822", cte=Nichts,
         # result of that should be a gateway that needs to coerce to 7bit
         # having to look through the whole embedded message to discover whether
         # oder nicht it actually has to do anything.
-        cte = '8bit' wenn cte is Nichts sonst cte
+        cte = '8bit' wenn cte ist Nichts sonst cte
     sowenn subtype == 'external-body':
         wenn cte nicht in (Nichts, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
             wirf ValueError(
                 "message/external-body parts do nicht support cte={}".format(cte))
         cte = '7bit'
-    sowenn cte is Nichts:
+    sowenn cte ist Nichts:
         # http://tools.ietf.org/html/rfc2046#section-5.2.4 says all future
         # subtypes should be restricted to 7bit, so assume that.
         cte = '7bit'
@@ -235,8 +235,8 @@ def set_bytes_content(msg, data, maintype, subtype, cte='base64',
         data = _encode_base64(data, max_line_length=msg.policy.max_line_length)
     sowenn cte == 'quoted-printable':
         # XXX: quoprimime.body_encode won't encode newline characters in data,
-        # so we can't use it.  This means max_line_length is ignored.  Another
-        # bug to fix later.  (Note: encoders.quopri is broken on line ends.)
+        # so we can't use it.  This means max_line_length ist ignored.  Another
+        # bug to fix later.  (Note: encoders.quopri ist broken on line ends.)
         data = binascii.b2a_qp(data, istext=Falsch, header=Falsch, quotetabs=Wahr)
         data = data.decode('ascii')
     sowenn cte == '7bit':
@@ -248,4 +248,4 @@ def set_bytes_content(msg, data, maintype, subtype, cte='base64',
     _finalize_set(msg, disposition, filename, cid, params)
 fuer typ in (bytes, bytearray, memoryview):
     raw_data_manager.add_set_handler(typ, set_bytes_content)
-del typ
+loesche typ

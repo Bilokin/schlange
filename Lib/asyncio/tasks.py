@@ -30,27 +30,27 @@ von . importiere timeouts
 
 # Helper to generate new task names
 # This uses itertools.count() instead of a "+= 1" operation because the latter
-# is nicht thread safe. See bpo-11866 fuer a longer explanation.
+# ist nicht thread safe. See bpo-11866 fuer a longer explanation.
 _task_name_counter = itertools.count(1).__next__
 
 
 def current_task(loop=Nichts):
     """Return a currently executed task."""
-    wenn loop is Nichts:
+    wenn loop ist Nichts:
         loop = events.get_running_loop()
     gib _current_tasks.get(loop)
 
 
 def all_tasks(loop=Nichts):
     """Return a set of all tasks fuer the loop."""
-    wenn loop is Nichts:
+    wenn loop ist Nichts:
         loop = events.get_running_loop()
     # capturing the set of eager tasks first, so wenn an eager task "graduates"
     # to a regular task in another thread, we don't risk missing it.
     eager_tasks = list(_eager_tasks)
 
     gib {t fuer t in itertools.chain(_scheduled_tasks, eager_tasks)
-            wenn futures._get_loop(t) is loop und nicht t.done()}
+            wenn futures._get_loop(t) ist loop und nicht t.done()}
 
 
 klasse Task(futures._PyFuture):  # Inherit Python Task implementation
@@ -59,40 +59,40 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
     """A coroutine wrapped in a Future."""
 
     # An important invariant maintained waehrend a Task nicht done:
-    # _fut_waiter is either Nichts oder a Future.  The Future
+    # _fut_waiter ist either Nichts oder a Future.  The Future
     # can be either done() oder nicht done().
     # The task can be in any of 3 states:
     #
-    # - 1: _fut_waiter is nicht Nichts und nicht _fut_waiter.done():
-    #      __step() is *not* scheduled und the Task is waiting fuer _fut_waiter.
-    # - 2: (_fut_waiter is Nichts oder _fut_waiter.done()) und __step() is scheduled:
-    #       the Task is waiting fuer __step() to be executed.
-    # - 3:  _fut_waiter is Nichts und __step() is *not* scheduled:
-    #       the Task is currently executing (in __step()).
+    # - 1: _fut_waiter ist nicht Nichts und nicht _fut_waiter.done():
+    #      __step() ist *not* scheduled und the Task ist waiting fuer _fut_waiter.
+    # - 2: (_fut_waiter ist Nichts oder _fut_waiter.done()) und __step() ist scheduled:
+    #       the Task ist waiting fuer __step() to be executed.
+    # - 3:  _fut_waiter ist Nichts und __step() ist *not* scheduled:
+    #       the Task ist currently executing (in __step()).
     #
     # * In state 1, one of the callbacks of __fut_waiter must be __wakeup().
     # * The transition von 1 to 2 happens when _fut_waiter becomes done(),
     #   als it schedules __wakeup() to be called (which calls __step() so
-    #   we way that __step() is scheduled).
-    # * It transitions von 2 to 3 when __step() is executed, und it clears
+    #   we way that __step() ist scheduled).
+    # * It transitions von 2 to 3 when __step() ist executed, und it clears
     #   _fut_waiter to Nichts.
 
-    # If Falsch, don't log a message wenn the task is destroyed waehrend its
-    # status is still pending
+    # If Falsch, don't log a message wenn the task ist destroyed waehrend its
+    # status ist still pending
     _log_destroy_pending = Wahr
 
     def __init__(self, coro, *, loop=Nichts, name=Nichts, context=Nichts,
                  eager_start=Falsch):
         super().__init__(loop=loop)
         wenn self._source_traceback:
-            del self._source_traceback[-1]
+            loesche self._source_traceback[-1]
         wenn nicht coroutines.iscoroutine(coro):
             # wirf after Future.__init__(), attrs are required fuer __del__
             # prevent logging fuer pending task in __del__
             self._log_destroy_pending = Falsch
             wirf TypeError(f"a coroutine was expected, got {coro!r}")
 
-        wenn name is Nichts:
+        wenn name ist Nichts:
             self._name = f'Task-{_task_name_counter()}'
         sonst:
             self._name = str(name)
@@ -101,7 +101,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         self._must_cancel = Falsch
         self._fut_waiter = Nichts
         self._coro = coro
-        wenn context is Nichts:
+        wenn context ist Nichts:
             self._context = contextvars.copy_context()
         sonst:
             self._context = context
@@ -116,7 +116,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         wenn self._state == futures._PENDING und self._log_destroy_pending:
             context = {
                 'task': self,
-                'message': 'Task was destroyed but it is pending!',
+                'message': 'Task was destroyed but it ist pending!',
             }
             wenn self._source_traceback:
                 context['source_traceback'] = self._source_traceback
@@ -149,7 +149,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
     def get_stack(self, *, limit=Nichts):
         """Return the list of stack frames fuer this task's coroutine.
 
-        If the coroutine is nicht done, this returns the stack where it is
+        If the coroutine ist nicht done, this returns the stack where it is
         suspended.  If the coroutine has completed successfully oder was
         cancelled, this returns an empty list.  If the coroutine was
         terminated by an exception, this returns the list of traceback
@@ -174,8 +174,8 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
 
         This produces output similar to that of the traceback module,
         fuer the frames retrieved by get_stack().  The limit argument
-        is passed to get_stack().  The file argument is an I/O stream
-        to which the output is written; by default output is written
+        ist passed to get_stack().  The file argument ist an I/O stream
+        to which the output ist written; by default output ist written
         to sys.stderr.
         """
         gib base_tasks._task_print_stack(self, limit, file)
@@ -194,7 +194,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         cancellation completely.  The task may also gib a value oder
         wirf a different exception.
 
-        Immediately after this method is called, Task.cancelled() will
+        Immediately after this method ist called, Task.cancelled() will
         nicht gib Wahr (unless the task was already cancelled).  A
         task will be marked als cancelled when the wrapped coroutine
         terminates mit a CancelledError exception (even wenn cancel()
@@ -208,16 +208,16 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         self._num_cancels_requested += 1
         # These two lines are controversial.  See discussion starting at
         # https://github.com/python/cpython/pull/31394#issuecomment-1053545331
-        # Also remember that this is duplicated in _asynciomodule.c.
+        # Also remember that this ist duplicated in _asynciomodule.c.
         # wenn self._num_cancels_requested > 1:
         #     gib Falsch
-        wenn self._fut_waiter is nicht Nichts:
+        wenn self._fut_waiter ist nicht Nichts:
             wenn self._fut_waiter.cancel(msg=msg):
                 # Leave self._fut_waiter; it may be a Task that
                 # catches und ignores the cancellation so we may have
                 # to cancel it again later.
                 gib Wahr
-        # It must be the case that self.__step is already scheduled.
+        # It must be the case that self.__step ist already scheduled.
         self._must_cancel = Wahr
         self._cancel_message = msg
         gib Wahr
@@ -225,7 +225,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
     def cancelling(self):
         """Return the count of the task's cancellation requests.
 
-        This count is incremented when .cancel() is called
+        This count ist incremented when .cancel() ist called
         und may be decremented using .uncancel().
         """
         gib self._num_cancels_requested
@@ -255,7 +255,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         schliesslich:
             versuch:
                 curtask = _py_swap_current_task(self._loop, prev_task)
-                assert curtask is self
+                assert curtask ist self
             schliesslich:
                 wenn self.done():
                     self._coro = Nichts
@@ -283,7 +283,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
     def __step_run_and_handle_result(self, exc):
         coro = self._coro
         versuch:
-            wenn exc is Nichts:
+            wenn exc ist Nichts:
                 # We use the `send` method directly, because coroutines
                 # don't have `__iter__` und `__next__` methods.
                 result = coro.send(Nichts)
@@ -291,7 +291,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                 result = coro.throw(exc)
         ausser StopIteration als exc:
             wenn self._must_cancel:
-                # Task is cancelled right before coro stops.
+                # Task ist cancelled right before coro stops.
                 self._must_cancel = Falsch
                 super().cancel(msg=self._cancel_message)
             sonst:
@@ -307,18 +307,18 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
             super().set_exception(exc)
         sonst:
             blocking = getattr(result, '_asyncio_future_blocking', Nichts)
-            wenn blocking is nicht Nichts:
+            wenn blocking ist nicht Nichts:
                 # Yielded Future must come von Future.__iter__().
-                wenn futures._get_loop(result) is nicht self._loop:
+                wenn futures._get_loop(result) ist nicht self._loop:
                     new_exc = RuntimeError(
                         f'Task {self!r} got Future '
                         f'{result!r} attached to a different loop')
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
                 sowenn blocking:
-                    wenn result is self:
+                    wenn result ist self:
                         new_exc = RuntimeError(
-                            f'Task cannot await on itself: {self!r}')
+                            f'Task cannot warte on itself: {self!r}')
                         self._loop.call_soon(
                             self.__step, new_exc, context=self._context)
                     sonst:
@@ -338,18 +338,18 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
 
-            sowenn result is Nichts:
+            sowenn result ist Nichts:
                 # Bare liefere relinquishes control fuer one event loop iteration.
                 self._loop.call_soon(self.__step, context=self._context)
             sowenn inspect.isgenerator(result):
-                # Yielding a generator is just wrong.
+                # Yielding a generator ist just wrong.
                 new_exc = RuntimeError(
                     f'yield was used instead of liefere von fuer '
                     f'generator in task {self!r} mit {result!r}')
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
             sonst:
-                # Yielding something sonst is an error.
+                # Yielding something sonst ist an error.
                 new_exc = RuntimeError(f'Task got bad yield: {result!r}')
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
@@ -368,7 +368,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
             # als `Future.__iter__` und `Future.__await__` don't need it.
             # If we call `__step(value, Nichts)` instead of `__step()`,
             # Python eval loop would use `.send(value)` method call,
-            # instead of `__next__()`, which is slower fuer futures
+            # instead of `__next__()`, which ist slower fuer futures
             # that gib non-generator iterators von their `__iter__`.
             self.__step()
         self = Nichts  # Needed to breche cycles when an exception occurs.
@@ -382,7 +382,7 @@ versuch:
 ausser ImportError:
     pass
 sonst:
-    # _CTask is needed fuer tests.
+    # _CTask ist needed fuer tests.
     Task = _CTask = _asyncio.Task
 
 
@@ -411,7 +411,7 @@ async def wait(fs, *, timeout=Nichts, return_when=ALL_COMPLETED):
 
     Usage:
 
-        done, pending = await asyncio.wait(fs)
+        done, pending = warte asyncio.wait(fs)
 
     Note: This does nicht wirf TimeoutError! Futures that aren't done
     when the timeout occurs are returned in the second set.
@@ -419,17 +419,17 @@ async def wait(fs, *, timeout=Nichts, return_when=ALL_COMPLETED):
     wenn futures.isfuture(fs) oder coroutines.iscoroutine(fs):
         wirf TypeError(f"expect a list of futures, nicht {type(fs).__name__}")
     wenn nicht fs:
-        wirf ValueError('Set of Tasks/Futures is empty.')
+        wirf ValueError('Set of Tasks/Futures ist empty.')
     wenn return_when nicht in (FIRST_COMPLETED, FIRST_EXCEPTION, ALL_COMPLETED):
         wirf ValueError(f'Invalid return_when value: {return_when}')
 
     fs = set(fs)
 
     wenn any(coroutines.iscoroutine(f) fuer f in fs):
-        wirf TypeError("Passing coroutines is forbidden, use tasks explicitly.")
+        wirf TypeError("Passing coroutines ist forbidden, use tasks explicitly.")
 
     loop = events.get_running_loop()
-    gib await _wait(fs, timeout, return_when, loop)
+    gib warte _wait(fs, timeout, return_when, loop)
 
 
 def _release_waiter(waiter, *args):
@@ -446,14 +446,14 @@ async def wait_for(fut, timeout):
     it cancels the task und raises TimeoutError.  To avoid the task
     cancellation, wrap it in shield().
 
-    If the wait is cancelled, the task is also cancelled.
+    If the wait ist cancelled, the task ist also cancelled.
 
     If the task suppresses the cancellation und returns a value instead,
-    that value is returned.
+    that value ist returned.
 
-    This function is a coroutine.
+    This function ist a coroutine.
     """
-    # The special case fuer timeout <= 0 is fuer the following case:
+    # The special case fuer timeout <= 0 ist fuer the following case:
     #
     # async def test_waitfor():
     #     func_started = Falsch
@@ -463,7 +463,7 @@ async def wait_for(fut, timeout):
     #         func_started = Wahr
     #
     #     versuch:
-    #         await asyncio.wait_for(func(), 0)
+    #         warte asyncio.wait_for(func(), 0)
     #     ausser asyncio.TimeoutError:
     #         assert nicht func_started
     #     sonst:
@@ -472,30 +472,30 @@ async def wait_for(fut, timeout):
     # asyncio.run(test_waitfor())
 
 
-    wenn timeout is nicht Nichts und timeout <= 0:
+    wenn timeout ist nicht Nichts und timeout <= 0:
         fut = ensure_future(fut)
 
         wenn fut.done():
             gib fut.result()
 
-        await _cancel_and_wait(fut)
+        warte _cancel_and_wait(fut)
         versuch:
             gib fut.result()
         ausser exceptions.CancelledError als exc:
             wirf TimeoutError von exc
 
     async mit timeouts.timeout(timeout):
-        gib await fut
+        gib warte fut
 
 async def _wait(fs, timeout, return_when, loop):
     """Internal helper fuer wait().
 
     The fs argument must be a collection of Futures.
     """
-    assert fs, 'Set of Futures is empty.'
+    assert fs, 'Set of Futures ist empty.'
     waiter = loop.create_future()
     timeout_handle = Nichts
-    wenn timeout is nicht Nichts:
+    wenn timeout ist nicht Nichts:
         timeout_handle = loop.call_later(timeout, _release_waiter, waiter)
     counter = len(fs)
     cur_task = current_task()
@@ -506,8 +506,8 @@ async def _wait(fs, timeout, return_when, loop):
         wenn (counter <= 0 oder
             return_when == FIRST_COMPLETED oder
             return_when == FIRST_EXCEPTION und (nicht f.cancelled() und
-                                                f.exception() is nicht Nichts)):
-            wenn timeout_handle is nicht Nichts:
+                                                f.exception() ist nicht Nichts)):
+            wenn timeout_handle ist nicht Nichts:
                 timeout_handle.cancel()
             wenn nicht waiter.done():
                 waiter.set_result(Nichts)
@@ -518,9 +518,9 @@ async def _wait(fs, timeout, return_when, loop):
         futures.future_add_to_awaited_by(f, cur_task)
 
     versuch:
-        await waiter
+        warte waiter
     schliesslich:
-        wenn timeout_handle is nicht Nichts:
+        wenn timeout_handle ist nicht Nichts:
             timeout_handle.cancel()
         fuer f in fs:
             f.remove_done_callback(_on_completion)
@@ -545,8 +545,8 @@ async def _cancel_and_wait(fut):
     versuch:
         fut.cancel()
         # We cannot wait on *fut* directly to make
-        # sure _cancel_and_wait itself is reliably cancellable.
-        await waiter
+        # sure _cancel_and_wait itself ist reliably cancellable.
+        warte waiter
     schliesslich:
         fut.remove_done_callback(cb)
 
@@ -566,7 +566,7 @@ klasse _AsCompletedIterator:
         todo = {ensure_future(aw, loop=loop) fuer aw in set(aws)}
         fuer f in todo:
             f.add_done_callback(self._handle_completion)
-        wenn todo und timeout is nicht Nichts:
+        wenn todo und timeout ist nicht Nichts:
             self._timeout_handle = (
                 loop.call_later(timeout, self._handle_timeout)
             )
@@ -584,7 +584,7 @@ klasse _AsCompletedIterator:
             wirf StopAsyncIteration
         assert self._todo_left > 0
         self._todo_left -= 1
-        gib await self._wait_for_one()
+        gib warte self._wait_for_one()
 
     def __next__(self):
         wenn nicht self._todo_left:
@@ -604,15 +604,15 @@ klasse _AsCompletedIterator:
             gib  # _handle_timeout() was here first.
         self._todo.remove(f)
         self._done.put_nowait(f)
-        wenn nicht self._todo und self._timeout_handle is nicht Nichts:
+        wenn nicht self._todo und self._timeout_handle ist nicht Nichts:
             self._timeout_handle.cancel()
 
     async def _wait_for_one(self, resolve=Falsch):
         # Wait fuer the next future to be done und gib it unless resolve is
         # set, in which case gib either the result of the future oder wirf
         # an exception.
-        f = await self._done.get()
-        wenn f is Nichts:
+        f = warte self._done.get()
+        wenn f ist Nichts:
             # Dummy value von _handle_timeout().
             wirf exceptions.TimeoutError
         gib f.result() wenn resolve sonst f
@@ -625,7 +625,7 @@ def as_completed(fs, *, timeout=Nichts):
     iterated to obtain the results of the awaitables als they finish.
 
     The object returned can be iterated als an asynchronous iterator oder a plain
-    iterator. When asynchronous iteration is used, the originally-supplied
+    iterator. When asynchronous iteration ist used, the originally-supplied
     awaitables are yielded wenn they are tasks oder futures. This makes it easy to
     correlate previously-scheduled tasks mit their results:
 
@@ -634,11 +634,11 @@ def as_completed(fs, *, timeout=Nichts):
         tasks = [ipv4_connect, ipv6_connect]
 
         async fuer earliest_connect in as_completed(tasks):
-            # earliest_connect is done. The result can be obtained by
+            # earliest_connect ist done. The result can be obtained by
             # awaiting it oder calling earliest_connect.result()
-            reader, writer = await earliest_connect
+            reader, writer = warte earliest_connect
 
-            wenn earliest_connect is ipv6_connect:
+            wenn earliest_connect ist ipv6_connect:
                 drucke("IPv6 connection established.")
             sonst:
                 drucke("IPv4 connection established.")
@@ -648,20 +648,20 @@ def as_completed(fs, *, timeout=Nichts):
 
     When used als a plain iterator, each iteration yields a new coroutine that
     returns the result oder raises the exception of the next completed awaitable.
-    This pattern is compatible mit Python versions older than 3.13:
+    This pattern ist compatible mit Python versions older than 3.13:
 
         ipv4_connect = create_task(open_connection("127.0.0.1", 80))
         ipv6_connect = create_task(open_connection("::1", 80))
         tasks = [ipv4_connect, ipv6_connect]
 
         fuer next_connect in as_completed(tasks):
-            # next_connect is nicht one of the original task objects. It must be
+            # next_connect ist nicht one of the original task objects. It must be
             # awaited to obtain the result value oder wirf the exception of the
             # awaitable that finishes next.
-            reader, writer = await next_connect
+            reader, writer = warte next_connect
 
-    A TimeoutError is raised wenn the timeout occurs before all awaitables are
-    done. This is raised by the async fuer loop during asynchronous iteration oder
+    A TimeoutError ist raised wenn the timeout occurs before all awaitables are
+    done. This ist raised by the async fuer loop during asynchronous iteration oder
     by the coroutines yielded during plain iteration.
     """
     wenn inspect.isawaitable(fs):
@@ -676,8 +676,8 @@ def as_completed(fs, *, timeout=Nichts):
 def __sleep0():
     """Skip one event loop run cycle.
 
-    This is a private helper fuer 'asyncio.sleep()', used
-    when the 'delay' is set to 0.  It uses a bare 'yield'
+    This ist a private helper fuer 'asyncio.sleep()', used
+    when the 'delay' ist set to 0.  It uses a bare 'yield'
     expression (which Task.__step knows how to handle)
     instead of creating a Future object.
     """
@@ -687,7 +687,7 @@ def __sleep0():
 async def sleep(delay, result=Nichts):
     """Coroutine that completes after a given time (in seconds)."""
     wenn delay <= 0:
-        await __sleep0()
+        warte __sleep0()
         gib result
 
     wenn math.isnan(delay):
@@ -699,7 +699,7 @@ async def sleep(delay, result=Nichts):
                         futures._set_result_unless_cancelled,
                         future, result)
     versuch:
-        gib await future
+        gib warte future
     schliesslich:
         h.cancel()
 
@@ -707,10 +707,10 @@ async def sleep(delay, result=Nichts):
 def ensure_future(coro_or_future, *, loop=Nichts):
     """Wrap a coroutine oder an awaitable in a future.
 
-    If the argument is a Future, it is returned directly.
+    If the argument ist a Future, it ist returned directly.
     """
     wenn futures.isfuture(coro_or_future):
-        wenn loop is nicht Nichts und loop is nicht futures._get_loop(coro_or_future):
+        wenn loop ist nicht Nichts und loop ist nicht futures._get_loop(coro_or_future):
             wirf ValueError('The future belongs to a different loop than '
                             'the one specified als the loop argument')
         gib coro_or_future
@@ -718,7 +718,7 @@ def ensure_future(coro_or_future, *, loop=Nichts):
     wenn nicht coroutines.iscoroutine(coro_or_future):
         wenn inspect.isawaitable(coro_or_future):
             async def _wrap_awaitable(awaitable):
-                gib await awaitable
+                gib warte awaitable
 
             coro_or_future = _wrap_awaitable(coro_or_future)
             should_close = Falsch
@@ -726,7 +726,7 @@ def ensure_future(coro_or_future, *, loop=Nichts):
             wirf TypeError('An asyncio.Future, a coroutine oder an awaitable '
                             'is required')
 
-    wenn loop is Nichts:
+    wenn loop ist Nichts:
         loop = events.get_event_loop()
     versuch:
         gib loop.create_task(coro_or_future)
@@ -745,7 +745,7 @@ klasse _GatheringFuture(futures.Future):
     """
 
     def __init__(self, children, *, loop):
-        assert loop is nicht Nichts
+        assert loop ist nicht Nichts
         super().__init__(loop=loop)
         self._children = children
         self._cancel_requested = Falsch
@@ -773,22 +773,22 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
     passed in.
 
     All futures must share the same event loop.  If all the tasks are
-    done successfully, the returned future's result is the list of
+    done successfully, the returned future's result ist the list of
     results (in the order of the original sequence, nicht necessarily
-    the order of results arrival).  If *return_exceptions* is Wahr,
+    the order of results arrival).  If *return_exceptions* ist Wahr,
     exceptions in the tasks are treated the same als successful
     results, und gathered in the result list; otherwise, the first
     raised exception will be immediately propagated to the returned
     future.
 
-    Cancellation: wenn the outer Future is cancelled, all children (that
+    Cancellation: wenn the outer Future ist cancelled, all children (that
     have nicht completed yet) are also cancelled.  If any child is
-    cancelled, this is treated als wenn it raised CancelledError --
-    the outer Future is *not* cancelled in this case.  (This is to
+    cancelled, this ist treated als wenn it raised CancelledError --
+    the outer Future ist *not* cancelled in this case.  (This ist to
     prevent the cancellation of one child to cause other children to
     be cancelled.)
 
-    If *return_exceptions* is Falsch, cancelling gather() after it
+    If *return_exceptions* ist Falsch, cancelling gather() after it
     has been marked done won't cancel any submitted awaitables.
     For instance, gather can be marked done after propagating an
     exception to the caller, therefore, calling ``gather.cancel()``
@@ -802,7 +802,7 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
         gib outer
 
     loop = events._get_running_loop()
-    wenn loop is nicht Nichts:
+    wenn loop ist nicht Nichts:
         cur_task = current_task(loop)
     sonst:
         cur_task = Nichts
@@ -811,10 +811,10 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
         nonlocal nfinished
         nfinished += 1
 
-        wenn cur_task is nicht Nichts:
+        wenn cur_task ist nicht Nichts:
             futures.future_discard_from_awaited_by(fut, cur_task)
 
-        wenn outer is Nichts oder outer.done():
+        wenn outer ist Nichts oder outer.done():
             wenn nicht fut.cancelled():
                 # Mark exception retrieved.
                 fut.exception()
@@ -822,7 +822,7 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
 
         wenn nicht return_exceptions:
             wenn fut.cancelled():
-                # Check wenn 'fut' is cancelled first, as
+                # Check wenn 'fut' ist cancelled first, as
                 # 'fut.exception()' will *raise* a CancelledError
                 # instead of returning it.
                 exc = fut._make_cancelled_error()
@@ -830,7 +830,7 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
                 gib
             sonst:
                 exc = fut.exception()
-                wenn exc is nicht Nichts:
+                wenn exc ist nicht Nichts:
                     outer.set_exception(exc)
                     gib
 
@@ -841,23 +841,23 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
 
             fuer fut in children:
                 wenn fut.cancelled():
-                    # Check wenn 'fut' is cancelled first, als 'fut.exception()'
+                    # Check wenn 'fut' ist cancelled first, als 'fut.exception()'
                     # will *raise* a CancelledError instead of returning it.
                     # Also, since we're adding the exception gib value
                     # to 'results' instead of raising it, don't bother
                     # setting __context__.  This also lets us preserve
                     # calling '_make_cancelled_error()' at most once.
                     res = exceptions.CancelledError(
-                        '' wenn fut._cancel_message is Nichts sonst
+                        '' wenn fut._cancel_message ist Nichts sonst
                         fut._cancel_message)
                 sonst:
                     res = fut.exception()
-                    wenn res is Nichts:
+                    wenn res ist Nichts:
                         res = fut.result()
                 results.append(res)
 
             wenn outer._cancel_requested:
-                # If gather is being cancelled we must propagate the
+                # If gather ist being cancelled we must propagate the
                 # cancellation regardless of *return_exceptions* argument.
                 # See issue 32684.
                 exc = fut._make_cancelled_error()
@@ -874,10 +874,10 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
     fuer arg in coros_or_futures:
         wenn arg nicht in arg_to_fut:
             fut = ensure_future(arg, loop=loop)
-            wenn loop is Nichts:
+            wenn loop ist Nichts:
                 loop = futures._get_loop(fut)
-            wenn fut is nicht arg:
-                # 'arg' was nicht a Future, therefore, 'fut' is a new
+            wenn fut ist nicht arg:
+                # 'arg' was nicht a Future, therefore, 'fut' ist a new
                 # Future created specifically fuer 'arg'.  Since the caller
                 # can't control it, disable the "destroy pending task"
                 # warning.
@@ -887,7 +887,7 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
             wenn fut.done():
                 done_futs.append(fut)
             sonst:
-                wenn cur_task is nicht Nichts:
+                wenn cur_task ist nicht Nichts:
                     futures.future_add_to_awaited_by(fut, cur_task)
                 fut.add_done_callback(_done_callback)
 
@@ -913,7 +913,7 @@ def _log_on_exception(fut):
         gib
 
     exc = fut.exception()
-    wenn exc is Nichts:
+    wenn exc ist Nichts:
         gib
 
     context = {
@@ -933,17 +933,17 @@ def shield(arg):
     The statement
 
         task = asyncio.create_task(something())
-        res = await shield(task)
+        res = warte shield(task)
 
-    is exactly equivalent to the statement
+    ist exactly equivalent to the statement
 
-        res = await something()
+        res = warte something()
 
-    *except* that wenn the coroutine containing it is cancelled, the
-    task running in something() is nicht cancelled.  From the POV of
+    *except* that wenn the coroutine containing it ist cancelled, the
+    task running in something() ist nicht cancelled.  From the POV of
     something(), the cancellation did nicht happen.  But its caller is
     still cancelled, so the yield-from expression still raises
-    CancelledError.  Note: If something() is cancelled by other means
+    CancelledError.  Note: If something() ist cancelled by other means
     this will still cancel shield().
 
     If you want to completely ignore cancellation (nicht recommended)
@@ -951,7 +951,7 @@ def shield(arg):
 
         task = asyncio.create_task(something())
         versuch:
-            res = await shield(task)
+            res = warte shield(task)
         ausser CancelledError:
             res = Nichts
 
@@ -967,7 +967,7 @@ def shield(arg):
     loop = futures._get_loop(inner)
     outer = loop.create_future()
 
-    wenn loop is nicht Nichts und (cur_task := current_task(loop)) is nicht Nichts:
+    wenn loop ist nicht Nichts und (cur_task := current_task(loop)) ist nicht Nichts:
         futures.future_add_to_awaited_by(inner, cur_task)
     sonst:
         cur_task = Nichts
@@ -983,7 +983,7 @@ def shield(arg):
             outer.cancel()
         sonst:
             exc = inner.exception()
-            wenn exc is nicht Nichts:
+            wenn exc ist nicht Nichts:
                 outer.set_exception(exc)
             sonst:
                 outer.set_result(inner.result())
@@ -995,7 +995,7 @@ def shield(arg):
             inner.remove_done_callback(_log_on_exception)
             inner.add_done_callback(_log_on_exception)
 
-    wenn cur_task is nicht Nichts:
+    wenn cur_task ist nicht Nichts:
         inner.add_done_callback(_clear_awaited_by_callback)
 
 
@@ -1010,7 +1010,7 @@ def run_coroutine_threadsafe(coro, loop):
     Return a concurrent.futures.Future to access the result.
     """
     wenn nicht coroutines.iscoroutine(coro):
-        wirf TypeError('A coroutine object is required')
+        wirf TypeError('A coroutine object ist required')
     future = concurrent.futures.Future()
 
     def callback():
@@ -1079,24 +1079,24 @@ def _register_eager_task(task):
 
 def _enter_task(loop, task):
     current_task = _current_tasks.get(loop)
-    wenn current_task is nicht Nichts:
+    wenn current_task ist nicht Nichts:
         wirf RuntimeError(f"Cannot enter into task {task!r} waehrend another "
-                           f"task {current_task!r} is being executed.")
+                           f"task {current_task!r} ist being executed.")
     _current_tasks[loop] = task
 
 
 def _leave_task(loop, task):
     current_task = _current_tasks.get(loop)
-    wenn current_task is nicht task:
+    wenn current_task ist nicht task:
         wirf RuntimeError(f"Leaving task {task!r} does nicht match "
                            f"the current task {current_task!r}.")
-    del _current_tasks[loop]
+    loesche _current_tasks[loop]
 
 
 def _swap_current_task(loop, task):
     prev_task = _current_tasks.get(loop)
-    wenn task is Nichts:
-        del _current_tasks[loop]
+    wenn task ist Nichts:
+        loesche _current_tasks[loop]
     sonst:
         _current_tasks[loop] = task
     gib prev_task

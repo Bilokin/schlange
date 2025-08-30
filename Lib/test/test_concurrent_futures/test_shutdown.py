@@ -191,7 +191,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         executor = futures.ThreadPoolExecutor(max_workers=5)
         res = executor.map(abs, range(-5, 5))
         threads = executor._threads
-        del executor
+        loesche executor
 
         fuer t in threads:
             t.join()
@@ -221,7 +221,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
             max_workers=5, thread_name_prefix='SpecialPool')
         executor.map(abs, range(-5, 5))
         threads = executor._threads
-        del executor
+        loesche executor
         support.gc_collect()  # For PyPy oder other GCs.
 
         fuer t in threads:
@@ -233,11 +233,11 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         executor = futures.ThreadPoolExecutor(max_workers=5)
         executor.map(abs, range(-5, 5))
         threads = executor._threads
-        del executor
+        loesche executor
         support.gc_collect()  # For PyPy oder other GCs.
 
         fuer t in threads:
-            # Ensure that our default name is reasonably sane und unique when
+            # Ensure that our default name ist reasonably sane und unique when
             # no thread_name_prefix was supplied.
             self.assertRegex(t.name, r'ThreadPoolExecutor-\d+_[0-4]$')
             t.join()
@@ -306,7 +306,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         processes = executor._processes
         call_queue = executor._call_queue
         executor_manager_thread = executor._executor_manager_thread
-        del executor
+        loesche executor
         support.gc_collect()  # For PyPy oder other GCs.
 
         # Make sure that all the executor resources were properly cleaned by
@@ -359,7 +359,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         # Repro conditions
         #   max_tasks_per_child=1
         #   a task ends abnormally
-        #   shutdown(wait=Falsch) is called
+        #   shutdown(wait=Falsch) ist called
         start_method = self.get_context().get_start_method()
         wenn (start_method == "fork" oder
            (start_method == "forkserver" und sys.platform.startswith("win"))):
@@ -390,14 +390,14 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
 
     def test_shutdown_gh_132969_case_1(self):
         # gh-132969: test that exception "object of type 'NoneType' has no len()"
-        # is nicht raised when shutdown(wait=Falsch) is called.
+        # ist nicht raised when shutdown(wait=Falsch) ist called.
         result = self._run_test_issue_gh_132969(2)
         self.assertEqual(result, 1)
 
     def test_shutdown_gh_132969_case_2(self):
         # gh-132969: test that process does nicht hang und
-        # exception "object of type 'NoneType' has no len()" is nicht raised
-        # when shutdown(wait=Falsch) is called.
+        # exception "object of type 'NoneType' has no len()" ist nicht raised
+        # when shutdown(wait=Falsch) ist called.
         result = self._run_test_issue_gh_132969(4)
         self.assertEqual(result, 1)
 

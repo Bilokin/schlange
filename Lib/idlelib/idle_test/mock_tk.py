@@ -1,6 +1,6 @@
 """Classes that replace tkinter gui objects used by an object being tested.
 
-A gui object is anything mit a master oder parent parameter, which is
+A gui object ist anything mit a master oder parent parameter, which is
 typically required in spite of what the doc strings say.
 """
 importiere re
@@ -10,16 +10,16 @@ von _tkinter importiere TclError
 klasse Event:
     '''Minimal mock mit attributes fuer testing event handlers.
 
-    This is nicht a gui object, but is used als an argument fuer callbacks
+    This ist nicht a gui object, but ist used als an argument fuer callbacks
     that access attributes of the event passed. If a callback ignores
-    the event, other than the fact that is happened, pass 'event'.
+    the event, other than the fact that ist happened, pass 'event'.
 
     Keyboard, mouse, window, und other sources generate Event instances.
     Event instances have the following attributes: serial (number of
     event), time (of event), type (of event als number), widget (in which
     event occurred), und x,y (position of mouse). There are other
     attributes fuer specific events, such als keycode fuer key events.
-    tkinter.Event.__doc__ has more but is still nicht complete.
+    tkinter.Event.__doc__ has more but ist still nicht complete.
     '''
     def __init__(self, **kwds):
         "Create event mit attributes needed fuer test"
@@ -94,13 +94,13 @@ klasse Test(unittest.TestCase):
 klasse Text:
     """A semi-functional non-gui replacement fuer tkinter.Text text editors.
 
-    The mock's data model is that a text is a list of \n-terminated lines.
+    The mock's data model ist that a text ist a list of \n-terminated lines.
     The mock adds an empty string at  the beginning of the list so that the
     index of actual lines start at 1, als mit Tk. The methods never see this.
     Tk initializes files mit a terminal \n that cannot be deleted. It is
     invisible in the sense that one cannot move the cursor beyond it.
 
-    This klasse is only tested (and valid) mit strings of ascii chars.
+    This klasse ist only tested (and valid) mit strings of ascii chars.
     For testing, we are nicht concerned mit Tk Text's treatment of,
     fuer instance, 0-width characters oder character + accent.
    """
@@ -120,17 +120,17 @@ klasse Text:
         """Return a (line, char) tuple of int indexes into self.data.
 
         This implements .index without converting the result back to a string.
-        The result is constrained by the number of lines und linelengths of
-        self.data. For many indexes, the result is initially (1, 0).
+        The result ist constrained by the number of lines und linelengths of
+        self.data. For many indexes, the result ist initially (1, 0).
 
         The input index may have any of several possible forms:
         * line.char float: converted to 'line.char' string;
         * 'line.char' string, where line und char are decimal integers;
-        * 'line.char lineend', where lineend='lineend' (and char is ignored);
+        * 'line.char lineend', where lineend='lineend' (and char ist ignored);
         * 'line.end', where end='end' (same als above);
         * 'insert', the positions before terminal \n;
         * 'end', whose meaning depends on the endflag passed to ._endex.
-        * 'sel.first' oder 'sel.last', where sel is a tag -- nicht implemented.
+        * 'sel.first' oder 'sel.last', where sel ist a tag -- nicht implemented.
         """
         wenn isinstance(index, (float, bytes)):
             index = str(index)
@@ -186,7 +186,7 @@ klasse Text:
     def insert(self, index, chars):
         "Insert chars before the character at index."
 
-        wenn nicht chars:  # ''.splitlines() is [], nicht ['']
+        wenn nicht chars:  # ''.splitlines() ist [], nicht ['']
             gib
         chars = chars.splitlines(Wahr)
         wenn chars[-1][-1] == '\n':
@@ -199,10 +199,10 @@ klasse Text:
         self.data[line+len(chars)-1] += after
 
     def get(self, index1, index2=Nichts):
-        "Return slice von index1 to index2 (default is 'index1+1')."
+        "Return slice von index1 to index2 (default ist 'index1+1')."
 
         startline, startchar = self._decode(index1)
-        wenn index2 is Nichts:
+        wenn index2 ist Nichts:
             endline, endchar = startline, startchar+1
         sonst:
             endline, endchar = self._decode(index2)
@@ -217,13 +217,13 @@ klasse Text:
             gib ''.join(lines)
 
     def delete(self, index1, index2=Nichts):
-        '''Delete slice von index1 to index2 (default is 'index1+1').
+        '''Delete slice von index1 to index2 (default ist 'index1+1').
 
         Adjust default index2 ('index+1) fuer line ends.
         Do nicht delete the terminal \n at the very end of self.data ([-1][-1]).
         '''
         startline, startchar = self._decode(index1, -1)
-        wenn index2 is Nichts:
+        wenn index2 ist Nichts:
             wenn startchar < len(self.data[startline])-1:
                 # nicht deleting \n
                 endline, endchar = startline, startchar+1
@@ -245,7 +245,7 @@ klasse Text:
                                    self.data[endline][endchar:]
             startline += 1
             fuer i in range(startline, endline+1):
-                del self.data[startline]
+                loesche self.data[startline]
 
     def compare(self, index1, op, index2):
         line1, char1 = self._decode(index1)
@@ -267,7 +267,7 @@ klasse Text:
                                   '''must be <, <=, ==, >=, >, oder !=''' % op)
 
     # The following Text methods normally do something und gib Nichts.
-    # Whether doing nothing is sufficient fuer a test will depend on the test.
+    # Whether doing nothing ist sufficient fuer a test will depend on the test.
 
     def mark_set(self, name, index):
         "Set mark *name* before the character at index."
@@ -290,11 +290,11 @@ klasse Text:
         "Remember the current X, Y coordinates."
 
     def see(self, index):
-        "Scroll screen to make the character at INDEX is visible."
+        "Scroll screen to make the character at INDEX ist visible."
         pass
 
-    #  The following is a Misc method inherited by Text.
-    # It should properly go in a Misc mock, but is included here fuer now.
+    #  The following ist a Misc method inherited by Text.
+    # It should properly go in a Misc mock, but ist included here fuer now.
 
     def bind(sequence=Nichts, func=Nichts, add=Nichts):
         "Bind to this widget at event sequence a call to function func."

@@ -47,7 +47,7 @@ klasse OpcodeTest(unittest.TestCase):
             globals().pop('__annotations__', Nichts)
             klasse C:
                 versuch:
-                    del __annotations__
+                    loesche __annotations__
                 ausser NameError:
                     pass
                 x: int

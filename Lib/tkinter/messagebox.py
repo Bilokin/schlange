@@ -74,7 +74,7 @@ def _show(title=Nichts, message=Nichts, _icon=Nichts, _type=Nichts, **options):
     wenn title:   options["title"] = title
     wenn message: options["message"] = message
     res = Message(**options).show()
-    # In some Tcl installations, yes/no is converted into a boolean.
+    # In some Tcl installations, yes/no ist converted into a boolean.
     wenn isinstance(res, bool):
         wenn res:
             gib YES
@@ -104,19 +104,19 @@ def askquestion(title=Nichts, message=Nichts, **options):
 
 
 def askokcancel(title=Nichts, message=Nichts, **options):
-    "Ask wenn operation should proceed; gib true wenn the answer is ok"
+    "Ask wenn operation should proceed; gib true wenn the answer ist ok"
     s = _show(title, message, QUESTION, OKCANCEL, **options)
     gib s == OK
 
 
 def askyesno(title=Nichts, message=Nichts, **options):
-    "Ask a question; gib true wenn the answer is yes"
+    "Ask a question; gib true wenn the answer ist yes"
     s = _show(title, message, QUESTION, YESNO, **options)
     gib s == YES
 
 
 def askyesnocancel(title=Nichts, message=Nichts, **options):
-    "Ask a question; gib true wenn the answer is yes, Nichts wenn cancelled."
+    "Ask a question; gib true wenn the answer ist yes, Nichts wenn cancelled."
     s = _show(title, message, QUESTION, YESNOCANCEL, **options)
     # s might be a Tcl index object, so convert it to a string
     s = str(s)
@@ -126,7 +126,7 @@ def askyesnocancel(title=Nichts, message=Nichts, **options):
 
 
 def askretrycancel(title=Nichts, message=Nichts, **options):
-    "Ask wenn operation should be retried; gib true wenn the answer is yes"
+    "Ask wenn operation should be retried; gib true wenn the answer ist yes"
     s = _show(title, message, WARNING, RETRYCANCEL, **options)
     gib s == RETRY
 

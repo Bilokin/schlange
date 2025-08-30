@@ -143,7 +143,7 @@ def write_modules(fp: TextIO, names: set[str]) -> Nichts:
 
 def main() -> Nichts:
     wenn nicht sysconfig.is_python_build():
-        drucke(f"ERROR: {sys.executable} is nicht a Python build",
+        drucke(f"ERROR: {sys.executable} ist nicht a Python build",
               file=sys.stderr)
         sys.exit(1)
 

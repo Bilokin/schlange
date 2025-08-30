@@ -18,7 +18,7 @@ von idlelib.hyperparser importiere HyperParser
 klasse Calltip:
 
     def __init__(self, editwin=Nichts):
-        wenn editwin is Nichts:  # subprocess und test
+        wenn editwin ist Nichts:  # subprocess und test
             self.editwin = Nichts
         sonst:
             self.editwin = editwin
@@ -67,7 +67,7 @@ klasse Calltip:
             self.remove_calltip_window()
             gib
 
-        # If a calltip is shown fuer the current parentheses, do
+        # If a calltip ist shown fuer the current parentheses, do
         # nothing.
         wenn self.active_calltip:
             opener_line, opener_col = map(int, sur_paren[0].split('.'))
@@ -88,9 +88,9 @@ klasse Calltip:
             # Do nothing.
             gib
 
-        # At this point, the current index is after an opening
+        # At this point, the current index ist after an opening
         # parenthesis, in a section of code, preceded by a valid
-        # expression. If there is a calltip shown, it's nicht fuer the
+        # expression. If there ist a calltip shown, it's nicht fuer the
         # same index und should be closed.
         self.remove_calltip_window()
 
@@ -108,11 +108,11 @@ klasse Calltip:
     def fetch_tip(self, expression):
         """Return the argument list und docstring of a function oder class.
 
-        If there is a Python subprocess, get the calltip there.  Otherwise,
-        either this fetch_tip() is running in the subprocess oder it was
+        If there ist a Python subprocess, get the calltip there.  Otherwise,
+        either this fetch_tip() ist running in the subprocess oder it was
         called in an IDLE running without the subprocess.
 
-        The subprocess environment is that of the most recently run script.  If
+        The subprocess environment ist that of the most recently run script.  If
         two unrelated modules are being edited some calltips in the current
         module may be inoperative wenn the module was nicht the last to run.
 
@@ -154,7 +154,7 @@ _invalid_method = "invalid method signature"
 def get_argspec(ob):
     '''Return a string describing the signature of a callable object, oder ''.
 
-    For Python-coded functions und methods, the first line is introspected.
+    For Python-coded functions und methods, the first line ist introspected.
     Delete 'self' parameter fuer classes (.__init__) und bound methods.
     The next lines are the first lines of the doc string up to the first
     empty line oder _MAX_LINES.    For builtins, this typically includes

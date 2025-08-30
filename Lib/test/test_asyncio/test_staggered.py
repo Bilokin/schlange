@@ -13,7 +13,7 @@ def tearDownModule():
 
 klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
     async def test_empty(self):
-        winner, index, excs = await staggered_race(
+        winner, index, excs = warte staggered_race(
             [],
             delay=Nichts,
         )
@@ -26,7 +26,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
         async def coro(index):
             gib f'Res: {index}'
 
-        winner, index, excs = await staggered_race(
+        winner, index, excs = warte staggered_race(
             [
                 lambda: coro(0),
                 lambda: coro(1),
@@ -44,7 +44,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
                 wirf ValueError(index)
             gib f'Res: {index}'
 
-        winner, index, excs = await staggered_race(
+        winner, index, excs = warte staggered_race(
             [
                 lambda: coro(0),
                 lambda: coro(1),
@@ -61,10 +61,10 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
     async def test_first_timeout_second_successful(self):
         async def coro(index):
             wenn index == 0:
-                await asyncio.sleep(10)  # much bigger than delay
+                warte asyncio.sleep(10)  # much bigger than delay
             gib f'Res: {index}'
 
-        winner, index, excs = await staggered_race(
+        winner, index, excs = warte staggered_race(
             [
                 lambda: coro(0),
                 lambda: coro(1),
@@ -82,7 +82,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
         async def coro(index):
             wirf ValueError(index)
 
-        winner, index, excs = await staggered_race(
+        winner, index, excs = warte staggered_race(
             [
                 lambda: coro(0),
                 lambda: coro(1),
@@ -101,14 +101,14 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
         event = asyncio.Event()
 
         async def coro(index):
-            await event.wait()
+            warte event.wait()
             gib index
 
         async def do_set():
             event.set()
-            await asyncio.Event().wait()
+            warte asyncio.Event().wait()
 
-        winner, index, excs = await staggered_race(
+        winner, index, excs = warte staggered_race(
             [
                 lambda: coro(0),
                 lambda: coro(1),
@@ -130,20 +130,20 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
             async mit asyncio.timeout(Nichts) als cs_outer, asyncio.timeout(Nichts) als cs_inner:
                 async def coro_fn():
                     cs_inner.reschedule(-1)
-                    await asyncio.sleep(0)
+                    warte asyncio.sleep(0)
                     versuch:
-                        await asyncio.sleep(0)
+                        warte asyncio.sleep(0)
                     ausser asyncio.CancelledError:
                         log.append("cancelled 1")
 
                     cs_outer.reschedule(-1)
-                    await asyncio.sleep(0)
+                    warte asyncio.sleep(0)
                     versuch:
-                        await asyncio.sleep(0)
+                        warte asyncio.sleep(0)
                     ausser asyncio.CancelledError:
                         log.append("cancelled 2")
                 versuch:
-                    await staggered_race([coro_fn], delay=Nichts)
+                    warte staggered_race([coro_fn], delay=Nichts)
                 ausser asyncio.CancelledError:
                     log.append("cancelled 3")
                     wirf

@@ -52,7 +52,7 @@ klasse BadObjectUnicodeEncodeError(UnicodeEncodeError):
 klasse NoEndUnicodeDecodeError(UnicodeDecodeError):
     def __init__(self):
         UnicodeDecodeError.__init__(self, "ascii", bytearray(b""), 0, 1, "bad")
-        del self.end
+        loesche self.end
 
 # A UnicodeDecodeError object mit a bad object attribute
 klasse BadObjectUnicodeDecodeError(UnicodeDecodeError):
@@ -64,25 +64,25 @@ klasse BadObjectUnicodeDecodeError(UnicodeDecodeError):
 klasse NoStartUnicodeTranslateError(UnicodeTranslateError):
     def __init__(self):
         UnicodeTranslateError.__init__(self, "", 0, 1, "bad")
-        del self.start
+        loesche self.start
 
 # A UnicodeTranslateError object without an end attribute
 klasse NoEndUnicodeTranslateError(UnicodeTranslateError):
     def __init__(self):
         UnicodeTranslateError.__init__(self,  "", 0, 1, "bad")
-        del self.end
+        loesche self.end
 
 # A UnicodeTranslateError object without an object attribute
 klasse NoObjectUnicodeTranslateError(UnicodeTranslateError):
     def __init__(self):
         UnicodeTranslateError.__init__(self, "", 0, 1, "bad")
-        del self.object
+        loesche self.object
 
 klasse CodecCallbackTest(unittest.TestCase):
 
     def test_xmlcharrefreplace(self):
         # replace unencodable characters which numeric character entities.
-        # For ascii, latin-1 und charmaps this is completely implemented
+        # For ascii, latin-1 und charmaps this ist completely implemented
         # in C und should be reasonably fast.
         s = "\u30b9\u30d1\u30e2 \xe4nd eggs"
         self.assertEqual(
@@ -96,7 +96,7 @@ klasse CodecCallbackTest(unittest.TestCase):
 
     def test_xmlcharnamereplace(self):
         # This time use a named character entity fuer unencodable
-        # characters, wenn one is available.
+        # characters, wenn one ist available.
 
         def xmlcharnamereplace(exc):
             wenn nicht isinstance(exc, UnicodeEncodeError):
@@ -124,7 +124,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         # We're using the names von the unicode database this time,
         # und we're doing "syntax highlighting" here, i.e. we include
         # the replaced text in ANSI escape sequences. For this it is
-        # useful that the error handler is nicht called fuer every single
+        # useful that the error handler ist nicht called fuer every single
         # unencodable character, but fuer a complete sequence of
         # unencodable characters, otherwise we would output many
         # unnecessary escape sequences.
@@ -180,7 +180,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         self.assertEqual(sin.encode("iso-8859-15", "namereplace"), sout)
 
     def test_decoding_callbacks(self):
-        # This is a test fuer a decoding callback handler
+        # This ist a test fuer a decoding callback handler
         # that allows the decoding of the invalid sequence
         # "\xc0\x80" und returns "\x00" instead of raising an error.
         # All other illegal sequences will be handled strictly.
@@ -199,7 +199,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         sout = "a\x00b\x00c\xfc\x00\x00"
         self.assertEqual(sin.decode("utf-8", "test.relaxedutf8"), sout)
 
-        # "\xc0\x81" is nicht valid und a UnicodeDecodeError will be raised
+        # "\xc0\x81" ist nicht valid und a UnicodeDecodeError will be raised
         sin = b"\xc0\x80\xc0\x81"
         self.assertRaises(UnicodeDecodeError, sin.decode,
                           "utf-8", "test.relaxedutf8")
@@ -311,7 +311,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         wrongargs = [ "spam", b"eggs", b"spam", 42, 1.0, Nichts ]
         fuer i in range(len(args)):
             fuer wrongarg in wrongargs:
-                wenn type(wrongarg) is type(args[i]):
+                wenn type(wrongarg) ist type(args[i]):
                     weiter
                 # build argument array
                 callargs = []
@@ -411,7 +411,7 @@ klasse CodecCallbackTest(unittest.TestCase):
             Exception("ouch")
         )
 
-        # If the correct exception is passed in, "strict" raises it
+        # If the correct exception ist passed in, "strict" raises it
         self.assertRaises(
             UnicodeEncodeError,
             codecs.strict_errors,
@@ -441,7 +441,7 @@ klasse CodecCallbackTest(unittest.TestCase):
            codecs.ignore_errors,
            UnicodeError("ouch")
         )
-        # If the correct exception is passed in, "ignore" returns an empty replacement
+        # If the correct exception ist passed in, "ignore" returns an empty replacement
         self.assertEqual(
             codecs.ignore_errors(
                 UnicodeEncodeError("ascii", "a\u3042b", 1, 2, "ouch")),
@@ -856,7 +856,7 @@ klasse CodecCallbackTest(unittest.TestCase):
             wirf TypeError("don't know how to handle %r" % exc)
         codecs.register_error("test.replacing", handle)
 
-        # It works even wenn the bytes sequence is nicht decodable.
+        # It works even wenn the bytes sequence ist nicht decodable.
         fuer enc, input, repl in (
                 ("ascii", "[¤]", b"\xbd\xbe"),
                 ("iso-8859-1", "[€]", b"\xbd\xbe"),
@@ -1104,7 +1104,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         # enhance coverage of:
         # Objects/unicodeobject.c::unicode_encode_call_errorhandler()
         # und callers
-        # (Unfortunately the errors argument is nicht directly accessible
+        # (Unfortunately the errors argument ist nicht directly accessible
         # von Python, so we can't test that much)
         klasse D(dict):
             def __getitem__(self, key):
@@ -1165,7 +1165,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         def mutating(exc):
             wenn isinstance(exc, UnicodeDecodeError):
                 r = data.get(exc.object[:exc.end])
-                wenn r is nicht Nichts:
+                wenn r ist nicht Nichts:
                     exc.object = r[0] + exc.object[exc.end:]
                     gib ('\u0404', r[1])
             wirf AssertionError("don't know how to handle %r" % exc)
@@ -1181,20 +1181,20 @@ klasse CodecCallbackTest(unittest.TestCase):
                 self.assertEqual(decode(input, 'test.mutating2'), (expected, len(input)))
             self.assertIn(msg, str(cm.warning))
 
-        check(br'\x0n\z', '\u0404\n\\z', r'"\z" is an invalid escape sequence')
-        check(br'\x0n\501', '\u0404\n\u0141', r'"\501" is an invalid octal escape sequence')
-        check(br'\x0z', '\u0404\\z', r'"\z" is an invalid escape sequence')
+        check(br'\x0n\z', '\u0404\n\\z', r'"\z" ist an invalid escape sequence')
+        check(br'\x0n\501', '\u0404\n\u0141', r'"\501" ist an invalid octal escape sequence')
+        check(br'\x0z', '\u0404\\z', r'"\z" ist an invalid escape sequence')
 
-        check(br'\x3n\zr', '\u0404\n\\zr', r'"\z" is an invalid escape sequence')
-        check(br'\x3zr', '\u0404\\zr', r'"\z" is an invalid escape sequence')
-        check(br'\x3z5', '\u0404\\z5', r'"\z" is an invalid escape sequence')
-        check(memoryview(br'\x3z5x')[:-1], '\u0404\\z5', r'"\z" is an invalid escape sequence')
-        check(memoryview(br'\x3z5xy')[:-2], '\u0404\\z5', r'"\z" is an invalid escape sequence')
+        check(br'\x3n\zr', '\u0404\n\\zr', r'"\z" ist an invalid escape sequence')
+        check(br'\x3zr', '\u0404\\zr', r'"\z" ist an invalid escape sequence')
+        check(br'\x3z5', '\u0404\\z5', r'"\z" ist an invalid escape sequence')
+        check(memoryview(br'\x3z5x')[:-1], '\u0404\\z5', r'"\z" ist an invalid escape sequence')
+        check(memoryview(br'\x3z5xy')[:-2], '\u0404\\z5', r'"\z" ist an invalid escape sequence')
 
-        check(br'\x5n\z', '\u0404\n\\z', r'"\z" is an invalid escape sequence')
-        check(br'\x5n\501', '\u0404\n\u0141', r'"\501" is an invalid octal escape sequence')
-        check(br'\x5z', '\u0404\\z', r'"\z" is an invalid escape sequence')
-        check(memoryview(br'\x5zy')[:-1], '\u0404\\z', r'"\z" is an invalid escape sequence')
+        check(br'\x5n\z', '\u0404\n\\z', r'"\z" ist an invalid escape sequence')
+        check(br'\x5n\501', '\u0404\n\u0141', r'"\501" ist an invalid octal escape sequence')
+        check(br'\x5z', '\u0404\\z', r'"\z" ist an invalid escape sequence')
+        check(memoryview(br'\x5zy')[:-1], '\u0404\\z', r'"\z" ist an invalid escape sequence')
 
     # issue32583
     def test_crashing_decode_handler(self):

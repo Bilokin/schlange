@@ -153,7 +153,7 @@ exec_tests = [
     # setcomp mit naked tuple
     "{r fuer l,m in x}",
     # AsyncFunctionDef
-    "async def f():\n 'async function'\n await something()",
+    "async def f():\n 'async function'\n warte something()",
     # AsyncFor
     "async def f():\n async fuer e in i: 1\n sonst: 2",
     # AsyncWith
@@ -316,8 +316,8 @@ eval_tests = [
   "a <= b",
   "a >= b",
   "a != b",
-  "a is b",
-  "a is nicht b",
+  "a ist b",
+  "a ist nicht b",
   "a in b",
   "a nicht in b",
   # Call without argument

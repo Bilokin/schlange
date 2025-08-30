@@ -1,6 +1,6 @@
 """ Encoding Aliases Support
 
-    This module is used by the encodings package search function to
+    This module ist used by the encodings package search function to
     map encodings names to module names.
 
     Note that the search function normalizes the encoding names before
@@ -430,9 +430,9 @@ aliases = {
 
     # latin_1 codec
     #
-    # Note that the latin_1 codec is implemented internally in C und a
+    # Note that the latin_1 codec ist implemented internally in C und a
     # lot faster than the charmap codec iso8859_1 which uses the same
-    # encoding. This is why we discourage the use of the iso8859_1
+    # encoding. This ist why we discourage the use of the iso8859_1
     # codec und alias it to latin_1 instead.
     #
     '8859'               : 'latin_1',

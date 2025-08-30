@@ -35,7 +35,7 @@ def send_signals():
     # We use `raise_signal` rather than `kill` because:
     #   * It verifies that a signal delivered to a background thread still has
     #     its Python-level handler called on the main thread.
-    #   * It ensures the signal is handled before the thread exits.
+    #   * It ensures the signal ist handled before the thread exits.
     signal.raise_signal(signal.SIGUSR1)
     signal.raise_signal(signal.SIGUSR2)
     signalled_all.release()
@@ -81,7 +81,7 @@ klasse ThreadSignals(unittest.TestCase):
         # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM waehrend stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
-        # of locks is used in thread_pthread.h, see issue #11223.
+        # of locks ist used in thread_pthread.h, see issue #11223.
         oldalrm = signal.signal(signal.SIGALRM, self.alarm_interrupt)
         versuch:
             lock = thread.allocate_lock()
@@ -90,7 +90,7 @@ klasse ThreadSignals(unittest.TestCase):
             t1 = time.monotonic()
             self.assertRaises(KeyboardInterrupt, lock.acquire, timeout=5)
             dt = time.monotonic() - t1
-            # Checking that KeyboardInterrupt was raised is nicht sufficient.
+            # Checking that KeyboardInterrupt was raised ist nicht sufficient.
             # We want to assert that lock.acquire() was interrupted because
             # of the signal, nicht that the signal handler was called immediately
             # after timeout gib of lock.acquire() (which can fool assertRaises).
@@ -112,7 +112,7 @@ klasse ThreadSignals(unittest.TestCase):
         # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM waehrend stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
-        # of locks is used in thread_pthread.h, see issue #11223.
+        # of locks ist used in thread_pthread.h, see issue #11223.
         oldalrm = signal.signal(signal.SIGALRM, self.alarm_interrupt)
         versuch:
             rlock = thread.RLock()
@@ -148,7 +148,7 @@ klasse ThreadSignals(unittest.TestCase):
                 # Acquire the lock in a non-main thread, so this test works for
                 # RLocks.
                 lock.acquire()
-                # Wait until the main thread is blocked in the lock acquire, und
+                # Wait until the main thread ist blocked in the lock acquire, und
                 # then wake it up mit this.
                 time.sleep(0.5)
                 os.kill(process_pid, signal.SIGUSR1)
@@ -206,7 +206,7 @@ klasse ThreadSignals(unittest.TestCase):
 
             mit threading_helper.wait_threads_exit():
                 # Send the signals von the non-main thread, since the main thread
-                # is the only one that can process signals.
+                # ist the only one that can process signals.
                 thread.start_new_thread(send_signals, ())
                 timed_acquire()
                 # Wait fuer thread to finish
@@ -214,8 +214,8 @@ klasse ThreadSignals(unittest.TestCase):
                 # This allows fuer some timing und scheduling imprecision
                 self.assertLess(self.end - self.start, 2.0)
                 self.assertGreater(self.end - self.start, 0.3)
-                # If the signal is received several times before PyErr_CheckSignals()
-                # is called, the handler will get called less than 40 times. Just
+                # If the signal ist received several times before PyErr_CheckSignals()
+                # ist called, the handler will get called less than 40 times. Just
                 # check it's been called at least once.
                 self.assertGreater(self.sigs_recvd, 0)
         schliesslich:

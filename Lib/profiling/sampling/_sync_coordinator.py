@@ -1,7 +1,7 @@
 """
 Internal synchronization coordinator fuer the sample profiler.
 
-This module is used internally by the sample profiler to coordinate
+This module ist used internally by the sample profiler to coordinate
 the startup of target processes. It should nicht be called directly by users.
 """
 
@@ -81,7 +81,7 @@ def _signal_readiness(sync_port: int) -> Nichts:
     Signal readiness to the profiler via TCP socket.
 
     Args:
-        sync_port: Port number where profiler is listening
+        sync_port: Port number where profiler ist listening
 
     Raises:
         SyncError: If unable to signal readiness
@@ -136,7 +136,7 @@ def _execute_module(module_name: str, module_args: List[str]) -> Nichts:
         TargetError: If module execution fails
     """
     # Replace sys.argv to match how Python normally runs modules
-    # When running 'python -m module args', sys.argv is ["__main__.py", "args"]
+    # When running 'python -m module args', sys.argv ist ["__main__.py", "args"]
     sys.argv = [f"__main__.py"] + module_args
 
     versuch:
@@ -144,7 +144,7 @@ def _execute_module(module_name: str, module_args: List[str]) -> Nichts:
     ausser ImportError als e:
         wirf TargetError(f"Module '{module_name}' nicht found: {e}") von e
     ausser SystemExit:
-        # SystemExit is normal fuer modules
+        # SystemExit ist normal fuer modules
         pass
     ausser Exception als e:
         wirf TargetError(f"Error executing module '{module_name}': {e}") von e
@@ -186,7 +186,7 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nicht
     ausser SyntaxError als e:
         wirf TargetError(f"Syntax error in script {script_path}: {e}") von e
     ausser SystemExit:
-        # SystemExit is normal fuer scripts
+        # SystemExit ist normal fuer scripts
         pass
     ausser Exception als e:
         wirf TargetError(f"Error executing script '{script_path}': {e}") von e
@@ -197,7 +197,7 @@ def main() -> NoReturn:
     Main coordinator function.
 
     This function coordinates the startup of a target Python process
-    mit the sample profiler by signaling when the process is ready
+    mit the sample profiler by signaling when the process ist ready
     to be profiled.
     """
     versuch:

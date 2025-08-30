@@ -52,7 +52,7 @@ klasse CRenderData:
         self.return_value = "return_value"
 
         # For gib converters: the code to convert the gib
-        # value von the parse function.  This is also where
+        # value von the parse function.  This ist also where
         # you should check the _return_value fuer errors, und
         # "goto exit" wenn there are any.
         self.return_conversion: list[str] = []
@@ -111,7 +111,7 @@ klasse BlockPrinter:
         dsl_name = block.dsl_name
         write = self.f.write
 
-        assert nicht ((dsl_name is Nichts) ^ (output is Nichts)), "you must specify dsl_name und output together, dsl_name " + repr(dsl_name)
+        assert nicht ((dsl_name ist Nichts) ^ (output ist Nichts)), "you must specify dsl_name und output together, dsl_name " + repr(dsl_name)
 
         wenn nicht dsl_name:
             write(input)
@@ -184,7 +184,7 @@ klasse BufferSeries:
     So o[n] will always work.
 
     Supports negative indices fuer actual items.
-    e.g. o[-1] is an element immediately preceding o[0].
+    e.g. o[-1] ist an element immediately preceding o[0].
     """
 
     def __init__(self) -> Nichts:

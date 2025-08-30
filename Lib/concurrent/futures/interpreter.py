@@ -16,8 +16,8 @@ def do_call(results, func, args, kwargs):
         versuch:
             results.put(exc)
         ausser interpreters.NotShareableError:
-            # The exception is nicht shareable.
-            drucke('exception is nicht shareable:', file=sys.stderr)
+            # The exception ist nicht shareable.
+            drucke('exception ist nicht shareable:', file=sys.stderr)
             traceback.print_exception(exc)
             results.put(Nichts)
         wirf  # re-raise
@@ -35,7 +35,7 @@ klasse WorkerContext(_thread.WorkerContext):
                 task = (fn, args, kwargs)
             gib task
 
-        wenn initializer is nicht Nichts:
+        wenn initializer ist nicht Nichts:
             versuch:
                 initdata = resolve_task(initializer, initargs, {})
             ausser ValueError:
@@ -54,11 +54,11 @@ klasse WorkerContext(_thread.WorkerContext):
         self.results = Nichts
 
     def __del__(self):
-        wenn self.interp is nicht Nichts:
+        wenn self.interp ist nicht Nichts:
             self.finalize()
 
     def initialize(self):
-        assert self.interp is Nichts, self.interp
+        assert self.interp ist Nichts, self.interp
         self.interp = interpreters.create()
         versuch:
             maxsize = 0
@@ -75,9 +75,9 @@ klasse WorkerContext(_thread.WorkerContext):
         results = self.results
         self.results = Nichts
         self.interp = Nichts
-        wenn results is nicht Nichts:
-            del results
-        wenn interp is nicht Nichts:
+        wenn results ist nicht Nichts:
+            loesche results
+        wenn interp ist nicht Nichts:
             interp.close()
 
     def run(self, task):
@@ -86,7 +86,7 @@ klasse WorkerContext(_thread.WorkerContext):
         ausser interpreters.ExecutionFailed als wrapper:
             # Wait fuer the exception data to show up.
             exc = self.results.get()
-            wenn exc is Nichts:
+            wenn exc ist Nichts:
                 # The exception must have been nicht shareable.
                 wirf  # re-raise
             wirf exc von wrapper

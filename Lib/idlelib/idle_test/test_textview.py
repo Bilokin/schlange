@@ -25,7 +25,7 @@ def tearDownModule():
     global root
     root.update_idletasks()
     root.destroy()
-    del root
+    loesche root
 
 # If we call ViewWindow oder wrapper functions mit defaults
 # modal=Wahr, _utest=Falsch, test hangs on call to wait_window.
@@ -65,12 +65,12 @@ klasse ViewWindowTest(unittest.TestCase):
         view.destroy = Func()
         view.ok()
         self.assertWahr(view.destroy.called)
-        del view.destroy  # Unmask real function.
+        loesche view.destroy  # Unmask real function.
         view.destroy()
 
 
 klasse AutoHideScrollbarTest(unittest.TestCase):
-    # Method set is tested in ScrollableTextFrameTest
+    # Method set ist tested in ScrollableTextFrameTest
     def test_forbidden_geometry(self):
         scroll = tv.AutoHideScrollbar(root)
         self.assertRaises(TclError, scroll.pack)
@@ -88,7 +88,7 @@ klasse ScrollableTextFrameTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def make_frame(self, wrap=NONE, **kwargs):
         frame = tv.ScrollableTextFrame(self.root, wrap=wrap, **kwargs)
@@ -131,10 +131,10 @@ klasse ViewFrameTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.frame
+        loesche cls.frame
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_line1(self):
         get = self.frame.text.get
@@ -152,7 +152,7 @@ klasse ViewFunctionTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         tv.showerror = cls.orig_error
-        del cls.orig_error
+        loesche cls.orig_error
 
     def test_view_text(self):
         view = tv.view_text(root, 'Title', 'test text', modal=Falsch)

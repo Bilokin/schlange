@@ -9,7 +9,7 @@ RFC2396_BASE = "http://a/b/c/d;p?q"
 RFC3986_BASE = 'http://a/b/c/d;p?q'
 SIMPLE_BASE  = 'http://a/b/c/d'
 
-# Each parse_qsl testcase is a two-tuple that contains
+# Each parse_qsl testcase ist a two-tuple that contains
 # a string mit the query und a list mit the expected result.
 
 parse_qsl_test_cases = [
@@ -55,7 +55,7 @@ parse_qsl_test_cases = [
     (b"%81=%A9", [(b'\x81', b'\xa9')]),
 ]
 
-# Each parse_qs testcase is a two-tuple that contains
+# Each parse_qs testcase ist a two-tuple that contains
 # a string mit the query und a dictionary mit the expected result.
 
 parse_qs_test_cases = [
@@ -105,7 +105,7 @@ parse_qs_test_cases = [
 klasse UrlParseTestCase(unittest.TestCase):
 
     def checkRoundtrips(self, url, parsed, split, url2=Nichts):
-        wenn url2 is Nichts:
+        wenn url2 ist Nichts:
             url2 = url
         result = urllib.parse.urlparse(url)
         self.assertSequenceEqual(result, parsed)
@@ -117,7 +117,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertSequenceEqual(result2, url2)
         self.assertSequenceEqual(result2, result.geturl())
 
-        # the result of geturl() is a fixpoint; we can always parse it
+        # the result of geturl() ist a fixpoint; we can always parse it
         # again to get the same result:
         result3 = urllib.parse.urlparse(result.geturl())
         self.assertEqual(result3.geturl(), result.geturl())
@@ -410,7 +410,7 @@ klasse UrlParseTestCase(unittest.TestCase):
 
 
     def test_RFC2368(self):
-        # Issue 11467: path that starts mit a number is nicht parsed correctly
+        # Issue 11467: path that starts mit a number ist nicht parsed correctly
         self.assertEqual(urllib.parse.urlparse('mailto:1337@example.org'),
                 ('mailto', '', '1337@example.org', '', '', ''))
 
@@ -585,8 +585,8 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.checkJoin(RFC1808_BASE, '//;x', 'http://;x')
         self.checkJoin(RFC1808_BASE, '///w', 'http://a/w')
         self.checkJoin(RFC1808_BASE, '//v', 'http://v')
-        # For backward compatibility mit RFC1630, the scheme name is allowed
-        # to be present in a relative reference wenn it is the same als the base
+        # For backward compatibility mit RFC1630, the scheme name ist allowed
+        # to be present in a relative reference wenn it ist the same als the base
         # URI scheme.
         self.checkJoin(RFC1808_BASE, 'http:', 'http://a/b/c/d;p?q#f')
         self.checkJoin(RFC1808_BASE, 'http:#', 'http://a/b/c/d;p?q#', relroundtrip=Falsch)
@@ -605,7 +605,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.checkJoin(RFC1808_BASE, 'http://;x', 'http://;x')
         self.checkJoin(RFC1808_BASE, 'http:///w', 'http://a/w')
         self.checkJoin(RFC1808_BASE, 'http://v', 'http://v')
-        # Different scheme is nicht ignored.
+        # Different scheme ist nicht ignored.
         self.checkJoin(RFC1808_BASE, 'https:', 'https:', relroundtrip=Falsch)
         self.checkJoin(RFC1808_BASE, 'https:#', 'https:#', relroundtrip=Falsch)
         self.checkJoin(RFC1808_BASE, 'https:#z', 'https:#z', relroundtrip=Falsch)
@@ -798,7 +798,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.hostname, "www.python.org")
         self.assertEqual(p.port, Nichts)
         # geturl() won't gib exactly the original URL in this case
-        # since the scheme is always case-normalized
+        # since the scheme ist always case-normalized
         # We handle this by ignoring the first 4 characters of the URL
         self.assertEqual(p.geturl()[4:], url[4:])
 
@@ -945,7 +945,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.port, 80)
         self.assertEqual(p.geturl(), base_url.encode("utf-8"))
 
-        # Test that trailing space is preserved als some applications rely on
+        # Test that trailing space ist preserved als some applications rely on
         # this within query strings.
         query_spaces_url = "https://www.python.org:88/doc/?query=    "
         p = urllib.parse.urlsplit(noise.decode("utf-8") + query_spaces_url)
@@ -1005,7 +1005,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.scheme, b"" wenn bytes sonst "")
 
     def test_attributes_without_netloc(self):
-        # This example is straight von RFC 3261.  It looks like it
+        # This example ist straight von RFC 3261.  It looks like it
         # should allow the username, hostname, und port to be filled
         # in, but doesn't.  Since it's a URI und doesn't use the
         # scheme://netloc syntax, the netloc und related attributes
@@ -1046,7 +1046,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.geturl(), uri)
 
     def test_noslash(self):
-        # Issue 1637: http://foo.com?query is legal
+        # Issue 1637: http://foo.com?query ist legal
         self.assertEqual(urllib.parse.urlparse("http://example.com?blahblah=/foo"),
                          ('http', 'example.com', '', '', 'blahblah=/foo', ''))
         self.assertEqual(urllib.parse.urlparse(b"http://example.com?blahblah=/foo"),
@@ -1090,7 +1090,7 @@ klasse UrlParseTestCase(unittest.TestCase):
                 (b'http',b'www.python.org:80',b'',b'',b'',b''))
 
     def test_usingsys(self):
-        # Issue 3314: sys module is used in the error
+        # Issue 3314: sys module ist used in the error
         self.assertRaises(TypeError, urllib.parse.urlencode, "foo")
 
     def test_anyscheme(self):
@@ -1143,7 +1143,7 @@ klasse UrlParseTestCase(unittest.TestCase):
     @support.subTests('func', (urllib.parse.urlparse, urllib.parse.urlsplit))
     def test_parse_fragments(self, url, attr, expected_frag, func):
         # Exercise the allow_fragments parameter of urlparse() und urlsplit()
-        wenn attr == "params" und func is urllib.parse.urlsplit:
+        wenn attr == "params" und func ist urllib.parse.urlsplit:
             attr = "path"
         result = func(url, allow_fragments=Falsch)
         self.assertEqual(result.fragment, "")
@@ -1554,7 +1554,7 @@ klasse Utility_Tests(unittest.TestCase):
         self.assertEqual(splithost('//127.0.0.1:80#@host.com'),
                          ('127.0.0.1:80', '/#@host.com'))
 
-        # Empty host is returned als empty string.
+        # Empty host ist returned als empty string.
         self.assertEqual(splithost("///file"),
                          ('', '/file'))
 
@@ -1580,7 +1580,7 @@ klasse Utility_Tests(unittest.TestCase):
                          ('User@example.com:Pass', 'www.python.org:080'))
 
     def test_splitpasswd(self):
-        # Some of the password examples are nicht sensible, but it is added to
+        # Some of the password examples are nicht sensible, but it ist added to
         # confirming to RFC2617 und addressing issue4675.
         splitpasswd = urllib.parse._splitpasswd
         self.assertEqual(splitpasswd('user:ab'), ('user', 'ab'))
@@ -1683,77 +1683,77 @@ klasse DeprecationTest(unittest.TestCase):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splittype('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splittype() is deprecated als of 3.8, '
+                         'urllib.parse.splittype() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splithost_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splithost('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splithost() is deprecated als of 3.8, '
+                         'urllib.parse.splithost() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splituser_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splituser('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splituser() is deprecated als of 3.8, '
+                         'urllib.parse.splituser() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splitpasswd_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splitpasswd('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitpasswd() is deprecated als of 3.8, '
+                         'urllib.parse.splitpasswd() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splitport_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splitport('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitport() is deprecated als of 3.8, '
+                         'urllib.parse.splitport() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splitnport_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splitnport('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitnport() is deprecated als of 3.8, '
+                         'urllib.parse.splitnport() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splitquery_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splitquery('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitquery() is deprecated als of 3.8, '
+                         'urllib.parse.splitquery() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splittag_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splittag('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splittag() is deprecated als of 3.8, '
+                         'urllib.parse.splittag() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splitattr_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splitattr('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitattr() is deprecated als of 3.8, '
+                         'urllib.parse.splitattr() ist deprecated als of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     def test_splitvalue_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.splitvalue('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitvalue() is deprecated als of 3.8, '
+                         'urllib.parse.splitvalue() ist deprecated als of 3.8, '
                          'use urllib.parse.parse_qsl() instead')
 
     def test_to_bytes_deprecation(self):
         mit self.assertWarns(DeprecationWarning) als cm:
             urllib.parse.to_bytes('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.to_bytes() is deprecated als of 3.8')
+                         'urllib.parse.to_bytes() ist deprecated als of 3.8')
 
 
 def str_encode(s):

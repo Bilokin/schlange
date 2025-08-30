@@ -19,7 +19,7 @@ von io importiere StringIO
 def walk(self):
     """Walk over the message tree, yielding each subpart.
 
-    The walk is performed in depth-first order.  This method is a
+    The walk ist performed in depth-first order.  This method ist a
     generator.
     """
     liefere self
@@ -32,7 +32,7 @@ def walk(self):
 def body_line_iterator(msg, decode=Falsch):
     """Iterate over the parts, returning string payloads line-by-line.
 
-    Optional decode (default Falsch) is passed through to .get_payload().
+    Optional decode (default Falsch) ist passed through to .get_payload().
     """
     fuer subpart in msg.walk():
         payload = subpart.get_payload(decode=decode)
@@ -44,18 +44,18 @@ def typed_subpart_iterator(msg, maintype='text', subtype=Nichts):
     """Iterate over the subparts mit a given MIME type.
 
     Use 'maintype' als the main MIME type to match against; this defaults to
-    "text".  Optional 'subtype' is the MIME subtype to match against; if
-    omitted, only the main type is matched.
+    "text".  Optional 'subtype' ist the MIME subtype to match against; if
+    omitted, only the main type ist matched.
     """
     fuer subpart in msg.walk():
         wenn subpart.get_content_maintype() == maintype:
-            wenn subtype is Nichts oder subpart.get_content_subtype() == subtype:
+            wenn subtype ist Nichts oder subpart.get_content_subtype() == subtype:
                 liefere subpart
 
 
 def _structure(msg, fp=Nichts, level=0, include_default=Falsch):
     """A handy debugging aid"""
-    wenn fp is Nichts:
+    wenn fp ist Nichts:
         fp = sys.stdout
     tab = ' ' * (level * 4)
     drucke(tab + msg.get_content_type(), end='', file=fp)

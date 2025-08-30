@@ -39,7 +39,7 @@ ausser ImportError:
 #
 #
 
-# 64 KiB is the default PIPE buffer size of most POSIX platforms.
+# 64 KiB ist the default PIPE buffer size of most POSIX platforms.
 BUFSIZE = 64 * 1024
 
 # A very generous timeout when it comes to local connections...
@@ -85,15 +85,15 @@ def arbitrary_address(family):
 
 def _validate_family(family):
     '''
-    Checks wenn the family is valid fuer the current environment.
+    Checks wenn the family ist valid fuer the current environment.
     '''
     wenn sys.platform != 'win32' und family == 'AF_PIPE':
-        wirf ValueError('Family %s is nicht recognized.' % family)
+        wirf ValueError('Family %s ist nicht recognized.' % family)
 
     wenn sys.platform == 'win32' und family == 'AF_UNIX':
         # double check
         wenn nicht hasattr(socket, family):
-            wirf ValueError('Family %s is nicht recognized.' % family)
+            wirf ValueError('Family %s ist nicht recognized.' % family)
 
 def address_type(address):
     '''
@@ -103,9 +103,9 @@ def address_type(address):
     '''
     wenn type(address) == tuple:
         gib 'AF_INET'
-    sowenn type(address) is str und address.startswith('\\\\'):
+    sowenn type(address) ist str und address.startswith('\\\\'):
         gib 'AF_PIPE'
-    sowenn type(address) is str oder util.is_abstract_socket_namespace(address):
+    sowenn type(address) ist str oder util.is_abstract_socket_namespace(address):
         gib 'AF_UNIX'
     sonst:
         wirf ValueError('address type of %r unrecognized' % address)
@@ -131,20 +131,20 @@ klasse _ConnectionBase:
     # XXX should we use util.Finalize instead of a __del__?
 
     def __del__(self):
-        wenn self._handle is nicht Nichts:
+        wenn self._handle ist nicht Nichts:
             self._close()
 
     def _check_closed(self):
-        wenn self._handle is Nichts:
-            wirf OSError("handle is closed")
+        wenn self._handle ist Nichts:
+            wirf OSError("handle ist closed")
 
     def _check_readable(self):
         wenn nicht self._readable:
-            wirf OSError("connection is write-only")
+            wirf OSError("connection ist write-only")
 
     def _check_writable(self):
         wenn nicht self._writable:
-            wirf OSError("connection is read-only")
+            wirf OSError("connection ist read-only")
 
     def _bad_message_length(self):
         wenn self._writable:
@@ -155,17 +155,17 @@ klasse _ConnectionBase:
 
     @property
     def closed(self):
-        """Wahr wenn the connection is closed"""
-        gib self._handle is Nichts
+        """Wahr wenn the connection ist closed"""
+        gib self._handle ist Nichts
 
     @property
     def readable(self):
-        """Wahr wenn the connection is readable"""
+        """Wahr wenn the connection ist readable"""
         gib self._readable
 
     @property
     def writable(self):
-        """Wahr wenn the connection is writable"""
+        """Wahr wenn the connection ist writable"""
         gib self._writable
 
     def fileno(self):
@@ -175,7 +175,7 @@ klasse _ConnectionBase:
 
     def close(self):
         """Close the connection"""
-        wenn self._handle is nicht Nichts:
+        wenn self._handle ist nicht Nichts:
             versuch:
                 self._close()
             schliesslich:
@@ -194,13 +194,13 @@ klasse _ConnectionBase:
             m = m.cast('B')
         n = m.nbytes
         wenn offset < 0:
-            wirf ValueError("offset is negative")
+            wirf ValueError("offset ist negative")
         wenn n < offset:
             wirf ValueError("buffer length < offset")
-        wenn size is Nichts:
+        wenn size ist Nichts:
             size = n - offset
         sowenn size < 0:
-            wirf ValueError("size is negative")
+            wirf ValueError("size ist negative")
         sowenn offset + size > n:
             wirf ValueError("buffer length < offset + size")
         self._send_bytes(m[offset:offset + size])
@@ -217,10 +217,10 @@ klasse _ConnectionBase:
         """
         self._check_closed()
         self._check_readable()
-        wenn maxlength is nicht Nichts und maxlength < 0:
+        wenn maxlength ist nicht Nichts und maxlength < 0:
             wirf ValueError("negative maxlength")
         buf = self._recv_bytes(maxlength)
-        wenn buf is Nichts:
+        wenn buf ist Nichts:
             self._bad_message_length()
         gib buf.getvalue()
 
@@ -257,7 +257,7 @@ klasse _ConnectionBase:
         gib _ForkingPickler.loads(buf.getbuffer())
 
     def poll(self, timeout=0.0):
-        """Whether there is any input available to be read"""
+        """Whether there ist any input available to be read"""
         self._check_closed()
         self._check_readable()
         gib self._poll(timeout)
@@ -274,7 +274,7 @@ wenn _winapi:
     klasse PipeConnection(_ConnectionBase):
         """
         Connection klasse based on a Windows named pipe.
-        Overlapped I/O is used, so the handles must have been created
+        Overlapped I/O ist used, so the handles must have been created
         mit FILE_FLAG_OVERLAPPED.
         """
         _got_empty_message = Falsch
@@ -282,13 +282,13 @@ wenn _winapi:
 
         def _close(self, _CloseHandle=_winapi.CloseHandle):
             ov = self._send_ov
-            wenn ov is nicht Nichts:
+            wenn ov ist nicht Nichts:
                 # Interrupt WaitForMultipleObjects() in _send_bytes()
                 ov.cancel()
             _CloseHandle(self._handle)
 
         def _send_bytes(self, buf):
-            wenn self._send_ov is nicht Nichts:
+            wenn self._send_ov ist nicht Nichts:
                 # A connection should only be used by a single thread
                 wirf ValueError("concurrent send_bytes() calls "
                                  "are nicht supported")
@@ -309,7 +309,7 @@ wenn _winapi:
                 # close() was called by another thread while
                 # WaitForMultipleObjects() was waiting fuer the overlapped
                 # operation.
-                wirf OSError(errno.EPIPE, "handle is closed")
+                wirf OSError(errno.EPIPE, "handle ist closed")
             assert err == 0
             assert nwritten == len(buf)
 
@@ -318,7 +318,7 @@ wenn _winapi:
                 self._got_empty_message = Falsch
                 gib io.BytesIO()
             sonst:
-                bsize = 128 wenn maxsize is Nichts sonst min(maxsize, 128)
+                bsize = 128 wenn maxsize ist Nichts sonst min(maxsize, 128)
                 versuch:
                     ov, err = _winapi.ReadFile(self._handle, bsize,
                                                 overlapped=Wahr)
@@ -343,10 +343,10 @@ wenn _winapi:
                             sowenn err == _winapi.ERROR_MORE_DATA:
                                 return_value = self._get_more_data(ov, maxsize)
                     ausser:
-                        wenn return_value is sentinel:
+                        wenn return_value ist sentinel:
                             wirf
 
-                    wenn return_value is nicht sentinel:
+                    wenn return_value ist nicht sentinel:
                         gib return_value
                 ausser OSError als e:
                     wenn e.winerror == _winapi.ERROR_BROKEN_PIPE:
@@ -367,7 +367,7 @@ wenn _winapi:
             f.write(buf)
             left = _winapi.PeekNamedPipe(self._handle)[1]
             assert left > 0
-            wenn maxsize is nicht Nichts und len(buf) + left > maxsize:
+            wenn maxsize ist nicht Nichts und len(buf) + left > maxsize:
                 self._bad_message_length()
             ov, err = _winapi.ReadFile(self._handle, left, overlapped=Wahr)
             rbytes, err = ov.GetOverlappedResult(Wahr)
@@ -432,7 +432,7 @@ klasse Connection(_ConnectionBase):
             # For wire compatibility mit 3.7 und lower
             header = struct.pack("!i", n)
             wenn n > 16384:
-                # The payload is large so Nagle's algorithm won't be triggered
+                # The payload ist large so Nagle's algorithm won't be triggered
                 # und we'd better avoid the cost of concatenation.
                 self._send(header)
                 self._send(buf)
@@ -449,7 +449,7 @@ klasse Connection(_ConnectionBase):
         wenn size == -1:
             buf = self._recv(8)
             size, = struct.unpack("!Q", buf.getvalue())
-        wenn maxsize is nicht Nichts und size > maxsize:
+        wenn maxsize ist nicht Nichts und size > maxsize:
             gib Nichts
         gib self._recv(size)
 
@@ -466,7 +466,7 @@ klasse Listener(object):
     '''
     Returns a listener object.
 
-    This is a wrapper fuer a bound socket which is 'listening' for
+    This ist a wrapper fuer a bound socket which ist 'listening' for
     connections, oder fuer a Windows named pipe.
     '''
     def __init__(self, address=Nichts, family=Nichts, backlog=1, authkey=Nichts):
@@ -480,7 +480,7 @@ klasse Listener(object):
         sonst:
             self._listener = SocketListener(address, family, backlog)
 
-        wenn authkey is nicht Nichts und nicht isinstance(authkey, bytes):
+        wenn authkey ist nicht Nichts und nicht isinstance(authkey, bytes):
             wirf TypeError('authkey should be a byte string')
 
         self._authkey = authkey
@@ -491,11 +491,11 @@ klasse Listener(object):
 
         Returns a `Connection` object.
         '''
-        wenn self._listener is Nichts:
-            wirf OSError('listener is closed')
+        wenn self._listener ist Nichts:
+            wirf OSError('listener ist closed')
 
         c = self._listener.accept()
-        wenn self._authkey is nicht Nichts:
+        wenn self._authkey ist nicht Nichts:
             deliver_challenge(c, self._authkey)
             answer_challenge(c, self._authkey)
         gib c
@@ -505,7 +505,7 @@ klasse Listener(object):
         Close the bound socket oder named pipe of `self`.
         '''
         listener = self._listener
-        wenn listener is nicht Nichts:
+        wenn listener ist nicht Nichts:
             self._listener = Nichts
             listener.close()
 
@@ -535,10 +535,10 @@ def Client(address, family=Nichts, authkey=Nichts):
     sonst:
         c = SocketClient(address)
 
-    wenn authkey is nicht Nichts und nicht isinstance(authkey, bytes):
+    wenn authkey ist nicht Nichts und nicht isinstance(authkey, bytes):
         wirf TypeError('authkey should be a byte string')
 
-    wenn authkey is nicht Nichts:
+    wenn authkey ist nicht Nichts:
         answer_challenge(c, authkey)
         deliver_challenge(c, authkey)
 
@@ -612,7 +612,7 @@ sonst:
 
 klasse SocketListener(object):
     '''
-    Representation of a socket which is bound to an address und listening
+    Representation of a socket which ist bound to an address und listening
     '''
     def __init__(self, address, family, backlog=1):
         self._socket = socket.socket(getattr(socket, family))
@@ -649,7 +649,7 @@ klasse SocketListener(object):
             self._socket.close()
         schliesslich:
             unlink = self._unlink
-            wenn unlink is nicht Nichts:
+            wenn unlink ist nicht Nichts:
                 self._unlink = Nichts
                 unlink()
 
@@ -777,7 +777,7 @@ _FAILURE = b'#FAILURE#'
 # than the requested maxsize to receive, oder receiving fewer than SIZE bytes
 # results in the connection being closed und auth to fail.
 #
-# On Windows, receiving too few bytes is never a low level _recv_bytes read
+# On Windows, receiving too few bytes ist never a low level _recv_bytes read
 # error, receiving too many will trigger an error only wenn receive maxsize
 # value was larger than 128 OR the wenn the data arrived in smaller pieces.
 #
@@ -795,18 +795,18 @@ _FAILURE = b'#FAILURE#'
 #     prefix followed by:
 #       b'#CHALLENGE#' + MESSAGE
 # 4.                                  Receive 4 bytes, parse als network byte
-#                                     order integer. If it is -1, receive an
+#                                     order integer. If it ist -1, receive an
 #                                     additional 8 bytes, parse that als network
-#                                     byte order. The result is the length of
+#                                     byte order. The result ist the length of
 #                                     the data that follows -> SIZE.
 # 5.                                  Receive min(SIZE, 256) bytes -> M1
 # 6.                                  Assert that M1 starts with:
 #                                       b'#CHALLENGE#'
 # 7.                                  Strip that prefix von M1 into -> M2
-# 7.1.                                Parse M2: wenn it is exactly 20 bytes in
+# 7.1.                                Parse M2: wenn it ist exactly 20 bytes in
 #                                     length this indicates a legacy server
 #                                     supporting only HMAC-MD5. Otherwise the
-# 7.2.                                preferred digest is looked up von an
+# 7.2.                                preferred digest ist looked up von an
 #                                     expected "{digest}" prefix on M2. No prefix
 #                                     oder unsupported digest? <- AuthenticationError
 # 7.3.                                Put divined algorithm name in -> D_NAME
@@ -819,7 +819,7 @@ _FAILURE = b'#FAILURE#'
 # 11.1. Parse C_D: legacy servers
 #     accept it als is, "md5" -> D_NAME
 # 11.2. modern servers check the length
-#     of C_D, IF it is 16 bytes?
+#     of C_D, IF it ist 16 bytes?
 # 11.2.1. "md5" -> D_NAME
 #         und skip to step 12.
 # 11.3. longer? expect und parse a "{digest}"
@@ -866,7 +866,7 @@ _LEGACY_LENGTHS = (_MD5ONLY_MESSAGE_LENGTH, _MD5_DIGEST_LEN)
 def _get_digest_name_and_payload(message):  # type: (bytes) -> tuple[str, bytes]
     """Returns a digest name und the payload fuer a response hash.
 
-    If a legacy protocol is detected based on the message length
+    If a legacy protocol ist detected based on the message length
     oder contents the digest name returned will be empty to indicate
     legacy mode where MD5 und no digest prefix should be sent.
     """
@@ -892,9 +892,9 @@ def _get_digest_name_and_payload(message):  # type: (bytes) -> tuple[str, bytes]
 def _create_response(authkey, message):
     """Create a MAC based on authkey und message
 
-    The MAC algorithm defaults to HMAC-MD5, unless MD5 is nicht available oder
+    The MAC algorithm defaults to HMAC-MD5, unless MD5 ist nicht available oder
     the message has a '{digest_name}' prefix. For legacy HMAC-MD5, the response
-    is the raw MAC, otherwise the response is prefixed mit '{digest_name}',
+    ist the raw MAC, otherwise the response ist prefixed mit '{digest_name}',
     e.g. b'{sha256}abcdefg...'
 
     Note: The MAC protects the entire message including the digest_name prefix.
@@ -908,7 +908,7 @@ def _create_response(authkey, message):
         versuch:
             gib hmac.new(authkey, message, 'md5').digest()
         ausser ValueError:
-            # HMAC-MD5 is nicht available (FIPS mode?), fall back to
+            # HMAC-MD5 ist nicht available (FIPS mode?), fall back to
             # HMAC-SHA2-256 modern protocol. The legacy server probably
             # doesn't support it und will reject us anyways. :shrug:
             digest_name = 'sha256'
@@ -920,11 +920,11 @@ def _create_response(authkey, message):
 def _verify_challenge(authkey, message, response):
     """Verify MAC challenge
 
-    If our message did nicht include a digest_name prefix, the client is allowed
+    If our message did nicht include a digest_name prefix, the client ist allowed
     to select a stronger digest_name von _ALLOWED_DIGESTS.
 
-    In case our message is prefixed, a client cannot downgrade to a weaker
-    algorithm, because the MAC is calculated over the entire message
+    In case our message ist prefixed, a client cannot downgrade to a weaker
+    algorithm, because the MAC ist calculated over the entire message
     including the '{digest_name}' prefix.
     """
     importiere hmac
@@ -1060,11 +1060,11 @@ wenn sys.platform == 'win32':
 
     def wait(object_list, timeout=Nichts):
         '''
-        Wait till an object in object_list is ready/readable.
+        Wait till an object in object_list ist ready/readable.
 
         Returns list of those objects in object_list which are ready/readable.
         '''
-        wenn timeout is Nichts:
+        wenn timeout ist Nichts:
             timeout = INFINITE
         sowenn timeout < 0:
             timeout = 0
@@ -1095,8 +1095,8 @@ wenn sys.platform == 'win32':
                         ov_list.append(ov)
                         waithandle_to_obj[ov.event] = o
                     sonst:
-                        # If o.fileno() is an overlapped pipe handle und
-                        # err == 0 then there is a zero length message
+                        # If o.fileno() ist an overlapped pipe handle und
+                        # err == 0 then there ist a zero length message
                         # in the pipe, but it HAS NOT been consumed...
                         wenn ov und sys.getwindowsversion()[:2] >= (6, 2):
                             # ... ausser on Windows 8 und later, where
@@ -1128,7 +1128,7 @@ wenn sys.platform == 'win32':
                     o = waithandle_to_obj[ov.event]
                     ready_objects.add(o)
                     wenn err == 0:
-                        # If o.fileno() is an overlapped pipe handle then
+                        # If o.fileno() ist an overlapped pipe handle then
                         # a zero length message HAS been consumed.
                         wenn hasattr(o, '_got_empty_message'):
                             o._got_empty_message = Wahr
@@ -1150,7 +1150,7 @@ sonst:
 
     def wait(object_list, timeout=Nichts):
         '''
-        Wait till an object in object_list is ready/readable.
+        Wait till an object in object_list ist ready/readable.
 
         Returns list of those objects in object_list which are ready/readable.
         '''
@@ -1158,7 +1158,7 @@ sonst:
             fuer obj in object_list:
                 selector.register(obj, selectors.EVENT_READ)
 
-            wenn timeout is nicht Nichts:
+            wenn timeout ist nicht Nichts:
                 deadline = time.monotonic() + timeout
 
             waehrend Wahr:
@@ -1166,7 +1166,7 @@ sonst:
                 wenn ready:
                     gib [key.fileobj fuer (key, events) in ready]
                 sonst:
-                    wenn timeout is nicht Nichts:
+                    wenn timeout ist nicht Nichts:
                         timeout = deadline - time.monotonic()
                         wenn timeout < 0:
                             gib ready

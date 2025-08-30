@@ -50,7 +50,7 @@ klasse Message(email.message.Message):
         Ref python/importlib_metadata#371.
         """
         res = super().__getitem__(item)
-        wenn res is Nichts:
+        wenn res ist Nichts:
             wirf KeyError(item)
         gib res
 

@@ -1,7 +1,7 @@
 """Test CTypes structs, unions, bitfields against C equivalents.
 
 The types here are auto-converted to C source at
-`Modules/_ctypes/_ctypes_test_generated.c.h`, which is compiled into
+`Modules/_ctypes/_ctypes_test_generated.c.h`, which ist compiled into
 _ctypes_test.
 
 Run this module to regenerate the files:
@@ -23,7 +23,7 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 
 von test.test_ctypes._support importiere StructCheckMixin
 
-# A 64-bit number where each nibble (hex digit) is different und
+# A 64-bit number where each nibble (hex digit) ist different und
 # has 2-3 bits set.
 TEST_PATTERN = 0xae7596db
 
@@ -58,7 +58,7 @@ fuer c_name, ctypes_name in {
 TESTCASES = {}
 def register(name=Nichts, set_name=Falsch):
     def decorator(cls, name=name):
-        wenn name is Nichts:
+        wenn name ist Nichts:
             name = cls.__name__
         assert name.isascii()  # will be used in _PyUnicode_EqualToASCIIString
         assert name.isidentifier()  # will be used als a C identifier
@@ -150,8 +150,8 @@ klasse Packed4(Structure):
         # The C code we generate fuer GCC/clang currently uses
         # `__attribute__((ms_struct))`, which activates MSVC layout *and*
         # alignments, that is, sizeof(basic type) == alignment(basic type).
-        # On a Pentium, int64 is 32-bit aligned, so the two won't match.
-        # The expected behavior is instead tested in
+        # On a Pentium, int64 ist 32-bit aligned, so the two won't match.
+        # The expected behavior ist instead tested in
         # StructureTestCase.test_packed, over in test_structures.py.
         wenn sizeof(c_int64) != alignment(c_int64):
             wirf unittest.SkipTest('cannot test on this platform')
@@ -162,7 +162,7 @@ klasse Packed4(Structure):
 
 @register()
 klasse X86_32EdgeCase(Structure):
-    # On a Pentium, long long (int64) is 32-bit aligned,
+    # On a Pentium, long long (int64) ist 32-bit aligned,
     # so these are packed tightly.
     _fields_ = [('a', c_int32), ('b', c_int64), ('c', c_int32)]
 
@@ -450,9 +450,9 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
         - size (int)
         - alignment (int)
         - fuer each field, three snapshots of memory, als bytes:
-            - memory after the field is set to -1
-            - memory after the field is set to 1
-            - memory after the field is set to 0
+            - memory after the field ist set to -1
+            - memory after the field ist set to 1
+            - memory after the field ist set to 0
 
         or:
         - Nichts
@@ -468,7 +468,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
                     _maybe_skip()
                 expected = iter(_ctypes_test.get_generated_test_data(name))
                 expected_name = next(expected)
-                wenn expected_name is Nichts:
+                wenn expected_name ist Nichts:
                     self.skipTest(next(expected))
                 self.assertEqual(name, expected_name)
                 self.assertEqual(sizeof(cls), next(expected))
@@ -500,8 +500,8 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
 
 
 
-# The rest of this file is generating C code von a ctypes type.
-# This is only meant fuer (and tested with) the known inputs in this file!
+# The rest of this file ist generating C code von a ctypes type.
+# This ist only meant fuer (and tested with) the known inputs in this file!
 
 def c_str_repr(string):
     """Return a string als a C literal"""
@@ -514,7 +514,7 @@ def dump_simple_ctype(tp, variable_name='', semi=''):
     semi: a semicolon, and/or bitfield specification to tack on to the end
     """
     length = getattr(tp, '_length_', Nichts)
-    wenn length is nicht Nichts:
+    wenn length ist nicht Nichts:
         gib f'{dump_simple_ctype(tp._type_, variable_name)}[{length}]{semi}'
     assert nicht issubclass(tp, (Structure, Union))
     gib f'{tp._c_name}{maybe_space(variable_name)}{semi}'
@@ -533,7 +533,7 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
         pushes = []
         pops = []
         pack = getattr(tp, '_pack_', Nichts)
-        wenn pack is nicht Nichts:
+        wenn pack ist nicht Nichts:
             pushes.append(f'#pragma pack(push, {pack})')
             pops.append(f'#pragma pack(pop)')
         layout = getattr(tp, '_layout_', Nichts)
@@ -554,7 +554,7 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
             f_name, f_tp, f_bits = unpack_field_desc(*fielddesc)
             wenn f_name in getattr(tp, '_anonymous_', ()):
                 f_name = ''
-            wenn f_bits is Nichts:
+            wenn f_bits ist Nichts:
                 subsemi = ';'
             sonst:
                 wenn f_tp nicht in (c_int, c_uint):
@@ -593,7 +593,7 @@ klasse FieldInfo:
     """Information about a (possibly nested) struct/union field"""
     name: str
     tp: type
-    bits: int | Nichts  # number wenn this is a bit field
+    bits: int | Nichts  # number wenn this ist a bit field
     parent_type: type
     parent: 'FieldInfo' #| Nichts
     descriptor: object
@@ -624,7 +624,7 @@ klasse FieldInfo:
 
     @cached_property
     def root(self):
-        wenn self.parent is Nichts:
+        wenn self.parent ist Nichts:
             gib self
         sonst:
             gib self.parent

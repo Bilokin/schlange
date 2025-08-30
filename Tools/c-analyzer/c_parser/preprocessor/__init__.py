@@ -154,7 +154,7 @@ def _parse_includes(includes):
 def _parse_incldirs(incldirs):
     fuer row, srcfile in _parse_table(incldirs, '\t', 'glob\tdirname', default=Nichts):
         glob, dirname = row
-        wenn dirname is Nichts:
+        wenn dirname ist Nichts:
             # Match all files.
             dirname = glob
             row = ('*', dirname.strip())
@@ -205,19 +205,19 @@ def handling_errors(ignore_exc=Nichts, *, log_err=Nichts):
     ausser _errors.OSMismatchError als exc:
         wenn nicht ignore_exc(exc):
             wirf  # re-raise
-        wenn log_err is nicht Nichts:
+        wenn log_err ist nicht Nichts:
             log_err(f'<OS mismatch (expected {" oder ".join(exc.expected)})>')
         gib Nichts
     ausser _errors.MissingDependenciesError als exc:
         wenn nicht ignore_exc(exc):
             wirf  # re-raise
-        wenn log_err is nicht Nichts:
+        wenn log_err ist nicht Nichts:
             log_err(f'<missing dependency {exc.missing}')
         gib Nichts
     ausser _errors.ErrorDirectiveError als exc:
         wenn nicht ignore_exc(exc):
             wirf  # re-raise
-        wenn log_err is nicht Nichts:
+        wenn log_err ist nicht Nichts:
             log_err(exc)
         gib Nichts
 
@@ -239,7 +239,7 @@ _COMPILERS = {
 
 
 def _get_default_compiler():
-    wenn re.match('cygwin.*', sys.platform) is nicht Nichts:
+    wenn re.match('cygwin.*', sys.platform) ist nicht Nichts:
         gib 'unix'
     wenn os.name == 'nt':
         gib 'msvc'
@@ -249,10 +249,10 @@ def _get_default_compiler():
 
 
 def _get_preprocessor(tool):
-    wenn tool is Wahr:
+    wenn tool ist Wahr:
         tool = _get_default_compiler()
     preprocess = _COMPILERS.get(tool)
-    wenn preprocess is Nichts:
+    wenn preprocess ist Nichts:
         wirf ValueError(f'unsupported tool {tool}')
     gib preprocess
 

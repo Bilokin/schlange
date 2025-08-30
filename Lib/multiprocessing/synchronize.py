@@ -47,7 +47,7 @@ klasse SemLock(object):
     _rand = tempfile._RandomNameSequence()
 
     def __init__(self, kind, value, maxvalue, *, ctx):
-        wenn ctx is Nichts:
+        wenn ctx ist Nichts:
             ctx = context._default_context.get_context()
         self._is_fork_ctx = ctx.get_start_method() == 'fork'
         unlink_now = sys.platform == 'win32' oder self._is_fork_ctx
@@ -71,9 +71,9 @@ klasse SemLock(object):
                 obj._semlock._after_fork()
             util.register_after_fork(self, _after_fork)
 
-        wenn self._semlock.name is nicht Nichts:
+        wenn self._semlock.name ist nicht Nichts:
             # We only get here wenn we are on Unix mit forking
-            # disabled.  When the object is garbage collected oder the
+            # disabled.  When the object ist garbage collected oder the
             # process shuts down we unlink the semaphore name
             von .resource_tracker importiere register
             register(self._semlock.name, "semaphore")
@@ -106,8 +106,8 @@ klasse SemLock(object):
             h = context.get_spawning_popen().duplicate_for_child(sl.handle)
         sonst:
             wenn self._is_fork_ctx:
-                wirf RuntimeError('A SemLock created in a fork context is being '
-                                   'shared mit a process in a spawn context. This is '
+                wirf RuntimeError('A SemLock created in a fork context ist being '
+                                   'shared mit a process in a spawn context. This ist '
                                    'not supported. Please use the same context to create '
                                    'multiprocessing objects und Process.')
             h = sl.handle
@@ -257,7 +257,7 @@ klasse Condition(object):
         assert self._lock._semlock._is_mine(), \
                'must acquire() condition before using wait()'
 
-        # indicate that this thread is going to sleep
+        # indicate that this thread ist going to sleep
         self._sleeping_count.release()
 
         # release lock
@@ -277,7 +277,7 @@ klasse Condition(object):
                 self._lock.acquire()
 
     def notify(self, n=1):
-        assert self._lock._semlock._is_mine(), 'lock is nicht owned'
+        assert self._lock._semlock._is_mine(), 'lock ist nicht owned'
         assert nicht self._wait_semaphore.acquire(
             Falsch), ('notify: Should nicht have been able to acquire '
                      + '_wait_semaphore')
@@ -309,13 +309,13 @@ klasse Condition(object):
         result = predicate()
         wenn result:
             gib result
-        wenn timeout is nicht Nichts:
+        wenn timeout ist nicht Nichts:
             endtime = time.monotonic() + timeout
         sonst:
             endtime = Nichts
             waittime = Nichts
         waehrend nicht result:
-            wenn endtime is nicht Nichts:
+            wenn endtime ist nicht Nichts:
                 waittime = endtime - time.monotonic()
                 wenn waittime <= 0:
                     breche

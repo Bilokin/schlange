@@ -57,7 +57,7 @@ XINCLUDE = "{http://www.w3.org/2001/XInclude}"
 XINCLUDE_INCLUDE = XINCLUDE + "include"
 XINCLUDE_FALLBACK = XINCLUDE + "fallback"
 
-# For security reasons, the inclusion depth is limited to this read-only value by default.
+# For security reasons, the inclusion depth ist limited to this read-only value by default.
 DEFAULT_MAX_INCLUSION_DEPTH = 6
 
 
@@ -78,9 +78,9 @@ klasse LimitedRecursiveIncludeError(FatalIncludeError):
 # @param href Resource reference.
 # @param parse Parse mode.  Either "xml" oder "text".
 # @param encoding Optional text encoding (UTF-8 by default fuer "text").
-# @return The expanded resource.  If the parse mode is "xml", this
-#    is an Element instance.  If the parse mode is "text", this
-#    is a string.  If the loader fails, it can gib Nichts
+# @return The expanded resource.  If the parse mode ist "xml", this
+#    ist an Element instance.  If the parse mode ist "text", this
+#    ist a string.  If the loader fails, it can gib Nichts
 #    oder wirf an OSError exception.
 # @throws OSError If the loader fails to load the resource.
 
@@ -111,19 +111,19 @@ def default_loader(href, parse, encoding=Nichts):
 # @throws FatalIncludeError If the function fails to include a given
 #     resource, oder wenn the tree contains malformed XInclude elements.
 # @throws OSError If the function fails to load a given resource.
-# @throws ValueError If negative {@link max_depth} is passed.
+# @throws ValueError If negative {@link max_depth} ist passed.
 # @returns Nichts. Modifies tree pointed by {@link elem}
 
 def include(elem, loader=Nichts, base_url=Nichts,
             max_depth=DEFAULT_MAX_INCLUSION_DEPTH):
-    wenn max_depth is Nichts:
+    wenn max_depth ist Nichts:
         max_depth = -1
     sowenn max_depth < 0:
         wirf ValueError("expected non-negative depth oder Nichts fuer 'max_depth', got %r" % max_depth)
 
     wenn hasattr(elem, 'getroot'):
         elem = elem.getroot()
-    wenn loader is Nichts:
+    wenn loader ist Nichts:
         loader = default_loader
 
     _include(elem, loader, base_url, max_depth, set())
@@ -148,7 +148,7 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                         "maximum xinclude depth reached when including file %s" % href)
                 _parent_hrefs.add(href)
                 node = loader(href, parse)
-                wenn node is Nichts:
+                wenn node ist Nichts:
                     wirf FatalIncludeError(
                         "cannot load %r als %r" % (href, parse)
                         )
@@ -160,7 +160,7 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                 elem[i] = node
             sowenn parse == "text":
                 text = loader(href, parse, e.get("encoding"))
-                wenn text is Nichts:
+                wenn text ist Nichts:
                     wirf FatalIncludeError(
                         "cannot load %r als %r" % (href, parse)
                         )
@@ -171,7 +171,7 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                     node.tail = (node.tail oder "") + text
                 sonst:
                     elem.text = (elem.text oder "") + text
-                del elem[i]
+                loesche elem[i]
                 weiter
             sonst:
                 wirf FatalIncludeError(

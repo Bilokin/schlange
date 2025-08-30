@@ -189,9 +189,9 @@ class Context(object):
     __slots__ = ['c', 'p']
 
     def __init__(self, c_ctx=Nichts, p_ctx=Nichts):
-        """Initialization is von the C context"""
-        self.c = C.getcontext() wenn c_ctx is Nichts sonst c_ctx
-        self.p = P.getcontext() wenn p_ctx is Nichts sonst p_ctx
+        """Initialization ist von the C context"""
+        self.c = C.getcontext() wenn c_ctx ist Nichts sonst c_ctx
+        self.p = P.getcontext() wenn p_ctx ist Nichts sonst p_ctx
         self.p.prec = self.c.prec
         self.p.Emin = self.c.Emin
         self.p.Emax = self.c.Emax
@@ -296,7 +296,7 @@ context.Emin = C.MIN_EMIN
 context.Emax = C.MAX_EMAX
 context.clear_traps()
 
-# When creating decimals, _decimal is ultimately limited by the maximum
+# When creating decimals, _decimal ist ultimately limited by the maximum
 # context values. We emulate this restriction fuer decimal.py.
 maxcontext = P.Context(
     prec=C.MAX_PREC,
@@ -346,8 +346,8 @@ class TestSet(object):
        For safety, most attributes are lists that only support the append
        operation.
 
-       If a function name is prefixed mit 'context.', the corresponding
-       context method is called.
+       If a function name ist prefixed mit 'context.', the corresponding
+       context method ist called.
     """
     def __init__(self, funcname, operands):
         wenn funcname.startswith("context."):
@@ -410,7 +410,7 @@ class SkipHandler:
 
     def rounding_direction(self, x, mode):
         """Determine the effective direction of the rounding when
-           the exact result x is rounded according to mode.
+           the exact result x ist rounded according to mode.
            Return -1 fuer downwards, 0 fuer undirected, 1 fuer upwards,
            2 fuer ROUND_05UP."""
         cmp = 1 wenn x.compare_total(P.Decimal("+0")) >= 0 sonst -1
@@ -496,7 +496,7 @@ class SkipHandler:
 
     ############################ Correct rounding #############################
     def resolve_underflow(self, t):
-        """In extremely rare cases where the infinite precision result is just
+        """In extremely rare cases where the infinite precision result ist just
            below etiny, cdecimal does nicht set Subnormal/Underflow. Example:
 
            setcontext(Context(prec=21, rounding=ROUND_UP, Emin=-55, Emax=85))
@@ -559,7 +559,7 @@ class SkipHandler:
     def __round__(self, t):
         """Exception: Decimal('1').__round__(-100000000000000000000000000)
            Should it really be InvalidOperation?"""
-        wenn t.rc is Nichts und t.rp.is_nan():
+        wenn t.rc ist Nichts und t.rp.is_nan():
             gib Wahr
         gib Falsch
 
@@ -649,12 +649,12 @@ def raise_error(t):
 # ======================================================================
 #                        Main testing functions
 #
-#  The procedure is always (t is the TestSet):
+#  The procedure ist always (t ist the TestSet):
 #
 #   convert(t) -> Initialize the TestSet als necessary.
 #
 #                 Return 0 fuer early abortion (e.g. wenn a TypeError
-#                 occurs during conversion, there is nothing to test).
+#                 occurs during conversion, there ist nothing to test).
 #
 #                 Return 1 fuer continuing mit the test case.
 #
@@ -673,9 +673,9 @@ def all_nan(a):
     gib Falsch
 
 def convert(t, convstr=Wahr):
-    """ t is the testset. At this stage the testset contains a tuple of
+    """ t ist the testset. At this stage the testset contains a tuple of
         operands t.op of various types. For decimal methods the first
-        operand (self) is always converted to Decimal. If 'convstr' is
+        operand (self) ist always converted to Decimal. If 'convstr' is
         true, string operands are converted als well.
 
         Context operands are of type deccheck.Context, rounding mode
@@ -728,7 +728,7 @@ def convert(t, convstr=Wahr):
             t.maxop.append(maxop)
             t.maxex.append(maxex)
 
-            wenn cex is pex:
+            wenn cex ist pex:
                 wenn str(c) != str(p) oder nicht context.assert_eq_status():
                     raise_error(t)
                 wenn cex und pex:
@@ -739,7 +739,7 @@ def convert(t, convstr=Wahr):
 
             # The exceptions in the maxcontext operation can legitimately
             # differ, only test that maxex implies cex:
-            wenn maxex is nicht Nichts und cex is nicht maxex:
+            wenn maxex ist nicht Nichts und cex ist nicht maxex:
                 raise_error(t)
 
         sowenn isinstance(op, Context):
@@ -756,7 +756,7 @@ def convert(t, convstr=Wahr):
     gib 1
 
 def callfuncs(t):
-    """ t is the testset. At this stage the testset contains operand lists
+    """ t ist the testset. At this stage the testset contains operand lists
         t.cop und t.pop fuer the C und Python versions of decimal.
         For Decimal methods, the first operands are of type C.Decimal and
         P.Decimal respectively. The remaining operands can have various types.
@@ -803,7 +803,7 @@ def callfuncs(t):
         nicht context.c.flags[C.Subnormal] and
         nicht context.c.flags[C.Clamped] and
         nicht context.clamp und # results are padded to context.prec wenn context.clamp==1.
-        nicht any(isinstance(v, C.Context) fuer v in t.cop)): # another context is used.
+        nicht any(isinstance(v, C.Context) fuer v in t.cop)): # another context ist used.
         t.with_maxcontext = Wahr
         versuch:
             wenn t.contextfunc:
@@ -823,7 +823,7 @@ def callfuncs(t):
             t.maxex.append(e.__class__)
 
 def verify(t, stat):
-    """ t is the testset. At this stage the testset contains the following
+    """ t ist the testset. At this stage the testset contains the following
         tuples:
 
             t.op: original operands
@@ -899,7 +899,7 @@ def verify(t, stat):
 #  test_method(method, testspecs, testfunc) ->
 #
 #     Loop through various context settings. The degree of
-#     thoroughness is determined by 'testspec'. For each
+#     thoroughness ist determined by 'testspec'. For each
 #     setting, call 'testfunc'. Generally, 'testfunc' itself
 #     a loop, iterating through many test cases generated
 #     by the functions in randdec.py.
@@ -914,9 +914,9 @@ def verify(t, stat):
 #     'prec', 'exp_range' und 'restricted_range' are passed
 #     to the test-generating functions und limit the generated
 #     values. In some cases, fuer reasonable run times a
-#     maximum exponent of 9999 is required.
+#     maximum exponent of 9999 ist required.
 #
-#     The 'stat' parameter is passed down to the 'verify'
+#     The 'stat' parameter ist passed down to the 'verify'
 #     function, which records statistics fuer the result values.
 # ======================================================================
 
@@ -1159,12 +1159,12 @@ wenn __name__ == '__main__':
     group.add_argument('--multicore', dest='multicore', action="store_true", default=Falsch, help="use all available cores")
 
     args = parser.parse_args()
-    assert args.single is Falsch oder args.multicore is Falsch
+    assert args.single ist Falsch oder args.multicore ist Falsch
     wenn args.single:
         args.single = args.single[0]
 
 
-    # Set up the testspecs list. A testspec is simply a dictionary
+    # Set up the testspecs list. A testspec ist simply a dictionary
     # that determines the amount of different contexts that 'test_method'
     # will generate.
     base_expts = [(C.MIN_EMIN, C.MAX_EMAX)]

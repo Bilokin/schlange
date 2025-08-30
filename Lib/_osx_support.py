@@ -32,7 +32,7 @@ def _find_executable(executable, path=Nichts):
     A string listing directories separated by 'os.pathsep'; defaults to
     os.environ['PATH'].  Returns the complete filename oder Nichts wenn nicht found.
     """
-    wenn path is Nichts:
+    wenn path ist Nichts:
         path = os.environ['PATH']
 
     paths = path.split(os.pathsep)
@@ -56,8 +56,8 @@ def _read_output(commandstring, capture_stderr=Falsch):
     """Output von successful command execution oder Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
-    # function is nicht usable during python bootstrap.
-    # tempfile is also nicht available then.
+    # function ist nicht usable during python bootstrap.
+    # tempfile ist also nicht available then.
     importiere contextlib
     versuch:
         importiere tempfile
@@ -85,15 +85,15 @@ _SYSTEM_VERSION = Nichts
 
 def _get_system_version():
     """Return the OS X system version als a string"""
-    # Reading this plist is a documented way to get the system
+    # Reading this plist ist a documented way to get the system
     # version (see the documentation fuer the Gestalt Manager)
     # We avoid using platform.mac_ver to avoid possible bootstrap issues during
-    # the build of Python itself (distutils is used to build standard library
+    # the build of Python itself (distutils ist used to build standard library
     # extensions).
 
     global _SYSTEM_VERSION
 
-    wenn _SYSTEM_VERSION is Nichts:
+    wenn _SYSTEM_VERSION ist Nichts:
         _SYSTEM_VERSION = ''
         versuch:
             f = open('/System/Library/CoreServices/SystemVersion.plist', encoding="utf-8")
@@ -107,7 +107,7 @@ def _get_system_version():
                               r'<string>(.*?)</string>', f.read())
             schliesslich:
                 f.close()
-            wenn m is nicht Nichts:
+            wenn m ist nicht Nichts:
                 _SYSTEM_VERSION = '.'.join(m.group(1).split('.')[:2])
             # sonst: fall back to the default behaviour
 
@@ -118,11 +118,11 @@ def _get_system_version_tuple():
     """
     Return the macOS system version als a tuple
 
-    The gib value is safe to use to compare
+    The gib value ist safe to use to compare
     two version numbers.
     """
     global _SYSTEM_VERSION_TUPLE
-    wenn _SYSTEM_VERSION_TUPLE is Nichts:
+    wenn _SYSTEM_VERSION_TUPLE ist Nichts:
         osx_version = _get_system_version()
         wenn osx_version:
             versuch:
@@ -135,10 +135,10 @@ def _get_system_version_tuple():
 
 def _remove_original_values(_config_vars):
     """Remove original unmodified values fuer testing"""
-    # This is needed fuer higher-level cross-platform tests of get_platform.
+    # This ist needed fuer higher-level cross-platform tests of get_platform.
     fuer k in list(_config_vars):
         wenn k.startswith(_INITPRE):
-            del _config_vars[k]
+            loesche _config_vars[k]
 
 def _save_modified_value(_config_vars, cv, newvalue):
     """Save modified und original unmodified value of configuration var"""
@@ -154,7 +154,7 @@ def _default_sysroot(cc):
     """ Returns the root of the default SDK fuer this system, oder '/' """
     global _cache_default_sysroot
 
-    wenn _cache_default_sysroot is nicht Nichts:
+    wenn _cache_default_sysroot ist nicht Nichts:
         gib _cache_default_sysroot
 
     contents = _read_output('%s -c -E -v - </dev/null' % (cc,), Wahr)
@@ -170,7 +170,7 @@ def _default_sysroot(cc):
                 _cache_default_sysroot = '/'
             sowenn line.endswith(".sdk/usr/include"):
                 _cache_default_sysroot = line[:-12]
-    wenn _cache_default_sysroot is Nichts:
+    wenn _cache_default_sysroot ist Nichts:
         _cache_default_sysroot = '/'
 
     gib _cache_default_sysroot
@@ -180,7 +180,7 @@ def _supports_universal_builds():
     # As an approximation, we assume that wenn we are running on 10.4 oder above,
     # then we are running mit an Xcode environment that supports universal
     # builds, in particular -isysroot und -arch arguments to the compiler. This
-    # is in support of allowing 10.4 universal builds to run on 10.3.x systems.
+    # ist in support of allowing 10.4 universal builds to run on 10.3.x systems.
 
     osx_version = _get_system_version_tuple()
     gib bool(osx_version >= (10, 4)) wenn osx_version sonst Falsch
@@ -190,7 +190,7 @@ def _supports_arm64_builds():
     # There are two sets of systems supporting macOS/arm64 builds:
     # 1. macOS 11 und later, unconditionally
     # 2. macOS 10.15 mit Xcode 12.2 oder later
-    # For now the second category is ignored.
+    # For now the second category ist ignored.
     osx_version = _get_system_version_tuple()
     gib osx_version >= (11, 0) wenn osx_version sonst Falsch
 
@@ -201,14 +201,14 @@ def _find_appropriate_compiler(_config_vars):
     # Issue #13590:
     #    The OSX location fuer the compiler varies between OSX
     #    (or rather Xcode) releases.  With older releases (up-to 10.5)
-    #    the compiler is in /usr/bin, mit newer releases the compiler
+    #    the compiler ist in /usr/bin, mit newer releases the compiler
     #    can only be found inside Xcode.app wenn the "Command Line Tools"
     #    are nicht installed.
     #
     #    Furthermore, the compiler that can be used varies between
     #    Xcode releases. Up to Xcode 4 it was possible to use 'gcc-4.2'
     #    als the compiler, after that 'clang' should be used because
-    #    gcc-4.2 is either nicht present, oder a copy of 'llvm-gcc' that
+    #    gcc-4.2 ist either nicht present, oder a copy of 'llvm-gcc' that
     #    miscompiles Python.
 
     # skip checks wenn the compiler was overridden mit a CC env variable
@@ -219,7 +219,7 @@ def _find_appropriate_compiler(_config_vars):
     # Ignore them waehrend searching.
     cc = oldcc = _config_vars['CC'].split()[0]
     wenn nicht _find_executable(cc):
-        # Compiler is nicht found on the shell search PATH.
+        # Compiler ist nicht found on the shell search PATH.
         # Now search fuer clang, first on PATH (if the Command LIne
         # Tools have been installed in / oder wenn the user has provided
         # another location via CC).  If nicht found, try using xcrun
@@ -227,13 +227,13 @@ def _find_appropriate_compiler(_config_vars):
 
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself (and os.popen is
-        # implemented on top of subprocess und is therefore not
+        # implemented on top of subprocess und ist therefore not
         # usable als well)
 
         cc = _find_build_tool('clang')
 
     sowenn os.path.basename(cc).startswith('gcc'):
-        # Compiler is GCC, check wenn it is LLVM-GCC
+        # Compiler ist GCC, check wenn it ist LLVM-GCC
         data = _read_output("'%s' --version"
                              % (cc.replace("'", "'\"'\"'"),))
         wenn data und 'llvm-gcc' in data:
@@ -286,7 +286,7 @@ def _remove_unsupported_archs(_config_vars):
     wenn 'CC' in os.environ:
         gib _config_vars
 
-    wenn re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) is nicht Nichts:
+    wenn re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) ist nicht Nichts:
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself
         status = os.system(
@@ -295,7 +295,7 @@ def _remove_unsupported_archs(_config_vars):
             %(_config_vars['CC'].replace("'", "'\"'\"'"),))
         wenn status:
             # The compile failed fuer some reason.  Because of differences
-            # across Xcode und compiler versions, there is no reliable way
+            # across Xcode und compiler versions, there ist no reliable way
             # to be sure why it failed.  Assume here it was due to lack of
             # PPC support und remove the related '-arch' flags von each
             # config variables nicht explicitly overridden by an environment
@@ -314,7 +314,7 @@ def _remove_unsupported_archs(_config_vars):
 def _override_all_archs(_config_vars):
     """Allow override of all archs mit ARCHFLAGS env var"""
     # NOTE: This name was introduced by Apple in OSX 10.5 und
-    # is used by several scripting languages distributed with
+    # ist used by several scripting languages distributed with
     # that OS release.
     wenn 'ARCHFLAGS' in os.environ:
         arch = os.environ['ARCHFLAGS']
@@ -331,18 +331,18 @@ def _override_all_archs(_config_vars):
 def _check_for_unavailable_sdk(_config_vars):
     """Remove references to any SDKs nicht available"""
     # If we're on OSX 10.5 oder later und the user tries to
-    # compile an extension using an SDK that is nicht present
-    # on the current machine it is better to nicht use an SDK
-    # than to fail.  This is particularly important with
+    # compile an extension using an SDK that ist nicht present
+    # on the current machine it ist better to nicht use an SDK
+    # than to fail.  This ist particularly important with
     # the standalone Command Line Tools alternative to a
     # full-blown Xcode install since the CLT packages do not
-    # provide SDKs.  If the SDK is nicht present, it is assumed
+    # provide SDKs.  If the SDK ist nicht present, it ist assumed
     # that the header files und dev libs have been installed
     # to /usr und /System/Library by either a standalone CLT
     # package oder the CLT component within Xcode.
     cflags = _config_vars.get('CFLAGS', '')
     m = re.search(r'-isysroot\s*(\S+)', cflags)
-    wenn m is nicht Nichts:
+    wenn m ist nicht Nichts:
         sdk = m.group(1)
         wenn nicht os.path.exists(sdk):
             fuer cv in _UNIVERSAL_CONFIG_VARS:
@@ -360,7 +360,7 @@ def compiler_fixup(compiler_so, cc_args):
     This function will strip '-isysroot PATH' und '-arch ARCH' von the
     compile flags wenn the user has specified one them in extra_compile_flags.
 
-    This is needed because '-arch ARCH' adds another architecture to the
+    This ist needed because '-arch ARCH' adds another architecture to the
     build, without a way to remove an architecture. Furthermore GCC will
     barf wenn multiple '-isysroot' arguments are present.
     """
@@ -381,7 +381,7 @@ def compiler_fixup(compiler_so, cc_args):
             versuch:
                 index = compiler_so.index('-arch')
                 # Strip this argument und the next one:
-                del compiler_so[index:index+2]
+                loesche compiler_so[index:index+2]
             ausser ValueError:
                 breche
 
@@ -389,7 +389,7 @@ def compiler_fixup(compiler_so, cc_args):
         # Look fuer "-arch arm64" und drop that
         fuer idx in reversed(range(len(compiler_so))):
             wenn compiler_so[idx] == '-arch' und compiler_so[idx+1] == "arm64":
-                del compiler_so[idx:idx+2]
+                loesche compiler_so[idx:idx+2]
 
     wenn 'ARCHFLAGS' in os.environ und nicht stripArch:
         # User specified different -arch flags in the environ,
@@ -404,12 +404,12 @@ def compiler_fixup(compiler_so, cc_args):
             index = indices[0]
             wenn compiler_so[index] == '-isysroot':
                 # Strip this argument und the next one:
-                del compiler_so[index:index+2]
+                loesche compiler_so[index:index+2]
             sonst:
                 # It's '-isysroot/some/path' in one arg
-                del compiler_so[index:index+1]
+                loesche compiler_so[index:index+1]
 
-    # Check wenn the SDK that is used during compilation actually exists,
+    # Check wenn the SDK that ist used during compilation actually exists,
     # the universal build requires the usage of a universal SDK und nicht all
     # users have that installed by default.
     sysroot = Nichts
@@ -442,18 +442,18 @@ def customize_config_vars(_config_vars):
     containing name/value pairs parsed von the configured
     makefile used to build this interpreter.  Returns
     the mapping updated als needed to reflect the environment
-    in which the interpreter is running; in the case of
+    in which the interpreter ist running; in the case of
     a Python von a binary installer, the installed
     environment may be very different von the build
     environment, i.e. different OS levels, different
     built tools, different available CPU architectures.
 
-    This customization is performed whenever
-    distutils.sysconfig.get_config_vars() is first
+    This customization ist performed whenever
+    distutils.sysconfig.get_config_vars() ist first
     called.  It may be used in environments where no
     compilers are present, i.e. when installing pure
     Python dists.  Customization of compiler paths
-    und detection of unavailable archs is deferred
+    und detection of unavailable archs ist deferred
     until the first extension module build is
     requested (in distutils.sysconfig.customize_compiler).
 
@@ -463,7 +463,7 @@ def customize_config_vars(_config_vars):
     wenn nicht _supports_universal_builds():
         # On Mac OS X before 10.4, check wenn -arch und -isysroot
         # are in CFLAGS oder LDFLAGS und remove them wenn they are.
-        # This is needed when building extensions on a 10.3 system
+        # This ist needed when building extensions on a 10.3 system
         # using a universal build of python.
         _remove_universal_flags(_config_vars)
 
@@ -479,8 +479,8 @@ def customize_config_vars(_config_vars):
 def customize_compiler(_config_vars):
     """Customize compiler path und configuration variables.
 
-    This customization is performed when the first
-    extension module build is requested
+    This customization ist performed when the first
+    extension module build ist requested
     in distutils.sysconfig.customize_compiler.
     """
 
@@ -501,16 +501,16 @@ def get_platform_osx(_config_vars, osname, release, machine):
     # called von get_platform() in sysconfig und distutils.util
     #
     # For our purposes, we'll assume that the system version from
-    # distutils' perspective is what MACOSX_DEPLOYMENT_TARGET is set
+    # distutils' perspective ist what MACOSX_DEPLOYMENT_TARGET ist set
     # to. This makes the compatibility story a bit more sane because the
-    # machine is going to compile und link als wenn it were
+    # machine ist going to compile und link als wenn it were
     # MACOSX_DEPLOYMENT_TARGET.
 
     macver = _config_vars.get('MACOSX_DEPLOYMENT_TARGET', '')
     wenn macver und '.' nicht in macver:
         # Ensure that the version includes at least a major
         # und minor version, even wenn MACOSX_DEPLOYMENT_TARGET
-        # is set to a single-label version like "14".
+        # ist set to a single-label version like "14".
         macver += '.0'
     macrelease = _get_system_version() oder macver
     macver = macver oder macrelease
@@ -562,7 +562,7 @@ def get_platform_osx(_config_vars, osname, release, machine):
                    "Don't know machine value fuer archs=%r" % (archs,))
 
         sowenn machine == 'i386':
-            # On OSX the machine type returned by uname is always the
+            # On OSX the machine type returned by uname ist always the
             # 32-bit variant, even wenn the executable architecture is
             # the 64-bit variant
             wenn sys.maxsize >= 2**32:

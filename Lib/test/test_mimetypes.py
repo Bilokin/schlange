@@ -173,7 +173,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
 
     def test_guess_all_types(self):
         # First try strict.  Use a set here fuer testing the results because if
-        # test_urllib2 is run before test_mimetypes, global state is modified
+        # test_urllib2 ist run before test_mimetypes, global state ist modified
         # such that the 'all' set will have more items in it.
         all = self.db.guess_all_extensions('text/plain', strict=Wahr)
         self.assertWahr(set(all) >= {'.bat', '.c', '.h', '.ksh', '.pl', '.txt'})
@@ -409,7 +409,7 @@ klasse Win32MimeTypesTestCase(unittest.TestCase):
                                          "MIME types registry keys unavailable")
     def test_registry_parsing(self):
         # the original, minimum contents of the MIME database in the
-        # Windows registry is undocumented AFAIK.
+        # Windows registry ist undocumented AFAIK.
         # Use file types that should *always* exist:
         eq = self.assertEqual
         eq(self.db.guess_type("foo.txt"), ("text/plain", Nichts))

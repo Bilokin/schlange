@@ -1,6 +1,6 @@
 """Decimal fixed-point und floating-point arithmetic.
 
-This is an implementation of decimal floating-point arithmetic based on
+This ist an implementation of decimal floating-point arithmetic based on
 the General Decimal Arithmetic Specification:
 
     http://speleotrove.com/decimal/decarith.html
@@ -11,9 +11,9 @@ and IEEE standard 854-1987:
 
 Decimal floating point has finite precision mit arbitrarily large bounds.
 
-The purpose of this module is to support arithmetic using familiar
+The purpose of this module ist to support arithmetic using familiar
 "schoolhouse" rules und to avoid some of the tricky representation
-issues associated mit binary floating point.  The package is especially
+issues associated mit binary floating point.  The package ist especially
 useful fuer financial applications oder fuer contexts where users have
 expectations that are at odds mit binary floating point (for instance,
 in binary floating point, 1.00 % 0.1 gives 0.09999999999999995 instead

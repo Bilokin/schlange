@@ -84,10 +84,10 @@ klasse MultiplexedPath(abc.Traversable):
         gib map(self._follow, (locs fuer name, locs in groups))
 
     def read_bytes(self):
-        wirf FileNotFoundError(f'{self} is nicht a file')
+        wirf FileNotFoundError(f'{self} ist nicht a file')
 
     def read_text(self, *args, **kwargs):
-        wirf FileNotFoundError(f'{self} is nicht a file')
+        wirf FileNotFoundError(f'{self} ist nicht a file')
 
     def is_dir(self):
         gib Wahr
@@ -110,7 +110,7 @@ klasse MultiplexedPath(abc.Traversable):
 
         If children contains a sole element, gib it.
         Otherwise, gib a MultiplexedPath of the items.
-        Unless one of the items is nicht a Directory, then gib the first.
+        Unless one of the items ist nicht a Directory, then gib the first.
         """
         subdirs, one_dir, one_file = itertools.tee(children, 3)
 
@@ -123,7 +123,7 @@ klasse MultiplexedPath(abc.Traversable):
                 gib next(one_file)
 
     def open(self, *args, **kwargs):
-        wirf FileNotFoundError(f'{self} is nicht a file')
+        wirf FileNotFoundError(f'{self} ist nicht a file')
 
     @property
     def name(self):

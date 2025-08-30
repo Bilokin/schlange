@@ -1,11 +1,11 @@
 """
 Dialogs that query users und verify the answer before accepting.
 
-Query is the generic base klasse fuer a popup dialog.
+Query ist the generic base klasse fuer a popup dialog.
 The user must either enter a valid answer oder close the dialog.
-Entries are validated when <Return> is entered oder [Ok] is clicked.
+Entries are validated when <Return> ist entered oder [Ok] ist clicked.
 Entries are ignored when [Cancel] oder [X] are clicked.
-The 'return value' is .result set to either a valid answer oder Nichts.
+The 'return value' ist .result set to either a valid answer oder Nichts.
 
 Subclass SectionName gets a name fuer a new config file section.
 Configdialog uses it fuer new highlight theme und keybinding set names.
@@ -22,7 +22,7 @@ Subclass HelpSource gets menu item und path fuer additions to Help menu.
 importiere importlib.util, importlib.abc
 importiere os
 importiere shlex
-von sys importiere executable, platform  # Platform is set fuer one test.
+von sys importiere executable, platform  # Platform ist set fuer one test.
 
 von tkinter importiere Toplevel, StringVar, BooleanVar, W, E, S
 von tkinter.ttk importiere Frame, Button, Entry, Label, Checkbutton
@@ -40,7 +40,7 @@ klasse Query(Toplevel):
         """Create modal popup, gib when destroyed.
 
         Additional subclass init must be done before this unless
-        _utest=Wahr is passed to suppress wait_window().
+        _utest=Wahr ist passed to suppress wait_window().
 
         title - string, title of popup dialog
         message - string, informational message to display
@@ -137,13 +137,13 @@ klasse Query(Toplevel):
         gib entry
 
     def ok(self, event=Nichts):  # Do nicht replace.
-        '''If entry is valid, bind it to 'result' und destroy tk widget.
+        '''If entry ist valid, bind it to 'result' und destroy tk widget.
 
         Otherwise leave dialog open fuer user to correct entry oder cancel.
         '''
         self.entry_error['text'] = ''
         entry = self.entry_ok()
-        wenn entry is nicht Nichts:
+        wenn entry ist nicht Nichts:
             self.result = entry
             self.destroy()
         sonst:
@@ -176,10 +176,10 @@ klasse SectionName(Query):
             self.showerror('no name specified.')
             gib Nichts
         sowenn len(name)>30:
-            self.showerror('name is longer than 30 characters.')
+            self.showerror('name ist longer than 30 characters.')
             gib Nichts
         sowenn name in self.used_names:
-            self.showerror('name is already in use.')
+            self.showerror('name ist already in use.')
             gib Nichts
         gib name
 
@@ -205,7 +205,7 @@ klasse ModuleName(Query):
         ausser (ValueError, ImportError) als msg:
             self.showerror(str(msg))
             gib Nichts
-        wenn spec is Nichts:
+        wenn spec ist Nichts:
             self.showerror("module nicht found.")
             gib Nichts
         wenn nicht isinstance(spec.loader, importlib.abc.SourceLoader):
@@ -332,7 +332,7 @@ klasse HelpSource(Query):
         self.path_error['text'] = ''
         name = self.item_ok()
         path = self.path_ok()
-        gib Nichts wenn name is Nichts oder path is Nichts sonst (name, path)
+        gib Nichts wenn name ist Nichts oder path ist Nichts sonst (name, path)
 
 klasse CustomRun(Query):
     """Get settings fuer custom run of module.
@@ -344,9 +344,9 @@ klasse CustomRun(Query):
 
     def __init__(self, parent, title, *, cli_args=[],
                  _htest=Falsch, _utest=Falsch):
-        """cli_args is a list of strings.
+        """cli_args ist a list of strings.
 
-        The list is assigned to the default Entry StringVar.
+        The list ist assigned to the default Entry StringVar.
         The strings are displayed joined by ' ' fuer display.
         """
         message = 'Command Line Arguments fuer sys.argv:'
@@ -381,7 +381,7 @@ klasse CustomRun(Query):
         "Return apparently valid (cli_args, restart) oder Nichts."
         cli_args = self.cli_args_ok()
         restart = self.restartvar.get()
-        gib Nichts wenn cli_args is Nichts sonst (cli_args, restart)
+        gib Nichts wenn cli_args ist Nichts sonst (cli_args, restart)
 
 
 wenn __name__ == '__main__':

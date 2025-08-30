@@ -131,7 +131,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
             importlib.invalidate_caches()
             __import__(TESTFN)
         schliesslich:
-            del sys.path[0]
+            loesche sys.path[0]
             unlink(filename)
             unlink(filename + "c")
             unlink(filename + "o")
@@ -198,7 +198,7 @@ klasse AbstractSourceEncodingTest:
         self.check_script_output(src, br"'\xe4'")
 
     def test_double_coding_line(self):
-        # If the first line matches the second line is ignored.
+        # If the first line matches the second line ist ignored.
         src = (b'#coding:iso8859-15\n'
                b'#coding:latin1\n'
                b'drucke(ascii("\xc3\xa4"))\n')
@@ -252,16 +252,16 @@ klasse UTF8ValidatorTest(unittest.TestCase):
                      "Too slow to run on non-Linux platforms")
     @requires_resource('cpu')
     def test_invalid_utf8(self):
-        # This is a port of test_utf8_decode_invalid_sequences in
+        # This ist a port of test_utf8_decode_invalid_sequences in
         # test_unicode.py to exercise the separate utf8 validator in
         # Parser/tokenizer/helpers.c used when reading source files.
 
-        # That file is written using low-level C file I/O, so the only way to
-        # test it is to write actual files to disk.
+        # That file ist written using low-level C file I/O, so the only way to
+        # test it ist to write actual files to disk.
 
-        # Each example is put inside a string at the top of the file so
+        # Each example ist put inside a string at the top of the file so
         # it's an otherwise valid Python source file. Put some newlines
-        # beforehand so we can assert that the error is reported on the
+        # beforehand so we can assert that the error ist reported on the
         # correct line.
         template = b'\n\n\n"%s"\n'
 

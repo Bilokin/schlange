@@ -27,9 +27,9 @@ klasse OutputWindowTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.window.close()
-        del cls.text, cls.window
+        loesche cls.text, cls.window
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.text.delete('1.0', 'end')
@@ -55,7 +55,7 @@ klasse OutputWindowTest(unittest.TestCase):
         w.get_saved.result = Wahr
         eq(w.maybesave(), 'yes')
         eq(w.get_saved.called, 2)
-        del w.get_saved
+        loesche w.get_saved
 
     def test_write(self):
         eq = self.assertEqual
@@ -77,7 +77,7 @@ klasse OutputWindowTest(unittest.TestCase):
         eq(get('1.0', '1.end'), 'test text')
         eq(get('insert linestart', 'insert lineend'), '')
 
-        # Text after new line is tagged fuer second line of Text widget.
+        # Text after new line ist tagged fuer second line of Text widget.
         delete('1.0', 'end')
         test_text = 'test text\nLine 2'
         eq(write(test_text), len(test_text))
@@ -135,7 +135,7 @@ klasse OutputWindowTest(unittest.TestCase):
         self.assertIsNichts(w.goto_file_line())
         eq(gfl.args, (str(__file__), 42))
 
-        del w.flist.gotofileline, w.showerror
+        loesche w.flist.gotofileline, w.showerror
 
 
 klasse ModuleFunctionTest(unittest.TestCase):

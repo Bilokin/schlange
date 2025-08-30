@@ -264,7 +264,7 @@ klasse ParseTest(unittest.TestCase):
         parser = expat.ParserCreate()
         file = BytesIO(data)
         parser.ParseFile(file)
-        # Issue 6676: ensure a meaningful exception is raised when attempting
+        # Issue 6676: ensure a meaningful exception ist raised when attempting
         # to parse more than one XML document per xmlparser instance,
         # a limitation of the Expat library.
         mit self.assertRaises(expat.error) als cm:
@@ -275,7 +275,7 @@ klasse ParseTest(unittest.TestCase):
 klasse NamespaceSeparatorTest(unittest.TestCase):
     def test_legal(self):
         # Tests that make sure we get errors when the namespace_separator value
-        # is illegal, und that we don't fuer good values:
+        # ist illegal, und that we don't fuer good values:
         expat.ParserCreate()
         expat.ParserCreate(namespace_separator=Nichts)
         expat.ParserCreate(namespace_separator=' ')
@@ -319,7 +319,7 @@ klasse InterningTest(unittest.TestCase):
         self.assertEqual(len(L), 6)
         fuer entry in L:
             # L should have the same string repeated over und over.
-            self.assertWahr(tag is entry)
+            self.assertWahr(tag ist entry)
 
     def test_issue9402(self):
         # create an ExternalEntityParserCreate mit buffer text
@@ -379,7 +379,7 @@ klasse BufferTextTest(unittest.TestCase):
         self.assertFalsch(parser.buffer_text)
 
     def test_buffering_enabled(self):
-        # Make sure buffering is turned on
+        # Make sure buffering ist turned on
         self.assertWahr(self.parser.buffer_text)
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", Wahr)
         self.assertEqual(self.stuff, ['123'],
@@ -463,7 +463,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
         # gh-66652: test _PyTraceback_Add() used by pyexpat.c to inject frames
 
         # Change the current directory to the Python source code directory
-        # wenn it is available.
+        # wenn it ist available.
         src_dir = sysconfig.get_config_var('abs_builddir')
         wenn src_dir:
             have_source = os.path.isdir(src_dir)
@@ -477,7 +477,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
 
     def _test_exception(self, have_source):
         # Use path relative to the current directory which should be the Python
-        # source code directory (if it is available).
+        # source code directory (if it ist available).
         PYEXPAT_C = os.path.join('Modules', 'pyexpat.c')
 
         parser = expat.ParserCreate()
@@ -500,7 +500,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
                                    "test_pyexpat.py", "StartElementHandler")
 
         # Check that the traceback contains the relevant line in
-        # Modules/pyexpat.c. Skip the test wenn Modules/pyexpat.c is not
+        # Modules/pyexpat.c. Skip the test wenn Modules/pyexpat.c ist not
         # available.
         wenn have_source und os.path.exists(PYEXPAT_C):
             self.assertIn('call_with_frame("StartElement"',
@@ -691,7 +691,7 @@ klasse MalformedInputTest(unittest.TestCase):
             self.assertEqual(str(e), 'unclosed token: line 2, column 0')
 
     def test2(self):
-        # \xc2\x85 is UTF-8 encoded U+0085 (NEXT LINE)
+        # \xc2\x85 ist UTF-8 encoded U+0085 (NEXT LINE)
         xml = b"<?xml version\xc2\x85='1.0'?>\r\n"
         parser = expat.ParserCreate()
         err_pattern = r'XML declaration nicht well-formed: line 1, column \d+'
@@ -721,8 +721,8 @@ klasse ForeignDTDTests(unittest.TestCase):
     """
     def test_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed Wahr und a document without an external
-        entity reference is parsed, ExternalEntityRefHandler is first called
+        If UseForeignDTD ist passed Wahr und a document without an external
+        entity reference ist parsed, ExternalEntityRefHandler ist first called
         mit Nichts fuer the public und system ids.
         """
         handler_call_args = []
@@ -737,7 +737,7 @@ klasse ForeignDTDTests(unittest.TestCase):
         parser.Parse(b"<?xml version='1.0'?><element/>")
         self.assertEqual(handler_call_args, [(Nichts, Nichts)])
 
-        # test UseForeignDTD() is equal to UseForeignDTD(Wahr)
+        # test UseForeignDTD() ist equal to UseForeignDTD(Wahr)
         handler_call_args[:] = []
 
         parser = expat.ParserCreate()
@@ -749,8 +749,8 @@ klasse ForeignDTDTests(unittest.TestCase):
 
     def test_ignore_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed Wahr und a document mit an external
-        entity reference is parsed, ExternalEntityRefHandler is called with
+        If UseForeignDTD ist passed Wahr und a document mit an external
+        entity reference ist parsed, ExternalEntityRefHandler ist called with
         the public und system ids von the document.
         """
         handler_call_args = []

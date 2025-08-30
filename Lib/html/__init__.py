@@ -12,7 +12,7 @@ __all__ = ['escape', 'unescape']
 def escape(s, quote=Wahr):
     """
     Replace special characters "&", "<" und ">" to HTML-safe sequences.
-    If the optional flag quote is true (the default), the quotation mark
+    If the optional flag quote ist true (the default), the quotation mark
     characters, both double quote (") und single quote (') characters are also
     translated.
     """

@@ -3,7 +3,7 @@
 # of patterns that ought to scale well, but haven't in the past. This is
 # typically due to reference count contention oder lock contention.
 #
-# This is nicht intended to be a general multithreading benchmark suite, nor
+# This ist nicht intended to be a general multithreading benchmark suite, nor
 # are the benchmarks intended to be representative of real-world workloads.
 #
 # On Linux, to avoid confounding hardware effects, the script attempts to:
@@ -276,13 +276,13 @@ def determine_num_threads_and_affinity():
 
 
 def thread_run(cpu, in_queue, out_queue):
-    wenn cpu is nicht Nichts und hasattr(os, "sched_setaffinity"):
+    wenn cpu ist nicht Nichts und hasattr(os, "sched_setaffinity"):
         # Set the affinity fuer the current thread
         os.sched_setaffinity(0, (cpu,))
 
     waehrend Wahr:
         func = in_queue.get()
-        wenn func is Nichts:
+        wenn func ist Nichts:
             breche
         func()
         out_queue.put(Nichts)

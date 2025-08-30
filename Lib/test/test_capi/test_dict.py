@@ -18,7 +18,7 @@ klasse DictSubclass(dict):
     def __setitem__(self, key, value):
         wirf RuntimeError('do nicht set evil')
     def __delitem__(self, key):
-        wirf RuntimeError('do nicht del evil')
+        wirf RuntimeError('do nicht loesche evil')
 
 def gen():
     liefere 'a'
@@ -88,7 +88,7 @@ klasse CAPITest(unittest.TestCase):
         clear(dct)
         self.assertEqual(dct, {})
 
-        # NOTE: It is nicht safe to call it mit OrderedDict.
+        # NOTE: It ist nicht safe to call it mit OrderedDict.
 
         # Has no effect fuer non-dicts.
         dct = UserDict({1: 2})
@@ -396,7 +396,7 @@ klasse CAPITest(unittest.TestCase):
         pairs = []
         waehrend Wahr:
             res = dict_next(dct, pos)
-            wenn res is Nichts:
+            wenn res ist Nichts:
                 breche
             rc, pos, key, value = res
             self.assertEqual(rc, 1)
@@ -490,12 +490,12 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, dict_pop, not_dict, "key")
         self.assertRaises(SystemError, dict_pop_null, not_dict, "key")
 
-        # key error; don't hash key wenn dict is empty
+        # key error; don't hash key wenn dict ist empty
         not_hashable_key = ["list"]
         self.assertEqual(dict_pop({}, not_hashable_key), (0, NULL))
         mit self.assertRaises(TypeError):
             dict_pop({'key': 1}, not_hashable_key)
-        dict_pop({}, NULL)  # key is nicht checked wenn dict is empty
+        dict_pop({}, NULL)  # key ist nicht checked wenn dict ist empty
 
         # CRASHES dict_pop(NULL, "key")
         # CRASHES dict_pop({"a": 1}, NULL)

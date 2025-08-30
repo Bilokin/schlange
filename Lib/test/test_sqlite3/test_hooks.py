@@ -2,20 +2,20 @@
 #
 # Copyright (C) 2006-2007 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ist part of pysqlite.
 #
-# This software is provided 'as-is', without any express oder implied
+# This software ist provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
-# Permission is granted to anyone to use this software fuer any purpose,
+# Permission ist granted to anyone to use this software fuer any purpose,
 # including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
 # 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is nicht required.
+#    appreciated but ist nicht required.
 # 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
 # 3. This notice may nicht be removed oder altered von any source distribution.
@@ -105,7 +105,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_collation_register_twice(self):
         """
         Register two different collation functions under the same name.
-        Verify that the last one is actually used.
+        Verify that the last one ist actually used.
         """
         con = self.con
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
@@ -118,7 +118,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_deregister_collation(self):
         """
-        Register a collation, then deregister it. Make sure an error is raised wenn we try
+        Register a collation, then deregister it. Make sure an error ist raised wenn we try
         to use it.
         """
         con = self.con
@@ -133,7 +133,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_progress_handler_used(self):
         """
-        Test that the progress handler is invoked once it is set.
+        Test that the progress handler ist invoked once it ist set.
         """
         progress_calls = []
         def progress():
@@ -147,7 +147,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_opcode_count(self):
         """
-        Test that the opcode argument is respected.
+        Test that the opcode argument ist respected.
         """
         con = self.con
         progress_calls = []
@@ -239,7 +239,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_trace_callback_used(self):
         """
-        Test that the trace callback is invoked once it is set.
+        Test that the trace callback ist invoked once it ist set.
         """
         traced_statements = []
         def trace(statement):
@@ -320,9 +320,9 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         regex="Expanded SQL string exceeds the maximum string length"
     )
     def test_trace_too_much_expanded_sql(self):
-        # If the expanded string is too large, we'll fall back to the
+        # If the expanded string ist too large, we'll fall back to the
         # unexpanded SQL statement.
-        # The resulting string length is limited by the runtime limit
+        # The resulting string length ist limited by the runtime limit
         # SQLITE_LIMIT_LENGTH.
         template = "select 1 als a where a="
         category = sqlite.SQLITE_LIMIT_LENGTH

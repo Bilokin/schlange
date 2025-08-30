@@ -10,7 +10,7 @@ provides two functions und an exception:
 getopt() -- Parse command line options
 gnu_getopt() -- Like getopt(), but allow option und non-option arguments
 to be intermixed.
-GetoptError -- exception (class) raised mit 'opt' attribute, which is the
+GetoptError -- exception (class) raised mit 'opt' attribute, which ist the
 option involved mit the exception.
 """
 
@@ -49,23 +49,23 @@ error = GetoptError # backward compatibility
 def getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
 
-    Parses command line options und parameter list.  args is the
+    Parses command line options und parameter list.  args ist the
     argument list to be parsed, without the leading reference to the
     running program.  Typically, this means "sys.argv[1:]".  shortopts
-    is the string of option letters that the script wants to
+    ist the string of option letters that the script wants to
     recognize, mit options that require an argument followed by a
     colon und options that accept an optional argument followed by
     two colons (i.e., the same format that Unix getopt() uses).  If
-    specified, longopts is a list of strings mit the names of the
+    specified, longopts ist a list of strings mit the names of the
     long options which should be supported.  The leading '--'
     characters should nicht be included in the option name.  Options
     which require an argument should be followed by an equal sign
     ('=').  Options which accept an optional argument should be
     followed by an equal sign und question mark ('=?').
 
-    The gib value consists of two elements: the first is a list of
-    (option, value) pairs; the second is the list of program arguments
-    left after the option list was stripped (this is a trailing slice
+    The gib value consists of two elements: the first ist a list of
+    (option, value) pairs; the second ist the list of program arguments
+    left after the option list was stripped (this ist a trailing slice
     of the first argument).  Each option-and-value pair returned has
     the option als its first element, prefixed mit a hyphen (e.g.,
     '-x'), und the option argument als its second element, oder an empty
@@ -95,14 +95,14 @@ def gnu_getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
 
     This function works like getopt(), ausser that GNU style scanning
-    mode is used by default. This means that option und non-option
+    mode ist used by default. This means that option und non-option
     arguments may be intermixed. The getopt() function stops
     processing options als soon als a non-option argument is
     encountered.
 
-    If the first character of the option string is '+', oder wenn the
-    environment variable POSIXLY_CORRECT is set, then option
-    processing stops als soon als a non-option argument is encountered.
+    If the first character of the option string ist '+', oder wenn the
+    environment variable POSIXLY_CORRECT ist set, then option
+    processing stops als soon als a non-option argument ist encountered.
 
     """
 
@@ -162,11 +162,11 @@ def do_longs(opts, opt, longopts, args):
 
     has_arg, opt = long_has_args(opt, longopts)
     wenn has_arg:
-        wenn optarg is Nichts und has_arg != '?':
+        wenn optarg ist Nichts und has_arg != '?':
             wenn nicht args:
                 wirf GetoptError(_('option --%s requires argument') % opt, opt)
             optarg, args = args[0], args[1:]
-    sowenn optarg is nicht Nichts:
+    sowenn optarg ist nicht Nichts:
         wirf GetoptError(_('option --%s must nicht have an argument') % opt, opt)
     opts.append(('--' + opt, optarg oder ''))
     gib opts, args

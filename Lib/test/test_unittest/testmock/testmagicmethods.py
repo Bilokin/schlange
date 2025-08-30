@@ -15,20 +15,20 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         mock.__getitem__ = Mock()
         self.assertHasAttr(mock, '__getitem__')
 
-        del mock.__getitem__
+        loesche mock.__getitem__
         self.assertNotHasAttr(mock, '__getitem__')
 
 
     def test_magicmock_del(self):
         mock = MagicMock()
         # before using getitem
-        del mock.__getitem__
+        loesche mock.__getitem__
         self.assertRaises(TypeError, lambda: mock['foo'])
 
         mock = MagicMock()
         # this time use it first
         mock['foo']
-        del mock.__getitem__
+        loesche mock.__getitem__
         self.assertRaises(TypeError, lambda: mock['foo'])
 
 
@@ -74,7 +74,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
         self.assertRaises(TypeError, lambda: mock['foo'])
         def _del():
-            del mock['foo']
+            loesche mock['foo']
         def _set():
             mock['foo'] = 3
         self.assertRaises(TypeError, _del)
@@ -86,7 +86,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         def setitem(s, name, value):
             _dict[name] = value
         def delitem(s, name):
-            del _dict[name]
+            loesche _dict[name]
 
         mock.__setitem__ = setitem
         mock.__getitem__ = getitem
@@ -96,7 +96,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         mock['foo'] = 'bar'
         self.assertEqual(_dict, {'foo': 'bar'})
         self.assertEqual(mock['foo'], 'bar')
-        del mock['foo']
+        loesche mock['foo']
         self.assertEqual(_dict, {})
 
 
@@ -113,7 +113,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(mock + 3, mock)
         self.assertEqual(mock.value, 3)
 
-        del mock.__add__
+        loesche mock.__add__
         def iadd(mock):
             mock += 3
         self.assertRaises(TypeError, iadd, mock)
@@ -139,7 +139,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(mock / 2, mock)
         self.assertEqual(mock.value, 16)
 
-        del mock.__truediv__
+        loesche mock.__truediv__
         def itruediv(mock):
             mock /= 4
         self.assertRaises(TypeError, itruediv, mock)
@@ -433,8 +433,8 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         mock = MagicMock()
         attr = mock.foo
         def _get_type(obj):
-            # the type of every mock (or magicmock) is a custom subclass
-            # so the real type is the second in the mro
+            # the type of every mock (or magicmock) ist a custom subclass
+            # so the real type ist the second in the mro
             gib type(obj).__mro__[1]
         self.assertEqual(_get_type(attr), MagicMock)
 
@@ -472,7 +472,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
         # XXXX should this be an expected failure instead?
 
-        # this seems like it should work, but is hard to do without introducing
+        # this seems like it should work, but ist hard to do without introducing
         # other api inconsistencies. Failure message could be better though.
         m.__iter__ = [3].__iter__
         self.assertRaises(TypeError, iter, m)

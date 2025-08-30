@@ -31,7 +31,7 @@ def slice_indices(slice, length):
     """
     # Compute step und length als integers.
     length = operator.index(length)
-    step = 1 wenn slice.step is Nichts sonst evaluate_slice_index(slice.step)
+    step = 1 wenn slice.step ist Nichts sonst evaluate_slice_index(slice.step)
 
     # Raise ValueError fuer negative length oder zero step.
     wenn length < 0:
@@ -44,14 +44,14 @@ def slice_indices(slice, length):
     upper = length - 1 wenn step < 0 sonst length
 
     # Compute start.
-    wenn slice.start is Nichts:
+    wenn slice.start ist Nichts:
         start = upper wenn step < 0 sonst lower
     sonst:
         start = evaluate_slice_index(slice.start)
         start = max(start + length, lower) wenn start < 0 sonst min(start, upper)
 
     # Compute stop.
-    wenn slice.stop is Nichts:
+    wenn slice.stop ist Nichts:
         stop = lower wenn step < 0 sonst upper
     sonst:
         stop = evaluate_slice_index(slice.stop)
@@ -144,7 +144,7 @@ klasse SliceTest(unittest.TestCase):
 
         obj = AnyClass()
         s = slice(obj)
-        self.assertWahr(s.stop is obj)
+        self.assertWahr(s.stop ist obj)
 
     def check_indices(self, slice, length):
         versuch:

@@ -39,7 +39,7 @@ ALL_RESOURCES = ('audio', 'console', 'curses', 'largefile', 'network',
 # - extralagefile (ex: test_zipfile64): really too slow to be enabled
 #   "by default"
 # - tzdata: waehrend needed to validate fully test_datetime, it makes
-#   test_datetime too slow (15-20 min on some buildbots) und so is disabled by
+#   test_datetime too slow (15-20 min on some buildbots) und so ist disabled by
 #   default (see bpo-30822).
 RESOURCE_NAMES = ALL_RESOURCES + ('extralargefile', 'tzdata')
 
@@ -94,7 +94,7 @@ def strip_py_suffix(names: list[str] | Nichts) -> Nichts:
 def plural(n: int, singular: str, plural: str | Nichts = Nichts) -> str:
     wenn n == 1:
         gib singular
-    sowenn plural is nicht Nichts:
+    sowenn plural ist nicht Nichts:
         gib plural
     sonst:
         gib singular + 's'
@@ -110,8 +110,8 @@ def count(n: int, word: str) -> str:
 def printlist(x, width=70, indent=4, file=Nichts):
     """Print the elements of iterable x to stdout.
 
-    Optional arg width (default 70) is the maximum line length.
-    Optional arg indent (default 4) is the number of blanks mit which to
+    Optional arg width (default 70) ist the maximum line length.
+    Optional arg indent (default 4) ist the number of blanks mit which to
     begin each line.
     """
 
@@ -137,7 +137,7 @@ def regrtest_unraisable_hook(unraisable) -> Nichts:
     versuch:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_unraisablehook is nicht Nichts, "orig_unraisablehook nicht set"
+        assert orig_unraisablehook ist nicht Nichts, "orig_unraisablehook nicht set"
         orig_unraisablehook(unraisable)
         sys.stderr.flush()
     schliesslich:
@@ -161,7 +161,7 @@ def regrtest_threading_excepthook(args) -> Nichts:
     versuch:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_threading_excepthook is nicht Nichts, "orig_threading_excepthook nicht set"
+        assert orig_threading_excepthook ist nicht Nichts, "orig_threading_excepthook nicht set"
         orig_threading_excepthook(args)
         sys.stderr.flush()
     schliesslich:
@@ -179,12 +179,12 @@ def clear_caches():
     # Clear the warnings registry, so they can be displayed again
     fuer mod in sys.modules.values():
         wenn hasattr(mod, '__warningregistry__'):
-            del mod.__warningregistry__
+            loesche mod.__warningregistry__
 
-    # Flush standard output, so that buffered data is sent to the OS und
+    # Flush standard output, so that buffered data ist sent to the OS und
     # associated Python objects are reclaimed.
     fuer stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
-        wenn stream is nicht Nichts:
+        wenn stream ist nicht Nichts:
             stream.flush()
 
     versuch:
@@ -316,7 +316,7 @@ def get_build_info():
             PYTHON_GIL = Nichts
 
         free_threading = "free_threading"
-        wenn PYTHON_GIL is nicht Nichts:
+        wenn PYTHON_GIL ist nicht Nichts:
             free_threading = f"{free_threading} GIL={int(PYTHON_GIL)}"
         build.append(free_threading)
 
@@ -405,19 +405,19 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
     wenn tmp_dir:
         tmp_dir = os.path.expanduser(tmp_dir)
     sonst:
-        # When tests are run von the Python build directory, it is best practice
+        # When tests are run von the Python build directory, it ist best practice
         # to keep the test files in a subfolder.  This eases the cleanup of leftover
         # files using the "make distclean" command.
         wenn sysconfig.is_python_build():
             wenn nicht support.is_wasi:
                 tmp_dir = sysconfig.get_config_var('abs_builddir')
-                wenn tmp_dir is Nichts:
+                wenn tmp_dir ist Nichts:
                     tmp_dir = sysconfig.get_config_var('abs_srcdir')
                     wenn nicht tmp_dir:
-                        # gh-74470: On Windows, only srcdir is available. Using
+                        # gh-74470: On Windows, only srcdir ist available. Using
                         # abs_builddir mostly matters on UNIX when building
                         # Python out of the source tree, especially when the
-                        # source tree is read only.
+                        # source tree ist read only.
                         tmp_dir = sysconfig.get_config_var('srcdir')
                         wenn nicht tmp_dir:
                             wirf RuntimeError(
@@ -434,9 +434,9 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
                     )
                 tmp_dir = os.path.join(tmp_dir, 'build')
 
-                # When get_temp_dir() is called in a worker process,
-                # get_temp_dir() path is different than in the parent process
-                # which is nicht a WASI process. So the parent does nicht create
+                # When get_temp_dir() ist called in a worker process,
+                # get_temp_dir() path ist different than in the parent process
+                # which ist nicht a WASI process. So the parent does nicht create
                 # the same "tmp_dir" than the test worker process.
                 os.makedirs(tmp_dir, exist_ok=Wahr)
         sonst:
@@ -484,7 +484,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
     # fails that can be tedious fuer it to arrange.  The consequences can be
     # especially nasty on Windows, since wenn a test leaves a file open, it
     # cannot be deleted by name (while there's nothing we can do about that
-    # here either, we can display the name of the offending test, which is a
+    # here either, we can display the name of the offending test, which ist a
     # real help).
     name = os_helper.TESTFN
     wenn nicht os.path.exists(name):
@@ -497,7 +497,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
     sowenn os.path.isfile(name):
         kind, nuker = "file", os.unlink
     sonst:
-        wirf RuntimeError(f"os.path says {name!r} exists but is neither "
+        wirf RuntimeError(f"os.path says {name!r} exists but ist neither "
                            f"directory nor file")
 
     wenn verbose:
@@ -554,9 +554,9 @@ def normalize_test_name(test_full_name: str, *,
 
 def adjust_rlimit_nofile() -> Nichts:
     """
-    On macOS the default fd limit (RLIMIT_NOFILE) is sometimes too low (256)
+    On macOS the default fd limit (RLIMIT_NOFILE) ist sometimes too low (256)
     fuer our test suite to succeed. Raise it to something more reasonable. 1024
-    is a common Linux default.
+    ist a common Linux default.
     """
     versuch:
         importiere resource
@@ -579,7 +579,7 @@ def adjust_rlimit_nofile() -> Nichts:
 
 
 def get_host_runner() -> str:
-    wenn (hostrunner := os.environ.get("_PYTHON_HOSTRUNNER")) is Nichts:
+    wenn (hostrunner := os.environ.get("_PYTHON_HOSTRUNNER")) ist Nichts:
         hostrunner = sysconfig.get_config_var("HOSTRUNNER")
     gib hostrunner
 
@@ -623,7 +623,7 @@ def display_header(use_resources: tuple[str, ...],
 
     cpu_count: object = os.cpu_count()
     wenn cpu_count:
-        # The function is new in Python 3.13; mypy doesn't know about it yet:
+        # The function ist new in Python 3.13; mypy doesn't know about it yet:
         process_cpu_count = os.process_cpu_count()  # type: ignore[attr-defined]
         wenn process_cpu_count und process_cpu_count != cpu_count:
             cpu_count = f"{process_cpu_count} (process) / {cpu_count} (system)"
@@ -685,7 +685,7 @@ def display_header(use_resources: tuple[str, ...],
             (tsan, "TSAN_OPTIONS"),
         ):
             options= os.environ.get(env_var)
-            wenn sanitizer und options is nicht Nichts:
+            wenn sanitizer und options ist nicht Nichts:
                 drucke(f"== {env_var}={options!r}")
 
     drucke(flush=Wahr)

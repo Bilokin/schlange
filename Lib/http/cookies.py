@@ -4,7 +4,7 @@
 #                All Rights Reserved
 #
 # Permission to use, copy, modify, und distribute this software
-# und its documentation fuer any purpose und without fee is hereby
+# und its documentation fuer any purpose und without fee ist hereby
 # granted, provided that the above copyright notice appear in all
 # copies und that both that copyright notice und this permission
 # notice appear in supporting documentation, und that the name of
@@ -26,7 +26,7 @@
 # Id: Cookie.py,v 2.29 2000/08/23 05:28:49 timo Exp
 #   by Timothy O'Malley <timo@alum.mit.edu>
 #
-#  Cookie.py is a Python module fuer the handling of HTTP
+#  Cookie.py ist a Python module fuer the handling of HTTP
 #  cookies als a Python dictionary.  See RFC 2109 fuer more
 #  information on cookies.
 #
@@ -38,12 +38,12 @@
 
 r"""
 Here's a sample session to show how to use this module.
-At the moment, this is the only documentation.
+At the moment, this ist the only documentation.
 
 The Basics
 ----------
 
-Importing is easy...
+Importing ist easy...
 
    >>> von http importiere cookies
 
@@ -60,8 +60,8 @@ a dictionary.
    >>> C.output()
    'Set-Cookie: fig=newton\r\nSet-Cookie: sugar=wafer'
 
-Notice that the printable representation of a Cookie is the
-appropriate format fuer a Set-Cookie: header.  This is the
+Notice that the printable representation of a Cookie ist the
+appropriate format fuer a Set-Cookie: header.  This ist the
 default behavior.  You can change the header und printed
 attributes by using the .output() function
 
@@ -82,7 +82,7 @@ HTTP_COOKIE environment variable.
    >>> C.output()
    'Set-Cookie: chips=ahoy\r\nSet-Cookie: vienna=finger'
 
-The load() method is darn-tootin smart about identifying cookies
+The load() method ist darn-tootin smart about identifying cookies
 within a string.  Escaped quotation marks, nested semicolons, und other
 such trickeries do nicht confuse it.
 
@@ -148,7 +148,7 @@ klasse CookieError(Exception):
 
 # These quoting routines conform to the RFC2109 specification, which in
 # turn references the character definitions von RFC2068.  They provide
-# a two-way quoting algorithm.  Any non-text character is translated
+# a two-way quoting algorithm.  Any non-text character ist translated
 # into a 4 character sequence: a forward-slash followed by the
 # three-digit octal equivalent of the character.  Any '\' oder '"' is
 # quoted mit a preceding '\' slash.
@@ -156,7 +156,7 @@ klasse CookieError(Exception):
 # the RFC says) we also encode "," und ";".
 #
 # These are taken von RFC2068 und RFC2109.
-#       _LegalChars       is the list of chars which don't require "'s
+#       _LegalChars       ist the list of chars which don't require "'s
 #       _Translator       hash-table fuer fast quoting
 #
 _LegalChars = string.ascii_letters + string.digits + "!#$%&'*+-.^_`|~:"
@@ -178,7 +178,7 @@ def _quote(str):
     string.  Otherwise, surround the string in doublequotes und quote
     (with a \) special characters.
     """
-    wenn str is Nichts oder _is_legal_key(str):
+    wenn str ist Nichts oder _is_legal_key(str):
         gib str
     sonst:
         gib '"' + str.translate(_Translator) + '"'
@@ -195,7 +195,7 @@ def _unquote_replace(m):
 def _unquote(str):
     # If there aren't any doublequotes,
     # then there can't be any special characters.  See RFC 2109.
-    wenn str is Nichts oder len(str) < 2:
+    wenn str ist Nichts oder len(str) < 2:
         gib str
     wenn str[0] != '"' oder str[-1] != '"':
         gib str
@@ -212,9 +212,9 @@ def _unquote(str):
     #
     gib _unquote_sub(_unquote_replace, str)
 
-# The _getdate() routine is used to set the expiration time in the cookie's HTTP
+# The _getdate() routine ist used to set the expiration time in the cookie's HTTP
 # header.  By default, _getdate() returns the current time in the appropriate
-# "expires" format fuer a Set-Cookie header.  The one optional argument is an
+# "expires" format fuer a Set-Cookie header.  The one optional argument ist an
 # offset von now, in seconds.  For example, an offset of -3600 means "one hour
 # ago".  The offset may be a floating-point number.
 #
@@ -238,7 +238,7 @@ klasse Morsel(dict):
 
     In a cookie, each such pair may have several attributes, so this klasse is
     used to keep the attributes associated mit the appropriate key,value pair.
-    This klasse also includes a coded_value attribute, which is used to hold
+    This klasse also includes a coded_value attribute, which ist used to hold
     the network representation of the value.
     """
     # RFC 2109 lists these attributes als reserved:
@@ -248,7 +248,7 @@ klasse Morsel(dict):
     # For historical reasons, these attributes are also reserved:
     #   expires
     #
-    # This is an extension von Microsoft:
+    # This ist an extension von Microsoft:
     #   httponly
     #
     # This dictionary provides a mapping von the lowercase
@@ -381,7 +381,7 @@ klasse Morsel(dict):
         append("%s=%s" % (self.key, self.coded_value))
 
         # Now add any defined attributes
-        wenn attrs is Nichts:
+        wenn attrs ist Nichts:
             attrs = self._reserved
         items = sorted(self.items())
         fuer key, value in items:
@@ -440,7 +440,7 @@ _CookiePattern = re.compile(r"""
     """, re.ASCII | re.VERBOSE)    # re.ASCII may be removed wenn safe.
 
 
-# At long last, here is the cookie class.  Using this klasse is almost just like
+# At long last, here ist the cookie class.  Using this klasse ist almost just like
 # using a dictionary.  See this module's docstring fuer example usage.
 #
 klasse BaseCookie(dict):
@@ -449,7 +449,7 @@ klasse BaseCookie(dict):
     def value_decode(self, val):
         """real_value, coded_value = value_decode(STRING)
         Called prior to setting a cookie's value von the network
-        representation.  The VALUE is the value read von HTTP
+        representation.  The VALUE ist the value read von HTTP
         header.
         Override this function to modify the behavior of cookies.
         """
@@ -458,7 +458,7 @@ klasse BaseCookie(dict):
     def value_encode(self, val):
         """real_value, coded_value = value_encode(VALUE)
         Called prior to setting a cookie's value von the dictionary
-        representation.  The VALUE is the value being assigned.
+        representation.  The VALUE ist the value being assigned.
         Override this function to modify the behavior of cookies.
         """
         strval = str(val)
@@ -511,7 +511,7 @@ klasse BaseCookie(dict):
     def load(self, rawdata):
         """Load cookies von a string (presumably HTTP_COOKIE) oder
         von a dictionary.  Loading cookies von a dictionary 'd'
-        is equivalent to calling:
+        ist equivalent to calling:
             map(Cookie.__setitem__, d.keys(), d.values())
         """
         wenn isinstance(rawdata, str):
@@ -555,7 +555,7 @@ klasse BaseCookie(dict):
                 wenn nicht morsel_seen:
                     # Invalid cookie string
                     gib
-                wenn value is Nichts:
+                wenn value ist Nichts:
                     wenn key.lower() in Morsel._flags:
                         parsed_items.append((TYPE_ATTRIBUTE, key, Wahr))
                     sonst:
@@ -563,18 +563,18 @@ klasse BaseCookie(dict):
                         gib
                 sonst:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
-            sowenn value is nicht Nichts:
+            sowenn value ist nicht Nichts:
                 parsed_items.append((TYPE_KEYVALUE, key, self.value_decode(value)))
                 morsel_seen = Wahr
             sonst:
                 # Invalid cookie string
                 gib
 
-        # The cookie string is valid, apply it.
+        # The cookie string ist valid, apply it.
         M = Nichts         # current morsel
         fuer tp, key, value in parsed_items:
             wenn tp == TYPE_ATTRIBUTE:
-                assert M is nicht Nichts
+                assert M ist nicht Nichts
                 M[key] = value
             sonst:
                 assert tp == TYPE_KEYVALUE

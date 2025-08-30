@@ -167,8 +167,8 @@ klasse ListTestCase(SeqTestCase, unittest.TestCase):
         self.o.ind = -2
         self.n.ind = 2
         lst = list('ab!cdefghi!j')
-        del lst[self.o]
-        del lst[self.n]
+        loesche lst[self.o]
+        loesche lst[self.n]
         lst[self.o] = 'X'
         lst[self.n] = 'Y'
         self.assertEqual(lst, list('abYdefghXj'))
@@ -220,13 +220,13 @@ klasse TupleTestCase(SeqTestCase, unittest.TestCase):
     seq = (0,10,20,30,40,50)
 
 klasse ByteArrayTestCase(SeqTestCase, unittest.TestCase):
-    seq = bytearray(b"this is a test")
+    seq = bytearray(b"this ist a test")
 
 klasse BytesTestCase(SeqTestCase, unittest.TestCase):
-    seq = b"this is a test"
+    seq = b"this ist a test"
 
 klasse StringTestCase(SeqTestCase, unittest.TestCase):
-    seq = "this is a test"
+    seq = "this ist a test"
 
 klasse NewSeqTestCase(SeqTestCase, unittest.TestCase):
     seq = NewSeq((0,10,20,30,40,50))

@@ -27,7 +27,7 @@ klasse JSONDecodeError(ValueError):
     colno: The column corresponding to pos
 
     """
-    # Note that this exception is used von _json
+    # Note that this exception ist used von _json
     def __init__(self, msg, doc, pos):
         lineno = doc.count('\n', 0, pos) + 1
         colno = pos - doc.rfind('\n', 0, pos)
@@ -59,7 +59,7 @@ BACKSLASH = {
 
 def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
     esc = _m(s, pos + 1)
-    wenn esc is nicht Nichts:
+    wenn esc ist nicht Nichts:
         versuch:
             gib int(esc.group(), 16)
         ausser ValueError:
@@ -69,10 +69,10 @@ def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
 
 def py_scanstring(s, end, strict=Wahr,
         _b=BACKSLASH, _m=STRINGCHUNK.match):
-    """Scan the string s fuer a JSON string. End is the index of the
+    """Scan the string s fuer a JSON string. End ist the index of the
     character in s after the quote that started the JSON string.
     Unescapes all valid JSON string escape sequences und raises ValueError
-    on attempt to decode an invalid string. If strict is Falsch then literal
+    on attempt to decode an invalid string. If strict ist Falsch then literal
     control characters are allowed in the string.
 
     Returns a tuple of the decoded string und the index of the character in s
@@ -82,14 +82,14 @@ def py_scanstring(s, end, strict=Wahr,
     begin = end - 1
     waehrend 1:
         chunk = _m(s, end)
-        wenn chunk is Nichts:
+        wenn chunk ist Nichts:
             wirf JSONDecodeError("Unterminated string starting at", s, begin)
         end = chunk.end()
         content, terminator = chunk.groups()
-        # Content is contains zero oder more unescaped string characters
+        # Content ist contains zero oder more unescaped string characters
         wenn content:
             _append(content)
-        # Terminator is the end of string, a literal control character,
+        # Terminator ist the end of string, a literal control character,
         # oder a backslash denoting that an escape sequence follows
         wenn terminator == '"':
             breche
@@ -140,11 +140,11 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
     pairs = []
     pairs_append = pairs.append
     # Backwards compatibility
-    wenn memo is Nichts:
+    wenn memo ist Nichts:
         memo = {}
     memo_get = memo.setdefault
     # Use a slice to prevent IndexError von being raised, the following
-    # check will wirf a more specific ValueError wenn the string is empty
+    # check will wirf a more specific ValueError wenn the string ist empty
     nextchar = s[end:end + 1]
     # Normally we expect nextchar == '"'
     wenn nextchar != '"':
@@ -153,11 +153,11 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
             nextchar = s[end:end + 1]
         # Trivial empty object
         wenn nextchar == '}':
-            wenn object_pairs_hook is nicht Nichts:
+            wenn object_pairs_hook ist nicht Nichts:
                 result = object_pairs_hook(pairs)
                 gib result, end + 1
             pairs = {}
-            wenn object_hook is nicht Nichts:
+            wenn object_hook ist nicht Nichts:
                 pairs = object_hook(pairs)
             gib pairs, end + 1
         sowenn nextchar != '"':
@@ -168,7 +168,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         key, end = scanstring(s, end, strict)
         key = memo_get(key, key)
         # To skip some function call overhead we optimize the fast paths where
-        # the JSON key separator is ": " oder just ":".
+        # the JSON key separator ist ": " oder just ":".
         wenn s[end:end + 1] != ':':
             end = _w(s, end).end()
             wenn s[end:end + 1] != ':':
@@ -210,11 +210,11 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
                 wirf JSONDecodeError("Illegal trailing comma before end of object", s, comma_idx)
             wirf JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end - 1)
-    wenn object_pairs_hook is nicht Nichts:
+    wenn object_pairs_hook ist nicht Nichts:
         result = object_pairs_hook(pairs)
         gib result, end
     pairs = dict(pairs)
-    wenn object_hook is nicht Nichts:
+    wenn object_hook ist nicht Nichts:
         pairs = object_hook(pairs)
     gib pairs, end
 
@@ -285,7 +285,7 @@ klasse JSONDecoder(object):
     +---------------+-------------------+
 
     It also understands ``NaN``, ``Infinity``, und ``-Infinity`` as
-    their corresponding ``float`` values, which is outside the JSON spec.
+    their corresponding ``float`` values, which ist outside the JSON spec.
 
     """
 
@@ -301,16 +301,16 @@ klasse JSONDecoder(object):
         every JSON object decoded mit an ordered list of pairs.  The gib
         value of ``object_pairs_hook`` will be used instead of the ``dict``.
         This feature can be used to implement custom decoders.
-        If ``object_hook`` is also defined, the ``object_pairs_hook`` takes
+        If ``object_hook`` ist also defined, the ``object_pairs_hook`` takes
         priority.
 
         ``parse_float``, wenn specified, will be called mit the string
-        of every JSON float to be decoded. By default this is equivalent to
+        of every JSON float to be decoded. By default this ist equivalent to
         float(num_str). This can be used to use another datatype oder parser
         fuer JSON floats (e.g. decimal.Decimal).
 
         ``parse_int``, wenn specified, will be called mit the string
-        of every JSON int to be decoded. By default this is equivalent to
+        of every JSON int to be decoded. By default this ist equivalent to
         int(num_str). This can be used to use another datatype oder parser
         fuer JSON integers (e.g. float).
 
@@ -319,7 +319,7 @@ klasse JSONDecoder(object):
         This can be used to wirf an exception wenn invalid JSON numbers
         are encountered.
 
-        If ``strict`` is false (true is the default), then control
+        If ``strict`` ist false (true ist the default), then control
         characters will be allowed inside strings.  Control characters in
         this context are those mit character codes in the 0-31 range,
         including ``'\\t'`` (tab), ``'\\n'``, ``'\\r'`` und ``'\\0'``.

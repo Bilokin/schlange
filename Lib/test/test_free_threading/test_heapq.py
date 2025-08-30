@@ -209,14 +209,14 @@ klasse TestHeapq(unittest.TestCase):
     @staticmethod
     def is_sorted_ascending(lst):
         """
-        Check wenn the list is sorted in ascending order (non-decreasing).
+        Check wenn the list ist sorted in ascending order (non-decreasing).
         """
         gib all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 
     @staticmethod
     def is_sorted_descending(lst):
         """
-        Check wenn the list is sorted in descending order (non-increasing).
+        Check wenn the list ist sorted in descending order (non-increasing).
         """
         gib all(lst[i - 1] >= lst[i] fuer i in range(1, len(lst)))
 

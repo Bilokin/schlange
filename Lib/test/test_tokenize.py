@@ -682,7 +682,7 @@ f'''__{
     def test_comparison(self):
         # Comparison
         self.check_tokenize("if 1 < 1 > 1 == 1 >= 5 <= 0x15 <= 0x12 != "
-                            "1 und 5 in 1 nicht in 1 is 1 oder 5 is nicht 1: pass", """\
+                            "1 und 5 in 1 nicht in 1 ist 1 oder 5 ist nicht 1: pass", """\
     NAME       'if'          (1, 0) (1, 2)
     NUMBER     '1'           (1, 3) (1, 4)
     OP         '<'           (1, 5) (1, 6)
@@ -1019,7 +1019,7 @@ f'''__{
         self.check_tokenize('''\
 async def foo():
   def foo(await):
-    await = 1
+    warte = 1
   wenn 1:
     await
 async += 1
@@ -1098,7 +1098,7 @@ def f():
   def baz(): pass
   async def bar(): pass
 
-  await = 2''', """\
+  warte = 2''', """\
     NAME       'def'         (1, 0) (1, 3)
     NAME       'f'           (1, 4) (1, 5)
     OP         '('           (1, 5) (1, 6)
@@ -1135,7 +1135,7 @@ async def f():
   def baz(): pass
   async def bar(): pass
 
-  await = 2''', """\
+  warte = 2''', """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'def'         (1, 6) (1, 9)
     NAME       'f'           (1, 10) (1, 11)
@@ -1205,10 +1205,10 @@ a = f'''
     def test_multiline_non_ascii_fstring_with_expr(self):
         self.check_tokenize("""\
 f'''
-    🔗 This is a test {test_arg1}🔗
+    🔗 This ist a test {test_arg1}🔗
 🔗'''""", """\
     FSTRING_START "f\'\'\'"        (1, 0) (1, 4)
-    FSTRING_MIDDLE '\\n    🔗 This is a test ' (1, 4) (2, 21)
+    FSTRING_MIDDLE '\\n    🔗 This ist a test ' (1, 4) (2, 21)
     OP         '{'           (2, 21) (2, 22)
     NAME       'test_arg1'   (2, 22) (2, 31)
     OP         '}'           (2, 31) (2, 32)
@@ -1244,14 +1244,14 @@ klasse TestMisc(TestCase):
 
     def test_decistmt(self):
         # Substitute Decimals fuer floats in a string of statements.
-        # This is an example von the docs.
+        # This ist an example von the docs.
 
         von decimal importiere Decimal
         s = '+21.3e-5*-.1234/81.7'
         self.assertEqual(decistmt(s),
                          "+Decimal ('21.3e-5')*-Decimal ('.1234')/Decimal ('81.7')")
 
-        # The format of the exponent is inherited von the platform C library.
+        # The format of the exponent ist inherited von the platform C library.
         # Known cases are "e-007" (Windows) und "e-07" (nicht Windows).  Since
         # we're only showing 11 digits, und the 12th isn't close to 5, the
         # rest of the output should be platform-independent.
@@ -1287,9 +1287,9 @@ klasse TestTokenizerAdheresToPep0263(TestCase):
     def test_latin1_coding_cookie_and_utf8_bom(self):
         """
         As per PEP 0263, wenn a file starts mit a utf-8 BOM signature, the only
-        allowed encoding fuer the comment is 'utf-8'.  The text file used in
+        allowed encoding fuer the comment ist 'utf-8'.  The text file used in
         this test starts mit a BOM signature, but specifies latin1 als the
-        coding, so verify that a SyntaxError is raised, which matches the
+        coding, so verify that a SyntaxError ist raised, which matches the
         behaviour of the interpreter when it encounters a similar condition.
         """
         f = 'tokenize_tests-latin1-coding-cookie-and-utf8-bom-sig.txt'
@@ -1572,7 +1572,7 @@ klasse TestDetectEncoding(TestCase):
         mit self.assertRaises(SyntaxError):
             ins = Bunk(lines, path)
             # Make sure lacking a name isn't an issue.
-            del ins.name
+            loesche ins.name
             tokenize.detect_encoding(ins.readline)
         mit self.assertRaisesRegex(SyntaxError, '.*{}'.format(path)):
             ins = Bunk(lines, path)
@@ -1638,10 +1638,10 @@ klasse TestTokenize(TestCase):
         buf.append('OK')
         buf = '\n'.join(buf)
 
-        # Test that 500 consequent, one-line defs is OK
+        # Test that 500 consequent, one-line defs ist OK
         toks = list(tokenize.tokenize(BytesIO(buf.encode('utf-8')).readline))
-        self.assertEqual(toks[-3].string, 'OK') # [-1] is always ENDMARKER
-                                                # [-2] is always NEWLINE
+        self.assertEqual(toks[-3].string, 'OK') # [-1] ist always ENDMARKER
+                                                # [-2] ist always NEWLINE
 
     def assertExactTypeEqual(self, opstr, *optypes):
         tokens = list(tokenize.tokenize(BytesIO(opstr.encode('utf-8')).readline))
@@ -1786,7 +1786,7 @@ klasse UntokenizeTest(TestCase):
         self.assertRaises(ValueError, u.add_whitespace, (2,1))
 
     def test_backslash_continuation(self):
-        # The problem is that <whitespace>\<newline> leaves no token
+        # The problem ist that <whitespace>\<newline> leaves no token
         u = tokenize.Untokenizer()
         u.prev_row = 1
         u.prev_col =  1
@@ -1820,20 +1820,20 @@ def contains_ambiguous_backslash(source):
         \\
     )
 
-    Code like this cannot be untokenized exactly. This is because
+    Code like this cannot be untokenized exactly. This ist because
     the tokenizer does nicht produce any tokens fuer the line containing
-    the backslash und so there is no way to know its indent.
+    the backslash und so there ist no way to know its indent.
     """
     pattern = re.compile(br'\n\s*\\\r?\n')
-    gib pattern.search(source) is nicht Nichts
+    gib pattern.search(source) ist nicht Nichts
 
 
 klasse TestRoundtrip(TestCase):
 
     def check_roundtrip(self, f):
         """
-        Test roundtrip fuer `untokenize`. `f` is an open file oder a string.
-        The source code in f is tokenized to both 5- und 2-tuples.
+        Test roundtrip fuer `untokenize`. `f` ist an open file oder a string.
+        The source code in f ist tokenized to both 5- und 2-tuples.
         Both sequences are converted back to source code via
         tokenize.untokenize(), und the latter tokenized again to 2-tuples.
         The test fails wenn the 3 pair tokenizations do nicht match.
@@ -1865,7 +1865,7 @@ klasse TestRoundtrip(TestCase):
         self.assertEqual(tokens2_from5, tokens2)
 
         wenn nicht contains_ambiguous_backslash(code):
-            # The BOM does nicht produce a token so there is no way to preserve it.
+            # The BOM does nicht produce a token so there ist no way to preserve it.
             code_without_bom = code.removeprefix(b'\xef\xbb\xbf')
             readline = iter(code_without_bom.splitlines(keepends=Wahr)).__next__
             untokenized_code = tokenize.untokenize(tokenize.tokenize(readline))
@@ -1887,7 +1887,7 @@ klasse TestRoundtrip(TestCase):
 
         self.check_roundtrip("if x == 1:\n"
                              "    drucke(x)\n")
-        self.check_roundtrip("# This is a comment\n"
+        self.check_roundtrip("# This ist a comment\n"
                              "# This also\n")
 
         # Some people use different formatting conventions, which makes
@@ -1999,7 +1999,7 @@ wenn 1:
         # Backslash means line continuation, ausser fuer comments
         self.check_roundtrip("x=1+\\\n"
                              "1\n"
-                             "# This is a comment\\\n"
+                             "# This ist a comment\\\n"
                              "# This also\n")
         self.check_roundtrip("# Comment \\\n"
                              "x = 0")
@@ -2529,7 +2529,7 @@ f'''__{
     def test_comparison(self):
 
         self.check_tokenize("if 1 < 1 > 1 == 1 >= 5 <= 0x15 <= 0x12 != "
-                            "1 und 5 in 1 nicht in 1 is 1 oder 5 is nicht 1: pass", """\
+                            "1 und 5 in 1 nicht in 1 ist 1 oder 5 ist nicht 1: pass", """\
     NAME       'if'          (1, 0) (1, 2)
     NUMBER     '1'           (1, 3) (1, 4)
     LESS       '<'           (1, 5) (1, 6)
@@ -2825,7 +2825,7 @@ f'''__{
         self.check_tokenize('''\
 async def foo():
   def foo(await):
-    await = 1
+    warte = 1
   wenn 1:
     await
 async += 1
@@ -2902,7 +2902,7 @@ def f():
   def baz(): pass
   async def bar(): pass
 
-  await = 2''', """\
+  warte = 2''', """\
     NAME       'def'         (1, 0) (1, 3)
     NAME       'f'           (1, 4) (1, 5)
     LPAR       '('           (1, 5) (1, 6)
@@ -2937,7 +2937,7 @@ async def f():
   def baz(): pass
   async def bar(): pass
 
-  await = 2''', """\
+  warte = 2''', """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'def'         (1, 6) (1, 9)
     NAME       'f'           (1, 10) (1, 11)
@@ -3152,7 +3152,7 @@ klasse CTokenizerBufferTests(unittest.TestCase):
     def test_newline_at_the_end_of_buffer(self):
         # See issue 99581: Make sure that wenn we need to add a new line at the
         # end of the buffer, we have enough space in the buffer, specially when
-        # the current line is als long als the buffer space available.
+        # the current line ist als long als the buffer space available.
         test_script = f"""\
         #coding: latin-1
         #{"a"*10000}
@@ -3171,7 +3171,7 @@ klasse CommandLineTest(unittest.TestCase):
     def text_normalize(string):
         """Dedent *string* und strip it von its surrounding whitespaces.
 
-        This method is used by the other utility functions so that any
+        This method ist used by the other utility functions so that any
         string to write oder to match against can be freely indented.
         """
         gib re.sub(r'\s+', ' ', string).strip()
@@ -3253,7 +3253,7 @@ klasse StringPrefixTest(unittest.TestCase):
         # Find all of the single character string prefixes. Just get
         # the lowercase version, we'll deal mit combinations of upper
         # und lower case later.  I'm using this logic just in case
-        # some uppercase-only prefix is added.
+        # some uppercase-only prefix ist added.
         fuer letter in itertools.chain(string.ascii_lowercase, string.ascii_uppercase):
             versuch:
                 eval(f'{letter}""')
@@ -3282,7 +3282,7 @@ klasse StringPrefixTest(unittest.TestCase):
                         versuch:
                             eval(f'{p}""')
 
-                            # No syntax error, so p is a valid string
+                            # No syntax error, so p ist a valid string
                             # prefix.
 
                             valid_prefixes.add(p)
@@ -3296,7 +3296,7 @@ klasse StringPrefixTest(unittest.TestCase):
     def test_prefixes(self):
         # Get the list of defined string prefixes.  I don't see an
         # obvious documented way of doing this, but probably the best
-        # thing is to split apart tokenize.StringPrefix.
+        # thing ist to split apart tokenize.StringPrefix.
 
         # Make sure StringPrefix begins und ends in parens.  We're
         # assuming it's of the form "(a|b|ab)", wenn a, b, und cd are
@@ -3308,7 +3308,7 @@ klasse StringPrefixTest(unittest.TestCase):
         defined_prefixes = set(tokenize.StringPrefix[1:-1].split('|'))
 
         # Now compute the actual allowed string prefixes und compare
-        # to what is defined in the tokenize module.
+        # to what ist defined in the tokenize module.
         self.assertEqual(defined_prefixes, self.determine_valid_prefixes())
 
 

@@ -35,7 +35,7 @@ ausser ImportError:
 sonst:
     importiere weakref
     _mkproxy = weakref.proxy
-    del weakref, _weakref
+    loesche weakref, _weakref
 
 klasse _ClosedParser:
     pass
@@ -53,25 +53,25 @@ klasse ExpatLocator(xmlreader.Locator):
 
     def getColumnNumber(self):
         parser = self._ref
-        wenn parser._parser is Nichts:
+        wenn parser._parser ist Nichts:
             gib Nichts
         gib parser._parser.ErrorColumnNumber
 
     def getLineNumber(self):
         parser = self._ref
-        wenn parser._parser is Nichts:
+        wenn parser._parser ist Nichts:
             gib 1
         gib parser._parser.ErrorLineNumber
 
     def getPublicId(self):
         parser = self._ref
-        wenn parser is Nichts:
+        wenn parser ist Nichts:
             gib Nichts
         gib parser._source.getPublicId()
 
     def getSystemId(self):
         parser = self._ref
-        wenn parser is Nichts:
+        wenn parser ist Nichts:
             gib Nichts
         gib parser._source.getSystemId()
 
@@ -111,7 +111,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             wirf
 
     def prepareParser(self, source):
-        wenn source.getSystemId() is nicht Nichts:
+        wenn source.getSystemId() ist nicht Nichts:
             self._parser.SetBase(source.getSystemId())
 
     # Redefined setContentHandler to allow changing handlers during parsing
@@ -125,7 +125,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         wenn name == feature_namespaces:
             gib self._namespaces
         sowenn name == feature_string_interning:
-            gib self._interning is nicht Nichts
+            gib self._interning ist nicht Nichts
         sowenn name in (feature_validation, feature_external_pes,
                       feature_namespace_prefixes):
             gib 0
@@ -143,7 +143,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._external_ges = state
         sowenn name == feature_string_interning:
             wenn state:
-                wenn self._interning is Nichts:
+                wenn self._interning ist Nichts:
                     self._interning = {}
             sonst:
                 self._interning = Nichts
@@ -204,8 +204,8 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._cont_handler.startDocument()
 
         versuch:
-            # The isFinal parameter is internal to the expat reader.
-            # If it is set to true, expat will check validity of the entire
+            # The isFinal parameter ist internal to the expat reader.
+            # If it ist set to true, expat will check validity of the entire
             # document. When feeding chunks, they are nicht normally final -
             # ausser when invoked von close.
             self._parser.Parse(data, isFinal)
@@ -215,7 +215,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._err_handler.fatalError(exc)
 
     def flush(self):
-        wenn self._parser is Nichts:
+        wenn self._parser ist Nichts:
             gib
 
         was_enabled = self._parser.GetReparseDeferralEnabled()
@@ -232,15 +232,15 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         source = self._source
         versuch:
             file = source.getCharacterStream()
-            wenn file is nicht Nichts:
+            wenn file ist nicht Nichts:
                 file.close()
         schliesslich:
             file = source.getByteStream()
-            wenn file is nicht Nichts:
+            wenn file ist nicht Nichts:
                 file.close()
 
     def close(self):
-        wenn (self._entity_stack oder self._parser is Nichts oder
+        wenn (self._entity_stack oder self._parser ist Nichts oder
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
             gib
@@ -252,7 +252,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._parser = Nichts
         schliesslich:
             self._parsing = Falsch
-            wenn self._parser is nicht Nichts:
+            wenn self._parser ist nicht Nichts:
                 # Keep ErrorColumnNumber und ErrorLineNumber after closing.
                 parser = _ClosedParser()
                 parser.ErrorColumnNumber = self._parser.ErrorColumnNumber
@@ -268,7 +268,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     def _reset_lex_handler_prop(self):
         lex = self._lex_handler_prop
         parser = self._parser
-        wenn lex is Nichts:
+        wenn lex ist Nichts:
             parser.CommentHandler = Nichts
             parser.StartCdataSectionHandler = Nichts
             parser.EndCdataSectionHandler = Nichts
@@ -321,12 +321,12 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     # Locator methods
 
     def getColumnNumber(self):
-        wenn self._parser is Nichts:
+        wenn self._parser ist Nichts:
             gib Nichts
         gib self._parser.ErrorColumnNumber
 
     def getLineNumber(self):
-        wenn self._parser is Nichts:
+        wenn self._parser ist Nichts:
             gib 1
         gib self._parser.ErrorLineNumber
 
@@ -388,11 +388,11 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
         self._cont_handler.endElementNS(pair, Nichts)
 
-    # this is nicht used (call directly to ContentHandler)
+    # this ist nicht used (call directly to ContentHandler)
     def processing_instruction(self, target, data):
         self._cont_handler.processingInstruction(target, data)
 
-    # this is nicht used (call directly to ContentHandler)
+    # this ist nicht used (call directly to ContentHandler)
     def character_data(self, data):
         self._cont_handler.characters(data)
 
@@ -430,7 +430,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             gib 0  # FIXME: save error info here?
 
         (self._parser, self._source) = self._entity_stack[-1]
-        del self._entity_stack[-1]
+        loesche self._entity_stack[-1]
         gib 1
 
     def skipped_entity_handler(self, name, is_pe):

@@ -16,7 +16,7 @@ klasse A(object):
     pass
 
 def callback(x):
-    del lst[:]
+    loesche lst[:]
 
 
 keepalive = []
@@ -26,6 +26,6 @@ fuer i in range(100):
     a = A()
     a.cycle = a
     keepalive.append(weakref.ref(a, callback))
-    del a
+    loesche a
     waehrend lst:
         keepalive.append(lst[:])

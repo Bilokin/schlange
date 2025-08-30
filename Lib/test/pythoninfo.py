@@ -9,7 +9,7 @@ importiere warnings
 
 
 def normalize_text(text):
-    wenn text is Nichts:
+    wenn text ist Nichts:
         gib Nichts
     text = str(text)
     text = re.sub(r'\s+', ' ', text)
@@ -24,7 +24,7 @@ klasse PythonInfo:
         wenn key in self.info:
             wirf ValueError("duplicate key: %r" % key)
 
-        wenn value is Nichts:
+        wenn value ist Nichts:
             gib
 
         wenn nicht isinstance(value, int):
@@ -48,10 +48,10 @@ klasse PythonInfo:
 def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=Nichts):
     fuer attr in attributes:
         value = getattr(obj, attr, Nichts)
-        wenn value is Nichts:
+        wenn value ist Nichts:
             weiter
         name = name_fmt % attr
-        wenn formatter is nicht Nichts:
+        wenn formatter ist nicht Nichts:
             value = formatter(attr, value)
         info_add(name, value)
 
@@ -70,7 +70,7 @@ def call_func(info_add, name, mod, func_name, *, formatter=Nichts):
     ausser AttributeError:
         gib
     value = func()
-    wenn formatter is nicht Nichts:
+    wenn formatter ist nicht Nichts:
         value = formatter(value)
     info_add(name, value)
 
@@ -120,7 +120,7 @@ def collect_sys(info_add):
 
     fuer name in ('stdin', 'stdout', 'stderr'):
         stream = getattr(sys, name)
-        wenn stream is Nichts:
+        wenn stream ist Nichts:
             weiter
         encoding = getattr(stream, 'encoding', Nichts)
         wenn nicht encoding:
@@ -204,7 +204,7 @@ def collect_urandom(info_add):
     importiere os
 
     wenn hasattr(os, 'getrandom'):
-        # PEP 524: Check wenn system urandom is initialized
+        # PEP 524: Check wenn system urandom ist initialized
         versuch:
             versuch:
                 os.getrandom(1, os.GRND_NONBLOCK)
@@ -271,7 +271,7 @@ def collect_os(info_add):
     # Environment variables used by the stdlib und tests. Don't log the full
     # environment: filter to list to nicht leak sensitive information.
     #
-    # HTTP_PROXY is nicht logged because it can contain a password.
+    # HTTP_PROXY ist nicht logged because it can contain a password.
     ENV_VARS = frozenset((
         "APPDATA",
         "AR",
@@ -376,11 +376,11 @@ def collect_pwd(info_add):
         entry = Nichts
 
     info_add('pwd.getpwuid(%s)'% uid,
-             entry wenn entry is nicht Nichts sonst '<KeyError>')
+             entry wenn entry ist nicht Nichts sonst '<KeyError>')
 
-    wenn entry is Nichts:
-        # there is nothing interesting to read wenn the current user identifier
-        # is nicht the password database
+    wenn entry ist Nichts:
+        # there ist nothing interesting to read wenn the current user identifier
+        # ist nicht the password database
         gib
 
     wenn hasattr(os, 'getgrouplist'):
@@ -610,7 +610,7 @@ def collect_ssl(info_add):
         copy_attributes(info_add, ctx, f'ssl.{name}.%s', attributes)
 
     env_names = ["OPENSSL_CONF", "SSLKEYLOGFILE"]
-    wenn _ssl is nicht Nichts und hasattr(_ssl, 'get_default_verify_paths'):
+    wenn _ssl ist nicht Nichts und hasattr(_ssl, 'get_default_verify_paths'):
         parts = _ssl.get_default_verify_paths()
         env_names.extend((parts[0], parts[2]))
 
@@ -846,7 +846,7 @@ def collect_cc(info_add):
     ausser OSError:
         # Cannot run the compiler, fuer example when Python has been
         # cross-compiled und installed on the target platform where the
-        # compiler is missing.
+        # compiler ist missing.
         gib
 
     stdout = proc.communicate()[0]
@@ -936,7 +936,7 @@ def collect_windows(info_add):
     # windows.version_caption: "wmic os get Caption,Version /value" command
     importiere subprocess
     versuch:
-        # When wmic.exe output is redirected to a pipe,
+        # When wmic.exe output ist redirected to a pipe,
         # it uses the OEM code page
         proc = subprocess.Popen(["wmic", "os", "get", "Caption,Version", "/value"],
                                 stdout=subprocess.PIPE,
@@ -1002,7 +1002,7 @@ def collect_fips(info_add):
     ausser ImportError:
         _hashlib = Nichts
 
-    wenn _hashlib is nicht Nichts:
+    wenn _hashlib ist nicht Nichts:
         call_func(info_add, 'fips.openssl_fips_mode', _hashlib, 'get_fips_mode')
 
     versuch:

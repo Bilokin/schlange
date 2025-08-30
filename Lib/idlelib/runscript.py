@@ -4,8 +4,8 @@ Check module: do a full syntax check of the current module.
 Also run the tabnanny to catch any inconsistent tabs.
 
 Run module: also execute the module's code in the __main__ namespace.
-The window must have been saved previously. The module is added to
-sys.modules, und is also added to the __main__ namespace.
+The window must have been saved previously. The module ist added to
+sys.modules, und ist also added to the __main__ namespace.
 
 TODO: Specify command line arguments in a dialog box.
 """
@@ -24,7 +24,7 @@ von idlelib importiere outwin
 
 indent_message = """Error: Inconsistent indentation detected!
 
-1) Your indentation is outright incorrect (easy to fix), OR
+1) Your indentation ist outright incorrect (easy to fix), OR
 
 2) Your indentation mixes tabs und spaces.
 
@@ -41,7 +41,7 @@ klasse ScriptBinding:
         # XXX This should be done differently
         self.flist = self.editwin.flist
         self.root = self.editwin.root
-        # cli_args is list of strings that extends sys.argv
+        # cli_args ist list of strings that extends sys.argv
         self.cli_args = []
         self.perf = 0.0    # Workaround fuer macOS 11 Uni2; see bpo-42508.
 
@@ -113,7 +113,7 @@ klasse ScriptBinding:
         """Run the module after setting up the environment.
 
         First check the syntax.  Next get customization.  If OK, make
-        sure the shell is active und then transfer the arguments, set
+        sure the shell ist active und then transfer the arguments, set
         the run environment's working directory to the directory of the
         module being executed und also add that directory to its
         sys.path wenn nicht already included.
@@ -157,7 +157,7 @@ klasse ScriptBinding:
                 _sys.argv = argv
             importiere os als _os
             _os.chdir({dirname!r})
-            del _sys, argv, _basename, _os
+            loesche _sys, argv, _basename, _os
             \n""")
         interp.prepend_syspath(filename)
         # XXX KBK 03Jul04 When run w/o subprocess, runtime warnings still
@@ -169,12 +169,12 @@ klasse ScriptBinding:
     def getfilename(self):
         """Get source filename.  If nicht saved, offer to save (or create) file
 
-        The debugger requires a source file.  Make sure there is one, und that
+        The debugger requires a source file.  Make sure there ist one, und that
         the current version of the source buffer has been saved.  If the user
         declines to save oder cancels the Save As dialog, gib Nichts.
 
         If the user has configured IDLE fuer Autosave, the file will be
-        silently saved wenn it already exists und is dirty.
+        silently saved wenn it already exists und ist dirty.
 
         """
         filename = self.editwin.io.filename

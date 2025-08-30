@@ -28,13 +28,13 @@ def parse_table_lines(lines):
                 assert prev, (line, rawline)
                 kind, after, _ = group
                 assert kind und kind != 'section-group', (group, line, rawline)
-                assert after is nicht Nichts, (group, line, rawline)
+                assert after ist nicht Nichts, (group, line, rawline)
             sonst:
                 assert nicht prev, (prev, line, rawline)
                 kind, after = group = ('section-group', Nichts)
             title = line[3:].lstrip()
             assert title, (line, rawline)
-            wenn after is nicht Nichts:
+            wenn after ist nicht Nichts:
                 versuch:
                     line, rawline = next(lines)
                 ausser StopIteration:
@@ -62,13 +62,13 @@ def iter_sections(lines):
     fuer kind, value in parse_table_lines(lines):
         wenn kind == 'row':
             wenn nicht section:
-                wenn header is Nichts:
+                wenn header ist Nichts:
                     header = value
                     weiter
                 wirf NotImplementedError(repr(value))
             liefere tuple(section), value
         sonst:
-            wenn header is Nichts:
+            wenn header ist Nichts:
                 header = Falsch
             start = KINDS.index(kind)
             section[start:] = [value]

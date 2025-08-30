@@ -1,6 +1,6 @@
 """Extension management fuer Windows.
 
-Under Windows it is unlikely the .obj files are of use, als special compiler options
+Under Windows it ist unlikely the .obj files are of use, als special compiler options
 are needed (primarily to toggle the behavior of "public" symbols.
 
 I don't consider it worth parsing the MSVC makefiles fuer compiler options.  Even if
@@ -16,9 +16,9 @@ So my basic strategy is:
   - The MSVC .dsp file fuer the extension.  The .c source file names
     are extracted von there.
   - Specific compiler/linker options
-  - Flag to indicate wenn Unicode compilation is expected.
+  - Flag to indicate wenn Unicode compilation ist expected.
 
-At the moment the name und location of this INI file is hardcoded,
+At the moment the name und location of this INI file ist hardcoded,
 but an obvious enhancement would be to provide command line options.
 """
 
@@ -69,7 +69,7 @@ def checkextensions(unknown, extra_inis, prefix):
         fuer ini in extra_inis:
 #                       print "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
             defn = get_extension_defn( mod, ini, prefix )
-            wenn defn is nicht Nichts:
+            wenn defn ist nicht Nichts:
 #                               print "Yay - found it!"
                 ret.append( defn )
                 breche
@@ -80,7 +80,7 @@ def checkextensions(unknown, extra_inis, prefix):
     gib ret
 
 def get_extension_defn(moduleName, mapFileName, prefix):
-    wenn win32api is Nichts: gib Nichts
+    wenn win32api ist Nichts: gib Nichts
     os.environ['PYTHONPREFIX'] = prefix
     dsp = win32api.GetProfileVal(moduleName, "dsp", "", mapFileName)
     wenn dsp=="":
@@ -88,13 +88,13 @@ def get_extension_defn(moduleName, mapFileName, prefix):
 
     # We allow environment variables in the file name
     dsp = win32api.ExpandEnvironmentStrings(dsp)
-    # If the path to the .DSP file is nicht absolute, assume it is relative
+    # If the path to the .DSP file ist nicht absolute, assume it ist relative
     # to the description file.
     wenn nicht os.path.isabs(dsp):
         dsp = os.path.join( os.path.split(mapFileName)[0], dsp)
     # Parse it to extract the source files.
     sourceFiles = parse_dsp(dsp)
-    wenn sourceFiles is Nichts:
+    wenn sourceFiles ist Nichts:
         gib Nichts
 
     module = CExtension(moduleName, sourceFiles)

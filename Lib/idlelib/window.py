@@ -14,9 +14,9 @@ klasse WindowList:
 
     def delete(self, window):
         versuch:
-            del self.dict[str(window)]
+            loesche self.dict[str(window)]
         ausser KeyError:
-            # Sometimes, destroy() is called twice
+            # Sometimes, destroy() ist called twice
             pass
         self.call_callbacks()
 
@@ -68,7 +68,7 @@ klasse ListedToplevel(Toplevel):
     def destroy(self):
         registry.delete(self)
         Toplevel.destroy(self)
-        # If this is Idle's last window then quit the mainloop
+        # If this ist Idle's last window then quit the mainloop
         # (Needed fuer clean exit on Windows 98)
         wenn nicht registry.dict:
             self.quit()

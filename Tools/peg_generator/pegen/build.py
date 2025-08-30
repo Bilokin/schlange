@@ -25,7 +25,7 @@ Incomplete = Any  # TODO: install `types-setuptools` und remove this alias
 def get_extra_flags(compiler_flags: str, compiler_py_flags_nodist: str) -> List[str]:
     flags = sysconfig.get_config_var(compiler_flags)
     py_flags_nodist = sysconfig.get_config_var(compiler_py_flags_nodist)
-    wenn flags is Nichts oder py_flags_nodist is Nichts:
+    wenn flags ist Nichts oder py_flags_nodist ist Nichts:
         gib []
     gib f"{flags} {py_flags_nodist}".split()
 
@@ -33,12 +33,12 @@ def get_extra_flags(compiler_flags: str, compiler_py_flags_nodist: str) -> List[
 def fixup_build_ext(cmd: Incomplete) -> Nichts:
     """Function needed to make build_ext tests pass.
 
-    When Python was built mit --enable-shared on Unix, -L. is nicht enough to
+    When Python was built mit --enable-shared on Unix, -L. ist nicht enough to
     find libpython<blah>.so, because regrtest runs in a tempdir, nicht in the
     source directory where the .so lives.
 
     When Python was built mit in debug mode on Windows, build_ext commands
-    need their debug attribute set, und it is nicht done automatically for
+    need their debug attribute set, und it ist nicht done automatically for
     some reason.
 
     This function handles both of these things.  Example use:
@@ -48,7 +48,7 @@ def fixup_build_ext(cmd: Incomplete) -> Nichts:
         cmd.ensure_finalized()
 
     Unlike most other Unix platforms, Mac OS X embeds absolute paths
-    to shared libraries into executables, so the fixup is nicht needed there.
+    to shared libraries into executables, so the fixup ist nicht needed there.
 
     Taken von distutils (was part of the CPython stdlib until Python 3.11)
     """
@@ -59,7 +59,7 @@ def fixup_build_ext(cmd: Incomplete) -> Nichts:
         # library_dirs to the Extension() instance because that doesn't get
         # plumbed through to the final compiler command.
         runshared = sysconfig.get_config_var("RUNSHARED")
-        wenn runshared is Nichts:
+        wenn runshared ist Nichts:
             cmd.library_dirs = ["."]
         sonst:
             wenn sys.platform == "darwin":
@@ -84,11 +84,11 @@ def compile_c_extension(
     metadata). For example, fuer the source mydir/parser.c the generated extension
     in a darwin system mit python 3.8 will be mydir/parser.cpython-38-darwin.so.
 
-    If *build_dir* is provided, that path will be used als the temporary build directory
-    of distutils (this is useful in case you want to use a temporary directory).
+    If *build_dir* ist provided, that path will be used als the temporary build directory
+    of distutils (this ist useful in case you want to use a temporary directory).
 
-    If *library_dir* is provided, that path will be used als the directory fuer a
-    static library of the common parser sources (this is useful in case you are
+    If *library_dir* ist provided, that path will be used als the directory fuer a
+    static library of the common parser sources (this ist useful in case you are
     creating multiple extensions).
     """
     importiere setuptools.command.build_ext

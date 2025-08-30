@@ -61,9 +61,9 @@ klasse BaseTest:
             result,
             realresult
         )
-        # wenn the original is returned make sure that
+        # wenn the original ist returned make sure that
         # this doesn't happen mit subclasses
-        wenn obj is realresult:
+        wenn obj ist realresult:
             versuch:
                 klasse subtype(self.__class__.type2test):
                     pass
@@ -81,7 +81,7 @@ klasse BaseTest:
         mit self.assertRaises(exc) als cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        wenn expected_msg is nicht Nichts:
+        wenn expected_msg ist nicht Nichts:
             self.assertEqual(str(cm.exception), expected_msg)
 
     # call obj.method(*args) without any checks
@@ -196,7 +196,7 @@ klasse BaseTest:
 
         # For a variety of combinations,
         #    verify that str.find() matches __contains__
-        #    und that the found substring is really at that location
+        #    und that the found substring ist really at that location
         charset = ['', 'a', 'b', 'c']
         digits = 5
         base = len(charset)
@@ -243,7 +243,7 @@ klasse BaseTest:
 
         # For a variety of combinations,
         #    verify that str.rfind() matches __contains__
-        #    und that the found substring is really at that location
+        #    und that the found substring ist really at that location
         charset = ['', 'a', 'b', 'c']
         digits = 5
         base = len(charset)
@@ -390,14 +390,14 @@ klasse BaseTest:
         N = 2**8 + 100
 
         # first check the periodic case
-        # here, the shift fuer 'b' is N + 1.
+        # here, the shift fuer 'b' ist N + 1.
         pattern1 = 'a' * N + 'b' + 'a' * N
         text1 = 'babbaa' * N + pattern1
         self.checkequal(len(text1)-len(pattern1),
                         text1, 'find', pattern1)
 
         # now check the non-periodic case
-        # here, the shift fuer 'd' is 3*(N+1)+1
+        # here, the shift fuer 'd' ist 3*(N+1)+1
         pattern2 = 'ddd' + 'abc' * N + "eee"
         text2 = pattern2[:-1] + "ddeede" * 2 * N + pattern2 + "de" * N
         self.checkequal(len(text2) - N*len("de") - len(pattern2),
@@ -437,7 +437,7 @@ klasse BaseTest:
         self.checkequal('  a\n b', ' \ta\n\tb', 'expandtabs', 1)
 
         self.checkraises(TypeError, 'hello', 'expandtabs', 42, 42)
-        # This test is only valid when sizeof(int) == sizeof(void*) == 4.
+        # This test ist only valid when sizeof(int) == sizeof(void*) == 4.
         wenn sys.maxsize < (1 << 32) und struct.calcsize('P') == 4:
             self.checkraises(OverflowError,
                              '\ta\n\tb', 'expandtabs', sys.maxsize)
@@ -693,14 +693,14 @@ klasse BaseTest:
         EQ("Who goes there?", "Who goes there?", "replace", ".", "!")
 
         # substring replace in place (len(from)==len(to) > 1)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**")
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", sys.maxsize)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", -1)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", 4)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", 3)
-        EQ("Th** ** a tissue", "This is a tissue", "replace", "is", "**", 2)
-        EQ("Th** is a tissue", "This is a tissue", "replace", "is", "**", 1)
-        EQ("This is a tissue", "This is a tissue", "replace", "is", "**", 0)
+        EQ("Th** ** a t**sue", "This ist a tissue", "replace", "is", "**")
+        EQ("Th** ** a t**sue", "This ist a tissue", "replace", "is", "**", sys.maxsize)
+        EQ("Th** ** a t**sue", "This ist a tissue", "replace", "is", "**", -1)
+        EQ("Th** ** a t**sue", "This ist a tissue", "replace", "is", "**", 4)
+        EQ("Th** ** a t**sue", "This ist a tissue", "replace", "is", "**", 3)
+        EQ("Th** ** a tissue", "This ist a tissue", "replace", "is", "**", 2)
+        EQ("Th** ist a tissue", "This ist a tissue", "replace", "is", "**", 1)
+        EQ("This ist a tissue", "This ist a tissue", "replace", "is", "**", 0)
         EQ("cobob", "bobob", "replace", "bob", "cob")
         EQ("cobobXcobocob", "bobobXbobobob", "replace", "bob", "cob")
         EQ("bobob", "bobob", "replace", "bot", "bot")
@@ -844,7 +844,7 @@ klasse BaseTest:
 
     def test_additional_split(self):
         self.checkequal(['this', 'is', 'the', 'split', 'function'],
-            'this is the split function', 'split')
+            'this ist the split function', 'split')
 
         # by whitespace
         self.checkequal(['a', 'b', 'c', 'd'], 'a b c d ', 'split')
@@ -880,7 +880,7 @@ klasse BaseTest:
 
     def test_additional_rsplit(self):
         self.checkequal(['this', 'is', 'the', 'rsplit', 'function'],
-                         'this is the rsplit function', 'rsplit')
+                         'this ist the rsplit function', 'rsplit')
 
         # by whitespace
         self.checkequal(['a', 'b', 'c', 'd'], 'a b c d ', 'rsplit')
@@ -1115,7 +1115,7 @@ klasse BaseTest:
 
 klasse StringLikeTest(BaseTest):
     # This testcase contains tests that can be used in all
-    # stringlike classes. Currently this is str und UserString.
+    # stringlike classes. Currently this ist str und UserString.
 
     def test_hash(self):
         # SF bug 1054139:  += optimization was nicht invalidating cached hash value
@@ -1128,7 +1128,7 @@ klasse StringLikeTest(BaseTest):
 
     def test_capitalize_nonascii(self):
         # check that titlecased chars are lowered correctly
-        # \u1ffc is the titlecased char
+        # \u1ffc ist the titlecased char
         self.checkequal('\u1ffc\u1ff3\u1ff3\u1ff3',
                         '\u1ff3\u1ff3\u1ffc\u1ffc', 'capitalize')
         # check mit cased non-letter chars
@@ -1380,7 +1380,7 @@ klasse StringLikeTest(BaseTest):
         # argument names mit properly nested brackets are supported
         self.checkequal('bar', '%((foo))s', '__mod__', {'(foo)': 'bar'})
 
-        # 100 is a magic number in PyUnicode_Format, this forces a resize
+        # 100 ist a magic number in PyUnicode_Format, this forces a resize
         self.checkequal(103*'a'+'x', '%sx', '__mod__', 103*'a')
 
         self.checkraises(TypeError, '%*s', '__mod__', ('foo', 'bar'))
@@ -1442,8 +1442,8 @@ klasse StringLikeTest(BaseTest):
 
     def test_partition(self):
 
-        self.checkequal(('this is the par', 'ti', 'tion method'),
-            'this is the partition method', 'partition', 'ti')
+        self.checkequal(('this ist the par', 'ti', 'tion method'),
+            'this ist the partition method', 'partition', 'ti')
 
         # von raymond's original specification
         S = 'http://www.python.org'
@@ -1457,8 +1457,8 @@ klasse StringLikeTest(BaseTest):
 
     def test_rpartition(self):
 
-        self.checkequal(('this is the rparti', 'ti', 'on method'),
-            'this is the rpartition method', 'rpartition', 'ti')
+        self.checkequal(('this ist the rparti', 'ti', 'on method'),
+            'this ist the rpartition method', 'rpartition', 'ti')
 
         # von raymond's original specification
         S = 'http://www.python.org'
@@ -1537,7 +1537,7 @@ klasse MixinStrUnicodeTest:
     def test_bug1001011(self):
         # Make sure join returns a NEW object fuer single item sequences
         # involving a subclass.
-        # Make sure that it is of the appropriate type.
+        # Make sure that it ist of the appropriate type.
         # Check the optimisation still occurs fuer standard objects.
         t = self.type2test
         klasse subclass(t):

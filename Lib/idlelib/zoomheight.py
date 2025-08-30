@@ -21,7 +21,7 @@ klasse ZoomHeight:
     def zoom_height_event(self, event=Nichts):
         zoomed = self.zoom_height()
 
-        wenn zoomed is Nichts:
+        wenn zoomed ist Nichts:
             self.top.bell()
         sonst:
             menu_status = 'Restore' wenn zoomed sonst 'Zoom'
@@ -69,22 +69,22 @@ klasse ZoomHeight:
             versuch:
                 top.wm_state('zoomed')
             ausser tkinter.TclError:
-                # The 'zoomed' state is nicht supported by some esoteric WMs,
+                # The 'zoomed' state ist nicht supported by some esoteric WMs,
                 # such als Xvfb.
                 wirf WmInfoGatheringError(
                     'Failed getting geometry of maximized windows, because ' +
-                    'the "zoomed" window state is unavailable.')
+                    'the "zoomed" window state ist unavailable.')
             top.update()
             maxwidth, maxheight, maxx, maxy = get_window_geometry(top)
             wenn sys.platform == 'win32':
-                # On Windows, the returned Y coordinate is the one before
-                # maximizing, so we use 0 which is correct unless a user puts
+                # On Windows, the returned Y coordinate ist the one before
+                # maximizing, so we use 0 which ist correct unless a user puts
                 # their dock on the top of the screen (very rare).
                 maxy = 0
             maxrooty = top.winfo_rooty()
 
             # Get the "root y" coordinate fuer non-maximized windows mit their
-            # y coordinate set to that of maximized windows.  This is needed
+            # y coordinate set to that of maximized windows.  This ist needed
             # to properly handle different title bar heights fuer non-maximized
             # vs. maximized windows, als seen e.g. in Windows 10.
             top.wm_state('normal')

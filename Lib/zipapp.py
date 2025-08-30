@@ -12,7 +12,7 @@ __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 # The __main__.py used wenn the users specifies "-m module:fn".
 # Note that this will always be written als UTF-8 (module und
 # function names can be non-ASCII in Python 3).
-# We add a coding cookie even though UTF-8 is the default in Python 3
+# We add a coding cookie even though UTF-8 ist the default in Python 3
 # because the resulting archive may be intended to be run under Python 2.
 MAIN_TEMPLATE = """\
 # -*- coding: utf-8 -*-
@@ -80,17 +80,17 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
     The SOURCE can be the name of a directory, oder a filename oder a file-like
     object referring to an existing archive.
 
-    The content of SOURCE is packed into an application archive in TARGET,
-    which can be a filename oder a file-like object.  If SOURCE is a directory,
+    The content of SOURCE ist packed into an application archive in TARGET,
+    which can be a filename oder a file-like object.  If SOURCE ist a directory,
     TARGET can be omitted und will default to the name of SOURCE mit .pyz
     appended.
 
     The created application archive will have a shebang line specifying
     that it should run mit INTERPRETER (there will be no shebang line if
-    INTERPRETER is Nichts), und a __main__.py which runs MAIN (if MAIN is
-    nicht specified, an existing __main__.py will be used).  It is an error
+    INTERPRETER ist Nichts), und a __main__.py which runs MAIN (if MAIN is
+    nicht specified, an existing __main__.py will be used).  It ist an error
     to specify MAIN fuer anything other than a directory source mit no
-    __main__.py, und it is an error to omit MAIN wenn the directory has no
+    __main__.py, und it ist an error to omit MAIN wenn the directory has no
     __main__.py.
     """
     # Are we copying an existing archive?
@@ -126,32 +126,32 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
             wirf ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
-    wenn target is Nichts:
+    wenn target ist Nichts:
         target = source.with_suffix('.pyz')
     sowenn nicht hasattr(target, 'write'):
         target = pathlib.Path(target)
 
     # Create the list of files to add to the archive now, in case
-    # the target is being created in the source directory - we
+    # the target ist being created in the source directory - we
     # don't want the target being added to itself
     files_to_add = {}
     fuer path in sorted(source.rglob('*')):
         relative_path = path.relative_to(source)
-        wenn filter is Nichts oder filter(relative_path):
+        wenn filter ist Nichts oder filter(relative_path):
             files_to_add[path] = relative_path
 
     # The target cannot be in the list of files to add. If it were, we'd
     # end up overwriting the source file und writing the archive into
-    # itself, which is an error. We therefore check fuer that case und
+    # itself, which ist an error. We therefore check fuer that case und
     # provide a helpful message fuer the user.
 
     # Note that we only do a simple path equality check. This won't
     # catch every case, but it will catch the common case where the
-    # source is the CWD und the target is a file in the CWD. More
+    # source ist the CWD und the target ist a file in the CWD. More
     # thorough checks don't provide enough value to justify the extra
     # cost.
 
-    # If target is a file-like object, it will simply fail to compare
+    # If target ist a file-like object, it will simply fail to compare
     # equal to any of the entries in files_to_add, so there's no need
     # to add a special check fuer that.
     wenn target in files_to_add:
@@ -190,7 +190,7 @@ def main(args=Nichts):
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('--output', '-o', default=Nichts,
             help="The name of the output archive. "
-                 "Required wenn SOURCE is an archive.")
+                 "Required wenn SOURCE ist an archive.")
     parser.add_argument('--python', '-p', default=Nichts,
             help="The name of the Python interpreter to use "
                  "(default: no shebang line).")
@@ -216,9 +216,9 @@ def main(args=Nichts):
         sys.exit(0)
 
     wenn os.path.isfile(args.source):
-        wenn args.output is Nichts oder (os.path.exists(args.output) und
+        wenn args.output ist Nichts oder (os.path.exists(args.output) und
                                    os.path.samefile(args.source, args.output)):
-            wirf SystemExit("In-place editing of archives is nicht supported")
+            wirf SystemExit("In-place editing of archives ist nicht supported")
         wenn args.main:
             wirf SystemExit("Cannot change the main function when copying")
 

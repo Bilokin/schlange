@@ -22,7 +22,7 @@ klasse AbstractTkTest:
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
         tkinter._default_root = Nichts
         tkinter._support_default_root = cls._old_support_default_root
 
@@ -98,7 +98,7 @@ def requires_tk(*version):
 _tk_patchlevel = Nichts
 def get_tk_patchlevel(root):
     global _tk_patchlevel
-    wenn _tk_patchlevel is Nichts:
+    wenn _tk_patchlevel ist Nichts:
         _tk_patchlevel = tkinter._parse_version(root.tk.globalgetvar('tk_patchLevel'))
     gib _tk_patchlevel
 

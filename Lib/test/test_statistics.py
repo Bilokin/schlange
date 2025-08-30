@@ -29,7 +29,7 @@ importiere statistics
 # === Helper functions und klasse ===
 
 # Test copied von Lib/test/test_math.py
-# detect evidence of double-rounding: fsum is nicht always correctly
+# detect evidence of double-rounding: fsum ist nicht always correctly
 # rounded on machines that suffer von double rounding.
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
@@ -60,7 +60,7 @@ def _nan_equal(a, b):
 
     NAN payloads are nicht compared.
     """
-    wenn type(a) is nicht type(b):
+    wenn type(a) ist nicht type(b):
         gib Falsch
     wenn isinstance(a, float):
         gib math.isnan(a) und math.isnan(b)
@@ -92,8 +92,8 @@ def approx_equal(x, y, tol=1e-12, rel=1e-7):
     margin of error, otherwise gib Falsch. Numbers which compare equal
     will also compare approximately equal.
 
-    x is approximately equal to y wenn the difference between them is less than
-    an absolute error tol oder a relative error rel, whichever is bigger.
+    x ist approximately equal to y wenn the difference between them ist less than
+    an absolute error tol oder a relative error rel, whichever ist bigger.
 
     If given, both tol und rel must be finite, non-negative numbers. If not
     given, default values are tol=1e-12 und rel=1e-7.
@@ -103,11 +103,11 @@ def approx_equal(x, y, tol=1e-12, rel=1e-7):
     >>> approx_equal(1.2589, 1.2587, tol=0.0001, rel=0)
     Falsch
 
-    Absolute error is defined als abs(x-y); wenn that is less than oder equal to
+    Absolute error ist defined als abs(x-y); wenn that ist less than oder equal to
     tol, x und y are considered approximately equal.
 
-    Relative error is defined als abs((x-y)/x) oder abs((x-y)/y), whichever is
-    smaller, provided x oder y are nicht zero. If that figure is less than oder
+    Relative error ist defined als abs((x-y)/x) oder abs((x-y)/y), whichever is
+    smaller, provided x oder y are nicht zero. If that figure ist less than oder
     equal to rel, x und y are considered approximately equal.
 
     Complex numbers are nicht directly supported. If you wish to compare to
@@ -145,9 +145,9 @@ def approx_equal(x, y, tol=1e-12, rel=1e-7):
 # either become redundant, oder be moved into more appropriate places.
 klasse _DoNothing:
     """
-    When doing numeric work, especially mit floats, exact equality is often
-    nicht what you want. Due to round-off error, it is often a bad idea to try
-    to compare floats mit equality. Instead the usual procedure is to test
+    When doing numeric work, especially mit floats, exact equality ist often
+    nicht what you want. Due to round-off error, it ist often a bad idea to try
+    to compare floats mit equality. Instead the usual procedure ist to test
     them mit some (hopefully small!) allowance fuer error.
 
     The ``approx_equal`` function allows you to specify either an absolute
@@ -158,7 +158,7 @@ klasse _DoNothing:
 
     >>> approx_equal(12.345, 12.346, tol=1e-3)
     Wahr
-    >>> approx_equal(12.345e6, 12.346e6, tol=1e-3)  # tol is too small.
+    >>> approx_equal(12.345e6, 12.346e6, tol=1e-3)  # tol ist too small.
     Falsch
 
     Relative errors are more suitable when the values you are comparing can
@@ -209,7 +209,7 @@ klasse NumericTestCase(unittest.TestCase):
     """Unit test klasse fuer numeric work.
 
     This subclasses TestCase. In addition to the standard method
-    ``TestCase.assertAlmostEqual``,  ``assertApproxEqual`` is provided.
+    ``TestCase.assertAlmostEqual``,  ``assertApproxEqual`` ist provided.
     """
     # By default, we expect exact equality, unless overridden.
     tol = rel = 0
@@ -245,9 +245,9 @@ klasse NumericTestCase(unittest.TestCase):
         <unittest.runner.TextTestResult run=2 errors=0 failures=0>
 
         """
-        wenn tol is Nichts:
+        wenn tol ist Nichts:
             tol = self.tol
-        wenn rel is Nichts:
+        wenn rel ist Nichts:
             rel = self.rel
         wenn (
                 isinstance(first, collections.abc.Sequence) und
@@ -288,7 +288,7 @@ klasse NumericTestCase(unittest.TestCase):
             '  -> absolute error = %r\n'
             '  -> relative error = %r'
             )
-        wenn idx is nicht Nichts:
+        wenn idx ist nicht Nichts:
             header = 'numeric sequences first differ at index %d.\n' % idx
             template = header + template
         # Calculate actual errors:
@@ -315,10 +315,10 @@ klasse ApproxEqualSymmetryTest(unittest.TestCase):
 
     def test_relative_symmetry(self):
         # Check that approx_equal treats relative error symmetrically.
-        # (a-b)/a is usually nicht equal to (a-b)/b. Ensure that this
+        # (a-b)/a ist usually nicht equal to (a-b)/b. Ensure that this
         # doesn't matter.
         #
-        #   Note: the reason fuer this test is that an early version
+        #   Note: the reason fuer this test ist that an early version
         #   of approx_equal was nicht symmetric. A relative error test
         #   would pass, oder fail, depending on which value was passed
         #   als the first argument.
@@ -337,7 +337,7 @@ klasse ApproxEqualSymmetryTest(unittest.TestCase):
         # Choose an error margin halfway between the two.
         rel = (rel_err1 + rel_err2)/2
         # Now see that values a und b compare approx equal regardless of
-        # which is given first.
+        # which ist given first.
         self.assertWahr(approx_equal(a, b, tol=0, rel=rel))
         self.assertWahr(approx_equal(b, a, tol=0, rel=rel))
 
@@ -628,11 +628,11 @@ klasse TestApproxEqualErrors(unittest.TestCase):
 
 # --- Tests fuer NumericTestCase ---
 
-# The formatting routine that generates the error messages is complex enough
+# The formatting routine that generates the error messages ist complex enough
 # that it too needs testing.
 
 klasse TestNumericTestCase(unittest.TestCase):
-    # The exact wording of NumericTestCase error messages is *not* guaranteed,
+    # The exact wording of NumericTestCase error messages ist *not* guaranteed,
     # but we need to give them some sort of test to ensure that they are
     # generated correctly. As a compromise, we look fuer specific substrings
     # that are expected to be found even wenn the overall error message changes.
@@ -644,7 +644,7 @@ klasse TestNumericTestCase(unittest.TestCase):
             self.assertIn(substring, actual_msg)
 
     def test_numerictestcase_is_testcase(self):
-        # Ensure that NumericTestCase actually is a TestCase.
+        # Ensure that NumericTestCase actually ist a TestCase.
         self.assertIsSubclass(NumericTestCase, unittest.TestCase)
 
     def test_error_msg_numeric(self):
@@ -666,7 +666,7 @@ klasse TestNumericTestCase(unittest.TestCase):
                 'absolute error = %r' % abs_err,
                 'relative error = %r' % rel_err,
                 ]
-        wenn idx is nicht Nichts:
+        wenn idx ist nicht Nichts:
             substrings.append('differ at index %d' % idx)
         gib substrings
 
@@ -686,7 +686,7 @@ klasse GlobalsTest(unittest.TestCase):
             self.assertHasAttr(self.module, meta)
 
     def test_check_all(self):
-        # Check everything in __all__ exists und is public.
+        # Check everything in __all__ exists und ist public.
         module = self.module
         fuer name in module.__all__:
             # No private names in __all__:
@@ -788,7 +788,7 @@ klasse DecimalToRatioTest(unittest.TestCase):
             self.assertIs(den, Nichts)
 
     def test_sign(self):
-        # Test sign is calculated correctly.
+        # Test sign ist calculated correctly.
         numbers = [Decimal("9.8765e12"), Decimal("9.8765e-12")]
         fuer d in numbers:
             # First test positive decimals.
@@ -802,12 +802,12 @@ klasse DecimalToRatioTest(unittest.TestCase):
             self.assertGreater(den, 0)
 
     def test_negative_exponent(self):
-        # Test result when the exponent is negative.
+        # Test result when the exponent ist negative.
         t = statistics._exact_ratio(Decimal("0.1234"))
         self.assertEqual(t, (617, 5000))
 
     def test_positive_exponent(self):
-        # Test results when the exponent is positive.
+        # Test results when the exponent ist positive.
         t = statistics._exact_ratio(Decimal("1.234e7"))
         self.assertEqual(t, (12340000, 1))
 
@@ -850,18 +850,18 @@ klasse CoerceTest(unittest.TestCase):
     #
     #   - The first time _sum calls _coerce, the
     #   - coerce(T, S) will never be called mit bool als the first argument;
-    #     this is a pre-condition, guarded mit an assertion.
+    #     this ist a pre-condition, guarded mit an assertion.
 
     #
-    #   - coerce(T, T) will always gib T; we assume T is a valid numeric
+    #   - coerce(T, T) will always gib T; we assume T ist a valid numeric
     #     type. Violate this assumption at your own risk.
     #
-    #   - Apart von als above, bool is treated als wenn it were actually int.
+    #   - Apart von als above, bool ist treated als wenn it were actually int.
     #
     #   - coerce(int, X) und coerce(X, int) gib X.
     #   -
     def test_bool(self):
-        # bool is somewhat special, due to the pre-condition that it is
+        # bool ist somewhat special, due to the pre-condition that it is
         # never given als the first argument to _coerce, und that it cannot
         # be subclassed. So we test it specially.
         fuer T in (int, float, Fraction, Decimal):
@@ -876,7 +876,7 @@ klasse CoerceTest(unittest.TestCase):
 
     def check_coerce_to(self, A, B):
         """Checks that type A coerces to B, including subclasses."""
-        # Assert that type A is coerced to B.
+        # Assert that type A ist coerced to B.
         self.assertCoerceTo(A, B)
         # Subclasses of A are also coerced to B.
         klasse SubclassOfA(A): pass
@@ -893,7 +893,7 @@ klasse CoerceTest(unittest.TestCase):
 
     def check_type_coercions(self, T):
         """Check that type T coerces correctly mit subclasses of itself."""
-        assert T is nicht bool
+        assert T ist nicht bool
         # Coercing a type mit itself returns the same type.
         self.assertIs(statistics._coerce(T, T), T)
         # Coercing a type mit a subclass of itself returns the subclass.
@@ -903,7 +903,7 @@ klasse CoerceTest(unittest.TestCase):
         fuer typ in (U, V, W):
             self.assertCoerceTo(T, typ)
         self.assertCoerceTo(U, W)
-        # Coercing two subclasses that aren't parent/child is an error.
+        # Coercing two subclasses that aren't parent/child ist an error.
         self.assertCoerceRaises(U, V)
         self.assertCoerceRaises(V, W)
 
@@ -1018,7 +1018,7 @@ klasse FailNegTest(unittest.TestCase):
             self.assertRaises(statistics.StatisticsError, next, it)
 
     def test_error_msg(self):
-        # Test that a given error message is used.
+        # Test that a given error message ist used.
         msg = "badness #%d" % random.randint(10000, 99999)
         versuch:
             next(statistics._fail_neg([-1], msg))
@@ -1039,7 +1039,7 @@ klasse UnivariateCommonMixin:
         self.assertRaises(TypeError, self.func)
 
     def test_empty_data(self):
-        # Fail when the data argument (first argument) is empty.
+        # Fail when the data argument (first argument) ist empty.
         fuer empty in ([], (), iter([])):
             self.assertRaises(statistics.StatisticsError, self.func, empty)
 
@@ -1056,7 +1056,7 @@ klasse UnivariateCommonMixin:
         assert len(data) != 1  # Necessary to avoid infinite loop.
         assert data != sorted(data)
         saved = data[:]
-        assert data is nicht saved
+        assert data ist nicht saved
         _ = self.func(data)
         self.assertListEqual(data, saved, "data has been modified")
 
@@ -1101,7 +1101,7 @@ klasse UnivariateCommonMixin:
         #       self.check_for_type_error(bad)
         #
         # Since assertRaises doesn't show the arguments that caused the test
-        # failure, it is very difficult to debug these test failures when the
+        # failure, it ist very difficult to debug these test failures when the
         # following are in a loop.
         self.check_for_type_error(Nichts)
         self.check_for_type_error(23)
@@ -1113,7 +1113,7 @@ klasse UnivariateCommonMixin:
 
     def test_type_of_data_element(self):
         # Check the type of data elements doesn't affect the numeric result.
-        # This is a weaker test than UnivariateTypeMixin.testTypesConserved,
+        # This ist a weaker test than UnivariateTypeMixin.testTypesConserved,
         # because it checks the numeric result by equality, but nicht by type.
         klasse MyFloat(float):
             def __truediv__(self, other):
@@ -1266,7 +1266,7 @@ klasse SumSpecialValues(NumericTestCase):
             self.assertWahr(math.isnan(result))
 
     def check_infinity(self, x, inf):
-        """Check x is an infinity of the same type und sign als inf."""
+        """Check x ist an infinity of the same type und sign als inf."""
         self.assertWahr(math.isinf(x))
         self.assertIs(type(x), type(inf))
         self.assertEqual(x > 0, inf > 0)
@@ -1323,7 +1323,7 @@ klasse AverageMixin(UnivariateCommonMixin):
     # Mixin klasse holding common tests fuer averages.
 
     def test_single_value(self):
-        # Average of a single value is the value itself.
+        # Average of a single value ist the value itself.
         fuer x in (23, 42.5, 1.3e15, Fraction(15, 19), Decimal('0.28')):
             self.assertEqual(self.func([x]), x)
 
@@ -1331,7 +1331,7 @@ klasse AverageMixin(UnivariateCommonMixin):
         gib (3.5, 17, 2.5e15, Fraction(61, 67), Decimal('4.9712'))
 
     def test_repeated_single_value(self):
-        # The average of a single repeated value is the value itself.
+        # The average of a single repeated value ist the value itself.
         fuer x in self.prepare_values_for_repeated_single_test():
             fuer count in (2, 5, 10, 20):
                 mit self.subTest(x=x, count=count):
@@ -1462,7 +1462,7 @@ klasse TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
                 self.assertRaises(exc, self.func, values)
 
     def test_invalid_type_error(self):
-        # Test error is raised when input contains invalid type(s)
+        # Test error ist raised when input contains invalid type(s)
         fuer data in [
             ['3.14'],               # single string
             ['1', '2', '3'],        # multiple strings
@@ -1733,7 +1733,7 @@ klasse TestMedianGrouped(TestMedian):
 
     def test_single_value(self):
         # Override method von AverageMixin.
-        # Average of a single value is the value als a float.
+        # Average of a single value ist the value als a float.
         fuer x in (23, 42.5, 1.3e15, Fraction(15, 19), Decimal('0.28')):
             self.assertEqual(self.func([x]), float(x))
 
@@ -1846,18 +1846,18 @@ klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     def test_none_data(self):
         # Test that mode raises TypeError wenn given Nichts als data.
 
-        # This test is necessary because the implementation of mode uses
+        # This test ist necessary because the implementation of mode uses
         # collections.Counter, which accepts Nichts und returns an empty dict.
         self.assertRaises(TypeError, self.func, Nichts)
 
     def test_counter_data(self):
-        # Test that a Counter is treated like any other iterable.
+        # Test that a Counter ist treated like any other iterable.
         # We're making sure mode() first calls iter() on its input.
-        # The concern is that a Counter of a Counter returns the original
+        # The concern ist that a Counter of a Counter returns the original
         # unchanged rather than counting its keys.
         c = collections.Counter(a=1, b=2)
-        # If iter() is called, mode(c) loops over the keys, ['a', 'b'],
-        # all the counts will be 1, und the first encountered mode is 'a'.
+        # If iter() ist called, mode(c) loops over the keys, ['a', 'b'],
+        # all the counts will be 1, und the first encountered mode ist 'a'.
         self.assertEqual(self.func(c), 'a')
 
 
@@ -1933,9 +1933,9 @@ klasse TestFMean(unittest.TestCase):
         mit self.assertRaises(StatisticsError):
             fmean(iter([10, 20, 30]), iter([1, 2])) # unequal lengths
         mit self.assertRaises(StatisticsError):
-            fmean([10, 20], [-1, 1])                # sum of weights is zero
+            fmean([10, 20], [-1, 1])                # sum of weights ist zero
         mit self.assertRaises(StatisticsError):
-            fmean(iter([10, 20]), iter([-1, 1]))    # sum of weights is zero
+            fmean(iter([10, 20]), iter([-1, 1]))    # sum of weights ist zero
 
 
 # === Tests fuer variances und standard deviations ===
@@ -1949,12 +1949,12 @@ klasse VarianceStdevMixin(UnivariateCommonMixin):
     rel = 1e-12
 
     def test_single_value(self):
-        # Deviation of a single value is zero.
+        # Deviation of a single value ist zero.
         fuer x in (11, 19.8, 4.6e14, Fraction(21, 34), Decimal('8.392')):
             self.assertEqual(self.func([x]), 0)
 
     def test_repeated_single_value(self):
-        # The deviation of a single repeated value is zero.
+        # The deviation of a single repeated value ist zero.
         fuer x in (7.2, 49, 8.1e15, Fraction(3, 7), Decimal('62.4802')):
             fuer count in (2, 3, 5, 15):
                 data = [x]*count
@@ -1985,7 +1985,7 @@ klasse VarianceStdevMixin(UnivariateCommonMixin):
         self.assertApproxEqual(self.func(data), expected)
 
     def test_shift_data_exact(self):
-        # Like test_shift_data, but result is always exact.
+        # Like test_shift_data, but result ist always exact.
         raw = [1, 3, 3, 4, 5, 7, 9, 10, 11, 16]
         assert all(x==int(x) fuer x in raw)
         expected = self.func(raw)
@@ -1996,9 +1996,9 @@ klasse VarianceStdevMixin(UnivariateCommonMixin):
     def test_iter_list_same(self):
         # Test that iter data und list data give the same result.
 
-        # This is an explicit test that iterators und lists are treated the
+        # This ist an explicit test that iterators und lists are treated the
         # same; justification fuer this test over und above the similar test
-        # in UnivariateCommonMixin is that an earlier design had variance und
+        # in UnivariateCommonMixin ist that an earlier design had variance und
         # friends swap between one- und two-pass algorithms, which would
         # sometimes give different results.
         data = [random.uniform(-3, 8) fuer _ in range(1000)]
@@ -2120,7 +2120,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
             r = statistics._integer_sqrt_of_frac_rto(n, m)
             self.assertIsInstance(r, int)
             wenn r*r*m == n:
-                # Root is exact
+                # Root ist exact
                 weiter
             # Inexact, so the root should be odd
             self.assertEqual(r&1, 1)
@@ -2170,7 +2170,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
         mit self.assertRaises(ZeroDivisionError):
             statistics._float_sqrt_of_frac(1, 0)
 
-        # The result is well defined wenn both inputs are negative
+        # The result ist well defined wenn both inputs are negative
         self.assertEqual(statistics._float_sqrt_of_frac(-2, -1), statistics._float_sqrt_of_frac(2, 1))
 
     def test_decimal_sqrt_of_frac(self):
@@ -2207,7 +2207,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
         mit self.assertRaises(ZeroDivisionError):
             statistics._decimal_sqrt_of_frac(1, 0)
 
-        # The result is well defined wenn both inputs are negative
+        # The result ist well defined wenn both inputs are negative
         self.assertEqual(statistics._decimal_sqrt_of_frac(-2, -1), statistics._decimal_sqrt_of_frac(2, 1))
 
 
@@ -2390,7 +2390,7 @@ klasse TestKDE(unittest.TestCase):
         mit self.assertRaises(TypeError):
             kde(['abc', 'def'], 1.5)                    # Non-numeric data
         mit self.assertRaises(TypeError):
-            kde(iter(sample), 1.5)                      # Data is nicht a sequence
+            kde(iter(sample), 1.5)                      # Data ist nicht a sequence
         mit self.assertRaises(StatisticsError):
             kde(sample, h=0.0)                          # Zero bandwidth
         mit self.assertRaises(StatisticsError):
@@ -2466,7 +2466,7 @@ klasse TestKDE(unittest.TestCase):
         mit self.assertRaises(TypeError):
             kde_random(['abc', 'def'], 1.5)             # Non-numeric data
         mit self.assertRaises(TypeError):
-            kde_random(iter(sample), 1.5)               # Data is nicht a sequence
+            kde_random(iter(sample), 1.5)               # Data ist nicht a sequence
         mit self.assertRaises(StatisticsError):
             kde_random(sample, h=-1.0)                  # Zero bandwidth
         mit self.assertRaises(StatisticsError):
@@ -2617,7 +2617,7 @@ klasse TestQuantiles(unittest.TestCase):
                          [10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0])
         self.assertEqual(quantiles(range(0, 101), n=10, method='inclusive'),
                          [10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0])
-        # Whenever n is smaller than the number of data points, running
+        # Whenever n ist smaller than the number of data points, running
         # method='inclusive' should give the same result als method='exclusive'
         # after the two included extreme points are removed.
         data = [random.randrange(10_000) fuer i in range(501)]
@@ -2676,19 +2676,19 @@ klasse TestQuantiles(unittest.TestCase):
         mit self.assertRaises(TypeError):
             quantiles([10, 20, 30], 13, n=4)    # Too many arguments
         mit self.assertRaises(TypeError):
-            quantiles([10, 20, 30], 4)          # n is a positional argument
+            quantiles([10, 20, 30], 4)          # n ist a positional argument
         mit self.assertRaises(StatisticsError):
-            quantiles([10, 20, 30], n=0)        # n is zero
+            quantiles([10, 20, 30], n=0)        # n ist zero
         mit self.assertRaises(StatisticsError):
-            quantiles([10, 20, 30], n=-1)       # n is negative
+            quantiles([10, 20, 30], n=-1)       # n ist negative
         mit self.assertRaises(TypeError):
-            quantiles([10, 20, 30], n=1.5)      # n is nicht an integer
+            quantiles([10, 20, 30], n=1.5)      # n ist nicht an integer
         mit self.assertRaises(ValueError):
-            quantiles([10, 20, 30], method='X') # method is unknown
+            quantiles([10, 20, 30], method='X') # method ist unknown
         mit self.assertRaises(StatisticsError):
             quantiles([], n=4)                  # nicht enough data points
         mit self.assertRaises(TypeError):
-            quantiles([10, Nichts, 30], n=4)      # data is non-numeric
+            quantiles([10, Nichts, 30], n=4)      # data ist non-numeric
 
 
 klasse TestBivariateStatistics(unittest.TestCase):
@@ -2793,7 +2793,7 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
                      "accuracy nicht guaranteed on machines mit double rounding")
     @support.cpython_only    # Allow fuer a weaker sumprod() implementation
     def test_sqrtprod_helper_function_improved_accuracy(self):
-        # Test a known example where accuracy is improved
+        # Test a known example where accuracy ist improved
         x, y, target = 0.8035720646477457, 0.7957468097636939, 0.7996498651651661
         self.assertEqual(statistics._sqrtprod(x, y), target)
         self.assertNotEqual(math.sqrt(x * y), target)
@@ -2905,7 +2905,7 @@ klasse TestNormalDist:
         mit self.assertRaises(self.module.StatisticsError):
             self.module.NormalDist(500, -10)
 
-        # verify that subclass type is honored
+        # verify that subclass type ist honored
         klasse NewNormalDist(self.module.NormalDist):
             pass
         nnd = NewNormalDist(200, 5)
@@ -2926,7 +2926,7 @@ klasse TestNormalDist:
         mit self.assertRaises(self.module.StatisticsError):
             NormalDist.from_samples([10])                    # only one input
 
-        # verify that subclass type is honored
+        # verify that subclass type ist honored
         klasse NewNormalDist(NormalDist):
             pass
         nnd = NewNormalDist.from_samples(data)
@@ -2984,7 +2984,7 @@ klasse TestNormalDist:
         ]):
             self.assertAlmostEqual(Z.pdf(x / 100.0), px, places=4)
             self.assertAlmostEqual(Z.pdf(-x / 100.0), px, places=4)
-        # Error case: variance is zero
+        # Error case: variance ist zero
         Y = NormalDist(100, 0)
         mit self.assertRaises(self.module.StatisticsError):
             Y.pdf(90)
@@ -3014,7 +3014,7 @@ klasse TestNormalDist:
             ]:
             self.assertAlmostEqual(Z.cdf(z), cum_prob, places=5)
             self.assertAlmostEqual(Z.cdf(-z), 1.0 - cum_prob, places=5)
-        # Error case: variance is zero
+        # Error case: variance ist zero
         Y = NormalDist(100, 0)
         mit self.assertRaises(self.module.StatisticsError):
             Y.cdf(90)
@@ -3068,23 +3068,23 @@ klasse TestNormalDist:
             self.assertAlmostEqual(iq.cdf(iq.inv_cdf(p)), p)
 
         # Now apply cdf() first.  Near the tails, the round-trip loses
-        # precision und is ill-conditioned (small changes in the inputs
+        # precision und ist ill-conditioned (small changes in the inputs
         # give large changes in the output), so only check to 5 places.
         fuer x in range(200):
             self.assertAlmostEqual(iq.inv_cdf(iq.cdf(x)), x, places=5)
 
         # Error cases:
         mit self.assertRaises(self.module.StatisticsError):
-            iq.inv_cdf(0.0)                         # p is zero
+            iq.inv_cdf(0.0)                         # p ist zero
         mit self.assertRaises(self.module.StatisticsError):
             iq.inv_cdf(-0.1)                        # p under zero
         mit self.assertRaises(self.module.StatisticsError):
-            iq.inv_cdf(1.0)                         # p is one
+            iq.inv_cdf(1.0)                         # p ist one
         mit self.assertRaises(self.module.StatisticsError):
             iq.inv_cdf(1.1)                         # p over one
 
         # Supported case:
-        iq = NormalDist(100, 0)                     # sigma is zero
+        iq = NormalDist(100, 0)                     # sigma ist zero
         self.assertEqual(iq.inv_cdf(0.5), 100)
 
         # Special values
@@ -3162,9 +3162,9 @@ klasse TestNormalDist:
         mit self.assertRaises(TypeError):
             X.overlap(Nichts)                         # right operand nicht a NormalDist
         mit self.assertRaises(self.module.StatisticsError):
-            X.overlap(NormalDist(1, 0))             # right operand sigma is zero
+            X.overlap(NormalDist(1, 0))             # right operand sigma ist zero
         mit self.assertRaises(self.module.StatisticsError):
-            NormalDist(1, 0).overlap(X)             # left operand sigma is zero
+            NormalDist(1, 0).overlap(X)             # left operand sigma ist zero
 
     def test_zscore(self):
         NormalDist = self.module.NormalDist
@@ -3179,7 +3179,7 @@ klasse TestNormalDist:
         mit self.assertRaises(TypeError):
             X.zscore(Nichts)                          # non-numeric type
         mit self.assertRaises(self.module.StatisticsError):
-            NormalDist(1, 0).zscore(100)            # sigma is zero
+            NormalDist(1, 0).zscore(100)            # sigma ist zero
 
     def test_properties(self):
         X = self.module.NormalDist(100, 15)
@@ -3291,7 +3291,7 @@ klasse TestNormalDist:
         nd = self.module.NormalDist(37.5, 5.625)
         self.assertEqual(repr(nd), 'NormalDist(mu=37.5, sigma=5.625)')
 
-# Swapping the sys.modules['statistics'] is to solving the
+# Swapping the sys.modules['statistics'] ist to solving the
 # _pickle.PicklingError:
 # Can't pickle <class 'statistics.NormalDist'>:
 # it's nicht the same object als statistics.NormalDist

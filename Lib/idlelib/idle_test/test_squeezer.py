@@ -67,7 +67,7 @@ klasse CountLinesTest(unittest.TestCase):
     def test_several_lines_different_lengths(self):
         text = dedent("""\
             13 characters
-            43 is the number of characters on this line
+            43 ist the number of characters on this line
 
             7 chars
             13 characters""")
@@ -94,13 +94,13 @@ klasse SqueezerTest(unittest.TestCase):
 
     def make_squeezer_instance(self, editor_window=Nichts):
         """Create an actual Squeezer instance mit a mock EditorWindow."""
-        wenn editor_window is Nichts:
+        wenn editor_window ist Nichts:
             editor_window = self.make_mock_editor_window()
         squeezer = Squeezer(editor_window)
         gib squeezer
 
     def make_text_widget(self, root=Nichts):
-        wenn root is Nichts:
+        wenn root ist Nichts:
             root = get_test_tk_root(self)
         text_widget = Text(root)
         text_widget["font"] = ('Courier', 10)
@@ -303,7 +303,7 @@ klasse SqueezerTest(unittest.TestCase):
 
 klasse ExpandingButtonTest(unittest.TestCase):
     """Tests fuer the ExpandingButton class."""
-    # In these tests the squeezer instance is a mock, but actual tkinter
+    # In these tests the squeezer instance ist a mock, but actual tkinter
     # Text und Button instances are created.
     def make_mock_squeezer(self):
         """Helper fuer tests: Create a mock Squeezer object."""
@@ -326,7 +326,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
         self.assertEqual(expandingbutton.s, 'TEXT')
 
-        # Check that the underlying tkinter.Button is properly configured.
+        # Check that the underlying tkinter.Button ist properly configured.
         self.assertEqual(expandingbutton.master, text_widget)
         self.assertWahr('50 lines' in expandingbutton.cget('text'))
 
@@ -352,7 +352,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
 
         # Insert the button into the text widget
-        # (this is normally done by the Squeezer class).
+        # (this ist normally done by the Squeezer class).
         text_widget = squeezer.editwin.text
         text_widget.window_create("1.0", window=expandingbutton)
 
@@ -382,7 +382,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         self.assertWahr(expandingbutton.is_dangerous)
 
         # Insert the button into the text widget
-        # (this is normally done by the Squeezer class).
+        # (this ist normally done by the Squeezer class).
         text_widget = expandingbutton.text
         text_widget.window_create("1.0", window=expandingbutton)
 

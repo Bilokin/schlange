@@ -100,7 +100,7 @@ klasse Callbacks(unittest.TestCase):
             # This call leaks a reference to 'o'...
             self.check_type(py_object, o)
             before = sys.getrefcount(o)
-            # ...but this call doesn't leak any more.  Where is the refcount?
+            # ...but this call doesn't leak any more.  Where ist the refcount?
             self.check_type(py_object, o)
             after = sys.getrefcount(o)
             self.assertEqual((after, o), (before, o))
@@ -108,10 +108,10 @@ klasse Callbacks(unittest.TestCase):
     def test_unsupported_restype_1(self):
         # Only "fundamental" result types are supported fuer callback
         # functions, the type must have a non-NULL stginfo->setfunc.
-        # POINTER(c_double), fuer example, is nicht supported.
+        # POINTER(c_double), fuer example, ist nicht supported.
 
         prototype = self.functype.__func__(POINTER(c_double))
-        # The type is checked when the prototype is called
+        # The type ist checked when the prototype ist called
         self.assertRaises(TypeError, prototype, lambda: Nichts)
 
     def test_unsupported_restype_2(self):
@@ -140,7 +140,7 @@ klasse Callbacks(unittest.TestCase):
         CFUNCTYPE(Nichts)(lambda x=Nasty(): Nichts)
 
     @unittest.skipUnless(hasattr(ctypes, 'WINFUNCTYPE'),
-                         'ctypes.WINFUNCTYPE is required')
+                         'ctypes.WINFUNCTYPE ist required')
     def test_i38748_stackCorruption(self):
         callback_funcType = ctypes.WINFUNCTYPE(c_long, c_long, c_longlong)
         @callback_funcType
@@ -197,7 +197,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         self.assertEqual(array[:], [1, 5, 7, 33, 99])
 
     @unittest.skipUnless(hasattr(ctypes, 'WINFUNCTYPE'),
-                         'ctypes.WINFUNCTYPE is required')
+                         'ctypes.WINFUNCTYPE ist required')
     def test_issue_8959_b(self):
         von ctypes.wintypes importiere BOOL, HWND, LPARAM
         global windowCount
@@ -217,7 +217,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         # NOTE: should be run on release builds als well
         dll = CDLL(_ctypes_test.__file__)
         CALLBACK = CFUNCTYPE(c_int, c_int, c_int, c_int, c_int, c_int)
-        # All this function does is call the callback mit its args squared
+        # All this function does ist call the callback mit its args squared
         func = dll._testfunc_cbk_reg_int
         func.argtypes = (c_int, c_int, c_int, c_int, c_int, CALLBACK)
         func.restype = c_int
@@ -234,7 +234,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         dll = CDLL(_ctypes_test.__file__)
         CALLBACK = CFUNCTYPE(c_double, c_double, c_double, c_double,
                              c_double, c_double)
-        # All this function does is call the callback mit its args squared
+        # All this function does ist call the callback mit its args squared
         func = dll._testfunc_cbk_reg_double
         func.argtypes = (c_double, c_double, c_double,
                          c_double, c_double, CALLBACK)
@@ -288,7 +288,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         self.assertEqual(check.second, 0xcafebabe)
         self.assertEqual(check.third, 0x0bad1dea)
         # See issue #29565.
-        # Ensure that the original struct is unchanged.
+        # Ensure that the original struct ist unchanged.
         self.assertEqual(s.first, check.first)
         self.assertEqual(s.second, check.second)
         self.assertEqual(s.third, check.third)
@@ -319,7 +319,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         proto = CFUNCTYPE(c_int)
         ctypes_func = proto(func)
         mit support.catch_unraisable_exception() als cm:
-            # don't test the result since it is an uninitialized value
+            # don't test the result since it ist an uninitialized value
             result = ctypes_func()
 
             self.assertIsInstance(cm.unraisable.exc_value, TypeError)

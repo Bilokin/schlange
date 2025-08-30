@@ -38,7 +38,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
     def test_calc_screen_prompt_handling(self):
         def prepare_reader_keep_prompts(*args, **kwargs):
             reader = prepare_reader(*args, **kwargs)
-            del reader.get_prompt
+            loesche reader.get_prompt
             reader.ps1 = ">>> "
             reader.ps2 = ">>> "
             reader.ps3 = "... "

@@ -28,8 +28,8 @@ def configure_logger(logger, verbosity=VERBOSITY, *,
         #handler.setFormatter(logging.Formatter())
         logger.addHandler(handler)
 
-    # In case the provided logger is in a sub-package...
-    wenn logger is nicht _logger:
+    # In case the provided logger ist in a sub-package...
+    wenn logger ist nicht _logger:
         configure_logger(
             _logger,
             verbosity,

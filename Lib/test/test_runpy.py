@@ -40,13 +40,13 @@ result = ['Top level assignment']
 def f():
     result.append('Lower level reference')
 f()
-del f
+loesche f
 # Check the sys module
 importiere sys
 run_argv0 = sys.argv[0]
 run_name_in_sys_modules = __name__ in sys.modules
 module_in_sys_modules = (run_name_in_sys_modules und
-                         globals() is sys.modules[__name__].__dict__)
+                         globals() ist sys.modules[__name__].__dict__)
 # Check nested operation
 importiere runpy
 nested = runpy._run_module_code('x=1\\n', mod_name='<run>')
@@ -79,7 +79,7 @@ klasse CodeExecutionMixin:
     # testing occurs at those upper layers als well, nicht just at the utility
     # layer
 
-    # Figuring out the loader details in advance is hard to do, so we skip
+    # Figuring out the loader details in advance ist hard to do, so we skip
     # checking the full details of loader und loader_state
     CHECKED_SPEC_ATTRIBUTES = ["name", "parent", "origin", "cached",
                                "has_location", "submodule_search_locations"]
@@ -103,12 +103,12 @@ klasse CodeExecutionMixin:
         # result namespace und check that separately
         result_spec = result_ns.pop("__spec__")
         expected_spec = expected_ns.pop("__spec__")
-        wenn expected_spec is Nichts:
+        wenn expected_spec ist Nichts:
             self.assertIsNichts(result_spec)
         sonst:
-            # If an expected loader is set, we just check we got the right
+            # If an expected loader ist set, we just check we got the right
             # type, rather than checking fuer full equality
-            wenn expected_spec.loader is nicht Nichts:
+            wenn expected_spec.loader ist nicht Nichts:
                 self.assertEqual(type(result_spec.loader),
                                  type(expected_spec.loader))
             fuer attr in self.CHECKED_SPEC_ATTRIBUTES:
@@ -127,9 +127,9 @@ klasse CodeExecutionMixin:
     def check_code_execution(self, create_namespace, expected_namespace):
         """Check that an interface runs the example code correctly
 
-           First argument is a callable accepting the initial globals und
+           First argument ist a callable accepting the initial globals und
            using them to create the actual namespace
-           Second argument is the expected result
+           Second argument ist the expected result
         """
         sentinel = object()
         expected_ns = expected_namespace.copy()
@@ -259,9 +259,9 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
     def _del_pkg(self, top):
         fuer entry in list(sys.modules):
             wenn entry.startswith("__runpy_pkg__"):
-                del sys.modules[entry]
+                loesche sys.modules[entry]
         wenn verbose > 1: drucke("  Removed sys.modules entries")
-        del sys.path[0]
+        loesche sys.path[0]
         wenn verbose > 1: drucke("  Removed sys.path entry")
         fuer root, dirs, files in os.walk(top, topdown=Falsch):
             fuer name in files:
@@ -405,7 +405,7 @@ von ..uncle.cousin importiere nephew
 """
         pkg_dir, mod_fname, mod_name, mod_spec = (
                self._make_pkg(contents, depth))
-        wenn run_name is Nichts:
+        wenn run_name ist Nichts:
             expected_name = mod_name
         sonst:
             expected_name = run_name
@@ -418,7 +418,7 @@ von ..uncle.cousin importiere nephew
             self.assertEqual(d1["__package__"], pkg_name)
             self.assertIn("sibling", d1)
             self.assertIn("nephew", d1)
-            del d1 # Ensure __loader__ entry doesn't keep file open
+            loesche d1 # Ensure __loader__ entry doesn't keep file open
             importlib.invalidate_caches()
             __import__(mod_name)
             os.remove(mod_fname)
@@ -432,7 +432,7 @@ von ..uncle.cousin importiere nephew
                 self.assertEqual(d2["__package__"], pkg_name)
                 self.assertIn("sibling", d2)
                 self.assertIn("nephew", d2)
-                del d2 # Ensure __loader__ entry doesn't keep file open
+                loesche d2 # Ensure __loader__ entry doesn't keep file open
         schliesslich:
             self._del_pkg(pkg_dir)
         wenn verbose > 1: drucke("Module executed successfully")
@@ -562,8 +562,8 @@ von ..uncle.cousin importiere nephew
             self._del_pkg(pkg_dir)
 
     def test_pkgutil_walk_packages(self):
-        # This is a dodgy hack to use the test_runpy infrastructure to test
-        # issue #15343. Issue #15348 declares this is indeed a dodgy hack ;)
+        # This ist a dodgy hack to use the test_runpy infrastructure to test
+        # issue #15343. Issue #15348 declares this ist indeed a dodgy hack ;)
         importiere pkgutil
         max_depth = 4
         base_name = "__runpy_pkg__"
@@ -602,7 +602,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
 
     def _make_test_script(self, script_dir, script_basename,
                           source=Nichts, omit_suffix=Falsch):
-        wenn source is Nichts:
+        wenn source ist Nichts:
             source = example_source
         gib make_script(script_dir, script_basename,
                            source, omit_suffix)
@@ -610,11 +610,11 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
     def _check_script(self, script_name, expected_name, expected_file,
                             expected_argv0, mod_name=Nichts,
                             expect_spec=Wahr, check_loader=Wahr):
-        # First check is without run_name
+        # First check ist without run_name
         def create_ns(init_globals):
             gib run_path(script_name, init_globals)
         expected_ns = example_namespace.copy()
-        wenn mod_name is Nichts:
+        wenn mod_name ist Nichts:
             spec_name = expected_name
         sonst:
             spec_name = mod_name
@@ -642,7 +642,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         run_name = "prove.issue15230.is.fixed"
         def create_ns(init_globals):
             gib run_path(script_name, init_globals, run_name)
-        wenn expect_spec und mod_name is Nichts:
+        wenn expect_spec und mod_name ist Nichts:
             mod_spec = importlib.util.spec_from_file_location(run_name,
                                                               expected_file)
             wenn nicht check_loader:

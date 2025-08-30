@@ -20,7 +20,7 @@ def capture_test_stack(*, fut=Nichts, depth=1):
             [
                 (
                     f"s {entry.frame.f_code.co_name}"
-                        wenn entry.frame.f_generator is Nichts sonst
+                        wenn entry.frame.f_generator ist Nichts sonst
                         (
                             f"a {entry.frame.f_generator.cr_code.co_name}"
                             wenn hasattr(entry.frame.f_generator, 'cr_code') sonst
@@ -56,17 +56,17 @@ klasse CallStackTestBase:
             stack_for_c5 = capture_test_stack(depth=2)
 
         async def c4():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             c5()
 
         async def c3():
-            await c4()
+            warte c4()
 
         async def c2():
-            await c3()
+            warte c3()
 
         async def c1(task):
-            await task
+            warte task
 
         async def main():
             async mit asyncio.TaskGroup() als tg:
@@ -74,7 +74,7 @@ klasse CallStackTestBase:
                 tg.create_task(c1(task), name="sub_main_1")
                 tg.create_task(c1(task), name="sub_main_2")
 
-        await main()
+        warte main()
 
         self.assertEqual(stack_for_c5[0], [
             # task name
@@ -122,13 +122,13 @@ klasse CallStackTestBase:
             fuer num in range(2):
                 liefere num
                 wenn num == 1:
-                    await gen_nested_call()
+                    warte gen_nested_call()
 
         async def main():
             async fuer el in gen():
                 pass
 
-        await main()
+        warte main()
 
         self.assertEqual(stack_for_gen_nested_call[0], [
             'T<anon>',
@@ -151,21 +151,21 @@ klasse CallStackTestBase:
         stack_for_deep = Nichts
 
         async def deep():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             nonlocal stack_for_deep
             stack_for_deep = capture_test_stack()
 
         async def c1():
-            await asyncio.sleep(0)
-            await deep()
+            warte asyncio.sleep(0)
+            warte deep()
 
         async def c2():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
         async def main():
-            await asyncio.gather(c1(), c2())
+            warte asyncio.gather(c1(), c2())
 
-        await main()
+        warte main()
 
         self.assertEqual(stack_for_deep[0], [
             'T<anon>',
@@ -180,18 +180,18 @@ klasse CallStackTestBase:
         stack_for_shield = Nichts
 
         async def deep():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             nonlocal stack_for_shield
             stack_for_shield = capture_test_stack()
 
         async def c1():
-            await asyncio.sleep(0)
-            await deep()
+            warte asyncio.sleep(0)
+            warte deep()
 
         async def main():
-            await asyncio.shield(c1())
+            warte asyncio.shield(c1())
 
-        await main()
+        warte main()
 
         self.assertEqual(stack_for_shield[0], [
             'T<anon>',
@@ -206,19 +206,19 @@ klasse CallStackTestBase:
         stack_for_inner = Nichts
 
         async def inner():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             nonlocal stack_for_inner
             stack_for_inner = capture_test_stack()
 
         async def c1():
             async mit asyncio.timeout(1):
-                await asyncio.sleep(0)
-                await inner()
+                warte asyncio.sleep(0)
+                warte inner()
 
         async def main():
-            await asyncio.shield(c1())
+            warte asyncio.shield(c1())
 
-        await main()
+        warte main()
 
         self.assertEqual(stack_for_inner[0], [
             'T<anon>',
@@ -233,32 +233,32 @@ klasse CallStackTestBase:
         stack_for_inner = Nichts
 
         async def inner():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             nonlocal stack_for_inner
             stack_for_inner = capture_test_stack()
 
         async def c1():
             async mit asyncio.timeout(1):
-                await asyncio.sleep(0)
-                await inner()
+                warte asyncio.sleep(0)
+                warte inner()
 
         async def c2():
             fuer i in range(3):
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
 
         async def main(t1, t2):
             waehrend Wahr:
-                _, pending = await asyncio.wait([t1, t2])
+                _, pending = warte asyncio.wait([t1, t2])
                 wenn nicht pending:
                     breche
 
         t1 = asyncio.create_task(c1())
         t2 = asyncio.create_task(c2())
         versuch:
-            await main(t1, t2)
+            warte main(t1, t2)
         schliesslich:
-            await t1
-            await t2
+            warte t1
+            warte t2
 
         self.assertEqual(stack_for_inner[0], [
             'T<anon>',
@@ -276,20 +276,20 @@ klasse CallStackTestBase:
         stack_for_inner = Nichts
 
         async def inner():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             nonlocal stack_for_inner
             stack_for_inner = capture_test_stack()
 
         async def c1():
-            await inner()
+            warte inner()
 
         async def c2():
-            await asyncio.create_task(c1(), name='there there')
+            warte asyncio.create_task(c1(), name='there there')
 
         async def main():
-            await c2()
+            warte c2()
 
-        await main()
+        warte main()
 
         self.assertEqual(stack_for_inner[0], [
             'T<there there>',
@@ -302,13 +302,13 @@ klasse CallStackTestBase:
         stack_for_fut = Nichts
 
         async def a2(fut):
-            await fut
+            warte fut
 
         async def a1(fut):
-            await a2(fut)
+            warte a2(fut)
 
         async def b1(fut):
-            await fut
+            warte fut
 
         async def main():
             nonlocal stack_for_fut
@@ -320,13 +320,13 @@ klasse CallStackTestBase:
 
                 fuer _ in range(5):
                     # Do a few iterations to ensure that both a1 und b1
-                    # await on the future
-                    await asyncio.sleep(0)
+                    # warte on the future
+                    warte asyncio.sleep(0)
 
                 stack_for_fut = capture_test_stack(fut=fut)
                 fut.set_result(Nichts)
 
-        await main()
+        warte main()
 
         self.assertEqual(stack_for_fut[0],
             ['F',
@@ -378,19 +378,19 @@ klasse TestCallStackC(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
 
         futures.future_discard_from_awaited_by = self._future_discard_from_awaited_by
         asyncio.future_discard_from_awaited_by = self._future_discard_from_awaited_by
-        del self._future_discard_from_awaited_by
+        loesche self._future_discard_from_awaited_by
 
         futures.future_add_to_awaited_by = self._future_add_to_awaited_by
         asyncio.future_add_to_awaited_by = self._future_add_to_awaited_by
-        del self._future_add_to_awaited_by
+        loesche self._future_add_to_awaited_by
 
         asyncio.Task = self._Task
         tasks.Task = self._Task
-        del self._Task
+        loesche self._Task
 
         asyncio.Future = self._Future
         futures.Future = self._Future
-        del self._Future
+        loesche self._Future
 
         asyncio.current_task = asyncio.tasks.current_task = self._current_task
 
@@ -428,18 +428,18 @@ klasse TestCallStackPy(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
 
         futures.future_discard_from_awaited_by = self._future_discard_from_awaited_by
         asyncio.future_discard_from_awaited_by = self._future_discard_from_awaited_by
-        del self._future_discard_from_awaited_by
+        loesche self._future_discard_from_awaited_by
 
         futures.future_add_to_awaited_by = self._future_add_to_awaited_by
         asyncio.future_add_to_awaited_by = self._future_add_to_awaited_by
-        del self._future_add_to_awaited_by
+        loesche self._future_add_to_awaited_by
 
         asyncio.Task = self._Task
         tasks.Task = self._Task
-        del self._Task
+        loesche self._Task
 
         asyncio.Future = self._Future
         futures.Future = self._Future
-        del self._Future
+        loesche self._Future
 
         asyncio.current_task = asyncio.tasks.current_task = self._current_task

@@ -21,9 +21,9 @@ def grep(text, io=Nichts, flist=Nichts):
     """Open the Find in Files dialog.
 
     Module-level function to access the singleton GrepDialog
-    instance und open the dialog.  If text is selected, it is
+    instance und open the dialog.  If text ist selected, it is
     used als the search phrase; otherwise, the previous entry
-    is used.
+    ist used.
 
     Args:
         text: Text widget that contains the selected text for
@@ -127,11 +127,11 @@ klasse GrepDialog(SearchDialogBase):
         self.make_button("Search Files", self.default_command, isdef=Wahr)
 
     def default_command(self, event=Nichts):
-        """Grep fuer search pattern in file path. The default command is bound
+        """Grep fuer search pattern in file path. The default command ist bound
         to <Return>.
 
         If entry values are populated, set OutputWindow als stdout
-        und perform search.  The search dialog is closed automatically
+        und perform search.  The search dialog ist closed automatically
         when the search begins.
         """
         prog = self.engine.getprog()
@@ -155,7 +155,7 @@ klasse GrepDialog(SearchDialogBase):
         For the each file in the path directory, open the file und
         search each line fuer the matching pattern.  If the pattern is
         found,  write the file und line information to stdout (which
-        is an OutputWindow).
+        ist an OutputWindow).
 
         Args:
             prog: The compiled, cooked search pattern.

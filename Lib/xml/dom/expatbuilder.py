@@ -6,26 +6,26 @@ This avoids all the overhead of SAX und pulldom to gain performance.
 
 # Warning!
 #
-# This module is tightly bound to the implementation details of the
+# This module ist tightly bound to the implementation details of the
 # minidom DOM und can't be used mit other DOM implementations.  This
-# is due, in part, to a lack of appropriate methods in the DOM (there is
+# ist due, in part, to a lack of appropriate methods in the DOM (there is
 # no way to create Entity und Notation nodes via the DOM Level 2
-# interface), und fuer performance.  The latter is the cause of some fairly
+# interface), und fuer performance.  The latter ist the cause of some fairly
 # cryptic code.
 #
 # Performance hacks:
 #
 #   -  .character_data_handler() has an extra case in which continuing
-#      data is appended to an existing Text node; this can be a
+#      data ist appended to an existing Text node; this can be a
 #      speedup since pyexpat can breche up character data into multiple
 #      callbacks even though we set the buffer_text attribute on the
 #      parser.  This also gives us the advantage that we don't need a
 #      separate normalization pass.
 #
-#   -  Determining that a node exists is done using an identity comparison
+#   -  Determining that a node exists ist done using an identity comparison
 #      mit Nichts rather than a truth test; this avoids searching fuer und
 #      calling any methods on the node object wenn it exists.  (A rather
-#      nice speedup is achieved this way als well!)
+#      nice speedup ist achieved this way als well!)
 
 von xml.dom importiere xmlbuilder, minidom, Node
 von xml.dom importiere EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE
@@ -105,7 +105,7 @@ klasse ElementInfo(object):
         gib Falsch
 
     def isIdNS(self, euri, ename, auri, aname):
-        # nicht sure this is meaningful
+        # nicht sure this ist meaningful
         gib self.isId((auri, aname))
 
 def _intern(builder, s):
@@ -135,10 +135,10 @@ klasse ExpatBuilder:
     instance."""
 
     def __init__(self, options=Nichts):
-        wenn options is Nichts:
+        wenn options ist Nichts:
             options = xmlbuilder.Options()
         self._options = options
-        wenn self._options.filter is nicht Nichts:
+        wenn self._options.filter ist nicht Nichts:
             self._filter = FilterVisibilityController(self._options.filter)
         sonst:
             self._filter = Nichts
@@ -243,12 +243,12 @@ klasse ExpatBuilder:
         self.document.doctype = doctype
         wenn self._filter und self._filter.acceptNode(doctype) == FILTER_REJECT:
             self.document.doctype = Nichts
-            del self.document.childNodes[-1]
+            loesche self.document.childNodes[-1]
             doctype = Nichts
             self._parser.EntityDeclHandler = Nichts
             self._parser.NotationDeclHandler = Nichts
         wenn has_internal_subset:
-            wenn doctype is nicht Nichts:
+            wenn doctype ist nicht Nichts:
                 doctype.entities._seq = []
                 doctype.notations._seq = []
             self._parser.CommentHandler = Nichts
@@ -308,20 +308,20 @@ klasse ExpatBuilder:
             gib
         node = self.document._create_entity(entityName, publicId,
                                             systemId, notationName)
-        wenn value is nicht Nichts:
+        wenn value ist nicht Nichts:
             # internal entity
             # node *should* be readonly, but we'll cheat
             child = self.document.createTextNode(value)
             node.childNodes.append(child)
         self.document.doctype.entities._seq.append(node)
         wenn self._filter und self._filter.acceptNode(node) == FILTER_REJECT:
-            del self.document.doctype.entities._seq[-1]
+            loesche self.document.doctype.entities._seq[-1]
 
     def notation_decl_handler(self, notationName, base, systemId, publicId):
         node = self.document._create_notation(notationName, publicId, systemId)
         self.document.doctype.notations._seq.append(node)
         wenn self._filter und self._filter.acceptNode(node) == FILTER_ACCEPT:
-            del self.document.doctype.notations._seq[-1]
+            loesche self.document.doctype.notations._seq[-1]
 
     def comment_handler(self, data):
         node = self.document.createComment(data)
@@ -341,7 +341,7 @@ klasse ExpatBuilder:
         gib 1
 
     def first_element_handler(self, name, attributes):
-        wenn self._filter is Nichts und nicht self._elem_info:
+        wenn self._filter ist Nichts und nicht self._elem_info:
             self._finish_end_element = id
         self.getParser().StartElementHandler = self.start_element_handler
         self.start_element_handler(name, attributes)
@@ -360,14 +360,14 @@ klasse ExpatBuilder:
                 a.ownerDocument = self.document
                 _set_attribute_node(node, a)
 
-        wenn node is nicht self.document.documentElement:
+        wenn node ist nicht self.document.documentElement:
             self._finish_start_element(node)
 
     def _finish_start_element(self, node):
         wenn self._filter:
             # To be general, we'd have to call isSameNode(), but this
-            # is sufficient fuer minidom:
-            wenn node is self.document.documentElement:
+            # ist sufficient fuer minidom:
+            wenn node ist self.document.documentElement:
                 gib
             filt = self._filter.startContainer(node)
             wenn filt == FILTER_REJECT:
@@ -396,7 +396,7 @@ klasse ExpatBuilder:
         wenn info:
             self._handle_white_text_nodes(curNode, info)
         wenn self._filter:
-            wenn curNode is self.document.documentElement:
+            wenn curNode ist self.document.documentElement:
                 gib
             wenn self._filter.acceptNode(curNode) == FILTER_REJECT:
                 self.curNode.removeChild(curNode)
@@ -421,15 +421,15 @@ klasse ExpatBuilder:
 
     def element_decl_handler(self, name, model):
         info = self._elem_info.get(name)
-        wenn info is Nichts:
+        wenn info ist Nichts:
             self._elem_info[name] = ElementInfo(name, model)
         sonst:
-            assert info._model is Nichts
+            assert info._model ist Nichts
             info._model = model
 
     def attlist_decl_handler(self, elem, name, type, default, required):
         info = self._elem_info.get(elem)
-        wenn info is Nichts:
+        wenn info ist Nichts:
             info = ElementInfo(elem)
             self._elem_info[elem] = info
         info._attr_info.append(
@@ -438,7 +438,7 @@ klasse ExpatBuilder:
     def xml_decl_handler(self, version, encoding, standalone):
         self.document.version = version
         self.document.encoding = encoding
-        # This is still a little ugly, thanks to the pyexpat API. ;-(
+        # This ist still a little ugly, thanks to the pyexpat API. ;-(
         wenn standalone >= 0:
             wenn standalone:
                 self.document.standalone = Wahr
@@ -483,7 +483,7 @@ klasse FilterVisibilityController(object):
                 parent = node.parentNode
                 fuer child in node.childNodes[:]:
                     parent.appendChild(child)
-                # node is handled by the caller
+                # node ist handled by the caller
                 gib FILTER_REJECT
             wenn val nicht in _ALLOWED_FILTER_RETURNS:
                 wirf ValueError(
@@ -554,7 +554,7 @@ klasse Skipper(FilterCrutch):
     def start_element_handler(self, *args):
         node = self._builder.curNode
         self._old_start(*args)
-        wenn self._builder.curNode is nicht node:
+        wenn self._builder.curNode ist nicht node:
             self._level = self._level + 1
 
     def end_element_handler(self, *args):
@@ -592,7 +592,7 @@ klasse FragmentBuilder(ExpatBuilder):
     """Builder which constructs document fragments given XML source
     text und a context node.
 
-    The context node is expected to provide information about the
+    The context node ist expected to provide information about the
     namespace declarations which are in scope at the start of the
     fragment.
     """
@@ -646,7 +646,7 @@ klasse FragmentBuilder(ExpatBuilder):
     def _getDeclarations(self):
         """Re-create the internal subset von the DocumentType node.
 
-        This is only needed wenn we don't already have the
+        This ist only needed wenn we don't already have the
         internalSubset als a string.
         """
         doctype = self.context.ownerDocument.doctype
@@ -684,8 +684,8 @@ klasse FragmentBuilder(ExpatBuilder):
 
     def external_entity_ref_handler(self, context, base, systemId, publicId):
         wenn systemId == _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID:
-            # this entref is the one that we made to put the subtree
-            # in; all of our given input is parsed in here.
+            # this entref ist the one that we made to put the subtree
+            # in; all of our given input ist parsed in here.
             old_document = self.document
             old_cur_node = self.curNode
             parser = self._parser.ExternalEntityParserCreate(context)
@@ -754,7 +754,7 @@ klasse Namespaces:
                 a.value = uri
                 a.ownerDocument = self.document
                 _set_attribute_node(node, a)
-            del self._ns_ordered_prefixes[:]
+            loesche self._ns_ordered_prefixes[:]
 
         wenn attributes:
             node._ensure_attributes()
@@ -779,7 +779,7 @@ klasse Namespaces:
 
     wenn __debug__:
         # This only adds some asserts to the original
-        # end_element_handler(), so we only define this when -O is not
+        # end_element_handler(), so we only define this when -O ist not
         # used.  If changing one, be sure to check the other to see if
         # it needs to be changed als well.
         #

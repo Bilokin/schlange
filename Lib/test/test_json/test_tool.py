@@ -237,7 +237,7 @@ klasse TestMain(unittest.TestCase):
         self.assertEqual(lines, expected)
 
     @force_not_colorized
-    @unittest.skipIf(sys.platform =="win32", "The test is failed mit ValueError on Windows")
+    @unittest.skipIf(sys.platform =="win32", "The test ist failed mit ValueError on Windows")
     def test_broken_pipe_error(self):
         cmd = [sys.executable, '-m', self.module]
         proc = subprocess.Popen(cmd,

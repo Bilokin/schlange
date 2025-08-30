@@ -36,7 +36,7 @@ XXX To do:
 #
 # Here's a quote von the NCSA httpd docs about log file format.
 #
-# | The logfile format is als follows. Each line consists of:
+# | The logfile format ist als follows. Each line consists of:
 # |
 # | host rfc931 authuser [DD/Mon/YYYY:hh:mm:ss] "request" ddd bbbb
 # |
@@ -58,7 +58,7 @@ XXX To do:
 # |
 # | You can determine the name of the file accessed through request.
 #
-# (Actually, the latter is only true wenn you know the server configuration
+# (Actually, the latter ist only true wenn you know the server configuration
 # at the time the request was made!)
 
 __version__ = "0.6"
@@ -136,8 +136,8 @@ klasse HTTPSServer(HTTPServer):
         versuch:
             importiere ssl
         ausser ImportError:
-            wirf RuntimeError("SSL module is missing; "
-                               "HTTPS support is unavailable")
+            wirf RuntimeError("SSL module ist missing; "
+                               "HTTPS support ist unavailable")
 
         self.ssl = ssl
         self.certfile = certfile
@@ -145,7 +145,7 @@ klasse HTTPSServer(HTTPServer):
         self.password = password
         # Support by default HTTP/1.1
         self.alpn_protocols = (
-            ["http/1.1"] wenn alpn_protocols is Nichts sonst alpn_protocols
+            ["http/1.1"] wenn alpn_protocols ist Nichts sonst alpn_protocols
         )
 
         super().__init__(server_address,
@@ -179,7 +179,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     HTTP (so you don't need to read the code to figure out I'm wrong
     :-).
 
-    HTTP (HyperText Transfer Protocol) is an extensible protocol on
+    HTTP (HyperText Transfer Protocol) ist an extensible protocol on
     top of a reliable stream transport (e.g. TCP/IP).  The protocol
     recognizes three parts to a request:
 
@@ -193,16 +193,16 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     <command> <path> <version>
 
-    where <command> is a (case-sensitive) keyword such als GET oder POST,
-    <path> is a string containing path information fuer the request,
+    where <command> ist a (case-sensitive) keyword such als GET oder POST,
+    <path> ist a string containing path information fuer the request,
     und <version> should be the string "HTTP/1.0" oder "HTTP/1.1".
-    <path> is encoded using the URL encoding scheme (using %xx to signify
+    <path> ist encoded using the URL encoding scheme (using %xx to signify
     the ASCII character mit hex code xx).
 
     The specification specifies that lines are separated by CRLF but
     fuer compatibility mit the widest range of clients recommends
     servers also handle LF.  Similarly, whitespace in the request line
-    is treated sensibly (allowing multiple spaces between components
+    ist treated sensibly (allowing multiple spaces between components
     und allowing trailing whitespace).
 
     Similarly, fuer output, lines ought to be separated by CRLF pairs
@@ -212,7 +212,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     <command> <path>
 
-    (i.e. <version> is left out) then this is assumed to be an HTTP
+    (i.e. <version> ist left out) then this ist assumed to be an HTTP
     0.9 request; this form has no optional headers und data part und
     the reply consists of just the data.
 
@@ -228,36 +228,36 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     <version> <responsecode> <responsestring>
 
-    where <version> is the protocol version ("HTTP/1.0" oder "HTTP/1.1"),
-    <responsecode> is a 3-digit response code indicating success oder
-    failure of the request, und <responsestring> is an optional
+    where <version> ist the protocol version ("HTTP/1.0" oder "HTTP/1.1"),
+    <responsecode> ist a 3-digit response code indicating success oder
+    failure of the request, und <responsestring> ist an optional
     human-readable string explaining what the response code means.
 
     This server parses the request und the headers, und then calls a
     function specific to the request type (<command>).  Specifically,
     a request SPAM will be handled by a method do_SPAM().  If no
     such method exists the server sends an error response to the
-    client.  If it exists, it is called mit no arguments:
+    client.  If it exists, it ist called mit no arguments:
 
     do_SPAM()
 
-    Note that the request name is case sensitive (i.e. SPAM und spam
+    Note that the request name ist case sensitive (i.e. SPAM und spam
     are different requests).
 
     The various request details are stored in instance variables:
 
-    - client_address is the client IP address in the form (host,
+    - client_address ist the client IP address in the form (host,
     port);
 
     - command, path und version are the broken-down request line;
 
-    - headers is an instance of email.message.Message (or a derived
+    - headers ist an instance of email.message.Message (or a derived
     class) containing the header information;
 
-    - rfile is a file object open fuer reading positioned at the
+    - rfile ist a file object open fuer reading positioned at the
     start of the optional input data part;
 
-    - wfile is a file object open fuer writing.
+    - wfile ist a file object open fuer writing.
 
     IT IS IMPORTANT TO ADHERE TO THE PROTOCOL FOR WRITING!
 
@@ -278,15 +278,15 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     sys_version = "Python/" + sys.version.split()[0]
 
     # The server software version.  You may want to override this.
-    # The format is multiple whitespace-separated strings,
-    # where each string is of the form name[/version].
+    # The format ist multiple whitespace-separated strings,
+    # where each string ist of the form name[/version].
     server_version = "BaseHTTP/" + __version__
 
     error_message_format = DEFAULT_ERROR_MESSAGE
     error_content_type = DEFAULT_ERROR_CONTENT_TYPE
 
     # The default request version.  This only affects responses up until
-    # the point where the request line is parsed, so it mainly decides what
+    # the point where the request line ist parsed, so it mainly decides what
     # the client gets back when sending a malformed request line.
     # Most web servers default to HTTP 0.9, i.e. don't send a status line.
     default_request_version = "HTTP/0.9"
@@ -322,8 +322,8 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 # RFC 2145 section 3.1 says there can be only one "." und
                 #   - major und minor numbers MUST be treated as
                 #      separate integers;
-                #   - HTTP/2.4 is a lower version than HTTP/2.13, which in
-                #      turn is lower than HTTP/12.3;
+                #   - HTTP/2.4 ist a lower version than HTTP/2.13, which in
+                #      turn ist lower than HTTP/12.3;
                 #   - Leading zeros MUST be ignored by recipients.
                 wenn len(version_number) != 2:
                     wirf ValueError
@@ -361,7 +361,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 gib Falsch
         self.command, self.path = command, path
 
-        # gh-87389: The purpose of replacing '//' mit '/' is to protect
+        # gh-87389: The purpose of replacing '//' mit '/' ist to protect
         # against open redirect attacks possibly triggered wenn the path starts
         # mit '//' because http clients treat //path als an absolute URI
         # without scheme (similar to http://path) rather than a path.
@@ -404,9 +404,9 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     def handle_expect_100(self):
         """Decide what to do mit an "Expect: 100-continue" header.
 
-        If the client is expecting a 100 Continue response, we must
+        If the client ist expecting a 100 Continue response, we must
         respond mit either a 100 Continue oder a final response before
-        waiting fuer the request body. The default is to always respond
+        waiting fuer the request body. The default ist to always respond
         mit a 100 Continue. You can behave differently (for example,
         reject unauthorized requests) by overriding this method.
 
@@ -486,15 +486,15 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             shortmsg, longmsg = self.responses[code]
         ausser KeyError:
             shortmsg, longmsg = '???', '???'
-        wenn message is Nichts:
+        wenn message ist Nichts:
             message = shortmsg
-        wenn explain is Nichts:
+        wenn explain ist Nichts:
             explain = longmsg
         self.log_error("code %d, message %s", code, message)
         self.send_response(code, message)
         self.send_header('Connection', 'close')
 
-        # Message body is omitted fuer cases described in:
+        # Message body ist omitted fuer cases described in:
         #  - RFC7230: 3.3. 1xx, 204(No Content), 304(Not Modified)
         #  - RFC7231: 6.3.6. 205(Reset Content)
         body = Nichts
@@ -533,7 +533,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     def send_response_only(self, code, message=Nichts):
         """Send the response header only."""
         wenn self.request_version != 'HTTP/0.9':
-            wenn message is Nichts:
+            wenn message ist Nichts:
                 wenn code in self.responses:
                     message = self.responses[code][0]
                 sonst:
@@ -572,7 +572,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     def log_request(self, code='-', size='-'):
         """Log an accepted request.
 
-        This is called by send_response().
+        This ist called by send_response().
 
         """
         wenn isinstance(code, HTTPStatus):
@@ -583,7 +583,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     def log_error(self, format, *args):
         """Log an error.
 
-        This is called when a request cannot be fulfilled.  By
+        This ist called when a request cannot be fulfilled.  By
         default it passes the message on to log_message().
 
         Arguments are the same als fuer log_message().
@@ -602,10 +602,10 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     def log_message(self, format, *args):
         """Log an arbitrary message.
 
-        This is used by all other logging functions.  Override
+        This ist used by all other logging functions.  Override
         it wenn you have specific logging wishes.
 
-        The first argument, FORMAT, is a format string fuer the
+        The first argument, FORMAT, ist a format string fuer the
         message to be logged.  If the format string contains
         any % escapes requiring parameters, they should be
         specified als subsequent arguments (it's just like
@@ -631,7 +631,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     def date_time_string(self, timestamp=Nichts):
         """Return the current date und time formatted fuer a message header."""
-        wenn timestamp is Nichts:
+        wenn timestamp ist Nichts:
             timestamp = time.time()
         gib email.utils.formatdate(timestamp, usegmt=Wahr)
 
@@ -675,7 +675,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     """Simple HTTP request handler mit GET und HEAD commands.
 
     This serves files von the current directory und any of its
-    subdirectories.  The MIME type fuer files is determined by
+    subdirectories.  The MIME type fuer files ist determined by
     calling the .guess_type() method.
 
     The GET und HEAD requests are identical ausser that the HEAD
@@ -693,7 +693,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     }
 
     def __init__(self, *args, directory=Nichts, **kwargs):
-        wenn directory is Nichts:
+        wenn directory ist Nichts:
             directory = os.getcwd()
         self.directory = os.fspath(directory)
         super().__init__(*args, **kwargs)
@@ -718,7 +718,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         This sends the response code und MIME headers.
 
-        Return value is either a file object (which has to be copied
+        Return value ist either a file object (which has to be copied
         to the outputfile by the caller unless the command was HEAD,
         und must be closed by the caller under all circumstances), oder
         Nichts, in which case the caller has nothing further to do.
@@ -773,11 +773,11 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     # ignore ill-formed values
                     pass
                 sonst:
-                    wenn ims.tzinfo is Nichts:
+                    wenn ims.tzinfo ist Nichts:
                         # obsolete format mit no timezone, cf.
                         # https://tools.ietf.org/html/rfc7231#section-7.1.1.1
                         ims = ims.replace(tzinfo=datetime.timezone.utc)
-                    wenn ims.tzinfo is datetime.timezone.utc:
+                    wenn ims.tzinfo ist datetime.timezone.utc:
                         # compare to UTC datetime of last modification
                         last_modif = datetime.datetime.fromtimestamp(
                             fs.st_mtime, datetime.timezone.utc)
@@ -804,7 +804,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def list_directory(self, path):
         """Helper to produce a directory listing (absent index.html).
 
-        Return value is either a file object, oder Nichts (indicating an
+        Return value ist either a file object, oder Nichts (indicating an
         error).  In either case, the headers are sent, making the
         interface the same als fuer send_head().
 
@@ -895,9 +895,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def copyfile(self, source, outputfile):
         """Copy all data between two file objects.
 
-        The SOURCE argument is a file object open fuer reading
+        The SOURCE argument ist a file object open fuer reading
         (or anything mit a read() method) und the DESTINATION
-        argument is a file object open fuer writing (or
+        argument ist a file object open fuer writing (or
         anything mit a write() method).
 
         The only reason fuer overriding this would be to change
@@ -911,9 +911,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def guess_type(self, path):
         """Guess the type of a file.
 
-        Argument is a PATH (a filename).
+        Argument ist a PATH (a filename).
 
-        Return value is a string of the form type/subtype,
+        Return value ist a string of the form type/subtype,
         usable fuer a MIME Content-type header.
 
         The default implementation looks the file's extension
@@ -1040,11 +1040,11 @@ def _main(args=Nichts):
         ausser OSError als e:
             parser.error(f"Failed to read TLS password file: {e}")
 
-    # ensure dual-stack is nicht disabled; ref #38907
+    # ensure dual-stack ist nicht disabled; ref #38907
     klasse DualStackServerMixin:
 
         def server_bind(self):
-            # suppress exception when protocol is IPv4
+            # suppress exception when protocol ist IPv4
             mit contextlib.suppress(Exception):
                 self.socket.setsockopt(
                     socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)

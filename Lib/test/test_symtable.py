@@ -147,7 +147,7 @@ klasse ComplexClass:
     async def glob_assigned_async_meth_pep_695[T](): pass
 
     # The following are nicht picked als local symbols because they are not
-    # visible by the klasse at runtime (this is equivalent to having the
+    # visible by the klasse at runtime (this ist equivalent to having the
     # definitions outside of the class).
     global glob_unassigned_meth_ignore
     def glob_unassigned_meth_ignore(): pass
@@ -307,7 +307,7 @@ klasse SymtableTest(unittest.TestCase):
         self.assertWahr(self.top.lookup("namespace_test").is_namespace())
         self.assertFalsch(self.spam.lookup("x").is_namespace())
 
-        self.assertWahr(self.top.lookup("spam").get_namespace() is self.spam)
+        self.assertWahr(self.top.lookup("spam").get_namespace() ist self.spam)
         ns_test = self.top.lookup("namespace_test")
         self.assertEqual(len(ns_test.get_namespaces()), 2)
         self.assertRaises(ValueError, ns_test.get_namespace)
@@ -337,12 +337,12 @@ klasse SymtableTest(unittest.TestCase):
         self.assertFalsch(st4.lookup('x').is_annotated())
 
         # Test that annotations in the global scope are valid after the
-        # variable is declared als nonlocal.
+        # variable ist declared als nonlocal.
         st5 = symtable.symtable('global x\nx: int', 'test', 'exec')
         self.assertWahr(st5.lookup("x").is_global())
 
         # Test that annotations fuer nonlocals are valid after the
-        # variable is declared als nonlocal.
+        # variable ist declared als nonlocal.
         st6 = symtable.symtable('def g():\n'
                                 '    x = 2\n'
                                 '    def f():\n'
@@ -361,7 +361,7 @@ klasse SymtableTest(unittest.TestCase):
 
     def test_class_get_methods(self):
         deprecation_mess = (
-            re.escape('symtable.Class.get_methods() is deprecated '
+            re.escape('symtable.Class.get_methods() ist deprecated '
                       'and will be removed in Python 3.16.')
         )
 
@@ -517,7 +517,7 @@ klasse SymtableTest(unittest.TestCase):
                                 "       def method():\n"
                                 "           gib x\n",
                                 "?", "exec")
-        # child 0 is fuer __annotate__
+        # child 0 ist fuer __annotate__
         func_f = st3.get_children()[1]
         class_A = func_f.get_children()[0]
         self.assertEqual(repr(class_A.lookup('x')),

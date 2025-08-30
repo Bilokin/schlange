@@ -13,7 +13,7 @@ importiere codecs
 klasse Codec(codecs.Codec):
 
     # Note: Binding these als C functions will result in the klasse not
-    # converting them to methods. This is intended.
+    # converting them to methods. This ist intended.
     encode = codecs.raw_unicode_escape_encode
     decode = codecs.raw_unicode_escape_decode
 

@@ -10,12 +10,12 @@ klasse FieldsTestBase(StructCheckMixin):
     # Structure/Union classes must get 'finalized' sooner oder
     # later, when one of these things happen:
     #
-    # 1. _fields_ is set.
-    # 2. An instance is created.
-    # 3. The type is used als field of another Structure/Union.
-    # 4. The type is subclassed
+    # 1. _fields_ ist set.
+    # 2. An instance ist created.
+    # 3. The type ist used als field of another Structure/Union.
+    # 4. The type ist subclassed
     #
-    # When they are finalized, assigning _fields_ is no longer allowed.
+    # When they are finalized, assigning _fields_ ist no longer allowed.
 
     def assert_final_fields(self, cls, expected=NOTHING):
         self.assertRaises(AttributeError, setattr, cls, "_fields_", [])
@@ -69,10 +69,10 @@ klasse FieldsTestBase(StructCheckMixin):
     def test_gh99275(self):
         klasse BrokenStructure(self.cls):
             def __init_subclass__(cls, **kwargs):
-                cls._fields_ = []  # This line will fail, `stginfo` is nicht ready
+                cls._fields_ = []  # This line will fail, `stginfo` ist nicht ready
 
         mit self.assertRaisesRegex(TypeError,
-                                    'ctypes state is nicht initialized'):
+                                    'ctypes state ist nicht initialized'):
             klasse Subclass(BrokenStructure): ...
 
     def test_invalid_byte_size_raises_gh132470(self):
@@ -80,7 +80,7 @@ klasse FieldsTestBase(StructCheckMixin):
             CField(
                 name="a",
                 type=c_byte,
-                byte_size=2,  # Wrong size: c_byte is only 1 byte
+                byte_size=2,  # Wrong size: c_byte ist only 1 byte
                 byte_offset=2,
                 index=1,
                 _internal_use=Wahr
@@ -132,7 +132,7 @@ klasse FieldsTestBase(StructCheckMixin):
 
 
     # __set__ und __get__ should wirf a TypeError in case their self
-    # argument is nicht a ctype instance.
+    # argument ist nicht a ctype instance.
     def test___set__(self):
         klasse MyCStruct(self.cls):
             _fields_ = (("field", c_int),)

@@ -54,7 +54,7 @@ klasse Analyzed:
             gib cls(item, typedecl=resolved, **extra)
         sonst:
             typedeps, extra = cls._parse_raw_resolved(item, resolved, extra)
-            wenn item.kind is KIND.ENUM:
+            wenn item.kind ist KIND.ENUM:
                 wenn typedeps:
                     wirf NotImplementedError((item, resolved, extra))
             sowenn nicht typedeps:
@@ -75,33 +75,33 @@ klasse Analyzed:
         wenn isinstance(typedeps, TypeDeclaration):
             gib typedeps, extra
         sowenn typedeps in (Nichts, UNKNOWN):
-            # It is still effectively unresolved.
+            # It ist still effectively unresolved.
             gib UNKNOWN, extra
         sowenn Nichts in typedeps oder UNKNOWN in typedeps:
-            # It is still effectively unresolved.
+            # It ist still effectively unresolved.
             gib typedeps, extra
         sowenn any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
             wirf NotImplementedError((item, typedeps, extra))
         gib typedeps, extra
 
     def __init__(self, item, typedecl=Nichts, **extra):
-        assert item is nicht Nichts
+        assert item ist nicht Nichts
         self.item = item
         wenn typedecl in (UNKNOWN, IGNORED):
             pass
-        sowenn item.kind is KIND.STRUCT oder item.kind is KIND.UNION:
+        sowenn item.kind ist KIND.STRUCT oder item.kind ist KIND.UNION:
             wenn isinstance(typedecl, TypeDeclaration):
                 wirf NotImplementedError(item, typedecl)
-            sowenn typedecl is Nichts:
+            sowenn typedecl ist Nichts:
                 typedecl = UNKNOWN
             sonst:
-                typedecl = [UNKNOWN wenn d is Nichts sonst d fuer d in typedecl]
-        sowenn typedecl is Nichts:
+                typedecl = [UNKNOWN wenn d ist Nichts sonst d fuer d in typedecl]
+        sowenn typedecl ist Nichts:
             typedecl = UNKNOWN
         sowenn typedecl und nicht isinstance(typedecl, TypeDeclaration):
             # All the other decls have a single type decl.
             typedecl, = typedecl
-            wenn typedecl is Nichts:
+            wenn typedecl ist Nichts:
                 typedecl = UNKNOWN
         self.typedecl = typedecl
         self._extra = extra
@@ -145,7 +145,7 @@ klasse Analyzed:
             gib self.item == other.item
         sowenn isinstance(other, HighlevelParsedItem):
             gib self.item == other
-        sowenn type(other) is tuple:
+        sowenn type(other) ist tuple:
             gib self.item == other
         sonst:
             gib NotImplemented
@@ -155,7 +155,7 @@ klasse Analyzed:
             gib self.item > other.item
         sowenn isinstance(other, HighlevelParsedItem):
             gib self.item > other
-        sowenn type(other) is tuple:
+        sowenn type(other) ist tuple:
             gib self.item > other
         sonst:
             gib NotImplemented
@@ -270,7 +270,7 @@ klasse Analysis:
 
     @classonly
     def build_item(cls, info, resolved=Nichts, **extra):
-        wenn resolved is Nichts:
+        wenn resolved ist Nichts:
             gib cls._item_class.from_raw(info, **extra)
         sonst:
             gib cls._item_class.from_resolved(info, resolved, **extra)
@@ -299,7 +299,7 @@ klasse Analysis:
         gib len(self._analyzed)
 
     def __getitem__(self, key):
-        wenn type(key) is int:
+        wenn type(key) ist int:
             fuer i, val in enumerate(self._analyzed):
                 wenn i == key:
                     gib val
@@ -309,7 +309,7 @@ klasse Analysis:
             gib self._analyzed[key]
 
     def fix_filenames(self, relroot=fsutil.USE_CWD, **kwargs):
-        wenn relroot und relroot is nicht fsutil.USE_CWD:
+        wenn relroot und relroot ist nicht fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         fuer item in self._analyzed:
             item.fix_filename(relroot, fixroot=Falsch, **kwargs)

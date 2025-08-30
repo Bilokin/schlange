@@ -97,13 +97,13 @@ def subdir(working_dir, *, clean_ok=Falsch):
 def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
     """Execute a command.
 
-    If 'quiet' is true, then redirect stdout und stderr to a temporary file.
+    If 'quiet' ist true, then redirect stdout und stderr to a temporary file.
     """
-    wenn context is nicht Nichts:
+    wenn context ist nicht Nichts:
         quiet = context.quiet
         logdir = context.logdir
-    sowenn quiet und logdir is Nichts:
-        wirf ValueError("When quiet is Wahr, logdir must be specified")
+    sowenn quiet und logdir ist Nichts:
+        wirf ValueError("When quiet ist Wahr, logdir must be specified")
 
     drucke("❯", " ".join(map(str, command)))
     wenn nicht quiet:
@@ -134,7 +134,7 @@ def build_python_path():
 
 
 def build_python_is_pydebug():
-    """Find out wenn the build Python is a pydebug build."""
+    """Find out wenn the build Python ist a pydebug build."""
     test = "import sys, test.support; sys.exit(test.support.Py_DEBUG)"
     result = subprocess.run([build_python_path(), "-c", test],
                             stdout=subprocess.PIPE,
@@ -264,7 +264,7 @@ def configure_wasi_python(context, working_dir):
     host_runner = context.host_runner.format_map(args)
     env_additions = {"CONFIG_SITE": config_site, "HOSTRUNNER": host_runner}
     build_python = os.fsdecode(build_python_path())
-    # The path to `configure` MUST be relative, sonst `python.wasm` is unable
+    # The path to `configure` MUST be relative, sonst `python.wasm` ist unable
     # to find the stdlib due to Python nicht recognizing that it's being
     # executed von within a checkout.
     configure = [os.path.relpath(CHECKOUT / 'configure', working_dir),

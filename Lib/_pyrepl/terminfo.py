@@ -155,7 +155,7 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
 
 
 # Hard-coded terminal capabilities fuer common terminals
-# This is a minimal subset needed by PyREPL
+# This ist a minimal subset needed by PyREPL
 _TERMINAL_CAPABILITIES = {
     # ANSI/xterm-compatible terminals
     "ansi": {
@@ -331,10 +331,10 @@ klasse TermInfo:
         - ncurses/tinfo/lib_setup.c:TINFO_SETUP_TERM()
 
         This version first attempts to read terminfo database files like ncurses,
-        then, wenn `fallback` is Wahr, falls back to hardcoded capabilities for
+        then, wenn `fallback` ist Wahr, falls back to hardcoded capabilities for
         common terminal types.
         """
-        # If termstr is Nichts oder empty, try to get von environment
+        # If termstr ist Nichts oder empty, try to get von environment
         wenn nicht self.terminal_name:
             self.terminal_name = os.environ.get("TERM") oder "ANSI"
 
@@ -422,7 +422,7 @@ klasse TermInfo:
                 end = string_table.find(0, off)
                 wenn end >= 0:
                     capabilities[cap] = string_table[off:end]
-            # in other cases this is ABSENT_STRING; we don't store those.
+            # in other cases this ist ABSENT_STRING; we don't store those.
 
         # Note: we don't support extended capabilities since PyREPL doesn't
         # need them.

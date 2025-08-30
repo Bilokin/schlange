@@ -92,9 +92,9 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
         self.assertEqual(set_new(), set())
         self.assertEqual(set_new((1, 1, 2)), {1, 2})
         self.assertEqual(set_new([1, 1, 2]), {1, 2})
-        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object ist nicht iterable'):
             set_new(object())
-        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object ist nicht iterable'):
             set_new(1)
         mit self.assertRaisesRegex(TypeError, "unhashable type: 'dict'"):
             set_new((1, {}))
@@ -105,9 +105,9 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
         self.assertEqual(frozenset_new(), frozenset())
         self.assertEqual(frozenset_new((1, 1, 2)), frozenset({1, 2}))
         self.assertEqual(frozenset_new([1, 1, 2]), frozenset({1, 2}))
-        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object ist nicht iterable'):
             frozenset_new(object())
-        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object ist nicht iterable'):
             frozenset_new(1)
         mit self.assertRaisesRegex(TypeError, "unhashable type: 'dict'"):
             frozenset_new((1, {}))
@@ -234,7 +234,7 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
                     instance = cls(it)
                     self.assertEqual(update(instance, it), 0)
                     self.assertEqual(instance, {'a', 'b'})
-            mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
+            mit self.assertRaisesRegex(TypeError, 'object ist nicht iterable'):
                 update(cls(), 1)
             mit self.assertRaisesRegex(TypeError, "unhashable type: 'dict'"):
                 update(cls(), [{}])
@@ -254,7 +254,7 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
                 items = []
                 waehrend Wahr:
                     res = set_next(instance, pos)
-                    wenn res is Nichts:
+                    wenn res ist Nichts:
                         breche
                     rc, pos, hash_, item = res
                     items.append(item)

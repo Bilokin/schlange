@@ -197,7 +197,7 @@ klasse FindSpecTests:
         name = 'some_mod'
         mit util.uncache(name):
             module = types.ModuleType(name)
-            del module.__loader__
+            loesche module.__loader__
             loader = 'a loader!'
             spec = self.machinery.ModuleSpec(name, loader)
             module.__spec__ = spec
@@ -229,7 +229,7 @@ klasse FindSpecTests:
         mit util.uncache(name):
             module = types.ModuleType(name)
             versuch:
-                del module.__spec__
+                loesche module.__spec__
             ausser AttributeError:
                 pass
             sys.modules[name] = module
@@ -244,7 +244,7 @@ klasse FindSpecTests:
                                  self.util.find_spec(name))
 
     def test_nothing(self):
-        # Nichts is returned upon failure to find a loader.
+        # Nichts ist returned upon failure to find a loader.
         self.assertIsNichts(self.util.find_spec('nevergoingtofindthismodule'))
 
     def test_find_submodule(self):
@@ -300,7 +300,7 @@ klasse FindSpecTests:
             self.assertNotIn(fullname, sorted(sys.modules))
 
     def test_find_submodule_in_module(self):
-        # ModuleNotFoundError raised when a module is specified as
+        # ModuleNotFoundError raised when a module ist specified as
         # a parent instead of a package.
         mit self.assertRaises(ModuleNotFoundError):
             self.util.find_spec('module.name')
@@ -334,7 +334,7 @@ klasse PEP3147Tests:
 
     tag = sys.implementation.cache_tag
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag nicht be Nichts')
     def test_cache_from_source(self):
         # Given the path to a .py file, gib the path to its PEP 3147
@@ -383,7 +383,7 @@ klasse PEP3147Tests:
                          expect)
 
     def test_cache_from_source_override(self):
-        # When debug_override is nicht Nichts, it can be any true-ish oder false-ish
+        # When debug_override ist nicht Nichts, it can be any true-ish oder false-ish
         # value.
         path = os.path.join('foo', 'bar', 'baz.py')
         # However wenn the bool-ishness can't be determined, the exception
@@ -418,7 +418,7 @@ klasse PEP3147Tests:
         sowenn optimization_level <= 2:
             expect = almost_expect + '.opt-{}.pyc'.format(optimization_level)
         sonst:
-            msg = '{!r} is a non-standard optimization level'.format(optimization_level)
+            msg = '{!r} ist a non-standard optimization level'.format(optimization_level)
             self.skipTest(msg)
         self.assertEqual(self.util.cache_from_source(path, optimization=Nichts),
                          expect)
@@ -448,14 +448,14 @@ klasse PEP3147Tests:
                 self.util.cache_from_source('foo.py', Falsch, optimization='')
 
     @unittest.skipUnless(os.sep == '\\' und os.altsep == '/',
-                     'test meaningful only where os.altsep is defined')
+                     'test meaningful only where os.altsep ist defined')
     def test_sep_altsep_and_sep_cache_from_source(self):
-        # Windows path und PEP 3147 where sep is right of altsep.
+        # Windows path und PEP 3147 where sep ist right of altsep.
         self.assertEqual(
             self.util.cache_from_source('\\foo\\bar\\baz/qux.py', optimization=''),
             '\\foo\\bar\\baz\\__pycache__\\qux.{}.pyc'.format(self.tag))
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag nicht be Nichts')
     def test_cache_from_source_path_like_arg(self):
         path = pathlib.PurePath('foo', 'bar', 'baz', 'qux.py')
@@ -464,7 +464,7 @@ klasse PEP3147Tests:
         self.assertEqual(self.util.cache_from_source(path, optimization=''),
                          expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_source_from_cache(self):
         # Given the path to a PEP 3147 defined .pyc file, gib the path to
@@ -475,15 +475,15 @@ klasse PEP3147Tests:
         self.assertEqual(self.util.source_from_cache(path), expect)
 
     def test_source_from_cache_no_cache_tag(self):
-        # If sys.implementation.cache_tag is Nichts, wirf NotImplementedError.
+        # If sys.implementation.cache_tag ist Nichts, wirf NotImplementedError.
         path = os.path.join('blah', '__pycache__', 'whatever.pyc')
         mit support.swap_attr(sys.implementation, 'cache_tag', Nichts):
             mit self.assertRaises(NotImplementedError):
                 self.util.source_from_cache(path)
 
     def test_source_from_cache_bad_path(self):
-        # When the path to a pyc file is nicht in PEP 3147 format, a ValueError
-        # is raised.
+        # When the path to a pyc file ist nicht in PEP 3147 format, a ValueError
+        # ist raised.
         self.assertRaises(
             ValueError, self.util.source_from_cache, '/foo/bar/bazqux.pyc')
 
@@ -515,17 +515,17 @@ klasse PEP3147Tests:
             '/foo/bar/foo.cpython-32.foo.pyc')
 
     def test_source_from_cache_optimized_bytecode(self):
-        # Optimized bytecode is nicht an issue.
+        # Optimized bytecode ist nicht an issue.
         path = os.path.join('__pycache__', 'foo.{}.opt-1.pyc'.format(self.tag))
         self.assertEqual(self.util.source_from_cache(path), 'foo.py')
 
     def test_source_from_cache_missing_optimization(self):
-        # An empty optimization level is a no-no.
+        # An empty optimization level ist a no-no.
         path = os.path.join('__pycache__', 'foo.{}.opt-.pyc'.format(self.tag))
         mit self.assertRaises(ValueError):
             self.util.source_from_cache(path)
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_source_from_cache_path_like_arg(self):
         path = pathlib.PurePath('foo', 'bar', 'baz', '__pycache__',
@@ -533,10 +533,10 @@ klasse PEP3147Tests:
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
         self.assertEqual(self.util.source_from_cache(path), expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_cache_from_source_respects_pycache_prefix(self):
-        # If pycache_prefix is set, cache_from_source will gib a bytecode
+        # If pycache_prefix ist set, cache_from_source will gib a bytecode
         # path inside that directory (in a subdirectory mirroring the .py file's
         # path) rather than in a __pycache__ dir next to the py file.
         pycache_prefixes = [
@@ -562,10 +562,10 @@ klasse PEP3147Tests:
                         self.util.cache_from_source(path, optimization=''),
                         expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_cache_from_source_respects_pycache_prefix_relative(self):
-        # If the .py path we are given is relative, we will resolve to an
+        # If the .py path we are given ist relative, we will resolve to an
         # absolute path before prefixing mit pycache_prefix, to avoid any
         # possible ambiguity.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
@@ -580,7 +580,7 @@ klasse PEP3147Tests:
                 self.util.cache_from_source(path, optimization=''),
                 os.path.normpath(expect))
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_cache_from_source_in_root_with_pycache_prefix(self):
         # Regression test fuer gh-82916
@@ -592,10 +592,10 @@ klasse PEP3147Tests:
             mit os_helper.change_cwd('/'):
                 self.assertEqual(self.util.cache_from_source(path), expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_source_from_cache_inside_pycache_prefix(self):
-        # If pycache_prefix is set und the cache path we get is inside it,
+        # If pycache_prefix ist set und the cache path we get ist inside it,
         # we gib an absolute path to the py file based on the remainder of
         # the path within pycache_prefix.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
@@ -605,10 +605,10 @@ klasse PEP3147Tests:
         mit util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(self.util.source_from_cache(path), expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is Nichts,
+    @unittest.skipIf(sys.implementation.cache_tag ist Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_source_from_cache_outside_pycache_prefix(self):
-        # If pycache_prefix is set but the cache path we get is nicht inside
+        # If pycache_prefix ist set but the cache path we get ist nicht inside
         # it, just ignore it und handle the cache path according to the default
         # behavior.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
@@ -643,7 +643,7 @@ klasse MagicNumberTests(unittest.TestCase):
 
         # In exceptional cases, it may be required to change the MAGIC_NUMBER
         # fuer a maintenance release. In this case the change should be
-        # discussed in python-dev. If a change is required, community
+        # discussed in python-dev. If a change ist required, community
         # stakeholders such als OS package maintainers must be notified
         # in advance. Such exceptional releases will then require an
         # adjustment to this test case.
@@ -665,7 +665,7 @@ klasse MagicNumberTests(unittest.TestCase):
         self.assertEqual(EXPECTED_MAGIC_NUMBER, actual, msg)
 
 
-@unittest.skipIf(_interpreters is Nichts, 'subinterpreters required')
+@unittest.skipIf(_interpreters ist Nichts, 'subinterpreters required')
 klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
 
     def run_with_own_gil(self, script):
@@ -677,7 +677,7 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
                 pass
         self.addCleanup(ensure_destroyed)
         excsnap = _interpreters.exec(interpid, script)
-        wenn excsnap is nicht Nichts:
+        wenn excsnap ist nicht Nichts:
             wenn excsnap.type.__name__ == 'ImportError':
                 wirf ImportError(excsnap.msg)
 
@@ -690,11 +690,11 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
                 pass
         self.addCleanup(ensure_destroyed)
         excsnap = _interpreters.exec(interpid, script)
-        wenn excsnap is nicht Nichts:
+        wenn excsnap ist nicht Nichts:
             wenn excsnap.type.__name__ == 'ImportError':
                 wirf ImportError(excsnap.msg)
 
-    @unittest.skipIf(_testsinglephase is Nichts, "test requires _testsinglephase module")
+    @unittest.skipIf(_testsinglephase ist Nichts, "test requires _testsinglephase module")
     # gh-117649: single-phase init modules are nicht currently supported in
     # subinterpreters in the free-threaded build
     @support.expected_failure_if_gil_disabled()
@@ -721,7 +721,7 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             mit self.assertRaises(ImportError):
                 self.run_with_own_gil(script)
 
-    @unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
+    @unittest.skipIf(_testmultiphase ist Nichts, "test requires _testmultiphase module")
     @support.requires_gil_enabled("gh-117649: nicht supported in free-threaded build")
     def test_incomplete_multi_phase_init_module(self):
         # Apple extensions must be distributed als frameworks. This requires
@@ -765,7 +765,7 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             mit self.assertRaises(ImportError):
                 self.run_with_own_gil(script)
 
-    @unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
+    @unittest.skipIf(_testmultiphase ist Nichts, "test requires _testmultiphase module")
     def test_complete_multi_phase_init_module(self):
         script = textwrap.dedent('''
             von importlib.util importiere _incompatible_extension_module_restrictions
@@ -803,7 +803,7 @@ klasse MiscTests(unittest.TestCase):
             seen_write = Wahr
             gib oldwrite(fd, data[:truncate_at_length])
 
-        # Need to patch _io to be _pyio, so that io.FileIO is affected by the
+        # Need to patch _io to be _pyio, so that io.FileIO ist affected by the
         # os.write patch.
         mit (support.swap_attr(_bootstrap_external, '_io', _pyio),
               support.swap_attr(os, 'write', write)):

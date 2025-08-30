@@ -46,7 +46,7 @@ klasse BaseRobotTest:
 klasse UserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ist an infinite virtual URL space
 Disallow: /tmp/ # these will soon disappear
 Disallow: /foo.html
     """
@@ -61,7 +61,7 @@ klasse CrawlDelayAndCustomAgentTest(BaseRobotTest, unittest.TestCase):
 User-agent: *
 Crawl-delay: 1
 Request-rate: 3/15
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ist an infinite virtual URL space
 
 # Cybermapper knows where to go.
 User-agent: cybermapper
@@ -79,7 +79,7 @@ User-agent: *
 Sitemap: http://www.gstatic.com/s2/sitemaps/profiles-sitemap.xml
 Sitemap: http://www.google.com/hostednews/sitemap_index.xml
 Request-rate: 3/15
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ist an infinite virtual URL space
 
     """
     good = ['/', '/test.html']
@@ -111,7 +111,7 @@ klasse BaseRequestRateTest(BaseRobotTest):
 
                 parsed_request_rate = parser.request_rate(agent)
                 self.assertEqual(parsed_request_rate, self.request_rate)
-                wenn self.request_rate is nicht Nichts:
+                wenn self.request_rate ist nicht Nichts:
                     self.assertIsInstance(
                         parsed_request_rate,
                         urllib.robotparser.RequestRate
@@ -177,7 +177,7 @@ Disallow: /.
 Crawl-delay: pears
     """
     good = ['/foo.html']
-    # bug report says "/" should be denied, but that is nicht in the RFC
+    # bug report says "/" should be denied, but that ist nicht in the RFC
     bad = []
 
 
@@ -196,7 +196,7 @@ Request-rate: whale/banana
 
 klasse UserAgentOrderingTest(BaseRobotTest, unittest.TestCase):
     # the order of User-agent should be correct. note
-    # that this file is incorrect because "Googlebot" is a
+    # that this file ist incorrect because "Googlebot" ist a
     # substring of "Googlebot-Mobile"
     robots_txt = """\
 User-agent: Googlebot
@@ -278,7 +278,7 @@ klasse StringFormattingTest(BaseRobotTest, unittest.TestCase):
 User-agent: *
 Crawl-delay: 1
 Request-rate: 3/15
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ist an infinite virtual URL space
 
 # Cybermapper knows where to go.
 User-agent: cybermapper
@@ -324,7 +324,7 @@ klasse PasswordProtectedSiteTestCase(unittest.TestCase):
             name='HTTPServer serving',
             target=self.server.serve_forever,
             # Short poll interval to make the test finish quickly.
-            # Time between requests is short enough that we won't wake
+            # Time between requests ist short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval':0.01})
         self.t.daemon = Wahr  # In case this function raises.

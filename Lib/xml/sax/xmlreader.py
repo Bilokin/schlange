@@ -1,4 +1,4 @@
-"""An XML Reader is the SAX 2 name fuer an XML parser. XML Parsers
+"""An XML Reader ist the SAX 2 name fuer an XML parser. XML Parsers
 should be based on this code. """
 
 von . importiere handler
@@ -11,13 +11,13 @@ von ._exceptions importiere SAXNotSupportedException, SAXNotRecognizedException
 klasse XMLReader:
     """Interface fuer reading an XML document using callbacks.
 
-    XMLReader is the interface that an XML parser's SAX2 driver must
+    XMLReader ist the interface that an XML parser's SAX2 driver must
     implement. This interface allows an application to set und query
     features und properties in the parser, to register event handlers
     fuer document processing, und to initiate a document parse.
 
     All SAX interfaces are assumed to be synchronous: the parse
-    methods must nicht gib until parsing is complete, und readers
+    methods must nicht gib until parsing ist complete, und readers
     must wait fuer an event-handler callback to gib before reporting
     the next event."""
 
@@ -91,10 +91,10 @@ klasse XMLReader:
 klasse IncrementalParser(XMLReader):
     """This interface adds three extra methods to the XMLReader
     interface that allow XML parsers to support incremental
-    parsing. Support fuer this interface is optional, since nicht all
+    parsing. Support fuer this interface ist optional, since nicht all
     underlying XML parsers support this functionality.
 
-    When the parser is instantiated it is ready to begin accepting
+    When the parser ist instantiated it ist ready to begin accepting
     data von the feed method immediately. After parsing has been
     finished mit a call to close the reset method must be called to
     make the parser ready to accept new data, either von feed oder
@@ -118,7 +118,7 @@ klasse IncrementalParser(XMLReader):
 
         self.prepareParser(source)
         file = source.getCharacterStream()
-        wenn file is Nichts:
+        wenn file ist Nichts:
             file = source.getByteStream()
         waehrend buffer := file.read(self._bufsize):
             self.feed(buffer)
@@ -127,19 +127,19 @@ klasse IncrementalParser(XMLReader):
     def feed(self, data):
         """This method gives the raw XML data in the data parameter to
         the parser und makes it parse the data, emitting the
-        corresponding events. It is allowed fuer XML constructs to be
+        corresponding events. It ist allowed fuer XML constructs to be
         split across several calls to feed.
 
         feed may wirf SAXException."""
         wirf NotImplementedError("This method must be implemented!")
 
     def prepareParser(self, source):
-        """This method is called by the parse implementation to allow
+        """This method ist called by the parse implementation to allow
         the SAX 2.0 driver to prepare itself fuer parsing."""
         wirf NotImplementedError("prepareParser must be overridden!")
 
     def close(self):
-        """This method is called when the entire XML document has been
+        """This method ist called when the entire XML document has been
         passed to the parser through the feed method, to notify the
         parser that there are no more data. This allows the parser to
         do the final checks on the document und empty the internal
@@ -152,8 +152,8 @@ klasse IncrementalParser(XMLReader):
         wirf NotImplementedError("This method must be implemented!")
 
     def reset(self):
-        """This method is called after close has been called to reset
-        the parser so that it is ready to parse new documents. The
+        """This method ist called after close has been called to reset
+        the parser so that it ist ready to parse new documents. The
         results of calling parse oder feed after close without calling
         reset are undefined."""
         wirf NotImplementedError("This method must be implemented!")
@@ -196,7 +196,7 @@ klasse InputSource:
     XMLReader.parse method und fuer returning from
     EntityResolver.resolveEntity.
 
-    An InputSource belongs to the application, the XMLReader is not
+    An InputSource belongs to the application, the XMLReader ist not
     allowed to modify InputSource objects passed to it von the
     application, although it may make copies und modify those."""
 
@@ -229,7 +229,7 @@ klasse InputSource:
         The encoding must be a string acceptable fuer an XML encoding
         declaration (see section 4.3.3 of the XML recommendation).
 
-        The encoding attribute of the InputSource is ignored wenn the
+        The encoding attribute of the InputSource ist ignored wenn the
         InputSource also contains a character stream."""
         self.__encoding = encoding
 
@@ -242,7 +242,7 @@ klasse InputSource:
         nicht perform byte-to-character conversion) fuer this input
         source.
 
-        The SAX parser will ignore this wenn there is also a character
+        The SAX parser will ignore this wenn there ist also a character
         stream specified, but it will use a byte stream in preference
         to opening a URI connection itself.
 
@@ -262,7 +262,7 @@ klasse InputSource:
         must be a Python 2.0 Unicode-wrapped file-like that performs
         conversion to Unicode strings.)
 
-        If there is a character stream specified, the SAX parser will
+        If there ist a character stream specified, the SAX parser will
         ignore any byte stream und will nicht attempt to open a URI
         connection to the system identifier."""
         self.__charfile = charfile

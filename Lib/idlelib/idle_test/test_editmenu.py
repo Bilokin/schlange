@@ -28,11 +28,11 @@ klasse PasteTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text, cls.entry, cls.tentry
+        loesche cls.text, cls.entry, cls.tentry
         cls.root.clipboard_clear()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_paste_text(self):
         "Test pasting into text mit und without a selection."

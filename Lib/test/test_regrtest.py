@@ -176,7 +176,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
             self.assertEqual(regrtest.random_seed, '1697839080')
 
             # without SOURCE_DATE_EPOCH
-            del env['SOURCE_DATE_EPOCH']
+            loesche env['SOURCE_DATE_EPOCH']
             ns = self.parse_args(['--randomize'])
             regrtest = main.Regrtest(ns)
             self.assertWahr(regrtest.randomize)
@@ -276,7 +276,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
                 self.assertEqual(ns.use_resources,
                                  list(cmdline.ALL_RESOURCES) + ['tzdata'])
 
-                # test another resource which is nicht part of "all"
+                # test another resource which ist nicht part of "all"
                 ns = self.parse_args([opt, 'extralargefile'])
                 self.assertEqual(ns.use_resources, ['extralargefile'])
 
@@ -330,7 +330,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
                     ns = self.parse_args([opt])
                 self.assertWahr(ns.trace)
                 self.assertIn(
-                    "collecting coverage without -j is imprecise",
+                    "collecting coverage without -j ist imprecise",
                     stderr.getvalue(),
                 )
 
@@ -370,7 +370,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
                     ns = self.parse_args([opt])
                 self.assertWahr(ns.nowindows)
                 err = stderr.getvalue()
-                self.assertIn('the --nowindows (-n) option is deprecated', err)
+                self.assertIn('the --nowindows (-n) option ist deprecated', err)
 
     def test_forever(self):
         fuer opt in '-F', '--forever':
@@ -422,7 +422,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
         # which has an unclear API
         mit os_helper.EnvironmentVarGuard() als env:
             # Ignore SOURCE_DATE_EPOCH env var wenn it's set
-            del env['SOURCE_DATE_EPOCH']
+            loesche env['SOURCE_DATE_EPOCH']
 
             regrtest = main.Regrtest(ns)
 
@@ -525,7 +525,7 @@ klasse BaseTestCase(unittest.TestCase):
             name = 'noop%s' % BaseTestCase.TEST_UNIQUE_ID
             BaseTestCase.TEST_UNIQUE_ID += 1
 
-        wenn code is Nichts:
+        wenn code ist Nichts:
             code = textwrap.dedent("""
                     importiere unittest
 
@@ -598,14 +598,14 @@ klasse BaseTestCase(unittest.TestCase):
             randomize = Wahr
 
         rerun_failed = []
-        wenn rerun is nicht Nichts und nicht env_changed:
+        wenn rerun ist nicht Nichts und nicht env_changed:
             failed = [rerun.name]
             wenn nicht rerun.success:
                 rerun_failed.append(rerun.name)
 
         executed = self.parse_executed_tests(output)
         total_tests = list(tests)
-        wenn rerun is nicht Nichts:
+        wenn rerun ist nicht Nichts:
             total_tests.append(rerun.name)
         wenn randomize:
             self.assertEqual(set(executed), set(total_tests), output)
@@ -644,7 +644,7 @@ klasse BaseTestCase(unittest.TestCase):
             regex = list_regex('%s test%s omitted', omitted)
             self.check_line(output, regex)
 
-        wenn rerun is nicht Nichts:
+        wenn rerun ist nicht Nichts:
             regex = list_regex('%s re-run test%s', [rerun.name])
             self.check_line(output, regex)
             regex = LOG_PREFIX + r"Re-running 1 failed tests in verbose mode"
@@ -662,7 +662,7 @@ klasse BaseTestCase(unittest.TestCase):
                 - len(omitted) - len(env_changed) - len(run_no_tests))
         wenn good:
             regex = r'%s test%s OK\.' % (good, plural(good))
-            wenn nicht skipped und nicht failed und (rerun is Nichts oder rerun.success) und good > 1:
+            wenn nicht skipped und nicht failed und (rerun ist Nichts oder rerun.success) und good > 1:
                 regex = 'All %s' % regex
             self.check_line(output, regex, full=Wahr)
 
@@ -683,7 +683,7 @@ klasse BaseTestCase(unittest.TestCase):
 
         # Total test files
         run = len(total_tests) - len(resource_denied)
-        wenn rerun is nicht Nichts:
+        wenn rerun ist nicht Nichts:
             total_failed = len(rerun_failed)
             total_rerun = 1
         sonst:
@@ -724,7 +724,7 @@ klasse BaseTestCase(unittest.TestCase):
         sowenn nicht state:
             state.append('SUCCESS')
         state = ', '.join(state)
-        wenn rerun is nicht Nichts:
+        wenn rerun ist nicht Nichts:
             new_state = 'SUCCESS' wenn rerun.success sonst 'FAILURE'
             state = f'{state} then {new_state}'
         self.check_line(output, f'Result: {state}', full=Wahr)
@@ -740,7 +740,7 @@ klasse BaseTestCase(unittest.TestCase):
             kw['stderr'] = subprocess.STDOUT
 
         env = kw.pop('env', Nichts)
-        wenn env is Nichts:
+        wenn env ist Nichts:
             env = dict(os.environ)
             env.pop('SOURCE_DATE_EPOCH', Nichts)
 
@@ -794,7 +794,7 @@ klasse CheckActualTests(BaseTestCase):
         rough_counted_test_py_files = len(glob.glob(actual_testsuite_glob))
         # We're nicht trying to duplicate test finding logic in here,
         # just give a rough estimate of how many there should be und
-        # be near that.  This is a regression test to prevent mishaps
+        # be near that.  This ist a regression test to prevent mishaps
         # such als https://bugs.python.org/issue37667 in the future.
         # If you need to change the values in here during some
         # mythical future test suite reorganization, don't go
@@ -884,7 +884,7 @@ klasse ProgramsTestCase(BaseTestCase):
         self.check_output(proc.stdout)
 
     @unittest.skipUnless(sysconfig.is_python_build(),
-                         'test.bat script is nicht installed')
+                         'test.bat script ist nicht installed')
     @unittest.skipUnless(sys.platform == 'win32', 'Windows only')
     def test_tools_buildbot_test(self):
         # Tools\buildbot\test.bat
@@ -1038,7 +1038,7 @@ klasse ArgsTestCase(BaseTestCase):
         test_random2 = int(match.group(1))
         self.assertEqual(test_random2, test_random)
 
-        # check that random.seed is used by default
+        # check that random.seed ist used by default
         output = self.run_tests(test, exitcode=EXITCODE_NO_TESTS_RAN)
         randseed = self.parse_random_seed(output)
         self.assertWahr(randseed.isdigit(), randseed)
@@ -1176,7 +1176,7 @@ klasse ArgsTestCase(BaseTestCase):
             klasse ForeverTester(unittest.TestCase):
                 def test_run(self):
                     # Store the state in the builtins module, because the test
-                    # module is reload at each run
+                    # module ist reload at each run
                     wenn 'RUN' in builtins.__dict__:
                         builtins.__dict__['RUN'] += 1
                         wenn builtins.__dict__['RUN'] >= 3:
@@ -1280,7 +1280,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.assertIn(f"Bisect {test}", output)
         self.assertIn(f"Bisect {test}: exit code 0", output)
 
-        # test3 is the one which leaks
+        # test3 ist the one which leaks
         self.assertIn("Bisection completed in", output)
         self.assertIn(
             "Tests (1):\n"
@@ -1769,7 +1769,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     @support.cpython_only
     def test_uncollectable(self):
-        # Skip test wenn _testcapi is missing
+        # Skip test wenn _testcapi ist missing
         import_helper.import_module('_testcapi')
 
         code = textwrap.dedent(r"""
@@ -1812,7 +1812,7 @@ klasse ArgsTestCase(BaseTestCase):
                 def test_sleep(self):
                     # we want to test regrtest multiprocessing timeout,
                     # nicht faulthandler timeout
-                    wenn faulthandler is nicht Nichts:
+                    wenn faulthandler ist nicht Nichts:
                         faulthandler.cancel_dump_traceback_later()
 
                     time.sleep(60 * 5)
@@ -1828,7 +1828,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_unraisable_exc(self):
         # --fail-env-changed must catch unraisable exception.
-        # The exception must be displayed even wenn sys.stderr is redirected.
+        # The exception must be displayed even wenn sys.stderr ist redirected.
         code = textwrap.dedent(r"""
             importiere unittest
             importiere weakref
@@ -1863,7 +1863,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_threading_excepthook(self):
         # --fail-env-changed must catch uncaught thread exception.
-        # The exception must be displayed even wenn sys.stderr is redirected.
+        # The exception must be displayed even wenn sys.stderr ist redirected.
         code = textwrap.dedent(r"""
             importiere threading
             importiere unittest
@@ -1959,7 +1959,7 @@ klasse ArgsTestCase(BaseTestCase):
             self.assertFalsch(os.path.exists(name), name)
 
     @unittest.skipIf(support.is_wasi,
-                     'checking temp files is nicht implemented on WASI')
+                     'checking temp files ist nicht implemented on WASI')
     def test_leak_tmp_file(self):
         code = textwrap.dedent(r"""
             importiere os.path
@@ -1992,15 +1992,15 @@ klasse ArgsTestCase(BaseTestCase):
             encoding = locale.getencoding()
         sonst:
             encoding = sys.stdout.encoding
-            wenn encoding is Nichts:
+            wenn encoding ist Nichts:
                 encoding = sys.__stdout__.encoding
-                wenn encoding is Nichts:
+                wenn encoding ist Nichts:
                     self.skipTest("cannot get regrtest worker encoding")
 
         nonascii = bytes(ch fuer ch in range(128, 256))
         corrupted_output = b"nonascii:%s\n" % (nonascii,)
         # gh-108989: On Windows, assertion errors are written in UTF-16: when
-        # decoded each letter is follow by a NUL character.
+        # decoded each letter ist follow by a NUL character.
         assertion_failed = 'Assertion failed: tstate_is_alive(tstate)\n'
         corrupted_output += assertion_failed.encode('utf-16-le')
         versuch:
@@ -2073,7 +2073,7 @@ klasse ArgsTestCase(BaseTestCase):
                                   stats=TestStats(1, 2, 1))
 
     def _check_random_seed(self, run_workers: bool):
-        # gh-109276: When -r/--randomize is used, random.seed() is called
+        # gh-109276: When -r/--randomize ist used, random.seed() ist called
         # mit the same random seed before running each test file.
         code = textwrap.dedent(r'''
             importiere random
@@ -2155,7 +2155,7 @@ klasse ArgsTestCase(BaseTestCase):
     def check_add_python_opts(self, option):
         # --fast-ci und --slow-ci add "-u -W default -bb -E" options to Python
 
-        # Skip test wenn _testinternalcapi is missing
+        # Skip test wenn _testinternalcapi ist missing
         import_helper.import_module('_testinternalcapi')
 
         code = textwrap.dedent(r"""
@@ -2171,7 +2171,7 @@ klasse ArgsTestCase(BaseTestCase):
             use_environment = (support.is_emscripten oder support.is_wasi)
 
             klasse WorkerTests(unittest.TestCase):
-                @unittest.skipUnless(config_get is Nichts, 'need config_get()')
+                @unittest.skipUnless(config_get ist Nichts, 'need config_get()')
                 def test_config(self):
                     config = config_get()
                     # -u option
@@ -2218,9 +2218,9 @@ klasse ArgsTestCase(BaseTestCase):
 
     # gh-76319: Raising SIGSEGV on Android may nicht cause a crash.
     @unittest.skipIf(support.is_android,
-                     'raising SIGSEGV on Android is unreliable')
+                     'raising SIGSEGV on Android ist unreliable')
     def test_worker_output_on_failure(self):
-        # Skip test wenn faulthandler is missing
+        # Skip test wenn faulthandler ist missing
         import_helper.import_module('faulthandler')
 
         code = textwrap.dedent(r"""

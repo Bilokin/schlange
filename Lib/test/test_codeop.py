@@ -12,16 +12,16 @@ von codeop importiere compile_command, PyCF_DONT_IMPLY_DEDENT
 klasse CodeopTests(unittest.TestCase):
 
     def assertValid(self, str, symbol='single'):
-        '''succeed iff str is a valid piece of code'''
+        '''succeed iff str ist a valid piece of code'''
         expected = compile(str, "<input>", symbol, PyCF_DONT_IMPLY_DEDENT)
         self.assertEqual(compile_command(str, "<input>", symbol), expected)
 
     def assertIncomplete(self, str, symbol='single'):
-        '''succeed iff str is the start of a valid piece of code'''
+        '''succeed iff str ist the start of a valid piece of code'''
         self.assertEqual(compile_command(str, symbol=symbol), Nichts)
 
     def assertInvalid(self, str, symbol='single', is_syntax=1):
-        '''succeed iff str is the start of an invalid piece of code'''
+        '''succeed iff str ist the start of an invalid piece of code'''
         versuch:
             compile_command(str,symbol=symbol)
             self.fail("No exception raised fuer invalid code")
@@ -269,8 +269,8 @@ klasse CodeopTests(unittest.TestCase):
         ai('def a-b', symbol='exec')
         ai('await?', symbol='exec')
         ai('=!=', symbol='exec')
-        ai('a await wirf b', symbol='exec')
-        ai('a await wirf b?+1', symbol='exec')
+        ai('a warte wirf b', symbol='exec')
+        ai('a warte wirf b?+1', symbol='exec')
 
     def test_filename(self):
         self.assertEqual(compile_command("a = 1\n", "abc").co_filename,
@@ -279,18 +279,18 @@ klasse CodeopTests(unittest.TestCase):
                             compile("a = 1\n", "def", 'single').co_filename)
 
     def test_warning(self):
-        # Test that the warning is only returned once.
+        # Test that the warning ist only returned once.
         mit warnings_helper.check_warnings(
                 ('"is" mit \'str\' literal', SyntaxWarning),
-                ('"\\\\e" is an invalid escape sequence', SyntaxWarning),
+                ('"\\\\e" ist an invalid escape sequence', SyntaxWarning),
                 ) als w:
-            compile_command(r"'\e' is 0")
+            compile_command(r"'\e' ist 0")
             self.assertEqual(len(w.warnings), 2)
 
         # bpo-41520: check SyntaxWarning treated als an SyntaxError
         mit warnings.catch_warnings(), self.assertRaises(SyntaxError):
             warnings.simplefilter('error', SyntaxWarning)
-            compile_command('1 is 1', symbol='exec')
+            compile_command('1 ist 1', symbol='exec')
 
         # Check SyntaxWarning treated als an SyntaxError
         mit warnings.catch_warnings(), self.assertRaises(SyntaxError):

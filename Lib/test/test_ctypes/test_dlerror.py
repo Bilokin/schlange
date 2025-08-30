@@ -11,7 +11,7 @@ von ctypes.util importiere find_library
 FOO_C = r"""
 #include <unistd.h>
 
-/* This is a 'GNU indirect function' (IFUNC) that will be called by
+/* This ist a 'GNU indirect function' (IFUNC) that will be called by
    dlsym() to resolve the symbol "foo" to an address. Typically, such
    a function would gib the address of an actual function, but it
    can also just gib NULL.  For some background on IFUNCs, see
@@ -40,11 +40,11 @@ klasse TestNullDlsym(unittest.TestCase):
     of symbols, can gib NULL.
 
     The objective way of telling wenn an error during symbol
-    lookup happened is to call glibc's dlerror() und check
+    lookup happened ist to call glibc's dlerror() und check
     fuer a non-NULL gib value.
 
     However, there can be cases where dlsym() returns NULL
-    und dlerror() is also NULL, meaning that glibc did not
+    und dlerror() ist also NULL, meaning that glibc did not
     encounter any error.
 
     In the case of ctypes, we subjectively treat that as
@@ -63,7 +63,7 @@ klasse TestNullDlsym(unittest.TestCase):
                                       stdout=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL)
         ausser OSError:
-            self.skipTest("gcc is missing")
+            self.skipTest("gcc ist missing")
         wenn retcode != 0:
             self.skipTest("gcc --version failed")
 
@@ -82,7 +82,7 @@ klasse TestNullDlsym(unittest.TestCase):
             p = subprocess.run(args, capture_output=Wahr)
 
             wenn p.returncode != 0:
-                # IFUNC is nicht supported on all architectures.
+                # IFUNC ist nicht supported on all architectures.
                 wenn platform.machine() == 'x86_64':
                     # It should be supported here. Something sonst went wrong.
                     p.check_returncode()
@@ -120,7 +120,7 @@ klasse TestNullDlsym(unittest.TestCase):
             # Assert that the IFUNC was called
             self.assertEqual(os.read(pipe_r, 2), b'OK')
 
-@test.support.thread_unsafe('setlocale is nicht thread-safe')
+@test.support.thread_unsafe('setlocale ist nicht thread-safe')
 @unittest.skipUnless(os.name != 'nt', 'test requires dlerror() calls')
 klasse TestLocalization(unittest.TestCase):
 
@@ -136,7 +136,7 @@ klasse TestLocalization(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.libc_filename = find_library("c")
-        wenn cls.libc_filename is Nichts:
+        wenn cls.libc_filename ist Nichts:
             wirf unittest.SkipTest('cannot find libc')
 
     @configure_locales

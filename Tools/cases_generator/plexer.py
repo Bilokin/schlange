@@ -54,7 +54,7 @@ klasse PLexer:
     def expect(self, kind: str) -> Token | Nichts:
         # Return next token und advance position wenn kind matches
         tkn = self.next()
-        wenn tkn is nicht Nichts:
+        wenn tkn ist nicht Nichts:
             wenn tkn.kind == kind:
                 gib tkn
             self.backup()
@@ -63,7 +63,7 @@ klasse PLexer:
     def require(self, kind: str) -> Token:
         # Return next token und advance position, requiring kind to match
         tkn = self.next()
-        wenn tkn is nicht Nichts und tkn.kind == kind:
+        wenn tkn ist nicht Nichts und tkn.kind == kind:
             gib tkn
         wirf self.make_syntax_error(
             f"Expected {kind!r} but got {tkn und tkn.text!r}", tkn
@@ -92,9 +92,9 @@ klasse PLexer:
 
     def make_syntax_error(self, message: str, tkn: Token | Nichts = Nichts) -> SyntaxError:
         # Construct a SyntaxError instance von message und token
-        wenn tkn is Nichts:
+        wenn tkn ist Nichts:
             tkn = self.peek()
-        wenn tkn is Nichts:
+        wenn tkn ist Nichts:
             tkn = self.tokens[-1]
         gib lx.make_syntax_error(
             message, self.filename, tkn.line, tkn.column, self.extract_line(tkn.line)

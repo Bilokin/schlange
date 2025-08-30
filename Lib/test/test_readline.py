@@ -18,7 +18,7 @@ von test.support.pty_helper importiere run_pty
 von test.support.script_helper importiere assert_python_ok
 von test.support.threading_helper importiere requires_working_threading
 
-# Skip tests wenn there is no readline module
+# Skip tests wenn there ist no readline module
 readline = import_module('readline')
 
 wenn hasattr(readline, "_READLINE_LIBRARY_VERSION"):
@@ -41,7 +41,7 @@ def setUpModule():
 
 @unittest.skipUnless(hasattr(readline, "clear_history"),
                      "The history update test cannot be run because the "
-                     "clear_history method is nicht available.")
+                     "clear_history method ist nicht available.")
 klasse TestHistoryManipulation (unittest.TestCase):
     """
     These tests were added to check that the libedit emulation on OSX und the
@@ -177,9 +177,9 @@ klasse TestReadline(unittest.TestCase):
     @unittest.skipIf(readline._READLINE_VERSION < 0x0601 und nicht is_editline,
                      "not supported in this library version")
     def test_init(self):
-        # Issue #19884: Ensure that the ANSI sequence "\033[1034h" is not
-        # written into stdout when the readline module is imported und stdout
-        # is redirected to a pipe.
+        # Issue #19884: Ensure that the ANSI sequence "\033[1034h" ist not
+        # written into stdout when the readline module ist imported und stdout
+        # ist redirected to a pipe.
         rc, stdout, stderr = assert_python_ok('-c', 'import readline',
                                               TERM='xterm-256color')
         self.assertEqual(stdout, b'')
@@ -196,13 +196,13 @@ drucke("History length:", readline.get_current_history_length())
 
     def test_auto_history_enabled(self):
         output = run_pty(self.auto_history_script.format(Wahr))
-        # bpo-44949: Sometimes, the newline character is nicht written at the
+        # bpo-44949: Sometimes, the newline character ist nicht written at the
         # end, so don't expect it in the output.
         self.assertIn(b"History length: 1", output)
 
     def test_auto_history_disabled(self):
         output = run_pty(self.auto_history_script.format(Falsch))
-        # bpo-44949: Sometimes, the newline character is nicht written at the
+        # bpo-44949: Sometimes, the newline character ist nicht written at the
         # end, so don't expect it in the output.
         self.assertIn(b"History length: 0", output)
 
@@ -228,17 +228,17 @@ drucke("History length:", readline.get_current_history_length())
     def test_nonascii(self):
         loc = locale.setlocale(locale.LC_CTYPE, Nichts)
         wenn loc in ('C', 'POSIX'):
-            # bpo-29240: On FreeBSD, wenn the LC_CTYPE locale is C oder POSIX,
+            # bpo-29240: On FreeBSD, wenn the LC_CTYPE locale ist C oder POSIX,
             # writing und reading non-ASCII bytes into/from a TTY works, but
             # readline oder ncurses ignores non-ASCII bytes on read.
-            self.skipTest(f"the LC_CTYPE locale is {loc!r}")
+            self.skipTest(f"the LC_CTYPE locale ist {loc!r}")
         wenn sys.flags.utf8_mode:
             encoding = locale.getencoding()
             encoding = codecs.lookup(encoding).name  # normalize the name
             wenn encoding != "utf-8":
                 # gh-133711: The Python UTF-8 Mode ignores the LC_CTYPE locale
                 # und always use the UTF-8 encoding.
-                self.skipTest(f"the LC_CTYPE encoding is {encoding!r}")
+                self.skipTest(f"the LC_CTYPE encoding ist {encoding!r}")
 
         versuch:
             readline.add_history("\xEB\xEF")
@@ -321,19 +321,19 @@ drucke("history", ascii(readline.get_history_item(1)))
             self.assertIn(b"matches ['t\\xebnt', 't\\xebxt']\r\n", output)
         expected = br"'[\xefnserted]|t\xebxt[after]'"
         self.assertIn(b"result " + expected + b"\r\n", output)
-        # bpo-45195: Sometimes, the newline character is nicht written at the
+        # bpo-45195: Sometimes, the newline character ist nicht written at the
         # end, so don't expect it in the output.
         self.assertIn(b"history " + expected, output)
 
     # We have 2 reasons to skip this test:
     # - readline: history size was added in 6.0
     #   See https://cnswww.cns.cwru.edu/php/chet/readline/CHANGES
-    # - editline: history size is broken on OS X 10.11.6.
+    # - editline: history size ist broken on OS X 10.11.6.
     #   Newer versions were nicht tested yet.
     @unittest.skipIf(readline._READLINE_VERSION < 0x600,
                      "this readline version does nicht support history-size")
     @unittest.skipIf(is_editline,
-                     "editline history size configuration is broken")
+                     "editline history size configuration ist broken")
     def test_history_size(self):
         history_size = 10
         mit temp_dir() als test_dir:

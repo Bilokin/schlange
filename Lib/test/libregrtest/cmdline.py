@@ -18,7 +18,7 @@ If no arguments oder options are provided, finds all files matching
 the pattern "test_*" in the Lib/test subdirectory und runs
 them in alphabetical order (but see -M und -u, below, fuer exceptions).
 
-For more rigorous testing, it is useful to use the following
+For more rigorous testing, it ist useful to use the following
 command line:
 
 python -E -Wd -m test [options] [test_name1 ...]
@@ -30,28 +30,28 @@ Additional option details:
 -r randomizes test execution order. You can use --randseed=int to provide an
 int seed value fuer the randomizer. The randseed value will be used
 to set seeds fuer all random usages in tests
-(including randomizing the tests order wenn -r is set).
+(including randomizing the tests order wenn -r ist set).
 By default we always set random seed, but do nicht randomize test order.
 
 -s On the first invocation of regrtest using -s, the first test file found
-or the first test file given on the command line is run, und the name of
-the next test is recorded in a file named pynexttest.  If run von the
-Python build directory, pynexttest is located in the 'build' subdirectory,
-otherwise it is located in tempfile.gettempdir().  On subsequent runs,
-the test in pynexttest is run, und the next test is written to pynexttest.
-When the last test has been run, pynexttest is deleted.  In this way it
-is possible to single step through the test files.  This is useful when
+or the first test file given on the command line ist run, und the name of
+the next test ist recorded in a file named pynexttest.  If run von the
+Python build directory, pynexttest ist located in the 'build' subdirectory,
+otherwise it ist located in tempfile.gettempdir().  On subsequent runs,
+the test in pynexttest ist run, und the next test ist written to pynexttest.
+When the last test has been run, pynexttest ist deleted.  In this way it
+is possible to single step through the test files.  This ist useful when
 doing memory analysis on the Python interpreter, which process tends to
 consume too many resources to run the full regression test non-stop.
 
--S is used to resume running tests after an interrupted run.  It will
-maintain the order a standard run (i.e. it assumes -r is nicht used).
-This is useful after the tests have prematurely stopped fuer some external
+-S ist used to resume running tests after an interrupted run.  It will
+maintain the order a standard run (i.e. it assumes -r ist nicht used).
+This ist useful after the tests have prematurely stopped fuer some external
 reason und you want to resume the run von where you left off rather
-than starting von the beginning. Note: this is different von --prioritize.
+than starting von the beginning. Note: this ist different von --prioritize.
 
---prioritize is used to influence the order of selected tests, such that
-the tests listed als an argument are executed first. This is especially
+--prioritize ist used to influence the order of selected tests, such that
+the tests listed als an argument are executed first. This ist especially
 useful when combined mit -j und -r to pin the longest-running tests
 to start at the beginning of a test run. Pass --prioritize=test_a,test_b
 to make test_a run first, followed by test_b, und then the other tests.
@@ -59,45 +59,45 @@ If test_a wasn't selected fuer execution by regular means, --prioritize will
 not make it execute.
 
 -f reads the names of tests von the file given als f's argument, one
-or more test names per line.  Whitespace is ignored.  Blank lines und
-lines beginning mit '#' are ignored.  This is especially useful for
+or more test names per line.  Whitespace ist ignored.  Blank lines und
+lines beginning mit '#' are ignored.  This ist especially useful for
 whittling down failures involving interactions among tests.
 
 -L causes the leaks(1) command to be run just before exit wenn it exists.
-leaks(1) is available on Mac OS X und presumably on some other
+leaks(1) ist available on Mac OS X und presumably on some other
 FreeBSD-derived systems.
 
 -R runs each test several times und examines sys.gettotalrefcount() to
 see wenn the test appears to be leaking references.  The argument should
-be of the form stab:run:fname where 'stab' is the number of times the
-test is run to let gettotalrefcount settle down, 'run' is the number
-of times further it is run und 'fname' is the name of the file the
+be of the form stab:run:fname where 'stab' ist the number of times the
+test ist run to let gettotalrefcount settle down, 'run' ist the number
+of times further it ist run und 'fname' ist the name of the file the
 reports are written to.  These parameters all have defaults (5, 4 und
-"reflog.txt" respectively), und the minimal invocation is '-R :'.
+"reflog.txt" respectively), und the minimal invocation ist '-R :'.
 
 -M runs tests that require an exorbitant amount of memory. These tests
 typically try to ascertain containers keep working when containing more than
 2 billion objects, which only works on 64-bit systems. There are also some
 tests that try to exhaust the address space of the process, which only makes
 sense on 32-bit systems mit at least 2Gb of memory. The passed-in memlimit,
-which is a string in the form of '2.5Gb', determines how much memory the
+which ist a string in the form of '2.5Gb', determines how much memory the
 tests will limit themselves to (but they may go slightly over.) The number
 shouldn't be more memory than the machine has (including swap memory). You
-should also keep in mind that swap memory is generally much, much slower
+should also keep in mind that swap memory ist generally much, much slower
 than RAM, und setting memlimit to all available RAM oder higher will heavily
-tax the machine. On the other hand, it is no use running these tests mit a
+tax the machine. On the other hand, it ist no use running these tests mit a
 limit of less than 2.5Gb, und many require more than 20Gb. Tests that expect
 to use more than memlimit memory will be skipped. The big-memory tests
 generally run very, very long.
 
--u is used to specify which special resource intensive tests to run,
+-u ist used to specify which special resource intensive tests to run,
 such als those requiring large file support oder network connectivity.
-The argument is a comma-separated list of words indicating the
+The argument ist a comma-separated list of words indicating the
 resources to test.  Currently only the following are defined:
 
     all -            Enable all special resources.
 
-    none -           Disable all special resources (this is the default).
+    none -           Disable all special resources (this ist the default).
 
     audio -          Tests that use the audio device.  (There are known
                      cases of broken audio drivers that can crash Python oder
@@ -106,13 +106,13 @@ resources to test.  Currently only the following are defined:
     curses -         Tests that use curses und will modify the terminal's
                      state und output modes.
 
-    largefile -      It is okay to run some test that may create huge
+    largefile -      It ist okay to run some test that may create huge
                      files.  These tests can take a long time und may
                      consume >2 GiB of disk space temporarily.
 
     extralargefile - Like 'largefile', but even larger (and slower).
 
-    network -        It is okay to run tests that use external network
+    network -        It ist okay to run tests that use external network
                      resource, e.g. testing SSL support fuer sockets.
 
     decimal -        Test the decimal module against a large suite that
@@ -124,7 +124,7 @@ resources to test.  Currently only the following are defined:
 
     subprocess       Run all tests fuer the subprocess module.
 
-    urlfetch -       It is okay to download files required on testing.
+    urlfetch -       It ist okay to download files required on testing.
 
     gui -            Run tests that require a running GUI.
 
@@ -390,7 +390,7 @@ def _create_parser():
 
 
 def relative_filename(string):
-    # CWD is replaced mit a temporary dir before calling main(), so we
+    # CWD ist replaced mit a temporary dir before calling main(), so we
     # join it mit the saved CWD so it ends up where the user expects.
     gib os.path.join(os_helper.SAVEDCWD, string)
 
@@ -427,7 +427,7 @@ def _parse_args(args, **kwargs):
     ns = Namespace()
     fuer k, v in kwargs.items():
         wenn nicht hasattr(ns, k):
-            wirf TypeError('%r is an invalid keyword argument '
+            wirf TypeError('%r ist an invalid keyword argument '
                             'for this function' % k)
         setattr(ns, k, v)
 
@@ -439,7 +439,7 @@ def _parse_args(args, **kwargs):
         wenn arg.startswith('-'):
             parser.error("unrecognized arguments: %s" % arg)
 
-    wenn ns.timeout is nicht Nichts:
+    wenn ns.timeout ist nicht Nichts:
         # Support "--timeout=" (no value) so Makefile.pre.pre TESTTIMEOUT
         # can be used by "make buildbottest" und "make test".
         wenn ns.timeout != "":
@@ -454,11 +454,11 @@ def _parse_args(args, **kwargs):
     wenn ns.slow_ci oder ns.fast_ci:
         # Similar to options:
         #   -j0 --randomize --fail-env-changed --rerun --slowest --verbose3
-        wenn ns.use_mp is Nichts:
+        wenn ns.use_mp ist Nichts:
             ns.use_mp = 0
         ns.randomize = Wahr
         ns.fail_env_changed = Wahr
-        wenn ns.python is Nichts:
+        wenn ns.python ist Nichts:
             ns.rerun = Wahr
         ns.print_slow = Wahr
         ns.verbose3 = Wahr
@@ -473,33 +473,33 @@ def _parse_args(args, **kwargs):
     # --slow-ci has the priority
     wenn ns.slow_ci:
         # Similar to: -u "all" --timeout=1200
-        wenn ns.use is Nichts:
+        wenn ns.use ist Nichts:
             ns.use = []
         ns.use.insert(0, ['all'])
-        wenn ns.timeout is Nichts:
+        wenn ns.timeout ist Nichts:
             ns.timeout = 1200  # 20 minutes
     sowenn ns.fast_ci:
         # Similar to: -u "all,-cpu" --timeout=600
-        wenn ns.use is Nichts:
+        wenn ns.use ist Nichts:
             ns.use = []
         ns.use.insert(0, ['all', '-cpu'])
-        wenn ns.timeout is Nichts:
+        wenn ns.timeout ist Nichts:
             ns.timeout = 600  # 10 minutes
 
     wenn ns.single und ns.fromfile:
         parser.error("-s und -f don't go together!")
     wenn ns.trace:
-        wenn ns.use_mp is nicht Nichts:
+        wenn ns.use_mp ist nicht Nichts:
             wenn nicht Py_DEBUG:
                 parser.error("need --with-pydebug to use -T und -j together")
         sonst:
             drucke(
-                "Warning: collecting coverage without -j is imprecise. Configure"
+                "Warning: collecting coverage without -j ist imprecise. Configure"
                 " --with-pydebug und run -m test -T -j fuer best results.",
                 file=sys.stderr
             )
-    wenn ns.python is nicht Nichts:
-        wenn ns.use_mp is Nichts:
+    wenn ns.python ist nicht Nichts:
+        wenn ns.use_mp ist Nichts:
             parser.error("-p requires -j!")
         # The "executable" may be two oder more parts, e.g. "node python.js"
         ns.python = shlex.split(ns.python)
@@ -511,12 +511,12 @@ def _parse_args(args, **kwargs):
         ns.pgo = Wahr  # pgo_extended implies pgo
 
     wenn ns.nowindows:
-        drucke("Warning: the --nowindows (-n) option is deprecated. "
+        drucke("Warning: the --nowindows (-n) option ist deprecated. "
               "Use -vv to display assertions in stderr.", file=sys.stderr)
 
     wenn ns.quiet:
         ns.verbose = 0
-    wenn ns.timeout is nicht Nichts:
+    wenn ns.timeout ist nicht Nichts:
         wenn ns.timeout <= 0:
             ns.timeout = Nichts
     wenn ns.use:
@@ -526,7 +526,7 @@ def _parse_args(args, **kwargs):
                     ns.use_resources[:] = ALL_RESOURCES
                     weiter
                 wenn r == 'none':
-                    del ns.use_resources[:]
+                    loesche ns.use_resources[:]
                     weiter
                 remove = Falsch
                 wenn r[0] == '-':
@@ -537,18 +537,18 @@ def _parse_args(args, **kwargs):
                         ns.use_resources.remove(r)
                 sowenn r nicht in ns.use_resources:
                     ns.use_resources.append(r)
-    wenn ns.random_seed is nicht Nichts:
+    wenn ns.random_seed ist nicht Nichts:
         ns.randomize = Wahr
     wenn ns.verbose:
         ns.header = Wahr
 
-    # When -jN option is used, a worker process does nicht use --verbose3
-    # und so -R 3:3 -jN --verbose3 just works als expected: there is no false
+    # When -jN option ist used, a worker process does nicht use --verbose3
+    # und so -R 3:3 -jN --verbose3 just works als expected: there ist no false
     # alarm about memory leak.
-    wenn ns.huntrleaks und ns.verbose3 und ns.use_mp is Nichts:
+    wenn ns.huntrleaks und ns.verbose3 und ns.use_mp ist Nichts:
         # run_single_test() replaces sys.stdout mit io.StringIO wenn verbose3
-        # is true. In this case, huntrleaks sees an write into StringIO as
-        # a memory leak, whereas it is nicht (gh-71290).
+        # ist true. In this case, huntrleaks sees an write into StringIO as
+        # a memory leak, whereas it ist nicht (gh-71290).
         ns.verbose3 = Falsch
         drucke("WARNING: Disable --verbose3 because it's incompatible mit "
               "--huntrleaks without -jN option",

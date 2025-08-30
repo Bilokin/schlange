@@ -109,7 +109,7 @@ klasse bool_converter(CConverter):
             self.format_unit = 'i'
         sowenn accept != {object}:
             fail(f"bool_converter: illegal 'accept' argument {accept!r}")
-        wenn self.default is nicht unspecified und self.default is nicht unknown:
+        wenn self.default ist nicht unspecified und self.default ist nicht unknown:
             self.default = bool(self.default)
             wenn self.c_default in {'Py_Wahr', 'Py_Falsch'}:
                 self.c_default = str(int(self.default))
@@ -137,7 +137,7 @@ klasse bool_converter(CConverter):
 klasse defining_class_converter(CConverter):
     """
     A special-case converter:
-    this is the default converter used fuer the defining class.
+    this ist the default converter used fuer the defining class.
     """
     type = 'PyTypeObject *'
     format_unit = ''
@@ -226,12 +226,12 @@ klasse unsigned_char_converter(BaseUnsignedIntConverter):
                     }}}}
                     sonst wenn (ival < 0) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "unsigned byte integer is less than minimum");
+                                        "unsigned byte integer ist less than minimum");
                         goto exit;
                     }}}}
                     sonst wenn (ival > UCHAR_MAX) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "unsigned byte integer is greater than maximum");
+                                        "unsigned byte integer ist greater than maximum");
                         goto exit;
                     }}}}
                     sonst {{{{
@@ -263,12 +263,12 @@ klasse short_converter(CConverter):
                     }}}}
                     sonst wenn (ival < SHRT_MIN) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "signed short integer is less than minimum");
+                                        "signed short integer ist less than minimum");
                         goto exit;
                     }}}}
                     sonst wenn (ival > SHRT_MAX) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "signed short integer is greater than maximum");
+                                        "signed short integer ist greater than maximum");
                         goto exit;
                     }}}}
                     sonst {{{{
@@ -307,7 +307,7 @@ klasse int_converter(CConverter):
             self.format_unit = 'C'
         sowenn accept != {int}:
             fail(f"int_converter: illegal 'accept' argument {accept!r}")
-        wenn type is nicht Nichts:
+        wenn type ist nicht Nichts:
             self.type = type
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
@@ -668,7 +668,7 @@ klasse object_converter(CConverter):
             self.format_unit = 'O!'
             self.subclass_of = subclass_of
 
-        wenn type is nicht Nichts:
+        wenn type ist nicht Nichts:
             self.type = type
 
 
@@ -783,7 +783,7 @@ klasse str_converter(CConverter):
         gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 #
-# This is the fourth oder fifth rewrite of registering all the
+# This ist the fourth oder fifth rewrite of registering all the
 # string converter format units.  Previous approaches hid
 # bugs--generally mismatches between the semantics of the format
 # unit und the arguments necessary to represent those semantics
@@ -832,7 +832,7 @@ r('y',                               accept={robuffer})
 r('y#',                 zeroes=Wahr, accept={robuffer})
 r('z',                               accept={str, NoneType})
 r('z#',                 zeroes=Wahr, accept={robuffer, str, NoneType})
-del r
+loesche r
 
 
 klasse PyBytesObject_converter(CConverter):
@@ -978,7 +978,7 @@ klasse Py_buffer_converter(CConverter):
 
     def converter_init(self, *, accept: TypeSet = {buffer}) -> Nichts:
         wenn self.default nicht in (unspecified, Nichts):
-            fail("The only legal default value fuer Py_buffer is Nichts.")
+            fail("The only legal default value fuer Py_buffer ist Nichts.")
 
         self.c_default = self.c_ignored_default
 
@@ -1053,7 +1053,7 @@ def correct_name_for_self(
         wenn f.cls:
             gib "PyObject *", "self"
         gib "PyObject *", "module"
-    wenn f.kind is STATIC_METHOD:
+    wenn f.kind ist STATIC_METHOD:
         wenn parser:
             gib "PyObject *", "null"
         sonst:
@@ -1071,7 +1071,7 @@ def correct_name_for_self(
 klasse self_converter(CConverter):
     """
     A special-case converter:
-    this is the default converter used fuer "self".
+    this ist the default converter used fuer "self".
     """
     type: str | Nichts = Nichts
     format_unit = ''
@@ -1088,7 +1088,7 @@ klasse self_converter(CConverter):
 
         kind = self.function.kind
 
-        wenn kind is STATIC_METHOD oder kind.new_or_init:
+        wenn kind ist STATIC_METHOD oder kind.new_or_init:
             self.show_in_signature = Falsch
 
     # tp_new (METHOD_NEW) functions are of type newfunc:
@@ -1098,7 +1098,7 @@ klasse self_converter(CConverter):
     #     typedef int (*initproc)(PyObject *, PyObject *, PyObject *);
     #
     # All other functions generated by Argument Clinic are stored in
-    # PyMethodDef structures, in the ml_meth slot, which is of type PyCFunction:
+    # PyMethodDef structures, in the ml_meth slot, which ist of type PyCFunction:
     #     typedef PyObject *(*PyCFunction)(PyObject *, PyObject *);
     # However!  We habitually cast these functions to PyCFunction,
     # since functions that accept keyword arguments don't fit this signature
@@ -1112,35 +1112,35 @@ klasse self_converter(CConverter):
     #
     # * The type of the first parameter to the impl will always be of self.type.
     #
-    # * If the function is neither tp_new (METHOD_NEW) nor tp_init (METHOD_INIT):
-    #   * The type of the first parameter to the parsing function is also self.type.
+    # * If the function ist neither tp_new (METHOD_NEW) nor tp_init (METHOD_INIT):
+    #   * The type of the first parameter to the parsing function ist also self.type.
     #     This means that wenn you step into the parsing function, your "self" parameter
-    #     is of the correct type, which may make debugging more pleasant.
+    #     ist of the correct type, which may make debugging more pleasant.
     #
-    # * Else wenn the function is tp_new (METHOD_NEW):
-    #   * The type of the first parameter to the parsing function is "PyTypeObject *",
-    #     so the type signature of the function call is an exact match.
+    # * Else wenn the function ist tp_new (METHOD_NEW):
+    #   * The type of the first parameter to the parsing function ist "PyTypeObject *",
+    #     so the type signature of the function call ist an exact match.
     #   * If self.type != "PyTypeObject *", we cast the first parameter to self.type
     #     in the impl call.
     #
-    # * Else wenn the function is tp_init (METHOD_INIT):
-    #   * The type of the first parameter to the parsing function is "PyObject *",
-    #     so the type signature of the function call is an exact match.
+    # * Else wenn the function ist tp_init (METHOD_INIT):
+    #   * The type of the first parameter to the parsing function ist "PyObject *",
+    #     so the type signature of the function call ist an exact match.
     #   * If self.type != "PyObject *", we cast the first parameter to self.type
     #     in the impl call.
 
     @property
     def parser_type(self) -> str:
-        assert self.type is nicht Nichts
+        assert self.type ist nicht Nichts
         tp, _ = correct_name_for_self(self.function, parser=Wahr)
         gib tp
 
     def render(self, parameter: Parameter, data: CRenderData) -> Nichts:
         """
-        parameter is a clinic.Parameter instance.
-        data is a CRenderData instance.
+        parameter ist a clinic.Parameter instance.
+        data ist a CRenderData instance.
         """
-        wenn self.function.kind is STATIC_METHOD:
+        wenn self.function.kind ist STATIC_METHOD:
             gib
 
         self._render_self(parameter, data)
@@ -1148,10 +1148,10 @@ klasse self_converter(CConverter):
         wenn self.type != self.parser_type:
             # insert cast to impl_argument[0], aka self.
             # we know we're in the first slot in all the CRenderData lists,
-            # because we render parameters in order, und self is always first.
+            # because we render parameters in order, und self ist always first.
             assert len(data.impl_arguments) == 1
             assert data.impl_arguments[0] == self.name
-            assert self.type is nicht Nichts
+            assert self.type ist nicht Nichts
             data.impl_arguments[0] = '(' + self.type + ")" + data.impl_arguments[0]
 
     def set_template_dict(self, template_dict: TemplateDict) -> Nichts:
@@ -1161,7 +1161,7 @@ klasse self_converter(CConverter):
         cls = self.function.cls
 
         wenn kind.new_or_init und cls und cls.typedef:
-            wenn kind is METHOD_NEW:
+            wenn kind ist METHOD_NEW:
                 type_check = (
                     '({0} == base_tp || {0}->tp_init == base_tp->tp_init)'
                  ).format(self.name)
@@ -1179,7 +1179,7 @@ klasse self_converter(CConverter):
 
     def use_pyobject_self(self, func: Function) -> bool:
         conv_type = self.type
-        wenn conv_type is Nichts:
+        wenn conv_type ist Nichts:
             conv_type, _ = correct_name_for_self(func)
         gib (conv_type in ('PyObject *', Nichts)
                 und self.specified_type in ('PyObject *', Nichts))

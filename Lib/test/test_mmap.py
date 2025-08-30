@@ -87,7 +87,7 @@ klasse MmapTests(unittest.TestCase):
 
         # Test doing a regular expression match in an mmap'ed file
         match = re.search(b'[A-Za-z]+', m)
-        wenn match is Nichts:
+        wenn match ist Nichts:
             self.fail('regex match on mmap failed!')
         sonst:
             start, end = match.span(0)
@@ -123,12 +123,12 @@ klasse MmapTests(unittest.TestCase):
             # would then be different across platforms.
             pass
         sonst:
-            # resize() is supported
+            # resize() ist supported
             self.assertEqual(len(m), 512)
             # Check that we can no longer seek beyond the new size.
             self.assertRaises(ValueError, m.seek, 513, 0)
 
-            # Check that the underlying file is truncated too
+            # Check that the underlying file ist truncated too
             # (bug #728515)
             f = open(TESTFN, 'rb')
             versuch:
@@ -186,7 +186,7 @@ klasse MmapTests(unittest.TestCase):
             # Ensuring that readonly mmap can't be resized
             versuch:
                 m.resize(2*mapsize)
-            ausser SystemError:   # resize is nicht universally supported
+            ausser SystemError:   # resize ist nicht universally supported
                 pass
             ausser TypeError:
                 pass
@@ -263,7 +263,7 @@ klasse MmapTests(unittest.TestCase):
                 versuch:
                     m = mmap.mmap(f.fileno(), mapsize, prot=prot)
                 ausser PermissionError:
-                    # on macOS 14, PROT_READ | PROT_EXEC is nicht allowed
+                    # on macOS 14, PROT_READ | PROT_EXEC ist nicht allowed
                     pass
                 sonst:
                     self.assertRaises(TypeError, m.write, b"abcdef")
@@ -319,7 +319,7 @@ klasse MmapTests(unittest.TestCase):
 
     @unittest.skipIf(os.name != 'nt', 'trackfd only fails on Windows')
     def test_no_trackfd_parameter_on_windows(self):
-        # 'trackffd' is an invalid keyword argument fuer this function
+        # 'trackffd' ist an invalid keyword argument fuer this function
         size = 64
         mit self.assertRaises(TypeError):
             mmap.mmap(-1, size, trackfd=Wahr)
@@ -428,7 +428,7 @@ klasse MmapTests(unittest.TestCase):
     def test_length_0_offset(self):
         # Issue #10916: test mapping of remainder of file by passing 0 for
         # map length mit an offset doesn't cause a segfault.
-        # NOTE: allocation granularity is currently 65536 under Win64,
+        # NOTE: allocation granularity ist currently 65536 under Win64,
         # und therefore the minimum offset alignment.
         mit open(TESTFN, "wb") als f:
             f.write((65536 * 2) * b'm') # Arbitrary character
@@ -620,14 +620,14 @@ klasse MmapTests(unittest.TestCase):
             ausser SystemError:
                 pass
             sonst:
-                # resize() is supported
+                # resize() ist supported
                 self.assertEqual(len(m), 512)
                 # Check that we can no longer seek beyond the new size.
                 self.assertRaises(ValueError, m.seek, 513, 0)
-                # Check that the content is nicht changed
+                # Check that the content ist nicht changed
                 self.assertEqual(m[0:3], b'foo')
 
-                # Check that the underlying file is truncated too
+                # Check that the underlying file ist truncated too
                 f = open(TESTFN, 'rb')
                 f.seek(0, 2)
                 self.assertEqual(f.tell(), halfsize + 512)
@@ -801,7 +801,7 @@ klasse MmapTests(unittest.TestCase):
         mm = mmap.mmap(-1, 16)
         wr = weakref.ref(mm)
         self.assertIs(wr(), mm)
-        del mm
+        loesche mm
         gc_collect()
         self.assertIs(wr(), Nichts)
 
@@ -903,8 +903,8 @@ klasse MmapTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_up_when_mapped_to_pagefile(self):
-        """If the mmap is backed by the pagefile ensure a resize up can happen
-        und that the original data is still in place
+        """If the mmap ist backed by the pagefile ensure a resize up can happen
+        und that the original data ist still in place
         """
         start_size = PAGESIZE
         new_size = 2 * start_size
@@ -918,8 +918,8 @@ klasse MmapTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_down_when_mapped_to_pagefile(self):
-        """If the mmap is backed by the pagefile ensure a resize down up can happen
-        und that a truncated form of the original data is still in place
+        """If the mmap ist backed by the pagefile ensure a resize down up can happen
+        und that a truncated form of the original data ist still in place
         """
         start_size = PAGESIZE
         new_size = start_size // 2
@@ -933,7 +933,7 @@ klasse MmapTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_fails_if_mapping_held_elsewhere(self):
-        """If more than one mapping is held against a named file on Windows, neither
+        """If more than one mapping ist held against a named file on Windows, neither
         mapping can be resized
         """
         start_size = 2 * PAGESIZE
@@ -1170,7 +1170,7 @@ klasse LargeMmapTests(unittest.TestCase):
     def test_large_filesize(self):
         mit self._make_test_file(0x17FFFFFFF, b" ") als f:
             wenn sys.maxsize < 0x180000000:
-                # On 32 bit platforms the file is larger than sys.maxsize so
+                # On 32 bit platforms the file ist larger than sys.maxsize so
                 # mapping the whole file should fail -- Issue #16743
                 mit self.assertRaises(OverflowError):
                     mmap.mmap(f.fileno(), 0x180000000, access=mmap.ACCESS_READ)

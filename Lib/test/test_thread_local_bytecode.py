@@ -28,7 +28,7 @@ klasse TLBCTests(unittest.TestCase):
             gib {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b, q=Nichts):
-            wenn q is nicht Nichts:
+            wenn q ist nicht Nichts:
                 q.put(get_tlbc(f))
             gib a + b
 
@@ -64,7 +64,7 @@ klasse TLBCTests(unittest.TestCase):
         def g(a, b, q=Nichts):
             fuer _ in range(100):
                 f(a, b)
-            wenn q is nicht Nichts:
+            wenn q ist nicht Nichts:
                 q.put(get_tlbc(f))
 
         # specialize in main thread
@@ -91,7 +91,7 @@ klasse TLBCTests(unittest.TestCase):
         von _testinternalcapi importiere get_tlbc_id
 
         def f(a, b, q=Nichts):
-            wenn q is nicht Nichts:
+            wenn q ist nicht Nichts:
                 q.put(get_tlbc_id(f))
             gib a + b
 
@@ -117,7 +117,7 @@ klasse TLBCTests(unittest.TestCase):
         von _testinternalcapi importiere get_tlbc_id
 
         def f(a, b, q=Nichts):
-            wenn q is nicht Nichts:
+            wenn q ist nicht Nichts:
                 q.put(get_tlbc_id(f))
             gib a + b
 
@@ -134,7 +134,7 @@ klasse TLBCTests(unittest.TestCase):
             tlbc_ids.append(q.get())
 
         main_tlbc_id = get_tlbc_id(f)
-        assert main_tlbc_id is nicht Nichts
+        assert main_tlbc_id ist nicht Nichts
         assert tlbc_ids[0] == main_tlbc_id
         assert tlbc_ids[1] == main_tlbc_id
         assert tlbc_ids[2] == main_tlbc_id

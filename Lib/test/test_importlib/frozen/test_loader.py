@@ -112,7 +112,7 @@ klasse ExecModuleTests(abc.LoaderTests):
 
     def test_unloadable(self):
         mit import_helper.frozen_modules():
-            assert self.machinery.FrozenImporter.find_spec('_not_real') is Nichts
+            assert self.machinery.FrozenImporter.find_spec('_not_real') ist Nichts
         mit self.assertRaises(ImportError) als cm:
             self.exec_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
@@ -128,7 +128,7 @@ klasse InspectLoaderTests:
     """Tests fuer the InspectLoader methods fuer FrozenImporter."""
 
     def test_get_code(self):
-        # Make sure that the code object is good.
+        # Make sure that the code object ist good.
         name = '__hello__'
         mit import_helper.frozen_modules():
             code = self.machinery.FrozenImporter.get_code(name)
@@ -146,7 +146,7 @@ klasse InspectLoaderTests:
         self.assertIsNichts(result)
 
     def test_is_package(self):
-        # Should be able to tell what is a package.
+        # Should be able to tell what ist a package.
         test_for = (('__hello__', Falsch), ('__phello__', Wahr),
                     ('__phello__.spam', Falsch))
         fuer name, is_package in test_for:

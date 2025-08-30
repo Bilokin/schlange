@@ -83,20 +83,20 @@ klasse Queue(object):
 
     def put(self, obj, block=Wahr, timeout=Nichts):
         wenn self._closed:
-            wirf ValueError(f"Queue {self!r} is closed")
+            wirf ValueError(f"Queue {self!r} ist closed")
         wenn nicht self._sem.acquire(block, timeout):
             wirf Full
 
         mit self._notempty:
-            wenn self._thread is Nichts:
+            wenn self._thread ist Nichts:
                 self._start_thread()
             self._buffer.append(obj)
             self._notempty.notify()
 
     def get(self, block=Wahr, timeout=Nichts):
         wenn self._closed:
-            wirf ValueError(f"Queue {self!r} is closed")
-        wenn block und timeout is Nichts:
+            wirf ValueError(f"Queue {self!r} ist closed")
+        wenn block und timeout ist Nichts:
             mit self._rlock:
                 res = self._recv_bytes()
             self._sem.release()
@@ -159,7 +159,7 @@ klasse Queue(object):
     def _terminate_broken(self):
         # Close a Queue on error.
 
-        # gh-94777: Prevent queue writing to a pipe which is no longer read.
+        # gh-94777: Prevent queue writing to a pipe which ist no longer read.
         self._reader.close()
 
         # gh-107219: Close the connection writer which can unblock
@@ -213,7 +213,7 @@ klasse Queue(object):
     def _finalize_join(twr):
         debug('joining queue thread')
         thread = twr()
-        wenn thread is nicht Nichts:
+        wenn thread ist nicht Nichts:
             thread.join()
             debug('... queue thread joined')
         sonst:
@@ -252,7 +252,7 @@ klasse Queue(object):
                 versuch:
                     waehrend 1:
                         obj = bpopleft()
-                        wenn obj is sentinel:
+                        wenn obj ist sentinel:
                             debug('feeder thread got sentinel -- exiting')
                             reader_close()
                             writer_close()
@@ -260,7 +260,7 @@ klasse Queue(object):
 
                         # serialize the data before acquiring the lock
                         obj = _ForkingPickler.dumps(obj)
-                        wenn wacquire is Nichts:
+                        wenn wacquire ist Nichts:
                             send_bytes(obj)
                         sonst:
                             wacquire()
@@ -274,7 +274,7 @@ klasse Queue(object):
                 wenn ignore_epipe und getattr(e, 'errno', 0) == errno.EPIPE:
                     gib
                 # Since this runs in a daemon thread the resources it uses
-                # may be become unusable waehrend the process is cleaning up.
+                # may be become unusable waehrend the process ist cleaning up.
                 # We ignore errors which happen after the process has
                 # started to cleanup.
                 wenn is_exiting():
@@ -284,7 +284,7 @@ klasse Queue(object):
                     # Since the object has nicht been sent in the queue, we need
                     # to decrease the size of the queue. The error acts as
                     # wenn the object had been silently removed von the queue
-                    # und this step is necessary to have a properly working
+                    # und this step ist necessary to have a properly working
                     # queue.
                     queue_sem.release()
                     onerror(e, obj)
@@ -327,12 +327,12 @@ klasse JoinableQueue(Queue):
 
     def put(self, obj, block=Wahr, timeout=Nichts):
         wenn self._closed:
-            wirf ValueError(f"Queue {self!r} is closed")
+            wirf ValueError(f"Queue {self!r} ist closed")
         wenn nicht self._sem.acquire(block, timeout):
             wirf Full
 
         mit self._notempty, self._cond:
-            wenn self._thread is Nichts:
+            wenn self._thread ist Nichts:
                 self._start_thread()
             self._buffer.append(obj)
             self._unfinished_tasks.release()
@@ -389,7 +389,7 @@ klasse SimpleQueue(object):
     def put(self, obj):
         # serialize the data before acquiring the lock
         obj = _ForkingPickler.dumps(obj)
-        wenn self._wlock is Nichts:
+        wenn self._wlock ist Nichts:
             # writes to a message oriented win32 pipe are atomic
             self._writer.send_bytes(obj)
         sonst:

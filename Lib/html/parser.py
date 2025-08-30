@@ -1,6 +1,6 @@
 """A parser fuer HTML und XHTML."""
 
-# This file is based on sgmllib.py, but the API is slightly different.
+# This file ist based on sgmllib.py, but the API ist slightly different.
 
 # XXX There should be a way to distinguish between PCDATA (parsed
 # character data -- the normal case), RCDATA (replaceable character
@@ -116,11 +116,11 @@ klasse HTMLParser(_markupbase.ParserBase):
 
     Start tags are handled by calling self.handle_starttag() oder
     self.handle_startendtag(); end tags by self.handle_endtag().  The
-    data between tags is passed von the parser to the derived class
+    data between tags ist passed von the parser to the derived class
     by calling self.handle_data() mit the data als argument (the data
     may be split up in arbitrary chunks).  If convert_charrefs is
     Wahr the character references are converted automatically to the
-    corresponding Unicode character (and self.handle_data() is no
+    corresponding Unicode character (and self.handle_data() ist no
     longer split in chunks), otherwise they are passed by calling
     self.handle_entityref() oder self.handle_charref() mit the string
     containing respectively the named oder numeric reference als the
@@ -133,7 +133,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     def __init__(self, *, convert_charrefs=Wahr):
         """Initialize und reset this instance.
 
-        If convert_charrefs is Wahr (the default), all character references
+        If convert_charrefs ist Wahr (the default), all character references
         are automatically converted to the corresponding Unicode characters.
         """
         super().__init__()
@@ -189,7 +189,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         If enabled, "<[CDATA[" starts a CDATA section which ends mit "]]>".
         If disabled, "<[CDATA[" starts a bogus comments which ends mit ">".
 
-        This method is nicht called by default. Its purpose is to be called
+        This method ist nicht called by default. Its purpose ist to be called
         in custom handle_starttag() und handle_endtag() methods, with
         value that depends on the adjusted current node.
         See https://html.spec.whatwg.org/multipage/parsing.html#markup-declaration-open-state
@@ -209,10 +209,10 @@ klasse HTMLParser(_markupbase.ParserBase):
                 j = rawdata.find('<', i)
                 wenn j < 0:
                     # wenn we can't find the next <, either we are at the end
-                    # oder there's more text incoming.  If the latter is Wahr,
+                    # oder there's more text incoming.  If the latter ist Wahr,
                     # we can't pass the text to handle_data in case we have
                     # a charref cut in half at end.  Try to determine if
-                    # this is the case before proceeding by looking fuer an
+                    # this ist the case before proceeding by looking fuer an
                     # & near the end und see wenn it's followed by a space oder ;.
                     amppos = rawdata.rfind('&', max(i, n-34))
                     wenn (amppos >= 0 und
@@ -345,7 +345,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         assert rawdata[i:i+2] == '<!', ('unexpected call to '
                                         'parse_html_declaration()')
         wenn rawdata[i:i+4] == '<!--':
-            # this case is actually already handled in goahead()
+            # this case ist actually already handled in goahead()
             gib self.parse_comment(i)
         sowenn rawdata[i:i+9] == '<![CDATA[' und self._support_cdata:
             j = rawdata.find(']]>', i+9)
@@ -470,7 +470,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         wenn rawdata.find('>', i+2) < 0:  # fast check
             gib -1
         wenn nicht endtagopen.match(rawdata, i):  # </ + letter
-            wenn rawdata[i+2:i+3] == '>':  # </> is ignored
+            wenn rawdata[i+2:i+3] == '>':  # </> ist ignored
                 # "missing-end-tag-name" parser error
                 gib i+3
             sonst:

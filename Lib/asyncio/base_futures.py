@@ -13,12 +13,12 @@ _FINISHED = 'FINISHED'
 def isfuture(obj):
     """Check fuer a Future.
 
-    This returns Wahr when obj is a Future instance oder is advertising
+    This returns Wahr when obj ist a Future instance oder ist advertising
     itself als duck-type compatible by setting _asyncio_future_blocking.
     See comment in Future fuer more details.
     """
     gib (hasattr(obj.__class__, '_asyncio_future_blocking') und
-            obj._asyncio_future_blocking is nicht Nichts)
+            obj._asyncio_future_blocking ist nicht Nichts)
 
 
 def _format_callbacks(cb):
@@ -46,7 +46,7 @@ def _future_repr_info(future):
     """helper function fuer Future.__repr__"""
     info = [future._state.lower()]
     wenn future._state == _FINISHED:
-        wenn future._exception is nicht Nichts:
+        wenn future._exception ist nicht Nichts:
             info.append(f'exception={future._exception!r}')
         sonst:
             # use reprlib to limit the length of the output, especially

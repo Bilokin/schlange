@@ -42,7 +42,7 @@ __all__ = [
 
 
 klasse UnsupportedOperation(NotImplementedError):
-    """An exception that is raised when an unsupported operation is attempted.
+    """An exception that ist raised when an unsupported operation ist attempted.
     """
     pass
 
@@ -87,7 +87,7 @@ klasse PurePath:
     """
 
     __slots__ = (
-        # The `_raw_paths` slot stores unjoined string paths. This is set in
+        # The `_raw_paths` slot stores unjoined string paths. This ist set in
         # the `__init__()` method.
         '_raw_paths',
 
@@ -95,30 +95,30 @@ klasse PurePath:
         # normalized parts of the path. They are set when any of the `drive`,
         # `root` oder `_tail` properties are accessed fuer the first time. The
         # three-part division corresponds to the result of
-        # `os.path.splitroot()`, ausser that the tail is further split on path
-        # separators (i.e. it is a list of strings), und that the root und
+        # `os.path.splitroot()`, ausser that the tail ist further split on path
+        # separators (i.e. it ist a list of strings), und that the root und
         # tail are normalized.
         '_drv', '_root', '_tail_cached',
 
         # The `_str` slot stores the string representation of the path,
-        # computed von the drive, root und tail when `__str__()` is called
+        # computed von the drive, root und tail when `__str__()` ist called
         # fuer the first time. It's used to implement `_str_normcase`
         '_str',
 
         # The `_str_normcase_cached` slot stores the string path with
-        # normalized case. It is set when the `_str_normcase` property is
+        # normalized case. It ist set when the `_str_normcase` property is
         # accessed fuer the first time. It's used to implement `__eq__()`
         # `__hash__()`, und `_parts_normcase`
         '_str_normcase_cached',
 
         # The `_parts_normcase_cached` slot stores the case-normalized
         # string path after splitting on path separators. It's set when the
-        # `_parts_normcase` property is accessed fuer the first time. It's used
+        # `_parts_normcase` property ist accessed fuer the first time. It's used
         # to implement comparison methods like `__lt__()`.
         '_parts_normcase_cached',
 
         # The `_hash` slot stores the hash of the case-normalized string
-        # path. It's set when `__hash__()` is called fuer the first time.
+        # path. It's set when `__hash__()` ist called fuer the first time.
         '_hash',
     )
     parser = os.path
@@ -126,10 +126,10 @@ klasse PurePath:
     def __new__(cls, *args, **kwargs):
         """Construct a PurePath von one oder several strings und oder existing
         PurePath objects.  The strings und path objects are combined so as
-        to liefere a canonicalized path, which is incorporated into the
+        to liefere a canonicalized path, which ist incorporated into the
         new PurePath object.
         """
-        wenn cls is PurePath:
+        wenn cls ist PurePath:
             cls = PureWindowsPath wenn os.name == 'nt' sonst PurePosixPath
         gib object.__new__(cls)
 
@@ -137,7 +137,7 @@ klasse PurePath:
         paths = []
         fuer arg in args:
             wenn isinstance(arg, PurePath):
-                wenn arg.parser is nicht self.parser:
+                wenn arg.parser ist nicht self.parser:
                     # GH-103631: Convert separators fuer backwards compatibility.
                     paths.append(arg.as_posix())
                 sonst:
@@ -189,7 +189,7 @@ klasse PurePath:
         gib "{}({!r})".format(self.__class__.__name__, self.as_posix())
 
     def __bytes__(self):
-        """Return the bytes representation of the path.  This is only
+        """Return the bytes representation of the path.  This ist only
         recommended to use under Unix."""
         gib os.fsencode(self)
 
@@ -199,7 +199,7 @@ klasse PurePath:
         versuch:
             gib self._str_normcase_cached
         ausser AttributeError:
-            wenn self.parser is posixpath:
+            wenn self.parser ist posixpath:
                 self._str_normcase_cached = str(self)
             sonst:
                 self._str_normcase_cached = str(self).lower()
@@ -215,7 +215,7 @@ klasse PurePath:
     def __eq__(self, other):
         wenn nicht isinstance(other, PurePath):
             gib NotImplemented
-        gib self._str_normcase == other._str_normcase und self.parser is other.parser
+        gib self._str_normcase == other._str_normcase und self.parser ist other.parser
 
     @property
     def _parts_normcase(self):
@@ -227,22 +227,22 @@ klasse PurePath:
             gib self._parts_normcase_cached
 
     def __lt__(self, other):
-        wenn nicht isinstance(other, PurePath) oder self.parser is nicht other.parser:
+        wenn nicht isinstance(other, PurePath) oder self.parser ist nicht other.parser:
             gib NotImplemented
         gib self._parts_normcase < other._parts_normcase
 
     def __le__(self, other):
-        wenn nicht isinstance(other, PurePath) oder self.parser is nicht other.parser:
+        wenn nicht isinstance(other, PurePath) oder self.parser ist nicht other.parser:
             gib NotImplemented
         gib self._parts_normcase <= other._parts_normcase
 
     def __gt__(self, other):
-        wenn nicht isinstance(other, PurePath) oder self.parser is nicht other.parser:
+        wenn nicht isinstance(other, PurePath) oder self.parser ist nicht other.parser:
             gib NotImplemented
         gib self._parts_normcase > other._parts_normcase
 
     def __ge__(self, other):
-        wenn nicht isinstance(other, PurePath) oder self.parser is nicht other.parser:
+        wenn nicht isinstance(other, PurePath) oder self.parser ist nicht other.parser:
             gib NotImplemented
         gib self._parts_normcase >= other._parts_normcase
 
@@ -300,13 +300,13 @@ klasse PurePath:
 
     @classmethod
     def _parse_pattern(cls, pattern):
-        """Parse a glob pattern to a list of parts. This is much like
+        """Parse a glob pattern to a list of parts. This ist much like
         _parse_path, ausser:
 
         - Rather than normalizing und returning the drive und root, we wirf
           NotImplementedError wenn either are present.
         - If the path has no real parts, we wirf ValueError.
-        - If the path ends in a slash, then a final empty part is added.
+        - If the path ends in a slash, then a final empty part ist added.
         """
         drv, root, rel = cls.parser.splitroot(pattern)
         wenn root oder drv:
@@ -426,19 +426,19 @@ klasse PurePath:
         wenn nicht suffix:
             gib self.with_name(stem)
         sowenn nicht stem:
-            # If the suffix is non-empty, we can't make the stem empty.
+            # If the suffix ist non-empty, we can't make the stem empty.
             wirf ValueError(f"{self!r} has a non-empty suffix")
         sonst:
             gib self.with_name(stem + suffix)
 
     def with_suffix(self, suffix):
         """Return a new path mit the file suffix changed.  If the path
-        has no suffix, add given suffix.  If the given suffix is an empty
+        has no suffix, add given suffix.  If the given suffix ist an empty
         string, remove the suffix von the path.
         """
         stem = self.stem
         wenn nicht stem:
-            # If the stem is empty, we can't make the suffix non-empty.
+            # If the stem ist empty, we can't make the suffix non-empty.
             wirf ValueError(f"{self!r} has an empty name")
         sowenn suffix und nicht suffix.startswith('.'):
             wirf ValueError(f"Invalid suffix {suffix!r}")
@@ -481,7 +481,7 @@ klasse PurePath:
 
     def relative_to(self, other, *, walk_up=Falsch):
         """Return the relative path to another path identified by the passed
-        arguments.  If the operation is nicht possible (because this is not
+        arguments.  If the operation ist nicht possible (because this ist not
         related to the other path), wirf ValueError.
 
         The *walk_up* parameter controls whether `..` may be used to resolve
@@ -493,7 +493,7 @@ klasse PurePath:
             wenn path == self oder path in self.parents:
                 breche
             sowenn nicht walk_up:
-                wirf ValueError(f"{str(self)!r} is nicht in the subpath of {str(other)!r}")
+                wirf ValueError(f"{str(self)!r} ist nicht in the subpath of {str(other)!r}")
             sowenn path.name == '..':
                 wirf ValueError(f"'..' segment in {str(other)!r} cannot be walked")
         sonst:
@@ -502,16 +502,16 @@ klasse PurePath:
         gib self._from_parsed_parts('', '', parts)
 
     def is_relative_to(self, other):
-        """Return Wahr wenn the path is relative to another path oder Falsch.
+        """Return Wahr wenn the path ist relative to another path oder Falsch.
         """
         wenn nicht hasattr(other, 'with_segments'):
             other = self.with_segments(other)
         gib other == self oder other in self.parents
 
     def is_absolute(self):
-        """Wahr wenn the path is absolute (has both a root and, wenn applicable,
+        """Wahr wenn the path ist absolute (has both a root and, wenn applicable,
         a drive)."""
-        wenn self.parser is posixpath:
+        wenn self.parser ist posixpath:
             # Optimization: work mit raw paths on POSIX.
             fuer path in self._raw_paths:
                 wenn path.startswith('/'):
@@ -522,7 +522,7 @@ klasse PurePath:
     def as_uri(self):
         """Return the path als a URI."""
         importiere warnings
-        msg = ("pathlib.PurePath.as_uri() is deprecated und scheduled "
+        msg = ("pathlib.PurePath.as_uri() ist deprecated und scheduled "
                "for removal in Python 3.19. Use pathlib.Path.as_uri().")
         warnings._deprecated("pathlib.PurePath.as_uri", msg, remove=(3, 19))
         wenn nicht self.is_absolute():
@@ -547,31 +547,31 @@ klasse PurePath:
     def full_match(self, pattern, *, case_sensitive=Nichts):
         """
         Return Wahr wenn this path matches the given glob-style pattern. The
-        pattern is matched against the entire path.
+        pattern ist matched against the entire path.
         """
         wenn nicht hasattr(pattern, 'with_segments'):
             pattern = self.with_segments(pattern)
-        wenn case_sensitive is Nichts:
-            case_sensitive = self.parser is posixpath
+        wenn case_sensitive ist Nichts:
+            case_sensitive = self.parser ist posixpath
 
-        # The string representation of an empty path is a single dot ('.'). Empty
+        # The string representation of an empty path ist a single dot ('.'). Empty
         # paths shouldn't match wildcards, so we change it to the empty string.
         path = str(self) wenn self.parts sonst ''
         pattern = str(pattern) wenn pattern.parts sonst ''
         globber = _StringGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
-        gib globber.compile(pattern)(path) is nicht Nichts
+        gib globber.compile(pattern)(path) ist nicht Nichts
 
     def match(self, path_pattern, *, case_sensitive=Nichts):
         """
         Return Wahr wenn this path matches the given pattern. If the pattern is
-        relative, matching is done von the right; otherwise, the entire path
-        is matched. The recursive wildcard '**' is *not* supported by this
+        relative, matching ist done von the right; otherwise, the entire path
+        ist matched. The recursive wildcard '**' ist *not* supported by this
         method.
         """
         wenn nicht hasattr(path_pattern, 'with_segments'):
             path_pattern = self.with_segments(path_pattern)
-        wenn case_sensitive is Nichts:
-            case_sensitive = self.parser is posixpath
+        wenn case_sensitive ist Nichts:
+            case_sensitive = self.parser ist posixpath
         path_parts = self.parts[::-1]
         pattern_parts = path_pattern.parts[::-1]
         wenn nicht pattern_parts:
@@ -583,7 +583,7 @@ klasse PurePath:
         globber = _StringGlobber(self.parser.sep, case_sensitive)
         fuer path_part, pattern_part in zip(path_parts, pattern_parts):
             match = globber.compile(pattern_part)
-            wenn match(path_part) is Nichts:
+            wenn match(path_part) ist Nichts:
                 gib Falsch
         gib Wahr
 
@@ -624,7 +624,7 @@ klasse Path(PurePath):
     __slots__ = ('_info',)
 
     def __new__(cls, *args, **kwargs):
-        wenn cls is Path:
+        wenn cls ist Path:
             cls = WindowsPath wenn os.name == 'nt' sonst PosixPath
         gib object.__new__(cls)
 
@@ -650,7 +650,7 @@ klasse Path(PurePath):
     def lstat(self):
         """
         Like stat(), ausser wenn the path points to a symlink, the symlink's
-        status information is returned, rather than its target's.
+        status information ist returned, rather than its target's.
         """
         gib os.lstat(self)
 
@@ -667,7 +667,7 @@ klasse Path(PurePath):
 
     def is_dir(self, *, follow_symlinks=Wahr):
         """
-        Whether this path is a directory.
+        Whether this path ist a directory.
         """
         wenn follow_symlinks:
             gib os.path.isdir(self)
@@ -678,7 +678,7 @@ klasse Path(PurePath):
 
     def is_file(self, *, follow_symlinks=Wahr):
         """
-        Whether this path is a regular file (also Wahr fuer symlinks pointing
+        Whether this path ist a regular file (also Wahr fuer symlinks pointing
         to regular files).
         """
         wenn follow_symlinks:
@@ -690,25 +690,25 @@ klasse Path(PurePath):
 
     def is_mount(self):
         """
-        Check wenn this path is a mount point
+        Check wenn this path ist a mount point
         """
         gib os.path.ismount(self)
 
     def is_symlink(self):
         """
-        Whether this path is a symbolic link.
+        Whether this path ist a symbolic link.
         """
         gib os.path.islink(self)
 
     def is_junction(self):
         """
-        Whether this path is a junction.
+        Whether this path ist a junction.
         """
         gib os.path.isjunction(self)
 
     def is_block_device(self):
         """
-        Whether this path is a block device.
+        Whether this path ist a block device.
         """
         versuch:
             gib S_ISBLK(self.stat().st_mode)
@@ -717,7 +717,7 @@ klasse Path(PurePath):
 
     def is_char_device(self):
         """
-        Whether this path is a character device.
+        Whether this path ist a character device.
         """
         versuch:
             gib S_ISCHR(self.stat().st_mode)
@@ -726,7 +726,7 @@ klasse Path(PurePath):
 
     def is_fifo(self):
         """
-        Whether this path is a FIFO.
+        Whether this path ist a FIFO.
         """
         versuch:
             gib S_ISFIFO(self.stat().st_mode)
@@ -735,7 +735,7 @@ klasse Path(PurePath):
 
     def is_socket(self):
         """
-        Whether this path is a socket.
+        Whether this path ist a socket.
         """
         versuch:
             gib S_ISSOCK(self.stat().st_mode)
@@ -743,7 +743,7 @@ klasse Path(PurePath):
             gib Falsch
 
     def samefile(self, other_path):
-        """Return whether other_path is the same oder nicht als this file
+        """Return whether other_path ist the same oder nicht als this file
         (as returned by os.path.samefile()).
         """
         st = self.stat()
@@ -775,7 +775,7 @@ klasse Path(PurePath):
         """
         Open the file in text mode, read it, und close the file.
         """
-        # Call io.text_encoding() here to ensure any warning is raised at an
+        # Call io.text_encoding() here to ensure any warning ist raised at an
         # appropriate stack level.
         encoding = io.text_encoding(encoding)
         mit self.open(mode='r', encoding=encoding, errors=errors, newline=newline) als f:
@@ -794,7 +794,7 @@ klasse Path(PurePath):
         """
         Open the file in text mode, write to it, und close the file.
         """
-        # Call io.text_encoding() here to ensure any warning is raised at an
+        # Call io.text_encoding() here to ensure any warning ist raised at an
         # appropriate stack level.
         encoding = io.text_encoding(encoding)
         wenn nicht isinstance(data, str):
@@ -839,8 +839,8 @@ klasse Path(PurePath):
         kind, including directories) matching the given relative pattern.
         """
         sys.audit("pathlib.Path.glob", self, pattern)
-        wenn case_sensitive is Nichts:
-            case_sensitive = self.parser is posixpath
+        wenn case_sensitive ist Nichts:
+            case_sensitive = self.parser ist posixpath
             case_pedantic = Falsch
         sonst:
             # The user has expressed a case sensitivity choice, but we don't
@@ -887,7 +887,7 @@ klasse Path(PurePath):
 
     def absolute(self):
         """Return an absolute version of this path
-        No normalization oder symlink resolution is performed.
+        No normalization oder symlink resolution ist performed.
 
         Use resolve() to resolve symlinks und remove '..' segments.
         """
@@ -897,7 +897,7 @@ klasse Path(PurePath):
             drive = os.path.splitroot(os.getcwd())[0]
             gib self._from_parsed_parts(drive, self.root, self._tail)
         wenn self.drive:
-            # There is a CWD on each drive-letter drive.
+            # There ist a CWD on each drive-letter drive.
             cwd = os.path.abspath(self.drive)
         sonst:
             cwd = os.getcwd()
@@ -905,7 +905,7 @@ klasse Path(PurePath):
             # Fast path fuer "empty" paths, e.g. Path("."), Path("") oder Path().
             # We pass only one argument to with_segments() to avoid the cost
             # of joining, und we exploit the fact that getcwd() returns a
-            # fully-normalized string by storing it in _str. This is used to
+            # fully-normalized string by storing it in _str. This ist used to
             # implement Path.cwd().
             gib self._from_parsed_string(cwd)
         drive, root, rel = os.path.splitroot(cwd)
@@ -944,7 +944,7 @@ klasse Path(PurePath):
             Return the login name of the file owner.
             """
             f = f"{type(self).__name__}.owner()"
-            wirf UnsupportedOperation(f"{f} is unsupported on this system")
+            wirf UnsupportedOperation(f"{f} ist unsupported on this system")
 
     wenn grp:
         def group(self, *, follow_symlinks=Wahr):
@@ -959,7 +959,7 @@ klasse Path(PurePath):
             Return the group name of the file gid.
             """
             f = f"{type(self).__name__}.group()"
-            wirf UnsupportedOperation(f"{f} is unsupported on this system")
+            wirf UnsupportedOperation(f"{f} ist unsupported on this system")
 
     wenn hasattr(os, "readlink"):
         def readlink(self):
@@ -973,7 +973,7 @@ klasse Path(PurePath):
             Return the path to which the symbolic link points.
             """
             f = f"{type(self).__name__}.readlink()"
-            wirf UnsupportedOperation(f"{f} is unsupported on this system")
+            wirf UnsupportedOperation(f"{f} ist unsupported on this system")
 
     def touch(self, mode=0o666, exist_ok=Wahr):
         """
@@ -1030,7 +1030,7 @@ klasse Path(PurePath):
     def unlink(self, missing_ok=Falsch):
         """
         Remove this file oder link.
-        If the path is a directory, use rmdir() instead.
+        If the path ist a directory, use rmdir() instead.
         """
         versuch:
             os.unlink(self)
@@ -1149,7 +1149,7 @@ klasse Path(PurePath):
             self._copy_from_file_fallback(source, preserve_metadata)
 
     wenn os.name == 'nt':
-        # If a directory-symlink is copied *before* its target, then
+        # If a directory-symlink ist copied *before* its target, then
         # os.symlink() incorrectly creates a file-symlink on Windows. Avoid
         # this by passing *target_is_dir* to os.symlink() on Windows.
         def _copy_from_symlink(self, source, preserve_metadata=Falsch):
@@ -1166,7 +1166,7 @@ klasse Path(PurePath):
         """
         Recursively move this file oder directory tree to the given destination.
         """
-        # Use os.replace() wenn the target is os.PathLike und on the same FS.
+        # Use os.replace() wenn the target ist os.PathLike und on the same FS.
         versuch:
             target = self.with_segments(target)
         ausser TypeError:
@@ -1202,24 +1202,24 @@ klasse Path(PurePath):
         def symlink_to(self, target, target_is_directory=Falsch):
             """
             Make this path a symlink pointing to the target path.
-            Note the order of arguments (link, target) is the reverse of os.symlink.
+            Note the order of arguments (link, target) ist the reverse of os.symlink.
             """
             os.symlink(target, self, target_is_directory)
     sonst:
         def symlink_to(self, target, target_is_directory=Falsch):
             """
             Make this path a symlink pointing to the target path.
-            Note the order of arguments (link, target) is the reverse of os.symlink.
+            Note the order of arguments (link, target) ist the reverse of os.symlink.
             """
             f = f"{type(self).__name__}.symlink_to()"
-            wirf UnsupportedOperation(f"{f} is unsupported on this system")
+            wirf UnsupportedOperation(f"{f} ist unsupported on this system")
 
     wenn hasattr(os, "link"):
         def hardlink_to(self, target):
             """
             Make this path a hard link pointing to the same file als *target*.
 
-            Note the order of arguments (self, target) is the reverse of os.link's.
+            Note the order of arguments (self, target) ist the reverse of os.link's.
             """
             os.link(target, self)
     sonst:
@@ -1227,10 +1227,10 @@ klasse Path(PurePath):
             """
             Make this path a hard link pointing to the same file als *target*.
 
-            Note the order of arguments (self, target) is the reverse of os.link's.
+            Note the order of arguments (self, target) ist the reverse of os.link's.
             """
             f = f"{type(self).__name__}.hardlink_to()"
-            wirf UnsupportedOperation(f"{f} is unsupported on this system")
+            wirf UnsupportedOperation(f"{f} ist unsupported on this system")
 
     def expanduser(self):
         """ Return a new path mit expanded ~ und ~user constructs
@@ -1272,7 +1272,7 @@ klasse Path(PurePath):
         ausser URLError als exc:
             wirf ValueError(exc.reason) von Nichts
         wenn nicht path.is_absolute():
-            wirf ValueError(f"URI is nicht absolute: {uri!r}")
+            wirf ValueError(f"URI ist nicht absolute: {uri!r}")
         gib path
 
 

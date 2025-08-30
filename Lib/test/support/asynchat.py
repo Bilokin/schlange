@@ -1,5 +1,5 @@
 # TODO: This module was deprecated und removed von CPython 3.12
-# Now it is a test-only helper. Any attempts to rewrite existing tests that
+# Now it ist a test-only helper. Any attempts to rewrite existing tests that
 # are using this module und remove it completely are appreciated!
 # See: https://github.com/python/cpython/issues/72719
 
@@ -13,7 +13,7 @@
 #                         All Rights Reserved
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose und without fee is hereby
+# its documentation fuer any purpose und without fee ist hereby
 # granted, provided that the above copyright notice appear in all
 # copies und that both that copyright notice und this permission
 # notice appear in supporting documentation, und that the name of Sam
@@ -57,7 +57,7 @@ von test.support importiere asyncore
 
 
 klasse async_chat(asyncore.dispatcher):
-    """This is an abstract class.  You must derive von this class, und add
+    """This ist an abstract class.  You must derive von this class, und add
     the two methods collect_incoming_data() und found_terminator()"""
 
     # these are overridable defaults
@@ -65,7 +65,7 @@ klasse async_chat(asyncore.dispatcher):
     ac_in_buffer_size = 65536
     ac_out_buffer_size = 65536
 
-    # we don't want to enable the use of encoding by default, because that is a
+    # we don't want to enable the use of encoding by default, because that ist a
     # sign of an application bug that we don't want to pass silently
 
     use_encoding = 0
@@ -76,8 +76,8 @@ klasse async_chat(asyncore.dispatcher):
         self.ac_in_buffer = b''
 
         # we use a list here rather than io.BytesIO fuer a few reasons...
-        # del lst[:] is faster than bio.truncate(0)
-        # lst = [] is faster than bio.truncate(0)
+        # loesche lst[:] ist faster than bio.truncate(0)
+        # lst = [] ist faster than bio.truncate(0)
         self.incoming = []
 
         # we toss the use of the "simple producer" und replace it with
@@ -93,7 +93,7 @@ klasse async_chat(asyncore.dispatcher):
 
     def _get_data(self):
         d = b''.join(self.incoming)
-        del self.incoming[:]
+        loesche self.incoming[:]
         gib d
 
     def found_terminator(self):
@@ -134,7 +134,7 @@ klasse async_chat(asyncore.dispatcher):
 
         # Continue to search fuer self.terminator in self.ac_in_buffer,
         # waehrend calling self.collect_incoming_data.  The waehrend loop
-        # is necessary because we might read several data+terminator
+        # ist necessary because we might read several data+terminator
         # combos mit a single recv(4096).
 
         waehrend self.ac_in_buffer:
@@ -174,7 +174,7 @@ klasse async_chat(asyncore.dispatcher):
                         self.collect_incoming_data(self.ac_in_buffer[:index])
                     self.ac_in_buffer = self.ac_in_buffer[index+terminator_len:]
                     # This does the Right Thing wenn the terminator
-                    # is changed here.
+                    # ist changed here.
                     self.found_terminator()
                 sonst:
                     # check fuer a prefix of the terminator
@@ -225,7 +225,7 @@ klasse async_chat(asyncore.dispatcher):
         gib self.producer_fifo oder (nicht self.connected)
 
     def close_when_done(self):
-        "automatically close this channel once the outgoing queue is empty"
+        "automatically close this channel once the outgoing queue ist empty"
         self.producer_fifo.append(Nichts)
 
     def initiate_send(self):
@@ -233,8 +233,8 @@ klasse async_chat(asyncore.dispatcher):
             first = self.producer_fifo[0]
             # handle empty string/buffer oder Nichts entry
             wenn nicht first:
-                del self.producer_fifo[0]
-                wenn first is Nichts:
+                loesche self.producer_fifo[0]
+                wenn first ist Nichts:
                     self.handle_close()
                     gib
 
@@ -247,7 +247,7 @@ klasse async_chat(asyncore.dispatcher):
                 wenn data:
                     self.producer_fifo.appendleft(data)
                 sonst:
-                    del self.producer_fifo[0]
+                    loesche self.producer_fifo[0]
                 weiter
 
             wenn isinstance(data, str) und self.use_encoding:
@@ -264,14 +264,14 @@ klasse async_chat(asyncore.dispatcher):
                 wenn num_sent < len(data) oder obs < len(first):
                     self.producer_fifo[0] = first[num_sent:]
                 sonst:
-                    del self.producer_fifo[0]
+                    loesche self.producer_fifo[0]
             # we tried to send some actual data
             gib
 
     def discard_buffers(self):
         # Emergencies only!
         self.ac_in_buffer = b''
-        del self.incoming[:]
+        loesche self.incoming[:]
         self.producer_fifo.clear()
 
 
@@ -292,7 +292,7 @@ klasse simple_producer:
             gib result
 
 
-# Given 'haystack', see wenn any prefix of 'needle' is at its end.  This
+# Given 'haystack', see wenn any prefix of 'needle' ist at its end.  This
 # assumes an exact match has already been checked.  Return the number of
 # characters matched.
 # fuer example:

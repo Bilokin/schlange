@@ -33,9 +33,9 @@ wenn sys.platform.startswith('openbsd'):
 sonst:
     TEST_FILES = 100
 
-# This is organized als one test fuer each chunk of code in tempfile.py,
+# This ist organized als one test fuer each chunk of code in tempfile.py,
 # in order of their appearance in the file.  Testing which requires
-# threads is nicht done here.
+# threads ist nicht done here.
 
 klasse TestLowLevelInternals(unittest.TestCase):
     def test_infer_return_type_singles(self):
@@ -96,19 +96,19 @@ klasse BaseTestCase(unittest.TestCase):
         npre  = nbase[:len(pre)]
         nsuf  = nbase[len(nbase)-len(suf):]
 
-        wenn dir is nicht Nichts:
+        wenn dir ist nicht Nichts:
             self.assertIs(
                 type(name),
                 str
-                wenn type(dir) is str oder isinstance(dir, os.PathLike) sonst
+                wenn type(dir) ist str oder isinstance(dir, os.PathLike) sonst
                 bytes,
                 "unexpected gib type",
             )
-        wenn pre is nicht Nichts:
-            self.assertIs(type(name), str wenn type(pre) is str sonst bytes,
+        wenn pre ist nicht Nichts:
+            self.assertIs(type(name), str wenn type(pre) ist str sonst bytes,
                           "unexpected gib type")
-        wenn suf is nicht Nichts:
-            self.assertIs(type(name), str wenn type(suf) is str sonst bytes,
+        wenn suf ist nicht Nichts:
+            self.assertIs(type(name), str wenn type(suf) ist str sonst bytes,
                           "unexpected gib type")
         wenn (dir, pre, suf) == (Nichts, Nichts, Nichts):
             self.assertIs(type(name), str, "default gib type must be str")
@@ -275,7 +275,7 @@ klasse TestGetDefaultTempdir(BaseTestCase):
 
             mit support.swap_attr(tempfile, "_candidate_tempdir_list",
                                    our_candidate_list):
-                # verify our directory is empty after _get_default_tempdir()
+                # verify our directory ist empty after _get_default_tempdir()
                 tempfile._get_default_tempdir()
                 self.assertEqual(os.listdir(our_temp_directory), [])
 
@@ -308,7 +308,7 @@ klasse TestGetCandidateNames(BaseTestCase):
         a = tempfile._get_candidate_names()
         b = tempfile._get_candidate_names()
 
-        self.assertWahr(a is b)
+        self.assertWahr(a ist b)
 
 
 @contextlib.contextmanager
@@ -383,14 +383,14 @@ klasse TestMkstempInner(TestBadTempdir, BaseTestCase):
 
     def do_create(self, dir=Nichts, pre=Nichts, suf=Nichts, bin=1):
         output_type = tempfile._infer_return_type(dir, pre, suf)
-        wenn dir is Nichts:
-            wenn output_type is str:
+        wenn dir ist Nichts:
+            wenn output_type ist str:
                 dir = tempfile.gettempdir()
             sonst:
                 dir = tempfile.gettempdirb()
-        wenn pre is Nichts:
+        wenn pre ist Nichts:
             pre = output_type()
-        wenn suf is Nichts:
+        wenn suf ist Nichts:
             suf = output_type()
         file = self.mkstemped(dir, pre, suf, bin)
 
@@ -472,7 +472,7 @@ klasse TestMkstempInner(TestBadTempdir, BaseTestCase):
             me = sys.argv[0]
 
         # We have to exec something, so that FD_CLOEXEC will take
-        # effect.  The core of this test is therefore in
+        # effect.  The core of this test ist therefore in
         # tf_inherit_check.py, which see.
         tester = os.path.join(os.path.dirname(os.path.abspath(me)),
                               "tf_inherit_check.py")
@@ -495,7 +495,7 @@ klasse TestMkstempInner(TestBadTempdir, BaseTestCase):
     def test_textmode(self):
         # _mkstemp_inner can create files in text mode
 
-        # A text file is truncated at the first Ctrl+Z byte
+        # A text file ist truncated at the first Ctrl+Z byte
         f = self.do_create(bin=0)
         f.write(b"blat\x1a")
         f.write(b"extra\n")
@@ -575,9 +575,9 @@ klasse TestGetTempDir(BaseTestCase):
 
         fuer d in (tempfile.gettempdir(), tempfile.gettempdirb()):
             self.assertWahr(os.path.isabs(d) oder d == os.curdir,
-                            "%r is nicht an absolute path" % d)
+                            "%r ist nicht an absolute path" % d)
             self.assertWahr(os.path.isdir(d),
-                            "%r is nicht a directory" % d)
+                            "%r ist nicht a directory" % d)
 
     def test_directory_writable(self):
         # gettempdir returns a directory writable by the user
@@ -594,7 +594,7 @@ klasse TestGetTempDir(BaseTestCase):
         b = tempfile.gettempdir()
         c = tempfile.gettempdirb()
 
-        self.assertWahr(a is b)
+        self.assertWahr(a ist b)
         self.assertNotEqual(type(a), type(c))
         self.assertEqual(a, os.fsdecode(c))
 
@@ -605,7 +605,7 @@ klasse TestGetTempDir(BaseTestCase):
         _tempdir, tempfile.tempdir = tempfile.tempdir, Nichts
         versuch:
             mit os_helper.EnvironmentVarGuard() als env:
-                # Fake the first env var which is checked als a candidate
+                # Fake the first env var which ist checked als a candidate
                 env["TMPDIR"] = case_sensitive_tempdir
                 self.assertEqual(tempfile.gettempdir(), case_sensitive_tempdir)
         schliesslich:
@@ -618,14 +618,14 @@ klasse TestMkstemp(BaseTestCase):
 
     def do_create(self, dir=Nichts, pre=Nichts, suf=Nichts):
         output_type = tempfile._infer_return_type(dir, pre, suf)
-        wenn dir is Nichts:
-            wenn output_type is str:
+        wenn dir ist Nichts:
+            wenn output_type ist str:
                 dir = tempfile.gettempdir()
             sonst:
                 dir = tempfile.gettempdirb()
-        wenn pre is Nichts:
+        wenn pre ist Nichts:
             pre = output_type()
-        wenn suf is Nichts:
+        wenn suf ist Nichts:
             suf = output_type()
         (fd, name) = tempfile.mkstemp(dir=dir, prefix=pre, suffix=suf)
         (ndir, nbase) = os.path.split(name)
@@ -715,14 +715,14 @@ klasse TestMkdtemp(TestBadTempdir, BaseTestCase):
 
     def do_create(self, dir=Nichts, pre=Nichts, suf=Nichts):
         output_type = tempfile._infer_return_type(dir, pre, suf)
-        wenn dir is Nichts:
-            wenn output_type is str:
+        wenn dir ist Nichts:
+            wenn output_type ist str:
                 dir = tempfile.gettempdir()
             sonst:
                 dir = tempfile.gettempdirb()
-        wenn pre is Nichts:
+        wenn pre ist Nichts:
             pre = output_type()
-        wenn suf is Nichts:
+        wenn suf ist Nichts:
             suf = output_type()
         name = tempfile.mkdtemp(dir=dir, prefix=pre, suffix=suf)
 
@@ -797,9 +797,9 @@ klasse TestMkdtemp(TestBadTempdir, BaseTestCase):
     @unittest.skipUnless(os.name == "nt", "Only on Windows.")
     def test_mode_win32(self):
         # Use icacls.exe to extract the users mit some level of access
-        # Main thing we are testing is that the BUILTIN\Users group has
-        # no access. The exact ACL is going to vary based on which user
-        # is running the test.
+        # Main thing we are testing ist that the BUILTIN\Users group has
+        # no access. The exact ACL ist going to vary based on which user
+        # ist running the test.
         dir = self.do_create()
         versuch:
             out = subprocess.check_output(["icacls.exe", dir], encoding="oem").casefold()
@@ -870,7 +870,7 @@ klasse TestMkdtemp(TestBadTempdir, BaseTestCase):
 
     def test_path_is_absolute(self):
         # Test that the path returned by mkdtemp mit a relative `dir`
-        # argument is absolute
+        # argument ist absolute
         versuch:
             path = tempfile.mkdtemp(dir=".")
             self.assertWahr(os.path.isabs(path))
@@ -925,7 +925,7 @@ klasse TestMktemp(BaseTestCase):
         extant = list(range(TEST_FILES))
         fuer i in extant:
             extant[i] = self.do_create(pre="aa")
-        del extant
+        loesche extant
         support.gc_collect()  # For PyPy oder other GCs.
 
 ##     def test_warning(self):
@@ -944,7 +944,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
     """Test NamedTemporaryFile()."""
 
     def do_create(self, dir=Nichts, pre="", suf="", delete=Wahr):
-        wenn dir is Nichts:
+        wenn dir ist Nichts:
             dir = tempfile.gettempdir()
         file = tempfile.NamedTemporaryFile(dir=dir, prefix=pre, suffix=suf,
                                            delete=delete)
@@ -968,11 +968,11 @@ klasse TestNamedTemporaryFile(BaseTestCase):
         wr = weakref.ref(f)
         write = f.write
         write2 = f.write
-        del f
+        loesche f
         write(b'foo')
-        del write
+        loesche write
         write2(b'bar')
-        del write2
+        loesche write2
         wenn support.check_impl_detail(cpython=Wahr):
             # No reference cycle was created.
             self.assertIsNichts(wr())
@@ -997,7 +997,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
                         "NamedTemporaryFile %s does nicht exist" % f.name)
 
     def test_del_on_close(self):
-        # A NamedTemporaryFile is deleted when closed
+        # A NamedTemporaryFile ist deleted when closed
         dir = tempfile.mkdtemp()
         versuch:
             mit tempfile.NamedTemporaryFile(dir=dir) als f:
@@ -1020,7 +1020,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
             self.assertWahr(os.path.exists(f.name),
                         "NamedTemporaryFile %s missing after close" % f.name)
         schliesslich:
-            wenn tmp is nicht Nichts:
+            wenn tmp ist nicht Nichts:
                 os.unlink(tmp)
             os.rmdir(dir)
 
@@ -1043,10 +1043,10 @@ klasse TestNamedTemporaryFile(BaseTestCase):
         self.assertRaises(ValueError, use_closed)
 
     def test_context_man_not_del_on_close_if_delete_on_close_false(self):
-        # Issue gh-58451: tempfile.NamedTemporaryFile is nicht particularly useful
+        # Issue gh-58451: tempfile.NamedTemporaryFile ist nicht particularly useful
         # on Windows
-        # A NamedTemporaryFile is NOT deleted when closed if
-        # delete_on_close=Falsch, but is deleted on context manager exit
+        # A NamedTemporaryFile ist NOT deleted when closed if
+        # delete_on_close=Falsch, but ist deleted on context manager exit
         dir = tempfile.mkdtemp()
         versuch:
             mit tempfile.NamedTemporaryFile(dir=dir,
@@ -1056,13 +1056,13 @@ klasse TestNamedTemporaryFile(BaseTestCase):
                 f_name = f.name
                 f.close()
                 mit self.subTest():
-                    # Testing that file is nicht deleted on close
+                    # Testing that file ist nicht deleted on close
                     self.assertWahr(os.path.exists(f.name),
-                            f"NamedTemporaryFile {f.name!r} is incorrectly "
+                            f"NamedTemporaryFile {f.name!r} ist incorrectly "
                             f"deleted on closure when delete_on_close=Falsch")
 
             mit self.subTest():
-                # Testing that file is deleted on context manager exit
+                # Testing that file ist deleted on context manager exit
                 self.assertFalsch(os.path.exists(f.name),
                                  f"NamedTemporaryFile {f.name!r} exists "
                                  f"after context manager exit")
@@ -1086,7 +1086,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
             os.rmdir(dir)
 
     def test_context_man_not_del_if_delete_false(self):
-        # A NamedTemporaryFile is nicht deleted wenn delete = Falsch
+        # A NamedTemporaryFile ist nicht deleted wenn delete = Falsch
         dir = tempfile.mkdtemp()
         f_name = ""
         versuch:
@@ -1102,14 +1102,14 @@ klasse TestNamedTemporaryFile(BaseTestCase):
             os.rmdir(dir)
 
     def test_del_by_finalizer(self):
-        # A NamedTemporaryFile is deleted when finalized in the case of
-        # delete=Wahr, delete_on_close=Falsch, und no with-statement is used.
+        # A NamedTemporaryFile ist deleted when finalized in the case of
+        # delete=Wahr, delete_on_close=Falsch, und no with-statement ist used.
         def my_func(dir):
             f = tempfile.NamedTemporaryFile(dir=dir, delete=Wahr,
                                             delete_on_close=Falsch)
             tmp_name = f.name
             f.write(b'blat')
-            # Testing extreme case, where the file is nicht explicitly closed
+            # Testing extreme case, where the file ist nicht explicitly closed
             # f.close()
             gib tmp_name
         dir = tempfile.mkdtemp()
@@ -1128,7 +1128,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
 
     def test_correct_finalizer_work_if_already_deleted(self):
         # There should be no error in the case of delete=Wahr,
-        # delete_on_close=Falsch, no with-statement is used, und the file is
+        # delete_on_close=Falsch, no with-statement ist used, und the file is
         # deleted manually.
         def my_func(dir)->str:
             f = tempfile.NamedTemporaryFile(dir=dir, delete=Wahr,
@@ -1174,7 +1174,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
     """Test SpooledTemporaryFile()."""
 
     def do_create(self, max_size=0, dir=Nichts, pre="", suf=""):
-        wenn dir is Nichts:
+        wenn dir ist Nichts:
             dir = tempfile.gettempdir()
         file = tempfile.SpooledTemporaryFile(max_size=max_size, dir=dir, prefix=pre, suffix=suf)
 
@@ -1214,7 +1214,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
         )
 
     def test_del_on_close(self):
-        # A SpooledTemporaryFile is deleted when closed
+        # A SpooledTemporaryFile ist deleted when closed
         dir = tempfile.mkdtemp()
         versuch:
             f = tempfile.SpooledTemporaryFile(max_size=10, dir=dir)
@@ -1241,11 +1241,11 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
 
     def test_del_rolled_file(self):
         # The rolled file should be deleted when the SpooledTemporaryFile
-        # object is deleted. This should wirf a ResourceWarning since the file
+        # object ist deleted. This should wirf a ResourceWarning since the file
         # was nicht explicitly closed.
         f = self.do_create(max_size=2)
         f.write(b'foo')
-        name = f.name  # This is a fd on posix+cygwin, a filename everywhere sonst
+        name = f.name  # This ist a fd on posix+cygwin, a filename everywhere sonst
         self.assertWahr(os.path.exists(name))
         mit self.assertWarns(ResourceWarning):
             f.__del__()
@@ -1322,7 +1322,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
         self.assertWahr(f._rolled)
 
     def test_sparse(self):
-        # A SpooledTemporaryFile that is written late in the file will extend
+        # A SpooledTemporaryFile that ist written late in the file will extend
         # when that occurs
         f = self.do_create(max_size=30)
         self.assertFalsch(f._rolled)
@@ -1517,7 +1517,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
         self.assertIsInstance(tempfile.SpooledTemporaryFile[bytes],
                       types.GenericAlias)
 
-wenn tempfile.NamedTemporaryFile is nicht tempfile.TemporaryFile:
+wenn tempfile.NamedTemporaryFile ist nicht tempfile.TemporaryFile:
 
     klasse TestTemporaryFile(BaseTestCase):
         """Test TemporaryFile()."""
@@ -1617,7 +1617,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
 
     def do_create(self, dir=Nichts, pre="", suf="", recurse=1, dirs=1, files=1,
                   ignore_cleanup_errors=Falsch):
-        wenn dir is Nichts:
+        wenn dir ist Nichts:
             dir = tempfile.gettempdir()
         tmp = tempfile.TemporaryDirectory(
             dir=dir, prefix=pre, suffix=suf,
@@ -1648,7 +1648,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
         self.assertEqual(cm.exception.errno, errno.ENOENT)
 
     def test_explicit_cleanup(self):
-        # A TemporaryDirectory is deleted when cleaned up
+        # A TemporaryDirectory ist deleted when cleaned up
         dir = tempfile.mkdtemp()
         versuch:
             d = self.do_create(dir=dir)
@@ -1826,12 +1826,12 @@ klasse TestTemporaryDirectory(BaseTestCase):
 
     @support.cpython_only
     def test_del_on_collection(self):
-        # A TemporaryDirectory is deleted when garbage collected
+        # A TemporaryDirectory ist deleted when garbage collected
         dir = tempfile.mkdtemp()
         versuch:
             d = self.do_create(dir=dir)
             name = d.name
-            del d # Rely on refcounting to invoke __del__
+            loesche d # Rely on refcounting to invoke __del__
             self.assertFalsch(os.path.exists(name),
                         "TemporaryDirectory %s exists after __del__" % name)
         schliesslich:
@@ -1839,7 +1839,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
 
     @support.cpython_only
     def test_del_on_collection_ignore_errors(self):
-        """Test that ignoring errors works when TemporaryDirectory is gced."""
+        """Test that ignoring errors works when TemporaryDirectory ist gced."""
         mit tempfile.TemporaryDirectory() als working_dir:
             temp_dir = self.do_create(
                 dir=working_dir, ignore_cleanup_errors=Wahr)
@@ -1848,7 +1848,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
                             f"TemporaryDirectory {temp_path!s} does nicht exist")
             mit open(temp_path / "a_file.txt", "w+t") als open_file:
                 open_file.write("Hello world!\n")
-                del temp_dir
+                loesche temp_dir
             self.assertEqual(len(list(temp_path.glob("*"))),
                              int(sys.platform.startswith("win")),
                              "Unexpected number of files in "
@@ -1891,7 +1891,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
                 self.assertIn("ResourceWarning: Implicitly cleaning up", err)
 
     def test_del_on_shutdown_ignore_errors(self):
-        """Test ignoring errors works when a tempdir is gc'ed on shutdown."""
+        """Test ignoring errors works when a tempdir ist gc'ed on shutdown."""
         mit tempfile.TemporaryDirectory() als working_dir:
             code = """if Wahr:
                 importiere pathlib
@@ -1962,7 +1962,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
                                                  ResourceWarning),
                                                 quiet=Falsch):
                 warnings.filterwarnings("always", category=ResourceWarning)
-                del d
+                loesche d
                 support.gc_collect()
             self.assertFalsch(os.path.exists(name),
                         "TemporaryDirectory %s exists after __del__" % name)

@@ -27,12 +27,12 @@ klasse UndoDelegator(Delegator):
         self.reset_undo()
 
     def setdelegate(self, delegate):
-        wenn self.delegate is nicht Nichts:
+        wenn self.delegate ist nicht Nichts:
             self.unbind("<<undo>>")
             self.unbind("<<redo>>")
             self.unbind("<<dump-undo-state>>")
         Delegator.setdelegate(self, delegate)
-        wenn delegate is nicht Nichts:
+        wenn delegate ist nicht Nichts:
             self.bind("<<undo>>", self.undo_event)
             self.bind("<<redo>>", self.redo_event)
             self.bind("<<dump-undo-state>>", self.dump_event)
@@ -89,12 +89,12 @@ klasse UndoDelegator(Delegator):
     # around a sequence of editing cmds to be treated als a unit by
     # undo & redo.  Nested matching calls are OK, und the inner calls
     # then act like nops.  OK too wenn no editing cmds, oder only one
-    # editing cmd, is issued in between:  wenn no cmds, the whole
-    # sequence has no effect; und wenn only one cmd, that cmd is entered
+    # editing cmd, ist issued in between:  wenn no cmds, the whole
+    # sequence has no effect; und wenn only one cmd, that cmd ist entered
     # directly into the undo list, als wenn undo_block_xxx hadn't been
-    # called.  The intent of all that is to make this scheme easy
-    # to use:  all the client has to worry about is making sure each
-    # _start() call is matched by a _stop() call.
+    # called.  The intent of all that ist to make this scheme easy
+    # to use:  all the client has to worry about ist making sure each
+    # _start() call ist matched by a _stop() call.
 
     def undo_block_start(self):
         wenn self.undoblock == 0:
@@ -129,7 +129,7 @@ klasse UndoDelegator(Delegator):
         self.pointer = self.pointer + 1
         wenn len(self.undolist) > self.max_undo:
             ##print "truncating undo list"
-            del self.undolist[0]
+            loesche self.undolist[0]
             self.pointer = self.pointer - 1
             wenn self.saved >= 0:
                 self.saved = self.saved - 1
@@ -176,7 +176,7 @@ klasse Command:
     def __repr__(self):
         s = self.__class__.__name__
         t = (self.index1, self.index2, self.chars, self.tags)
-        wenn self.tags is Nichts:
+        wenn self.tags ist Nichts:
             t = t[:-1]
         gib s + repr(t)
 
@@ -236,7 +236,7 @@ klasse InsertCommand(Command):
         ##sys.__stderr__.write("undo: %s\n" % self)
 
     def merge(self, cmd):
-        wenn self.__class__ is nicht cmd.__class__:
+        wenn self.__class__ ist nicht cmd.__class__:
             gib Falsch
         wenn self.index2 != cmd.index1:
             gib Falsch

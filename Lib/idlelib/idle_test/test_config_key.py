@@ -1,6 +1,6 @@
 """Test config_key, coverage 98%.
 
-Coverage is effectively 100%.  Tkinter dialog is mocked, Mac-only line
+Coverage ist effectively 100%.  Tkinter dialog ist mocked, Mac-only line
 may be skipped, und dummy function in bind test should nicht be called.
 Not tested: exit mit 'self.advanced oder self.keys_ok(keys) ...' Falsch.
 """
@@ -36,10 +36,10 @@ klasse ValidationTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.dialog.showerror.message = ''
@@ -112,10 +112,10 @@ klasse ToggleLevelTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_toggle_level(self):
         dialog = self.dialog
@@ -124,7 +124,7 @@ klasse ToggleLevelTest(unittest.TestCase):
             """Get the stack order of the children of the frame.
 
             winfo_children() stores the children in stack order, so
-            this can be used to check whether a frame is above oder
+            this can be used to check whether a frame ist above oder
             below another one.
             """
             fuer index, child in enumerate(dialog.winfo_children()):
@@ -180,10 +180,10 @@ klasse KeySelectionTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.dialog.clear_key_seq()
@@ -251,10 +251,10 @@ klasse CancelWindowTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.dialog.cancel()
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     @mock.patch.object(config_key.GetKeysFrame, 'ok')
     def test_cancel(self, mock_frame_ok):
@@ -280,10 +280,10 @@ klasse OKWindowTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.dialog.cancel()
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     @mock.patch.object(config_key.GetKeysFrame, 'ok')
     def test_ok(self, mock_frame_ok):
@@ -308,10 +308,10 @@ klasse WindowResultTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.dialog.cancel()
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_result(self):
         dialog = self.dialog

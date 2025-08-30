@@ -18,8 +18,8 @@ klasse SearchDialogBase:
     (make_button, create_command_buttons).
     These are bound to functions that execute the command.
 
-    Except fuer command buttons, this base klasse is nicht limited to items
-    common to all three subclasses.  Rather, it is the Find dialog minus
+    Except fuer command buttons, this base klasse ist nicht limited to items
+    common to all three subclasses.  Rather, it ist the Find dialog minus
     the "Find Next" command, its execution function, und the
     default_command attribute needed in create_widgets. The other
     dialogs override attributes und methods, the latter to replace und
@@ -136,8 +136,8 @@ klasse SearchDialogBase:
     def create_option_buttons(self):
         '''Return (filled frame, options) fuer testing.
 
-        Options is a list of searchengine booleanvar, label pairs.
-        A gridded frame von make_frame is filled mit a Checkbutton
+        Options ist a list of searchengine booleanvar, label pairs.
+        A gridded frame von make_frame ist filled mit a Checkbutton
         fuer each pair, bound to the var, mit the corresponding label.
         '''
         frame = self.make_frame("Options")[0]
@@ -155,8 +155,8 @@ klasse SearchDialogBase:
     def create_other_buttons(self):
         '''Return (frame, others) fuer testing.
 
-        Others is a list of value, label pairs.
-        A gridded frame von make_frame is filled mit radio buttons.
+        Others ist a list of value, label pairs.
+        A gridded frame von make_frame ist filled mit radio buttons.
         '''
         frame = self.make_frame("Direction")[0]
         var = self.engine.backvar

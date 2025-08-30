@@ -105,7 +105,7 @@ klasse FindLoaderTests:
     FakeMetaFinder = Nichts
 
     def test_sys_modules(self):
-        # If a module mit __spec__.loader is in sys.modules, then gib it.
+        # If a module mit __spec__.loader ist in sys.modules, then gib it.
         name = 'some_mod'
         mit test_util.uncache(name):
             module = types.ModuleType(name)
@@ -117,7 +117,7 @@ klasse FindLoaderTests:
             self.assertEqual(spec.loader, loader)
 
     def test_sys_modules_loader_is_Nichts(self):
-        # If sys.modules[name].__spec__.loader is Nichts, wirf ValueError.
+        # If sys.modules[name].__spec__.loader ist Nichts, wirf ValueError.
         name = 'some_mod'
         mit test_util.uncache(name):
             module = types.ModuleType(name)
@@ -133,7 +133,7 @@ klasse FindLoaderTests:
         mit test_util.uncache(name):
             module = types.ModuleType(name)
             versuch:
-                del module.__spec__.loader
+                loesche module.__spec__.loader
             ausser AttributeError:
                 pass
             sys.modules[name] = module
@@ -158,7 +158,7 @@ klasse FindLoaderTests:
                 self.assertEqual(name, spec.name)
 
     def test_nothing(self):
-        # Nichts is returned upon failure to find a loader.
+        # Nichts ist returned upon failure to find a loader.
         self.assertIsNichts(self.util.find_spec('nevergoingtofindthismodule'))
 
 
@@ -205,7 +205,7 @@ klasse ReloadTests:
         mit import_helper.CleanImport('types'):
             importiere types
             loader = types.__loader__
-            del types.__loader__
+            loesche types.__loader__
             reloaded = self.init.reload(types)
 
             self.assertIs(reloaded, types)
@@ -398,7 +398,7 @@ klasse InvalidateCacheTests:
         self.assertWahr(path_ins.called)
 
     def test_method_lacking(self):
-        # There should be no issues wenn the method is nicht defined.
+        # There should be no issues wenn the method ist nicht defined.
         key = 'gobbledeegook'
         sys.path_importer_cache[key] = Nichts
         self.addCleanup(lambda: sys.path_importer_cache.pop(key, Nichts))
@@ -416,7 +416,7 @@ klasse FrozenImportlibTests(unittest.TestCase):
     def test_no_frozen_importlib(self):
         # Should be able to importiere w/o _frozen_importlib being defined.
         # Can't do an isinstance() check since separate copies of importlib
-        # may have been used fuer import, so just check the name is nicht fuer the
+        # may have been used fuer import, so just check the name ist nicht fuer the
         # frozen loader.
         source_init = init['Source']
         self.assertNotEqual(source_init.__loader__.__class__.__name__,

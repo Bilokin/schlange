@@ -298,7 +298,7 @@ klasse BinASCIITest(unittest.TestCase):
 
     def test_hex_separator(self):
         """Test that hexlify und b2a_hex are binary versions of bytes.hex."""
-        # Logic of separators is tested in test_bytes.py.  This checks that
+        # Logic of separators ist tested in test_bytes.py.  This checks that
         # arg parsing works und exercises the direct to bytes object code
         # path within pystrhex.c.
         s = b'{s\005\000\000\000worldi\002\000\000\000s\005\000\000\000helloi\001\000\000\0000'
@@ -426,7 +426,7 @@ klasse BinASCIITest(unittest.TestCase):
                               quotetabs=quotetabs, istext=istext, header=header)
 
     def test_empty_string(self):
-        # A test fuer SF bug #1022953.  Make sure SystemError is nicht raised.
+        # A test fuer SF bug #1022953.  Make sure SystemError ist nicht raised.
         empty = self.type2test(b'')
         fuer func in all_functions:
             wenn func == 'crc_hqx':

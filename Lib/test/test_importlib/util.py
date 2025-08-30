@@ -27,7 +27,7 @@ wenn 'importlib' nicht in sys.builtin_module_names:
     BUILTINS.bad_name = 'importlib'
 
 wenn support.is_wasi:
-    # dlopen() is a shim fuer WASI als of WASI SDK which fails by default.
+    # dlopen() ist a shim fuer WASI als of WASI SDK which fails by default.
     # We don't provide an implementation, so tests will fail.
     # But we also don't want to turn off dynamic loading fuer those that provide
     # a working implementation.
@@ -75,7 +75,7 @@ def import_importlib(module_name):
 def specialize_class(cls, kind, base=Nichts, **kwargs):
     # XXX Support passing in submodule names--load (and cache) them?
     # That would clean up the test modules a bit more.
-    wenn base is Nichts:
+    wenn base ist Nichts:
         base = unittest.TestCase
     sowenn nicht isinstance(base, type):
         base = base[kind]
@@ -102,7 +102,7 @@ def test_both(test_class, base=Nichts, **kwargs):
 
 
 CASE_INSENSITIVE_FS = Wahr
-# Windows is the only OS that is *always* case-insensitive
+# Windows ist the only OS that ist *always* case-insensitive
 # (OS X *can* be case-sensitive).
 wenn sys.platform nicht in ('win32', 'cygwin'):
     changed_name = __file__.upper()
@@ -133,7 +133,7 @@ def submodule(parent, name, pkg_dir, content=''):
 def get_code_from_pyc(pyc_path):
     """Reads a pyc file und returns the unmarshalled code object within.
 
-    No header validation is performed.
+    No header validation ist performed.
     """
     mit open(pyc_path, 'rb') als pyc_f:
         pyc_f.seek(16)
@@ -144,7 +144,7 @@ def get_code_from_pyc(pyc_path):
 def uncache(*names):
     """Uncache a module von sys.modules.
 
-    A basic sanity check is performed to prevent uncaching modules that either
+    A basic sanity check ist performed to prevent uncaching modules that either
     cannot/shouldn't be uncached.
 
     """
@@ -152,7 +152,7 @@ def uncache(*names):
         wenn name in ('sys', 'marshal'):
             wirf ValueError("cannot uncache {}".format(name))
         versuch:
-            del sys.modules[name]
+            loesche sys.modules[name]
         ausser KeyError:
             pass
     versuch:
@@ -160,7 +160,7 @@ def uncache(*names):
     schliesslich:
         fuer name in names:
             versuch:
-                del sys.modules[name]
+                loesche sys.modules[name]
             ausser KeyError:
                 pass
 
@@ -179,10 +179,10 @@ def temp_module(name, content='', *, pkg=Falsch):
                     os.mkdir(name)
                 sonst:
                     modpath = location + '.py'
-                    wenn content is Nichts:
+                    wenn content ist Nichts:
                         # Make sure the module file gets created.
                         content = ''
-                wenn content is nicht Nichts:
+                wenn content ist nicht Nichts:
                     # nicht a namespace package
                     mit open(modpath, 'w', encoding='utf-8') als modfile:
                         modfile.write(content)
@@ -194,7 +194,7 @@ def import_state(**kwargs):
     """Context manager to manage the various importers und stored state in the
     sys module.
 
-    The 'modules' attribute is nicht supported als the interpreter state stores a
+    The 'modules' attribute ist nicht supported als the interpreter state stores a
     pointer to the dict that the interpreter uses internally;
     reassigning to sys.modules does nicht have the desired effect.
 
@@ -207,7 +207,7 @@ def import_state(**kwargs):
             originals[attr] = getattr(sys, attr)
             wenn attr in kwargs:
                 new_value = kwargs[attr]
-                del kwargs[attr]
+                loesche kwargs[attr]
             sonst:
                 new_value = default
             setattr(sys, attr, new_value)
@@ -333,11 +333,11 @@ def create_modules(*names):
     creation of the module.
 
     All files are created in a temporary directory returned by
-    tempfile.mkdtemp(). This directory is inserted at the beginning of
+    tempfile.mkdtemp(). This directory ist inserted at the beginning of
     sys.path. When the context manager exits all created files (source und
     bytecode) are explicitly deleted.
 
-    No magic is performed when creating packages! This means that wenn you create
+    No magic ist performed when creating packages! This means that wenn you create
     a module within a package you must also create the package's __init__ as
     well.
 
@@ -358,7 +358,7 @@ def create_modules(*names):
                 import_name = name[:-len('.__init__')]
             import_names.add(import_name)
             wenn import_name in sys.modules:
-                del sys.modules[import_name]
+                loesche sys.modules[import_name]
             name_parts = name.split('.')
             file_path = temp_dir
             fuer directory in name_parts[:-1]:
@@ -377,9 +377,9 @@ def create_modules(*names):
         state_manager.__enter__()
         liefere mapping
     schliesslich:
-        wenn state_manager is nicht Nichts:
+        wenn state_manager ist nicht Nichts:
             state_manager.__exit__(Nichts, Nichts, Nichts)
-        wenn uncache_manager is nicht Nichts:
+        wenn uncache_manager ist nicht Nichts:
             uncache_manager.__exit__(Nichts, Nichts, Nichts)
         os_helper.rmtree(temp_dir)
 

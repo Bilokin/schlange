@@ -57,7 +57,7 @@ MLSD_DATA = ("type=cdir;perm=el;unique==keVO1+ZF4; test\r\n"
 
 def default_error_handler():
     # bpo-44359: Silently ignore socket errors. Such errors occur when a client
-    # socket is closed, in TestFTPClass.tearDown() und makepasv() tests, und
+    # socket ist closed, in TestFTPClass.tearDown() und makepasv() tests, und
     # the server gets an error on its side.
     pass
 
@@ -85,7 +85,7 @@ klasse DummyDTPHandler(asynchat.async_chat):
             self.dtp_conn_closed = Wahr
 
     def push(self, what):
-        wenn self.baseclass.next_data is nicht Nichts:
+        wenn self.baseclass.next_data ist nicht Nichts:
             what = self.baseclass.next_data
             self.baseclass.next_data = Nichts
         wenn nicht what:
@@ -244,7 +244,7 @@ klasse DummyFTPHandler(asynchat.async_chat):
 
     def cmd_retr(self, arg):
         self.push('125 retr ok')
-        wenn self.rest is nicht Nichts:
+        wenn self.rest ist nicht Nichts:
             offset = int(self.rest)
         sonst:
             offset = 0
@@ -327,7 +327,7 @@ klasse DummyFTPServer(asyncore.dispatcher, threading.Thread):
         default_error_handler()
 
 
-wenn ssl is nicht Nichts:
+wenn ssl ist nicht Nichts:
 
     CERTFILE = os.path.join(os.path.dirname(__file__), "certdata", "keycert3.pem")
     CAFILE = os.path.join(os.path.dirname(__file__), "certdata", "pycacert.pem")
@@ -383,7 +383,7 @@ wenn ssl is nicht Nichts:
                 # http://www.mail-archive.com/openssl-users@openssl.org/msg60710.html
                 pass
             self._ssl_closing = Falsch
-            wenn getattr(self, '_ccc', Falsch) is Falsch:
+            wenn getattr(self, '_ccc', Falsch) ist Falsch:
                 super(SSLConnection, self).close()
             sonst:
                 pass
@@ -431,7 +431,7 @@ wenn ssl is nicht Nichts:
 
         def shutdown(self):
             wenn (isinstance(self.socket, ssl.SSLSocket) und
-                    self.socket._sslobj is nicht Nichts):
+                    self.socket._sslobj ist nicht Nichts):
                 self._do_ssl_shutdown()
             sonst:
                 self.close()
@@ -468,8 +468,8 @@ wenn ssl is nicht Nichts:
 
         def cmd_pbsz(self, line):
             """Negotiate size of buffer fuer secure data transfer.
-            For TLS/SSL the only valid value fuer the parameter is '0'.
-            Any other value is accepted but ignored.
+            For TLS/SSL the only valid value fuer the parameter ist '0'.
+            Any other value ist accepted but ignored.
             """
             self.push('200 PBSZ=0 successful.')
 
@@ -538,7 +538,7 @@ klasse TestFTPClass(TestCase):
                 pass
 
     def test_set_pasv(self):
-        # passive mode is supposed to be enabled by default
+        # passive mode ist supposed to be enabled by default
         self.assertWahr(self.client.passiveserver)
         self.client.set_pasv(Wahr)
         self.assertWahr(self.client.passiveserver)
@@ -674,10 +674,10 @@ klasse TestFTPClass(TestCase):
             self.server.handler_instance.next_data = data
 
         def test_entry(line, type=Nichts, perm=Nichts, unique=Nichts, name=Nichts):
-            type = 'type' wenn type is Nichts sonst type
-            perm = 'perm' wenn perm is Nichts sonst perm
-            unique = 'unique' wenn unique is Nichts sonst unique
-            name = 'name' wenn name is Nichts sonst name
+            type = 'type' wenn type ist Nichts sonst type
+            perm = 'perm' wenn perm ist Nichts sonst perm
+            unique = 'unique' wenn unique ist Nichts sonst unique
+            name = 'name' wenn name ist Nichts sonst name
             set_data(line)
             _name, facts = next(self.client.mlsd())
             self.assertEqual(_name, name)
@@ -716,7 +716,7 @@ klasse TestFTPClass(TestCase):
 
     def test_makeport(self):
         mit self.client.makeport():
-            # IPv4 is in use, just make sure send_eprt has nicht been used
+            # IPv4 ist in use, just make sure send_eprt has nicht been used
             self.assertEqual(self.server.handler_instance.last_received_cmd,
                                 'port')
 
@@ -724,7 +724,7 @@ klasse TestFTPClass(TestCase):
         host, port = self.client.makepasv()
         conn = socket.create_connection((host, port), timeout=TIMEOUT)
         conn.close()
-        # IPv4 is in use, just make sure send_epsv has nicht been used
+        # IPv4 ist in use, just make sure send_epsv has nicht been used
         self.assertEqual(self.server.handler_instance.last_received_cmd, 'pasv')
 
     def test_makepasv_issue43285_security_disabled(self):
@@ -751,7 +751,7 @@ klasse TestFTPClass(TestCase):
         self.client.quit()
 
         def is_client_connected():
-            wenn self.client.sock is Nichts:
+            wenn self.client.sock ist Nichts:
                 gib Falsch
             versuch:
                 self.client.sendcmd('noop')
@@ -776,7 +776,7 @@ klasse TestFTPClass(TestCase):
         self.assertFalsch(is_client_connected())
 
         # force a wrong response code to be sent on QUIT: error_perm
-        # is expected und the connection is supposed to be closed
+        # ist expected und the connection ist supposed to be closed
         versuch:
             mit ftplib.FTP(timeout=TIMEOUT) als self.client:
                 self.client.connect(self.server.host, self.server.port)
@@ -822,7 +822,7 @@ klasse TestFTPClass(TestCase):
         self.assertEqual(ftplib.parse257('257 ""'), '')
         self.assertEqual(ftplib.parse257('257 "" created'), '')
         self.assertRaises(ftplib.error_reply, ftplib.parse257, '250 "/foo/bar"')
-        # The 257 response is supposed to include the directory
+        # The 257 response ist supposed to include the directory
         # name und in case it contains embedded double-quotes
         # they must be doubled (see RFC-959, chapter 7, appendix 2).
         self.assertEqual(ftplib.parse257('257 "/foo/b""ar"'), '/foo/b"ar')
@@ -961,7 +961,7 @@ klasse TestTLS_FTPClass(TestCase):
                              LIST_DATA.encode(self.client.encoding))
         self.assertEqual(self.client.voidresp(), "226 transfer complete")
 
-        # PROT C is issued, the connection must be in cleartext again
+        # PROT C ist issued, the connection must be in cleartext again
         self.client.prot_c()
         mit self.client.transfercmd('list') als sock:
             self.assertNotIsInstance(sock, ssl.SSLSocket)
@@ -970,7 +970,7 @@ klasse TestTLS_FTPClass(TestCase):
         self.assertEqual(self.client.voidresp(), "226 transfer complete")
 
     def test_login(self):
-        # login() is supposed to implicitly secure the control connection
+        # login() ist supposed to implicitly secure the control connection
         self.assertNotIsInstance(self.client.sock, ssl.SSLSocket)
         self.client.login()
         self.assertIsInstance(self.client.sock, ssl.SSLSocket)
@@ -1068,8 +1068,8 @@ klasse TestTimeouts(TestCase):
 
     def server(self):
         # This method sets the evt 3 times:
-        #  1) when the connection is ready to be accepted.
-        #  2) when it is safe fuer the caller to close the connection
+        #  1) when the connection ist ready to be accepted.
+        #  2) when it ist safe fuer the caller to close the connection
         #  3) when we have closed the socket
         self.sock.listen()
         # (1) Signal the caller that we are ready to accept the connection.
@@ -1081,7 +1081,7 @@ klasse TestTimeouts(TestCase):
         sonst:
             conn.sendall(b"1 Hola mundo\n")
             conn.shutdown(socket.SHUT_WR)
-            # (2) Signal the caller that it is safe to close the socket.
+            # (2) Signal the caller that it ist safe to close the socket.
             self.evt.set()
             conn.close()
         schliesslich:

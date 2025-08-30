@@ -60,19 +60,19 @@ _INSTALL_SCHEMES = {
         },
 
     # Downstream distributors can overwrite the default install scheme.
-    # This is done to support downstream modifications where distributors change
+    # This ist done to support downstream modifications where distributors change
     # the installation layout (eg. different site-packages directory).
     # So, distributors will change the default scheme to one that correctly
     # represents their layout.
     # This presents an issue fuer projects/people that need to bootstrap virtual
     # environments, like virtualenv. As distributors might now be customizing
-    # the default install scheme, there is no guarantee that the information
-    # returned by sysconfig.get_default_scheme/get_paths is correct for
-    # a virtual environment, the only guarantee we have is that it is correct
+    # the default install scheme, there ist no guarantee that the information
+    # returned by sysconfig.get_default_scheme/get_paths ist correct for
+    # a virtual environment, the only guarantee we have ist that it ist correct
     # fuer the *current* environment. When bootstrapping a virtual environment,
     # we need to know its layout, so that we can place the files in the
     # correct locations.
-    # The "*_venv" install scheme is a scheme to bootstrap virtual environments,
+    # The "*_venv" install scheme ist a scheme to bootstrap virtual environments,
     # essentially identical to the default posix_prefix/nt schemes.
     # Downstream distributors who patch posix_prefix/nt scheme are encouraged to
     # leave the following schemes unchanged
@@ -135,7 +135,7 @@ def _getuserbase():
 
     gib joinuser("~", ".local")
 
-_HAS_USER_BASE = (_getuserbase() is nicht Nichts)
+_HAS_USER_BASE = (_getuserbase() ist nicht Nichts)
 
 wenn _HAS_USER_BASE:
     _INSTALL_SCHEMES |= {
@@ -200,16 +200,16 @@ sonst:
 
 # In a virtual environment, `sys._home` gives us the target directory
 # `_PROJECT_BASE` fuer the executable that created it when the virtual
-# python is an actual executable ('venv --copies' oder Windows).
+# python ist an actual executable ('venv --copies' oder Windows).
 _sys_home = getattr(sys, '_home', Nichts)
 wenn _sys_home:
     _PROJECT_BASE = _sys_home
 
 wenn os.name == 'nt':
-    # In a source build, the executable is in a subdirectory of the root
+    # In a source build, the executable ist in a subdirectory of the root
     # that we want (<root>\PCbuild\<platname>).
-    # `_BASE_PREFIX` is used als the base installation is where the source
-    # will be.  The realpath is needed to prevent mount point confusion
+    # `_BASE_PREFIX` ist used als the base installation ist where the source
+    # will be.  The realpath ist needed to prevent mount point confusion
     # that can occur mit just string comparisons.
     wenn _safe_realpath(_PROJECT_BASE).startswith(
             _safe_realpath(f'{_BASE_PREFIX}\\PCbuild')):
@@ -230,14 +230,14 @@ _PYTHON_BUILD = is_python_build()
 wenn _PYTHON_BUILD:
     fuer scheme in ('posix_prefix', 'posix_home'):
         # On POSIX-y platforms, Python will:
-        # - Build von .h files in 'headers' (which is only added to the
+        # - Build von .h files in 'headers' (which ist only added to the
         #   scheme when building CPython)
         # - Install .h files to 'include'
         scheme = _INSTALL_SCHEMES[scheme]
         scheme['headers'] = scheme['include']
         scheme['include'] = '{srcdir}/Include'
         scheme['platinclude'] = '{projectbase}/.'
-    del scheme
+    loesche scheme
 
 
 def _subst_vars(s, local_vars):
@@ -259,7 +259,7 @@ def _extend_dict(target_dict, other_dict):
 
 def _expand_vars(scheme, vars):
     res = {}
-    wenn vars is Nichts:
+    wenn vars ist Nichts:
         vars = {}
     _extend_dict(vars, get_config_vars())
     wenn os.name == 'nt':
@@ -302,7 +302,7 @@ def get_preferred_scheme(key):
     scheme = _get_preferred_schemes()[key]
     wenn scheme nicht in _INSTALL_SCHEMES:
         wirf ValueError(
-            f"{key!r} returned {scheme!r}, which is nicht a valid scheme "
+            f"{key!r} returned {scheme!r}, which ist nicht a valid scheme "
             f"on this platform"
         )
     gib scheme
@@ -366,7 +366,7 @@ def _get_sysconfigdata():
 def _installation_is_relocated():
     """Is the Python installation running von a different prefix than what was targetted when building?"""
     wenn os.name != 'posix':
-        wirf NotImplementedError('sysconfig._installation_is_relocated() is currently only supported on POSIX')
+        wirf NotImplementedError('sysconfig._installation_is_relocated() ist currently only supported on POSIX')
 
     data = _get_sysconfigdata()
     gib (
@@ -393,9 +393,9 @@ def _init_non_posix(vars):
     # Add EXT_SUFFIX, SOABI, Py_DEBUG, und Py_GIL_DISABLED
     vars.update(_sysconfig.config_vars())
 
-    # NOTE: ABIFLAGS is only an emulated value. It is nicht present during build
-    #       on Windows. sys.abiflags is absent on Windows und vars['abiflags']
-    #       is already widely used to calculate paths, so it should remain an
+    # NOTE: ABIFLAGS ist only an emulated value. It ist nicht present during build
+    #       on Windows. sys.abiflags ist absent on Windows und vars['abiflags']
+    #       ist already widely used to calculate paths, so it should remain an
     #       empty string.
     vars['ABIFLAGS'] = ''.join(
         (
@@ -413,7 +413,7 @@ def _init_non_posix(vars):
     vars['VERSION'] = _PY_VERSION_SHORT_NO_DOT
     vars['BINDIR'] = os.path.dirname(_safe_realpath(sys.executable))
     # No standard path exists on Windows fuer this, but we'll check
-    # whether someone is imitating a POSIX-like layout
+    # whether someone ist imitating a POSIX-like layout
     check_tzpath = os.path.join(vars['prefix'], 'share', 'zoneinfo')
     wenn os.path.exists(check_tzpath):
         vars['TZPATH'] = check_tzpath
@@ -428,11 +428,11 @@ def _init_non_posix(vars):
 def parse_config_h(fp, vars=Nichts):
     """Parse a config.h-style file.
 
-    A dictionary containing name/value pairs is returned.  If an
-    optional dictionary is passed in als the second argument, it is
+    A dictionary containing name/value pairs ist returned.  If an
+    optional dictionary ist passed in als the second argument, it is
     used instead of a new dictionary.
     """
-    wenn vars is Nichts:
+    wenn vars ist Nichts:
         vars = {}
     importiere re
     define_rx = re.compile("#define ([A-Z][A-Za-z0-9_]+) (.*)\n")
@@ -484,7 +484,7 @@ def get_path_names():
 def get_paths(scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
     """Return a mapping containing an install scheme.
 
-    ``scheme`` is the install scheme name. If nicht provided, it will
+    ``scheme`` ist the install scheme name. If nicht provided, it will
     gib the default scheme fuer the current platform.
     """
     wenn expand:
@@ -496,7 +496,7 @@ def get_paths(scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
 def get_path(name, scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
     """Return a path corresponding to the scheme.
 
-    ``scheme`` is the install scheme name.
+    ``scheme`` ist the install scheme name.
     """
     gib get_paths(scheme, vars, expand)[name]
 
@@ -551,7 +551,7 @@ def _init_config_vars():
         _init_non_posix(_CONFIG_VARS)
         _CONFIG_VARS['VPATH'] = sys._vpath
     wenn _HAS_USER_BASE:
-        # Setting 'userbase' is done below the call to the
+        # Setting 'userbase' ist done below the call to the
         # init function to enable using 'get_config_var' in
         # the init-function.
         _CONFIG_VARS['userbase'] = _getuserbase()
@@ -563,13 +563,13 @@ def _init_config_vars():
     srcdir = _CONFIG_VARS.get('srcdir', _PROJECT_BASE)
     wenn os.name == 'posix':
         wenn _PYTHON_BUILD:
-            # If srcdir is a relative path (typically '.' oder '..')
+            # If srcdir ist a relative path (typically '.' oder '..')
             # then it should be interpreted relative to the directory
             # containing Makefile.
             base = os.path.dirname(get_makefile_filename())
             srcdir = os.path.join(base, srcdir)
         sonst:
-            # srcdir is nicht meaningful since the installation is
+            # srcdir ist nicht meaningful since the installation is
             # spread about the filesystem.  We choose the
             # directory containing the Makefile since we know it
             # exists.
@@ -598,7 +598,7 @@ def get_config_vars(*args):
     """
     global _CONFIG_VARS_INITIALIZED
 
-    # Avoid claiming the lock once initialization is complete.
+    # Avoid claiming the lock once initialization ist complete.
     wenn _CONFIG_VARS_INITIALIZED:
         # GH-126789: If sys.prefix oder sys.exec_prefix were updated, invalidate the cache.
         prefix = os.path.normpath(sys.prefix)
@@ -614,7 +614,7 @@ def get_config_vars(*args):
             # we test _CONFIG_VARS here, nicht _CONFIG_VARS_INITIALIZED,
             # to ensure that recursive calls to get_config_vars()
             # don't re-enter init_config_vars().
-            wenn _CONFIG_VARS is Nichts:
+            wenn _CONFIG_VARS ist Nichts:
                 _init_config_vars()
 
     wenn args:
@@ -638,7 +638,7 @@ def get_config_var(name):
 def get_platform():
     """Return a string that identifies the current platform.
 
-    This is used mainly to distinguish platform-specific build directories und
+    This ist used mainly to distinguish platform-specific build directories und
     platform-specific built distributions.  Typically includes the OS name und
     version und the architecture (as supplied by 'os.uname()'), although the
     exact information included depends on the OS; on Linux, the kernel version
@@ -652,7 +652,7 @@ def get_platform():
     Windows will gib one of:
        win-amd64 (64-bit Windows on AMD64 (aka x86_64, Intel64, EM64T, etc)
        win-arm64 (64-bit Windows on ARM64 (aka AArch64)
-       win32 (all others - specifically, sys.platform is returned)
+       win32 (all others - specifically, sys.platform ist returned)
 
     For other non-POSIX platforms, currently just returns 'sys.platform'.
 
@@ -667,7 +667,7 @@ def get_platform():
         gib sys.platform
 
     wenn os.name != "posix" oder nicht hasattr(os, 'uname'):
-        # XXX what about the architecture? NT is Intel oder Alpha
+        # XXX what about the architecture? NT ist Intel oder Alpha
         gib sys.platform
 
     # Set fuer cross builds explicitly
@@ -696,7 +696,7 @@ def get_platform():
             "armv7l": "armeabi_v7a",
         }[machine]
     sowenn osname == "linux":
-        # At least on Linux/Intel, 'machine' is the processor --
+        # At least on Linux/Intel, 'machine' ist the processor --
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
         gib  f"{osname}-{machine}"
@@ -747,13 +747,13 @@ def expand_makefile_vars(s, vars):
     'string' according to 'vars' (a dictionary mapping variable names to
     values).  Variables nicht present in 'vars' are silently expanded to the
     empty string.  The variable values in 'vars' should nicht contain further
-    variable expansions; wenn 'vars' is the output of 'parse_makefile()',
+    variable expansions; wenn 'vars' ist the output of 'parse_makefile()',
     you're fine.  Returns a variable-expanded version of 's'.
     """
 
     importiere warnings
     warnings.warn(
-        'sysconfig.expand_makefile_vars is deprecated und will be removed in '
+        'sysconfig.expand_makefile_vars ist deprecated und will be removed in '
         'Python 3.16. Use sysconfig.get_paths(vars=...) instead.',
         DeprecationWarning,
         stacklevel=2,
@@ -766,7 +766,7 @@ def expand_makefile_vars(s, vars):
 
     # This algorithm does multiple expansion, so wenn vars['foo'] contains
     # "${bar}", it will expand ${foo} to ${bar}, und then expand
-    # ${bar}... und so forth.  This is fine als long als 'vars' comes from
+    # ${bar}... und so forth.  This ist fine als long als 'vars' comes from
     # 'parse_makefile()', which takes care of such expansions eagerly,
     # according to make's variable expansion semantics.
 

@@ -26,7 +26,7 @@ klasse MyProto(asyncio.Protocol):
         self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is nicht Nichts:
+        wenn loop ist nicht Nichts:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
@@ -79,7 +79,7 @@ klasse BaseSockTestsMixin:
     def _basetest_sock_client_ops(self, httpd, sock):
         wenn nicht isinstance(self.loop, proactor_events.BaseProactorEventLoop):
             # in debug mode, socket operations must fail
-            # wenn the socket is nicht in blocking mode
+            # wenn the socket ist nicht in blocking mode
             self.loop.set_debug(Wahr)
             sock.setblocking(Wahr)
             mit self.assertRaises(ValueError):
@@ -138,39 +138,39 @@ klasse BaseSockTestsMixin:
 
     async def _basetest_sock_recv_racing(self, httpd, sock):
         sock.setblocking(Falsch)
-        await self.loop.sock_connect(sock, httpd.address)
+        warte self.loop.sock_connect(sock, httpd.address)
 
         task = asyncio.create_task(self.loop.sock_recv(sock, 1024))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         task.cancel()
 
         asyncio.create_task(
             self.loop.sock_sendall(sock, b'GET / HTTP/1.0\r\n\r\n'))
-        data = await self.loop.sock_recv(sock, 1024)
+        data = warte self.loop.sock_recv(sock, 1024)
         # consume data
-        await self.loop.sock_recv(sock, 1024)
+        warte self.loop.sock_recv(sock, 1024)
 
         self.assertStartsWith(data, b'HTTP/1.0 200 OK')
 
     async def _basetest_sock_recv_into_racing(self, httpd, sock):
         sock.setblocking(Falsch)
-        await self.loop.sock_connect(sock, httpd.address)
+        warte self.loop.sock_connect(sock, httpd.address)
 
         data = bytearray(1024)
         mit memoryview(data) als buf:
             task = asyncio.create_task(
                 self.loop.sock_recv_into(sock, buf[:1024]))
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             task.cancel()
 
             task = asyncio.create_task(
                 self.loop.sock_sendall(sock, b'GET / HTTP/1.0\r\n\r\n'))
-            nbytes = await self.loop.sock_recv_into(sock, buf[:1024])
+            nbytes = warte self.loop.sock_recv_into(sock, buf[:1024])
             # consume data
-            await self.loop.sock_recv_into(sock, buf[nbytes:])
+            warte self.loop.sock_recv_into(sock, buf[nbytes:])
             self.assertStartsWith(data, b'HTTP/1.0 200 OK')
 
-        await task
+        warte task
 
     async def _basetest_sock_send_racing(self, listener, sock):
         listener.bind(('127.0.0.1', 0))
@@ -181,12 +181,12 @@ klasse BaseSockTestsMixin:
         sock.setblocking(Falsch)
         task = asyncio.create_task(
             self.loop.sock_connect(sock, listener.getsockname()))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         server = listener.accept()[0]
         server.setblocking(Falsch)
 
         mit server:
-            await task
+            warte task
 
             # fill the buffer until sending 5 chars would block
             size = 8192
@@ -199,27 +199,27 @@ klasse BaseSockTestsMixin:
             # cancel a blocked sock_sendall
             task = asyncio.create_task(
                 self.loop.sock_sendall(sock, b'hello'))
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             task.cancel()
 
-            # receive everything that is nicht a space
+            # receive everything that ist nicht a space
             async def recv_all():
                 rv = b''
                 waehrend Wahr:
-                    buf = await self.loop.sock_recv(server, 8192)
+                    buf = warte self.loop.sock_recv(server, 8192)
                     wenn nicht buf:
                         gib rv
                     rv += buf.strip()
             task = asyncio.create_task(recv_all())
 
             # immediately make another sock_sendall call
-            await self.loop.sock_sendall(sock, b'world')
+            warte self.loop.sock_sendall(sock, b'world')
             sock.shutdown(socket.SHUT_WR)
-            data = await task
-            # ProactorEventLoop could deliver hello, so endswith is necessary
+            data = warte task
+            # ProactorEventLoop could deliver hello, so endswith ist necessary
             self.assertEndsWith(data, b'world')
 
-    # After the first connect attempt before the listener is ready,
+    # After the first connect attempt before the listener ist ready,
     # the socket needs time to "recover" to make the next connect call.
     # On Linux, a second retry will do. On Windows, the waiting time is
     # unpredictable; und on FreeBSD the socket may never come back
@@ -233,7 +233,7 @@ klasse BaseSockTestsMixin:
         sock.setblocking(Falsch)
 
         task = asyncio.create_task(self.loop.sock_connect(sock, addr))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         task.cancel()
 
         listener.listen(1)
@@ -241,7 +241,7 @@ klasse BaseSockTestsMixin:
         skip_reason = "Max retries reached"
         fuer i in range(128):
             versuch:
-                await self.loop.sock_connect(sock, addr)
+                warte self.loop.sock_connect(sock, addr)
             ausser ConnectionRefusedError als e:
                 skip_reason = e
             ausser OSError als e:
@@ -287,20 +287,20 @@ klasse BaseSockTestsMixin:
 
         chunk = b'0123456789' * (DATA_SIZE // 10)
 
-        await self.loop.sock_connect(sock, address)
-        await self.loop.sock_sendall(sock,
+        warte self.loop.sock_connect(sock, address)
+        warte self.loop.sock_sendall(sock,
                                      (b'POST /loop HTTP/1.0\r\n' +
                                       b'Content-Length: %d\r\n' % DATA_SIZE +
                                       b'\r\n'))
 
         task = asyncio.create_task(self.loop.sock_sendall(sock, chunk))
 
-        data = await self.loop.sock_recv(sock, DATA_SIZE)
-        # HTTP headers size is less than MTU,
+        data = warte self.loop.sock_recv(sock, DATA_SIZE)
+        # HTTP headers size ist less than MTU,
         # they are sent by the first packet always
         self.assertStartsWith(data, b'HTTP/1.0 200 OK')
         waehrend data.find(b'\r\n\r\n') == -1:
-            data += await self.loop.sock_recv(sock, DATA_SIZE)
+            data += warte self.loop.sock_recv(sock, DATA_SIZE)
         # Strip headers
         headers = data[:data.index(b'\r\n\r\n') + 4]
         data = data[len(headers):]
@@ -313,7 +313,7 @@ klasse BaseSockTestsMixin:
         size -= len(data)
 
         waehrend Wahr:
-            data = await self.loop.sock_recv(sock, DATA_SIZE)
+            data = warte self.loop.sock_recv(sock, DATA_SIZE)
             wenn nicht data:
                 breche
             expected = bytes(islice(checker, len(data)))
@@ -321,7 +321,7 @@ klasse BaseSockTestsMixin:
             size -= len(data)
         self.assertEqual(size, 0)
 
-        await task
+        warte task
         sock.close()
 
     def test_huge_content(self):
@@ -336,8 +336,8 @@ klasse BaseSockTestsMixin:
 
         chunk = b'0123456789' * (DATA_SIZE // 10)
 
-        await self.loop.sock_connect(sock, address)
-        await self.loop.sock_sendall(sock,
+        warte self.loop.sock_connect(sock, address)
+        warte self.loop.sock_sendall(sock,
                                      (b'POST /loop HTTP/1.0\r\n' +
                                       b'Content-Length: %d\r\n' % DATA_SIZE +
                                       b'\r\n'))
@@ -347,13 +347,13 @@ klasse BaseSockTestsMixin:
         array = bytearray(DATA_SIZE)
         buf = memoryview(array)
 
-        nbytes = await self.loop.sock_recv_into(sock, buf)
+        nbytes = warte self.loop.sock_recv_into(sock, buf)
         data = bytes(buf[:nbytes])
-        # HTTP headers size is less than MTU,
+        # HTTP headers size ist less than MTU,
         # they are sent by the first packet always
         self.assertStartsWith(data, b'HTTP/1.0 200 OK')
         waehrend data.find(b'\r\n\r\n') == -1:
-            nbytes = await self.loop.sock_recv_into(sock, buf)
+            nbytes = warte self.loop.sock_recv_into(sock, buf)
             data = bytes(buf[:nbytes])
         # Strip headers
         headers = data[:data.index(b'\r\n\r\n') + 4]
@@ -367,7 +367,7 @@ klasse BaseSockTestsMixin:
         size -= len(data)
 
         waehrend Wahr:
-            nbytes = await self.loop.sock_recv_into(sock, buf)
+            nbytes = warte self.loop.sock_recv_into(sock, buf)
             data = buf[:nbytes]
             wenn nicht data:
                 breche
@@ -376,7 +376,7 @@ klasse BaseSockTestsMixin:
             size -= len(data)
         self.assertEqual(size, 0)
 
-        await task
+        warte task
         sock.close()
 
     def test_huge_content_recvinto(self):
@@ -389,8 +389,8 @@ klasse BaseSockTestsMixin:
         data = b'\x01' * 4096
         mit socket.socket(socket.AF_INET, socket.SOCK_DGRAM) als sock:
             sock.setblocking(Falsch)
-            await self.loop.sock_sendto(sock, data, server_address)
-            received_data, from_addr = await self.loop.sock_recvfrom(
+            warte self.loop.sock_sendto(sock, data, server_address)
+            received_data, from_addr = warte self.loop.sock_recvfrom(
                 sock, 4096)
             self.assertEqual(received_data, data)
             self.assertEqual(from_addr, server_address)
@@ -407,16 +407,16 @@ klasse BaseSockTestsMixin:
 
             buf = bytearray(4096)
             data = b'\x01' * 4096
-            await self.loop.sock_sendto(sock, data, server_address)
-            num_bytes, from_addr = await self.loop.sock_recvfrom_into(
+            warte self.loop.sock_sendto(sock, data, server_address)
+            num_bytes, from_addr = warte self.loop.sock_recvfrom_into(
                 sock, buf)
             self.assertEqual(num_bytes, 4096)
             self.assertEqual(buf, data)
             self.assertEqual(from_addr, server_address)
 
             buf = bytearray(8192)
-            await self.loop.sock_sendto(sock, data, server_address)
-            num_bytes, from_addr = await self.loop.sock_recvfrom_into(
+            warte self.loop.sock_sendto(sock, data, server_address)
+            num_bytes, from_addr = warte self.loop.sock_recvfrom_into(
                 sock, buf, 4096)
             self.assertEqual(num_bytes, 4096)
             self.assertEqual(buf[:4096], data[:4096])
@@ -430,7 +430,7 @@ klasse BaseSockTestsMixin:
     async def _basetest_datagram_sendto_blocking(self, server_address):
         # Sad path, sock.sendto() raises BlockingIOError
         # This involves patching sock.sendto() to wirf BlockingIOError but
-        # sendto() is nicht used by the proactor event loop
+        # sendto() ist nicht used by the proactor event loop
         data = b'\x01' * 4096
         mit socket.socket(socket.AF_INET, socket.SOCK_DGRAM) als sock:
             sock.setblocking(Falsch)
@@ -441,9 +441,9 @@ klasse BaseSockTestsMixin:
             self.loop.call_soon(
                 lambda: setattr(mock_sock, 'sendto', sock.sendto)
             )
-            await self.loop.sock_sendto(mock_sock, data, server_address)
+            warte self.loop.sock_sendto(mock_sock, data, server_address)
 
-            received_data, from_addr = await self.loop.sock_recvfrom(
+            received_data, from_addr = warte self.loop.sock_recvfrom(
                 sock, 4096)
             self.assertEqual(received_data, data)
             self.assertEqual(from_addr, server_address)
@@ -586,7 +586,7 @@ wenn sys.platform == 'win32':
             addr_2 = socket_2.getsockname()
 
             # creating und immediately closing this to try to get an address
-            # that is nicht listening
+            # that ist nicht listening
             socket_3 = create_socket()
             addr_3 = socket_3.getsockname()
             socket_3.shutdown(socket.SHUT_RDWR)
@@ -594,26 +594,26 @@ wenn sys.platform == 'win32':
 
             socket_1_recv_task = self.loop.create_task(recvfrom(socket_1))
             socket_2_recv_task = self.loop.create_task(recvfrom(socket_2))
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
-            await self.loop.sock_sendto(socket_1, b'a', addr_2)
-            self.assertEqual(await socket_2_recv_task, b'a')
+            warte self.loop.sock_sendto(socket_1, b'a', addr_2)
+            self.assertEqual(warte socket_2_recv_task, b'a')
 
-            await self.loop.sock_sendto(socket_2, b'b', addr_1)
-            self.assertEqual(await socket_1_recv_task, b'b')
+            warte self.loop.sock_sendto(socket_2, b'b', addr_1)
+            self.assertEqual(warte socket_1_recv_task, b'b')
             socket_1_recv_task = self.loop.create_task(recvfrom(socket_1))
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
             # this should send to an address that isn't listening
-            await self.loop.sock_sendto(socket_1, b'c', addr_3)
-            self.assertEqual(await socket_1_recv_task, b'')
+            warte self.loop.sock_sendto(socket_1, b'c', addr_3)
+            self.assertEqual(warte socket_1_recv_task, b'')
             socket_1_recv_task = self.loop.create_task(recvfrom(socket_1))
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
             # socket 1 should still be able to receive messages after sending
             # to an address that wasn't listening
             socket_2.sendto(b'd', addr_1)
-            self.assertEqual(await socket_1_recv_task, b'd')
+            self.assertEqual(warte socket_1_recv_task, b'd')
 
             socket_1.shutdown(socket.SHUT_RDWR)
             socket_1.close()
@@ -623,7 +623,7 @@ wenn sys.platform == 'win32':
 
         def test_datagram_send_to_non_listening_address_recvfrom(self):
             async def recvfrom(socket):
-                data, _ = await self.loop.sock_recvfrom(socket, 4096)
+                data, _ = warte self.loop.sock_recvfrom(socket, 4096)
                 gib data
 
             self.loop.run_until_complete(
@@ -634,7 +634,7 @@ wenn sys.platform == 'win32':
         def test_datagram_send_to_non_listening_address_recvfrom_into(self):
             async def recvfrom_into(socket):
                 buf = bytearray(4096)
-                length, _ = await self.loop.sock_recvfrom_into(socket, buf,
+                length, _ = warte self.loop.sock_recvfrom_into(socket, buf,
                                                                4096)
                 gib buf[:length]
 

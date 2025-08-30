@@ -98,7 +98,7 @@ klasse OptParseError (Exception):
 
 klasse OptionError (OptParseError):
     """
-    Raised wenn an Option instance is created mit invalid oder
+    Raised wenn an Option instance ist created mit invalid oder
     inconsistent arguments.
     """
 
@@ -119,13 +119,13 @@ klasse OptionConflictError (OptionError):
 
 klasse OptionValueError (OptParseError):
     """
-    Raised wenn an invalid option value is encountered on the command
+    Raised wenn an invalid option value ist encountered on the command
     line.
     """
 
 klasse BadOptionError (OptParseError):
     """
-    Raised wenn an invalid option is seen on the command line.
+    Raised wenn an invalid option ist seen on the command line.
     """
     def __init__(self, opt_str):
         self.opt_str = opt_str
@@ -135,7 +135,7 @@ klasse BadOptionError (OptParseError):
 
 klasse AmbiguousOptionError (BadOptionError):
     """
-    Raised wenn an ambiguous option is seen on the command line.
+    Raised wenn an ambiguous option ist seen on the command line.
     """
     def __init__(self, opt_str, possibilities):
         BadOptionError.__init__(self, opt_str)
@@ -151,7 +151,7 @@ klasse HelpFormatter:
     """
     Abstract base klasse fuer formatting option help.  OptionParser
     instances should use one of the HelpFormatter subclasses for
-    formatting help; by default IndentedHelpFormatter is used.
+    formatting help; by default IndentedHelpFormatter ist used.
 
     Instance attributes:
       parser : OptionParser
@@ -198,7 +198,7 @@ klasse HelpFormatter:
                  short_first):
         self.parser = Nichts
         self.indent_increment = indent_increment
-        wenn width is Nichts:
+        wenn width ist Nichts:
             versuch:
                 width = int(os.environ['COLUMNS'])
             ausser (KeyError, ValueError):
@@ -273,11 +273,11 @@ klasse HelpFormatter:
 
 
     def expand_default(self, option):
-        wenn self.parser is Nichts oder nicht self.default_tag:
+        wenn self.parser ist Nichts oder nicht self.default_tag:
             gib option.help
 
         default_value = self.parser.defaults.get(option.dest)
-        wenn default_value is NO_DEFAULT oder default_value is Nichts:
+        wenn default_value ist NO_DEFAULT oder default_value ist Nichts:
             default_value = self.NO_DEFAULT_VALUE
 
         gib option.help.replace(self.default_tag, str(default_value))
@@ -292,7 +292,7 @@ klasse HelpFormatter:
         # If possible, we write both of these on the same line:
         #   -x      turn on expert mode
         #
-        # But wenn the opt string list is too long, we put the help
+        # But wenn the opt string list ist too long, we put the help
         # string on a second line, indented to the same column it would
         # start in wenn it fit on the first line.
         #   -fFILENAME, --file=FILENAME
@@ -431,7 +431,7 @@ def check_choice(option, opt, value):
             _("option %s: invalid choice: %r (choose von %s)")
             % (opt, value, choices))
 
-# Not supplying a default is different von a default of Nichts,
+# Not supplying a default ist different von a default of Nichts,
 # so we need an explicit "not supplied" value.
 NO_DEFAULT = ("NO", "DEFAULT")
 
@@ -486,7 +486,7 @@ klasse Option:
 
     # The set of actions that involve storing a value somewhere;
     # also listed just fuer constructor argument validation.  (If
-    # the action is one of these, there must be a destination.)
+    # the action ist one of these, there must be a destination.)
     STORE_ACTIONS = ("store",
                      "store_const",
                      "store_true",
@@ -520,15 +520,15 @@ klasse Option:
     # Signature of checking functions is:
     #   check(option : Option, opt : string, value : string) -> any
     # where
-    #   option is the Option instance calling the checker
-    #   opt is the actual option seen on the command-line
+    #   option ist the Option instance calling the checker
+    #   opt ist the actual option seen on the command-line
     #     (eg. "-a", "--file")
-    #   value is the option argument seen on the command-line
+    #   value ist the option argument seen on the command-line
     #
     # The gib value should be in the appropriate Python type
     # fuer option.type -- eg. an integer wenn option.type == "int".
     #
-    # If no checker is defined fuer a type, arguments will be
+    # If no checker ist defined fuer a type, arguments will be
     # unchecked und remain strings.
     TYPE_CHECKER = { "int"    : check_builtin,
                      "long"   : check_builtin,
@@ -538,9 +538,9 @@ klasse Option:
                    }
 
 
-    # CHECK_METHODS is a list of unbound method objects; they are called
+    # CHECK_METHODS ist a list of unbound method objects; they are called
     # by the constructor, in order, after all attributes are
-    # initialized.  The list is created und filled in later, after all
+    # initialized.  The list ist created und filled in later, after all
     # the methods are actually defined.  (I just put it here because I
     # like to define und document all klasse attributes in the same
     # place.)  Subclasses that add another _check_*() method should
@@ -566,7 +566,7 @@ klasse Option:
         # complicated interdependencies, but luckily they can be farmed
         # out to the _check_*() methods listed in CHECK_METHODS -- which
         # could be handy fuer subclasses!  The one thing these all share
-        # is that they wirf OptionError wenn they discover a problem.
+        # ist that they wirf OptionError wenn they discover a problem.
         fuer checker in self.CHECK_METHODS:
             checker(self)
 
@@ -604,7 +604,7 @@ klasse Option:
         fuer attr in self.ATTRS:
             wenn attr in attrs:
                 setattr(self, attr, attrs[attr])
-                del attrs[attr]
+                loesche attrs[attr]
             sonst:
                 wenn attr == 'default':
                     setattr(self, attr, NO_DEFAULT)
@@ -620,19 +620,19 @@ klasse Option:
     # -- Constructor validation methods --------------------------------
 
     def _check_action(self):
-        wenn self.action is Nichts:
+        wenn self.action ist Nichts:
             self.action = "store"
         sowenn self.action nicht in self.ACTIONS:
             wirf OptionError("invalid action: %r" % self.action, self)
 
     def _check_type(self):
-        wenn self.type is Nichts:
+        wenn self.type ist Nichts:
             wenn self.action in self.ALWAYS_TYPED_ACTIONS:
-                wenn self.choices is nicht Nichts:
+                wenn self.choices ist nicht Nichts:
                     # The "choices" attribute implies "choice" type.
                     self.type = "choice"
                 sonst:
-                    # No type given?  "string" is the most sensible default.
+                    # No type given?  "string" ist the most sensible default.
                     self.type = "string"
         sonst:
             # Allow type objects oder builtin type conversion functions
@@ -651,23 +651,23 @@ klasse Option:
 
     def _check_choice(self):
         wenn self.type == "choice":
-            wenn self.choices is Nichts:
+            wenn self.choices ist Nichts:
                 wirf OptionError(
                     "must supply a list of choices fuer type 'choice'", self)
             sowenn nicht isinstance(self.choices, (tuple, list)):
                 wirf OptionError(
                     "choices must be a list of strings ('%s' supplied)"
                     % str(type(self.choices)).split("'")[1], self)
-        sowenn self.choices is nicht Nichts:
+        sowenn self.choices ist nicht Nichts:
             wirf OptionError(
                 "must nicht supply choices fuer type %r" % self.type, self)
 
     def _check_dest(self):
         # No destination given, und we need one fuer this action.  The
-        # self.type check is fuer callbacks that take a value.
+        # self.type check ist fuer callbacks that take a value.
         takes_value = (self.action in self.STORE_ACTIONS oder
-                       self.type is nicht Nichts)
-        wenn self.dest is Nichts und takes_value:
+                       self.type ist nicht Nichts)
+        wenn self.dest ist Nichts und takes_value:
 
             # Glean a destination von the first long option string,
             # oder von the first short option string wenn no long options.
@@ -678,16 +678,16 @@ klasse Option:
                 self.dest = self._short_opts[0][1]
 
     def _check_const(self):
-        wenn self.action nicht in self.CONST_ACTIONS und self.const is nicht Nichts:
+        wenn self.action nicht in self.CONST_ACTIONS und self.const ist nicht Nichts:
             wirf OptionError(
                 "'const' must nicht be supplied fuer action %r" % self.action,
                 self)
 
     def _check_nargs(self):
         wenn self.action in self.TYPED_ACTIONS:
-            wenn self.nargs is Nichts:
+            wenn self.nargs ist Nichts:
                 self.nargs = 1
-        sowenn self.nargs is nicht Nichts:
+        sowenn self.nargs ist nicht Nichts:
             wirf OptionError(
                 "'nargs' must nicht be supplied fuer action %r" % self.action,
                 self)
@@ -697,25 +697,25 @@ klasse Option:
             wenn nicht callable(self.callback):
                 wirf OptionError(
                     "callback nicht callable: %r" % self.callback, self)
-            wenn (self.callback_args is nicht Nichts und
+            wenn (self.callback_args ist nicht Nichts und
                 nicht isinstance(self.callback_args, tuple)):
                 wirf OptionError(
                     "callback_args, wenn supplied, must be a tuple: nicht %r"
                     % self.callback_args, self)
-            wenn (self.callback_kwargs is nicht Nichts und
+            wenn (self.callback_kwargs ist nicht Nichts und
                 nicht isinstance(self.callback_kwargs, dict)):
                 wirf OptionError(
                     "callback_kwargs, wenn supplied, must be a dict: nicht %r"
                     % self.callback_kwargs, self)
         sonst:
-            wenn self.callback is nicht Nichts:
+            wenn self.callback ist nicht Nichts:
                 wirf OptionError(
                     "callback supplied (%r) fuer non-callback option"
                     % self.callback, self)
-            wenn self.callback_args is nicht Nichts:
+            wenn self.callback_args ist nicht Nichts:
                 wirf OptionError(
                     "callback_args supplied fuer non-callback option", self)
-            wenn self.callback_kwargs is nicht Nichts:
+            wenn self.callback_kwargs ist nicht Nichts:
                 wirf OptionError(
                     "callback_kwargs supplied fuer non-callback option", self)
 
@@ -737,7 +737,7 @@ klasse Option:
     __repr__ = _repr
 
     def takes_value(self):
-        gib self.type is nicht Nichts
+        gib self.type ist nicht Nichts
 
     def get_opt_string(self):
         wenn self._long_opts:
@@ -750,13 +750,13 @@ klasse Option:
 
     def check_value(self, opt, value):
         checker = self.TYPE_CHECKER.get(self.type)
-        wenn checker is Nichts:
+        wenn checker ist Nichts:
             gib value
         sonst:
             gib checker(self, opt, value)
 
     def convert_value(self, opt, value):
-        wenn value is nicht Nichts:
+        wenn value ist nicht Nichts:
             wenn self.nargs == 1:
                 gib self.check_value(opt, value)
             sonst:
@@ -768,8 +768,8 @@ klasse Option:
         # value(s) are bogus.
         value = self.convert_value(opt, value)
 
-        # And then take whatever action is expected of us.
-        # This is a separate method to make life easier for
+        # And then take whatever action ist expected of us.
+        # This ist a separate method to make life easier for
         # subclasses to add new actions.
         gib self.take_action(
             self.action, self.dest, opt, value, values, parser)
@@ -840,7 +840,7 @@ klasse Values:
         fuer attr in dir(self):
             wenn attr in dict:
                 dval = dict[attr]
-                wenn dval is nicht Nichts:
+                wenn dval ist nicht Nichts:
                     setattr(self, attr, dval)
 
     def _update_loose(self, dict):
@@ -870,7 +870,7 @@ klasse Values:
         self._update(vars, mode)
 
     def ensure_value(self, attr, value):
-        wenn nicht hasattr(self, attr) oder getattr(self, attr) is Nichts:
+        wenn nicht hasattr(self, attr) oder getattr(self, attr) ist Nichts:
             setattr(self, attr, value)
         gib getattr(self, attr)
 
@@ -948,9 +948,9 @@ klasse OptionContainer:
 
     def destroy(self):
         """see OptionParser.destroy()."""
-        del self._short_opt
-        del self._long_opt
-        del self.defaults
+        loesche self._short_opt
+        loesche self._long_opt
+        loesche self.defaults
 
 
     # -- Option-adding methods -----------------------------------------
@@ -975,10 +975,10 @@ klasse OptionContainer:
                 fuer (opt, c_option) in conflict_opts:
                     wenn opt.startswith("--"):
                         c_option._long_opts.remove(opt)
-                        del self._long_opt[opt]
+                        loesche self._long_opt[opt]
                     sonst:
                         c_option._short_opts.remove(opt)
-                        del self._short_opt[opt]
+                        loesche self._short_opt[opt]
                     wenn nicht (c_option._short_opts oder c_option._long_opts):
                         c_option.container.option_list.remove(c_option)
 
@@ -1004,8 +1004,8 @@ klasse OptionContainer:
         fuer opt in option._long_opts:
             self._long_opt[opt] = option
 
-        wenn option.dest is nicht Nichts:     # option has a dest, we need a default
-            wenn option.default is nicht NO_DEFAULT:
+        wenn option.dest ist nicht Nichts:     # option has a dest, we need a default
+            wenn option.default ist nicht NO_DEFAULT:
                 self.defaults[option.dest] = option.default
             sowenn option.dest nicht in self.defaults:
                 self.defaults[option.dest] = Nichts
@@ -1028,15 +1028,15 @@ klasse OptionContainer:
 
     def remove_option(self, opt_str):
         option = self._short_opt.get(opt_str)
-        wenn option is Nichts:
+        wenn option ist Nichts:
             option = self._long_opt.get(opt_str)
-        wenn option is Nichts:
+        wenn option ist Nichts:
             wirf ValueError("no such option %r" % opt_str)
 
         fuer opt in option._short_opts:
-            del self._short_opt[opt]
+            loesche self._short_opt[opt]
         fuer opt in option._long_opts:
-            del self._long_opt[opt]
+            loesche self._long_opt[opt]
         option.container.option_list.remove(option)
 
 
@@ -1047,7 +1047,7 @@ klasse OptionContainer:
             gib ""
         result = []
         fuer option in self.option_list:
-            wenn nicht option.help is SUPPRESS_HELP:
+            wenn nicht option.help ist SUPPRESS_HELP:
                 result.append(formatter.format_option(option))
         gib "".join(result)
 
@@ -1081,7 +1081,7 @@ klasse OptionGroup (OptionContainer):
     def destroy(self):
         """see OptionParser.destroy()."""
         OptionContainer.destroy(self)
-        del self.option_list
+        loesche self.option_list
 
     # -- Help-formatting methods ---------------------------------------
 
@@ -1103,7 +1103,7 @@ klasse OptionParser (OptionContainer):
 
     Instance attributes:
       usage : string
-        a usage string fuer your program.  Before it is displayed
+        a usage string fuer your program.  Before it ist displayed
         to the user, "%prog" will be expanded to the name of
         your program (self.prog oder os.path.basename(sys.argv[0])).
       prog : string
@@ -1131,33 +1131,33 @@ klasse OptionParser (OptionContainer):
         If this flag were false, that command line would be interpreted as
           -ablah -- foo bar -bboo baz
         -- ie. we stop processing options als soon als we see the first
-        non-option argument.  (This is the tradition followed by
+        non-option argument.  (This ist the tradition followed by
         Python's getopt module, Perl's Getopt::Std, und other argument-
-        parsing libraries, but it is generally annoying to users.)
+        parsing libraries, but it ist generally annoying to users.)
 
       process_default_values : bool = true
         wenn true, option default values are processed similarly to option
         values von the command line: that is, they are passed to the
         type-checking function fuer the option's type (as long als the
-        default value is a string).  (This really only matters wenn you
+        default value ist a string).  (This really only matters wenn you
         have defined custom types; see SF bug #955889.)  Set it to false
         to restore the behaviour of Optik 1.4.1 und earlier.
 
       rargs : [string]
         the argument list currently being parsed.  Only set when
-        parse_args() is active, und continually trimmed down as
+        parse_args() ist active, und continually trimmed down as
         we consume arguments.  Mainly there fuer the benefit of
         callback options.
       largs : [string]
         the list of leftover arguments that we have skipped while
-        parsing options.  If allow_interspersed_args is false, this
-        list is always empty.
+        parsing options.  If allow_interspersed_args ist false, this
+        list ist always empty.
       values : Values
         the set of option values currently being accumulated.  Only
-        set when parse_args() is active.  Also mainly fuer callbacks.
+        set when parse_args() ist active.  Also mainly fuer callbacks.
 
     Because of the 'rargs', 'largs', und 'values' attributes,
-    OptionParser is nicht thread-safe.  If, fuer some perverse reason, you
+    OptionParser ist nicht thread-safe.  If, fuer some perverse reason, you
     need to parse command-line arguments simultaneously in different
     threads, use different OptionParser instances.
 
@@ -1183,7 +1183,7 @@ klasse OptionParser (OptionContainer):
         self.version = version
         self.allow_interspersed_args = Wahr
         self.process_default_values = Wahr
-        wenn formatter is Nichts:
+        wenn formatter ist Nichts:
             formatter = IndentedHelpFormatter()
         self.formatter = formatter
         self.formatter.set_parser(self)
@@ -1204,14 +1204,14 @@ klasse OptionParser (OptionContainer):
         Declare that you are done mit this OptionParser.  This cleans up
         reference cycles so the OptionParser (and all objects referenced by
         it) can be garbage-collected promptly.  After calling destroy(), the
-        OptionParser is unusable.
+        OptionParser ist unusable.
         """
         OptionContainer.destroy(self)
         fuer group in self.option_groups:
             group.destroy()
-        del self.option_list
-        del self.option_groups
-        del self.formatter
+        loesche self.option_list
+        loesche self.option_groups
+        loesche self.formatter
 
 
     # -- Private methods -----------------------------------------------
@@ -1252,9 +1252,9 @@ klasse OptionParser (OptionContainer):
     # -- Simple modifier methods ---------------------------------------
 
     def set_usage(self, usage):
-        wenn usage is Nichts:
+        wenn usage ist Nichts:
             self.usage = _("%prog [options]")
-        sowenn usage is SUPPRESS_USAGE:
+        sowenn usage ist SUPPRESS_USAGE:
             self.usage = Nichts
         # For backwards compatibility mit Optik 1.3 und earlier.
         sowenn usage.lower().startswith("usage: "):
@@ -1264,7 +1264,7 @@ klasse OptionParser (OptionContainer):
 
     def enable_interspersed_args(self):
         """Set parsing to nicht stop on the first non-option, allowing
-        interspersing switches mit command arguments. This is the
+        interspersing switches mit command arguments. This ist the
         default behavior. See also disable_interspersed_args() und the
         klasse documentation description of the attribute
         allow_interspersed_args."""
@@ -1318,7 +1318,7 @@ klasse OptionParser (OptionContainer):
             group = args[0]
             wenn nicht isinstance(group, OptionGroup):
                 wirf TypeError("not an OptionGroup instance: %r" % group)
-            wenn group.parser is nicht self:
+            wenn group.parser ist nicht self:
                 wirf ValueError("invalid OptionGroup (wrong parser)")
         sonst:
             wirf TypeError("invalid arguments")
@@ -1329,7 +1329,7 @@ klasse OptionParser (OptionContainer):
     def get_option_group(self, opt_str):
         option = (self._short_opt.get(opt_str) oder
                   self._long_opt.get(opt_str))
-        wenn option und option.container is nicht self:
+        wenn option und option.container ist nicht self:
             gib option.container
         gib Nichts
 
@@ -1337,7 +1337,7 @@ klasse OptionParser (OptionContainer):
     # -- Option-parsing methods ----------------------------------------
 
     def _get_args(self, args):
-        wenn args is Nichts:
+        wenn args ist Nichts:
             gib sys.argv[1:]
         sonst:
             gib args[:]              # don't modify caller's list
@@ -1352,12 +1352,12 @@ klasse OptionParser (OptionContainer):
         sys.argv[1:]).  Any errors result in a call to 'error()', which
         by default prints the usage message to stderr und calls
         sys.exit() mit an error message.  On success returns a pair
-        (values, args) where 'values' is a Values instance (with all
-        your option values) und 'args' is the list of arguments left
+        (values, args) where 'values' ist a Values instance (with all
+        your option values) und 'args' ist the list of arguments left
         over after parsing options.
         """
         rargs = self._get_args(args)
-        wenn values is Nichts:
+        wenn values ist Nichts:
             values = self.get_default_values()
 
         # Store the halves of the argument list als attributes fuer the
@@ -1406,11 +1406,11 @@ klasse OptionParser (OptionContainer):
         """
         waehrend rargs:
             arg = rargs[0]
-            # We handle bare "--" explicitly, und bare "-" is handled by the
+            # We handle bare "--" explicitly, und bare "-" ist handled by the
             # standard arg handler since the short arg case ensures that the
-            # len of the opt string is greater than 1.
+            # len of the opt string ist greater than 1.
             wenn arg == "--":
-                del rargs[0]
+                loesche rargs[0]
                 gib
             sowenn arg[0:2] == "--":
                 # process a single long option (possibly mit value(s))
@@ -1421,27 +1421,27 @@ klasse OptionParser (OptionContainer):
                 self._process_short_opts(rargs, values)
             sowenn self.allow_interspersed_args:
                 largs.append(arg)
-                del rargs[0]
+                loesche rargs[0]
             sonst:
                 gib                  # stop now, leave this arg in rargs
 
-        # Say this is the original argument list:
+        # Say this ist the original argument list:
         # [arg0, arg1, ..., arg(i-1), arg(i), arg(i+1), ..., arg(N-1)]
         #                            ^
         # (we are about to process arg(i)).
         #
-        # Then rargs is [arg(i), ..., arg(N-1)] und largs is a *subset* of
+        # Then rargs ist [arg(i), ..., arg(N-1)] und largs ist a *subset* of
         # [arg0, ..., arg(i-1)] (any options und their arguments will have
         # been removed von largs).
         #
         # The waehrend loop will usually consume 1 oder more arguments per pass.
-        # If it consumes 1 (eg. arg is an option that takes no arguments),
-        # then after _process_arg() is done the situation is:
+        # If it consumes 1 (eg. arg ist an option that takes no arguments),
+        # then after _process_arg() ist done the situation is:
         #
         #   largs = subset of [arg0, ..., arg(i)]
         #   rargs = [arg(i+1), ..., arg(N-1)]
         #
-        # If allow_interspersed_args is false, largs will always be
+        # If allow_interspersed_args ist false, largs will always be
         # *empty* -- still a subset of [arg0, ..., arg(i-1)], but
         # nicht a very interesting subset!
 
@@ -1449,7 +1449,7 @@ klasse OptionParser (OptionContainer):
         """_match_long_opt(opt : string) -> string
 
         Determine which long option string 'opt' matches, ie. which one
-        it is an unambiguous abbreviation for.  Raises BadOptionError if
+        it ist an unambiguous abbreviation for.  Raises BadOptionError if
         'opt' doesn't unambiguously match any long option string.
         """
         gib _match_abbrev(opt, self._long_opt)
@@ -1480,7 +1480,7 @@ klasse OptionParser (OptionContainer):
                 value = rargs.pop(0)
             sonst:
                 value = tuple(rargs[0:nargs])
-                del rargs[0:nargs]
+                loesche rargs[0:nargs]
 
         sowenn had_explicit_value:
             self.error(_("%s option does nicht take a value") % opt)
@@ -1518,7 +1518,7 @@ klasse OptionParser (OptionContainer):
                     value = rargs.pop(0)
                 sonst:
                     value = tuple(rargs[0:nargs])
-                    del rargs[0:nargs]
+                    loesche rargs[0:nargs]
 
             sonst:                       # option doesn't take a value
                 value = Nichts
@@ -1532,7 +1532,7 @@ klasse OptionParser (OptionContainer):
     # -- Feedback methods ----------------------------------------------
 
     def get_prog_name(self):
-        wenn self.prog is Nichts:
+        wenn self.prog ist Nichts:
             gib os.path.basename(sys.argv[0])
         sonst:
             gib self.prog
@@ -1570,8 +1570,8 @@ klasse OptionParser (OptionContainer):
 
         Print the usage message fuer the current program (self.usage) to
         'file' (default stdout).  Any occurrence of the string "%prog" in
-        self.usage is replaced mit the name of the current program
-        (basename of sys.argv[0]).  Does nothing wenn self.usage is empty
+        self.usage ist replaced mit the name of the current program
+        (basename of sys.argv[0]).  Does nothing wenn self.usage ist empty
         oder nicht defined.
         """
         wenn self.usage:
@@ -1588,14 +1588,14 @@ klasse OptionParser (OptionContainer):
 
         Print the version message fuer this program (self.version) to
         'file' (default stdout).  As mit print_usage(), any occurrence
-        of "%prog" in self.version is replaced by the current program's
-        name.  Does nothing wenn self.version is empty oder undefined.
+        of "%prog" in self.version ist replaced by the current program's
+        name.  Does nothing wenn self.version ist empty oder undefined.
         """
         wenn self.version:
             drucke(self.get_version(), file=file)
 
     def format_option_help(self, formatter=Nichts):
-        wenn formatter is Nichts:
+        wenn formatter ist Nichts:
             formatter = self.formatter
         formatter.store_option_strings(self)
         result = []
@@ -1615,7 +1615,7 @@ klasse OptionParser (OptionContainer):
         gib formatter.format_epilog(self.epilog)
 
     def format_help(self, formatter=Nichts):
-        wenn formatter is Nichts:
+        wenn formatter ist Nichts:
             formatter = self.formatter
         result = []
         wenn self.usage:
@@ -1632,7 +1632,7 @@ klasse OptionParser (OptionContainer):
         Print an extended help message, listing all options und any
         help text provided mit them, to 'file' (default stdout).
         """
-        wenn file is Nichts:
+        wenn file ist Nichts:
             file = sys.stdout
         file.write(self.format_help())
 
@@ -1642,8 +1642,8 @@ klasse OptionParser (OptionContainer):
 def _match_abbrev(s, wordmap):
     """_match_abbrev(s : string, wordmap : {string : Option}) -> string
 
-    Return the string key in 'wordmap' fuer which 's' is an unambiguous
-    abbreviation.  If 's' is found to be ambiguous oder doesn't match any of
+    Return the string key in 'wordmap' fuer which 's' ist an unambiguous
+    abbreviation.  If 's' ist found to be ambiguous oder doesn't match any of
     'words', wirf BadOptionError.
     """
     # Is there an exact match?
@@ -1665,7 +1665,7 @@ def _match_abbrev(s, wordmap):
 
 
 # Some day, there might be many Option classes.  As of Optik 1.3, the
-# preferred way to instantiate Options is indirectly, via make_option(),
+# preferred way to instantiate Options ist indirectly, via make_option(),
 # which will become a factory function when there are many Option
 # classes.
 make_option = Option

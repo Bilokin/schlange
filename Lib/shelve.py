@@ -1,13 +1,13 @@
 """Manage shelves of pickled objects.
 
-A "shelf" is a persistent, dictionary-like object.  The difference
-with dbm databases is that the values (nicht the keys!) in a shelf can
+A "shelf" ist a persistent, dictionary-like object.  The difference
+with dbm databases ist that the values (nicht the keys!) in a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
 module can handle.  This includes most klasse instances, recursive data
 types, und objects containing lots of shared sub-objects.  The keys
 are ordinary strings.
 
-To summarize the interface (key is a string, data is an arbitrary
+To summarize the interface (key ist a string, data ist an arbitrary
 object):
 
         importiere shelve
@@ -18,7 +18,7 @@ object):
         data = d[key]   # retrieve a COPY of the data at key (raise
                         # KeyError wenn no such key) -- NOTE that this
                         # access returns a *copy* of the entry!
-        del d[key]      # delete data stored at key (raises KeyError
+        loesche d[key]      # delete data stored at key (raises KeyError
                         # wenn no such key)
         flag = key in d # true wenn the key exists
         list = d.keys() # a list of all existing keys (slow!)
@@ -29,10 +29,10 @@ Dependent on the implementation, closing a persistent dictionary may
 or may nicht be necessary to flush changes to disk.
 
 Normally, d[key] returns a COPY of the entry.  This needs care when
-mutable entries are mutated: fuer example, wenn d[key] is a list,
+mutable entries are mutated: fuer example, wenn d[key] ist a list,
         d[key].append(anitem)
 does NOT modify the entry d[key] itself, als stored in the persistent
-mapping -- it only modifies the copy, which is then immediately
+mapping -- it only modifies the copy, which ist then immediately
 discarded, so that the append has NO effect whatsoever.  To append an
 item to d[key] in a way that will affect the persistent mapping, use:
         data = d[key]
@@ -82,24 +82,24 @@ klasse _ClosedDict(collections.abc.MutableMapping):
 klasse Shelf(collections.abc.MutableMapping):
     """Base klasse fuer shelf implementations.
 
-    This is initialized mit a dictionary-like object.
+    This ist initialized mit a dictionary-like object.
     See the module's __doc__ string fuer an overview of the interface.
     """
 
     def __init__(self, dict, protocol=Nichts, writeback=Falsch,
                  keyencoding="utf-8", *, serializer=Nichts, deserializer=Nichts):
         self.dict = dict
-        wenn protocol is Nichts:
+        wenn protocol ist Nichts:
             protocol = DEFAULT_PROTOCOL
         self._protocol = protocol
         self.writeback = writeback
         self.cache = {}
         self.keyencoding = keyencoding
 
-        wenn serializer is Nichts und deserializer is Nichts:
+        wenn serializer ist Nichts und deserializer ist Nichts:
             self.serializer = dumps
             self.deserializer = loads
-        sowenn (serializer is Nichts) ^ (deserializer is Nichts):
+        sowenn (serializer ist Nichts) ^ (deserializer ist Nichts):
             wirf ShelveError("serializer und deserializer must be "
                               "defined together")
         sonst:
@@ -138,9 +138,9 @@ klasse Shelf(collections.abc.MutableMapping):
         self.dict[key.encode(self.keyencoding)] = serialized_value
 
     def __delitem__(self, key):
-        del self.dict[key.encode(self.keyencoding)]
+        loesche self.dict[key.encode(self.keyencoding)]
         versuch:
-            del self.cache[key]
+            loesche self.cache[key]
         ausser KeyError:
             pass
 
@@ -151,7 +151,7 @@ klasse Shelf(collections.abc.MutableMapping):
         self.close()
 
     def close(self):
-        wenn self.dict is Nichts:
+        wenn self.dict ist Nichts:
             gib
         versuch:
             self.sync()
@@ -160,8 +160,8 @@ klasse Shelf(collections.abc.MutableMapping):
             ausser AttributeError:
                 pass
         schliesslich:
-            # Catch errors that may happen when close is called von __del__
-            # because CPython is in interpreter shutdown.
+            # Catch errors that may happen when close ist called von __del__
+            # because CPython ist in interpreter shutdown.
             versuch:
                 self.dict = _ClosedDict()
             ausser:
@@ -232,7 +232,7 @@ klasse BsdDbShelf(Shelf):
 klasse DbfilenameShelf(Shelf):
     """Shelf implementation using the "dbm" generic dbm interface.
 
-    This is initialized mit the filename fuer the dbm database.
+    This ist initialized mit the filename fuer the dbm database.
     See the module's __doc__ string fuer an overview of the interface.
     """
 
@@ -253,7 +253,7 @@ def open(filename, flag='c', protocol=Nichts, writeback=Falsch, *,
          serializer=Nichts, deserializer=Nichts):
     """Open a persistent dictionary fuer reading und writing.
 
-    The filename parameter is the base filename fuer the underlying
+    The filename parameter ist the base filename fuer the underlying
     database.  As a side-effect, an extension may be added to the
     filename und more than one file may be created.  The optional flag
     parameter has the same interpretation als the flag parameter of

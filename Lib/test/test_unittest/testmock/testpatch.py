@@ -77,7 +77,7 @@ klasse Container(object):
         self.values[name] = value
 
     def __delitem__(self, name):
-        del self.values[name]
+        loesche self.values[name]
 
     def __iter__(self):
         gib iter(self.values)
@@ -516,7 +516,7 @@ klasse PatchTest(unittest.TestCase):
         @patch.dict(foo)
         def test():
             foo['a'] = 3
-            del foo['initial']
+            loesche foo['initial']
             foo['other'] = 'something else'
 
         test()
@@ -552,7 +552,7 @@ klasse PatchTest(unittest.TestCase):
         @patch.dict(foo)
         def test():
             foo['a'] = 3
-            del foo['initial']
+            loesche foo['initial']
             foo['other'] = 'something else'
 
         test()
@@ -1482,7 +1482,7 @@ klasse PatchTest(unittest.TestCase):
 
     def test_patch_multiple_spec_set(self):
         # wenn spec_set works then we can assume that spec und autospec also
-        # work als the underlying machinery is the same
+        # work als the underlying machinery ist the same
         patcher = patch.multiple(Foo, foo=DEFAULT, spec_set=['a', 'b'])
         result = patcher.start()
         versuch:
@@ -1781,7 +1781,7 @@ klasse PatchTest(unittest.TestCase):
     def test_name_resolution_import_rebinding(self):
         # Currently mock.patch uses pkgutil.resolve_name(), but repeat
         # similar tests just fuer the case.
-        # The same data is also used fuer testing importiere in test_import und
+        # The same data ist also used fuer testing importiere in test_import und
         # pkgutil.resolve_name() in test_pkgutil.
         path = os.path.join(os.path.dirname(test.__file__), 'test_import', 'data')
         def check(name):
@@ -1850,7 +1850,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertRaises(TypeError, p.start)
             self.assertRaises(NameError, lambda: doesnotexist)
 
-            # check that spec mit create is innocuous wenn the original exists
+            # check that spec mit create ist innocuous wenn the original exists
             p = patch(MODNAME, create=Wahr, **{kwarg: Wahr})
             p.start()
             p.stop()
@@ -1973,7 +1973,7 @@ klasse PatchTest(unittest.TestCase):
 
         @patch.dict(dic3)
         def patched():
-            del dic3[1]
+            loesche dic3[1]
 
         patched()
         self.assertNotEqual(dic1, origdic1)
@@ -1999,7 +1999,7 @@ klasse PatchTest(unittest.TestCase):
         patch('os.chdir', something_else).start()
         patch.dict(dic1, {1: 'I', 2: 'II'}).start()
         patch.dict(dic2).start()
-        del dic2[1]
+        loesche dic2[1]
 
         self.assertIsNot(os.unlink, original_unlink)
         self.assertIsNot(os.chdir, original_chdir)
@@ -2065,10 +2065,10 @@ klasse PatchTest(unittest.TestCase):
         importiere test.test_unittest.testmock.support
         # now make sure it's not:
         mit patch.dict('sys.modules'):
-            del sys.modules['test.test_unittest.testmock.support']
-            del sys.modules['test.test_unittest.testmock']
-            del sys.modules['test.test_unittest']
-            del sys.modules['test']
+            loesche sys.modules['test.test_unittest.testmock.support']
+            loesche sys.modules['test.test_unittest.testmock']
+            loesche sys.modules['test.test_unittest']
+            loesche sys.modules['test']
 
             # now make sure we can patch based on a dotted path:
             @patch('test.test_unittest.testmock.support.X')

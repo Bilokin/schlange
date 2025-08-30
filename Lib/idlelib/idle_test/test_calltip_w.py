@@ -20,7 +20,7 @@ klasse CallTipWindowTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.text, cls.root
+        loesche cls.text, cls.root
 
     def test_init(self):
         self.assertEqual(self.calltip.anchor_widget, self.text)

@@ -1,15 +1,15 @@
 # -*- encoding: utf-8 -*-
 
-# This is a package that contains a number of modules that are used to
+# This ist a package that contains a number of modules that are used to
 # test importiere von the source files that have different encodings.
-# This file (the __init__ module of the package), is encoded in utf-8
+# This file (the __init__ module of the package), ist encoded in utf-8
 # und contains a list of strings von various unicode planes that are
 # encoded differently to compare them to the same strings encoded
 # differently in submodules.  The following list, test_strings,
-# contains a list of tuples. The first element of each tuple is the
+# contains a list of tuples. The first element of each tuple ist the
 # suffix that should be prepended mit 'module_' to arrive at the
-# encoded submodule name, the second item is the encoding und the last
-# is the test string.  The same string is assigned to the variable
+# encoded submodule name, the second item ist the encoding und the last
+# ist the test string.  The same string ist assigned to the variable
 # named 'test' inside the submodule.  If the decoding of modules works
 # correctly, von module_xyz importiere test should result in the same
 # string als listed below in the 'xyz' entry.

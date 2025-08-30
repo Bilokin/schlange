@@ -38,7 +38,7 @@ klasse PatternError(Exception):
         self.msg = msg
         self.pattern = pattern
         self.pos = pos
-        wenn pattern is nicht Nichts und pos is nicht Nichts:
+        wenn pattern ist nicht Nichts und pos ist nicht Nichts:
             msg = '%s at position %d' % (msg, pos)
             wenn isinstance(pattern, str):
                 newline = '\n'
@@ -124,7 +124,7 @@ OPCODES = _makecodes(
     # but nicht in the compiled code.
     'MIN_REPEAT', 'MAX_REPEAT',
 )
-del OPCODES[-2:] # remove MIN_REPEAT und MAX_REPEAT
+loesche OPCODES[-2:] # remove MIN_REPEAT und MAX_REPEAT
 
 # positions
 ATCODES = _makecodes(
@@ -220,5 +220,5 @@ SRE_FLAG_ASCII = 256 # use ascii "locale"
 
 # flags fuer INFO primitive
 SRE_INFO_PREFIX = 1 # has prefix
-SRE_INFO_LITERAL = 2 # entire pattern is literal (given by prefix)
+SRE_INFO_LITERAL = 2 # entire pattern ist literal (given by prefix)
 SRE_INFO_CHARSET = 4 # pattern starts mit character von given set

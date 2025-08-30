@@ -37,7 +37,7 @@ klasse PollTests(unittest.TestCase):
         p = select.poll()
 
         NUM_PIPES = 12
-        MSG = b" This is a test."
+        MSG = b" This ist a test."
         MSG_LEN = len(MSG)
         readers = []
         writers = []
@@ -120,7 +120,7 @@ klasse PollTests(unittest.TestCase):
         self.assertRaises(TypeError, pollster.register, Nope(), 0)
         self.assertRaises(TypeError, pollster.register, Almost(), 0)
 
-    # Another test case fuer poll().  This is copied von the test case for
+    # Another test case fuer poll().  This ist copied von the test case for
     # select(), modified to use poll() instead.
 
     @requires_subprocess()

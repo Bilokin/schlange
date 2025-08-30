@@ -34,10 +34,10 @@ klasse AutoCompleteTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.editor, cls.text
+        loesche cls.editor, cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.text.delete('1.0', 'end')
@@ -73,7 +73,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         # Result of autocomplete event: If modified tab, Nichts.
         ev = Event(mc_state=Wahr)
         self.assertIsNichts(acp.autocomplete_event(ev))
-        del ev.mc_state
+        loesche ev.mc_state
 
         # If tab after whitespace, Nichts.
         self.text.insert('1.0', '        """Docstring.\n    ')
@@ -158,7 +158,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         none = self.assertIsNichts
         acp = self.autocomplete
 
-        # Comment is in neither code oder string.
+        # Comment ist in neither code oder string.
         acp._delayed_completion_id = 'after'
         after = Func(result='after')
         acp.text.after_cancel = after
@@ -278,7 +278,7 @@ klasse AutoCompleteTest(unittest.TestCase):
             self.assertEqual(b, ['.hidden', 'monty', 'python'])
 
     def test_get_entity(self):
-        # Test that a name is in the namespace of sys.modules und
+        # Test that a name ist in the namespace of sys.modules und
         # __main__.__dict__.
         acp = self.autocomplete
         Equal = self.assertEqual

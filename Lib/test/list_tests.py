@@ -13,7 +13,7 @@ von test.support importiere skip_emscripten_stack_overflow, skip_wasi_stack_over
 klasse CommonTest(seq_tests.CommonTest):
 
     def test_init(self):
-        # Iterable arg is optional
+        # Iterable arg ist optional
         self.assertEqual(self.type2test([]), self.type2test())
 
         # Init clears previous values
@@ -128,15 +128,15 @@ klasse CommonTest(seq_tests.CommonTest):
 
     def test_delitem(self):
         a = self.type2test([0, 1])
-        del a[1]
+        loesche a[1]
         self.assertEqual(a, [0])
-        del a[0]
+        loesche a[0]
         self.assertEqual(a, [])
 
         a = self.type2test([0, 1])
-        del a[-2]
+        loesche a[-2]
         self.assertEqual(a, [1])
-        del a[-1]
+        loesche a[-1]
         self.assertEqual(a, [])
 
         a = self.type2test([0, 1])
@@ -204,43 +204,43 @@ klasse CommonTest(seq_tests.CommonTest):
 
     def test_delslice(self):
         a = self.type2test([0, 1])
-        del a[1:2]
-        del a[0:1]
+        loesche a[1:2]
+        loesche a[0:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[1:2]
-        del a[0:1]
+        loesche a[1:2]
+        loesche a[0:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[-2:-1]
+        loesche a[-2:-1]
         self.assertEqual(a, self.type2test([1]))
 
         a = self.type2test([0, 1])
-        del a[-2:-1]
+        loesche a[-2:-1]
         self.assertEqual(a, self.type2test([1]))
 
         a = self.type2test([0, 1])
-        del a[1:]
-        del a[:1]
+        loesche a[1:]
+        loesche a[:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[1:]
-        del a[:1]
+        loesche a[1:]
+        loesche a[:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[-1:]
+        loesche a[-1:]
         self.assertEqual(a, self.type2test([0]))
 
         a = self.type2test([0, 1])
-        del a[-1:]
+        loesche a[-1:]
         self.assertEqual(a, self.type2test([0]))
 
         a = self.type2test([0, 1])
-        del a[:]
+        loesche a[:]
         self.assertEqual(a, self.type2test([]))
 
     def test_append(self):
@@ -384,7 +384,7 @@ klasse CommonTest(seq_tests.CommonTest):
             def __init__(self, victim):
                 self.victim = victim
             def __eq__(self, other):
-                del self.victim[:]
+                loesche self.victim[:]
                 gib Falsch
         a = self.type2test()
         a[:] = [EvilCmp(a) fuer _ in range(100)]
@@ -520,16 +520,16 @@ klasse CommonTest(seq_tests.CommonTest):
         a = self.type2test([0,1,2,3,4])
 
         #  deletion
-        del a[::2]
+        loesche a[::2]
         self.assertEqual(a, self.type2test([1,3]))
         a = self.type2test(range(5))
-        del a[1::2]
+        loesche a[1::2]
         self.assertEqual(a, self.type2test([0,2,4]))
         a = self.type2test(range(5))
-        del a[1::-2]
+        loesche a[1::-2]
         self.assertEqual(a, self.type2test([0,2,3,4]))
         a = self.type2test(range(10))
-        del a[::1000]
+        loesche a[::1000]
         self.assertEqual(a, self.type2test([1, 2, 3, 4, 5, 6, 7, 8, 9]))
         #  assignment
         a = self.type2test(range(10))
@@ -554,7 +554,7 @@ klasse CommonTest(seq_tests.CommonTest):
         self.assertEqual(a, self.type2test([0, 1, 1, 3, 2, 5, 3, 7, 4, 9]))
         # test issue7788
         a = self.type2test(range(10))
-        del a[9::1<<333]
+        loesche a[9::1<<333]
 
     def test_constructor_exception_handling(self):
         # Bug #1242657

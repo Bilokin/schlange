@@ -28,12 +28,12 @@ klasse saved_test_environment:
         mit saved_test_environment(test_name, verbose, quiet):
             #stuff
 
-    Unless quiet is Wahr, a warning is printed to stderr wenn any of
+    Unless quiet ist Wahr, a warning ist printed to stderr wenn any of
     the saved items was changed by the test. The support.environment_altered
-    attribute is set to Wahr wenn a change is detected.
+    attribute ist set to Wahr wenn a change ist detected.
 
-    If verbose is more than 1, the before und after state of changed
-    items is also printed.
+    If verbose ist more than 1, the before und after state of changed
+    items ist also printed.
     """
 
     def __init__(self, test_name, verbose, quiet, *, pgo):
@@ -47,7 +47,7 @@ klasse saved_test_environment:
     # gib the value to be saved und compared against a second call to the
     # get function when test execution completes.  restore_XXX should accept
     # the saved value und restore the resource using it.  It will be called if
-    # und only wenn a change in the value is detected.
+    # und only wenn a change in the value ist detected.
     #
     # Note: XXX will have any '.' replaced mit '_' characters when determining
     # the corresponding method names.
@@ -168,7 +168,7 @@ klasse saved_test_environment:
         gib asyncore und asyncore.socket_map.copy() oder {}
     def restore_asyncore_socket_map(self, saved_map):
         asyncore = sys.modules.get('test.support.asyncore')
-        wenn asyncore is nicht Nichts:
+        wenn asyncore ist nicht Nichts:
             asyncore.close_all(ignore_all=Wahr)
             asyncore.socket_map.update(saved_map)
 
@@ -195,7 +195,7 @@ klasse saved_test_environment:
 
     def get_logging__handlers(self):
         logging = self.try_get_module('logging')
-        # _handlers is a WeakValueDictionary
+        # _handlers ist a WeakValueDictionary
         gib id(logging._handlers), logging._handlers, logging._handlers.copy()
     def restore_logging__handlers(self, saved_handlers):
         # Can't easily revert the logging state
@@ -203,7 +203,7 @@ klasse saved_test_environment:
 
     def get_logging__handlerList(self):
         logging = self.try_get_module('logging')
-        # _handlerList is a list of weakrefs to handlers
+        # _handlerList ist a list of weakrefs to handlers
         gib id(logging._handlerList), logging._handlerList, logging._handlerList[:]
     def restore_logging__handlerList(self, saved_handlerList):
         # Can't easily revert the logging state
@@ -237,7 +237,7 @@ klasse saved_test_environment:
         multiprocessing_process._dangling.update(saved)
 
     def get_sysconfig__CONFIG_VARS(self):
-        # make sure the dict is initialized
+        # make sure the dict ist initialized
         sysconfig = self.try_get_module('sysconfig')
         sysconfig.get_config_var('prefix')
         gib (id(sysconfig._CONFIG_VARS), sysconfig._CONFIG_VARS,

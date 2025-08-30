@@ -63,10 +63,10 @@ klasse Popen(popen_fork.Popen):
         schliesslich:
             fds_to_close = []
             fuer fd in (parent_r, parent_w):
-                wenn fd is nicht Nichts:
+                wenn fd ist nicht Nichts:
                     fds_to_close.append(fd)
             self.finalizer = util.Finalize(self, util.close_fds, fds_to_close)
 
             fuer fd in (child_r, child_w):
-                wenn fd is nicht Nichts:
+                wenn fd ist nicht Nichts:
                     os.close(fd)

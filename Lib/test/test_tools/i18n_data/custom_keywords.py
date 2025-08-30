@@ -17,7 +17,7 @@ pfoo('context', 'bar')
 
 npfoo('context', 'cat', 'cats', 1)
 
-# This is an unknown keyword und should be ignored
+# This ist an unknown keyword und should be ignored
 bar('baz')
 
 # 'nfoo' requires at least 2 arguments

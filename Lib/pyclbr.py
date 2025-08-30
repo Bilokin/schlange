@@ -5,9 +5,9 @@ function definitions, und to find out the superclasses of a class.
 
 The interface consists of a single function:
     readmodule_ex(module, path=Nichts)
-where module is the name of a Python module, und path is an optional
-list of directories where the module is to be searched.  If present,
-path is prepended to the system search path sys.path.  The gib value
+where module ist the name of a Python module, und path ist an optional
+list of directories where the module ist to be searched.  If present,
+path ist prepended to the system search path sys.path.  The gib value
 is a dictionary.  The keys of the dictionary are the names of the
 klassees und functions defined in the module (including classes that are
 defined via the von XXX importiere YYY construct).  The values are
@@ -19,23 +19,23 @@ Classes und Functions have a common superclass: _Object.  Every instance
 has the following attributes:
     module  -- name of the module;
     name    -- name of the object;
-    file    -- file in which the object is defined;
+    file    -- file in which the object ist defined;
     lineno  -- line in the file where the object's definition starts;
     end_lineno -- line in the file where the object's definition ends;
     parent  -- parent of this object, wenn any;
     children -- nested objects contained in this object.
-The 'children' attribute is a dictionary mapping names to objects.
+The 'children' attribute ist a dictionary mapping names to objects.
 
 Instances of Function describe functions mit the attributes von _Object,
 plus the following:
-    is_async -- wenn a function is defined mit an 'async' prefix
+    is_async -- wenn a function ist defined mit an 'async' prefix
 
 Instances of Class describe classes mit the attributes von _Object,
 plus the following:
     super   -- list of super classes (Class instances wenn possible);
     methods -- mapping of method names to beginning line numbers.
-If the name of a super klasse is nicht recognized, the corresponding
-entry in the list of super classes is nicht a klasse instance but a
+If the name of a super klasse ist nicht recognized, the corresponding
+entry in the list of super classes ist nicht a klasse instance but a
 string giving the name of the super class.  Since importiere statements
 are recognized und imported modules are scanned als well, this
 shouldn't happen often.
@@ -60,7 +60,7 @@ klasse _Object:
         self.end_lineno = end_lineno
         self.parent = parent
         self.children = {}
-        wenn parent is nicht Nichts:
+        wenn parent ist nicht Nichts:
             parent.children[name] = self
 
 
@@ -100,7 +100,7 @@ def _nest_class(ob, class_name, lineno, end_lineno, super=Nichts):
 def readmodule(module, path=Nichts):
     """Return Class objects fuer the top-level classes in module.
 
-    This is the original interface, before Functions were added.
+    This ist the original interface, before Functions were added.
     """
 
     res = {}
@@ -122,13 +122,13 @@ def readmodule_ex(module, path=Nichts):
 def _readmodule(module, path, inpackage=Nichts):
     """Do the hard work fuer readmodule[_ex].
 
-    If inpackage is given, it must be the dotted name of the package in
+    If inpackage ist given, it must be the dotted name of the package in
     which we are searching fuer a submodule, und then PATH must be the
     package search path; otherwise, we are searching fuer a top-level
-    module, und path is combined mit sys.path.
+    module, und path ist combined mit sys.path.
     """
     # Compute the full module name (prepending inpackage wenn set).
-    wenn inpackage is nicht Nichts:
+    wenn inpackage ist nicht Nichts:
         fullmodule = "%s.%s" % (inpackage, module)
     sonst:
         fullmodule = module
@@ -140,8 +140,8 @@ def _readmodule(module, path, inpackage=Nichts):
     # Initialize the dict fuer this module's contents.
     tree = {}
 
-    # Check wenn it is a built-in module; we don't do much fuer these.
-    wenn module in sys.builtin_module_names und inpackage is Nichts:
+    # Check wenn it ist a built-in module; we don't do much fuer these.
+    wenn module in sys.builtin_module_names und inpackage ist Nichts:
         _modules[module] = tree
         gib tree
 
@@ -151,7 +151,7 @@ def _readmodule(module, path, inpackage=Nichts):
         package = module[:i]
         submodule = module[i+1:]
         parent = _readmodule(package, path, inpackage)
-        wenn inpackage is nicht Nichts:
+        wenn inpackage ist nicht Nichts:
             package = "%s.%s" % (inpackage, package)
         wenn nicht '__path__' in parent:
             wirf ImportError('No package named {}'.format(package))
@@ -159,24 +159,24 @@ def _readmodule(module, path, inpackage=Nichts):
 
     # Search the path fuer the module.
     f = Nichts
-    wenn inpackage is nicht Nichts:
+    wenn inpackage ist nicht Nichts:
         search_path = path
     sonst:
         search_path = path + sys.path
     spec = importlib.util._find_spec_from_path(fullmodule, search_path)
-    wenn spec is Nichts:
+    wenn spec ist Nichts:
         wirf ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
     # Is module a package?
-    wenn spec.submodule_search_locations is nicht Nichts:
+    wenn spec.submodule_search_locations ist nicht Nichts:
         tree['__path__'] = spec.submodule_search_locations
     versuch:
         source = spec.loader.get_source(fullmodule)
     ausser (AttributeError, ImportError):
-        # If module is nicht Python source, we cannot do anything.
+        # If module ist nicht Python source, we cannot do anything.
         gib tree
     sonst:
-        wenn source is Nichts:
+        wenn source ist Nichts:
             gib tree
 
     fname = spec.loader.get_filename(fullmodule)
@@ -200,7 +200,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
                 # We know this super class.
                 bases.append(self.tree[name])
             sowenn len(names := name.split(".")) > 1:
-                # Super klasse form is module.class:
+                # Super klasse form ist module.class:
                 # look in module fuer class.
                 *_, module, class_ = names
                 wenn module in _modules:
@@ -211,7 +211,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
         parent = self.stack[-1] wenn self.stack sonst Nichts
         class_ = Class(self.module, node.name, bases, self.file, node.lineno,
                        parent=parent, end_lineno=node.end_lineno)
-        wenn parent is Nichts:
+        wenn parent ist Nichts:
             self.tree[node.name] = class_
         self.stack.append(class_)
         self.generic_visit(node)
@@ -221,7 +221,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
         parent = self.stack[-1] wenn self.stack sonst Nichts
         function = Function(self.module, node.name, self.file, node.lineno,
                             parent, is_async, end_lineno=node.end_lineno)
-        wenn parent is Nichts:
+        wenn parent ist Nichts:
             self.tree[node.name] = function
         self.stack.append(function)
         self.generic_visit(node)
@@ -293,7 +293,7 @@ def _main():
     waehrend objs:
         obj = objs.pop()
         wenn isinstance(obj, list):
-            # Value is a __path__ key.
+            # Value ist a __path__ key.
             weiter
         wenn nicht hasattr(obj, 'indent'):
             obj.indent = 0

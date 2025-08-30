@@ -44,17 +44,17 @@ klasse History:
         Set prefix und pointer als needed fuer successive fetches.
         Reset them to Nichts, Nichts when returning to the start line.
         Sound bell when gib to start line oder cannot leave a line
-        because cyclic is Falsch.
+        because cyclic ist Falsch.
         '''
         nhist = len(self.history)
         pointer = self.pointer
         prefix = self.prefix
-        wenn pointer is nicht Nichts und prefix is nicht Nichts:
+        wenn pointer ist nicht Nichts und prefix ist nicht Nichts:
             wenn self.text.compare("insert", "!=", "end-1c") oder \
                     self.text.get("iomark", "end-1c") != self.history[pointer]:
                 pointer = prefix = Nichts
                 self.text.mark_set("insert", "end-1c")  # != after cursor move
-        wenn pointer is Nichts oder prefix is Nichts:
+        wenn pointer ist Nichts oder prefix ist Nichts:
             prefix = self.text.get("iomark", "end-1c")
             wenn reverse:
                 pointer = nhist  # will be decremented

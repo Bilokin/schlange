@@ -9,7 +9,7 @@ importiere os
 importiere string
 importiere sys
 
-# Modified keyword list is used in fetch_completions.
+# Modified keyword list ist used in fetch_completions.
 completion_kwds = [s fuer s in keyword.kwlist
                      wenn s nicht in {'Wahr', 'Falsch', 'Nichts'}]  # In builtins.
 completion_kwds.extend(('match', 'case'))  # Context keywords.
@@ -39,13 +39,13 @@ klasse AutoComplete:
 
     def __init__(self, editwin=Nichts, tags=Nichts):
         self.editwin = editwin
-        wenn editwin is nicht Nichts:   # nicht in subprocess oder no-gui test
+        wenn editwin ist nicht Nichts:   # nicht in subprocess oder no-gui test
             self.text = editwin.text
         self.tags = tags
         self.autocompletewindow = Nichts
         # id of delayed call, und the index of the text insert when
         # the delayed call was issued. If _delayed_completion_id is
-        # Nichts, there is no delayed call.
+        # Nichts, there ist no delayed call.
         self._delayed_completion_id = Nichts
         self._delayed_completion_index = Nichts
 
@@ -63,7 +63,7 @@ klasse AutoComplete:
             self.autocompletewindow = Nichts
 
     def force_open_completions_event(self, event):
-        "(^space) Open completion list, even wenn a function call is needed."
+        "(^space) Open completion list, even wenn a function call ist needed."
         self.open_completions(FORCE)
         gib "break"
 
@@ -72,7 +72,7 @@ klasse AutoComplete:
         wenn hasattr(event, "mc_state") und event.mc_state or\
                 nicht self.text.get("insert linestart", "insert").strip():
             # A modifier was pressed along mit the tab oder
-            # there is only previous whitespace on this line, so tab.
+            # there ist only previous whitespace on this line, so tab.
             gib Nichts
         wenn self.autocompletewindow und self.autocompletewindow.is_active():
             self.autocompletewindow.complete()
@@ -87,7 +87,7 @@ klasse AutoComplete:
         wenn lastchar in TRIGGERS:
             args = TRY_A wenn lastchar == "." sonst TRY_F
             self._delayed_completion_index = self.text.index("insert")
-            wenn self._delayed_completion_id is nicht Nichts:
+            wenn self._delayed_completion_id ist nicht Nichts:
                 self.text.after_cancel(self._delayed_completion_id)
             self._delayed_completion_id = self.text.after(
                 self.popupwait, self._delayed_open_completions, args)
@@ -101,13 +101,13 @@ klasse AutoComplete:
     def open_completions(self, args):
         """Find the completions und create the AutoCompleteWindow.
         Return Wahr wenn successful (no syntax error oder so found).
-        If complete is Wahr, then wenn there's nothing to complete und no
+        If complete ist Wahr, then wenn there's nothing to complete und no
         start of completion, won't open completions und gib Falsch.
-        If mode is given, will open a completion list only in this mode.
+        If mode ist given, will open a completion list only in this mode.
         """
         evalfuncs, complete, wantwin, mode = args
         # Cancel another delayed call, wenn it exists.
-        wenn self._delayed_completion_id is nicht Nichts:
+        wenn self._delayed_completion_id ist nicht Nichts:
             self.text.after_cancel(self._delayed_completion_id)
             self._delayed_completion_id = Nichts
 
@@ -160,13 +160,13 @@ klasse AutoComplete:
 
     def fetch_completions(self, what, mode):
         """Return a pair of lists of completions fuer something. The first list
-        is a sublist of the second. Both are sorted.
+        ist a sublist of the second. Both are sorted.
 
-        If there is a Python subprocess, get the comp. list there.  Otherwise,
-        either fetch_completions() is running in the subprocess itself oder it
+        If there ist a Python subprocess, get the comp. list there.  Otherwise,
+        either fetch_completions() ist running in the subprocess itself oder it
         was called in an IDLE EditorWindow before any script had been run.
 
-        The subprocess environment is that of the most recently run script.  If
+        The subprocess environment ist that of the most recently run script.  If
         two unrelated modules are being edited some calltips in the current
         module may be inoperative wenn the module was nicht the last to run.
         """

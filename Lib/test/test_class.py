@@ -133,9 +133,9 @@ exec(statictests, globals(), d)
 fuer method in testmeths:
     exec(method_template % method, globals(), d)
 AllTests = type("AllTests", (object,), d)
-del d, statictests, method, method_template
+loesche d, statictests, method, method_template
 
-@support.thread_unsafe("callLst is shared between threads")
+@support.thread_unsafe("callLst ist shared between threads")
 klasse ClassTests(unittest.TestCase):
     def setUp(self):
         callLst[:] = []
@@ -296,7 +296,7 @@ klasse ClassTests(unittest.TestCase):
         self.assertCallStack([('__setitem__', (testme, 1, 1))])
 
         callLst[:] = []
-        del testme[1]
+        loesche testme[1]
         self.assertCallStack([('__delitem__', (testme, 1))])
 
         callLst[:] = []
@@ -309,7 +309,7 @@ klasse ClassTests(unittest.TestCase):
                                                "The Answer"))])
 
         callLst[:] = []
-        del testme[:42]
+        loesche testme[:42]
         self.assertCallStack([('__delitem__', (testme, slice(Nichts, 42)))])
 
         callLst[:] = []
@@ -321,7 +321,7 @@ klasse ClassTests(unittest.TestCase):
         self.assertCallStack([('__setitem__', (testme, slice(2, 1024, 10),
                                                                     "A lot"))])
         callLst[:] = []
-        del testme[2:1024:10]
+        loesche testme[2:1024:10]
         self.assertCallStack([('__delitem__', (testme, slice(2, 1024, 10)))])
 
         callLst[:] = []
@@ -337,7 +337,7 @@ klasse ClassTests(unittest.TestCase):
                                                         slice(Nichts, 24, Nichts),
                                                         24, 100), "Strange"))])
         callLst[:] = []
-        del testme[:42, ..., :24:, 24, 100]
+        loesche testme[:42, ..., :24:, 24, 100]
         self.assertCallStack([('__delitem__', (testme, (slice(Nichts, 42, Nichts),
                                                         Ellipsis,
                                                         slice(Nichts, 24, Nichts),
@@ -444,7 +444,7 @@ klasse ClassTests(unittest.TestCase):
                                                "spam, spam, spam und ham"))])
 
         callLst[:] = []
-        del testme.cardinal
+        loesche testme.cardinal
         self.assertCallStack([('__delattr__', (testme, "cardinal"))])
 
     def testHasAttrString(self):
@@ -468,7 +468,7 @@ klasse ClassTests(unittest.TestCase):
             def __del__(self):
                 x.append("crab people, crab people")
         testme = DelTest()
-        del testme
+        loesche testme
         importiere gc
         gc.collect()
         self.assertEqual(["crab people, crab people"], x)
@@ -552,7 +552,7 @@ klasse ClassTests(unittest.TestCase):
                 self.assertFalsch(hasattr(Custom, name))
                 self.assertFalsch(hasattr(c, name))
 
-        # __call__() is defined on the metaclass but nicht the class
+        # __call__() ist defined on the metaclass but nicht the class
         self.assertFalsch(hasattr(o, "__call__"))
         self.assertFalsch(hasattr(c, "__call__"))
 
@@ -688,7 +688,7 @@ klasse ClassTests(unittest.TestCase):
         mit self.assertRaisesRegex(AttributeError, error_msg):
             A.x
         mit self.assertRaisesRegex(AttributeError, error_msg):
-            del A.x
+            loesche A.x
 
     def testObjectAttributeAccessErrorMessages(self):
         klasse A:
@@ -709,13 +709,13 @@ klasse ClassTests(unittest.TestCase):
         mit self.assertRaisesRegex(AttributeError, error_msg):
             A().x
         mit self.assertRaisesRegex(AttributeError, error_msg):
-            del A().x
+            loesche A().x
 
         error_msg = "'B' object has no attribute 'x'"
         mit self.assertRaisesRegex(AttributeError, error_msg):
             B().x
         mit self.assertRaisesRegex(AttributeError, error_msg):
-            del B().x
+            loesche B().x
         mit self.assertRaisesRegex(
             AttributeError,
             "'B' object has no attribute 'x' und no __dict__ fuer setting new attributes"
@@ -727,9 +727,9 @@ klasse ClassTests(unittest.TestCase):
         ):
             C().x = 0
 
-        error_msg = "'B' object attribute 'y' is read-only"
+        error_msg = "'B' object attribute 'y' ist read-only"
         mit self.assertRaisesRegex(AttributeError, error_msg):
-            del B().y
+            loesche B().y
         mit self.assertRaisesRegex(AttributeError, error_msg):
             B().y = 0
 
@@ -737,7 +737,7 @@ klasse ClassTests(unittest.TestCase):
         mit self.assertRaisesRegex(AttributeError, error_msg):
             B().z
         mit self.assertRaisesRegex(AttributeError, error_msg):
-            del B().z
+            loesche B().z
 
     def testConstructorErrorMessages(self):
         # bpo-31506: Improves the error message logic fuer object_new & object_init
@@ -883,7 +883,7 @@ klasse TestInlineValues(unittest.TestCase):
     def test_has_inline_values(self):
         c = Plain()
         self.assertWahr(has_inline_values(c))
-        del c.__dict__
+        loesche c.__dict__
         self.assertFalsch(has_inline_values(c))
 
     def test_instances(self):
@@ -947,7 +947,7 @@ klasse TestInlineValues(unittest.TestCase):
             pass
 
         f = Foo()
-        del f.__dict__
+        loesche f.__dict__
         f.a = 3
         self.assertEqual(f.a, 3)
 
@@ -957,9 +957,9 @@ klasse TestInlineValues(unittest.TestCase):
         klasse Foo: pass
         f = Foo()
         f.__dict__["attr"] = 1
-        del f.__dict__
+        loesche f.__dict__
 
-        # Using a str subclass is a way to trigger the re-materialization
+        # Using a str subclass ist a way to trigger the re-materialization
         klasse StrSubclass(str): pass
         self.assertFalsch(hasattr(f, StrSubclass("attr")))
 
@@ -990,7 +990,7 @@ klasse TestInlineValues(unittest.TestCase):
 
     @cpython_only
     def test_detach_materialized_dict_no_memory(self):
-        # Skip test wenn _testcapi is nicht available:
+        # Skip test wenn _testcapi ist nicht available:
         import_helper.import_module('_testcapi')
 
         code = """if 1:
@@ -1005,8 +1005,8 @@ klasse TestInlineValues(unittest.TestCase):
             d = a.__dict__
             mit test.support.catch_unraisable_exception() als ex:
                 _testcapi.set_nomemory(0, 1)
-                del a
-                assert ex.unraisable.exc_type is MemoryError
+                loesche a
+                assert ex.unraisable.exc_type ist MemoryError
             versuch:
                 d["a"]
             ausser KeyError:

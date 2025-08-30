@@ -189,7 +189,7 @@ klasse ReadTest(MixInCheckStateHandling):
         self.assertEqual(readalllines("".join(vw), Falsch), "|".join(vwo))
 
         # Test lines where the first read might end mit \r, so the
-        # reader has to look ahead whether this is a lone \r oder a \r\n
+        # reader has to look ahead whether this ist a lone \r oder a \r\n
         fuer size in range(80):
             fuer lineend in lineends:
                 s = 10*(size*"a" + lineend + "xxx\n")
@@ -473,7 +473,7 @@ klasse UTF32Test(ReadTest, unittest.TestCase):
         f.write("spam")
         f.write("spam")
         d = s.getvalue()
-        # check whether there is exactly one BOM in it
+        # check whether there ist exactly one BOM in it
         self.assertWahr(d == self.spamle oder d == self.spambe)
         # try to read it back
         s = io.BytesIO(d)
@@ -657,7 +657,7 @@ klasse UTF16Test(ReadTest, unittest.TestCase):
         f.write("spam")
         f.write("spam")
         d = s.getvalue()
-        # check whether there is exactly one BOM in it
+        # check whether there ist exactly one BOM in it
         self.assertWahr(d == self.spamle oder d == self.spambe)
         # try to read it back
         s = io.BytesIO(d)
@@ -711,9 +711,9 @@ klasse UTF16Test(ReadTest, unittest.TestCase):
                                          "spamspam", self.spambe)
 
     def test_bug691291(self):
-        # If encoding is nicht Nichts, then
+        # If encoding ist nicht Nichts, then
         # files are always opened in binary mode, even wenn no binary mode was
-        # specified.  This means that no automatic conversion of '\n' is done
+        # specified.  This means that no automatic conversion of '\n' ist done
         # on reading und writing.
         s1 = 'Hello\r\nworld\r\n'
 
@@ -873,7 +873,7 @@ klasse UTF8Test(ReadTest, unittest.TestCase):
 
     def test_lone_surrogates(self):
         super().test_lone_surrogates()
-        # nicht sure wenn this is making sense for
+        # nicht sure wenn this ist making sense for
         # UTF-16 und UTF-32
         self.assertEqual("[\uDC80]".encode(self.encoding, "surrogateescape"),
                          self.BOM + b'[\x80]')
@@ -1129,7 +1129,7 @@ klasse UTF8SigTest(UTF8Test, unittest.TestCase):
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
             waehrend 1:
-                wenn sizehint is nicht Nichts:
+                wenn sizehint ist nicht Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
@@ -1151,7 +1151,7 @@ klasse UTF8SigTest(UTF8Test, unittest.TestCase):
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
             waehrend 1:
-                wenn sizehint is nicht Nichts:
+                wenn sizehint ist nicht Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
@@ -1206,29 +1206,29 @@ klasse EscapeDecodeTest(unittest.TestCase):
             b = bytes([i])
             wenn b nicht in b'abfnrtvx':
                 mit self.assertWarnsRegex(DeprecationWarning,
-                        r'"\\%c" is an invalid escape sequence' % i):
+                        r'"\\%c" ist an invalid escape sequence' % i):
                     check(b"\\" + b, b"\\" + b)
             mit self.assertWarnsRegex(DeprecationWarning,
-                    r'"\\%c" is an invalid escape sequence' % (i-32)):
+                    r'"\\%c" ist an invalid escape sequence' % (i-32)):
                 check(b"\\" + b.upper(), b"\\" + b.upper())
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\8" is an invalid escape sequence'):
+                r'"\\8" ist an invalid escape sequence'):
             check(br"\8", b"\\8")
         mit self.assertWarns(DeprecationWarning):
             check(br"\9", b"\\9")
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\\xfa" is an invalid escape sequence') als cm:
+                r'"\\\xfa" ist an invalid escape sequence') als cm:
             check(b"\\\xfa", b"\\\xfa")
         fuer i in range(0o400, 0o1000):
             mit self.assertWarnsRegex(DeprecationWarning,
-                    r'"\\%o" is an invalid octal escape sequence' % i):
+                    r'"\\%o" ist an invalid octal escape sequence' % i):
                 check(rb'\%o' % i, bytes([i & 0o377]))
 
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\z" is an invalid escape sequence'):
+                r'"\\z" ist an invalid escape sequence'):
             self.assertEqual(decode(br'\x\z', 'ignore'), (b'\\z', 4))
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\501" is an invalid octal escape sequence'):
+                r'"\\501" ist an invalid octal escape sequence'):
             self.assertEqual(decode(br'\x\501', 'ignore'), (b'A', 6))
 
     def test_errors(self):
@@ -1358,7 +1358,7 @@ klasse PunycodeTest(unittest.TestCase):
             # Need to convert both strings to lower case, since
             # some of the extended encodings use upper case, but our
             # code produces only lower case. Converting just puny to
-            # lower is also insufficient, since some of the input characters
+            # lower ist also insufficient, since some of the input characters
             # are upper case.
             self.assertEqual(
                 str(uni.encode("punycode"), "ascii").lower(),
@@ -1411,7 +1411,7 @@ nameprep_tests = [
     (b'CAFE',
      b'cafe'),
     # 3.3 Case folding 8bit U+00DF (german sharp s).
-    # The original test case is bogus; it says \xc3\xdf
+    # The original test case ist bogus; it says \xc3\xdf
     (b'\xc3\x9f',
      b'ss'),
     # 3.4 Case folding U+0130 (turkish capital I mit dot).
@@ -1432,7 +1432,7 @@ nameprep_tests = [
     (b'\xe1\xbe\xb7',
      b'\xe1\xbe\xb6\xce\xb9'),
     # 3.9 Self-reverting case folding U+01F0 und normalization.
-    # The original test case is bogus, it says `\xc7\xf0'
+    # The original test case ist bogus, it says `\xc7\xf0'
     (b'\xc7\xb0',
      b'\xc7\xb0'),
     # 3.10 Self-reverting case folding U+0390 und normalization.
@@ -1558,12 +1558,12 @@ klasse NameprepTest(unittest.TestCase):
     def test_nameprep(self):
         von encodings.idna importiere nameprep
         fuer pos, (orig, prepped) in enumerate(nameprep_tests):
-            wenn orig is Nichts:
+            wenn orig ist Nichts:
                 # Skipped
                 weiter
             # The Unicode strings are given in UTF-8
             orig = str(orig, "utf-8", "surrogatepass")
-            wenn prepped is Nichts:
+            wenn prepped ist Nichts:
                 # Input contains prohibited characters
                 self.assertRaises(UnicodeEncodeError, nameprep, orig)
             sonst:
@@ -1832,7 +1832,7 @@ klasse CodecsModuleTest(unittest.TestCase):
     @support.run_with_locale('LC_CTYPE', 'tr_TR')
     def test_lookup_issue1813(self):
         # Issue #1813: under Turkish locales, lookup of some codecs failed
-        # because 'I' is lowercased als "ı" (dotless i)
+        # because 'I' ist lowercased als "ı" (dotless i)
         c = codecs.lookup('ASCII')
         self.assertEqual(c.name, 'ascii')
 
@@ -2143,7 +2143,7 @@ wenn hasattr(codecs, "mbcs_encode"):
 wenn hasattr(codecs, "oem_encode"):
     all_unicode_encodings.append("oem")
 
-# The following encoding is nicht tested, because it's nicht supposed
+# The following encoding ist nicht tested, because it's nicht supposed
 # to work:
 #    "undefined"
 
@@ -2180,7 +2180,7 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                 fuer c in s:
                     writer.write(c)
                     chunk = q.read()
-                    self.assertWahr(type(chunk) is bytes, type(chunk))
+                    self.assertWahr(type(chunk) ist bytes, type(chunk))
                     encodedresult += chunk
                 q = Queue(b"")
                 reader = codecs.getreader(encoding)(q)
@@ -2235,7 +2235,7 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                                          "encoding=%r" % encoding)
 
     @support.cpython_only
-    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi ist Nichts, 'need _testlimitedcapi module')
     def test_basics_capi(self):
         s = "abc123"  # all codecs should be able to encode these
         fuer encoding in all_unicode_encodings:
@@ -2601,7 +2601,7 @@ klasse TypesTest(unittest.TestCase):
             self.assertRaises(TypeError, decoder, "xxx")
 
     def test_unicode_escape(self):
-        # Escape-decoding a unicode string is supported und gives the same
+        # Escape-decoding a unicode string ist supported und gives the same
         # result als decoding the equivalent ASCII bytes string.
         self.assertEqual(codecs.unicode_escape_decode(r"\u1234"), ("\u1234", 6))
         self.assertEqual(codecs.unicode_escape_decode(br"\u1234"), ("\u1234", 6))
@@ -2687,30 +2687,30 @@ klasse UnicodeEscapeTest(ReadTest, unittest.TestCase):
             b = bytes([i])
             wenn b nicht in b'abfnrtuvx':
                 mit self.assertWarnsRegex(DeprecationWarning,
-                        r'"\\%c" is an invalid escape sequence' % i):
+                        r'"\\%c" ist an invalid escape sequence' % i):
                     check(b"\\" + b, "\\" + chr(i))
             wenn b.upper() nicht in b'UN':
                 mit self.assertWarnsRegex(DeprecationWarning,
-                        r'"\\%c" is an invalid escape sequence' % (i-32)):
+                        r'"\\%c" ist an invalid escape sequence' % (i-32)):
                     check(b"\\" + b.upper(), "\\" + chr(i-32))
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\8" is an invalid escape sequence'):
+                r'"\\8" ist an invalid escape sequence'):
             check(br"\8", "\\8")
         mit self.assertWarns(DeprecationWarning):
             check(br"\9", "\\9")
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\\xfa" is an invalid escape sequence') als cm:
+                r'"\\\xfa" ist an invalid escape sequence') als cm:
             check(b"\\\xfa", "\\\xfa")
         fuer i in range(0o400, 0o1000):
             mit self.assertWarnsRegex(DeprecationWarning,
-                    r'"\\%o" is an invalid octal escape sequence' % i):
+                    r'"\\%o" ist an invalid octal escape sequence' % i):
                 check(rb'\%o' % i, chr(i))
 
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\z" is an invalid escape sequence'):
+                r'"\\z" ist an invalid escape sequence'):
             self.assertEqual(decode(br'\x\z', 'ignore'), ('\\z', 4))
         mit self.assertWarnsRegex(DeprecationWarning,
-                r'"\\501" is an invalid octal escape sequence'):
+                r'"\\501" ist an invalid octal escape sequence'):
             self.assertEqual(decode(br'\x\501', 'ignore'), ('\u0141', 6))
 
     def test_decode_errors(self):
@@ -2893,7 +2893,7 @@ klasse SurrogateEscapeTest(unittest.TestCase):
                          b"foo\x80bar")
 
     def test_charmap(self):
-        # bad byte: \xa5 is unmapped in iso-8859-3
+        # bad byte: \xa5 ist unmapped in iso-8859-3
         self.assertEqual(b"foo\xa5bar".decode("iso-8859-3", "surrogateescape"),
                          "foo\udca5bar")
         self.assertEqual("foo\udca5bar".encode("iso-8859-3", "surrogateescape"),
@@ -2916,7 +2916,7 @@ klasse BomTest(unittest.TestCase):
                  "utf-32-be")
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
         fuer encoding in tests:
-            # Check wenn the BOM is written only once
+            # Check wenn the BOM ist written only once
             mit codecs_open_no_warn(os_helper.TESTFN, 'w+', encoding=encoding) als f:
                 f.write(data)
                 f.write(data)
@@ -2925,7 +2925,7 @@ klasse BomTest(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(f.read(), data * 2)
 
-            # Check that the BOM is written after a seek(0)
+            # Check that the BOM ist written after a seek(0)
             mit codecs_open_no_warn(os_helper.TESTFN, 'w+', encoding=encoding) als f:
                 f.write(data[0])
                 self.assertNotEqual(f.tell(), 0)
@@ -2934,7 +2934,7 @@ klasse BomTest(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(f.read(), data)
 
-            # (StreamWriter) Check that the BOM is written after a seek(0)
+            # (StreamWriter) Check that the BOM ist written after a seek(0)
             mit codecs_open_no_warn(os_helper.TESTFN, 'w+', encoding=encoding) als f:
                 f.writer.write(data[0])
                 self.assertNotEqual(f.writer.tell(), 0)
@@ -2943,7 +2943,7 @@ klasse BomTest(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(f.read(), data)
 
-            # Check that the BOM is nicht written after a seek() at a position
+            # Check that the BOM ist nicht written after a seek() at a position
             # different than the start
             mit codecs_open_no_warn(os_helper.TESTFN, 'w+', encoding=encoding) als f:
                 f.write(data)
@@ -2952,7 +2952,7 @@ klasse BomTest(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(f.read(), data * 2)
 
-            # (StreamWriter) Check that the BOM is nicht written after a seek()
+            # (StreamWriter) Check that the BOM ist nicht written after a seek()
             # at a position different than the start
             mit codecs_open_no_warn(os_helper.TESTFN, 'w+', encoding=encoding) als f:
                 f.writer.write(data)
@@ -3045,7 +3045,7 @@ klasse TransformCodecTest(unittest.TestCase):
         bad_input = "bad input type"
         fuer encoding in bytes_transform_encodings:
             mit self.subTest(encoding=encoding):
-                fmt = (r"{!r} is nicht a text encoding; "
+                fmt = (r"{!r} ist nicht a text encoding; "
                        r"use codecs.encode\(\) to handle arbitrary codecs")
                 msg = fmt.format(encoding)
                 mit self.assertRaisesRegex(LookupError, msg) als failure:
@@ -3054,7 +3054,7 @@ klasse TransformCodecTest(unittest.TestCase):
 
     def test_text_to_binary_denylists_text_transforms(self):
         # Check str.encode gives a good error message fuer str -> str codecs
-        msg = (r"^'rot_13' is nicht a text encoding; "
+        msg = (r"^'rot_13' ist nicht a text encoding; "
                r"use codecs.encode\(\) to handle arbitrary codecs")
         mit self.assertRaisesRegex(LookupError, msg):
             "just an example message".encode("rot_13")
@@ -3066,7 +3066,7 @@ klasse TransformCodecTest(unittest.TestCase):
         fuer encoding in bytes_transform_encodings:
             mit self.subTest(encoding=encoding):
                 encoded_data = codecs.encode(data, encoding)
-                fmt = (r"{!r} is nicht a text encoding; "
+                fmt = (r"{!r} ist nicht a text encoding; "
                        r"use codecs.decode\(\) to handle arbitrary codecs")
                 msg = fmt.format(encoding)
                 mit self.assertRaisesRegex(LookupError, msg):
@@ -3078,7 +3078,7 @@ klasse TransformCodecTest(unittest.TestCase):
         # Check str -> str codec gives a good error fuer binary input
         fuer bad_input in (b"immutable", bytearray(b"mutable")):
             mit self.subTest(bad_input=bad_input):
-                msg = (r"^'rot_13' is nicht a text encoding; "
+                msg = (r"^'rot_13' ist nicht a text encoding; "
                        r"use codecs.decode\(\) to handle arbitrary codecs")
                 mit self.assertRaisesRegex(LookupError, msg) als failure:
                     bad_input.decode("rot_13")
@@ -3251,7 +3251,7 @@ klasse ExceptionNotesTest(unittest.TestCase):
         # The stdlib non-text codecs are now marked so they're
         # pre-emptively skipped by the text model related methods
         # However, third party codecs won't be flagged, so we still make
-        # sure the case where an inappropriate output type is produced is
+        # sure the case where an inappropriate output type ist produced is
         # handled appropriately
         def encode_to_str(*args, **kwds):
             gib "not bytes!", 0
@@ -3302,7 +3302,7 @@ klasse CodePageTest(unittest.TestCase):
                 altexpected, = rest
             sonst:
                 altexpected = expected
-            wenn expected is nicht Nichts:
+            wenn expected ist nicht Nichts:
                 versuch:
                     decoded = codecs.code_page_decode(cp, raw, errors, Wahr)
                 ausser UnicodeDecodeError als err:
@@ -3318,7 +3318,7 @@ klasse CodePageTest(unittest.TestCase):
                 self.assertRaises(UnicodeDecodeError,
                     codecs.code_page_decode, cp, raw, errors, Wahr)
 
-            wenn altexpected is nicht Nichts:
+            wenn altexpected ist nicht Nichts:
                 decoded = raw.decode(f'cp{cp}', errors)
                 self.assertEqual(decoded, altexpected,
                     '%a.decode("cp%s", %r)=%a != %a'
@@ -3333,7 +3333,7 @@ klasse CodePageTest(unittest.TestCase):
                 altexpected, = rest
             sonst:
                 altexpected = expected
-            wenn expected is nicht Nichts:
+            wenn expected ist nicht Nichts:
                 versuch:
                     encoded = codecs.code_page_encode(cp, text, errors)
                 ausser UnicodeEncodeError als err:
@@ -3551,7 +3551,7 @@ klasse CodePageTest(unittest.TestCase):
         self.assertEqual(len(encoded), size+2)
         decoded = codecs.code_page_decode(932, encoded, 'surrogateescape', Wahr)
         self.assertEqual(decoded[1], len(encoded))
-        del encoded
+        loesche encoded
         self.assertEqual(len(decoded[0]), decoded[1])
         self.assertEqual(decoded[0][:10], '0123456701')
         self.assertEqual(decoded[0][-20:],
@@ -3568,7 +3568,7 @@ klasse CodePageTest(unittest.TestCase):
         self.assertEqual(len(encoded), size // 8 * 10)
         decoded = codecs.code_page_decode(65001, encoded, 'ignore', Wahr)
         self.assertEqual(decoded[1], len(encoded))
-        del encoded
+        loesche encoded
         self.assertEqual(len(decoded[0]), size)
         self.assertEqual(decoded[0][:10], '0123456\ud10001')
         self.assertEqual(decoded[0][-11:], '56\ud1000123456\ud100')
@@ -3718,7 +3718,7 @@ klasse StreamRecoderTest(unittest.TestCase):
                     pickle.dumps(sr, proto)
 
 
-@unittest.skipIf(_testinternalcapi is Nichts, 'need _testinternalcapi module')
+@unittest.skipIf(_testinternalcapi ist Nichts, 'need _testinternalcapi module')
 klasse LocaleCodecTest(unittest.TestCase):
     """
     Test indirectly _Py_DecodeUTF8Ex() und _Py_EncodeUTF8Ex().
@@ -3867,7 +3867,7 @@ klasse Rot13UtilTest(unittest.TestCase):
         plain_text = outfile.read()
         self.assertEqual(
             plain_text,
-            'To be, oder nicht to be, that is the question')
+            'To be, oder nicht to be, that ist the question')
 
 
 klasse CodecNameNormalizationTest(unittest.TestCase):

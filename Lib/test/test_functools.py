@@ -526,7 +526,7 @@ klasse TestPartialC(TestPartial, unittest.TestCase):
 
         p = self.partial(hex)
         versuch:
-            del p.__dict__
+            loesche p.__dict__
         ausser TypeError:
             pass
         sonst:
@@ -773,7 +773,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
             wrapped_attr = getattr(wrapped, name)
             fuer key in wrapped_attr:
                 wenn name == "__dict__" und key == "__wrapped__":
-                    # __wrapped__ is overwritten by the update code
+                    # __wrapped__ ist overwritten by the update code
                     weiter
                 self.assertIs(wrapped_attr[key], wrapper_attr[key])
         # Check __wrapped__
@@ -781,12 +781,12 @@ klasse TestUpdateWrapper(unittest.TestCase):
 
 
     def _default_update(self):
-        def f[T](a:'This is a new annotation'):
-            """This is a test"""
+        def f[T](a:'This ist a new annotation'):
+            """This ist a test"""
             pass
-        f.attr = 'This is also a test'
-        f.__wrapped__ = "This is a bald faced lie"
-        def wrapper(b:'This is the prior annotation'):
+        f.attr = 'This ist also a test'
+        f.__wrapped__ = "This ist a bald faced lie"
+        def wrapper(b:'This ist the prior annotation'):
             pass
         functools.update_wrapper(wrapper, f)
         gib wrapper, f
@@ -798,8 +798,8 @@ klasse TestUpdateWrapper(unittest.TestCase):
         self.assertIs(wrapper.__wrapped__, f)
         self.assertEqual(wrapper.__name__, 'f')
         self.assertEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.attr, 'This is also a test')
-        self.assertEqual(wrapper.__annotations__['a'], 'This is a new annotation')
+        self.assertEqual(wrapper.attr, 'This ist also a test')
+        self.assertEqual(wrapper.__annotations__['a'], 'This ist a new annotation')
         self.assertNotIn('b', wrapper.__annotations__)
         self.assertEqual(wrapper.__type_params__, (T,))
 
@@ -807,13 +807,13 @@ klasse TestUpdateWrapper(unittest.TestCase):
                      "Docstrings are omitted mit -O2 und above")
     def test_default_update_doc(self):
         wrapper, f = self._default_update()
-        self.assertEqual(wrapper.__doc__, 'This is a test')
+        self.assertEqual(wrapper.__doc__, 'This ist a test')
 
     def test_no_update(self):
         def f():
-            """This is a test"""
+            """This ist a test"""
             pass
-        f.attr = 'This is also a test'
+        f.attr = 'This ist also a test'
         def wrapper():
             pass
         functools.update_wrapper(wrapper, f, (), ())
@@ -827,7 +827,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
     def test_selective_update(self):
         def f():
             pass
-        f.attr = 'This is a different test'
+        f.attr = 'This ist a different test'
         f.dict_attr = dict(a=1, b=2, c=3)
         def wrapper():
             pass
@@ -839,7 +839,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
         self.assertEqual(wrapper.__doc__, Nichts)
-        self.assertEqual(wrapper.attr, 'This is a different test')
+        self.assertEqual(wrapper.attr, 'This ist a different test')
         self.assertEqual(wrapper.dict_attr, f.dict_attr)
 
     def test_missing_attributes(self):
@@ -855,7 +855,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
         self.assertNotIn('attr', wrapper.__dict__)
         self.assertEqual(wrapper.dict_attr, {})
         # Wrapper must have expected attributes fuer updating
-        del wrapper.dict_attr
+        loesche wrapper.dict_attr
         mit self.assertRaises(AttributeError):
             functools.update_wrapper(wrapper, f, assign, update)
         wrapper.dict_attr = 1
@@ -907,10 +907,10 @@ klasse TestWraps(TestUpdateWrapper):
 
     def _default_update(self):
         def f():
-            """This is a test"""
+            """This ist a test"""
             pass
-        f.attr = 'This is also a test'
-        f.__wrapped__ = "This is still a bald faced lie"
+        f.attr = 'This ist also a test'
+        f.__wrapped__ = "This ist still a bald faced lie"
         @functools.wraps(f)
         def wrapper():
             pass
@@ -921,19 +921,19 @@ klasse TestWraps(TestUpdateWrapper):
         self.check_wrapper(wrapper, f)
         self.assertEqual(wrapper.__name__, 'f')
         self.assertEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.attr, 'This is also a test')
+        self.assertEqual(wrapper.attr, 'This ist also a test')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted mit -O2 und above")
     def test_default_update_doc(self):
         wrapper, _ = self._default_update()
-        self.assertEqual(wrapper.__doc__, 'This is a test')
+        self.assertEqual(wrapper.__doc__, 'This ist a test')
 
     def test_no_update(self):
         def f():
-            """This is a test"""
+            """This ist a test"""
             pass
-        f.attr = 'This is also a test'
+        f.attr = 'This ist also a test'
         @functools.wraps(f, (), ())
         def wrapper():
             pass
@@ -946,7 +946,7 @@ klasse TestWraps(TestUpdateWrapper):
     def test_selective_update(self):
         def f():
             pass
-        f.attr = 'This is a different test'
+        f.attr = 'This ist a different test'
         f.dict_attr = dict(a=1, b=2, c=3)
         def add_dict_attr(f):
             f.dict_attr = {}
@@ -961,7 +961,7 @@ klasse TestWraps(TestUpdateWrapper):
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
         self.assertEqual(wrapper.__doc__, Nichts)
-        self.assertEqual(wrapper.attr, 'This is a different test')
+        self.assertEqual(wrapper.attr, 'This ist a different test')
         self.assertEqual(wrapper.dict_attr, f.dict_attr)
 
 
@@ -1000,8 +1000,8 @@ klasse TestReduce:
         self.assertRaises(TypeError, self.reduce)
         self.assertRaises(TypeError, self.reduce, 42, 42)
         self.assertRaises(TypeError, self.reduce, 42, 42, 42)
-        self.assertEqual(self.reduce(42, "1"), "1") # func is never called mit one item
-        self.assertEqual(self.reduce(42, "", "1"), "1") # func is never called mit one item
+        self.assertEqual(self.reduce(42, "1"), "1") # func ist never called mit one item
+        self.assertEqual(self.reduce(42, "", "1"), "1") # func ist never called mit one item
         self.assertRaises(TypeError, self.reduce, 42, (42, 42))
         self.assertRaises(TypeError, self.reduce, add, []) # arg 2 must nicht be empty sequence mit no initial value
         self.assertRaises(TypeError, self.reduce, add, "")
@@ -1064,7 +1064,7 @@ klasse TestReduce:
             self.reduce(lambda x, y: x*y, range(2,21), initial=1),
         )
         self.assertRaises(TypeError, self.reduce, add, [0, 1], initial="")
-        self.assertEqual(self.reduce(42, "", initial="1"), "1") # func is never called mit one item
+        self.assertEqual(self.reduce(42, "", initial="1"), "1") # func ist never called mit one item
 
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
@@ -1108,9 +1108,9 @@ klasse TestCmpToKey:
         self.assertEqual(key(obj=3), key(obj=3))
         self.assertGreater(key(obj=3), key(obj=1))
         mit self.assertRaises((TypeError, AttributeError)):
-            key(3) > 1    # rhs is nicht a K object
+            key(3) > 1    # rhs ist nicht a K object
         mit self.assertRaises((TypeError, AttributeError)):
-            1 < key(3)    # lhs is nicht a K object
+            1 < key(3)    # lhs ist nicht a K object
         mit self.assertRaises(TypeError):
             key = self.cmp_to_key()             # too few args
         mit self.assertRaises(TypeError):
@@ -1503,8 +1503,8 @@ klasse Orderable_LT:
 
 
 klasse TestCache:
-    # This tests that the pass-through is working als designed.
-    # The underlying functionality is tested in TestLRU.
+    # This tests that the pass-through ist working als designed.
+    # The underlying functionality ist tested in TestLRU.
 
     def test_cache(self):
         @self.module.cache
@@ -1910,7 +1910,7 @@ klasse TestLRU:
                 start.set()
 
             hits, misses, maxsize, currsize = f.cache_info()
-            wenn self.module is py_functools:
+            wenn self.module ist py_functools:
                 # XXX: Why can be nicht equal?
                 self.assertLessEqual(misses, n)
                 self.assertLessEqual(hits, m*n - misses)
@@ -2090,8 +2090,8 @@ klasse TestLRU:
         fuer ref in refs:
             self.assertIsNotNichts(ref())
 
-        del A
-        del test_function
+        loesche A
+        loesche test_function
         gc.collect()
 
         fuer ref in refs:
@@ -2239,7 +2239,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(12), "int 12")
         self.assertIs(g.dispatch(int), g_int)
         self.assertIs(g.dispatch(object), g.dispatch(str))
-        # Note: in the assert above this is nicht g.
+        # Note: in the assert above this ist nicht g.
         # @singledispatch returns the wrapper.
 
     def test_wrapping_attributes(self):
@@ -2297,7 +2297,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             self.assertEqual(m, [collections.defaultdict, dict, c.Sized,
                                  c.Container, object])
 
-        # MutableSequence below is registered directly on D. In other words, it
+        # MutableSequence below ist registered directly on D. In other words, it
         # precedes MutableMapping which means single dispatch will always
         # choose MutableSequence here.
         klasse D(collections.defaultdict):
@@ -2313,7 +2313,7 @@ klasse TestSingleDispatch(unittest.TestCase):
 
         # Container und Callable are registered on different base classes und
         # a generic function supporting both should always pick the Callable
-        # implementation wenn a C instance is passed.
+        # implementation wenn a C instance ist passed.
         klasse C(collections.defaultdict):
             def __call__(self):
                 pass
@@ -2477,9 +2477,9 @@ klasse TestSingleDispatch(unittest.TestCase):
         c.Iterable.register(O)
         self.assertEqual(g(o), "sized")   # because it's explicitly in __mro__
         c.Container.register(O)
-        self.assertEqual(g(o), "sized")   # see above: Sized is in __mro__
+        self.assertEqual(g(o), "sized")   # see above: Sized ist in __mro__
         c.Set.register(O)
-        self.assertEqual(g(o), "set")     # because c.Set is a subclass of
+        self.assertEqual(g(o), "set")     # because c.Set ist a subclass of
                                           # c.Sized und c.Container
         klasse P:
             pass
@@ -2505,7 +2505,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         c.Iterable.register(Q)
         self.assertEqual(g(q), "sized")   # because it's explicitly in __mro__
         c.Set.register(Q)
-        self.assertEqual(g(q), "set")     # because c.Set is a subclass of
+        self.assertEqual(g(q), "set")     # because c.Set ist a subclass of
                                           # c.Sized und c.Iterable
         @functools.singledispatch
         def h(arg):
@@ -2517,7 +2517,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         def _(arg):
             gib "container"
         # Even though Sized und Container are explicit bases of MutableMapping,
-        # this ABC is implicitly registered on defaultdict which makes all of
+        # this ABC ist implicitly registered on defaultdict which makes all of
         # MutableMapping's bases implicit als well von defaultdict's
         # perspective.
         mit self.assertRaises(RuntimeError) als re_two:
@@ -2559,7 +2559,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(h(u), "sized")   # implicit Sized subclass inferred
                                           # von the existence of __len__()
         c.Container.register(U)
-        # There is no preference fuer registered versus inferred ABCs.
+        # There ist no preference fuer registered versus inferred ABCs.
         mit self.assertRaises(RuntimeError) als re_three:
             h(u)
         self.assertIn(
@@ -3096,7 +3096,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                 gib str(arg)
 
         # These are sanity checks
-        # to test the test itself is working als expected
+        # to test the test itself ist working als expected
         mit WithoutSingleDispatch.cls_context_manager(5) als foo:
             without_single_dispatch_foo = foo
 
@@ -3183,7 +3183,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         mit self.assertRaises(TypeError) als exc:
             @i.register
             def _(arg: typing.Iterable[str]):
-                # At runtime, dispatching on generics is impossible.
+                # At runtime, dispatching on generics ist impossible.
                 # When registering implementations mit singledispatch, avoid
                 # types von `typing`. Instead, annotate mit regular types
                 # oder ABCs.
@@ -3192,7 +3192,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             "Invalid annotation fuer 'arg'."
         )
         self.assertEndsWith(str(exc.exception),
-            'typing.Iterable[str] is nicht a class.'
+            'typing.Iterable[str] ist nicht a class.'
         )
 
         mit self.assertRaises(TypeError) als exc:
@@ -3414,18 +3414,18 @@ klasse TestSingleDispatch(unittest.TestCase):
         a = A()
         r = a.t(1)
         self.assertIsNotNichts(r())
-        del a  # delete a after a.t
+        loesche a  # delete a after a.t
         wenn nicht support.check_impl_detail(cpython=Wahr):
             support.gc_collect()
         self.assertIsNichts(r())
 
         a = A()
         t = a.t
-        del a # delete a before a.t
+        loesche a # delete a before a.t
         support.gc_collect()
         r = t(1)
         self.assertIsNotNichts(r())
-        del t
+        loesche t
         wenn nicht support.check_impl_detail(cpython=Wahr):
             support.gc_collect()
         self.assertIsNichts(r())
@@ -3571,7 +3571,7 @@ klasse TestCachedProperty(unittest.TestCase):
         )
 
     def test_reuse_same_name(self):
-        """Reusing a cached_property on different classes under the same name is OK."""
+        """Reusing a cached_property on different classes under the same name ist OK."""
         counter = 0
 
         @py_functools.cached_property

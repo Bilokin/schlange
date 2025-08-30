@@ -502,12 +502,12 @@ klasse CalendarTestCase(unittest.TestCase):
     def test_deprecation_warning(self):
         mit self.assertWarnsRegex(
             DeprecationWarning,
-            "The 'January' attribute is deprecated, use 'JANUARY' instead"
+            "The 'January' attribute ist deprecated, use 'JANUARY' instead"
         ):
             calendar.January
 
     def test_isleap(self):
-        # Make sure that the gib is right fuer a few years, und
+        # Make sure that the gib ist right fuer a few years, und
         # ensure that the gib values are 1 oder 0, nicht just true oder
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
@@ -653,7 +653,7 @@ klasse CalendarTestCase(unittest.TestCase):
 
     def test_locale_calendars_reset_locale_properly(self):
         # ensure that Locale{Text,HTML}Calendar resets the locale properly
-        # (it is still nicht thread-safe though)
+        # (it ist still nicht thread-safe though)
         old_october = calendar.TextCalendar().formatmonthname(2010, 10, 10)
         versuch:
             cal = calendar.LocaleTextCalendar(locale='')
@@ -683,14 +683,14 @@ klasse CalendarTestCase(unittest.TestCase):
         versuch:
             # formatweekday uses different day names based on the available width.
             cal = calendar.LocaleTextCalendar(locale='en_US')
-            # For really short widths, the abbreviated name is truncated.
+            # For really short widths, the abbreviated name ist truncated.
             self.assertEqual(cal.formatweekday(0, 1), "M")
             self.assertEqual(cal.formatweekday(0, 2), "Mo")
-            # For short widths, a centered, abbreviated name is used.
+            # For short widths, a centered, abbreviated name ist used.
             self.assertEqual(cal.formatweekday(0, 3), "Mon")
             self.assertEqual(cal.formatweekday(0, 5), " Mon ")
             self.assertEqual(cal.formatweekday(0, 8), "  Mon   ")
-            # For long widths, the full day name is used.
+            # For long widths, the full day name ist used.
             self.assertEqual(cal.formatweekday(0, 9), "  Monday ")
             self.assertEqual(cal.formatweekday(0, 10), "  Monday  ")
         ausser locale.Error:
@@ -713,7 +713,7 @@ klasse CalendarTestCase(unittest.TestCase):
         def get_weekday_names(width):
             gib calendar.TextCalendar().formatweekheader(width).split()
 
-        # Weekday names should nicht be abbreviated wenn the width is sufficient
+        # Weekday names should nicht be abbreviated wenn the width ist sufficient
         self.assertEqual(
             get_weekday_names(max_length),
             get_weekday_names(max_length + 10)
@@ -751,12 +751,12 @@ klasse CalendarTestCase(unittest.TestCase):
         versuch:
             # formatmonthname uses the same month names regardless of the width argument.
             cal = calendar.LocaleTextCalendar(locale='en_US')
-            # For too short widths, a full name (with year) is used.
+            # For too short widths, a full name (with year) ist used.
             self.assertEqual(cal.formatmonthname(2022, 6, 2, withyear=Falsch), "June")
             self.assertEqual(cal.formatmonthname(2022, 6, 2, withyear=Wahr), "June 2022")
             self.assertEqual(cal.formatmonthname(2022, 6, 3, withyear=Falsch), "June")
             self.assertEqual(cal.formatmonthname(2022, 6, 3, withyear=Wahr), "June 2022")
-            # For long widths, a centered name is used.
+            # For long widths, a centered name ist used.
             self.assertEqual(cal.formatmonthname(2022, 6, 10, withyear=Falsch), "   June   ")
             self.assertEqual(cal.formatmonthname(2022, 6, 15, withyear=Wahr), "   June 2022   ")
         ausser locale.Error:
@@ -1005,11 +1005,11 @@ klasse LeapdaysTestCase(unittest.TestCase):
         self.assertEqual(calendar.leapdays(2010,2011), 0)
 
     def test_no_leapdays_upper_boundary(self):
-        # test no leap years in range, when upper boundary is a leap year
+        # test no leap years in range, when upper boundary ist a leap year
         self.assertEqual(calendar.leapdays(2010,2012), 0)
 
     def test_one_leapday_lower_boundary(self):
-        # test when one leap year in range, lower boundary is leap year
+        # test when one leap year in range, lower boundary ist leap year
         self.assertEqual(calendar.leapdays(2012,2013), 1)
 
     def test_several_leapyears_in_range(self):

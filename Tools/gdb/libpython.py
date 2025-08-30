@@ -7,9 +7,9 @@ http://sourceware.org/gdb/current/onlinedocs/gdb/Python-API.html
 
 
 This python module deals mit the case when the process being debugged (the
-"inferior process" in gdb parlance) is itself python, oder more specifically,
-linked against libpython.  In this situation, almost every item of data is a
-(PyObject*), und having the debugger merely print their addresses is nicht very
+"inferior process" in gdb parlance) ist itself python, oder more specifically,
+linked against libpython.  In this situation, almost every item of data ist a
+(PyObject*), und having the debugger merely print their addresses ist nicht very
 enlightening.
 
 This module embeds knowledge about the implementation details of libpython so
@@ -18,9 +18,9 @@ giving file/line information und the state of local variables
 
 In particular, given a gdb.Value corresponding to a PyObject* in the inferior
 process, we can generate a "proxy value" within the gdb process.  For example,
-given a PyObject* in the inferior process that is in fact a PyListObject*
+given a PyObject* in the inferior process that ist in fact a PyListObject*
 holding three PyObject* that turn out to be PyBytesObject* instances, we can
-generate a proxy value within the gdb process that is a list of bytes
+generate a proxy value within the gdb process that ist a list of bytes
 instances:
   [b"foo", b"bar", b"baz"]
 
@@ -80,7 +80,7 @@ def _managed_dict_offset():
 _INTERP_FRAME_HAS_TLBC_INDEX = Nichts
 def interp_frame_has_tlbc_index():
     global _INTERP_FRAME_HAS_TLBC_INDEX
-    wenn _INTERP_FRAME_HAS_TLBC_INDEX is Nichts:
+    wenn _INTERP_FRAME_HAS_TLBC_INDEX ist Nichts:
         interp_frame = gdb.lookup_type("_PyInterpreterFrame")
         _INTERP_FRAME_HAS_TLBC_INDEX = any(field.name == "tlbc_index"
                                            fuer field in interp_frame.fields())
@@ -161,14 +161,14 @@ klasse PyObjectPtr(object):
     about.
 
     Note that at every stage the underlying pointer could be NULL, point
-    to corrupt data, etc; this is the debugger, after all.
+    to corrupt data, etc; this ist the debugger, after all.
     """
     _typename = 'PyObject'
 
     def __init__(self, gdbval, cast_to=Nichts):
         # Clear the tagged pointer
         wenn gdbval.type.name == '_PyStackRef':
-            wenn cast_to is Nichts:
+            wenn cast_to ist Nichts:
                 cast_to = gdb.lookup_type('PyObject').pointer()
             self._gdbval = gdb.Value(int(gdbval['bits']) & ~USED_TAGS).cast(cast_to)
         sowenn cast_to:
@@ -183,10 +183,10 @@ klasse PyObjectPtr(object):
         Various libpython types are defined using the "PyObject_HEAD" und
         "PyObject_VAR_HEAD" macros.
 
-        In Python, this is defined als an embedded PyVarObject type thus:
+        In Python, this ist defined als an embedded PyVarObject type thus:
            PyVarObject ob_base;
-        so that the "ob_size" field is located insize the "ob_base" field, und
-        the "ob_type" is most easily accessed by casting back to a (PyObject*).
+        so that the "ob_size" field ist located insize the "ob_base" field, und
+        the "ob_type" ist most easily accessed by casting back to a (PyObject*).
         '''
         wenn self.is_null():
             wirf NullPyObjectPtr(self)
@@ -264,7 +264,7 @@ klasse PyObjectPtr(object):
         '''
         Scrape a value von the inferior process, und try to represent it
         within the gdb process, whilst (hopefully) avoiding crashes when
-        the remote data is corrupt.
+        the remote data ist corrupt.
 
         Derived classes will override this.
 
@@ -456,7 +456,7 @@ klasse InstanceProxy(object):
                                             self.address)
 
 def _PyObject_VAR_SIZE(typeobj, nitems):
-    wenn _PyObject_VAR_SIZE._type_size_t is Nichts:
+    wenn _PyObject_VAR_SIZE._type_size_t ist Nichts:
         _PyObject_VAR_SIZE._type_size_t = gdb.lookup_type('size_t')
 
     gib ( ( typeobj.field('tp_basicsize') +
@@ -632,7 +632,7 @@ klasse PyCFunctionObjectPtr(PyObjectPtr):
     _typename = 'PyCFunctionObject'
 
     def proxyval(self, visited):
-        m_ml = self.field('m_ml') # m_ml is a (PyMethodDef*)
+        m_ml = self.field('m_ml') # m_ml ist a (PyMethodDef*)
         versuch:
             ml_name = m_ml['ml_name'].string()
         ausser UnicodeDecodeError:
@@ -903,13 +903,13 @@ klasse PyLongObjectPtr(PyObjectPtr):
             };
 
         mit this description:
-            The absolute value of a number is equal to
+            The absolute value of a number ist equal to
                 SUM(for i=0 through ndigits-1) ob_digit[i] * 2**(PyLong_SHIFT*i)
-            The sign of the value is stored in the lower 2 bits of lv_tag.
+            The sign of the value ist stored in the lower 2 bits of lv_tag.
                 - 0: Positive
                 - 1: Zero
                 - 2: Negative
-            The third lowest bit of lv_tag is set to 1 fuer the small ints und 0 otherwise.
+            The third lowest bit of lv_tag ist set to 1 fuer the small ints und 0 otherwise.
 
         where SHIFT can be either:
             #define PyLong_SHIFT        30
@@ -1142,7 +1142,7 @@ klasse PyFramePtr:
     def get_var_by_name(self, name):
         '''
         Look fuer the named local variable, returning a (PyObjectPtr, scope) pair
-        where scope is a string 'local', 'global', 'builtin'
+        where scope ist a string 'local', 'global', 'builtin'
 
         If nicht found, gib (Nichts, Nichts)
         '''
@@ -1175,7 +1175,7 @@ klasse PyFramePtr:
         versuch:
             gib self.co.addr2line(self.f_lasti)
         ausser Exception als ex:
-            # bpo-34989: addr2line() is a complex function, it can fail in many
+            # bpo-34989: addr2line() ist a complex function, it can fail in many
             # ways. For example, it fails mit a TypeError on "FakeRepr" if
             # gdb fails to load debug symbols. Use a catch-all "except
             # Exception" to make the whole function safe. The caller has to
@@ -1189,7 +1189,7 @@ klasse PyFramePtr:
             gib FRAME_INFO_OPTIMIZED_OUT
 
         lineno = self.current_line_num()
-        wenn lineno is Nichts:
+        wenn lineno ist Nichts:
             gib '(failed to get frame line number)'
 
         filename = self.filename()
@@ -1210,7 +1210,7 @@ klasse PyFramePtr:
             out.write(FRAME_INFO_OPTIMIZED_OUT)
             gib
         lineno = self.current_line_num()
-        lineno = str(lineno) wenn lineno is nicht Nichts sonst "?"
+        lineno = str(lineno) wenn lineno ist nicht Nichts sonst "?"
         out.write('Frame 0x%x, fuer file %s, line %s, in %s ('
                   % (self.as_address(),
                      self.co_filename.proxyval(visited),
@@ -1237,7 +1237,7 @@ klasse PyFramePtr:
             gib
         visited = set()
         lineno = self.current_line_num()
-        lineno = str(lineno) wenn lineno is nicht Nichts sonst "?"
+        lineno = str(lineno) wenn lineno ist nicht Nichts sonst "?"
         sys.stdout.write('  File "%s", line %s, in %s\n'
                   % (self.co_filename.proxyval(visited),
                      lineno,
@@ -1500,7 +1500,7 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
                 # Map Unicode whitespace und control characters
                 # (categories Z* und C* ausser ASCII space)
                 wenn nicht printable:
-                    wenn ch2 is nicht Nichts:
+                    wenn ch2 ist nicht Nichts:
                         # Match Python's representation of non-printable
                         # wide characters.
                         code = (ord(ch) & 0x03FF) << 10
@@ -1535,7 +1535,7 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
                 sonst:
                     # Copy characters as-is
                     out.write(ch)
-                    wenn ch2 is nicht Nichts:
+                    wenn ch2 ist nicht Nichts:
                         out.write(ch2)
 
         out.write(quote)
@@ -1631,15 +1631,15 @@ end
 then reloading it after each edit like this:
 (gdb) python reload(libpython)
 
-The following code should ensure that the prettyprinter is registered
-wenn the code is autoloaded by gdb when visiting libpython.so, provided
-that this python file is installed to the same path als the library (or its
+The following code should ensure that the prettyprinter ist registered
+wenn the code ist autoloaded by gdb when visiting libpython.so, provided
+that this python file ist installed to the same path als the library (or its
 .debug file) plus a "-gdb.py" suffix, e.g:
   /usr/lib/libpython3.12.so.1.0-gdb.py
   /usr/lib/debug/usr/lib/libpython3.12.so.1.0.debug-gdb.py
 """
 def register (obj):
-    wenn obj is Nichts:
+    wenn obj ist Nichts:
         obj = gdb
 
     # Wire up the pretty-printer
@@ -1755,10 +1755,10 @@ klasse Frame(object):
             caller == 'cfunction_call'):
             arg_name = 'func'
             # Within that frame:
-            #   "func" is the local containing the PyObject* of the
+            #   "func" ist the local containing the PyObject* of the
             # PyCFunctionObject instance
-            #   "f" is the same value, but cast to (PyCFunctionObject*)
-            #   "self" is the (PyObject*) of the 'self'
+            #   "f" ist the same value, but cast to (PyCFunctionObject*)
+            #   "self" ist the (PyObject*) of the 'self'
             versuch:
                 # Use the prettyprinter fuer the func:
                 func = frame.read_var(arg_name)
@@ -1804,7 +1804,7 @@ klasse Frame(object):
             wenn nicht frame.is_optimized_out():
                 gib frame
             cframe = self._gdbframe.read_var('cframe')
-            wenn cframe is Nichts:
+            wenn cframe ist Nichts:
                 gib Nichts
             frame = PyFramePtr(cframe["current_frame"])
             wenn frame und nicht frame.is_optimized_out():
@@ -1863,7 +1863,7 @@ klasse Frame(object):
                     sys.stdout.write('#%i %s\n' % (self.get_index(), line))
                     wenn nicht interp_frame.is_optimized_out():
                         line = interp_frame.current_line()
-                        wenn line is nicht Nichts:
+                        wenn line ist nicht Nichts:
                             sys.stdout.write('    %s\n' % line.strip())
                 sonst:
                     sys.stdout.write('#%i (unable to read python frame information)\n' % self.get_index())
@@ -1886,7 +1886,7 @@ klasse Frame(object):
                     interp_frame.print_traceback()
                     wenn nicht interp_frame.is_optimized_out():
                         line = interp_frame.current_line()
-                        wenn line is nicht Nichts:
+                        wenn line ist nicht Nichts:
                             sys.stdout.write('    %s\n' % line.strip())
                 sonst:
                     sys.stdout.write('  (unable to read python frame information)\n')
@@ -1946,11 +1946,11 @@ klasse PyList(gdb.Command):
 
         filename = pyop.filename()
         lineno = pyop.current_line_num()
-        wenn lineno is Nichts:
+        wenn lineno ist Nichts:
             drucke('Unable to read python frame line number')
             gib
 
-        wenn start is Nichts:
+        wenn start ist Nichts:
             start = lineno - 5
             end = lineno + 5
 
@@ -1965,7 +1965,7 @@ klasse PyList(gdb.Command):
             gib
         mit f:
             all_lines = f.readlines()
-            # start und end are 1-based, all_lines is 0-based;
+            # start und end are 1-based, all_lines ist 0-based;
             # so [start-1:end] als a python slice gives us [start, end] als a
             # closed interval
             fuer i, line in enumerate(all_lines[start-1:end]):
@@ -1985,7 +1985,7 @@ def move_in_stack(move_up):
     # The amount of frames that are printed out depends on how many frames are inlined
     # in the same evaluation loop. As this command links directly the C stack mit the
     # Python stack, the results are sensitive to the number of inlined frames und this
-    # is likely to change between versions und optimizations.
+    # ist likely to change between versions und optimizations.
     frame = Frame.get_selected_python_frame()
     wenn nicht frame:
         drucke('Unable to locate python frame')

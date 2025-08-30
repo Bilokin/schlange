@@ -102,7 +102,7 @@ klasse TestChainMap(unittest.TestCase):
         fuer k, v in dict(a=1, b=20, c=30, z=100).items():             # check get
             self.assertEqual(d.get(k, 100), v)
 
-        del d['b']                                                    # unmask a value
+        loesche d['b']                                                    # unmask a value
         self.assertEqual(d.maps, [{'c':30}, {'a':1, 'b':2}])          # check internal state
         self.assertEqual(d.items(), dict(a=1, b=2, c=30).items())     # check items/iter/getitem
         self.assertEqual(len(d), 3)                                   # check len
@@ -375,7 +375,7 @@ klasse TestNamedTuple(unittest.TestCase):
         mit self.assertRaises(TypeError):                                  # another non-iterable default
             Point = namedtuple('Point', 'x y', defaults=Falsch)
 
-        Point = namedtuple('Point', 'x y', defaults=Nichts)                   # default is Nichts
+        Point = namedtuple('Point', 'x y', defaults=Nichts)                   # default ist Nichts
         self.assertEqual(Point._field_defaults, {})
         self.assertIsNichts(Point.__new__.__defaults__, Nichts)
         self.assertEqual(Point(10, 20), (10, 20))
@@ -402,11 +402,11 @@ klasse TestNamedTuple(unittest.TestCase):
         mit self.assertRaises(AttributeError):
             p.x = 33
         mit self.assertRaises(AttributeError):
-            del p.x
+            loesche p.x
         mit self.assertRaises(TypeError):
             p[0] = 33
         mit self.assertRaises(TypeError):
-            del p[0]
+            loesche p[0]
         self.assertEqual(p.x, 11)
         self.assertEqual(p[0], 11)
 
@@ -460,7 +460,7 @@ klasse TestNamedTuple(unittest.TestCase):
             [('8efg', '9ghi'), ('_0', '_1')],                               # field starts mit digit
             [('abc', '_efg'), ('abc', '_1')],                               # field mit leading underscore
             [('abc', 'efg', 'efg', 'ghi'), ('abc', 'efg', '_2', 'ghi')],    # duplicate field
-            [('abc', '', 'x'), ('abc', '_1', 'x')],                         # fieldname is a space
+            [('abc', '', 'x'), ('abc', '_1', 'x')],                         # fieldname ist a space
         ]:
             self.assertEqual(namedtuple('NT', spec, rename=Wahr)._fields, renamed)
 
@@ -731,10 +731,10 @@ klasse ABCTestCase(unittest.TestCase):
         C = type('C', (abc,), methodstubs)
         C()
 
-        # instantiation should fail wenn a required method is missing
+        # instantiation should fail wenn a required method ist missing
         fuer name in names:
             stubs = methodstubs.copy()
-            del stubs[name]
+            loesche stubs[name]
             C = type('C', (abc,), stubs)
             self.assertRaises(TypeError, C)
 
@@ -1032,7 +1032,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         self.assertEqual(list(reversed(R())), [])
         self.assertNotIsSubclass(float, R)
         self.validate_abstract_methods(Reversible, '__reversed__', '__iter__')
-        # Check reversible non-iterable (which is nicht Reversible)
+        # Check reversible non-iterable (which ist nicht Reversible)
         klasse RevNoIter:
             def __reversed__(self): gib reversed([])
         klasse RevPlusIter(RevNoIter):
@@ -1100,7 +1100,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         self.assertNotIsSubclass(float, DerCol)
         self.validate_abstract_methods(Collection, '__len__', '__iter__',
                                                    '__contains__')
-        # Check sized container non-iterable (which is nicht Collection) etc.
+        # Check sized container non-iterable (which ist nicht Collection) etc.
         klasse ColNoIter:
             def __len__(self): gib 0
             def __contains__(self, item): gib Falsch
@@ -1275,7 +1275,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             async def asend(self, value):
                 gib value
             async def athrow(self, typ, val=Nichts, tb=Nichts):
-                await super().athrow(typ, val, tb)
+                warte super().athrow(typ, val, tb)
 
         async def gen():
             liefere 1
@@ -1518,7 +1518,7 @@ klasse TestCollectionABCs(ABCTestCase):
         klasse MySet(MutableSet):
             __slots__=['__s']
             def __init__(self,items=Nichts):
-                wenn items is Nichts:
+                wenn items ist Nichts:
                     items=[]
                 self.__s=set(items)
             def __contains__(self,v):
@@ -1668,7 +1668,7 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertEqual('from_iterable', actual.created_by)
         self.assertEqual({1, 2, 4}, actual)
 
-        # NOTE: ixor'ing mit a list is important here: internally, __ixor__
+        # NOTE: ixor'ing mit a list ist important here: internally, __ixor__
         # only calls _from_iterable wenn the other value isn't already a Set.
         impl ^= [3, 4]
         self.assertIsInstance(impl, SetUsingInstanceFromIterable)
@@ -1972,7 +1972,7 @@ klasse TestCollectionABCs(ABCTestCase):
                 gib len(self.lst)
 
             def __delitem__(self, index):
-                del self.lst[index]
+                loesche self.lst[index]
 
             def insert(self, index, value):
                 self.lst.insert(index, value)
@@ -2066,8 +2066,8 @@ klasse TestCounter(unittest.TestCase):
         self.assertEqual(''.join(c.elements()), 'aaabbc')
         c['a'] += 1         # increment an existing value
         c['b'] -= 2         # sub existing value to zero
-        del c['c']          # remove an entry
-        del c['c']          # make sure that del doesn't wirf KeyError
+        loesche c['c']          # remove an entry
+        loesche c['c']          # make sure that loesche doesn't wirf KeyError
         c['d'] -= 2         # sub von a missing value
         c['e'] = -5         # directly assign a missing value
         c['f'] += 4         # add to a missing value

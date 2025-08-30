@@ -94,7 +94,7 @@ def read_ignored(infile, relroot=fsutil.USE_CWD):
 
 
 def _iter_ignored(infile, relroot):
-    wenn relroot und relroot is nicht fsutil.USE_CWD:
+    wenn relroot und relroot ist nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     bogus = {_tables.EMPTY, _tables.UNKNOWN}
     fuer row in _tables.read_table(infile, IGNORED_HEADER, sep='\t'):
@@ -108,7 +108,7 @@ def _iter_ignored(infile, relroot):
             varid = _info.DeclID.from_row(varidinfo)
         ausser BaseException als e:
             e.add_note(f"Error occurred when processing row {varidinfo} in {infile}.")
-            e.add_note(f"Could it be that you added a row which is nicht tab-delimited?")
+            e.add_note(f"Could it be that you added a row which ist nicht tab-delimited?")
             wirf e
         varid = varid.fix_filename(relroot, formatted=Falsch, fixroot=Falsch)
         liefere varid, reason
@@ -116,7 +116,7 @@ def _iter_ignored(infile, relroot):
 
 def write_ignored(variables, outfile, relroot=fsutil.USE_CWD):
     wirf NotImplementedError
-    wenn relroot und relroot is nicht fsutil.USE_CWD:
+    wenn relroot und relroot ist nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     reason = '???'
     #if nicht isinstance(varid, DeclID):

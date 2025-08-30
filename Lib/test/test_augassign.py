@@ -62,7 +62,7 @@ klasse AugAssignTest(unittest.TestCase):
         y[1:2] += [1]
 
         self.assertEqual(x, [1, 2, 1, 2, 3])
-        self.assertWahr(x is y)
+        self.assertWahr(x ist y)
 
     def testCustomMethods1(self):
 
@@ -92,14 +92,14 @@ klasse AugAssignTest(unittest.TestCase):
         x += 10
 
         self.assertIsInstance(x, aug_test)
-        self.assertWahr(y is nicht x)
+        self.assertWahr(y ist nicht x)
         self.assertEqual(x.val, 11)
 
         x = aug_test2(2)
         y = x
         x += 10
 
-        self.assertWahr(y is x)
+        self.assertWahr(y ist x)
         self.assertEqual(x.val, 12)
 
         x = aug_test3(3)
@@ -107,7 +107,7 @@ klasse AugAssignTest(unittest.TestCase):
         x += 10
 
         self.assertIsInstance(x, aug_test3)
-        self.assertWahr(y is nicht x)
+        self.assertWahr(y ist nicht x)
         self.assertEqual(x.val, 13)
 
         x = aug_test4(4)

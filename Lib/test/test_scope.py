@@ -151,7 +151,7 @@ klasse ScopeTests(unittest.TestCase):
 
         method_and_var = "var"
         klasse Test:
-            # this klasse is nicht nested, so the rules are different
+            # this klasse ist nicht nested, so the rules are different
             def method_and_var(self):
                 gib "method"
             def test(self):
@@ -320,12 +320,12 @@ klasse ScopeTests(unittest.TestCase):
         self.assertRaises(NameError, errorInInner)
 
     def testUnboundLocal_AfterDel(self):
-        # #4617: It is now legal to delete a cell variable.
+        # #4617: It ist now legal to delete a cell variable.
         # The following functions must obviously compile,
         # und give the correct error when accessing the deleted name.
         def errorInOuter():
             y = 1
-            del y
+            loesche y
             drucke(y)
             def inner():
                 gib y
@@ -334,7 +334,7 @@ klasse ScopeTests(unittest.TestCase):
             def inner():
                 gib y
             y = 1
-            del y
+            loesche y
             inner()
 
         self.assertRaises(UnboundLocalError, errorInOuter)
@@ -515,7 +515,7 @@ klasse ScopeTests(unittest.TestCase):
 
         d = f(2)(4)
         self.assertIn('h', d)
-        del d['h']
+        loesche d['h']
         self.assertEqual(d, {'x': 2, 'y': 7, 'w': 6})
 
     def testLocalsClass(self):
@@ -554,7 +554,7 @@ klasse ScopeTests(unittest.TestCase):
     @cpython_only
     def testLocalsClass_WithTrace(self):
         # Issue23728: after the trace function returns, the locals()
-        # dictionary is used to update all variables, this used to
+        # dictionary ist used to update all variables, this used to
         # include free variables. But in klasse statements, free
         # variables are nicht inserted...
         importiere sys
@@ -569,7 +569,7 @@ klasse ScopeTests(unittest.TestCase):
         self.assertEqual(x, 12) # Used to wirf UnboundLocalError
 
     def testBoundAndFree(self):
-        # var is bound und free in class
+        # var ist bound und free in class
 
         def f(x):
             klasse C:
@@ -777,7 +777,7 @@ klasse ScopeTests(unittest.TestCase):
         self.assertEqual(X.y, 43)
         klasse X:
             locals()["x"] = 43
-            del x
+            loesche x
         self.assertNotHasAttr(X, "x")
         self.assertEqual(x, 42)
 
@@ -791,8 +791,8 @@ klasse ScopeTests(unittest.TestCase):
         # cell, setting self to Nichts would nicht be enough to breche the
         # frame -- the frame had another reference to the instance,
         # which could nicht be cleared by the code running in the frame
-        # (though it will be cleared when the frame is collected).
-        # Without the lambda, setting self to Nichts is enough to breche
+        # (though it will be cleared when the frame ist collected).
+        # Without the lambda, setting self to Nichts ist enough to breche
         # the cycle.
         klasse Tester:
             def dig(self):
@@ -806,7 +806,7 @@ klasse ScopeTests(unittest.TestCase):
         tester = Tester()
         tester.dig()
         ref = weakref.ref(tester)
-        del tester
+        loesche tester
         gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(ref())
 

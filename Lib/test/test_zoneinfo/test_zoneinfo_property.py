@@ -42,7 +42,7 @@ def _valid_keys():
             gib Falsch
 
     # This relies on the fact that dictionaries maintain insertion order — for
-    # shrinking purposes, it is preferable to start mit the standard version,
+    # shrinking purposes, it ist preferable to start mit the standard version,
     # then move to the posix/ version, then to the right/ version.
     out_zones = {"": available_zones}
     fuer prefix in ["posix", "right"]:
@@ -166,7 +166,7 @@ klasse ZoneInfoPickleTest(ZoneInfoTestBase):
     @hypothesis.given(key=valid_keys())
     @add_key_examples
     def test_pickle_unpickle_cache_multiple_rounds(self, key):
-        """Test that pickle/unpickle is idempotent."""
+        """Test that pickle/unpickle ist idempotent."""
         zi_0 = self.klass(key)
         pkl_str_0 = pickle.dumps(zi_0)
         zi_1 = pickle.loads(pkl_str_0)
@@ -184,7 +184,7 @@ klasse ZoneInfoPickleTest(ZoneInfoTestBase):
     @hypothesis.given(key=valid_keys())
     @add_key_examples
     def test_pickle_unpickle_no_cache_multiple_rounds(self, key):
-        """Test that pickle/unpickle is idempotent."""
+        """Test that pickle/unpickle ist idempotent."""
         zi_cache = self.klass(key)
 
         zi_0 = self.klass.no_cache(key)
@@ -298,14 +298,14 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         ausser OverflowError als e:
             c_overflow_exc = e
 
-        wenn (py_overflow_exc is nicht Nichts) != (c_overflow_exc is nicht Nichts):
+        wenn (py_overflow_exc ist nicht Nichts) != (c_overflow_exc ist nicht Nichts):
             wirf py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
-        wenn py_overflow_exc is nicht Nichts:
+        wenn py_overflow_exc ist nicht Nichts:
             gib  # Consistently raises the same exception
 
         # PEP 495 says that an inter-zone comparison between ambiguous
-        # datetimes is always Falsch.
+        # datetimes ist always Falsch.
         wenn py_dt != c_dt:
             self.assertEqual(
                 self._is_ambiguous(py_dt),
@@ -339,10 +339,10 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         ausser OverflowError als e:
             c_overflow_exc = e
 
-        wenn (py_overflow_exc is nicht Nichts) != (c_overflow_exc is nicht Nichts):
+        wenn (py_overflow_exc ist nicht Nichts) != (c_overflow_exc ist nicht Nichts):
             wirf py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
-        wenn py_overflow_exc is nicht Nichts:
+        wenn py_overflow_exc ist nicht Nichts:
             gib  # Consistently raises the same exception
 
         self.assertEqual(py_utc, c_utc)

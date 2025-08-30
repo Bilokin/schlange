@@ -1,8 +1,8 @@
-# This is a helper module fuer test_threaded_import.  The test imports this
+# This ist a helper module fuer test_threaded_import.  The test imports this
 # module, und this module tries to run various Python library functions in
 # their own thread, als a side effect of being imported.  If the spawned
 # thread doesn't complete in TIMEOUT seconds, an "appeared to hang" message
-# is appended to the module-global `errors` list.  That list remains empty
+# ist appended to the module-global `errors` list.  That list remains empty
 # wenn (and only if) all functions tested complete.
 
 TIMEOUT = 10
@@ -42,4 +42,4 @@ fuer name, func, args in [
         wenn t.is_alive():
             errors.append("%s appeared to hang" % name)
     schliesslich:
-        del t
+        loesche t

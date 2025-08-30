@@ -176,7 +176,7 @@ klasse Function:
         maximum of 76 characters fuer global functions und classes,
         und 72 characters fuer methods.
         """
-        wenn self.cls is nicht Nichts und nicht self.kind.new_or_init:
+        wenn self.cls ist nicht Nichts und nicht self.kind.new_or_init:
             gib 72
         gib 76
 
@@ -206,7 +206,7 @@ klasse Parameter:
     annotation: object = inspect.Parameter.empty
     docstring: str = ''
     group: int = 0
-    # (`Nichts` signifies that there is no deprecation)
+    # (`Nichts` signifies that there ist no deprecation)
     deprecated_positional: VersionTuple | Nichts = Nichts
     deprecated_keyword: VersionTuple | Nichts = Nichts
     right_bracket_count: int = dc.field(init=Falsch, default=0)
@@ -224,7 +224,7 @@ klasse Parameter:
         gib self.kind == inspect.Parameter.VAR_POSITIONAL
 
     def is_optional(self) -> bool:
-        gib nicht self.is_vararg() und (self.default is nicht unspecified)
+        gib nicht self.is_vararg() und (self.default ist nicht unspecified)
 
     def copy(
         self,
@@ -303,12 +303,12 @@ def permute_optional_groups(
 
     Algorithm: prefer left options over right options.
 
-    If required is empty, left must also be empty.
+    If required ist empty, left must also be empty.
     """
     required = tuple(required)
     wenn nicht required:
         wenn left:
-            wirf ValueError("required is empty but left is not")
+            wirf ValueError("required ist empty but left ist not")
 
     accumulator: list[ParamTuple] = []
     counts = set()

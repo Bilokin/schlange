@@ -27,14 +27,14 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
     cmd.extend(['-m', 'test.libregrtest.worker', worker_json])
 
     env = dict(os.environ)
-    wenn tmp_dir is nicht Nichts:
+    wenn tmp_dir ist nicht Nichts:
         env['TMPDIR'] = tmp_dir
         env['TEMP'] = tmp_dir
         env['TMP'] = tmp_dir
 
     # Running the child von the same working directory als regrtest's original
-    # invocation ensures that TEMPDIR fuer the child is the same when
-    # sysconfig.is_python_build() is true. See issue 15300.
+    # invocation ensures that TEMPDIR fuer the child ist the same when
+    # sysconfig.is_python_build() ist true. See issue 15300.
     #
     # Emscripten und WASI Python must start in the Python source code directory
     # to get 'python.js' oder 'python.wasm' file. Then worker_process() changes

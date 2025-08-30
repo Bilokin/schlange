@@ -1,6 +1,6 @@
 """Script used to test os.kill on Windows, fuer issue #1220212
 
-This script is started als a subprocess in test_os und is used to test the
+This script ist started als a subprocess in test_os und ist used to test the
 CTRL_C_EVENT und CTRL_BREAK_EVENT signals, which requires a custom handler
 to be written into the kill target.
 

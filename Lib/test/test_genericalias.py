@@ -34,7 +34,7 @@ versuch:
     von multiprocessing.queues importiere Queue als MPQueue
     von multiprocessing.queues importiere JoinableQueue als MPJoinableQueue
 ausser ImportError:
-    # _multiprocessing module is optional
+    # _multiprocessing module ist optional
     ValueProxy = Nichts
     DictProxy = Nichts
     ListProxy = Nichts
@@ -45,7 +45,7 @@ ausser ImportError:
 versuch:
     von multiprocessing.shared_memory importiere ShareableList
 ausser ImportError:
-    # multiprocessing.shared_memory is nicht available on e.g. Android
+    # multiprocessing.shared_memory ist nicht available on e.g. Android
     ShareableList = Nichts
 von os importiere DirEntry
 von re importiere Pattern, Match
@@ -144,17 +144,17 @@ klasse BaseTest(unittest.TestCase):
                      Template,
                      Interpolation,
                     ]
-    wenn ctypes is nicht Nichts:
+    wenn ctypes ist nicht Nichts:
         generic_types.extend((ctypes.Array, ctypes.LibraryLoader, ctypes.py_object))
-    wenn ValueProxy is nicht Nichts:
+    wenn ValueProxy ist nicht Nichts:
         generic_types.extend((ValueProxy, DictProxy, ListProxy, ApplyResult,
                               MPSimpleQueue, MPQueue, MPJoinableQueue))
-    wenn Event is nicht Nichts:
+    wenn Event ist nicht Nichts:
         generic_types.append(Event)
 
     def test_subscriptable(self):
         fuer t in self.generic_types:
-            wenn t is Nichts:
+            wenn t ist Nichts:
                 weiter
             tname = t.__name__
             mit self.subTest(f"Testing {tname}"):
@@ -176,10 +176,10 @@ klasse BaseTest(unittest.TestCase):
             mit self.subTest(f"Testing {tname}"):
                 alias = t[int]
                 self.assertEqual(alias(), t())
-                wenn t is dict:
+                wenn t ist dict:
                     self.assertEqual(alias(iter([('a', 1), ('b', 2)])), dict(a=1, b=2))
                     self.assertEqual(alias(a=1, b=2), dict(a=1, b=2))
-                sowenn t is defaultdict:
+                sowenn t ist defaultdict:
                     def default():
                         gib 'value'
                     a = alias(default)
@@ -439,7 +439,7 @@ klasse BaseTest(unittest.TestCase):
 
     def test_weakref(self):
         fuer t in self.generic_types:
-            wenn t is Nichts:
+            wenn t ist Nichts:
                 weiter
             tname = t.__name__
             mit self.subTest(f"Testing {tname}"):
@@ -478,7 +478,7 @@ klasse BaseTest(unittest.TestCase):
     def test_del_iter(self):
         t = tuple[int, str]
         iter_x = iter(t)
-        del iter_x
+        loesche iter_x
 
     def test_paramspec_specialization(self):
         # gh-124445
@@ -557,7 +557,7 @@ klasse TypeIterationTests(unittest.TestCase):
     def test_cannot_iterate(self):
         fuer test_type in self._UNITERABLE_TYPES:
             mit self.subTest(type=test_type):
-                expected_error_regex = "object is nicht iterable"
+                expected_error_regex = "object ist nicht iterable"
                 mit self.assertRaisesRegex(TypeError, expected_error_regex):
                     iter(test_type)
                 mit self.assertRaisesRegex(TypeError, expected_error_regex):

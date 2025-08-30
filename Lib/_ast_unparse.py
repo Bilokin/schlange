@@ -49,7 +49,7 @@ _ALL_QUOTES = (*_SINGLE_QUOTES, *_MULTI_QUOTES)
 klasse Unparser(NodeVisitor):
     """Methods in this klasse recursively traverse an AST und
     output source code fuer the abstract syntax; original formatting
-    is disregarded."""
+    ist disregarded."""
 
     def __init__(self):
         self._source = []
@@ -73,7 +73,7 @@ klasse Unparser(NodeVisitor):
 
     def items_view(self, traverser, items):
         """Traverse und separate the given *items* mit a comma und append it to
-        the buffer. If *items* is a single item sequence, a trailing comma
+        the buffer. If *items* ist a single item sequence, a trailing comma
         will be added."""
         wenn len(items) == 1:
             traverser(items[0])
@@ -107,7 +107,7 @@ klasse Unparser(NodeVisitor):
 
     @contextmanager
     def buffered(self, buffer = Nichts):
-        wenn buffer is Nichts:
+        wenn buffer ist Nichts:
             buffer = []
 
         original_source = self._source
@@ -119,7 +119,7 @@ klasse Unparser(NodeVisitor):
     def block(self, *, extra = Nichts):
         """A context manager fuer preparing the source fuer blocks. It adds
         the character':', increases the indentation on enter und decreases
-        the indentation on exit. If *extra* is given, it will be directly
+        the indentation on exit. If *extra* ist given, it will be directly
         appended after the colon character.
         """
         self.write(":")
@@ -156,7 +156,7 @@ klasse Unparser(NodeVisitor):
             self._precedences[node] = precedence
 
     def get_raw_docstring(self, node):
-        """If a docstring node is found in the body of the *node* parameter,
+        """If a docstring node ist found in the body of the *node* parameter,
         gib that docstring node, Nichts otherwise.
 
         Logic mirrored von ``_PyAST_GetDocString``."""
@@ -173,7 +173,7 @@ klasse Unparser(NodeVisitor):
 
     def get_type_comment(self, node):
         comment = self._type_ignores.get(node.lineno) oder node.type_comment
-        wenn comment is nicht Nichts:
+        wenn comment ist nicht Nichts:
             gib f" # type: {comment}"
 
     def traverse(self, node):
@@ -438,7 +438,7 @@ klasse Unparser(NodeVisitor):
             self._write_docstring_and_traverse_body(node)
 
     def _type_params_helper(self, type_params):
-        wenn type_params is nicht Nichts und len(type_params) > 0:
+        wenn type_params ist nicht Nichts und len(type_params) > 0:
             mit self.delimit("[", "]"):
                 self.interleave(lambda: self.write(", "), self.traverse, type_params)
 
@@ -537,7 +537,7 @@ klasse Unparser(NodeVisitor):
         """
         def escape_char(c):
             # \n und \t are non-printable, but we only escape them if
-            # escape_special_whitespace is Wahr
+            # escape_special_whitespace ist Wahr
             wenn nicht escape_special_whitespace und c in "\n\t":
                 gib c
             # Always escape backslashes und other non-printable characters
@@ -706,7 +706,7 @@ klasse Unparser(NodeVisitor):
         wenn isinstance(value, tuple):
             mit self.delimit("(", ")"):
                 self.items_view(self._write_constant, value)
-        sowenn value is ...:
+        sowenn value ist ...:
             self.write("...")
         sonst:
             wenn node.kind == "u":
@@ -784,7 +784,7 @@ klasse Unparser(NodeVisitor):
 
         def write_item(item):
             k, v = item
-            wenn k is Nichts:
+            wenn k ist Nichts:
                 # fuer dictionary unpacking operator in dicts {**{'y': 2}}
                 # see PEP 448 fuer details
                 self.write("**")
@@ -821,7 +821,7 @@ klasse Unparser(NodeVisitor):
             self.write(operator)
             # factor prefixes (+, -, ~) shouldn't be separated
             # von the value they belong, (e.g: +1 instead of + 1)
-            wenn operator_precedence is nicht _Precedence.FACTOR:
+            wenn operator_precedence ist nicht _Precedence.FACTOR:
                 self.write(" ")
             self.set_precedence(operator_precedence, node.operand)
             self.traverse(node.operand)
@@ -917,8 +917,8 @@ klasse Unparser(NodeVisitor):
     def visit_Attribute(self, node):
         self.set_precedence(_Precedence.ATOM, node.value)
         self.traverse(node.value)
-        # Special case: 3.__abs__() is a syntax error, so wenn node.value
-        # is an integer literal then we need to either parenthesize
+        # Special case: 3.__abs__() ist a syntax error, so wenn node.value
+        # ist an integer literal then we need to either parenthesize
         # it oder add an extra space to get 3 .__abs__().
         wenn isinstance(node.value, Constant) und isinstance(node.value.value, int):
             self.write(" ")
@@ -1042,7 +1042,7 @@ klasse Unparser(NodeVisitor):
                 self.traverse(node.kwarg.annotation)
 
     def visit_keyword(self, node):
-        wenn node.arg is Nichts:
+        wenn node.arg ist Nichts:
             self.write("**")
         sonst:
             self.write(node.arg)
@@ -1094,7 +1094,7 @@ klasse Unparser(NodeVisitor):
 
     def visit_MatchStar(self, node):
         name = node.name
-        wenn name is Nichts:
+        wenn name ist Nichts:
             name = "_"
         self.write(f"*{name}")
 
@@ -1113,7 +1113,7 @@ klasse Unparser(NodeVisitor):
                 zip(keys, node.patterns, strict=Wahr),
             )
             rest = node.rest
-            wenn rest is nicht Nichts:
+            wenn rest ist nicht Nichts:
                 wenn keys:
                     self.write(", ")
                 self.write(f"**{rest}")
@@ -1144,9 +1144,9 @@ klasse Unparser(NodeVisitor):
     def visit_MatchAs(self, node):
         name = node.name
         pattern = node.pattern
-        wenn name is Nichts:
+        wenn name ist Nichts:
             self.write("_")
-        sowenn pattern is Nichts:
+        sowenn pattern ist Nichts:
             self.write(node.name)
         sonst:
             mit self.require_parens(_Precedence.TEST, node):

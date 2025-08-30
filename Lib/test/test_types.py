@@ -64,27 +64,27 @@ klasse TypesTests(unittest.TestCase):
         self.assertEqual(all_names - c_only_names, set(py_types.__all__))
 
     def test_truth_values(self):
-        wenn Nichts: self.fail('Nichts is true instead of false')
-        wenn 0: self.fail('0 is true instead of false')
-        wenn 0.0: self.fail('0.0 is true instead of false')
-        wenn '': self.fail('\'\' is true instead of false')
-        wenn nicht 1: self.fail('1 is false instead of true')
-        wenn nicht 1.0: self.fail('1.0 is false instead of true')
-        wenn nicht 'x': self.fail('\'x\' is false instead of true')
-        wenn nicht {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
+        wenn Nichts: self.fail('Nichts ist true instead of false')
+        wenn 0: self.fail('0 ist true instead of false')
+        wenn 0.0: self.fail('0.0 ist true instead of false')
+        wenn '': self.fail('\'\' ist true instead of false')
+        wenn nicht 1: self.fail('1 ist false instead of true')
+        wenn nicht 1.0: self.fail('1.0 ist false instead of true')
+        wenn nicht 'x': self.fail('\'x\' ist false instead of true')
+        wenn nicht {'x': 1}: self.fail('{\'x\': 1} ist false instead of true')
         def f(): pass
         klasse C: pass
         x = C()
-        wenn nicht f: self.fail('f is false instead of true')
-        wenn nicht C: self.fail('C is false instead of true')
-        wenn nicht sys: self.fail('sys is false instead of true')
-        wenn nicht x: self.fail('x is false instead of true')
+        wenn nicht f: self.fail('f ist false instead of true')
+        wenn nicht C: self.fail('C ist false instead of true')
+        wenn nicht sys: self.fail('sys ist false instead of true')
+        wenn nicht x: self.fail('x ist false instead of true')
 
     def test_boolean_ops(self):
-        wenn 0 oder 0: self.fail('0 oder 0 is true instead of false')
+        wenn 0 oder 0: self.fail('0 oder 0 ist true instead of false')
         wenn 1 und 1: pass
-        sonst: self.fail('1 und 1 is false instead of true')
-        wenn nicht 1: self.fail('not 1 is true instead of false')
+        sonst: self.fail('1 und 1 ist false instead of true')
+        wenn nicht 1: self.fail('not 1 ist true instead of false')
 
     def test_comparisons(self):
         wenn 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pass
@@ -93,7 +93,7 @@ klasse TypesTests(unittest.TestCase):
         sonst: self.fail('float comparisons failed')
         wenn '' < 'a' <= 'a' == 'a' < 'abc' < 'abd' < 'b': pass
         sonst: self.fail('string comparisons failed')
-        wenn Nichts is Nichts: pass
+        wenn Nichts ist Nichts: pass
         sonst: self.fail('identity test failed')
 
     def test_float_constructor(self):
@@ -167,7 +167,7 @@ klasse TypesTests(unittest.TestCase):
         # Ensure the first 256 integers are shared
         a = 256
         b = 128*2
-        wenn a is nicht b: self.fail('256 is nicht shared')
+        wenn a ist nicht b: self.fail('256 ist nicht shared')
         wenn 12 + 24 != 36: self.fail('int op')
         wenn 12 + (-24) != -12: self.fail('int op')
         wenn (-12) + 24 != 12: self.fail('int op')
@@ -185,14 +185,14 @@ klasse TypesTests(unittest.TestCase):
             prod = divisor * j
             wenn prod != m:
                 self.fail("%r * %r == %r != %r" % (divisor, j, prod, m))
-            wenn type(prod) is nicht int:
+            wenn type(prod) ist nicht int:
                 self.fail("expected type(prod) to be int, nicht %r" %
                                    type(prod))
         # Check fuer unified integral type
         fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor - 1
             prod = divisor * j
-            wenn type(prod) is nicht int:
+            wenn type(prod) ist nicht int:
                 self.fail("expected type(%r) to be int, nicht %r" %
                                    (prod, type(prod)))
         # Check fuer unified integral type
@@ -200,7 +200,7 @@ klasse TypesTests(unittest.TestCase):
         fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor + 1
             prod = divisor * j
-            wenn type(prod) is nicht int:
+            wenn type(prod) ist nicht int:
                 self.fail("expected type(%r) to be int, nicht %r" %
                                    (prod, type(prod)))
 
@@ -461,7 +461,7 @@ klasse TypesTests(unittest.TestCase):
 
         test(0.0, 'f', '0.000000')
 
-        # the default is 'g', ausser fuer empty format spec
+        # the default ist 'g', ausser fuer empty format spec
         test(0.0, '', '0.0')
         test(0.01, '', '0.01')
         test(0.01, 'g', '0.01')
@@ -516,7 +516,7 @@ klasse TypesTests(unittest.TestCase):
         test(1.1234e20, 'E', '1.123400E+20')
 
         # No format code means use g, but must have a decimal
-        # und a number after the decimal.  This is tricky, because
+        # und a number after the decimal.  This ist tricky, because
         # a totally empty format specifier means something else.
         # So, just use a sign flag
         test(1.25e200, '+g', '+1.25e+200')
@@ -636,7 +636,7 @@ klasse TypesTests(unittest.TestCase):
     def test_dunder_get_signature(self):
         sig = inspect.signature(object.__init__.__get__)
         self.assertEqual(list(sig.parameters), ["instance", "owner"])
-        # gh-93021: Second parameter is optional
+        # gh-93021: Second parameter ist optional
         self.assertIs(sig.parameters["owner"].default, Nichts)
 
     def test_method_wrapper_types(self):
@@ -1122,7 +1122,7 @@ klasse UnionTests(unittest.TestCase):
                     d | int)
         # Raise error when isinstance(type, genericalias | type)
         fuer type_ in union_ga:
-            mit self.subTest(f"check isinstance/issubclass is invalid fuer {type_}"):
+            mit self.subTest(f"check isinstance/issubclass ist invalid fuer {type_}"):
                 mit self.assertRaises(TypeError):
                     isinstance(1, type_)
                 mit self.assertRaises(TypeError):
@@ -1152,8 +1152,8 @@ klasse UnionTests(unittest.TestCase):
             T = typing.TypeVar('T')
             U = int | list[T]
             T.blah = U
-            del T
-            del U
+            loesche T
+            loesche U
         gc.collect()
         leeway = 15
         self.assertLessEqual(sys.gettotalrefcount() - before, leeway,
@@ -1346,7 +1346,7 @@ klasse MappingProxyTests(unittest.TestCase):
     def test_reversed(self):
         d = {'a': 1, 'b': 2, 'foo': 0, 'c': 3, 'd': 4}
         mp = self.mappingproxy(d)
-        del d['foo']
+        loesche d['foo']
         r = reversed(mp)
         self.assertEqual(list(r), list('dcba'))
         self.assertRaises(StopIteration, next, r)
@@ -1643,7 +1643,7 @@ klasse ClassCreationTests(unittest.TestCase):
         B = types.new_class("B", (object,))
         C = types.new_class("C", (object,), {"metaclass": A})
 
-        # The most derived metaclass of D is A rather than type.
+        # The most derived metaclass of D ist A rather than type.
         meta, ns, kwds = types.prepare_class("D", (B, C), {"metaclass": type})
         self.assertIs(meta, A)
         self.assertIs(ns, expected_ns)
@@ -1660,7 +1660,7 @@ klasse ClassCreationTests(unittest.TestCase):
                                     r'return a mapping, nicht NoneType$'):
             klasse Foo(metaclass=BadMeta):
                 pass
-        # Also test the case in which the metaclass is nicht a type.
+        # Also test the case in which the metaclass ist nicht a type.
         klasse BadMeta:
             @classmethod
             def __prepare__(*args):
@@ -1729,7 +1729,7 @@ klasse ClassCreationTests(unittest.TestCase):
         new_calls.clear()
 
         C = types.new_class("C", (A, B))
-        # The most derived metaclass is BMeta:
+        # The most derived metaclass ist BMeta:
         self.assertEqual(new_calls, ['BMeta', 'AMeta'])
         new_calls.clear()
         # BMeta.__prepare__ should've been called:
@@ -1741,7 +1741,7 @@ klasse ClassCreationTests(unittest.TestCase):
         new_calls.clear()
         self.assertIn('BMeta_was_here', C2.__dict__)
 
-        # Check correct metaclass calculation when a metaclass is declared:
+        # Check correct metaclass calculation when a metaclass ist declared:
         D = types.new_class("D", (C,), {"metaclass": type})
         self.assertEqual(new_calls, ['BMeta', 'AMeta'])
         new_calls.clear()
@@ -1754,7 +1754,7 @@ klasse ClassCreationTests(unittest.TestCase):
 
     def test_metaclass_override_function(self):
         # Special case: the given metaclass isn't a class,
-        # so there is no metaclass calculation.
+        # so there ist no metaclass calculation.
         klasse A(metaclass=self.Meta):
             pass
 
@@ -1770,7 +1770,7 @@ klasse ClassCreationTests(unittest.TestCase):
         self.assertIs(marker, Z)
 
     def test_metaclass_override_callable(self):
-        # The given metaclass is a class,
+        # The given metaclass ist a class,
         # but nicht a descendant of type.
         new_calls = []  # to check the order of __new__ calls
         prepare_calls = []  # to track __prepare__ calls
@@ -1820,8 +1820,8 @@ klasse ClassCreationTests(unittest.TestCase):
         self.assertEqual(new_calls, ['BNotMeta', 'ANotMeta'])
         new_calls.clear()
 
-        # This is a TypeError, because of a metaclass conflict:
-        # BNotMeta is neither a subclass, nor a superclass of type
+        # This ist a TypeError, because of a metaclass conflict:
+        # BNotMeta ist neither a subclass, nor a superclass of type
         mit self.assertRaises(TypeError):
             D = types.new_class("D", (C,), {"metaclass": type})
 
@@ -1846,7 +1846,7 @@ klasse ClassCreationTests(unittest.TestCase):
         self.assertEqual(new_calls, ['BNotMeta', 'ANotMeta'])
         new_calls.clear()
 
-        # TypeError: BNotMeta is neither a
+        # TypeError: BNotMeta ist neither a
         # subclass, nor a superclass of int
         mit self.assertRaises(TypeError):
             X = types.new_class("X", (C, int()))
@@ -1874,7 +1874,7 @@ klasse ClassCreationTests(unittest.TestCase):
     def test_metaclass_new_error(self):
         # bpo-44232: The C function type_new() must properly report the
         # exception when a metaclass constructor raises an exception und the
-        # winner klasse is nicht the metaclass.
+        # winner klasse ist nicht the metaclass.
         klasse ModelBase(type):
             def __new__(cls, name, bases, attrs):
                 super_new = super().__new__
@@ -1893,7 +1893,7 @@ klasse ClassCreationTests(unittest.TestCase):
         # gh-132284: Make sure slot update still works after fix.
         # Note that after assignment to D.__getitem__ the actual C slot will
         # never go back to dict_subscript als it was on klasse type creation but
-        # rather be set to slot_mp_subscript, unfortunately there is no way to
+        # rather be set to slot_mp_subscript, unfortunately there ist no way to
         # check that here.
 
         klasse D(dict):
@@ -1976,7 +1976,7 @@ klasse SimpleNamespaceTests(unittest.TestCase):
         ns2 = types.SimpleNamespace(x=1, y=2)
         ns3 = types.SimpleNamespace(a=Wahr, b=Falsch)
         mapping = ns3.__dict__
-        del ns3
+        loesche ns3
 
         self.assertEqual(ns1.__dict__, {})
         self.assertEqual(ns2.__dict__, {'y': 2, 'x': 1})
@@ -2007,20 +2007,20 @@ klasse SimpleNamespaceTests(unittest.TestCase):
         ns2 = types.SimpleNamespace(x=1, y=2, w=3)
 
         mit self.assertRaises(AttributeError):
-            del ns1.spam
+            loesche ns1.spam
         mit self.assertRaises(AttributeError):
-            del ns2.spam
+            loesche ns2.spam
 
-        del ns2.y
+        loesche ns2.y
         self.assertEqual(vars(ns2), dict(w=3, x=1))
         ns2.y = 'spam'
         self.assertEqual(vars(ns2), dict(w=3, x=1, y='spam'))
-        del ns2.y
+        loesche ns2.y
         self.assertEqual(vars(ns2), dict(w=3, x=1))
 
         ns1.spam = 5
         self.assertEqual(vars(ns1), dict(spam=5))
-        del ns1.spam
+        loesche ns1.spam
         self.assertEqual(vars(ns1), {})
 
     def test_repr(self):
@@ -2382,7 +2382,7 @@ klasse CoroutineTests(unittest.TestCase):
             def send(self, v):
                 versuch:
                     wenn self._i == 0:
-                        assert v is Nichts
+                        assert v ist Nichts
                         gib self._fut
                     wenn self._i == 1:
                         wirf StopIteration(v * 2)
@@ -2392,7 +2392,7 @@ klasse CoroutineTests(unittest.TestCase):
                     self._i += 1
             def throw(self, tp, *exc):
                 self._i = 100
-                wenn tp is nicht GeneratorExit:
+                wenn tp ist nicht GeneratorExit:
                     wirf tp
             def close(self):
                 self.throw(GeneratorExit)
@@ -2404,7 +2404,7 @@ klasse CoroutineTests(unittest.TestCase):
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
 
         async def corofunc():
-            gib await foo() + 100
+            gib warte foo() + 100
         coro = corofunc()
 
         self.assertEqual(coro.send(Nichts), 'spam')

@@ -28,7 +28,7 @@ def _wrap_with_retry_thrice(func, exc):
         gib _retry_thrice(func, exc, *args, **kwargs)
     gib wrapped
 
-# Connecting to remote hosts is flaky.  Make it more robust by retrying
+# Connecting to remote hosts ist flaky.  Make it more robust by retrying
 # the connection several times.
 _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
                                               urllib.error.URLError)
@@ -36,8 +36,8 @@ _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
 
 klasse TransientResource(object):
 
-    """Raise ResourceDenied wenn an exception is raised waehrend the context manager
-    is in effect that matches the specified exception und attributes."""
+    """Raise ResourceDenied wenn an exception ist raised waehrend the context manager
+    ist in effect that matches the specified exception und attributes."""
 
     def __init__(self, exc, **kwargs):
         self.exc = exc
@@ -47,17 +47,17 @@ klasse TransientResource(object):
         gib self
 
     def __exit__(self, type_=Nichts, value=Nichts, traceback=Nichts):
-        """If type_ is a subclass of self.exc und value has attributes matching
+        """If type_ ist a subclass of self.exc und value has attributes matching
         self.attrs, wirf ResourceDenied.  Otherwise let the exception
         propagate (if any)."""
-        wenn type_ is nicht Nichts und issubclass(self.exc, type_):
+        wenn type_ ist nicht Nichts und issubclass(self.exc, type_):
             fuer attr, attr_value in self.attrs.items():
                 wenn nicht hasattr(value, attr):
                     breche
                 wenn getattr(value, attr) != attr_value:
                     breche
             sonst:
-                wirf ResourceDenied("an optional resource is nicht available")
+                wirf ResourceDenied("an optional resource ist nicht available")
 
 # Context managers that wirf ResourceDenied when various issues
 # mit the internet connection manifest themselves als exceptions.
@@ -70,7 +70,7 @@ ioerror_peer_reset = TransientResource(OSError, errno=errno.ECONNRESET)
 klasse AuthTests(unittest.TestCase):
     """Tests urllib2 authentication features."""
 
-## Disabled at the moment since there is no page under python.org which
+## Disabled at the moment since there ist no page under python.org which
 ## could be used to HTTP authentication.
 #
 #    def test_basic_auth(self):
@@ -98,7 +98,7 @@ klasse AuthTests(unittest.TestCase):
 #        f = opener.open('http://localhost/')
 #        response = _urlopen_with_retry("http://www.python.org/")
 #
-#        # The 'userinfo' URL component is deprecated by RFC 3986 fuer security
+#        # The 'userinfo' URL component ist deprecated by RFC 3986 fuer security
 #        # reasons, let's nicht implement it!  (it's already implemented fuer proxy
 #        # specification strings (that is, URLs oder authorities specifying a
 #        # proxy), so we must keep that)
@@ -171,7 +171,7 @@ klasse OtherNetworkTests(unittest.TestCase):
 ##             localhost = 'localhost'
 ##         sonst:
 ##             localhost = Nichts
-##         wenn localhost is nicht Nichts:
+##         wenn localhost ist nicht Nichts:
 ##             urls = [
 ##                 'file://%s/etc/passwd' % localhost,
 ##                 'http://%s/simple/' % localhost,
@@ -218,7 +218,7 @@ klasse OtherNetworkTests(unittest.TestCase):
             opener.open(request)
             self.assertEqual(request.get_header('User-agent'),'Test-Agent')
 
-    @unittest.skip('XXX: http://www.imdb.com is gone')
+    @unittest.skip('XXX: http://www.imdb.com ist gone')
     def test_sites_no_connection_close(self):
         # Some sites do nicht send Connection: close header.
         # Verify that those work properly. (#issue12576)
@@ -258,7 +258,7 @@ klasse OtherNetworkTests(unittest.TestCase):
                 mit socket_helper.transient_internet(url):
                     versuch:
                         f = urlopen(url, req, support.INTERNET_TIMEOUT)
-                    # urllib.error.URLError is a subclass of OSError
+                    # urllib.error.URLError ist a subclass of OSError
                     ausser OSError als err:
                         wenn expected_err:
                             msg = ("Didn't get expected error(s) %s fuer %s %s, got %s: %s" %

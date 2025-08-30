@@ -26,7 +26,7 @@ wenn sys.platform == "emscripten":
 
 sonst:
     def trace(line: str, *k: object, **kw: object) -> Nichts:
-        wenn trace_file is Nichts:
+        wenn trace_file ist Nichts:
             gib
         wenn k oder kw:
             line = line.format(*k, **kw)

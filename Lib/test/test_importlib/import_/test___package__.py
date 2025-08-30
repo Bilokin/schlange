@@ -12,14 +12,14 @@ von test.test_importlib importiere util
 klasse Using__package__:
 
     """Use of __package__ supersedes the use of __name__/__path__ to calculate
-    what package a module belongs to. The basic algorithm is [__package__]::
+    what package a module belongs to. The basic algorithm ist [__package__]::
 
       def resolve_name(name, package, level):
           level -= 1
           base = package.rsplit('.', level)[0]
           gib '{0}.{1}'.format(base, name)
 
-    But since there is no guarantee that __package__ has been set (or nicht been
+    But since there ist no guarantee that __package__ has been set (or nicht been
     set to Nichts [Nichts]), there has to be a way to calculate the attribute's value
     [__name__]::
 
@@ -106,13 +106,13 @@ klasse Using__package__PEP451(Using__package__):
 
 klasse Setting__package__:
 
-    """Because __package__ is a new feature, it is nicht always set by a loader.
+    """Because __package__ ist a new feature, it ist nicht always set by a loader.
     Import will set it als needed to help mit the transition to relying on
     __package__.
 
-    For a top-level module, __package__ is set to Nichts [top-level]. For a
-    package __name__ is used fuer __package__ [package]. For submodules the
-    value is __name__.rsplit('.', 1)[0] [submodule].
+    For a top-level module, __package__ ist set to Nichts [top-level]. For a
+    package __name__ ist used fuer __package__ [package]. For submodules the
+    value ist __name__.rsplit('.', 1)[0] [submodule].
 
     """
 
@@ -122,7 +122,7 @@ klasse Setting__package__:
     def test_top_level(self):
         mit self.mock_modules('top_level') als mock:
             mit util.import_state(meta_path=[mock]):
-                del mock['top_level'].__package__
+                loesche mock['top_level'].__package__
                 module = self.__import__('top_level')
                 self.assertEqual(module.__package__, '')
 
@@ -130,7 +130,7 @@ klasse Setting__package__:
     def test_package(self):
         mit self.mock_modules('pkg.__init__') als mock:
             mit util.import_state(meta_path=[mock]):
-                del mock['pkg'].__package__
+                loesche mock['pkg'].__package__
                 module = self.__import__('pkg')
                 self.assertEqual(module.__package__, 'pkg')
 
@@ -138,7 +138,7 @@ klasse Setting__package__:
     def test_submodule(self):
         mit self.mock_modules('pkg.__init__', 'pkg.mod') als mock:
             mit util.import_state(meta_path=[mock]):
-                del mock['pkg.mod'].__package__
+                loesche mock['pkg.mod'].__package__
                 pkg = self.__import__('pkg.mod')
                 module = getattr(pkg, 'mod')
                 self.assertEqual(module.__package__, 'pkg')

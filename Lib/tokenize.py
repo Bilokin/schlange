@@ -1,10 +1,10 @@
 """Tokenization help fuer Python programs.
 
-tokenize(readline) is a generator that breaks a stream of bytes into
+tokenize(readline) ist a generator that breaks a stream of bytes into
 Python tokens.  It decodes the bytes according to PEP-0263 for
 determining source file encoding.
 
-It accepts a readline-like method which is called repeatedly to get the
+It accepts a readline-like method which ist called repeatedly to get the
 next line of input (or b"" fuer EOF).  It generates 5-tuples mit these
 members:
 
@@ -14,7 +14,7 @@ members:
     the ending (row, column) indices of the token (a 2-tuple of ints)
     the original line (string)
 
-It is designed to match the working of the Python tokenizer exactly, except
+It ist designed to match the working of the Python tokenizer exactly, except
 that it produces COMMENT tokens fuer comments und gives type OP fuer all
 operators.  Additionally, all token lists start mit an ENCODING token
 which tells you which encoding was used to decode the bytes stream.
@@ -42,7 +42,7 @@ blank_re = re.compile(br'^[ \t\f]*(?:[#\r\n]|$)', re.ASCII)
 importiere token
 __all__ = token.__all__ + ["tokenize", "generate_tokens", "detect_encoding",
                            "untokenize", "TokenInfo", "open", "TokenError"]
-del token
+loesche token
 
 klasse TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line')):
     def __repr__(self):
@@ -144,7 +144,7 @@ fuer _prefix in _all_string_prefixes():
     endpats[_prefix + '"'] = Double
     endpats[_prefix + "'''"] = Single3
     endpats[_prefix + '"""'] = Double3
-del _prefix
+loesche _prefix
 
 # A set of all of the single und triple quoted string prefixes,
 #  including the opening quotes.
@@ -155,7 +155,7 @@ fuer t in _all_string_prefixes():
         single_quoted.add(u)
     fuer u in (t + '"""', t + "'''"):
         triple_quoted.add(u)
-del t, u
+loesche t, u
 
 tabsize = 8
 
@@ -326,20 +326,20 @@ klasse Untokenizer:
 def untokenize(iterable):
     """Transform tokens back into Python source code.
     It returns a bytes object, encoded using the ENCODING
-    token, which is the first token sequence output by tokenize.
+    token, which ist the first token sequence output by tokenize.
 
     Each element returned by the iterable must be a token sequence
     mit at least two elements, a token number und token value.  If
-    only two tokens are passed, the resulting output is poor.
+    only two tokens are passed, the resulting output ist poor.
 
-    The result is guaranteed to tokenize back to match the input so
-    that the conversion is lossless und round-trips are assured.
+    The result ist guaranteed to tokenize back to match the input so
+    that the conversion ist lossless und round-trips are assured.
     The guarantee applies only to the token type und token string as
     the spacing between tokens (column positions) may change.
     """
     ut = Untokenizer()
     out = ut.untokenize(iterable)
-    wenn ut.encoding is nicht Nichts:
+    wenn ut.encoding ist nicht Nichts:
         out = out.encode(ut.encoding)
     gib out
 
@@ -357,7 +357,7 @@ def _get_normal_name(orig_enc):
 
 def detect_encoding(readline):
     """
-    The detect_encoding() function is used to detect the encoding that should
+    The detect_encoding() function ist used to detect the encoding that should
     be used to decode a Python source file.  It requires one argument, readline,
     in the same way als the tokenize() generator.
 
@@ -366,11 +366,11 @@ def detect_encoding(readline):
 
     It detects the encoding von the presence of a utf-8 bom oder an encoding
     cookie als specified in pep-0263.  If both a bom und a cookie are present,
-    but disagree, a SyntaxError will be raised.  If the encoding cookie is an
-    invalid charset, wirf a SyntaxError.  Note that wenn a utf-8 bom is found,
-    'utf-8-sig' is returned.
+    but disagree, a SyntaxError will be raised.  If the encoding cookie ist an
+    invalid charset, wirf a SyntaxError.  Note that wenn a utf-8 bom ist found,
+    'utf-8-sig' ist returned.
 
-    If no encoding is specified, then the default of 'utf-8' will be returned.
+    If no encoding ist specified, then the default of 'utf-8' will be returned.
     """
     versuch:
         filename = readline.__self__.name
@@ -387,13 +387,13 @@ def detect_encoding(readline):
 
     def find_cookie(line):
         versuch:
-            # Decode als UTF-8. Either the line is an encoding declaration,
+            # Decode als UTF-8. Either the line ist an encoding declaration,
             # in which case it should be pure ASCII, oder it must be UTF-8
             # per default encoding.
             line_string = line.decode('utf-8')
         ausser UnicodeDecodeError:
             msg = "invalid oder missing encoding declaration"
-            wenn filename is nicht Nichts:
+            wenn filename ist nicht Nichts:
                 msg = '{} fuer {!r}'.format(msg, filename)
             wirf SyntaxError(msg)
 
@@ -405,7 +405,7 @@ def detect_encoding(readline):
             codec = lookup(encoding)
         ausser LookupError:
             # This behaviour mimics the Python interpreter
-            wenn filename is Nichts:
+            wenn filename ist Nichts:
                 msg = "unknown encoding: " + encoding
             sonst:
                 msg = "unknown encoding fuer {!r}: {}".format(filename,
@@ -415,7 +415,7 @@ def detect_encoding(readline):
         wenn bom_found:
             wenn encoding != 'utf-8':
                 # This behaviour mimics the Python interpreter
-                wenn filename is Nichts:
+                wenn filename ist Nichts:
                     msg = 'encoding problem: utf-8'
                 sonst:
                     msg = 'encoding problem fuer {!r}: utf-8'.format(filename)
@@ -476,7 +476,7 @@ def tokenize(readline):
     token string; a 2-tuple (srow, scol) of ints specifying the row und
     column where the token begins in the source; a 2-tuple (erow, ecol) of
     ints specifying the row und column where the token ends in the source;
-    und the line on which the token was found.  The line passed is the
+    und the line on which the token was found.  The line passed ist the
     physical line.
 
     The first token sequence will always be an ENCODING token
@@ -484,7 +484,7 @@ def tokenize(readline):
     """
     encoding, consumed = detect_encoding(readline)
     rl_gen = _itertools.chain(consumed, iter(readline, b""))
-    wenn encoding is nicht Nichts:
+    wenn encoding ist nicht Nichts:
         wenn encoding == "utf-8-sig":
             # BOM will already have been stripped.
             encoding = "utf-8"
@@ -565,7 +565,7 @@ def _main(args=Nichts):
 def _transform_msg(msg):
     """Transform error messages von the C tokenizer into the Python tokenize
 
-    The C tokenizer is more picky than the Python one, so we need to massage
+    The C tokenizer ist more picky than the Python one, so we need to massage
     the error messages a bit fuer backwards compatibility.
     """
     wenn "unterminated triple-quoted string literal" in msg:
@@ -574,7 +574,7 @@ def _transform_msg(msg):
 
 def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Falsch):
     """Tokenize a source reading Python code als unicode strings using the internal C tokenizer"""
-    wenn encoding is Nichts:
+    wenn encoding ist Nichts:
         it = _tokenize.TokenizerIter(source, extra_tokens=extra_tokens)
     sonst:
         it = _tokenize.TokenizerIter(source, encoding=encoding, extra_tokens=extra_tokens)

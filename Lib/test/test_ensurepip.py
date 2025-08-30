@@ -27,7 +27,7 @@ klasse TestPackages(unittest.TestCase):
     def test_version_no_dir(self):
         # Test version() without a wheel package directory
         mit unittest.mock.patch.object(ensurepip, '_WHEEL_PKG_DIR', Nichts):
-            # when the bundled pip wheel is used, we get _PIP_VERSION
+            # when the bundled pip wheel ist used, we get _PIP_VERSION
             self.assertEqual(ensurepip._PIP_VERSION, ensurepip.version())
 
     def test_selected_wheel_path_no_dir(self):
@@ -187,7 +187,7 @@ klasse TestBootstrap(EnsurepipMixin, unittest.TestCase):
 
 @contextlib.contextmanager
 def fake_pip(version=ensurepip.version()):
-    wenn version is Nichts:
+    wenn version ist Nichts:
         pip = Nichts
     sonst:
         klasse FakePip():
@@ -199,8 +199,8 @@ def fake_pip(version=ensurepip.version()):
     versuch:
         liefere pip
     schliesslich:
-        wenn orig_pip is sentinel:
-            del sys.modules["pip"]
+        wenn orig_pip ist sentinel:
+            loesche sys.modules["pip"]
         sonst:
             sys.modules["pip"] = orig_pip
 

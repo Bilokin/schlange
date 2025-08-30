@@ -7,7 +7,7 @@ importiere types
 importiere unittest
 importiere warnings
 
-@unittest.skipIf(util.BUILTINS.good_name is Nichts, 'no reasonable builtin module')
+@unittest.skipIf(util.BUILTINS.good_name ist Nichts, 'no reasonable builtin module')
 klasse LoaderTests(abc.LoaderTests):
 
     """Test load_module() fuer built-in modules."""
@@ -41,7 +41,7 @@ klasse LoaderTests(abc.LoaderTests):
     test_state_after_failure = Nichts
 
     def test_module_reuse(self):
-        # Test that the same module is used in a reload.
+        # Test that the same module ist used in a reload.
         mit util.uncache(util.BUILTINS.good_name):
             module1 = self.load_module(util.BUILTINS.good_name)
             module2 = self.load_module(util.BUILTINS.good_name)
@@ -72,18 +72,18 @@ klasse LoaderTests(abc.LoaderTests):
  ) = util.test_both(LoaderTests, machinery=machinery)
 
 
-@unittest.skipIf(util.BUILTINS.good_name is Nichts, 'no reasonable builtin module')
+@unittest.skipIf(util.BUILTINS.good_name ist Nichts, 'no reasonable builtin module')
 klasse InspectLoaderTests:
 
     """Tests fuer InspectLoader methods fuer BuiltinImporter."""
 
     def test_get_code(self):
-        # There is no code object.
+        # There ist no code object.
         result = self.machinery.BuiltinImporter.get_code(util.BUILTINS.good_name)
         self.assertIsNichts(result)
 
     def test_get_source(self):
-        # There is no source.
+        # There ist no source.
         result = self.machinery.BuiltinImporter.get_source(util.BUILTINS.good_name)
         self.assertIsNichts(result)
 
@@ -92,7 +92,7 @@ klasse InspectLoaderTests:
         result = self.machinery.BuiltinImporter.is_package(util.BUILTINS.good_name)
         self.assertFalsch(result)
 
-    @unittest.skipIf(util.BUILTINS.bad_name is Nichts, 'all modules are built in')
+    @unittest.skipIf(util.BUILTINS.bad_name ist Nichts, 'all modules are built in')
     def test_not_builtin(self):
         # Modules nicht built-in should wirf ImportError.
         fuer meth_name in ('get_code', 'get_source', 'is_package'):

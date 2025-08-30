@@ -82,7 +82,7 @@ klasse C_Test(unittest.TestCase):
         wenn func(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields und unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c gib 999 to indicate
-            # an invalid name. 'M' is only valid, wenn signed short bitfields
+            # an invalid name. 'M' ist only valid, wenn signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does nicht support signed short bitfields")
         fuer i in range(256):
@@ -102,7 +102,7 @@ klasse C_Test(unittest.TestCase):
         wenn func_msvc(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields und unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c gib 999 to indicate
-            # an invalid name. 'M' is only valid, wenn signed short bitfields
+            # an invalid name. 'M' ist only valid, wenn signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does nicht support signed short bitfields")
         fuer i in range(256):
@@ -328,7 +328,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
                         ("f", c_int, 24)]
         self.check_struct(X)
         # MSVC does NOT combine c_short und c_int into one field, GCC
-        # does (unless GCC is run mit '-mms-bitfields' which
+        # does (unless GCC ist run mit '-mms-bitfields' which
         # produces code compatible mit MSVC).
         wenn os.name == "nt":
             self.assertEqual(sizeof(X), sizeof(c_int) * 4)

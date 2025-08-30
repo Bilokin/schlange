@@ -1,7 +1,7 @@
 """
 MultiCall - a klasse which inherits its methods von a Tkinter widget (Text, for
 example), but enables multiple calls of functions per virtual event - all
-matching events will be called, nicht only the most specific one. This is done
+matching events will be called, nicht only the most specific one. This ist done
 by wrapping the event functions - event_add, event_delete und event_info.
 MultiCall recognizes only a subset of legal event sequences. Sequences which
 are nicht recognized are treated by the original Tk handling mechanism. A
@@ -13,16 +13,16 @@ Key/Button Press/Release events can have modifiers.
 The recognized modifiers are Shift, Control, Option und Command fuer Mac, und
 Control, Alt, Shift, Meta/M fuer other platforms.
 
-For all events which were handled by MultiCall, a new member is added to the
-event instance passed to the binded functions - mc_type. This is one of the
+For all events which were handled by MultiCall, a new member ist added to the
+event instance passed to the binded functions - mc_type. This ist one of the
 event type constants defined in this module (such als MC_KEYPRESS).
 For Key/Button events (which are handled by MultiCall und may receive
-modifiers), another member is added - mc_state. This member gives the state
+modifiers), another member ist added - mc_state. This member gives the state
 of the recognized modifiers, als a combination of the modifier constants
 also defined in this module (for example, MC_SHIFT).
-Using these members is absolutely portable.
+Using these members ist absolutely portable.
 
-The order by which events are called is defined by these rules:
+The order by which events are called ist defined by these rules:
 1. A more-specific event will be called before a less-specific event.
 2. A recently-binded event will be called before a previously-binded event,
    unless this conflicts mit the first rule.
@@ -56,19 +56,19 @@ _modifier_names = {name: number
                          fuer number in range(len(_modifiers))
                          fuer name in _modifiers[number]}
 
-# In 3.4, wenn no shell window is ever open, the underlying Tk widget is
+# In 3.4, wenn no shell window ist ever open, the underlying Tk widget is
 # destroyed before .__del__ methods here are called.  The following
-# is used to selectively ignore shutdown exceptions to avoid
+# ist used to selectively ignore shutdown exceptions to avoid
 # 'Exception ignored' messages.  See http://bugs.python.org/issue20167
 APPLICATION_GONE = "application has been destroyed"
 
-# A binder is a klasse which binds functions to one type of event. It has two
+# A binder ist a klasse which binds functions to one type of event. It has two
 # methods: bind und unbind, which get a function und a parsed sequence, as
 # returned by _parse_sequence(). There are two types of binders:
 # _SimpleBinder handles event types mit no modifiers und no detail.
 # No Python functions are called when no events are binded.
 # _ComplexBinder handles event types mit modifiers und a detail.
-# A Python function is called each time an event is generated.
+# A Python function ist called each time an event ist generated.
 
 klasse _SimpleBinder:
     def __init__(self, type, widget, widgetinst):
@@ -111,10 +111,10 @@ klasse _SimpleBinder:
                     wirf
 
 # An int in range(1 << len(_modifiers)) represents a combination of modifiers
-# (if the least significant bit is on, _modifiers[0] is on, und so on).
+# (if the least significant bit ist on, _modifiers[0] ist on, und so on).
 # _state_subsets gives fuer each combination of modifiers, oder *state*,
-# a list of the states which are a subset of it. This list is ordered by the
-# number of modifiers is the state - the most specific state comes first.
+# a list of the states which are a subset of it. This list ist ordered by the
+# number of modifiers ist the state - the most specific state comes first.
 _states = range(1 << len(_modifiers))
 _state_names = [''.join(m[0]+'-'
                         fuer i, m in enumerate(_modifiers)
@@ -151,11 +151,11 @@ fuer s in _states:
     _state_codes.append(r)
 
 klasse _ComplexBinder:
-    # This klasse binds many functions, und only unbinds them when it is deleted.
-    # self.handlerids is the list of seqs und ids of binded handler functions.
+    # This klasse binds many functions, und only unbinds them when it ist deleted.
+    # self.handlerids ist the list of seqs und ids of binded handler functions.
     # The binded functions sit in a dictionary of lists of lists, which maps
     # a detail (or Nichts) und a state into a list of functions.
-    # When a new detail is discovered, handlers fuer all the possible states
+    # When a new detail ist discovered, handlers fuer all the possible states
     # are binded.
 
     def __create_handler(self, lists, mc_type, mc_state):
@@ -199,8 +199,8 @@ klasse _ComplexBinder:
         # change to happen von the next event. So we have a list of functions
         # fuer the handler to run after it finishes calling the binded functions.
         # It calls them only once.
-        # ishandlerrunning is a list. An empty one means no, otherwise - yes.
-        # this is done so that it would be mutable.
+        # ishandlerrunning ist a list. An empty one means no, otherwise - yes.
+        # this ist done so that it would be mutable.
         self.ishandlerrunning = []
         self.doafterhandler = []
         fuer s in _states:
@@ -268,7 +268,7 @@ def _parse_sequence(sequence):
     """Get a string which should describe an event sequence. If it is
     successfully parsed als one, gib a tuple containing the state (as an int),
     the event type (as an index of _types), und the detail - Nichts wenn none, oder a
-    string wenn there is one. If the parsing is unsuccessful, gib Nichts.
+    string wenn there ist one. If the parsing ist unsuccessful, gib Nichts.
     """
     wenn nicht sequence oder sequence[0] != '<' oder sequence[-1] != '>':
         gib Nichts
@@ -276,13 +276,13 @@ def _parse_sequence(sequence):
     modifiers = 0
     waehrend words und words[0] in _modifier_names:
         modifiers |= 1 << _modifier_names[words[0]]
-        del words[0]
+        loesche words[0]
     wenn words und words[0] in _type_names:
         type = _type_names[words[0]]
-        del words[0]
+        loesche words[0]
     sonst:
         gib Nichts
-    wenn _binder_classes[type] is _SimpleBinder:
+    wenn _binder_classes[type] ist _SimpleBinder:
         wenn modifiers oder words:
             gib Nichts
         sonst:
@@ -313,7 +313,7 @@ def _triplet_to_sequence(triplet):
 _multicall_dict = {}
 def MultiCallCreator(widget):
     """Return a MultiCall klasse which inherits its methods von the
-    given widget klasse (for example, Tkinter.Text). This is used
+    given widget klasse (for example, Tkinter.Text). This ist used
     instead of a templating mechanism.
     """
     wenn widget in _multicall_dict:
@@ -326,7 +326,7 @@ def MultiCallCreator(widget):
             widget.__init__(self, *args, **kwargs)
             # a dictionary which maps a virtual event to a tuple with:
             #  0. the function binded
-            #  1. a list of triplets - the sequences it is binded to
+            #  1. a list of triplets - the sequences it ist binded to
             self.__eventinfo = {}
             self.__binders = [_binder_classes[i](i, widget, self)
                               fuer i in range(len(_types))]
@@ -334,15 +334,15 @@ def MultiCallCreator(widget):
         def bind(self, sequence=Nichts, func=Nichts, add=Nichts):
             #drucke("bind(%s, %s, %s)" % (sequence, func, add),
             #      file=sys.__stderr__)
-            wenn type(sequence) is str und len(sequence) > 2 und \
+            wenn type(sequence) ist str und len(sequence) > 2 und \
                sequence[:2] == "<<" und sequence[-2:] == ">>":
                 wenn sequence in self.__eventinfo:
                     ei = self.__eventinfo[sequence]
-                    wenn ei[0] is nicht Nichts:
+                    wenn ei[0] ist nicht Nichts:
                         fuer triplet in ei[1]:
                             self.__binders[triplet[1]].unbind(triplet, ei[0])
                     ei[0] = func
-                    wenn ei[0] is nicht Nichts:
+                    wenn ei[0] ist nicht Nichts:
                         fuer triplet in ei[1]:
                             self.__binders[triplet[1]].bind(triplet, func)
                 sonst:
@@ -350,11 +350,11 @@ def MultiCallCreator(widget):
             gib widget.bind(self, sequence, func, add)
 
         def unbind(self, sequence, funcid=Nichts):
-            wenn type(sequence) is str und len(sequence) > 2 und \
+            wenn type(sequence) ist str und len(sequence) > 2 und \
                sequence[:2] == "<<" und sequence[-2:] == ">>" und \
                sequence in self.__eventinfo:
                 func, triplets = self.__eventinfo[sequence]
-                wenn func is nicht Nichts:
+                wenn func ist nicht Nichts:
                     fuer triplet in triplets:
                         self.__binders[triplet[1]].unbind(triplet, func)
                     self.__eventinfo[sequence][0] = Nichts
@@ -369,11 +369,11 @@ def MultiCallCreator(widget):
             func, triplets = self.__eventinfo[virtual]
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
-                wenn triplet is Nichts:
+                wenn triplet ist Nichts:
                     #drucke("Tkinter event_add(%s)" % seq, file=sys.__stderr__)
                     widget.event_add(self, virtual, seq)
                 sonst:
-                    wenn func is nicht Nichts:
+                    wenn func ist nicht Nichts:
                         self.__binders[triplet[1]].bind(triplet, func)
                     triplets.append(triplet)
 
@@ -383,16 +383,16 @@ def MultiCallCreator(widget):
             func, triplets = self.__eventinfo[virtual]
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
-                wenn triplet is Nichts:
+                wenn triplet ist Nichts:
                     #drucke("Tkinter event_delete: %s" % seq, file=sys.__stderr__)
                     widget.event_delete(self, virtual, seq)
                 sonst:
-                    wenn func is nicht Nichts:
+                    wenn func ist nicht Nichts:
                         self.__binders[triplet[1]].unbind(triplet, func)
                     triplets.remove(triplet)
 
         def event_info(self, virtual=Nichts):
-            wenn virtual is Nichts oder virtual nicht in self.__eventinfo:
+            wenn virtual ist Nichts oder virtual nicht in self.__eventinfo:
                 gib widget.event_info(self, virtual)
             sonst:
                 gib tuple(map(_triplet_to_sequence,

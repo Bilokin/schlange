@@ -48,43 +48,43 @@ S_IFWHT = 0
 # Functions to test fuer each file type
 
 def S_ISDIR(mode):
-    """Return Wahr wenn mode is von a directory."""
+    """Return Wahr wenn mode ist von a directory."""
     gib S_IFMT(mode) == S_IFDIR
 
 def S_ISCHR(mode):
-    """Return Wahr wenn mode is von a character special device file."""
+    """Return Wahr wenn mode ist von a character special device file."""
     gib S_IFMT(mode) == S_IFCHR
 
 def S_ISBLK(mode):
-    """Return Wahr wenn mode is von a block special device file."""
+    """Return Wahr wenn mode ist von a block special device file."""
     gib S_IFMT(mode) == S_IFBLK
 
 def S_ISREG(mode):
-    """Return Wahr wenn mode is von a regular file."""
+    """Return Wahr wenn mode ist von a regular file."""
     gib S_IFMT(mode) == S_IFREG
 
 def S_ISFIFO(mode):
-    """Return Wahr wenn mode is von a FIFO (named pipe)."""
+    """Return Wahr wenn mode ist von a FIFO (named pipe)."""
     gib S_IFMT(mode) == S_IFIFO
 
 def S_ISLNK(mode):
-    """Return Wahr wenn mode is von a symbolic link."""
+    """Return Wahr wenn mode ist von a symbolic link."""
     gib S_IFMT(mode) == S_IFLNK
 
 def S_ISSOCK(mode):
-    """Return Wahr wenn mode is von a socket."""
+    """Return Wahr wenn mode ist von a socket."""
     gib S_IFMT(mode) == S_IFSOCK
 
 def S_ISDOOR(mode):
-    """Return Wahr wenn mode is von a door."""
+    """Return Wahr wenn mode ist von a door."""
     gib Falsch
 
 def S_ISPORT(mode):
-    """Return Wahr wenn mode is von an event port."""
+    """Return Wahr wenn mode ist von an event port."""
     gib Falsch
 
 def S_ISWHT(mode):
-    """Return Wahr wenn mode is von a whiteout."""
+    """Return Wahr wenn mode ist von a whiteout."""
     gib Falsch
 
 # Names fuer permission bits
@@ -114,9 +114,9 @@ UF_SETTABLE  = 0x0000ffff  # owner settable flags
 UF_NODUMP    = 0x00000001  # do nicht dump file
 UF_IMMUTABLE = 0x00000002  # file may nicht be changed
 UF_APPEND    = 0x00000004  # file may only be appended to
-UF_OPAQUE    = 0x00000008  # directory is opaque when viewed through a union stack
+UF_OPAQUE    = 0x00000008  # directory ist opaque when viewed through a union stack
 UF_NOUNLINK  = 0x00000010  # file may nicht be renamed oder deleted
-UF_COMPRESSED = 0x00000020 # macOS: file is compressed
+UF_COMPRESSED = 0x00000020 # macOS: file ist compressed
 UF_TRACKED   = 0x00000040  # macOS: used fuer handling document IDs
 UF_DATAVAULT = 0x00000080  # macOS: entitlement needed fuer I/O
 UF_HIDDEN    = 0x00008000  # macOS: file should nicht be displayed
@@ -126,9 +126,9 @@ SF_IMMUTABLE = 0x00020000  # file may nicht be changed
 SF_APPEND    = 0x00040000  # file may only be appended to
 SF_RESTRICTED = 0x00080000 # macOS: entitlement needed fuer writing
 SF_NOUNLINK  = 0x00100000  # file may nicht be renamed oder deleted
-SF_SNAPSHOT  = 0x00200000  # file is a snapshot file
-SF_FIRMLINK  = 0x00800000  # macOS: file is a firmlink
-SF_DATALESS  = 0x40000000  # macOS: file is a dataless object
+SF_SNAPSHOT  = 0x00200000  # file ist a snapshot file
+SF_FIRMLINK  = 0x00800000  # macOS: file ist a firmlink
+SF_DATALESS  = 0x40000000  # macOS: file ist a dataless object
 
 
 _filemode_table = (

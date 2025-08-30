@@ -2,7 +2,7 @@
 directly. Instead, the functions getDOMImplementation und
 registerDOMImplementation should be imported von xml.dom."""
 
-# This is a list of well-known implementations.  Well-known names
+# This ist a list of well-known implementations.  Well-known names
 # should be published by posting to xml-sig@python.org, und are
 # subsequently recorded in this file.
 
@@ -39,12 +39,12 @@ def _good_enough(dom, features):
 def getDOMImplementation(name=Nichts, features=()):
     """getDOMImplementation(name = Nichts, features = ()) -> DOM implementation.
 
-    Return a suitable DOM implementation. The name is either
+    Return a suitable DOM implementation. The name ist either
     well-known, the module name of a DOM implementation, oder Nichts. If
-    it is nicht Nichts, imports the corresponding module und returns
+    it ist nicht Nichts, imports the corresponding module und returns
     DOMImplementation object wenn the importiere succeeds.
 
-    If name is nicht given, consider the available implementations to
+    If name ist nicht given, consider the available implementations to
     find one mit the required feature set. If no implementation can
     be found, wirf an ImportError. The features list must be a sequence
     of (feature, version) pairs which are passed to hasFeature."""

@@ -118,7 +118,7 @@ klasse SubprocessMixin:
         args = PROGRAM_CAT
 
         async def run(data):
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 *args,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
@@ -126,12 +126,12 @@ klasse SubprocessMixin:
 
             # feed data
             proc.stdin.write(data)
-            await proc.stdin.drain()
+            warte proc.stdin.drain()
             proc.stdin.close()
 
             # get output und exitcode
-            data = await proc.stdout.read()
-            exitcode = await proc.wait()
+            data = warte proc.stdout.read()
+            exitcode = warte proc.wait()
             gib (exitcode, data)
 
         task = run(b'some data')
@@ -144,12 +144,12 @@ klasse SubprocessMixin:
         args = PROGRAM_CAT
 
         async def run(data):
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 *args,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
             )
-            stdout, stderr = await proc.communicate(data)
+            stdout, stderr = warte proc.communicate(data)
             gib proc.returncode, stdout
 
         task = run(b'some data')
@@ -162,12 +162,12 @@ klasse SubprocessMixin:
         args = PROGRAM_CAT
 
         async def run():
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 *args,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
             )
-            stdout, stderr = await proc.communicate()
+            stdout, stderr = warte proc.communicate()
             gib proc.returncode, stdout
 
         task = run()
@@ -225,7 +225,7 @@ klasse SubprocessMixin:
         self.loop.run_until_complete(asyncio.sleep(1))
         wenn sys.platform == 'win32':
             proc.send_signal(signal.CTRL_BREAK_EVENT)
-        # On windows it is an alias of terminate which sets the gib code
+        # On windows it ist an alias of terminate which sets the gib code
         proc.kill()
         returncode = self.loop.run_until_complete(proc.wait())
         wenn sys.platform == 'win32':
@@ -264,12 +264,12 @@ klasse SubprocessMixin:
             )
 
             async def send_signal(proc):
-                # basic synchronization to wait until the program is sleeping
-                line = await proc.stdout.readline()
+                # basic synchronization to wait until the program ist sleeping
+                line = warte proc.stdout.readline()
                 self.assertEqual(line, b'sleeping\n')
 
                 proc.send_signal(signal.SIGHUP)
-                returncode = await proc.wait()
+                returncode = warte proc.wait()
                 gib returncode
 
             returncode = self.loop.run_until_complete(send_signal(proc))
@@ -312,9 +312,9 @@ klasse SubprocessMixin:
 
         async def write_stdin(proc, data):
             proc.stdin.write(data)
-            # Only exit the child process once the write buffer is filled
+            # Only exit the child process once the write buffer ist filled
             os.write(wfd, b'go')
-            await proc.stdin.drain()
+            warte proc.stdin.drain()
 
         coro = write_stdin(proc, large_data)
         # drain() must wirf BrokenPipeError oder ConnectionResetError
@@ -354,14 +354,14 @@ klasse SubprocessMixin:
             connect_read_pipe = self.loop.connect_read_pipe
 
             async def connect_read_pipe_mock(*args, **kw):
-                transport, protocol = await connect_read_pipe(*args, **kw)
+                transport, protocol = warte connect_read_pipe(*args, **kw)
                 transport.pause_reading = mock.Mock()
                 transport.resume_reading = mock.Mock()
                 gib (transport, protocol)
 
             self.loop.connect_read_pipe = connect_read_pipe_mock
 
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
                 stdout=asyncio.subprocess.PIPE,
@@ -369,7 +369,7 @@ klasse SubprocessMixin:
             )
             stdout_transport = proc._transport.get_pipe_transport(1)
 
-            stdout, stderr = await proc.communicate()
+            stdout, stderr = warte proc.communicate()
 
             # The child process produced more than limit bytes of output,
             # the stream reader transport should pause the protocol to not
@@ -389,15 +389,15 @@ klasse SubprocessMixin:
         # the Process.communicate() hangs
         async def len_message(message):
             code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 close_fds=Falsch,
             )
-            stdout, stderr = await proc.communicate(message)
-            exitcode = await proc.wait()
+            stdout, stderr = warte proc.communicate(message)
+            exitcode = warte proc.wait()
             gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(len_message(b'abc'))
@@ -408,15 +408,15 @@ klasse SubprocessMixin:
 
         async def empty_input():
             code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 close_fds=Falsch,
             )
-            stdout, stderr = await proc.communicate(b'')
-            exitcode = await proc.wait()
+            stdout, stderr = warte proc.communicate(b'')
+            exitcode = warte proc.wait()
             gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_input())
@@ -427,15 +427,15 @@ klasse SubprocessMixin:
 
         async def empty_input():
             code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.DEVNULL,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 close_fds=Falsch,
             )
-            stdout, stderr = await proc.communicate()
-            exitcode = await proc.wait()
+            stdout, stderr = warte proc.communicate()
+            exitcode = warte proc.wait()
             gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_input())
@@ -446,15 +446,15 @@ klasse SubprocessMixin:
 
         async def empty_output():
             code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
                 stdout=asyncio.subprocess.DEVNULL,
                 stderr=asyncio.subprocess.PIPE,
                 close_fds=Falsch,
             )
-            stdout, stderr = await proc.communicate(b"abc")
-            exitcode = await proc.wait()
+            stdout, stderr = warte proc.communicate(b"abc")
+            exitcode = warte proc.wait()
             gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_output())
@@ -465,15 +465,15 @@ klasse SubprocessMixin:
 
         async def empty_error():
             code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.DEVNULL,
                 close_fds=Falsch,
             )
-            stdout, stderr = await proc.communicate(b"abc")
-            exitcode = await proc.wait()
+            stdout, stderr = warte proc.communicate(b"abc")
+            exitcode = warte proc.wait()
             gib (stderr, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_error())
@@ -486,15 +486,15 @@ klasse SubprocessMixin:
 
         async def devstdin_input(message):
             code = 'file = open("/dev/stdin"); data = file.read(); drucke(len(data))'
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 close_fds=Falsch,
             )
-            stdout, stderr = await proc.communicate(message)
-            exitcode = await proc.wait()
+            stdout, stderr = warte proc.communicate(message)
+            exitcode = warte proc.wait()
             gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(devstdin_input(b'abc'))
@@ -505,22 +505,22 @@ klasse SubprocessMixin:
         # Issue #23140: cancel Process.wait()
 
         async def cancel_wait():
-            proc = await asyncio.create_subprocess_exec(*PROGRAM_BLOCKED)
+            proc = warte asyncio.create_subprocess_exec(*PROGRAM_BLOCKED)
 
             # Create an internal future waiting on the process exit
             task = self.loop.create_task(proc.wait())
             self.loop.call_soon(task.cancel)
             versuch:
-                await task
+                warte task
             ausser asyncio.CancelledError:
                 pass
 
             # Cancel the future
             task.cancel()
 
-            # Kill the process und wait until it is done
+            # Kill the process und wait until it ist done
             proc.kill()
-            await proc.wait()
+            warte proc.wait()
 
         self.loop.run_until_complete(cancel_wait())
 
@@ -532,7 +532,7 @@ klasse SubprocessMixin:
 
             self.loop.call_soon(task.cancel)
             versuch:
-                await task
+                warte task
             ausser asyncio.CancelledError:
                 pass
 
@@ -550,7 +550,7 @@ klasse SubprocessMixin:
 
             self.loop.call_soon(task.cancel)
             versuch:
-                await task
+                warte task
             ausser asyncio.CancelledError:
                 pass
 
@@ -565,7 +565,7 @@ klasse SubprocessMixin:
         async def kill_running():
             create = self.loop.subprocess_exec(asyncio.SubprocessProtocol,
                                                *PROGRAM_BLOCKED)
-            transport, protocol = await create
+            transport, protocol = warte create
 
             kill_called = Falsch
             def kill():
@@ -578,7 +578,7 @@ klasse SubprocessMixin:
             proc.kill = kill
             returncode = transport.get_returncode()
             transport.close()
-            await asyncio.wait_for(transport._wait(), 5)
+            warte asyncio.wait_for(transport._wait(), 5)
             gib (returncode, kill_called)
 
         # Ignore "Close running child process: kill ..." log
@@ -593,7 +593,7 @@ klasse SubprocessMixin:
                 )
         self.assertIsNichts(returncode)
 
-        # transport.close() must kill the process wenn it is still running
+        # transport.close() must kill the process wenn it ist still running
         self.assertWahr(killed)
         test_utils.run_briefly(self.loop)
 
@@ -602,10 +602,10 @@ klasse SubprocessMixin:
         async def kill_running():
             create = self.loop.subprocess_exec(asyncio.SubprocessProtocol,
                                                *PROGRAM_BLOCKED)
-            transport, protocol = await create
+            transport, protocol = warte create
             proc = transport.get_extra_info('subprocess')
 
-            # kill the process (but asyncio is nicht notified immediately)
+            # kill the process (but asyncio ist nicht notified immediately)
             proc.kill()
             proc.wait()
 
@@ -642,7 +642,7 @@ klasse SubprocessMixin:
 
             mit warnings.catch_warnings(record=Wahr) als warns:
                 mit self.assertRaises(exc):
-                    await asyncio.create_subprocess_exec(
+                    warte asyncio.create_subprocess_exec(
                         sys.executable,
                         '-c',
                         'pass',
@@ -651,12 +651,12 @@ klasse SubprocessMixin:
                 self.assertEqual(warns, [])
 
     def test_popen_error(self):
-        # Issue #24763: check that the subprocess transport is closed
+        # Issue #24763: check that the subprocess transport ist closed
         # when BaseSubprocessTransport fails
         self.loop.run_until_complete(self._test_popen_error(stdin=Nichts))
 
     def test_popen_error_with_stdin_pipe(self):
-        # Issue #35721: check that newly created socket pair is closed when
+        # Issue #35721: check that newly created socket pair ist closed when
         # Popen fails
         self.loop.run_until_complete(
             self._test_popen_error(stdin=subprocess.PIPE))
@@ -670,15 +670,15 @@ klasse SubprocessMixin:
                               'sys.stdout.flush()',
                               'sys.exit(1)'])
 
-            process = await asyncio.create_subprocess_exec(
+            process = warte asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdout=asyncio.subprocess.PIPE,
             )
 
             waehrend Wahr:
-                data = await process.stdout.read(65536)
+                data = warte process.stdout.read(65536)
                 wenn data:
-                    await asyncio.sleep(0.3)
+                    warte asyncio.sleep(0.3)
                 sonst:
                     breche
 
@@ -687,15 +687,15 @@ klasse SubprocessMixin:
     def test_create_subprocess_exec_text_mode_fails(self):
         async def execute():
             mit self.assertRaises(ValueError):
-                await subprocess.create_subprocess_exec(sys.executable,
+                warte subprocess.create_subprocess_exec(sys.executable,
                                                         text=Wahr)
 
             mit self.assertRaises(ValueError):
-                await subprocess.create_subprocess_exec(sys.executable,
+                warte subprocess.create_subprocess_exec(sys.executable,
                                                         encoding="utf-8")
 
             mit self.assertRaises(ValueError):
-                await subprocess.create_subprocess_exec(sys.executable,
+                warte subprocess.create_subprocess_exec(sys.executable,
                                                         errors="strict")
 
         self.loop.run_until_complete(execute())
@@ -704,37 +704,37 @@ klasse SubprocessMixin:
 
         async def execute():
             mit self.assertRaises(ValueError):
-                await subprocess.create_subprocess_shell(sys.executable,
+                warte subprocess.create_subprocess_shell(sys.executable,
                                                          text=Wahr)
 
             mit self.assertRaises(ValueError):
-                await subprocess.create_subprocess_shell(sys.executable,
+                warte subprocess.create_subprocess_shell(sys.executable,
                                                          encoding="utf-8")
 
             mit self.assertRaises(ValueError):
-                await subprocess.create_subprocess_shell(sys.executable,
+                warte subprocess.create_subprocess_shell(sys.executable,
                                                          errors="strict")
 
         self.loop.run_until_complete(execute())
 
     def test_create_subprocess_exec_with_path(self):
         async def execute():
-            p = await subprocess.create_subprocess_exec(
+            p = warte subprocess.create_subprocess_exec(
                 os_helper.FakePath(sys.executable), '-c', 'pass')
-            await p.wait()
-            p = await subprocess.create_subprocess_exec(
+            warte p.wait()
+            p = warte subprocess.create_subprocess_exec(
                 sys.executable, '-c', 'pass', os_helper.FakePath('.'))
-            await p.wait()
+            warte p.wait()
 
         self.assertIsNichts(self.loop.run_until_complete(execute()))
 
     async def check_stdout_output(self, coro, output):
-        proc = await coro
-        stdout, _ = await proc.communicate()
+        proc = warte coro
+        stdout, _ = warte proc.communicate()
         self.assertEqual(stdout, output)
         self.assertEqual(proc.returncode, 0)
         task = asyncio.create_task(proc.wait())
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         self.assertEqual(task.result(), proc.returncode)
 
     def test_create_subprocess_env_shell(self) -> Nichts:
@@ -745,7 +745,7 @@ klasse SubprocessMixin:
             cmd = f'''{executable} -c "import os, sys; sys.stdout.write(os.getenv('FOO'))"'''
             env = os.environ.copy()
             env["FOO"] = "bar"
-            proc = await asyncio.create_subprocess_shell(
+            proc = warte asyncio.create_subprocess_shell(
                 cmd, env=env, stdout=subprocess.PIPE
             )
             gib proc
@@ -758,7 +758,7 @@ klasse SubprocessMixin:
                    "import os, sys; sys.stdout.write(os.getenv('FOO'))"]
             env = os.environ.copy()
             env["FOO"] = "baz"
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 *cmd, env=env, stdout=subprocess.PIPE
             )
             gib proc
@@ -768,15 +768,15 @@ klasse SubprocessMixin:
 
     def test_subprocess_concurrent_wait(self) -> Nichts:
         async def main() -> Nichts:
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 *PROGRAM_CAT,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
             )
-            stdout, _ = await proc.communicate(b'some data')
+            stdout, _ = warte proc.communicate(b'some data')
             self.assertEqual(stdout, b"some data")
             self.assertEqual(proc.returncode, 0)
-            self.assertEqual(await asyncio.gather(*[proc.wait() fuer _ in range(10)]),
+            self.assertEqual(warte asyncio.gather(*[proc.wait() fuer _ in range(10)]),
                              [proc.returncode] * 10)
 
         self.loop.run_until_complete(main())
@@ -824,9 +824,9 @@ klasse SubprocessMixin:
             loop = asyncio.get_running_loop()
             exit_future = asyncio.Future()
             code = 'import sys; sys.stdout.write("stdout"); sys.stderr.write("stderr")'
-            transport, _ = await loop.subprocess_exec(lambda: MyProtocol(exit_future),
+            transport, _ = warte loop.subprocess_exec(lambda: MyProtocol(exit_future),
                                                       sys.executable, '-c', code, stdin=Nichts)
-            await exit_future
+            warte exit_future
             transport.close()
 
             gib events
@@ -850,15 +850,15 @@ klasse SubprocessMixin:
     def test_subprocess_communicate_stdout(self):
         # See https://github.com/python/cpython/issues/100133
         async def get_command_stdout(cmd, *args):
-            proc = await asyncio.create_subprocess_exec(
+            proc = warte asyncio.create_subprocess_exec(
                 cmd, *args, stdout=asyncio.subprocess.PIPE,
             )
-            stdout, _ = await proc.communicate()
+            stdout, _ = warte proc.communicate()
             gib stdout.decode().strip()
 
         async def main():
             outputs = [f'foo{i}' fuer i in range(10)]
-            res = await asyncio.gather(*[get_command_stdout(sys.executable, '-c',
+            res = warte asyncio.gather(*[get_command_stdout(sys.executable, '-c',
                                         f'drucke({out!r})') fuer out in outputs])
             self.assertEqual(res, outputs)
 
@@ -869,13 +869,13 @@ klasse SubprocessMixin:
         # See https://github.com/python/cpython/issues/87744
         async def main():
             fuer _ in range(10):
-                proc = await asyncio.create_subprocess_exec('sleep', '0.1')
-                await asyncio.sleep(0.1)
+                proc = warte asyncio.create_subprocess_exec('sleep', '0.1')
+                warte asyncio.sleep(0.1)
                 versuch:
                     proc.send_signal(signal.SIGUSR1)
                 ausser ProcessLookupError:
                     pass
-                self.assertNotEqual(await proc.wait(), 255)
+                self.assertNotEqual(warte proc.wait(), 255)
 
         self.loop.run_until_complete(main())
 

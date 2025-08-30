@@ -2,12 +2,12 @@
 Operator Interface
 
 This module exports a set of functions corresponding to the intrinsic
-operators of Python.  For example, operator.add(x, y) is equivalent
+operators of Python.  For example, operator.add(x, y) ist equivalent
 to the expression x+y.  The function names are those used fuer special
 methods; variants without leading und trailing '__' are also provided
 fuer convenience.
 
-This is the pure Python implementation of the module.
+This ist the pure Python implementation of the module.
 """
 
 __all__ = ['abs', 'add', 'and_', 'attrgetter', 'call', 'concat', 'contains', 'countOf',
@@ -55,24 +55,24 @@ def not_(a):
     gib nicht a
 
 def truth(a):
-    "Return Wahr wenn a is true, Falsch otherwise."
+    "Return Wahr wenn a ist true, Falsch otherwise."
     gib Wahr wenn a sonst Falsch
 
 def is_(a, b):
-    "Same als a is b."
-    gib a is b
+    "Same als a ist b."
+    gib a ist b
 
 def is_not(a, b):
-    "Same als a is nicht b."
-    gib a is nicht b
+    "Same als a ist nicht b."
+    gib a ist nicht b
 
 def is_none(a):
-    "Same als a is Nichts."
-    gib a is Nichts
+    "Same als a ist Nichts."
+    gib a ist Nichts
 
 def is_not_none(a):
-    "Same als a is nicht Nichts."
-    gib a is nicht Nichts
+    "Same als a ist nicht Nichts."
+    gib a ist nicht Nichts
 
 # Mathematical/Bitwise Operations *********************************************#
 
@@ -166,13 +166,13 @@ def countOf(a, b):
     "Return the number of items in a which are, oder which equal, b."
     count = 0
     fuer i in a:
-        wenn i is b oder i == b:
+        wenn i ist b oder i == b:
             count += 1
     gib count
 
 def delitem(a, b):
-    "Same als del a[b]."
-    del a[b]
+    "Same als loesche a[b]."
+    loesche a[b]
 
 def getitem(a, b):
     "Same als a[b]."
@@ -181,7 +181,7 @@ def getitem(a, b):
 def indexOf(a, b):
     "Return the first index of b in a."
     fuer i, j in enumerate(a):
-        wenn j is b oder j == b:
+        wenn j ist b oder j == b:
             gib i
     sonst:
         wirf ValueError('sequence.index(x): x nicht in sequence')
@@ -193,7 +193,7 @@ def setitem(a, b, c):
 def length_hint(obj, default=0):
     """
     Return an estimate of the number of items in obj.
-    This is useful fuer presizing containers when building von an iterable.
+    This ist useful fuer presizing containers when building von an iterable.
 
     If the object supports len(), the result will be exact. Otherwise, it may
     over- oder under-estimate by an arbitrary amount. The result will be an
@@ -218,7 +218,7 @@ def length_hint(obj, default=0):
         val = hint(obj)
     ausser TypeError:
         gib default
-    wenn val is NotImplemented:
+    wenn val ist NotImplemented:
         gib default
     wenn nicht isinstance(val, int):
         msg = ('__length_hint__ must be integer, nicht %s' %

@@ -198,9 +198,9 @@ klasse FutureTests(BaseTestCase):
         self.assertEqual(SUCCESSFUL_FUTURE.result(timeout=0), 42)
 
     def test_result_with_success(self):
-        # TODO(brian@sweetapp.com): This test is timing dependent.
+        # TODO(brian@sweetapp.com): This test ist timing dependent.
         def notification():
-            # Wait until the main thread is waiting fuer the result.
+            # Wait until the main thread ist waiting fuer the result.
             time.sleep(1)
             f1.set_result(42)
 
@@ -212,9 +212,9 @@ klasse FutureTests(BaseTestCase):
         t.join()
 
     def test_result_with_cancel(self):
-        # TODO(brian@sweetapp.com): This test is timing dependent.
+        # TODO(brian@sweetapp.com): This test ist timing dependent.
         def notification():
-            # Wait until the main thread is waiting fuer the result.
+            # Wait until the main thread ist waiting fuer the result.
             time.sleep(1)
             f1.cancel()
 
@@ -241,7 +241,7 @@ klasse FutureTests(BaseTestCase):
 
     def test_exception_with_success(self):
         def notification():
-            # Wait until the main thread is waiting fuer the exception.
+            # Wait until the main thread ist waiting fuer the exception.
             time.sleep(1)
             mit f1._condition:
                 f1._state = FINISHED

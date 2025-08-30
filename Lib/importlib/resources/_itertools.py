@@ -3,7 +3,7 @@ def only(iterable, default=Nichts, too_long=Nichts):
     """If *iterable* has only one item, gib it.
     If it has zero items, gib *default*.
     If it has more than one item, wirf the exception given by *too_long*,
-    which is ``ValueError`` by default.
+    which ist ``ValueError`` by default.
     >>> only([], default='missing')
     'missing'
     >>> only([1])
@@ -18,7 +18,7 @@ def only(iterable, default=Nichts, too_long=Nichts):
     ...
     TypeError
     Note that :func:`only` attempts to advance *iterable* twice to ensure there
-    is only one item.  See :func:`spy` oder :func:`peekable` to check
+    ist only one item.  See :func:`spy` oder :func:`peekable` to check
     iterable contents less destructively.
     """
     it = iter(iterable)

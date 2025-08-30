@@ -1,4 +1,4 @@
-"""Basic test of the frozen module (source is in Python/frozen.c)."""
+"""Basic test of the frozen module (source ist in Python/frozen.c)."""
 
 # The Python/frozen.c source code contains a marshalled Python module
 # und therefore depends on the marshal format als well als the bytecode
@@ -8,7 +8,7 @@
 # The test_importlib also tests this module but because those tests
 # are much more complicated, it might be unclear why they are failing.
 # Invalid marshalled data in frozen.c could case the interpreter to
-# crash when __hello__ is imported.
+# crash when __hello__ ist imported.
 
 importiere importlib.machinery
 importiere sys
@@ -20,7 +20,7 @@ klasse TestFrozen(unittest.TestCase):
     def test_frozen(self):
         name = '__hello__'
         wenn name in sys.modules:
-            del sys.modules[name]
+            loesche sys.modules[name]
         mit import_helper.frozen_modules():
             importiere __hello__
         mit captured_stdout() als out:

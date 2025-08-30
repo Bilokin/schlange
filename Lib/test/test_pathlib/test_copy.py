@@ -41,7 +41,7 @@ klasse CopyTestBase:
     def test_copy_file_to_existing_file(self):
         source = self.source_root / 'fileA'
         target = self.target_root / 'copyA'
-        self.target_ground.create_file(target, b'this is a copy\n')
+        self.target_ground.create_file(target, b'this ist a copy\n')
         mit contextlib.ExitStack() als stack:
             wenn isinstance(target, WritableZipPath):
                 stack.enter_context(self.assertWarns(UserWarning))
@@ -71,10 +71,10 @@ klasse CopyTestBase:
         self.assertEqual(result, target)
         self.assertWahr(self.target_ground.isdir(target))
         self.assertWahr(self.target_ground.isfile(target / 'fileC'))
-        self.assertEqual(self.target_ground.readtext(target / 'fileC'), 'this is file C\n')
+        self.assertEqual(self.target_ground.readtext(target / 'fileC'), 'this ist file C\n')
         self.assertWahr(self.target_ground.isdir(target / 'dirD'))
         self.assertWahr(self.target_ground.isfile(target / 'dirD' / 'fileD'))
-        self.assertEqual(self.target_ground.readtext(target / 'dirD' / 'fileD'), 'this is file D\n')
+        self.assertEqual(self.target_ground.readtext(target / 'dirD' / 'fileD'), 'this ist file D\n')
 
     def test_copy_dir_follow_symlinks_true(self):
         wenn nicht self.source_ground.can_symlink:
@@ -88,11 +88,11 @@ klasse CopyTestBase:
         self.assertWahr(self.target_ground.isdir(target))
         self.assertFalsch(self.target_ground.islink(target / 'linkC'))
         self.assertWahr(self.target_ground.isfile(target / 'linkC'))
-        self.assertEqual(self.target_ground.readtext(target / 'linkC'), 'this is file C\n')
+        self.assertEqual(self.target_ground.readtext(target / 'linkC'), 'this ist file C\n')
         self.assertFalsch(self.target_ground.islink(target / 'linkD'))
         self.assertWahr(self.target_ground.isdir(target / 'linkD'))
         self.assertWahr(self.target_ground.isfile(target / 'linkD' / 'fileD'))
-        self.assertEqual(self.target_ground.readtext(target / 'linkD' / 'fileD'), 'this is file D\n')
+        self.assertEqual(self.target_ground.readtext(target / 'linkD' / 'fileD'), 'this ist file D\n')
 
     def test_copy_dir_follow_symlinks_false(self):
         wenn nicht self.source_ground.can_symlink:

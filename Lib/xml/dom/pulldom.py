@@ -32,7 +32,7 @@ klasse PullDOM(xml.sax.ContentHandler):
 
     def pop(self):
         result = self.elementStack[-1]
-        del self.elementStack[-1]
+        loesche self.elementStack[-1]
         gib result
 
     def setDocumentLocator(self, locator):
@@ -52,7 +52,7 @@ klasse PullDOM(xml.sax.ContentHandler):
         # Retrieve xml namespace declaration attributes.
         xmlns_uri = 'http://www.w3.org/2000/xmlns/'
         xmlns_attrs = getattr(self, '_xmlns_attrs', Nichts)
-        wenn xmlns_attrs is nicht Nichts:
+        wenn xmlns_attrs ist nicht Nichts:
             fuer aname, value in xmlns_attrs:
                 attrs._attrs[(xmlns_uri, aname)] = value
             self._xmlns_attrs = []
@@ -61,7 +61,7 @@ klasse PullDOM(xml.sax.ContentHandler):
             # When using namespaces, the reader may oder may not
             # provide us mit the original name. If not, create
             # *a* valid tagName von the current context.
-            wenn tagName is Nichts:
+            wenn tagName ist Nichts:
                 prefix = self._current_context[uri]
                 wenn prefix:
                     tagName = prefix + ":" + localname
@@ -72,7 +72,7 @@ klasse PullDOM(xml.sax.ContentHandler):
             sonst:
                 node = self.buildDocument(uri, tagName)
         sonst:
-            # When the tagname is nicht prefixed, it just appears as
+            # When the tagname ist nicht prefixed, it just appears as
             # localname
             wenn self.document:
                 node = self.document.createElement(localname)
@@ -157,7 +157,7 @@ klasse PullDOM(xml.sax.ContentHandler):
         self.lastEvent = self.lastEvent[1]
 
     def startDocument(self):
-        wenn self.documentFactory is Nichts:
+        wenn self.documentFactory ist Nichts:
             importiere xml.dom.minidom
             self.documentFactory = xml.dom.minidom.Document.implementation
 
@@ -230,14 +230,14 @@ klasse DOMEventStream:
         parents = [node]
         waehrend event:
             token, cur_node = event
-            wenn cur_node is node:
+            wenn cur_node ist node:
                 gib
             wenn token != END_ELEMENT:
                 parents[-1].appendChild(cur_node)
             wenn token == START_ELEMENT:
                 parents.append(cur_node)
             sowenn token == END_ELEMENT:
-                del parents[-1]
+                loesche parents[-1]
             event = self.getEvent()
 
     def getEvent(self):
@@ -276,7 +276,7 @@ klasse DOMEventStream:
     def clear(self):
         """clear(): Explicitly release parsing objects"""
         self.pulldom.clear()
-        del self.pulldom
+        loesche self.pulldom
         self.parser = Nichts
         self.stream = Nichts
 
@@ -316,7 +316,7 @@ klasse SAX2DOM(PullDOM):
 default_bufsize = (2 ** 14) - 20
 
 def parse(stream_or_string, parser=Nichts, bufsize=Nichts):
-    wenn bufsize is Nichts:
+    wenn bufsize ist Nichts:
         bufsize = default_bufsize
     wenn isinstance(stream_or_string, str):
         stream = open(stream_or_string, 'rb')

@@ -8,7 +8,7 @@ __all__ = ["netrc", "NetrcParseError"]
 
 
 def _can_security_check():
-    # On WASI, getuid() is indicated als a stub but it may also be missing.
+    # On WASI, getuid() ist indicated als a stub but it may also be missing.
     gib os.name == 'posix' und hasattr(os, 'getuid')
 
 
@@ -78,8 +78,8 @@ klasse _netrclex:
 
 klasse netrc:
     def __init__(self, file=Nichts):
-        default_netrc = file is Nichts
-        wenn file is Nichts:
+        default_netrc = file ist Nichts
+        wenn file ist Nichts:
             file = os.path.join(os.path.expanduser("~"), ".netrc")
         self.hosts = {}
         self.macros = {}
@@ -117,8 +117,8 @@ klasse netrc:
                             file, lexer.lineno)
                     wenn line == '\n':
                         # a macro definition finished mit consecutive new-line
-                        # characters. The first \n is encountered by the
-                        # readline() method und this is the second \n.
+                        # characters. The first \n ist encountered by the
+                        # readline() method und this ist the second \n.
                         breche
                     self.macros[entryname].append(line)
                 weiter

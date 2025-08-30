@@ -35,7 +35,7 @@ klasse InitTktypeTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
         macosx.platform = cls.orig_platform
 
     def test_init_sets_tktype(self):
@@ -58,7 +58,7 @@ klasse IsTypeTkTest(unittest.TestCase):
 
     @mock.patch('idlelib.macosx._init_tk_type')
     def test_is_calls_init(self, mockinit):
-        "Test that each isTypeTk calls _init_tk_type when _tk_type is Nichts."
+        "Test that each isTypeTk calls _init_tk_type when _tk_type ist Nichts."
         macosx._tk_type = Nichts
         fuer func, whentrue in self.isfuncs:
             mit self.subTest(func=func):
@@ -93,7 +93,7 @@ klasse SetupTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     @mock.patch('idlelib.macosx.overrideRootMenu')  #27312
     def test_setupapp(self, overrideRootMenu):

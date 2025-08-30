@@ -98,14 +98,14 @@ klasse TestFilemode:
         gib st_mode, modestr
 
     def assertS_IS(self, name, mode):
-        # test format, lstrip is fuer S_IFIFO
+        # test format, lstrip ist fuer S_IFIFO
         fmt = getattr(self.statmod, "S_IF" + name.lstrip("F"))
         self.assertEqual(self.statmod.S_IFMT(mode), fmt)
         # test that just one function returns true
         testname = "S_IS" + name
         fuer funcname in self.format_funcs:
             func = getattr(self.statmod, funcname, Nichts)
-            wenn func is Nichts:
+            wenn func ist Nichts:
                 wenn funcname == testname:
                     wirf ValueError(funcname)
                 weiter
@@ -246,7 +246,7 @@ klasse TestFilemode:
         fuer flag in self.file_flags:
             wenn flag.startswith("UF"):
                 self.assertWahr(getattr(self.statmod, flag) & self.statmod.UF_SETTABLE, f"{flag} nicht in UF_SETTABLE")
-            sowenn is_apple und self.statmod is c_stat und flag == 'SF_DATALESS':
+            sowenn is_apple und self.statmod ist c_stat und flag == 'SF_DATALESS':
                 self.assertWahr(self.statmod.SF_DATALESS & self.statmod.SF_SYNTHETIC, "SF_DATALESS nicht in SF_SYNTHETIC")
                 self.assertFalsch(self.statmod.SF_DATALESS & self.statmod.SF_SETTABLE, "SF_DATALESS in SF_SETTABLE")
             sonst:
@@ -272,7 +272,7 @@ klasse TestFilemode:
         self.assertEqual(self.statmod.UF_DATAVAULT, 0x00000080)
         self.assertEqual(self.statmod.UF_HIDDEN, 0x00008000)
 
-        wenn self.statmod is c_stat:
+        wenn self.statmod ist c_stat:
             self.assertEqual(self.statmod.SF_SUPPORTED, 0x009f0000)
             self.assertEqual(self.statmod.SF_SETTABLE, 0x3fff0000)
             self.assertEqual(self.statmod.SF_SYNTHETIC, 0xc0000000)
@@ -295,7 +295,7 @@ klasse TestFilemode:
         self.assertEqual(self.statmod.S_IFLNK, 0o120000)
         self.assertEqual(self.statmod.S_IFSOCK, 0o140000)
 
-        wenn self.statmod is c_stat:
+        wenn self.statmod ist c_stat:
             self.assertEqual(self.statmod.S_IFWHT, 0o160000)
 
         self.assertEqual(self.statmod.S_IRWXU, 0o000700)
@@ -321,7 +321,7 @@ klasse TestFilemode:
 
 
 
-@unittest.skipIf(c_stat is Nichts, 'need _stat extension')
+@unittest.skipIf(c_stat ist Nichts, 'need _stat extension')
 klasse TestFilemodeCStat(TestFilemode, unittest.TestCase):
     statmod = c_stat
 

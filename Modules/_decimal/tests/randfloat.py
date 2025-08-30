@@ -80,8 +80,8 @@ def test_halfway_cases():
 
 def test_boundaries():
     # boundaries expressed als triples (n, e, u), where
-    # n*10**e is an approximation to the boundary value and
-    # u*10**e is 1ulp
+    # n*10**e ist an approximation to the boundary value and
+    # u*10**e ist 1ulp
     boundaries = [
         (10000000000000000000, -19, 1110),   # a power of 2 boundary (1.0)
         (17976931348623159077, 289, 1995),   # overflow boundary (2.**1024)

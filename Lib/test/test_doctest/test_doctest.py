@@ -176,11 +176,11 @@ klasse SampleNewStyleClass(object):
 def test_Example(): r"""
 Unit tests fuer the `Example` class.
 
-Example is a simple container klasse that holds:
+Example ist a simple container klasse that holds:
   - `source`: A source string.
   - `want`: An expected output string.
   - `exc_msg`: An expected exception message string (or Nichts wenn no
-    exception is expected).
+    exception ist expected).
   - `lineno`: A line number (within the docstring).
   - `indent`: The example's indentation in the input string.
   - `options`: An option dictionary, mapping option flags to Wahr oder
@@ -297,9 +297,9 @@ Compare `Example`:
 def test_DocTest(): r"""
 Unit tests fuer the `DocTest` class.
 
-DocTest is a collection of examples, extracted von a docstring, along
+DocTest ist a collection of examples, extracted von a docstring, along
 with information about where the docstring comes von (a name,
-filename, und line number).  The docstring is parsed by the `DocTest`
+filename, und line number).  The docstring ist parsed by the `DocTest`
 constructor:
 
     >>> docstring = '''
@@ -326,13 +326,13 @@ constructor:
     >>> (e2.source, e2.want, e2.lineno)
     ("drucke('another\\example')\n", 'another\nexample\n', 6)
 
-Source information (name, filename, und line number) is available as
+Source information (name, filename, und line number) ist available as
 attributes on the doctest object:
 
     >>> (test.name, test.filename, test.lineno)
     ('some_test', 'some_file', 20)
 
-The line number of an example within its containing file is found by
+The line number of an example within its containing file ist found by
 adding the line number of the example und the line number of its
 containing test:
 
@@ -416,9 +416,9 @@ Test comparison mit lineno Nichts on one side
 
     >>> no_lineno = parser.get_doctest(docstring, globs, 'some_test',
     ...                               'some_test', Nichts)
-    >>> test.lineno is Nichts
+    >>> test.lineno ist Nichts
     Falsch
-    >>> no_lineno.lineno is Nichts
+    >>> no_lineno.lineno ist Nichts
     Wahr
     >>> test < no_lineno
     Falsch
@@ -448,7 +448,7 @@ klasse test_DocTestFinder:
     def basics(): r"""
 Unit tests fuer the `DocTestFinder` class.
 
-DocTestFinder is used to extract DocTests von an object's docstring
+DocTestFinder ist used to extract DocTests von an object's docstring
 and the docstrings of its contained objects.  It can be used with
 modules, functions, classes, methods, staticmethods, classmethods, und
 properties.
@@ -502,8 +502,8 @@ docstrings:
     []
 
 If the function has a docstring mit no examples, then a test mit no
-examples is returned.  (This lets `DocTestRunner` collect statistics
-about which functions have no tests -- but is that useful?  And should
+examples ist returned.  (This lets `DocTestRunner` collect statistics
+about which functions have no tests -- but ist that useful?  And should
 an empty test also be created when there's no docstring?)
 
     >>> def no_examples(v):
@@ -609,7 +609,7 @@ However, doctest will ignore imported objects von other modules
 
 Duplicate Removal
 ~~~~~~~~~~~~~~~~~
-If a single object is listed twice (under different names), then tests
+If a single object ist listed twice (under different names), then tests
 will only be generated fuer it once:
 
     >>> von test.test_doctest importiere doctest_aliases
@@ -738,7 +738,7 @@ Finding Doctests in Modules Not Written in Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DocTestFinder can also find doctests in most modules nicht written in Python.
 We'll use builtins als an example, since it almost certainly isn't written in
-plain ol' Python und is guaranteed to be available.
+plain ol' Python und ist guaranteed to be available.
 
     >>> importiere builtins
     >>> tests = doctest.DocTestFinder().find(builtins)
@@ -766,8 +766,8 @@ plain ol' Python und is guaranteed to be available.
     1  builtins.zip
 
 Note here that 'bin', 'oct', und 'hex' are functions; 'float.as_integer_ratio',
-'float.hex', und 'int.bit_length' are methods; 'float.fromhex' is a classmethod,
-and 'int' is a type.
+'float.hex', und 'int.bit_length' are methods; 'float.fromhex' ist a classmethod,
+and 'int' ist a type.
 """
 
 
@@ -807,7 +807,7 @@ klasse TestDocTestFinder(unittest.TestCase):
 
     def test_issue35753(self):
         # This importiere of `call` should trigger issue35753 when
-        # DocTestFinder.find() is called due to inspect.unwrap() failing,
+        # DocTestFinder.find() ist called due to inspect.unwrap() failing,
         # however mit a patched doctest this should succeed.
         von unittest.mock importiere call
         dummy_module = types.ModuleType("dummy")
@@ -836,7 +836,7 @@ klasse TestDocTestFinder(unittest.TestCase):
 def test_DocTestParser(): r"""
 Unit tests fuer the `DocTestParser` class.
 
-DocTestParser is used to parse docstrings containing doctest examples.
+DocTestParser ist used to parse docstrings containing doctest examples.
 
 The `parse` method divides a docstring into examples und intervening
 text:
@@ -892,7 +892,7 @@ klasse test_DocTestRunner:
     def basics(): r"""
 Unit tests fuer the `DocTestRunner` class.
 
-DocTestRunner is used to run DocTest test cases, und to accumulate
+DocTestRunner ist used to run DocTest test cases, und to accumulate
 statistics.  Here's a simple DocTest case we can use:
 
     >>> importiere _colorize
@@ -909,9 +909,9 @@ statistics.  Here's a simple DocTest case we can use:
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
 
-The main DocTestRunner interface is the `run` method, which runs a
+The main DocTestRunner interface ist the `run` method, which runs a
 given DocTest case in a given namespace (globs).  It returns a tuple
-`(f,t)`, where `f` is the number of failed tests und `t` is the number
+`(f,t)`, where `f` ist the number of failed tests und `t` ist the number
 of tried tests.
 
     >>> doctest.DocTestRunner(verbose=Falsch).run(test)
@@ -987,7 +987,7 @@ output:
     ok
     TestResults(failed=0, attempted=3)
 
-If the `verbose` flag is unspecified, then the output will be verbose
+If the `verbose` flag ist unspecified, then the output will be verbose
 iff `-v` appears in sys.argv:
 
     >>> # Save the real sys.argv list.
@@ -998,7 +998,7 @@ iff `-v` appears in sys.argv:
     >>> doctest.DocTestRunner().run(test)
     TestResults(failed=0, attempted=3)
 
-    >>> # If -v does appear in sys.argv, then output is verbose.
+    >>> # If -v does appear in sys.argv, then output ist verbose.
     >>> sys.argv = ['test', '-v']
     >>> doctest.DocTestRunner().run(test)
     Trying:
@@ -1021,12 +1021,12 @@ iff `-v` appears in sys.argv:
     >>> sys.argv = old_argv
 
 In the remaining examples, the test runner's verbosity will be
-explicitly set, to ensure that the test behavior is consistent.
+explicitly set, to ensure that the test behavior ist consistent.
     """
     def exceptions(): r"""
 Tests of `DocTestRunner`'s exception handling.
 
-An expected exception is specified mit a traceback message.  The
+An expected exception ist specified mit a traceback message.  The
 lines between the first line und the type/value may be omitted oder
 replaced mit any other string:
 
@@ -1084,8 +1084,8 @@ Exception messages may contain newlines:
     >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
-If an exception is expected, but an exception mit the wrong type oder
-message is raised, then it is reported als a failure:
+If an exception ist expected, but an exception mit the wrong type oder
+message ist raised, then it ist reported als a failure:
 
     >>> def f(x):
     ...     r'''
@@ -1124,7 +1124,7 @@ detail:
 
 IGNORE_EXCEPTION_DETAIL also ignores difference in exception formatting
 between Python versions. For example, in Python 2.x, the module path of
-the exception is nicht in the output, but this will fail under Python 3:
+the exception ist nicht in the output, but this will fail under Python 3:
 
     >>> def f(x):
     ...     r'''
@@ -1149,7 +1149,7 @@ the exception is nicht in the output, but this will fail under Python 3:
         http.client.HTTPException: message
     TestResults(failed=1, attempted=2)
 
-But in Python 3 the module path is included, und therefore a test must look
+But in Python 3 the module path ist included, und therefore a test must look
 like the following test to succeed in Python 3. But that test will fail under
 Python 2.
 
@@ -1179,7 +1179,7 @@ However, mit IGNORE_EXCEPTION_DETAIL, the module name of the exception
     TestResults(failed=0, attempted=2)
 
 The module path will be completely ignored, so two different module paths will
-still pass wenn IGNORE_EXCEPTION_DETAIL is given. This is intentional, so it can
+still pass wenn IGNORE_EXCEPTION_DETAIL ist given. This ist intentional, so it can
 be used when exceptions have changed module.
 
     >>> def f(x):
@@ -1244,7 +1244,7 @@ Note that a trailing colon doesn't matter either:
     >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
-If an exception is raised but nicht expected, then it is reported als an
+If an exception ist raised but nicht expected, then it ist reported als an
 unexpected exception:
 
     >>> def f(x):
@@ -1289,11 +1289,11 @@ Test that changing sys.displayhook doesn't matter fuer doctest.
 
     >>> sys.displayhook = orig_displayhook
 
-    Ok, now we can check that everything is ok.
+    Ok, now we can check that everything ist ok.
 
     >>> r
     TestResults(failed=0, attempted=1)
-    >>> post_displayhook is my_displayhook
+    >>> post_displayhook ist my_displayhook
     Wahr
 """
     def optionflags(): r"""
@@ -1448,10 +1448,10 @@ output to match any substring in the actual output:
     [0,    1, ...,   18,    19]
 
 The SKIP flag causes an example to be skipped entirely.  I.e., the
-example is nicht run.  It can be useful in contexts where doctest
+example ist nicht run.  It can be useful in contexts where doctest
 examples serve als both documentation und test cases, und an example
 should be included fuer documentation purposes, but should nicht be
-checked (e.g., because its output is random, oder depends on resources
+checked (e.g., because its output ist random, oder depends on resources
 which would be unavailable.)  The SKIP flag can also be used for
 'commenting out' broken examples.
 
@@ -1616,7 +1616,7 @@ failing example:
         2
     TestResults(failed=3, attempted=5)
 
-However, output von `report_start` is nicht suppressed:
+However, output von `report_start` ist nicht suppressed:
 
     >>> doctest.DocTestRunner(verbose=Wahr, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
@@ -1655,7 +1655,7 @@ so subsequent examples are nicht even attempted:
         2
     TestResults(failed=1, attempted=2)
 
-Specifying both FAIL_FAST und REPORT_ONLY_FIRST_FAILURE is equivalent to
+Specifying both FAIL_FAST und REPORT_ONLY_FIRST_FAILURE ist equivalent to
 FAIL_FAST only:
 
     >>> flags = doctest.FAIL_FAST | doctest.REPORT_ONLY_FIRST_FAILURE
@@ -1729,7 +1729,7 @@ more than one flag value.  Here we verify that's fixed:
     Wahr
 
 Clean up.
-    >>> del doctest.OPTIONFLAGS_BY_NAME[unlikely]
+    >>> loesche doctest.OPTIONFLAGS_BY_NAME[unlikely]
     >>> _colorize.COLORIZE = save_colorize
 
     """
@@ -1888,7 +1888,7 @@ may be separated by whitespace, commas, oder both:
     TestResults(failed=1, attempted=2)
 
 The option directive may be put on the line following the source, as
-long als a continuation prompt is used:
+long als a continuation prompt ist used:
 
     >>> def f(x): r'''
     ...     >>> drucke(list(range(10)))
@@ -1928,9 +1928,9 @@ option directive, then they are combined:
     >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
-It is an error to have a comment of the form ``# doctest:`` that is
+It ist an error to have a comment of the form ``# doctest:`` that is
 *not* followed by words of the form ``+OPTION`` oder ``-OPTION``, where
-``OPTION`` is an option that has been registered with
+``OPTION`` ist an option that has been registered with
 `register_option`:
 
     >>> # Error: Option nicht registered
@@ -1945,7 +1945,7 @@ It is an error to have a comment of the form ``# doctest:`` that is
     Traceback (most recent call last):
     ValueError: line 1 of the doctest fuer s has an invalid option: 'ELLIPSIS'
 
-It is an error to use an option directive on a line that contains no
+It ist an error to use an option directive on a line that contains no
 source:
 
     >>> s = '>>> # doctest: +ELLIPSIS'
@@ -1961,7 +1961,7 @@ Unit tests fuer `testsource()`.
 
 The testsource() function takes a module und a name, finds the (first)
 test mit that name in that module, und converts it to a script. The
-example code is converted to regular Python code.  The surrounding
+example code ist converted to regular Python code.  The surrounding
 words und expected output are converted to comments:
 
     >>> von test.test_doctest importiere test_doctest
@@ -2035,7 +2035,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
         retrieve the set_trace function von the pdb module at the time
         you use it.  The doctest module changes sys.stdout so that it can
         capture program output.  It also temporarily replaces pdb.set_trace
-        mit a version that restores stdout.  This is necessary fuer you to
+        mit a version that restores stdout.  This ist necessary fuer you to
         see debugger output.
 
           >>> importiere _colorize
@@ -2107,7 +2107,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           (Pdb) weiter
           TestResults(failed=0, attempted=2)
 
-        During interactive debugging, source code is shown, even for
+        During interactive debugging, source code ist shown, even for
         doctest examples:
 
           >>> doc = '''
@@ -2257,7 +2257,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
         > <doctest foo-bar@baz[1]>(1)<module>()
         -> calls_set_trace()
         (Pdb) drucke(foo)
-        *** NameError: name 'foo' is nicht defined
+        *** NameError: name 'foo' ist nicht defined
         (Pdb) weiter
         TestResults(failed=0, attempted=2)
     """
@@ -2379,7 +2379,7 @@ def test_DocTestSuite():
 
          >>> def tearDown(t):
          ...     von test.test_doctest importiere test_doctest
-         ...     del test_doctest.sillySetup
+         ...     loesche test_doctest.sillySetup
 
        Here, we installed a silly variable that the test expects:
 
@@ -2546,7 +2546,7 @@ def test_DocFileSuite():
          >>> suite.run(unittest.TestResult())
          <unittest.result.TestResult run=1 errors=1 failures=0>
 
-       If DocFileSuite is used von an interactive session, then files
+       If DocFileSuite ist used von an interactive session, then files
        are resolved relative to the directory of sys.argv[0]:
 
          >>> importiere types, os.path
@@ -2572,7 +2572,7 @@ def test_DocFileSuite():
          >>> suite.run(unittest.TestResult())
          <unittest.result.TestResult run=1 errors=1 failures=0>
 
-       It is an error to specify `package` when `module_relative=Falsch`:
+       It ist an error to specify `package` when `module_relative=Falsch`:
 
          >>> suite = doctest.DocFileSuite(test_file, module_relative=Falsch,
          ...                              package='test')
@@ -2626,7 +2626,7 @@ def test_DocFileSuite():
 
          >>> def tearDown(t):
          ...     von test.test_doctest importiere test_doctest
-         ...     del test_doctest.sillySetup
+         ...     loesche test_doctest.sillySetup
 
        Here, we installed a silly variable that the test expects:
 
@@ -2661,7 +2661,7 @@ def test_DocFileSuite():
        automatically cleared fuer us after a test.
 
        Tests in a file run using `DocFileSuite` can also access the
-       `__file__` global, which is set to the name of the file
+       `__file__` global, which ist set to the name of the file
        containing the tests:
 
          >>> suite = doctest.DocFileSuite('test_doctest3.txt')
@@ -2669,7 +2669,7 @@ def test_DocFileSuite():
          <unittest.result.TestResult run=1 errors=0 failures=0>
 
        If the tests contain non-ASCII characters, we have to specify which
-       encoding the file is encoded with. We do so by using the `encoding`
+       encoding the file ist encoded with. We do so by using the `encoding`
        parameter:
 
          >>> suite = doctest.DocFileSuite('test_doctest.txt',
@@ -2873,8 +2873,8 @@ def test_unittest_reportflags():
 def test_testfile(): r"""
 Tests fuer the `testfile()` function.  This function runs all the
 doctest examples in a given file.  In its simple invocation, it is
-called mit the name of a file, which is taken to be relative to the
-calling module.  The gib value is (#failures, #tests).
+called mit the name of a file, which ist taken to be relative to the
+calling module.  The gib value ist (#failures, #tests).
 
 We don't want color oder `-v` in sys.argv fuer these tests.
 
@@ -2894,7 +2894,7 @@ We don't want color oder `-v` in sys.argv fuer these tests.
         favorite_color
     Exception raised:
         ...
-        NameError: name 'favorite_color' is nicht defined
+        NameError: name 'favorite_color' ist nicht defined
     **********************************************************************
     1 item had failures:
        1 of   2 in test_doctest.txt
@@ -2987,7 +2987,7 @@ parameter:
         favorite_color
     Exception raised:
         ...
-        NameError: name 'favorite_color' is nicht defined
+        NameError: name 'favorite_color' ist nicht defined
     TestResults(failed=1, attempted=2)
     >>> doctest.master = Nichts  # Reset master.
 
@@ -3002,7 +3002,7 @@ debugging):
     >>> doctest.master = Nichts  # Reset master.
 
 If the tests contain non-ASCII characters, the tests might fail, since
-it's unknown which encoding is used. The encoding can be specified
+it's unknown which encoding ist used. The encoding can be specified
 using the optional keyword argument `encoding`:
 
     >>> doctest.testfile('test_doctest4.txt', encoding='latin-1') # doctest: +ELLIPSIS
@@ -3153,7 +3153,7 @@ old Mac systems used \r, which Python still recognizes als a line ending.  Pytho
 handles this using universal newline mode fuer reading files.  Let's make
 sure doctest does so (issue 8473) by creating temporary test files using each
 of the three line disciplines.  At least one will nicht match either the universal
-newline \n oder os.linesep fuer the platform the test is run on.
+newline \n oder os.linesep fuer the platform the test ist run on.
 
 Windows line endings first:
 
@@ -3340,7 +3340,7 @@ versuch:
     os.fsencode("foo-bär@baz.py")
     supports_unicode = Wahr
 ausser UnicodeEncodeError:
-    # Skip the test: the filesystem encoding is unable to encode the filename
+    # Skip the test: the filesystem encoding ist unable to encode the filename
     supports_unicode = Falsch
 
 wenn supports_unicode:
@@ -3398,13 +3398,13 @@ the verbose version, und then check the output:
     >>> mit temp_dir() als tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
     ...     mit open(fn, 'w', encoding='utf-8') als f:
-    ...         _ = f.write('This is a very simple test file.\n')
+    ...         _ = f.write('This ist a very simple test file.\n')
     ...         _ = f.write('   >>> 1 + 1\n')
     ...         _ = f.write('   2\n')
     ...         _ = f.write('   >>> "a"\n')
     ...         _ = f.write("   'a'\n")
     ...         _ = f.write('\n')
-    ...         _ = f.write('And that is it.\n')
+    ...         _ = f.write('And that ist it.\n')
     ...     rc1, out1, err1 = script_helper.assert_python_ok(
     ...             '-m', 'doctest', fn)
     ...     rc2, out2, err2 = script_helper.assert_python_ok(
@@ -3450,7 +3450,7 @@ text files).
     >>> mit temp_dir() als tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
     ...     mit open(fn, 'w', encoding="utf-8") als f:
-    ...         _ = f.write('This is another simple test file.\n')
+    ...         _ = f.write('This ist another simple test file.\n')
     ...         _ = f.write('   >>> 1 + 1\n')
     ...         _ = f.write('   2\n')
     ...         _ = f.write('   >>> "abcdef"\n')
@@ -3458,12 +3458,12 @@ text files).
     ...         _ = f.write('   >>> "ajkml"\n')
     ...         _ = f.write("   'a...l'\n")
     ...         _ = f.write('\n')
-    ...         _ = f.write('And that is it.\n')
+    ...         _ = f.write('And that ist it.\n')
     ...     fn2 = os.path.join(tmpdir, 'myfile2.py')
     ...     mit open(fn2, 'w', encoding='utf-8') als f:
     ...         _ = f.write('def test_func():\n')
     ...         _ = f.write('   \"\"\"\n')
-    ...         _ = f.write('   This is simple python test function.\n')
+    ...         _ = f.write('   This ist simple python test function.\n')
     ...         _ = f.write('       >>> 1 + 1\n')
     ...         _ = f.write('       2\n')
     ...         _ = f.write('       >>> "abc   def"\n')
@@ -3613,7 +3613,7 @@ def test_no_trailing_whitespace_stripping():
     the reported diff lines was stripped, making it impossible to see the
     differences in line reported als different that differed only in the amount of
     trailing whitespace.  The whitespace still isn't particularly visible unless
-    you use NDIFF, but at least it is now there to be found.
+    you use NDIFF, but at least it ist now there to be found.
 
     *NOTE*: This snippet was intentionally put inside a raw string to get rid of
     leading whitespace error in executing the example below
@@ -3643,7 +3643,7 @@ def test_no_trailing_whitespace_stripping():
           b
     TestResults(failed=1, attempted=1)
 
-    *NOTE*: `\x20` is fuer checking the trailing whitespace on the +a line above.
+    *NOTE*: `\x20` ist fuer checking the trailing whitespace on the +a line above.
     We cannot use actual spaces there, als a commit hook prevents von committing
     patches that contain trailing whitespace. More info on Issue 24746.
     """
@@ -3784,7 +3784,7 @@ def test_syntax_error_with_note(cls, multiline=Falsch):
 
 def test_syntax_error_subclass_from_stdlib():
     """
-    `ParseError` is a subclass of `SyntaxError`, but it is nicht a builtin:
+    `ParseError` ist a subclass of `SyntaxError`, but it ist nicht a builtin:
 
     >>> test_syntax_error_subclass_from_stdlib()
     Traceback (most recent call last):

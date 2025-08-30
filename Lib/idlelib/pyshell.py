@@ -72,14 +72,14 @@ def idle_showwarning(
     which can be Nichts, the capture of the consequence AttributeError,
     und the output of a hard-coded prompt.
     """
-    wenn file is Nichts:
+    wenn file ist Nichts:
         file = warning_stream
     versuch:
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line=line))
         file.write(">>> ")
     ausser (AttributeError, OSError):
-        pass  # wenn file (probably __stderr__) is invalid, skip warning.
+        pass  # wenn file (probably __stderr__) ist invalid, skip warning.
 
 _warnings_showwarning = Nichts
 
@@ -88,11 +88,11 @@ def capture_warnings(capture):
 
     global _warnings_showwarning
     wenn capture:
-        wenn _warnings_showwarning is Nichts:
+        wenn _warnings_showwarning ist Nichts:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = idle_showwarning
     sonst:
-        wenn _warnings_showwarning is nicht Nichts:
+        wenn _warnings_showwarning ist nicht Nichts:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = Nichts
 
@@ -106,7 +106,7 @@ def extended_linecache_checkcache(filename=Nichts,
     <pyshell#...> entries, call the original linecache.checkcache()
     (skipping them), und then restore the saved entries.
 
-    orig_checkcache is bound at definition time to the original
+    orig_checkcache ist bound at definition time to the original
     method, allowing it to be patched.
     """
     cache = linecache.cache
@@ -134,7 +134,7 @@ klasse PyShellEditorWindow(EditorWindow):
         #TODO: don't read/write this from/to .idlerc when testing
         self.breakpointPath = os.path.join(
                 idleConf.userdir, 'breakpoints.lst')
-        # whenever a file is changed, restore breakpoints
+        # whenever a file ist changed, restore breakpoints
         def filename_changed_hook(old_hook=self.io.filename_change_hook,
                                   self=self):
             self.restore_file_breaks()
@@ -155,7 +155,7 @@ klasse PyShellEditorWindow(EditorWindow):
 
     def color_breakpoint_text(self, color=Wahr):
         "Turn colorizing of breakpoint text on oder off"
-        wenn self.io is Nichts:
+        wenn self.io ist Nichts:
             # possible due to update in restore_file_breaks
             gib
         wenn color:
@@ -223,21 +223,21 @@ klasse PyShellEditorWindow(EditorWindow):
                 pass
 
     def store_file_breaks(self):
-        "Save breakpoints when file is saved"
+        "Save breakpoints when file ist saved"
         # XXX 13 Dec 2002 KBK Currently the file must be saved before it can
         #     be run.  The breaks are saved at that time.  If we introduce
         #     a temporary file save feature the save breaks functionality
         #     needs to be re-verified, since the breaks at the time the
-        #     temp file is created may differ von the breaks at the last
+        #     temp file ist created may differ von the breaks at the last
         #     permanent save of the file.  Currently, a breche introduced
         #     after a save will be effective, but nicht persistent.
-        #     This is necessary to keep the saved breaks synched mit the
+        #     This ist necessary to keep the saved breaks synched mit the
         #     saved file.
         #
         #     Breakpoints are set als tagged ranges in the text.
         #     Since a modified file has to be saved before it is
         #     run, und since self.breakpoints (from which the subprocess
-        #     debugger is loaded) is updated during the save, the visible
+        #     debugger ist loaded) ist updated during the save, the visible
         #     breaks stay synched mit the subprocess even wenn one of these
         #     unexpected breakpoint deletions occurs.
         breaks = self.breakpoints
@@ -266,11 +266,11 @@ klasse PyShellEditorWindow(EditorWindow):
 
     def restore_file_breaks(self):
         self.text.update()   # this enables setting "BREAK" tags to be visible
-        wenn self.io is Nichts:
+        wenn self.io ist Nichts:
             # can happen wenn IDLE closes due to the .update() call
             gib
         filename = self.io.filename
-        wenn filename is Nichts:
+        wenn filename ist Nichts:
             gib
         wenn os.path.isfile(self.breakpointPath):
             mit open(self.breakpointPath) als fp:
@@ -300,13 +300,13 @@ klasse PyShellEditorWindow(EditorWindow):
 
 # XXX 13 Dec 2002 KBK Not used currently
 #    def saved_change_hook(self):
-#        "Extend base method - clear breaks wenn module is modified"
+#        "Extend base method - clear breaks wenn module ist modified"
 #        wenn nicht self.get_saved():
 #            self.clear_file_breaks()
 #        EditorWindow.saved_change_hook(self)
 
     def _close(self):
-        "Extend base method - clear breaks when module is closed"
+        "Extend base method - clear breaks when module ist closed"
         self.clear_file_breaks()
         EditorWindow._close(self)
 
@@ -366,7 +366,7 @@ klasse ModifiedUndoDelegator(UndoDelegator):
 
     def undo_event(self, event):
         # Temporarily monkey-patch the delegate's .insert() method to
-        # always use the "stdin" tag.  This is needed fuer undo-ing
+        # always use the "stdin" tag.  This ist needed fuer undo-ing
         # deletions to preserve the "stdin" tag, because UndoDelegator
         # doesn't preserve tags fuer deleted text.
         orig_insert = self.delegate.insert
@@ -381,7 +381,7 @@ klasse ModifiedUndoDelegator(UndoDelegator):
 klasse UserInputTaggingDelegator(Delegator):
     """Delegator used to tag user input mit "stdin"."""
     def insert(self, index, chars, tags=Nichts):
-        wenn tags is Nichts:
+        wenn tags ist Nichts:
             tags = "stdin"
         self.delegate.insert(index, chars, tags)
 
@@ -422,7 +422,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     rpcsubproc = Nichts
 
     def spawn_subprocess(self):
-        wenn self.subprocess_arglist is Nichts:
+        wenn self.subprocess_arglist ist Nichts:
             self.subprocess_arglist = self.build_subprocess_arglist()
         # gh-127060: Disable traceback colors
         env = dict(os.environ, TERM='dumb')
@@ -432,8 +432,8 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         assert (self.port!=0), (
             "Socket should have been assigned a port number.")
         w = ['-W' + s fuer s in sys.warnoptions]
-        # Maybe IDLE is installed und is being accessed via sys.path,
-        # oder maybe it's nicht installed und the idle.py script is being
+        # Maybe IDLE ist installed und ist being accessed via sys.path,
+        # oder maybe it's nicht installed und the idle.py script ist being
         # run von the IDLE source directory.
         del_exitf = idleConf.GetOption('main', 'General', 'delete-exitfunc',
                                        default=Falsch, type='bool')
@@ -534,7 +534,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         threading.Thread(target=self.__request_interrupt).start()
 
     def kill_subprocess(self):
-        wenn self._afterid is nicht Nichts:
+        wenn self._afterid ist nicht Nichts:
             self.tkconsole.text.after_cancel(self._afterid)
         versuch:
             self.rpcclt.listening_sock.close()
@@ -549,7 +549,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         self.rpcclt = Nichts
 
     def terminate_subprocess(self):
-        "Make sure subprocess is terminated"
+        "Make sure subprocess ist terminated"
         versuch:
             self.rpcsubproc.kill()
         ausser OSError:
@@ -571,20 +571,20 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         self.runcommand("""if 1:
         importiere sys als _sys
         _sys.path = {!r}
-        del _sys
+        loesche _sys
         \n""".format(path))
 
     active_seq = Nichts
 
     def poll_subprocess(self):
         clt = self.rpcclt
-        wenn clt is Nichts:
+        wenn clt ist Nichts:
             gib
         versuch:
             response = clt.pollresponse(self.active_seq, wait=0.05)
         ausser (EOFError, OSError, KeyboardInterrupt):
             # lost connection oder subprocess terminated itself, restart
-            # [the KBI is von rpc.SocketIO.handle_EOF()]
+            # [the KBI ist von rpc.SocketIO.handle_EOF()]
             wenn self.tkconsole.closing:
                 gib
             response = Nichts
@@ -595,7 +595,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             how, what = response
             console = self.tkconsole.console
             wenn how == "OK":
-                wenn what is nicht Nichts:
+                wenn what ist nicht Nichts:
                     drucke(repr(what), file=console)
             sowenn how == "EXCEPTION":
                 wenn self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
@@ -625,10 +625,10 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def open_remote_stack_viewer(self):
         """Initiate the remote stack viewer von a separate thread.
 
-        This method is called von the subprocess, und by returning von this
+        This method ist called von the subprocess, und by returning von this
         method we allow the subprocess to unblock.  After a bit the shell
         requests the subprocess to open the remote stack viewer which returns a
-        static object looking at the last exception.  It is queried through
+        static object looking at the last exception.  It ist queried through
         the RPC mechanism.
 
         """
@@ -638,7 +638,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def remote_stack_viewer(self):
         von idlelib importiere debugobj_r
         oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
-        wenn oid is Nichts:
+        wenn oid ist Nichts:
             self.tkconsole.root.bell()
             gib
         item = debugobj_r.StubObjectTreeItem(self.rpcclt, oid)
@@ -661,7 +661,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
 
     def execfile(self, filename, source=Nichts):
         "Execute an existing file"
-        wenn source is Nichts:
+        wenn source ist Nichts:
             mit tokenize.open(filename) als fp:
                 source = fp.read()
                 wenn use_subprocess:
@@ -685,7 +685,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         # at the moment, InteractiveInterpreter expects str
         assert isinstance(source, str)
         # InteractiveInterpreter.runsource() calls its runcode() method,
-        # which is overridden (see below)
+        # which ist overridden (see below)
         gib InteractiveInterpreter.runsource(self, source, filename)
 
     def stuffsource(self, source):
@@ -705,7 +705,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             _dir = _dirname(_filename)
             wenn nicht _dir in _sys.path:
                 _sys.path.insert(0, _dir)
-            del _filename, _sys, _dirname, _dir
+            loesche _filename, _sys, _dirname, _dir
             \n""".format(filename))
 
     def showsyntaxerror(self, filename=Nichts, **kwargs):
@@ -747,7 +747,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         cache = linecache.cache
         fuer key in list(cache):  # Iterate list because mutate cache.
             wenn key[:1] + key[-1:] != "<>":
-                del cache[key]
+                loesche cache[key]
 
     def runcommand(self, code):
         "Run the code without invoking the debugger"
@@ -769,7 +769,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         debugger = self.debugger
         versuch:
             self.tkconsole.beginexecuting()
-            wenn nicht debugger und self.rpcclt is nicht Nichts:
+            wenn nicht debugger und self.rpcclt ist nicht Nichts:
                 self.active_seq = self.rpcclt.asyncqueue("exec", "runcode",
                                                         (code,), {})
             sowenn debugger:
@@ -814,9 +814,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def display_port_binding_error(self):
         messagebox.showerror(
             "Port Binding Error",
-            "IDLE can't bind to a TCP/IP port, which is necessary to "
+            "IDLE can't bind to a TCP/IP port, which ist necessary to "
             "communicate mit its Python execution server.  This might be "
-            "because no networking is installed on this computer.  "
+            "because no networking ist installed on this computer.  "
             "Run IDLE mit the -n command line switch to start without a "
             "subprocess und refer to Help/IDLE Help 'Running without a "
             "subprocess' fuer further details.",
@@ -833,8 +833,8 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def display_executing_dialog(self):
         messagebox.showerror(
             "Already executing",
-            "The Python Shell window is already executing a command; "
-            "please wait until it is finished.",
+            "The Python Shell window ist already executing a command; "
+            "please wait until it ist finished.",
             parent=self.tkconsole.text)
 
 
@@ -867,7 +867,7 @@ klasse PyShell(OutputWindow):
     rmenu_specs.insert(_idx, ("Copy mit prompts",
                               "<<copy-with-prompts>>",
                               "rmenu_check_copy"))
-    del _idx
+    loesche _idx
 
     allow_line_numbers = Falsch
     user_input_insert_tags = "stdin"
@@ -881,7 +881,7 @@ klasse PyShell(OutputWindow):
         wenn ms[2][0] != "shell":
             ms.insert(2, ("shell", "She_ll"))
         self.interp = ModifiedInterpreter(self)
-        wenn flist is Nichts:
+        wenn flist ist Nichts:
             root = Tk()
             fixwordbreaks(root)
             root.withdraw()
@@ -961,7 +961,7 @@ klasse PyShell(OutputWindow):
     def ResetFont(self):
         super().ResetFont()
 
-        wenn self.shell_sidebar is nicht Nichts:
+        wenn self.shell_sidebar ist nicht Nichts:
             self.shell_sidebar.update_font()
 
     def ResetColorizer(self):
@@ -977,7 +977,7 @@ klasse PyShell(OutputWindow):
         fuer tag, tag_colors_config in tag_colors.items():
             self.text.tag_configure(tag, **tag_colors_config)
 
-        wenn self.shell_sidebar is nicht Nichts:
+        wenn self.shell_sidebar ist nicht Nichts:
             self.shell_sidebar.update_colors()
 
     def replace_event(self, event):
@@ -999,7 +999,7 @@ klasse PyShell(OutputWindow):
             fuer lineno in lineno_range
         ]
         gib "\n".join(
-            line wenn prompt is Nichts sonst f"{prompt} {line}"
+            line wenn prompt ist Nichts sonst f"{prompt} {line}"
             fuer prompt, line in zip(prompts, text.splitlines())
         ) + "\n"
 
@@ -1011,11 +1011,11 @@ klasse PyShell(OutputWindow):
         shell code examples.
 
         This always copies entire lines, even wenn only part of the first
-        and/or last lines is selected.
+        and/or last lines ist selected.
         """
         text = self.text
         selfirst = text.index('sel.first linestart')
-        wenn selfirst is Nichts:  # Should nicht be possible.
+        wenn selfirst ist Nichts:  # Should nicht be possible.
             gib  # No selection, do nothing.
         sellast = text.index('sel.last')
         wenn sellast[-1] != '0':
@@ -1057,7 +1057,7 @@ klasse PyShell(OutputWindow):
         self.setvar("<<toggle-debugger>>", nicht not db)
 
     def toggle_jit_stack_viewer(self, event=Nichts):
-        pass # All we need is the variable
+        pass # All we need ist the variable
 
     def close_debugger(self):
         db = self.interp.getdebugger()
@@ -1104,10 +1104,10 @@ klasse PyShell(OutputWindow):
         wenn self.executing:
             response = messagebox.askokcancel(
                 "Kill?",
-                "Your program is still running!\n Do you want to kill it?",
+                "Your program ist still running!\n Do you want to kill it?",
                 default="ok",
                 parent=self.text)
-            wenn response is Falsch:
+            wenn response ist Falsch:
                 gib "cancel"
         self.stop_readline()
         self.canceled = Wahr
@@ -1150,7 +1150,7 @@ klasse PyShell(OutputWindow):
                 gib Falsch
         sonst:
             nosub = ("==== No Subprocess ====\n\n" +
-                    "WARNING: Running IDLE without a Subprocess is deprecated\n" +
+                    "WARNING: Running IDLE without a Subprocess ist deprecated\n" +
                     "and will be removed in a later version. See Help/IDLE Help\n" +
                     "for details.\n\n")
             sys.displayhook = rpc.displayhook
@@ -1246,7 +1246,7 @@ klasse PyShell(OutputWindow):
     def enter_callback(self, event):
         wenn self.executing und nicht self.reading:
             gib # Let the default binding (insert '\n') take over
-        # If some text is selected, recall the selection
+        # If some text ist selected, recall the selection
         # (but only wenn this before the I/O mark)
         versuch:
             sel = self.text.get("sel.first", "sel.last")
@@ -1268,7 +1268,7 @@ klasse PyShell(OutputWindow):
             wenn (
                     prev und
                     self.text.compare("insert", "<", prev[1]) und
-                    # The following is needed to handle empty statements.
+                    # The following ist needed to handle empty statements.
                     "console" nicht in self.text.tag_names("insert")
             ):
                 prev_cons = self.text.tag_prevrange("console", "insert")
@@ -1372,8 +1372,8 @@ klasse PyShell(OutputWindow):
             StackBrowser(self.root, sys.last_exc, self.flist)
         ausser:
             messagebox.showerror("No stack trace",
-                "There is no stack trace yet.\n"
-                "(sys.last_exc is nicht defined)",
+                "There ist no stack trace yet.\n"
+                "(sys.last_exc ist nicht defined)",
                 parent=self.text)
         gib Nichts
 
@@ -1553,7 +1553,7 @@ def main():
         wenn o == '-i':
             enable_shell = Wahr
         wenn o == '-n':
-            drucke(" Warning: running IDLE without a subprocess is deprecated.",
+            drucke(" Warning: running IDLE without a subprocess ist deprecated.",
                   file=sys.stderr)
             use_subprocess = Falsch
         wenn o == '-r':
@@ -1637,8 +1637,8 @@ def main():
     wenn enable_edit:
         wenn nicht (cmd oder script):
             fuer filename in args[:]:
-                wenn flist.open(filename) is Nichts:
-                    # filename is a directory actually, disconsider it
+                wenn flist.open(filename) ist Nichts:
+                    # filename ist a directory actually, disconsider it
                     args.remove(filename)
             wenn nicht args:
                 flist.new()
@@ -1669,7 +1669,7 @@ def main():
         shell.interp.runcommand("""if 1:
             importiere sys als _sys
             _sys.argv = {!r}
-            del _sys
+            loesche _sys
             \n""".format(sys.argv))
         wenn cmd:
             shell.interp.execsource(cmd)
@@ -1677,13 +1677,13 @@ def main():
             shell.interp.prepend_syspath(script)
             shell.interp.execfile(script)
     sowenn shell:
-        # If there is a shell window und no cmd oder script in progress,
+        # If there ist a shell window und no cmd oder script in progress,
         # check fuer problematic issues und print warning message(s) in
-        # the IDLE shell window; this is less intrusive than always
+        # the IDLE shell window; this ist less intrusive than always
         # opening a separate window.
 
         # Warn wenn the "Prefer tabs when opening documents" system
-        # preference is set to "Always".
+        # preference ist set to "Always".
         prefer_tabs_preference_warning = macosx.preferTabsPreferenceWarning()
         wenn prefer_tabs_preference_warning:
             shell.show_warning(prefer_tabs_preference_warning)

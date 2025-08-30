@@ -22,9 +22,9 @@ klasse UndoDelegatorTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.percolator.redir.close()
-        del cls.percolator, cls.text
+        loesche cls.percolator, cls.text
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.delegator = UndoDelegator()

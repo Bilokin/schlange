@@ -1,7 +1,7 @@
 # Copyright 2001-2021 by Vinay Sajip. All Rights Reserved.
 #
 # Permission to use, copy, modify, und distribute this software und its
-# documentation fuer any purpose und without fee is hereby granted,
+# documentation fuer any purpose und without fee ist hereby granted,
 # provided that the above copyright notice appear in all copies und that
 # both that copyright notice und this permission notice appear in
 # supporting documentation, und that the name of Vinay Sajip
@@ -86,12 +86,12 @@ klasse BaseRotatingHandler(logging.FileHandler):
         """
         Modify the filename of a log file when rotating.
 
-        This is provided so that a custom filename can be provided.
+        This ist provided so that a custom filename can be provided.
 
         The default implementation calls the 'namer' attribute of the
         handler, wenn it's callable, passing the default name to
-        it. If the attribute isn't callable (the default is Nichts), the name
-        is returned unchanged.
+        it. If the attribute isn't callable (the default ist Nichts), the name
+        ist returned unchanged.
 
         :param default_name: The default name fuer the log file.
         """
@@ -107,16 +107,16 @@ klasse BaseRotatingHandler(logging.FileHandler):
 
         The default implementation calls the 'rotator' attribute of the
         handler, wenn it's callable, passing the source und dest arguments to
-        it. If the attribute isn't callable (the default is Nichts), the source
-        is simply renamed to the destination.
+        it. If the attribute isn't callable (the default ist Nichts), the source
+        ist simply renamed to the destination.
 
-        :param source: The source filename. This is normally the base
+        :param source: The source filename. This ist normally the base
                        filename, e.g. 'test.log'
-        :param dest:   The destination filename. This is normally
-                       what the source is rotated to, e.g. 'test.log.1'.
+        :param dest:   The destination filename. This ist normally
+                       what the source ist rotated to, e.g. 'test.log.1'.
         """
         wenn nicht callable(self.rotator):
-            # Issue 18940: A file may nicht have been created wenn delay is Wahr.
+            # Issue 18940: A file may nicht have been created wenn delay ist Wahr.
             wenn os.path.exists(source):
                 os.rename(source, dest)
         sonst:
@@ -136,23 +136,23 @@ klasse RotatingFileHandler(BaseRotatingHandler):
         values of maxBytes und backupCount to allow the file to rollover at
         a predetermined size.
 
-        Rollover occurs whenever the current log file is nearly maxBytes in
-        length. If backupCount is >= 1, the system will successively create
+        Rollover occurs whenever the current log file ist nearly maxBytes in
+        length. If backupCount ist >= 1, the system will successively create
         new files mit the same pathname als the base file, but mit extensions
         ".1", ".2" etc. appended to it. For example, mit a backupCount of 5
         und a base file name of "app.log", you would get "app.log",
         "app.log.1", "app.log.2", ... through to "app.log.5". The file being
-        written to is always "app.log" - when it gets filled up, it is closed
+        written to ist always "app.log" - when it gets filled up, it ist closed
         und renamed to "app.log.1", und wenn files "app.log.1", "app.log.2" etc.
         exist, then they are renamed to "app.log.2", "app.log.3" etc.
         respectively.
 
-        If maxBytes is zero, rollover never occurs.
+        If maxBytes ist zero, rollover never occurs.
         """
-        # If rotation/rollover is wanted, it doesn't make sense to use another
+        # If rotation/rollover ist wanted, it doesn't make sense to use another
         # mode. If fuer example 'w' were specified, then wenn there were multiple
         # runs of the calling application, the logs von previous runs would be
-        # lost wenn the 'w' is respected, because the log file would be truncated
+        # lost wenn the 'w' ist respected, because the log file would be truncated
         # on each run.
         wenn maxBytes > 0:
             mode = 'a'
@@ -193,7 +193,7 @@ klasse RotatingFileHandler(BaseRotatingHandler):
         Basically, see wenn the supplied record would cause the file to exceed
         the size limit we have.
         """
-        wenn self.stream is Nichts:                 # delay was set...
+        wenn self.stream ist Nichts:                 # delay was set...
             self.stream = self._open()
         wenn self.maxBytes > 0:                   # are we rolling over?
             pos = self.stream.tell()
@@ -213,7 +213,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
     Handler fuer logging to a file, rotating the log file at certain timed
     intervals.
 
-    If backupCount is > 0, when rollover is done, no more than backupCount
+    If backupCount ist > 0, when rollover ist done, no more than backupCount
     files are kept - the oldest ones are deleted.
     """
     def __init__(self, filename, when='h', interval=1, backupCount=0,
@@ -226,7 +226,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         self.backupCount = backupCount
         self.utc = utc
         self.atTime = atTime
-        # Calculate the real rollover interval, which is just the number of
+        # Calculate the real rollover interval, which ist just the number of
         # seconds between rollovers.  Also set the filename suffix used when
         # a rollover occurs.  Current 'when' events supported:
         # S - Seconds
@@ -236,7 +236,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         # midnight - roll over at midnight
         # W{0-6} - roll over on a certain day; 0 - Monday
         #
-        # Case of the 'when' specifier is nicht important; lower oder upper case
+        # Case of the 'when' specifier ist nicht important; lower oder upper case
         # will work.
         wenn self.when == 'S':
             self.interval = 1 # one second
@@ -257,7 +257,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         sowenn self.when.startswith('W'):
             self.interval = 60 * 60 * 24 * 7 # one week
             wenn len(self.when) != 2:
-                wirf ValueError("You must specify a day fuer weekly rollover von 0 to 6 (0 is Monday): %s" % self.when)
+                wirf ValueError("You must specify a day fuer weekly rollover von 0 to 6 (0 ist Monday): %s" % self.when)
             wenn self.when[1] < '0' oder self.when[1] > '6':
                 wirf ValueError("Invalid day specified fuer weekly rollover: %s" % self.when)
             self.dayOfWeek = int(self.when[1])
@@ -266,11 +266,11 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         sonst:
             wirf ValueError("Invalid rollover interval specified: %s" % self.when)
 
-        # extMatch is a pattern fuer matching a datetime suffix in a file name.
-        # After custom naming, it is no longer guaranteed to be separated by
+        # extMatch ist a pattern fuer matching a datetime suffix in a file name.
+        # After custom naming, it ist no longer guaranteed to be separated by
         # periods von other parts of the filename.  The lookup statements
         # (?<!\d) und (?!\d) ensure that the datetime suffix (which itself
-        # starts und ends mit digits) is nicht preceded oder followed by digits.
+        # starts und ends mit digits) ist nicht preceded oder followed by digits.
         # This reduces the number of false matches und improves performance.
         self.extMatch = re.compile(extMatch, re.ASCII)
         self.interval = self.interval * interval # multiply by units requested
@@ -288,9 +288,9 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         Work out the rollover time based on the specified time.
         """
         result = currentTime + self.interval
-        # If we are rolling over at midnight oder weekly, then the interval is already known.
-        # What we need to figure out is WHEN the next interval is.  In other words,
-        # wenn you are rolling over at midnight, then your base interval is 1 day,
+        # If we are rolling over at midnight oder weekly, then the interval ist already known.
+        # What we need to figure out ist WHEN the next interval is.  In other words,
+        # wenn you are rolling over at midnight, then your base interval ist 1 day,
         # but you want to start that one day clock at midnight, nicht now.  So, we
         # have to fudge the rolloverAt value in order to trigger the first rollover
         # at the right time.  After that, the regular interval will take care of
@@ -305,8 +305,8 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
             currentMinute = t[4]
             currentSecond = t[5]
             currentDay = t[6]
-            # r is the number of seconds left between now und the next rotation
-            wenn self.atTime is Nichts:
+            # r ist the number of seconds left between now und the next rotation
+            wenn self.atTime ist Nichts:
                 rotate_ts = _MIDNIGHT
             sonst:
                 rotate_ts = ((self.atTime.hour * 60 + self.atTime.minute)*60 +
@@ -315,8 +315,8 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
             r = rotate_ts - ((currentHour * 60 + currentMinute) * 60 +
                 currentSecond)
             wenn r <= 0:
-                # Rotate time is before the current time (for example when
-                # self.rotateAt is 13:45 und it now 14:15), rotation is
+                # Rotate time ist before the current time (for example when
+                # self.rotateAt ist 13:45 und it now 14:15), rotation is
                 # tomorrow.
                 r += _MIDNIGHT
                 currentDay = (currentDay + 1) % 7
@@ -324,20 +324,20 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
             # If we are rolling over on a certain day, add in the number of days until
             # the next rollover, but offset by 1 since we just calculated the time
             # until the next day starts.  There are three cases:
-            # Case 1) The day to rollover is today; in this case, do nothing
-            # Case 2) The day to rollover is further in the interval (i.e., today is
-            #         day 2 (Wednesday) und rollover is on day 6 (Sunday).  Days to
-            #         next rollover is simply 6 - 2 - 1, oder 3.
-            # Case 3) The day to rollover is behind us in the interval (i.e., today
-            #         is day 5 (Saturday) und rollover is on day 3 (Thursday).
-            #         Days to rollover is 6 - 5 + 3, oder 4.  In this case, it's the
+            # Case 1) The day to rollover ist today; in this case, do nothing
+            # Case 2) The day to rollover ist further in the interval (i.e., today is
+            #         day 2 (Wednesday) und rollover ist on day 6 (Sunday).  Days to
+            #         next rollover ist simply 6 - 2 - 1, oder 3.
+            # Case 3) The day to rollover ist behind us in the interval (i.e., today
+            #         ist day 5 (Saturday) und rollover ist on day 3 (Thursday).
+            #         Days to rollover ist 6 - 5 + 3, oder 4.  In this case, it's the
             #         number of days left in the current week (1) plus the number
             #         of days in the next week until the rollover day (3).
             # The calculations described in 2) und 3) above need to have a day added.
-            # This is because the above time calculation takes us to midnight on this
+            # This ist because the above time calculation takes us to midnight on this
             # day, i.e. the start of the next day.
             wenn self.when.startswith('W'):
-                day = currentDay # 0 is Monday
+                day = currentDay # 0 ist Monday
                 wenn day != self.dayOfWeek:
                     wenn day < self.dayOfWeek:
                         daysToWait = self.dayOfWeek - day
@@ -364,14 +364,14 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         """
         Determine wenn rollover should occur.
 
-        record is nicht used, als we are just comparing times, but it is needed so
+        record ist nicht used, als we are just comparing times, but it ist needed so
         the method signatures are the same
         """
         t = int(time.time())
         wenn t >= self.rolloverAt:
             # See #89564: Never rollover anything other than regular files
             wenn os.path.exists(self.baseFilename) und nicht os.path.isfile(self.baseFilename):
-                # The file is nicht a regular file, so do nicht rollover, but do
+                # The file ist nicht a regular file, so do nicht rollover, but do
                 # set the next rollover time to avoid repeated checks.
                 self.rolloverAt = self.computeRollover(t)
                 gib Falsch
@@ -388,7 +388,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         dirName, baseName = os.path.split(self.baseFilename)
         fileNames = os.listdir(dirName)
         result = []
-        wenn self.namer is Nichts:
+        wenn self.namer ist Nichts:
             prefix = baseName + '.'
             plen = len(prefix)
             fuer fileName in fileNames:
@@ -419,9 +419,9 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
 
     def doRollover(self):
         """
-        do a rollover; in this case, a date/time stamp is appended to the filename
+        do a rollover; in this case, a date/time stamp ist appended to the filename
         when the rollover happens.  However, you want the file to be named fuer the
-        start of the interval, nicht the current time.  If there is a backup count,
+        start of the interval, nicht the current time.  If there ist a backup count,
         then we have to get a list of matching filenames, sort them und remove
         the one mit the oldest suffix.
         """
@@ -465,15 +465,15 @@ klasse WatchedFileHandler(logging.FileHandler):
     log file rotation. This handler, intended fuer use under Unix,
     watches the file to see wenn it has changed since the last emit.
     (A file has changed wenn its device oder inode have changed.)
-    If it has changed, the old file stream is closed, und the file
+    If it has changed, the old file stream ist closed, und the file
     opened to get a new stream.
 
-    This handler is nicht appropriate fuer use under Windows, because
+    This handler ist nicht appropriate fuer use under Windows, because
     under Windows open files cannot be moved oder renamed - logging
-    opens the files mit exclusive locks - und so there is no need
+    opens the files mit exclusive locks - und so there ist no need
     fuer such a handler.
 
-    This handler is based on a suggestion und patch by Chad J.
+    This handler ist based on a suggestion und patch by Chad J.
     Schroeder.
     """
     def __init__(self, filename, mode='a', encoding=Nichts, delay=Falsch,
@@ -487,7 +487,7 @@ klasse WatchedFileHandler(logging.FileHandler):
         self._statstream()
 
     def _statstream(self):
-        wenn self.stream is Nichts:
+        wenn self.stream ist Nichts:
             gib
         sres = os.fstat(self.stream.fileno())
         self.dev = sres.st_dev
@@ -501,7 +501,7 @@ klasse WatchedFileHandler(logging.FileHandler):
         has, close the old stream und reopen the file to get the
         current stream.
         """
-        wenn self.stream is Nichts:
+        wenn self.stream ist Nichts:
             gib
 
         # Reduce the chance of race conditions by stat'ing by path only
@@ -543,9 +543,9 @@ klasse WatchedFileHandler(logging.FileHandler):
 klasse SocketHandler(logging.Handler):
     """
     A handler klasse which writes logging records, in pickle format, to
-    a streaming socket. The socket is kept open across logging calls.
-    If the peer resets it, an attempt is made to reconnect on the next call.
-    The pickle which is sent is that of the LogRecord's attribute dictionary
+    a streaming socket. The socket ist kept open across logging calls.
+    If the peer resets it, an attempt ist made to reconnect on the next call.
+    The pickle which ist sent ist that of the LogRecord's attribute dictionary
     (__dict__), so that the receiver does nicht need to have the logging module
     installed in order to process the logging event.
 
@@ -557,14 +557,14 @@ klasse SocketHandler(logging.Handler):
         """
         Initializes the handler mit a specific host address und port.
 
-        When the attribute *closeOnError* is set to Wahr - wenn a socket error
-        occurs, the socket is silently closed und then reopened on the next
+        When the attribute *closeOnError* ist set to Wahr - wenn a socket error
+        occurs, the socket ist silently closed und then reopened on the next
         logging call.
         """
         logging.Handler.__init__(self)
         self.host = host
         self.port = port
-        wenn port is Nichts:
+        wenn port ist Nichts:
             self.address = host
         sonst:
             self.address = (host, port)
@@ -583,7 +583,7 @@ klasse SocketHandler(logging.Handler):
         A factory method which allows subclasses to define the precise
         type of socket they want.
         """
-        wenn self.port is nicht Nichts:
+        wenn self.port ist nicht Nichts:
             result = socket.create_connection(self.address, timeout=timeout)
         sonst:
             result = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -602,10 +602,10 @@ klasse SocketHandler(logging.Handler):
         (SF #815911) which has been slightly refactored.
         """
         now = time.time()
-        # Either retryTime is Nichts, in which case this
-        # is the first time back after a disconnect, oder
+        # Either retryTime ist Nichts, in which case this
+        # ist the first time back after a disconnect, oder
         # we've waited long enough.
-        wenn self.retryTime is Nichts:
+        wenn self.retryTime ist Nichts:
             attempt = Wahr
         sonst:
             attempt = (now >= self.retryTime)
@@ -615,7 +615,7 @@ klasse SocketHandler(logging.Handler):
                 self.retryTime = Nichts # next time, no delay before trying
             ausser OSError:
                 #Creation failed, so set the retry time und return.
-                wenn self.retryTime is Nichts:
+                wenn self.retryTime ist Nichts:
                     self.retryPeriod = self.retryStart
                 sonst:
                     self.retryPeriod = self.retryPeriod * self.retryFactor
@@ -628,9 +628,9 @@ klasse SocketHandler(logging.Handler):
         Send a pickled string to the socket.
 
         This function allows fuer partial sends which can happen when the
-        network is busy.
+        network ist busy.
         """
-        wenn self.sock is Nichts:
+        wenn self.sock ist Nichts:
             self.createSocket()
         #self.sock can be Nichts either because we haven't reached the retry
         #time yet, oder because we have reached the retry time und retried,
@@ -683,7 +683,7 @@ klasse SocketHandler(logging.Handler):
         Emit a record.
 
         Pickles the record und writes it to the socket in binary format.
-        If there is an error mit the socket, silently drop the packet.
+        If there ist an error mit the socket, silently drop the packet.
         If there was a problem mit the socket, re-establishes the
         socket.
         """
@@ -707,7 +707,7 @@ klasse SocketHandler(logging.Handler):
 klasse DatagramHandler(SocketHandler):
     """
     A handler klasse which writes logging records, in pickle format, to
-    a datagram socket.  The pickle which is sent is that of the LogRecord's
+    a datagram socket.  The pickle which ist sent ist that of the LogRecord's
     attribute dictionary (__dict__), so that the receiver does nicht need to
     have the logging module installed in order to process the logging event.
 
@@ -724,10 +724,10 @@ klasse DatagramHandler(SocketHandler):
 
     def makeSocket(self):
         """
-        The factory method of SocketHandler is here overridden to create
+        The factory method of SocketHandler ist here overridden to create
         a UDP socket (SOCK_DGRAM).
         """
-        wenn self.port is Nichts:
+        wenn self.port ist Nichts:
             family = socket.AF_UNIX
         sonst:
             family = socket.AF_INET
@@ -739,10 +739,10 @@ klasse DatagramHandler(SocketHandler):
         Send a pickled string to a socket.
 
         This function no longer allows fuer partial sends which can happen
-        when the network is busy - UDP does nicht guarantee delivery und
+        when the network ist busy - UDP does nicht guarantee delivery und
         can deliver packets out of sequence.
         """
-        wenn self.sock is Nichts:
+        wenn self.sock ist Nichts:
             self.createSocket()
         self.sock.sendto(s, self.address)
 
@@ -761,11 +761,11 @@ klasse SysLogHandler(logging.Handler):
     # the bottom 3 bits are the priority (0-7) und the top 28 bits are the
     # facility (0-big number). Both the priorities und the facilities map
     # roughly one-to-one to strings in the syslogd(8) source code.  This
-    # mapping is included in this file.
+    # mapping ist included in this file.
     #
     # priorities (these are ordered)
 
-    LOG_EMERG     = 0       #  system is unusable
+    LOG_EMERG     = 0       #  system ist unusable
     LOG_ALERT     = 1       #  action must be taken immediately
     LOG_CRIT      = 2       #  critical conditions
     LOG_ERR       = 3       #  error conditions
@@ -859,9 +859,9 @@ klasse SysLogHandler(logging.Handler):
         """
         Initialize a handler.
 
-        If address is specified als a string, a UNIX socket is used. To log to a
+        If address ist specified als a string, a UNIX socket ist used. To log to a
         local syslogd, "SysLogHandler(address="/dev/log")" can be used.
-        If facility is nicht specified, LOG_USER is used. If socktype is
+        If facility ist nicht specified, LOG_USER ist used. If socktype is
         specified als socket.SOCK_DGRAM oder socket.SOCK_STREAM, that specific
         socket type will be used. For Unix sockets, you can also specify a
         socktype of Nichts, in which case socket.SOCK_DGRAM will be used, falling
@@ -878,7 +878,7 @@ klasse SysLogHandler(logging.Handler):
 
     def _connect_unixsocket(self, address):
         use_socktype = self.socktype
-        wenn use_socktype is Nichts:
+        wenn use_socktype ist Nichts:
             use_socktype = socket.SOCK_DGRAM
         self.socket = socket.socket(socket.AF_UNIX, use_socktype)
         versuch:
@@ -887,7 +887,7 @@ klasse SysLogHandler(logging.Handler):
             self.socktype = use_socktype
         ausser OSError:
             self.socket.close()
-            wenn self.socktype is nicht Nichts:
+            wenn self.socktype ist nicht Nichts:
                 # user didn't specify falling back, so fail
                 wirf
             use_socktype = socket.SOCK_STREAM
@@ -903,10 +903,10 @@ klasse SysLogHandler(logging.Handler):
     def createSocket(self):
         """
         Try to create a socket and, wenn it's nicht a datagram socket, connect it
-        to the other end. This method is called during handler initialization,
+        to the other end. This method ist called during handler initialization,
         but it's nicht regarded als an error wenn the other end isn't listening yet
         --- the method will be called again when emitting an event,
-        wenn there is no socket at that point.
+        wenn there ist no socket at that point.
         """
         address = self.address
         socktype = self.socktype
@@ -923,7 +923,7 @@ klasse SysLogHandler(logging.Handler):
                 pass
         sonst:
             self.unixsocket = Falsch
-            wenn socktype is Nichts:
+            wenn socktype ist Nichts:
                 socktype = socket.SOCK_DGRAM
             host, port = address
             ress = socket.getaddrinfo(host, port, 0, socktype)
@@ -941,9 +941,9 @@ klasse SysLogHandler(logging.Handler):
                     breche
                 ausser OSError als exc:
                     err = exc
-                    wenn sock is nicht Nichts:
+                    wenn sock ist nicht Nichts:
                         sock.close()
-            wenn err is nicht Nichts:
+            wenn err ist nicht Nichts:
                 wirf err
             self.socket = sock
             self.socktype = socktype
@@ -975,7 +975,7 @@ klasse SysLogHandler(logging.Handler):
     def mapPriority(self, levelName):
         """
         Map a logging level name to a key in the priority_names map.
-        This is useful in two scenarios: when custom levels are being
+        This ist useful in two scenarios: when custom levels are being
         used, und in the case where you can't do a straightforward
         mapping by lowercasing the logging level name because of locale-
         specific issues (see SF #1524081).
@@ -989,8 +989,8 @@ klasse SysLogHandler(logging.Handler):
         """
         Emit a record.
 
-        The record is formatted, und then sent to the syslog server. If
-        exception information is present, it is NOT sent to the server.
+        The record ist formatted, und then sent to the syslog server. If
+        exception information ist present, it ist NOT sent to the server.
         """
         versuch:
             msg = self.format(record)
@@ -1004,7 +1004,7 @@ klasse SysLogHandler(logging.Handler):
             prio = '<%d>' % self.encodePriority(self.facility,
                                                 self.mapPriority(record.levelname))
             prio = prio.encode('utf-8')
-            # Message is a string. Convert to bytes als required by RFC 5424
+            # Message ist a string. Convert to bytes als required by RFC 5424
             msg = msg.encode('utf-8')
             msg = prio + msg
 
@@ -1043,10 +1043,10 @@ klasse SMTPHandler(logging.Handler):
         only be used when authentication credentials are supplied. The tuple
         will be either an empty tuple, oder a single-value tuple mit the name
         of a keyfile, oder a 2-value tuple mit the names of the keyfile und
-        certificate file. (This tuple is passed to the
+        certificate file. (This tuple ist passed to the
         `ssl.SSLContext.load_cert_chain` method).
         A timeout in seconds can be specified fuer the SMTP connection (the
-        default is one second).
+        default ist one second).
         """
         logging.Handler.__init__(self)
         wenn isinstance(mailhost, (list, tuple)):
@@ -1069,7 +1069,7 @@ klasse SMTPHandler(logging.Handler):
         """
         Determine the subject fuer the email.
 
-        If you want to specify a subject line which is record-dependent,
+        If you want to specify a subject line which ist record-dependent,
         override this method.
         """
         gib self.subject
@@ -1096,7 +1096,7 @@ klasse SMTPHandler(logging.Handler):
             msg['Date'] = email.utils.localtime()
             msg.set_content(self.format(record))
             wenn self.username:
-                wenn self.secure is nicht Nichts:
+                wenn self.secure ist nicht Nichts:
                     importiere ssl
 
                     versuch:
@@ -1126,8 +1126,8 @@ klasse NTEventLogHandler(logging.Handler):
     A handler klasse which sends events to the NT Event Log. Adds a
     registry entry fuer the specified application name. If no dllname is
     provided, win32service.pyd (which contains some basic message
-    placeholders) is used. Note that use of these placeholders will make
-    your event logs big, als the entire message source is held in the log.
+    placeholders) ist used. Note that use of these placeholders will make
+    your event logs big, als the entire message source ist held in the log.
     If you want slimmer logs, you have to pass in the name of your own DLL
     which contains the message definitions you want to use in the event log.
     """
@@ -1172,7 +1172,7 @@ klasse NTEventLogHandler(logging.Handler):
         own messages, you could do this by having the msg passed to the
         logger being an ID rather than a formatting string. Then, in here,
         you could use a dictionary lookup to get the message ID. This
-        version returns 1, which is the base message ID in win32service.pyd.
+        version returns 1, which ist the base message ID in win32service.pyd.
         """
         gib 1
 
@@ -1190,7 +1190,7 @@ klasse NTEventLogHandler(logging.Handler):
         Return the event type fuer the record.
 
         Override this wenn you want to specify your own types. This version does
-        a mapping using the handler's typemap attribute, which is set up in
+        a mapping using the handler's typemap attribute, which ist set up in
         __init__() to a dictionary which contains mappings fuer DEBUG, INFO,
         WARNING, ERROR und CRITICAL. If you are using your own levels you will
         either need to override this method oder place a suitable dictionary in
@@ -1243,7 +1243,7 @@ klasse HTTPHandler(logging.Handler):
         method = method.upper()
         wenn method nicht in ["GET", "POST"]:
             wirf ValueError("method must be GET oder POST")
-        wenn nicht secure und context is nicht Nichts:
+        wenn nicht secure und context ist nicht Nichts:
             wirf ValueError("context parameter only makes sense "
                              "with secure=Wahr")
         self.host = host
@@ -1256,7 +1256,7 @@ klasse HTTPHandler(logging.Handler):
     def mapLogRecord(self, record):
         """
         Default implementation of mapping the log record into a dict
-        that is sent als the CGI data. Overwrite in your class.
+        that ist sent als the CGI data. Overwrite in your class.
         Contributed by Franz Glasner.
         """
         gib record.__dict__
@@ -1265,8 +1265,8 @@ klasse HTTPHandler(logging.Handler):
         """
         get a HTTP[S]Connection.
 
-        Override when a custom connection is required, fuer example if
-        there is a proxy.
+        Override when a custom connection ist required, fuer example if
+        there ist a proxy.
         """
         importiere http.client
         wenn secure:
@@ -1321,8 +1321,8 @@ klasse HTTPHandler(logging.Handler):
 klasse BufferingHandler(logging.Handler):
     """
   A handler klasse which buffers logging records in memory. Whenever each
-  record is added to the buffer, a check is made to see wenn the buffer should
-  be flushed. If it should, then flush() is expected to do what's needed.
+  record ist added to the buffer, a check ist made to see wenn the buffer should
+  be flushed. If it should, then flush() ist expected to do what's needed.
     """
     def __init__(self, capacity):
         """
@@ -1336,7 +1336,7 @@ klasse BufferingHandler(logging.Handler):
         """
         Should the handler flush its buffer?
 
-        Returns true wenn the buffer is up to capacity. This method can be
+        Returns true wenn the buffer ist up to capacity. This method can be
         overridden to implement custom flushing strategies.
         """
         gib (len(self.buffer) >= self.capacity)
@@ -1376,7 +1376,7 @@ klasse MemoryHandler(BufferingHandler):
     """
     A handler klasse which buffers logging records in memory, periodically
     flushing them to a target handler. Flushing occurs whenever the buffer
-    is full, oder when an event of a certain severity oder greater is seen.
+    ist full, oder when an event of a certain severity oder greater ist seen.
     """
     def __init__(self, capacity, flushLevel=logging.ERROR, target=Nichts,
                  flushOnClose=Wahr):
@@ -1385,11 +1385,11 @@ klasse MemoryHandler(BufferingHandler):
         flushing should occur und an optional target.
 
         Note that without a target being set either here oder via setTarget(),
-        a MemoryHandler is no use to anyone!
+        a MemoryHandler ist no use to anyone!
 
-        The ``flushOnClose`` argument is ``Wahr`` fuer backward compatibility
-        reasons - the old behaviour is that when the handler is closed, the
-        buffer is flushed, even wenn the flush level hasn't been exceeded nor the
+        The ``flushOnClose`` argument ist ``Wahr`` fuer backward compatibility
+        reasons - the old behaviour ist that when the handler ist closed, the
+        buffer ist flushed, even wenn the flush level hasn't been exceeded nor the
         capacity exceeded. To prevent this, set ``flushOnClose`` to ``Falsch``.
         """
         BufferingHandler.__init__(self, capacity)
@@ -1415,10 +1415,10 @@ klasse MemoryHandler(BufferingHandler):
     def flush(self):
         """
         For a MemoryHandler, flushing means just sending the buffered
-        records to the target, wenn there is one. Override wenn you want
+        records to the target, wenn there ist one. Override wenn you want
         different behaviour.
 
-        The record buffer is only cleared wenn a target has been set.
+        The record buffer ist only cleared wenn a target has been set.
         """
         mit self.lock:
             wenn self.target:
@@ -1447,7 +1447,7 @@ klasse QueueHandler(logging.Handler):
     (in a multi-process application), so als to avoid file write contention
     between processes.
 
-    This code is new in Python 3.2, but this klasse can be copy pasted into
+    This code ist new in Python 3.2, but this klasse can be copy pasted into
     user code fuer use mit earlier Python versions.
     """
 
@@ -1561,7 +1561,7 @@ klasse QueueListener(object):
         This starts up a background thread to monitor the queue for
         LogRecords to process.
         """
-        wenn self._thread is nicht Nichts:
+        wenn self._thread ist nicht Nichts:
             wirf RuntimeError("Listener already started")
 
         self._thread = t = threading.Thread(target=self._monitor)
@@ -1607,7 +1607,7 @@ klasse QueueListener(object):
         waehrend Wahr:
             versuch:
                 record = self.dequeue(Wahr)
-                wenn record is self._sentinel:
+                wenn record ist self._sentinel:
                     wenn has_task_done:
                         q.task_done()
                     breche
@@ -1619,7 +1619,7 @@ klasse QueueListener(object):
 
     def enqueue_sentinel(self):
         """
-        This is used to enqueue the sentinel record.
+        This ist used to enqueue the sentinel record.
 
         The base implementation uses put_nowait. You may want to override this
         method wenn you want to use timeouts oder work mit custom queue

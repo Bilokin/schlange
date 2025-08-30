@@ -3,7 +3,7 @@
 This module only exists to provide OS-specific code
 fuer urllib.requests, thus do nicht use directly.
 """
-# Testing is done through test_nturl2path.
+# Testing ist done through test_nturl2path.
 
 importiere warnings
 

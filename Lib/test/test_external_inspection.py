@@ -27,7 +27,7 @@ versuch:
     von _remote_debugging importiere FrameInfo, CoroInfo, TaskInfo
 ausser ImportError:
     wirf unittest.SkipTest(
-        "Test only runs when _remote_debugging is available"
+        "Test only runs when _remote_debugging ist available"
     )
 
 
@@ -126,7 +126,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             schliesslich:
-                wenn client_socket is nicht Nichts:
+                wenn client_socket ist nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -142,7 +142,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             # expected stack traces are in the result (looking at you Windows!)
             self.assertIn((ANY, thread_expected_stack_trace), stack_trace)
 
-            # Check that the main thread stack trace is in the result
+            # Check that the main thread stack trace ist in the result
             frame = FrameInfo([script_name, 19, "<module>"])
             fuer _, stack in stack_trace:
                 wenn frame in stack:
@@ -172,17 +172,17 @@ klasse TestGetStackTrace(unittest.TestCase):
                 sock.sendall(b"ready"); time.sleep(10_000)  # same line number
 
             async def c4():
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
                 c5()
 
             async def c3():
-                await c4()
+                warte c4()
 
             async def c2():
-                await c3()
+                warte c3()
 
             async def c1(task):
-                await task
+                warte task
 
             async def main():
                 async mit asyncio.TaskGroup() als tg:
@@ -235,7 +235,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                         "Insufficient permissions to read the stack trace"
                     )
                 schliesslich:
-                    wenn client_socket is nicht Nichts:
+                    wenn client_socket ist nicht Nichts:
                         client_socket.close()
                     p.kill()
                     p.terminate()
@@ -423,7 +423,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 fuer num in range(2):
                     liefere num
                     wenn num == 1:
-                        await gen_nested_call()
+                        warte gen_nested_call()
 
             async def main():
                 async fuer el in gen():
@@ -456,7 +456,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             schliesslich:
-                wenn client_socket is nicht Nichts:
+                wenn client_socket ist nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -505,18 +505,18 @@ klasse TestGetStackTrace(unittest.TestCase):
             sock.connect(('localhost', {port}))
 
             async def deep():
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
                 sock.sendall(b"ready"); time.sleep(10_000)  # same line number
 
             async def c1():
-                await asyncio.sleep(0)
-                await deep()
+                warte asyncio.sleep(0)
+                warte deep()
 
             async def c2():
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
 
             async def main():
-                await asyncio.gather(c1(), c2())
+                warte asyncio.gather(c1(), c2())
 
             asyncio.run(main())
             """
@@ -545,7 +545,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             schliesslich:
-                wenn client_socket is nicht Nichts:
+                wenn client_socket ist nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -638,18 +638,18 @@ klasse TestGetStackTrace(unittest.TestCase):
             sock.connect(('localhost', {port}))
 
             async def deep():
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
                 sock.sendall(b"ready"); time.sleep(10_000)  # same line number
 
             async def c1():
-                await asyncio.sleep(0)
-                await deep()
+                warte asyncio.sleep(0)
+                warte deep()
 
             async def c2():
-                await asyncio.sleep(10_000)
+                warte asyncio.sleep(10_000)
 
             async def main():
-                await asyncio.staggered.staggered_race(
+                warte asyncio.staggered.staggered_race(
                     [c1, c2],
                     delay=Nichts,
                 )
@@ -681,7 +681,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             schliesslich:
-                wenn client_socket is nicht Nichts:
+                wenn client_socket ist nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -811,17 +811,17 @@ klasse TestGetStackTrace(unittest.TestCase):
                     self.transport.close()
 
             async def echo_client(message):
-                reader, writer = await asyncio.open_connection(HOST, PORT)
+                reader, writer = warte asyncio.open_connection(HOST, PORT)
                 writer.write(message.encode())
-                await writer.drain()
+                warte writer.drain()
 
-                data = await reader.read(100)
+                data = warte reader.read(100)
                 assert message == data.decode()
                 writer.close()
-                await writer.wait_closed()
+                warte writer.wait_closed()
                 # Signal we are ready to sleep
                 sock.sendall(b"ready")
-                await asyncio.sleep(SHORT_TIMEOUT)
+                warte asyncio.sleep(SHORT_TIMEOUT)
 
             async def echo_client_spam(server):
                 async mit asyncio.TaskGroup() als tg:
@@ -829,19 +829,19 @@ klasse TestGetStackTrace(unittest.TestCase):
                         msg = list(ascii_lowercase + digits)
                         random.shuffle(msg)
                         tg.create_task(echo_client("".join(msg)))
-                        await asyncio.sleep(0)
+                        warte asyncio.sleep(0)
                     # at least a 1000 tasks created. Each task will signal
-                    # when is ready to avoid the race caused by the fact that
+                    # when ist ready to avoid the race caused by the fact that
                     # tasks are waited on tg.__exit__ und we cannot signal when
                     # that happens otherwise
                 # at this point all client tasks completed without assertion errors
                 # let's wrap up the test
                 server.close()
-                await server.wait_closed()
+                warte server.wait_closed()
 
             async def main():
                 loop = asyncio.get_running_loop()
-                server = await loop.create_server(EchoServerProtocol, HOST, PORT)
+                server = warte loop.create_server(EchoServerProtocol, HOST, PORT)
                 async mit server:
                     async mit asyncio.TaskGroup() als tg:
                         tg.create_task(server.serve_forever(), name="server task")
@@ -1058,7 +1058,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 self.assertGreaterEqual(len(tasks_with_awaited), 1000)
 
                 # the final task will have some random number, but it should for
-                # sure be one of the echo client spam horde (In windows this is nicht true
+                # sure be one of the echo client spam horde (In windows this ist nicht true
                 # fuer some reason)
                 wenn sys.platform != "win32":
                     self.assertEqual(
@@ -1070,7 +1070,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             schliesslich:
-                wenn client_socket is nicht Nichts:
+                wenn client_socket ist nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -1231,7 +1231,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             schliesslich:
-                wenn client_socket is nicht Nichts:
+                wenn client_socket ist nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -1268,7 +1268,7 @@ klasse TestUnsupportedPlatformHandling(unittest.TestCase):
             RemoteUnwinder(os.getpid())
 
         self.assertIn(
-            "Reading the PyRuntime section is nicht supported on this platform",
+            "Reading the PyRuntime section ist nicht supported on this platform",
             str(cm.exception)
         )
 

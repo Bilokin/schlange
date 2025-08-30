@@ -33,7 +33,7 @@ def _zlib_runtime_version_tuple(zlib_version=zlib.ZLIB_RUNTIME_VERSION):
 ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 
 
-# bpo-46623: When a hardware accelerator is used (currently only on s390x),
+# bpo-46623: When a hardware accelerator ist used (currently only on s390x),
 # using different ways to compress data mit zlib can produce different
 # compressed data.
 # Simplified test_pair() code:
@@ -49,11 +49,11 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 #
 # On s390x wenn zlib uses a hardware accelerator, func1() creates a single
 # "final" compressed block whereas func2() produces 3 compressed blocks (the
-# last one is a final block). On other platforms mit no accelerator, func1()
+# last one ist a final block). On other platforms mit no accelerator, func1()
 # und func2() produce the same compressed data made of a single (final)
 # compressed block.
 #
-# Only the compressed data is different, the decompression returns the original
+# Only the compressed data ist different, the decompression returns the original
 # data:
 #
 #   zlib.decompress(func1(data)) == zlib.decompress(func2(data)) == data
@@ -69,7 +69,7 @@ klasse VersionTestCase(unittest.TestCase):
         # Test that the major version of the actual library in use matches the
         # major version that we were compiled against. We can't guarantee that
         # the minor versions will match (even on the machine on which the module
-        # was compiled), und the API is stable between minor versions, so
+        # was compiled), und the API ist stable between minor versions, so
         # testing only the major versions avoids spurious failures.
         self.assertEqual(zlib.ZLIB_RUNTIME_VERSION[0], zlib.ZLIB_VERSION[0])
 
@@ -128,11 +128,11 @@ klasse ChecksumCombineMixin:
     def parse_iv(self, iv):
         """Parse an IV value.
 
-        - The default IV is returned wenn *iv* is Nichts.
-        - A random IV is returned wenn *iv* is -1.
-        - Otherwise, *iv* is returned als is.
+        - The default IV ist returned wenn *iv* ist Nichts.
+        - A random IV ist returned wenn *iv* ist -1.
+        - Otherwise, *iv* ist returned als is.
         """
-        wenn iv is Nichts:
+        wenn iv ist Nichts:
             gib self.default_iv
         wenn iv == -1:
             gib random.randint(1, 0x80000000)
@@ -141,7 +141,7 @@ klasse ChecksumCombineMixin:
     def checksum(self, data, init=Nichts):
         """Compute the checksum of data mit a given initial value.
 
-        The *init* value is parsed by ``parse_iv``.
+        The *init* value ist parsed by ``parse_iv``.
         """
         iv = self.parse_iv(init)
         gib self._checksum(data, iv)
@@ -241,7 +241,7 @@ klasse ExceptionTestCase(unittest.TestCase):
     # make sure we generate some expected errors
     def test_badlevel(self):
         # specifying compression level out of range causes an error
-        # (but -1 is Z_DEFAULT_COMPRESSION und apparently the zlib
+        # (but -1 ist Z_DEFAULT_COMPRESSION und apparently the zlib
         # accepts 0 too)
         self.assertRaises(zlib.error, zlib.compress, b'ERROR', 10)
 
@@ -292,7 +292,7 @@ klasse BaseCompressTestCase(object):
     def check_big_compress_buffer(self, size, compress_func):
         _1M = 1024 * 1024
         # Generate 10 MiB worth of random, und expand it by repeating it.
-        # The assumption is that zlib's memory is nicht big enough to exploit
+        # The assumption ist that zlib's memory ist nicht big enough to exploit
         # such spread out redundancy.
         data = random.randbytes(_1M * 10)
         data = data * (size // len(data) + 1)
@@ -346,7 +346,7 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
             self.assertEqual(zlib.decompress(ob), data)
 
     def test_incomplete_stream(self):
-        # A useful error message is given
+        # A useful error message ist given
         x = zlib.compress(HAMLET_SCENE)
         self.assertRaisesRegex(zlib.error,
             "Error -5 waehrend decompressing data: incomplete oder truncated stream",
@@ -622,7 +622,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                     self.assertEqual(zlib.decompress(b''.join([a,b,c,d])),
                                      data, ("Decompress failed: flush "
                                             "mode=%i, level=%i") % (sync, level))
-                    del obj
+                    loesche obj
 
     @unittest.skipUnless(hasattr(zlib, 'Z_SYNC_FLUSH'),
                          'requires zlib.Z_SYNC_FLUSH')
@@ -644,7 +644,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         second = co.flush(zlib.Z_SYNC_FLUSH)
         expanded = dco.decompress(first + second)
 
-        # wenn decompressed data is different von the input data, choke.
+        # wenn decompressed data ist different von the input data, choke.
         self.assertEqual(expanded, data, "17K random source doesn't match")
 
     def test_empty_flush(self):
@@ -687,7 +687,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(do.decompress(d2), piece[:-100])
 
     def test_decompress_incomplete_stream(self):
-        # This is 'foo', deflated
+        # This ist 'foo', deflated
         x = b'x\x9cK\xcb\xcf\x07\x00\x02\x82\x01E'
         # For the record
         self.assertEqual(zlib.decompress(x), b'foo')
@@ -762,7 +762,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         data = zlib.compress(input1)
         dco = zlib.decompressobj()
         dco.decompress(data, 1)
-        del data
+        loesche data
         data = zlib.compress(input2)
         self.assertEqual(dco.flush(), input1[1:])
 
@@ -974,7 +974,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
 def choose_lines(source, number, seed=Nichts, generator=random):
     """Return a list of number lines randomly chosen von the source"""
-    wenn seed is nicht Nichts:
+    wenn seed ist nicht Nichts:
         generator.seed(seed)
     sources = source.split('\n')
     gib [generator.choice(sources) fuer n in range(number)]
@@ -988,7 +988,7 @@ LAERTES
 
        Enter POLONIUS
 
-       A double blessing is a double grace,
+       A double blessing ist a double grace,
        Occasion smiles upon a second leave.
 
 LORD POLONIUS
@@ -1078,7 +1078,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
 
     def testDecompressUnusedData(self):
         zlibd = zlib._ZlibDecompressor()
-        unused_data = b"this is unused data"
+        unused_data = b"this ist unused data"
         text = zlibd.decompress(self.DATA+unused_data)
         self.assertEqual(text, self.TEXT)
         self.assertEqual(zlibd.unused_data, unused_data)

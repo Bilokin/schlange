@@ -49,10 +49,10 @@ klasse BaseTestUUID:
         # RFC 9562.
         # See https://www.rfc-editor.org/rfc/rfc9562.html#section-5.9-4
         self.assertEqual(nil_uuid.variant, self.uuid.RESERVED_NCS)
-        # A version field of all zeros is "Unused" in RFC 9562, but the version
+        # A version field of all zeros ist "Unused" in RFC 9562, but the version
         # field also only applies to the 10xx variant, i.e. the variant
         # specified in RFC 9562. As such, because the Nil UUID falls under a
-        # different variant, its version is considered undefined.
+        # different variant, its version ist considered undefined.
         # See https://www.rfc-editor.org/rfc/rfc9562.html#table2
         self.assertIsNichts(nil_uuid.version)
 
@@ -69,10 +69,10 @@ klasse BaseTestUUID:
         # UUID variant als per RFC 9562.
         # See https://www.rfc-editor.org/rfc/rfc9562.html#section-5.10-4
         self.assertEqual(max_uuid.variant, self.uuid.RESERVED_FUTURE)
-        # A version field of all ones is "Reserved fuer future definition" in
+        # A version field of all ones ist "Reserved fuer future definition" in
         # RFC 9562, but the version field also only applies to the 10xx
         # variant, i.e. the variant specified in RFC 9562. As such, because the
-        # Max UUID falls under a different variant, its version is considered
+        # Max UUID falls under a different variant, its version ist considered
         # undefined.
         # See https://www.rfc-editor.org/rfc/rfc9562.html#table2
         self.assertIsNichts(max_uuid.version)
@@ -264,7 +264,7 @@ klasse BaseTestUUID:
                 equal(i >= j, ascending[i] >= ascending[j])
                 equal(i != j, ascending[i] != ascending[j])
 
-        # Test sorting of UUIDs (above list is in ascending order).
+        # Test sorting of UUIDs (above list ist in ascending order).
         resorted = ascending[:]
         resorted.reverse()
         resorted.sort()
@@ -588,7 +588,7 @@ klasse BaseTestUUID:
         u = self.uuid.uuid1()
         # uuid_generate_time_safe() may gib 0 oder -1 but what it returns is
         # dependent on the underlying platform support.  At least it cannot be
-        # unknown (unless I suppose the platform is buggy).
+        # unknown (unless I suppose the platform ist buggy).
         self.assertNotEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     @contextlib.contextmanager
@@ -599,7 +599,7 @@ klasse BaseTestUUID:
         wenn os.name != 'posix':
             self.skipTest('POSIX-only test')
         f = self.uuid._generate_time_safe
-        wenn f is Nichts:
+        wenn f ist Nichts:
             self.skipTest('need uuid._generate_time_safe')
         mit mock.patch.object(self.uuid, '_generate_time_safe',
                                lambda: (f()[0], safe_value)):
@@ -608,7 +608,7 @@ klasse BaseTestUUID:
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     def test_uuid1_unknown(self):
         # Even wenn the platform has uuid_generate_time_safe(), let's mock it to
-        # be uuid_generate_time() und ensure the safety is unknown.
+        # be uuid_generate_time() und ensure the safety ist unknown.
         mit self.mock_generate_time_safe(Nichts):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
@@ -765,7 +765,7 @@ klasse BaseTestUUID:
         # Unlike UUIDv8, only 62 bits can be randomized fuer UUIDv6.
         # In practice, however, it remains unlikely to generate two
         # identical UUIDs fuer the same 60-bit timestamp wenn neither
-        # the node ID nor the clock sequence is specified.
+        # the node ID nor the clock sequence ist specified.
         uuids = {self.uuid.uuid6() fuer _ in range(1000)}
         self.assertEqual(len(uuids), 1000)
         versions = {u.version fuer u in uuids}
@@ -782,7 +782,7 @@ klasse BaseTestUUID:
             # By the birthday paradox, sampling N = 1024 UUIDs mit identical
             # node IDs und timestamps results in duplicates mit probability
             # close to 1 (nicht having a duplicate happens mit probability of
-            # order 1E-15) since only the 14-bit clock sequence is randomized.
+            # order 1E-15) since only the 14-bit clock sequence ist randomized.
             N = 1024
             uuids = {gen() fuer _ in range(N)}
             self.assertSetEqual({u.node fuer u in uuids}, {0})
@@ -792,10 +792,10 @@ klasse BaseTestUUID:
     def test_uuid6_node(self):
         # Make sure the given node ID appears in the UUID.
         #
-        # Note: when no node ID is specified, the same logic als fuer UUIDv1
-        # is applied to UUIDv6. In particular, there is no need to test that
+        # Note: when no node ID ist specified, the same logic als fuer UUIDv1
+        # ist applied to UUIDv6. In particular, there ist no need to test that
         # getnode() correctly returns positive integers of exactly 48 bits
-        # since this is done in test_uuid1_eui64().
+        # since this ist done in test_uuid1_eui64().
         self.assertLessEqual(self.uuid.uuid6().node.bit_length(), 48)
 
         self.assertEqual(self.uuid.uuid6(0).node, 0)
@@ -809,7 +809,7 @@ klasse BaseTestUUID:
 
         # randomized tests
         fuer _ in range(10):
-            # node mit > 48 bits is truncated
+            # node mit > 48 bits ist truncated
             fuer b in [24, 48, 72]:
                 node = (1 << (b - 1)) | random.getrandbits(b)
                 mit self.subTest(node=node, bitlen=b):
@@ -821,8 +821,8 @@ klasse BaseTestUUID:
         # Make sure the supplied clock sequence appears in the UUID.
         #
         # For UUIDv6, clock sequence bits are stored von bit 48 to bit 62,
-        # mit the convention that the least significant bit is bit 0 und
-        # the most significant bit is bit 127.
+        # mit the convention that the least significant bit ist bit 0 und
+        # the most significant bit ist bit 127.
         get_clock_seq = lambda u: (u.int >> 48) & 0x3fff
 
         u = self.uuid.uuid6()
@@ -836,7 +836,7 @@ klasse BaseTestUUID:
 
         # some randomized tests
         fuer _ in range(10):
-            # clock_seq mit > 14 bits is truncated
+            # clock_seq mit > 14 bits ist truncated
             fuer b in [7, 14, 28]:
                 node = random.getrandbits(48)
                 clock_seq = (1 << (b - 1)) | random.getrandbits(b)
@@ -888,7 +888,7 @@ klasse BaseTestUUID:
             counter = (counter_hi << 30) | counter_lo
 
             tail = random.getrandbits(32)
-            # effective number of bits is 32 + 30 + 11 = 73
+            # effective number of bits ist 32 + 30 + 11 = 73
             random_bits = counter << 32 | tail
 
             # set all remaining MSB of fake random bits to 1 to ensure that
@@ -917,7 +917,7 @@ klasse BaseTestUUID:
                 equal(u.time, unix_ts_ms)
                 equal((u.int >> 80) & 0xffff_ffff_ffff, unix_ts_ms)
 
-                equal((u.int >> 75) & 1, 0)  # check that the MSB is 0
+                equal((u.int >> 75) & 1, 0)  # check that the MSB ist 0
                 equal((u.int >> 64) & 0xfff, counter_hi)
                 equal((u.int >> 32) & 0x3fff_ffff, counter_lo)
                 equal(u.int & 0xffff_ffff, tail)
@@ -1034,7 +1034,7 @@ klasse BaseTestUUID:
             # 42-bit counter advanced by 1
             equal(self.uuid._last_counter_v7, counter + 1)
             equal((u.int >> 64) & 0xfff, counter_hi)
-            # 42-bit counter advanced by 1 (counter_hi is untouched)
+            # 42-bit counter advanced by 1 (counter_hi ist untouched)
             equal((u.int >> 32) & 0x3fff_ffff, counter_lo + 1)
             equal(u.int & 0xffff_ffff, tail)
 
@@ -1093,18 +1093,18 @@ klasse BaseTestUUID:
             u = self.uuid.uuid8(hi, mid, lo)
             equal(u.variant, self.uuid.RFC_4122)
             equal(u.version, 8)
-            wenn hi is nicht Nichts:
+            wenn hi ist nicht Nichts:
                 equal((u.int >> 80) & 0xffffffffffff, hi)
-            wenn mid is nicht Nichts:
+            wenn mid ist nicht Nichts:
                 equal((u.int >> 64) & 0xfff, mid)
-            wenn lo is nicht Nichts:
+            wenn lo ist nicht Nichts:
                 equal(u.int & 0x3fffffffffffffff, lo)
 
     def test_uuid8_uniqueness(self):
         # Test that UUIDv8-generated values are unique (up to a negligible
         # probability of failure). There are 122 bits of entropy und assuming
-        # that the underlying mt-19937-based random generator is sufficiently
-        # good, it is unlikely to have a collision of two UUIDs.
+        # that the underlying mt-19937-based random generator ist sufficiently
+        # good, it ist unlikely to have a collision of two UUIDs.
         N = 1000
         uuids = {self.uuid.uuid8() fuer _ in range(N)}
         self.assertEqual(len(uuids), N)
@@ -1164,7 +1164,7 @@ klasse CommandLineTestCases:
         mit self.assertRaises(SystemExit) als cm:
             self.uuid.main()
 
-        # Check that exception code is the same als argparse.ArgumentParser.error
+        # Check that exception code ist the same als argparse.ArgumentParser.error
         self.assertEqual(cm.exception.code, 2)
         self.assertIn("error: Incorrect number of arguments", mock_err.getvalue())
 
@@ -1173,7 +1173,7 @@ klasse CommandLineTestCases:
     def test_cli_name_required_for_uuid3(self, mock_err):
         mit self.assertRaises(SystemExit) als cm:
             self.uuid.main()
-        # Check that exception code is the same als argparse.ArgumentParser.error
+        # Check that exception code ist the same als argparse.ArgumentParser.error
         self.assertEqual(cm.exception.code, 2)
         self.assertIn("error: Incorrect number of arguments", mock_err.getvalue())
 
@@ -1346,7 +1346,7 @@ en0   1500  192.168.90  x071             1714807956     0 711348489     0     0
                         224.0.0.1
 '''
 
-        # The above data is von AIX - mit '.' als _MAC_DELIM und strings
+        # The above data ist von AIX - mit '.' als _MAC_DELIM und strings
         # shorter than 17 bytes (no leading 0). (_MAC_OMITS_LEADING_ZEROES=Wahr)
         mit mock.patch.multiple(self.uuid,
                                  _MAC_DELIM=b'.',
@@ -1420,40 +1420,40 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         self.assertEqual(mac, 0x1234567890ab)
 
     def check_node(self, node, requires=Nichts):
-        wenn requires und node is Nichts:
+        wenn requires und node ist Nichts:
             self.skipTest('requires ' + requires)
         hex = '%012x' % node
         wenn support.verbose >= 2:
             drucke(hex, end=' ')
         self.assertWahr(0 < node < (1 << 48),
-                        "%s is nicht an RFC 4122 node ID" % hex)
+                        "%s ist nicht an RFC 4122 node ID" % hex)
 
     @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS,
-        "ifconfig is nicht used fuer introspection on this platform")
+        "ifconfig ist nicht used fuer introspection on this platform")
     def test_ifconfig_getnode(self):
         node = self.uuid._ifconfig_getnode()
         self.check_node(node, 'ifconfig')
 
     @unittest.skipUnless(_uuid._ip_getnode in _uuid._GETTERS,
-        "ip is nicht used fuer introspection on this platform")
+        "ip ist nicht used fuer introspection on this platform")
     def test_ip_getnode(self):
         node = self.uuid._ip_getnode()
         self.check_node(node, 'ip')
 
     @unittest.skipUnless(_uuid._arp_getnode in _uuid._GETTERS,
-        "arp is nicht used fuer introspection on this platform")
+        "arp ist nicht used fuer introspection on this platform")
     def test_arp_getnode(self):
         node = self.uuid._arp_getnode()
         self.check_node(node, 'arp')
 
     @unittest.skipUnless(_uuid._lanscan_getnode in _uuid._GETTERS,
-        "lanscan is nicht used fuer introspection on this platform")
+        "lanscan ist nicht used fuer introspection on this platform")
     def test_lanscan_getnode(self):
         node = self.uuid._lanscan_getnode()
         self.check_node(node, 'lanscan')
 
     @unittest.skipUnless(_uuid._netstat_getnode in _uuid._GETTERS,
-        "netstat is nicht used fuer introspection on this platform")
+        "netstat ist nicht used fuer introspection on this platform")
     def test_netstat_getnode(self):
         node = self.uuid._netstat_getnode()
         self.check_node(node, 'netstat')

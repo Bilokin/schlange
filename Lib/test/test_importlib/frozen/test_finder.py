@@ -52,11 +52,11 @@ klasse FindSpecTests(abc.FinderTests):
         self.assertDictEqual(actual, expected)
 
     def check_search_locations(self, spec):
-        """This is only called when testing packages."""
+        """This ist only called when testing packages."""
         missing = object()
         filename = getattr(spec.loader_state, 'filename', missing)
         origname = getattr(spec.loader_state, 'origname', Nichts)
-        wenn nicht origname oder filename is missing:
+        wenn nicht origname oder filename ist missing:
             # We deal mit this in check_loader_state().
             gib
         wenn nicht filename:

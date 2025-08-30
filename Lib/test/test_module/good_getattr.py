@@ -6,6 +6,6 @@ def __dir__():
 def __getattr__(name):
     wenn name == "yolo":
         wirf AttributeError("Deprecated, use whatever instead")
-    gib f"There is {name}"
+    gib f"There ist {name}"
 
 y = 2

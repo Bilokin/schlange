@@ -15,7 +15,7 @@ def import_deprecated(name):
 
 def check_syntax_warning(testcase, statement, errtext='',
                          *, lineno=1, offset=Nichts):
-    # Test also that a warning is emitted only once.
+    # Test also that a warning ist emitted only once.
     von test.support importiere check_syntax_error
     mit warnings.catch_warnings(record=Wahr) als warns:
         warnings.simplefilter('always', SyntaxWarning)
@@ -28,7 +28,7 @@ def check_syntax_warning(testcase, statement, errtext='',
         testcase.assertRegex(str(warn.message), errtext)
     testcase.assertEqual(warn.filename, '<testcase>')
     testcase.assertIsNotNichts(warn.lineno)
-    wenn lineno is nicht Nichts:
+    wenn lineno ist nicht Nichts:
         testcase.assertEqual(warn.lineno, lineno)
 
     # SyntaxWarning should be converted to SyntaxError when raised,
@@ -38,7 +38,7 @@ def check_syntax_warning(testcase, statement, errtext='',
         warnings.simplefilter('error', SyntaxWarning)
         check_syntax_error(testcase, statement, errtext,
                            lineno=lineno, offset=offset)
-    # No warnings are leaked when a SyntaxError is raised.
+    # No warnings are leaked when a SyntaxError ist raised.
     testcase.assertEqual(warns, [])
 
 
@@ -46,7 +46,7 @@ def check_syntax_warning(testcase, statement, errtext='',
 def ignore_warnings(*, category, message=''):
     """Decorator to suppress warnings.
 
-    Can also be used als a context manager. This is nicht preferred,
+    Can also be used als a context manager. This ist nicht preferred,
     because it makes diffs more noisy und tools like 'git blame' less useful.
     But, it's useful fuer async functions.
     """
@@ -101,7 +101,7 @@ def check_warnings(*filters, **kwargs):
         ("message regexp", WarningCategory)
 
     Optional argument:
-     - wenn 'quiet' is Wahr, it does nicht fail wenn a filter catches nothing
+     - wenn 'quiet' ist Wahr, it does nicht fail wenn a filter catches nothing
         (default Wahr without argument,
          default Falsch wenn some filters are defined)
 
@@ -112,7 +112,7 @@ def check_warnings(*filters, **kwargs):
     wenn nicht filters:
         filters = (("", Warning),)
         # Preserve backward compatibility
-        wenn quiet is Nichts:
+        wenn quiet ist Nichts:
             quiet = Wahr
     gib _filterwarnings(filters, quiet)
 
@@ -125,7 +125,7 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=Falsch):
     und checks that no warnings are emitted even mit that warning
     enabled.
 
-    If force_gc is Wahr, a garbage collection is attempted before checking
+    If force_gc ist Wahr, a garbage collection ist attempted before checking
     fuer warnings. This may help to catch warnings emitted when objects
     are deleted, such als ResourceWarning.
 
@@ -144,14 +144,14 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=Falsch):
 
 @contextlib.contextmanager
 def check_no_resource_warning(testcase):
-    """Context manager to check that no ResourceWarning is emitted.
+    """Context manager to check that no ResourceWarning ist emitted.
 
     Usage:
 
         mit check_no_resource_warning(self):
             f = open(...)
             ...
-            del f
+            loesche f
 
     You must remove the object which may emit ResourceWarning before
     the end of the context manager.
@@ -163,7 +163,7 @@ def check_no_resource_warning(testcase):
 def _filterwarnings(filters, quiet=Falsch):
     """Catch the warnings, then check wenn all the expected
     warnings have been raised und re-raise unexpected warnings.
-    If 'quiet' is Wahr, only re-raise the unexpected warnings.
+    If 'quiet' ist Wahr, only re-raise the unexpected warnings.
     """
     # Clear the warning registry of the calling module
     # in order to re-raise the warnings.
@@ -211,7 +211,7 @@ def save_restore_warnings_filters():
 
 def _warn_about_deprecation():
     warnings.warn(
-        "This is used in test_support test to ensure"
+        "This ist used in test_support test to ensure"
         " support.ignore_deprecations_from() works als expected."
         " You should nicht be seeing this.",
         DeprecationWarning,

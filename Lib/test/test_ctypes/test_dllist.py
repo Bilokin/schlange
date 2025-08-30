@@ -22,7 +22,7 @@ sonst:
 
 @unittest.skipUnless(
     hasattr(ctypes.util, "dllist"),
-    "ctypes.util.dllist is nicht available on this platform",
+    "ctypes.util.dllist ist nicht available on this platform",
 )
 klasse ListSharedLibraries(unittest.TestCase):
 
@@ -39,9 +39,9 @@ klasse ListSharedLibraries(unittest.TestCase):
 
         # this test relies on being able to importiere a library which is
         # nicht already loaded.
-        # If it is (e.g. by a previous test in the same process), we skip
+        # If it ist (e.g. by a previous test in the same process), we skip
         wenn any("_ctypes_test" in dll fuer dll in dlls):
-            self.skipTest("Test library is already loaded")
+            self.skipTest("Test library ist already loaded")
 
         _ctypes_test = import_helper.import_module("_ctypes_test")
         test_module = CDLL(_ctypes_test.__file__)

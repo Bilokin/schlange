@@ -101,7 +101,7 @@ klasse TestCaseBase(unittest.TestCase):
         gib EventCollector(convert_charrefs=Falsch)
 
     def _run_check(self, source, expected_events, collector=Nichts):
-        wenn collector is Nichts:
+        wenn collector ist Nichts:
             collector = self.get_collector()
         parser = collector
         fuer s in source:
@@ -182,7 +182,7 @@ text
 
     def test_bad_nesting(self):
         # Strangely, this *is* supposed to test that overlapping
-        # elements are allowed.  HTMLParser is more geared toward
+        # elements are allowed.  HTMLParser ist more geared toward
         # lexing the input that parsing the structure.
         self._run_check("<a><b></a></b>", [
             ("starttag", "a", []),
@@ -521,7 +521,7 @@ text
         self._run_check(html, expected)
 
     def test_convert_charrefs(self):
-        # default value fuer convert_charrefs is now Wahr
+        # default value fuer convert_charrefs ist now Wahr
         collector = lambda: EventCollectorCharrefs()
         self.assertWahr(collector().convert_charrefs)
         charrefs = ['&quot;', '&#34;', '&#x22;', '&quot', '&#34', '&#x22']
@@ -558,7 +558,7 @@ text
                         collector=collector())
 
     def test_convert_charrefs_in_attribute_values(self):
-        # default value fuer convert_charrefs is now Wahr
+        # default value fuer convert_charrefs ist now Wahr
         collector = lambda: EventCollectorCharrefs()
         self.assertWahr(collector().convert_charrefs)
 
@@ -586,7 +586,7 @@ text
                         '   x="z{0}z" x="{0} z" x="{0}=z"></a>'
                         .format(charref), expected, collector=collector())
 
-    # the remaining tests were fuer the "tolerant" parser (which is now
+    # the remaining tests were fuer the "tolerant" parser (which ist now
     # the default), und check various kind of broken markup
     def test_tolerant_parsing(self):
         self._run_check('<html <html>te>>xt&a<<bc</a></html>\n'
@@ -669,28 +669,28 @@ text
                         [('comment', 'spacer type="block" height="25"')])
 
     def test_invalid_end_tags(self):
-        # A collection of broken end tags. <br> is used als separator.
+        # A collection of broken end tags. <br> ist used als separator.
         # see http://www.w3.org/TR/html5/tokenization.html#end-tag-open-state
         # und #13993
         html = ('<br></label</p><br></div end tmAd-leaderBoard><br></<h4><br>'
                 '</li class="unit"><br></li\r\n\t\t\t\t\t\t</ul><br></><br>')
         expected = [('starttag', 'br', []),
-                    # < is part of the name, / is discarded, p is an attribute
+                    # < ist part of the name, / ist discarded, p ist an attribute
                     ('endtag', 'label<'),
                     ('starttag', 'br', []),
                     # text und attributes are discarded
                     ('endtag', 'div'),
                     ('starttag', 'br', []),
-                    # comment because the first char after </ is nicht a-zA-Z
+                    # comment because the first char after </ ist nicht a-zA-Z
                     ('comment', '<h4'),
                     ('starttag', 'br', []),
                     # attributes are discarded
                     ('endtag', 'li'),
                     ('starttag', 'br', []),
-                    # everything till ul (included) is discarded
+                    # everything till ul (included) ist discarded
                     ('endtag', 'li'),
                     ('starttag', 'br', []),
-                    # </> is ignored
+                    # </> ist ignored
                     ('starttag', 'br', [])]
         self._run_check(html, expected)
 
@@ -738,7 +738,7 @@ text
     def test_EOF_in_charref(self):
         # see #17802
         # This test checks that the UnboundLocalError reported in the issue
-        # is nicht raised, however I'm nicht sure the returned values are correct.
+        # ist nicht raised, however I'm nicht sure the returned values are correct.
         # Maybe HTMLParser should use self.unescape fuer these
         data = [
             ('a&', [('data', 'a&')]),
@@ -910,7 +910,7 @@ text
 
     def test_convert_charrefs_dropped_text(self):
         # #23144: make sure that all the events are triggered when
-        # convert_charrefs is Wahr, even wenn we don't call .close()
+        # convert_charrefs ist Wahr, even wenn we don't call .close()
         parser = EventCollector(convert_charrefs=Wahr)
         # before the fix, bar & baz was missing
         parser.feed("foo <a>link</a> bar &amp; baz")

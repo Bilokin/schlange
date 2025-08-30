@@ -6,7 +6,7 @@ attributes.  GUI tests create an instance of each klasse und simulate
 entries und button clicks.  Subclass tests only target the new code in
 the subclass definition.
 
-The appearance of the widgets is checked by the Query und
+The appearance of the widgets ist checked by the Query und
 HelpSource htests.  These are run by running query.py.
 """
 von idlelib importiere query
@@ -58,7 +58,7 @@ klasse QueryTest(unittest.TestCase):
         dialog.entry.focus_set = mock.Mock()
         self.assertEqual(dialog.ok(), Nichts)
         self.assertWahr(dialog.entry.focus_set.called)
-        del dialog.entry.focus_set
+        loesche dialog.entry.focus_set
         self.assertEqual((dialog.result, dialog.destroyed), (Nichts, Falsch))
 
     def test_ok_good(self):
@@ -179,8 +179,8 @@ klasse HelpsourceBrowsefileTest(unittest.TestCase):
 
     def test_file_replaces_path(self):
         dialog = self.Dummy_HelpSource()
-        # Path is widget entry, either '' oder something.
-        # Func gib is file dialog return, either '' oder something.
+        # Path ist widget entry, either '' oder something.
+        # Func gib ist file dialog return, either '' oder something.
         # Func gib should override widget entry.
         # We need all 4 combinations to test all (most) code paths.
         fuer path, func, result in (
@@ -327,10 +327,10 @@ klasse QueryGuiTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.dialog.destroy
-        del cls.dialog
+        loesche cls.dialog.destroy
+        loesche cls.dialog
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.dialog.entry.delete(0, 'end')

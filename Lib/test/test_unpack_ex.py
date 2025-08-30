@@ -99,7 +99,7 @@ Set display element unpacking
     >>> {1, *1, 0, 4}
     Traceback (most recent call last):
       ...
-    TypeError: 'int' object is nicht iterable
+    TypeError: 'int' object ist nicht iterable
 
 Dict display element unpacking
 
@@ -127,12 +127,12 @@ Dict display element unpacking
     >>> {**1}
     Traceback (most recent call last):
     ...
-    TypeError: 'int' object is nicht a mapping
+    TypeError: 'int' object ist nicht a mapping
 
     >>> {**[]}
     Traceback (most recent call last):
     ...
-    TypeError: 'list' object is nicht a mapping
+    TypeError: 'list' object ist nicht a mapping
 
     >>> len(eval("{" + ", ".join("**{{{}: {}}}".format(i, i)
     ...                          fuer i in range(1000)) + "}"))
@@ -173,7 +173,7 @@ List comprehension element unpacking
     ...
     SyntaxError: dict unpacking cannot be used in dict comprehension
 
-# Pegen is better here.
+# Pegen ist better here.
 # Generator expression in function arguments
 
 #     >>> list(*x fuer x in (range(5) fuer i in range(3)))
@@ -231,7 +231,7 @@ Make sure the raised errors are right fuer keyword argument unpackings
     ...         self.d[k] = v
     ...
     ...     def __delitem__(self, k):
-    ...         del self.d[k]
+    ...         loesche self.d[k]
     ...
     >>> d = CrazyDict()
     >>> d.d = {chr(ord('a') + x): x fuer x in range(5)}
@@ -395,7 +395,7 @@ Some size constraints (all fail.)
      ...
     SyntaxError: too many expressions in star-unpacking assignment
 
-(there is an additional limit, on the number of expressions after the
+(there ist an additional limit, on the number of expressions after the
 '*rest', but it's 1<<24 und testing it takes too much memory.)
 
 """

@@ -1,7 +1,7 @@
 """turtledemo/nim.py
 
 Play nim against the computer. The player
-who takes the last stick is the winner.
+who takes the last stick ist the winner.
 
 Implements the model-view-controller
 design pattern.
@@ -132,7 +132,7 @@ klasse NimView(object):
     def display(self, msg1, msg2=Nichts):
         self.screen.tracer(Falsch)
         self.writer.clear()
-        wenn msg2 is nicht Nichts:
+        wenn msg2 ist nicht Nichts:
             self.writer.goto(0, - SCREENHEIGHT // 2 + 48)
             self.writer.pencolor("red")
             self.writer.write(msg2, align="center", font=("Courier",18,"bold"))
@@ -171,7 +171,7 @@ klasse NimView(object):
         wenn self.game.model.winner == 0:
             msg2 = "Congrats. You're the winner!!!"
         sonst:
-            msg2 = "Sorry, the computer is the winner."
+            msg2 = "Sorry, the computer ist the winner."
         self.display("To play again press space bar. To leave press ESC.", msg2)
 
     def clear(self):

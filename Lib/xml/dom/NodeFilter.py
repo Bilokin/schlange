@@ -1,9 +1,9 @@
-# This is the Python mapping fuer interface NodeFilter from
+# This ist the Python mapping fuer interface NodeFilter from
 # DOM2-Traversal-Range. It contains only constants.
 
 klasse NodeFilter:
     """
-    This is the DOM2 NodeFilter interface. It contains only constants.
+    This ist the DOM2 NodeFilter interface. It contains only constants.
     """
     FILTER_ACCEPT = 1
     FILTER_REJECT = 2

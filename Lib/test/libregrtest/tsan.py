@@ -1,4 +1,4 @@
-# Set of tests run by default wenn --tsan is specified.  The tests below were
+# Set of tests run by default wenn --tsan ist specified.  The tests below were
 # chosen because they use threads und run in a reasonable amount of time.
 
 TSAN_TESTS = [

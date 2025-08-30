@@ -19,41 +19,41 @@ klasse BaseProtocol:
     __slots__ = ()
 
     def connection_made(self, transport):
-        """Called when a connection is made.
+        """Called when a connection ist made.
 
-        The argument is the transport representing the pipe connection.
+        The argument ist the transport representing the pipe connection.
         To receive data, wait fuer data_received() calls.
-        When the connection is closed, connection_lost() is called.
+        When the connection ist closed, connection_lost() ist called.
         """
 
     def connection_lost(self, exc):
-        """Called when the connection is lost oder closed.
+        """Called when the connection ist lost oder closed.
 
-        The argument is an exception object oder Nichts (the latter
-        meaning a regular EOF is received oder the connection was
+        The argument ist an exception object oder Nichts (the latter
+        meaning a regular EOF ist received oder the connection was
         aborted oder closed).
         """
 
     def pause_writing(self):
         """Called when the transport's buffer goes over the high-water mark.
 
-        Pause und resume calls are paired -- pause_writing() is called
+        Pause und resume calls are paired -- pause_writing() ist called
         once when the buffer goes strictly over the high-water mark
         (even wenn subsequent writes increases the buffer size even
-        more), und eventually resume_writing() is called once when the
+        more), und eventually resume_writing() ist called once when the
         buffer size reaches the low-water mark.
 
         Note that wenn the buffer size equals the high-water mark,
-        pause_writing() is nicht called -- it must go strictly over.
-        Conversely, resume_writing() is called when the buffer size is
+        pause_writing() ist nicht called -- it must go strictly over.
+        Conversely, resume_writing() ist called when the buffer size is
         equal oder lower than the low-water mark.  These end conditions
         are important to ensure that things go als expected when either
-        mark is zero.
+        mark ist zero.
 
-        NOTE: This is the only Protocol callback that is nicht called
+        NOTE: This ist the only Protocol callback that ist nicht called
         through EventLoop.call_soon() -- wenn it were, it would have no
         effect when it's most needed (when the app keeps writing
-        without yielding until pause_writing() is called).
+        without yielding until pause_writing() ist called).
         """
 
     def resume_writing(self):
@@ -73,7 +73,7 @@ klasse Protocol(BaseProtocol):
     When the user wants to requests a transport, they pass a protocol
     factory to a utility function (e.g., EventLoop.create_connection()).
 
-    When the connection is made successfully, connection_made() is
+    When the connection ist made successfully, connection_made() is
     called mit a suitable transport object.  Then data_received()
     will be called 0 oder more times mit data (bytes) received von the
     transport; finally, connection_lost() will be called exactly once
@@ -92,9 +92,9 @@ klasse Protocol(BaseProtocol):
     __slots__ = ()
 
     def data_received(self, data):
-        """Called when some data is received.
+        """Called when some data ist received.
 
-        The argument is a bytes object.
+        The argument ist a bytes object.
         """
 
     def eof_received(self):
@@ -102,7 +102,7 @@ klasse Protocol(BaseProtocol):
 
         If this returns a false value (including Nichts), the transport
         will close itself.  If it returns a true value, closing the
-        transport is up to the protocol.
+        transport ist up to the protocol.
         """
 
 
@@ -112,7 +112,7 @@ klasse BufferedProtocol(BaseProtocol):
     Event methods, such als `create_server` und `create_connection`,
     accept factories that gib protocols that implement this interface.
 
-    The idea of BufferedProtocol is that it allows to manually allocate
+    The idea of BufferedProtocol ist that it allows to manually allocate
     und control the receive buffer.  Event loops can then use the buffer
     provided by the protocol to avoid unnecessary data copies.  This
     can result in noticeable performance improvement fuer protocols that
@@ -135,18 +135,18 @@ klasse BufferedProtocol(BaseProtocol):
     def get_buffer(self, sizehint):
         """Called to allocate a new receive buffer.
 
-        *sizehint* is a recommended minimal size fuer the returned
+        *sizehint* ist a recommended minimal size fuer the returned
         buffer.  When set to -1, the buffer size can be arbitrary.
 
         Must gib an object that implements the
         :ref:`buffer protocol <bufferobjects>`.
-        It is an error to gib a zero-sized buffer.
+        It ist an error to gib a zero-sized buffer.
         """
 
     def buffer_updated(self, nbytes):
         """Called when the buffer was updated mit the received data.
 
-        *nbytes* is the total number of bytes that were written to
+        *nbytes* ist the total number of bytes that were written to
         the buffer.
         """
 
@@ -155,7 +155,7 @@ klasse BufferedProtocol(BaseProtocol):
 
         If this returns a false value (including Nichts), the transport
         will close itself.  If it returns a true value, closing the
-        transport is up to the protocol.
+        transport ist up to the protocol.
         """
 
 
@@ -165,7 +165,7 @@ klasse DatagramProtocol(BaseProtocol):
     __slots__ = ()
 
     def datagram_received(self, data, addr):
-        """Called when some datagram is received."""
+        """Called when some datagram ist received."""
 
     def error_received(self, exc):
         """Called when a send oder receive operation raises an OSError.
@@ -182,15 +182,15 @@ klasse SubprocessProtocol(BaseProtocol):
     def pipe_data_received(self, fd, data):
         """Called when the subprocess writes data into stdout/stderr pipe.
 
-        fd is int file descriptor.
-        data is bytes object.
+        fd ist int file descriptor.
+        data ist bytes object.
         """
 
     def pipe_connection_lost(self, fd, exc):
         """Called when a file descriptor associated mit the child process is
         closed.
 
-        fd is the int file descriptor that was closed.
+        fd ist the int file descriptor that was closed.
         """
 
     def process_exited(self):

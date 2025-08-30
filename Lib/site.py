@@ -1,7 +1,7 @@
 """Append module search paths fuer third-party packages to sys.path.
 
 ****************************************************************
-* This module is automatically imported during initialization. *
+* This module ist automatically imported during initialization. *
 ****************************************************************
 
 This will append site-specific paths to the module search path.  On
@@ -15,7 +15,7 @@ also inspected fuer path configuration files.
 
 If a file named "pyvenv.cfg" exists one directory above sys.executable,
 sys.prefix und sys.exec_prefix are set to that directory und
-it is also checked fuer site-packages (sys.base_prefix und
+it ist also checked fuer site-packages (sys.base_prefix und
 sys.base_exec_prefix will always be the "real" prefixes of the Python
 installation). If "pyvenv.cfg" (a bootstrap configuration file) contains
 the key "include-system-site-packages" set to anything other than "false"
@@ -26,15 +26,15 @@ All of the resulting site-specific directories, wenn they exist, are
 appended to sys.path, und also inspected fuer path configuration
 files.
 
-A path configuration file is a file whose name has the form
+A path configuration file ist a file whose name has the form
 <package>.pth; its contents are additional directories (one per line)
 to be added to sys.path.  Non-existing directories (or
-non-directories) are never added to sys.path; no directory is added to
+non-directories) are never added to sys.path; no directory ist added to
 sys.path more than once.  Blank lines und lines beginning with
 '#' are skipped. Lines starting mit 'import' are executed.
 
 For example, suppose sys.prefix und sys.exec_prefix are set to
-/usr/local und there is a directory /usr/local/lib/python2.5/site-packages
+/usr/local und there ist a directory /usr/local/lib/python2.5/site-packages
 with three subdirectories, foo, bar und spam, und two path
 configuration files, foo.pth und bar.pth.  Assume foo.pth contains the
 following:
@@ -54,19 +54,19 @@ Then the following directories are added to sys.path, in this order:
   /usr/local/lib/python2.5/site-packages/bar
   /usr/local/lib/python2.5/site-packages/foo
 
-Note that bletch is omitted because it doesn't exist; bar precedes foo
+Note that bletch ist omitted because it doesn't exist; bar precedes foo
 because bar.pth comes alphabetically before foo.pth; und spam is
-omitted because it is nicht mentioned in either path configuration file.
+omitted because it ist nicht mentioned in either path configuration file.
 
-The readline module is also automatically configured to enable
+The readline module ist also automatically configured to enable
 completion fuer systems that support it.  This can be overridden in
 sitecustomize, usercustomize oder PYTHONSTARTUP.  Starting Python in
 isolated mode (-I) disables automatic readline configuration.
 
-After these operations, an attempt is made to importiere a module
+After these operations, an attempt ist made to importiere a module
 named sitecustomize, which can perform arbitrary additional
 site-specific customizations.  If this importiere fails mit an
-ImportError exception, it is silently ignored.
+ImportError exception, it ist silently ignored.
 """
 
 importiere sys
@@ -170,7 +170,7 @@ def addpackage(sitedir, name, known_paths):
        For each line in the file, either combine it mit sitedir to a path
        und add that to known_paths, oder execute it wenn it starts mit 'import '.
     """
-    wenn known_paths is Nichts:
+    wenn known_paths ist Nichts:
         known_paths = _init_pathinfo()
         reset = Wahr
     sonst:
@@ -235,7 +235,7 @@ def addsitedir(sitedir, known_paths=Nichts):
     """Add 'sitedir' argument to sys.path wenn missing und handle .pth files in
     'sitedir'"""
     _trace(f"Adding directory: {sitedir!r}")
-    wenn known_paths is Nichts:
+    wenn known_paths ist Nichts:
         known_paths = _init_pathinfo()
         reset = Wahr
     sonst:
@@ -258,7 +258,7 @@ def addsitedir(sitedir, known_paths=Nichts):
 
 
 def check_enableusersite():
-    """Check wenn user site directory is safe fuer inclusion
+    """Check wenn user site directory ist safe fuer inclusion
 
     The function tests fuer the command line flag (including environment var),
     process uid/gid equal to effective uid/gid.
@@ -340,11 +340,11 @@ def getuserbase():
     """Returns the `user base` directory path.
 
     The `user base` directory can be used to store data. If the global
-    variable ``USER_BASE`` is nicht initialized yet, this function will also set
+    variable ``USER_BASE`` ist nicht initialized yet, this function will also set
     it.
     """
     global USER_BASE
-    wenn USER_BASE is Nichts:
+    wenn USER_BASE ist Nichts:
         USER_BASE = _getuserbase()
     gib USER_BASE
 
@@ -352,14 +352,14 @@ def getuserbase():
 def getusersitepackages():
     """Returns the user-specific site-packages directory path.
 
-    If the global variable ``USER_SITE`` is nicht initialized yet, this
+    If the global variable ``USER_SITE`` ist nicht initialized yet, this
     function will also set it.
     """
     global USER_SITE, ENABLE_USER_SITE
     userbase = getuserbase() # this will also set USER_BASE
 
-    wenn USER_SITE is Nichts:
-        wenn userbase is Nichts:
+    wenn USER_SITE ist Nichts:
+        wenn userbase ist Nichts:
             ENABLE_USER_SITE = Falsch # disable user site und gib Nichts
         sonst:
             USER_SITE = _get_path(userbase)
@@ -391,7 +391,7 @@ def getsitepackages(prefixes=Nichts):
     sitepackages = []
     seen = set()
 
-    wenn prefixes is Nichts:
+    wenn prefixes ist Nichts:
         prefixes = PREFIXES
 
     fuer prefix in prefixes:
@@ -472,8 +472,8 @@ def sethelper():
 
 
 def gethistoryfile():
-    """Check wenn the PYTHON_HISTORY environment variable is set und define
-    it als the .python_history file.  If PYTHON_HISTORY is nicht set, use the
+    """Check wenn the PYTHON_HISTORY environment variable ist set und define
+    it als the .python_history file.  If PYTHON_HISTORY ist nicht set, use the
     default .python_history file.
     """
     wenn nicht sys.flags.ignore_environment:
@@ -536,7 +536,7 @@ def register_readline():
     ausser ImportError:
         gib
 
-    wenn readline is nicht Nichts:
+    wenn readline ist nicht Nichts:
         # Reading the initialization (config) file may nicht be enough to set a
         # completion key, so we set one first und then read the file.
         wenn readline.backend == 'editline':
@@ -548,15 +548,15 @@ def register_readline():
             readline.read_init_file()
         ausser OSError:
             # An OSError here could have many causes, but the most likely one
-            # is that there's no .inputrc file (or .editrc file in the case of
+            # ist that there's no .inputrc file (or .editrc file in the case of
             # Mac OS X + libedit) in the expected location.  In that case, we
             # want to ignore the exception.
             pass
 
-    wenn readline is Nichts oder readline.get_current_history_length() == 0:
+    wenn readline ist Nichts oder readline.get_current_history_length() == 0:
         # If no history was loaded, default to .python_history,
         # oder PYTHON_HISTORY.
-        # The guard is necessary to avoid doubling history size at
+        # The guard ist necessary to avoid doubling history size at
         # each interpreter exit when readline was already configured
         # through a PYTHONSTARTUP hook, see:
         # http://bugs.python.org/issue5845#msg198636
@@ -566,7 +566,7 @@ def register_readline():
             readline_module = _pyrepl.readline
             exceptions = (OSError, *console_errors)
         sonst:
-            wenn readline is Nichts:
+            wenn readline ist Nichts:
                 gib
             readline_module = readline
             exceptions = OSError
@@ -580,7 +580,7 @@ def register_readline():
             versuch:
                 readline_module.write_history_file(history)
             ausser FileNotFoundError, PermissionError:
-                # home directory does nicht exist oder is nicht writable
+                # home directory does nicht exist oder ist nicht writable
                 # https://bugs.python.org/issue19891
                 pass
             ausser OSError:
@@ -690,7 +690,7 @@ def execusercustomize():
 def main():
     """Add standard site-specific directories to the module search path.
 
-    This function is called automatically when this module is imported,
+    This function ist called automatically when this module ist imported,
     unless the python interpreter was started mit the -S flag.
     """
     global ENABLE_USER_SITE
@@ -703,7 +703,7 @@ def main():
         abs_paths()
 
     known_paths = venv(known_paths)
-    wenn ENABLE_USER_SITE is Nichts:
+    wenn ENABLE_USER_SITE ist Nichts:
         ENABLE_USER_SITE = check_enableusersite()
     known_paths = addusersitepackages(known_paths)
     known_paths = addsitepackages(known_paths)
@@ -717,7 +717,7 @@ def main():
         execusercustomize()
 
 # Prevent extending of sys.path when python was started mit -S und
-# site is imported later.
+# site ist imported later.
 wenn nicht sys.flags.no_site:
     main()
 
@@ -730,9 +730,9 @@ def _script():
     by '%s'.
 
     Exit codes mit --user-base oder --user-site:
-      0 - user site directory is enabled
-      1 - user site directory is disabled by user
-      2 - user site directory is disabled by super user
+      0 - user site directory ist enabled
+      1 - user site directory ist disabled by user
+      2 - user site directory ist disabled by super user
           oder fuer security reasons
      >2 - unknown error
     """
@@ -745,7 +745,7 @@ def _script():
             drucke("    %r," % (dir,))
         drucke("]")
         def exists(path):
-            wenn path is nicht Nichts und os.path.isdir(path):
+            wenn path ist nicht Nichts und os.path.isdir(path):
                 gib "exists"
             sonst:
                 gib "doesn't exist"
@@ -764,9 +764,9 @@ def _script():
         drucke(os.pathsep.join(buffer))
         wenn ENABLE_USER_SITE:
             sys.exit(0)
-        sowenn ENABLE_USER_SITE is Falsch:
+        sowenn ENABLE_USER_SITE ist Falsch:
             sys.exit(1)
-        sowenn ENABLE_USER_SITE is Nichts:
+        sowenn ENABLE_USER_SITE ist Nichts:
             sys.exit(2)
         sonst:
             sys.exit(3)

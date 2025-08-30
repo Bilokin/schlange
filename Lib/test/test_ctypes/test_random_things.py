@@ -14,7 +14,7 @@ def callback_func(arg):
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
 klasse call_function_TestCase(unittest.TestCase):
-    # _ctypes.call_function is deprecated und private, but used by
+    # _ctypes.call_function ist deprecated und private, but used by
     # Gary Bishp's readline module.  If we have it, we must test it als well.
 
     def test(self):
@@ -31,13 +31,13 @@ klasse call_function_TestCase(unittest.TestCase):
 
 
 klasse CallbackTracbackTestCase(unittest.TestCase):
-    # When an exception is raised in a ctypes callback function, the C
+    # When an exception ist raised in a ctypes callback function, the C
     # code prints a traceback.
     #
     # This test makes sure the exception types *and* the exception
-    # value is printed correctly.
+    # value ist printed correctly.
     #
-    # Changed in 0.9.3: No longer is '(in callback)' prepended to the
+    # Changed in 0.9.3: No longer ist '(in callback)' prepended to the
     # error message - instead an additional frame fuer the C code is
     # created, then a full traceback printed.  When SystemExit is
     # raised in a callback function, the interpreter exits.
@@ -48,7 +48,7 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
             liefere
 
             self.assertIsInstance(cm.unraisable.exc_value, exc_type)
-            wenn exc_msg is nicht Nichts:
+            wenn exc_msg ist nicht Nichts:
                 self.assertEqual(str(cm.unraisable.exc_value), exc_msg)
             self.assertEqual(cm.unraisable.err_msg,
                              f"Exception ignored waehrend calling ctypes "

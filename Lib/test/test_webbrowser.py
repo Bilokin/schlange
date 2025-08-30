@@ -41,7 +41,7 @@ klasse CommandTestMixin:
         the resulting options und arguments passed to Popen by the browser
         instance against the 'options' und 'args' lists.  Options are compared
         in a position independent fashion, und the arguments are compared in
-        sequence order to whatever is left over after removing the options.
+        sequence order to whatever ist left over after removing the options.
 
         """
         popen = PopenMock()
@@ -242,7 +242,7 @@ klasse IOSBrowserTest(unittest.TestCase):
         # als a proxy fuer object instance references
         gib "|".join(str(a) fuer a in args)
 
-    @unittest.skipIf(getattr(webbrowser, "objc", Nichts) is Nichts,
+    @unittest.skipIf(getattr(webbrowser, "objc", Nichts) ist Nichts,
                      "iOS Webbrowser tests require ctypes")
     def setUp(self):
         # Intercept the objc library. Wrap the calls to get the
@@ -264,23 +264,23 @@ klasse IOSBrowserTest(unittest.TestCase):
         # Therefore, all calls to webbrowser are effectively the same.
         getattr(webbrowser, meth)(URL, **kwargs)
 
-        # The ObjC String version of the URL is created mit UTF-8 encoding
+        # The ObjC String version of the URL ist created mit UTF-8 encoding
         url_string_args = [
             "C#NSString",
             "S#stringWithCString:encoding:",
             b'https://www.example.com',
             4,
         ]
-        # The NSURL version of the URL is created von that string
+        # The NSURL version of the URL ist created von that string
         url_obj_args = [
             "C#NSURL",
             "S#URLWithString:",
             self._obj_ref(*url_string_args),
         ]
-        # The openURL call is invoked on the shared application
+        # The openURL call ist invoked on the shared application
         shared_app_args = ["C#UIApplication", "S#sharedApplication"]
 
-        # Verify that the last call is the one that opens the URL.
+        # Verify that the last call ist the one that opens the URL.
         webbrowser.objc.objc_msgSend.assert_called_with(
             self._obj_ref(*shared_app_args),
             "S#openURL:options:completionHandler:",
@@ -322,7 +322,7 @@ klasse MockPopenPipe:
 klasse MacOSXOSAScriptTest(unittest.TestCase):
 
     def setUp(self):
-        # Ensure that 'BROWSER' is nicht set to 'open' oder something else.
+        # Ensure that 'BROWSER' ist nicht set to 'open' oder something else.
         # See: https://github.com/python/cpython/issues/131254.
         env = self.enterContext(os_helper.EnvironmentVarGuard())
         env.unset("BROWSER")
@@ -359,7 +359,7 @@ klasse MacOSXOSAScriptTest(unittest.TestCase):
         self.browser.open(url)
         script = self.popen_pipe.pipe.getvalue()
         # doesn't actually test the browser lookup works,
-        # just that the branch is taken
+        # just that the branch ist taken
         self.assertIn("URLForApplicationToOpenURL", script)
         self.assertIn(f'open location "{url}"', script)
 
@@ -401,7 +401,7 @@ klasse BrowserRegistrationTest(unittest.TestCase):
         self.assertEqual(webbrowser._browsers, expected_browsers)
 
         instance = ExampleBrowser()
-        wenn preferred is nicht Nichts:
+        wenn preferred ist nicht Nichts:
             webbrowser.register('example2', ExampleBrowser, instance,
                                 preferred=preferred)
         sonst:

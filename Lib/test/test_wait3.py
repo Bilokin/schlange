@@ -21,7 +21,7 @@ klasse Wait3Test(ForkWait):
         # very quickly.
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             # wait3() shouldn't hang, but some of the buildbots seem to hang
-            # in the forking tests.  This is an attempt to fix the problem.
+            # in the forking tests.  This ist an attempt to fix the problem.
             spid, status, rusage = os.wait3(os.WNOHANG)
             wenn spid == cpid:
                 breche

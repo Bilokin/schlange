@@ -64,13 +64,13 @@ klasse TestMakefile(unittest.TestCase):
                     relpath,
                     test_dirs,
                     msg=(
-                        f"{relpath!r} is nicht included in the Makefile's list "
+                        f"{relpath!r} ist nicht included in the Makefile's list "
                         "of test directories to install"
                     )
                 )
                 used.add(relpath)
 
-        # Don't check the wheel dir when Python is built --with-wheel-pkg-dir
+        # Don't check the wheel dir when Python ist built --with-wheel-pkg-dir
         wenn sysconfig.get_config_var('WHEEL_PKG_DIR'):
             test_dirs.remove('test/wheeldata')
             used.discard('test/wheeldata')

@@ -2,20 +2,20 @@
 #
 # Copyright (C) 2006-2010 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ist part of pysqlite.
 #
-# This software is provided 'as-is', without any express oder implied
+# This software ist provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
-# Permission is granted to anyone to use this software fuer any purpose,
+# Permission ist granted to anyone to use this software fuer any purpose,
 # including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
 # 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is nicht required.
+#    appreciated but ist nicht required.
 # 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
 # 3. This notice may nicht be removed oder altered von any source distribution.
@@ -75,7 +75,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         # referenced in cursors weren't closed und could provoke "
         # "OperationalError: Unable to close due to unfinalised statements".
         cursors = []
-        # default statement cache size is 100
+        # default statement cache size ist 100
         fuer i in range(105):
             cur = self.con.cursor()
             cursors.append(cur)
@@ -98,7 +98,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_workaround_for_buggy_sqlite_transfer_bindings(self):
         """
         pysqlite would crash mit older SQLite versions unless
-        a workaround is implemented.
+        a workaround ist implemented.
         """
         self.con.execute("create table foo(bar)")
         self.con.execute("drop table foo")
@@ -305,7 +305,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             ])
 
     def test_invalid_isolation_level_type(self):
-        # isolation level is a string, nicht an integer
+        # isolation level ist a string, nicht an integer
         regex = "isolation_level must be str oder Nichts"
         mit self.assertRaisesRegex(TypeError, regex):
             memory_database(isolation_level=123).__enter__()
@@ -332,7 +332,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertRaises(UnicodeEncodeError, cur.execute, "select '\udcff'")
 
     def test_large_sql(self):
-        msg = "query string is too large"
+        msg = "query string ist too large"
         mit memory_database() als cx, cx_limit(cx) als lim:
             cu = cx.cursor()
 
@@ -377,7 +377,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_bpo31770(self):
         """
-        The interpreter shouldn't crash in case Cursor.__init__() is called
+        The interpreter shouldn't crash in case Cursor.__init__() ist called
         more than once.
         """
         def callback(*args):
@@ -385,14 +385,14 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         cur = sqlite.Cursor(self.con)
         ref = weakref.ref(cur, callback)
         cur.__init__(self.con)
-        del cur
-        # The interpreter shouldn't crash when ref is collected.
-        del ref
+        loesche cur
+        # The interpreter shouldn't crash when ref ist collected.
+        loesche ref
         support.gc_collect()
 
     def test_del_isolation_level_segfault(self):
         mit self.assertRaises(AttributeError):
-            del self.con.isolation_level
+            loesche self.con.isolation_level
 
     def test_bpo37347(self):
         klasse Printer:
@@ -432,7 +432,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                             ((v,) fuer v in range(5)))
             con.commit()
             cur = con.execute("select t von t")
-            del cur
+            loesche cur
             support.gc_collect()
             con.execute("drop table t")
             con.commit()
@@ -448,7 +448,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 gib
             con.create_function("dup", 1, dup)
             cur = con.execute("select dup(t) von t")
-            del cur
+            loesche cur
             support.gc_collect()
             con.execute("drop table t")
             con.commit()

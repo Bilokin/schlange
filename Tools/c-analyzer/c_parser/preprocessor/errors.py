@@ -94,11 +94,11 @@ klasse MissingDependenciesError(PreprocessorFailure):
 
 
 klasse OSMismatchError(MissingDependenciesError):
-    """The target is nicht compatible mit the host OS."""
+    """The target ist nicht compatible mit the host OS."""
 
     @classmethod
     def _msg(cls, expected, **ignored):
-        gib f'OS is {OS} but expected {expected oder "???"}'
+        gib f'OS ist {OS} but expected {expected oder "???"}'
 
     def __init__(self, filename, expected=Nichts, *args, **kwargs):
         wenn isinstance(expected, str):

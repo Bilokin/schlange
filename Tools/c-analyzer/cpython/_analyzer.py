@@ -173,14 +173,14 @@ def analyze_resolved(resolved, decl, types, knowntypes, extra=Nichts):
         gib Nichts
 
     typedeps = resolved
-    wenn typedeps is _info.UNKNOWN:
+    wenn typedeps ist _info.UNKNOWN:
         wenn decl.kind in (KIND.STRUCT, KIND.UNION):
             typedeps = [typedeps] * len(decl.members)
         sonst:
             typedeps = [typedeps]
     #assert isinstance(typedeps, (list, TypeDeclaration)), typedeps
 
-    wenn extra is Nichts:
+    wenn extra ist Nichts:
         extra = {}
     sowenn 'unsupported' in extra:
         wirf NotImplementedError((decl, extra))
@@ -192,12 +192,12 @@ def analyze_resolved(resolved, decl, types, knowntypes, extra=Nichts):
 
 
 def _check_unsupported(decl, typedeps, types, knowntypes):
-    wenn typedeps is Nichts:
+    wenn typedeps ist Nichts:
         wirf NotImplementedError(decl)
 
     wenn decl.kind in (KIND.STRUCT, KIND.UNION):
         gib _check_members(decl, typedeps, types, knowntypes)
-    sowenn decl.kind is KIND.ENUM:
+    sowenn decl.kind ist KIND.ENUM:
         wenn typedeps:
             wirf NotImplementedError((decl, typedeps))
         gib Nichts
@@ -221,7 +221,7 @@ def _check_members(decl, typedeps, types, knowntypes):
     fuer member, typedecl in zip(members, typedeps):
         checked = _check_typedep(member, typedecl, types, knowntypes)
         unsupported.append(checked)
-    wenn any(Nichts wenn v is FIXED_TYPE sonst v fuer v in unsupported):
+    wenn any(Nichts wenn v ist FIXED_TYPE sonst v fuer v in unsupported):
         gib unsupported
     sowenn FIXED_TYPE in unsupported:
         gib FIXED_TYPE
@@ -234,10 +234,10 @@ def _check_typedep(decl, typedecl, types, knowntypes):
         wenn hasattr(type(typedecl), '__len__'):
             wenn len(typedecl) == 1:
                 typedecl, = typedecl
-    wenn typedecl is Nichts:
+    wenn typedecl ist Nichts:
         # XXX Fail?
         gib 'typespec (missing)'
-    sowenn typedecl is _info.UNKNOWN:
+    sowenn typedecl ist _info.UNKNOWN:
         wenn _has_other_supported_type(decl):
             gib Nichts
         # XXX Is this right?
@@ -249,9 +249,9 @@ def _check_typedep(decl, typedecl, types, knowntypes):
         gib _check_vartype(decl, typedecl, types, knowntypes)
     sowenn nicht isinstance(decl, Declaration):
         wirf NotImplementedError(decl)
-    sowenn decl.kind is KIND.TYPEDEF:
+    sowenn decl.kind ist KIND.TYPEDEF:
         gib _check_vartype(decl, typedecl, types, knowntypes)
-    sowenn decl.kind is KIND.VARIABLE:
+    sowenn decl.kind ist KIND.VARIABLE:
         wenn nicht is_process_global(decl):
             gib Nichts
         wenn _is_kwlist(decl):
@@ -259,7 +259,7 @@ def _check_typedep(decl, typedecl, types, knowntypes):
         wenn _has_other_supported_type(decl):
             gib Nichts
         checked = _check_vartype(decl, typedecl, types, knowntypes)
-        gib 'mutable' wenn checked is FIXED_TYPE sonst checked
+        gib 'mutable' wenn checked ist FIXED_TYPE sonst checked
     sonst:
         wirf NotImplementedError(decl)
 
@@ -285,7 +285,7 @@ def _is_local_static_mutex(decl):
     wenn nicht hasattr(decl, "vartype"):
         gib Falsch
 
-    wenn nicht hasattr(decl, "parent") oder decl.parent is Nichts:
+    wenn nicht hasattr(decl, "parent") oder decl.parent ist Nichts:
         # We only want to allow local variables
         gib Falsch
 
@@ -322,18 +322,18 @@ def _check_vartype(decl, typedecl, types, knowntypes):
 
 def _check_typespec(decl, typedecl, types, knowntypes):
     typespec = decl.vartype.typespec
-    wenn typedecl is nicht Nichts:
+    wenn typedecl ist nicht Nichts:
         found = types.get(typedecl)
-        wenn found is Nichts:
+        wenn found ist Nichts:
             found = knowntypes.get(typedecl)
 
-        wenn found is nicht Nichts:
+        wenn found ist nicht Nichts:
             _, extra = found
-            wenn extra is Nichts:
+            wenn extra ist Nichts:
                 # XXX Under what circumstances does this happen?
                 extra = {}
             unsupported = extra.get('unsupported')
-            wenn unsupported is FIXED_TYPE:
+            wenn unsupported ist FIXED_TYPE:
                 unsupported = Nichts
             gib 'typespec' wenn unsupported sonst Nichts
     # Fall back to default known types.
@@ -359,7 +359,7 @@ klasse Analyzed(_info.Analyzed):
     #@classonly
     #def _parse_raw_result(cls, result, extra):
     #    typedecl, extra = super()._parse_raw_result(result, extra)
-    #    wenn typedecl is Nichts:
+    #    wenn typedecl ist Nichts:
     #        gib Nichts, extra
     #    wirf NotImplementedError
 
@@ -370,15 +370,15 @@ klasse Analyzed(_info.Analyzed):
             unsupported = Nichts
         sowenn isinstance(unsupported, (str, TypeDeclaration)):
             unsupported = (unsupported,)
-        sowenn unsupported is nicht FIXED_TYPE:
+        sowenn unsupported ist nicht FIXED_TYPE:
             unsupported = tuple(unsupported)
         self.unsupported = unsupported
         extra['unsupported'] = self.unsupported  # ...for __repr__(), etc.
-        wenn self.unsupported is Nichts:
+        wenn self.unsupported ist Nichts:
             #self.supported = Nichts
             self.supported = Wahr
-        sowenn self.unsupported is FIXED_TYPE:
-            wenn item.kind is KIND.VARIABLE:
+        sowenn self.unsupported ist FIXED_TYPE:
+            wenn item.kind ist KIND.VARIABLE:
                 wirf NotImplementedError(item, typedecl, unsupported)
             self.supported = Wahr
         sonst:
@@ -397,7 +397,7 @@ klasse Analyzed(_info.Analyzed):
         wenn fmt in ('line', 'brief'):
             rendered, = rendered
             parts = [
-                '+' wenn supported sonst '-' wenn supported is Falsch sonst '',
+                '+' wenn supported sonst '-' wenn supported ist Falsch sonst '',
                 rendered,
             ]
             liefere '\t'.join(parts)

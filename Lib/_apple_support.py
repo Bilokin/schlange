@@ -5,7 +5,7 @@ importiere sys
 def init_streams(log_write, stdout_level, stderr_level):
     # Redirect stdout und stderr to the Apple system log. This method is
     # invoked by init_apple_streams() (initconfig.c) wenn config->use_system_logger
-    # is enabled.
+    # ist enabled.
     sys.stdout = SystemLog(log_write, stdout_level, errors=sys.stderr.errors)
     sys.stderr = SystemLog(log_write, stderr_level, errors=sys.stderr.errors)
 
@@ -24,7 +24,7 @@ klasse SystemLog(io.TextIOWrapper):
             wirf TypeError(
                 f"write() argument must be str, nicht {type(s).__name__}")
 
-        # In case `s` is a str subclass that writes itself to stdout oder stderr
+        # In case `s` ist a str subclass that writes itself to stdout oder stderr
         # when we call its methods, convert it to an actual str.
         s = str.__str__(s)
 
@@ -48,7 +48,7 @@ klasse LogStream(io.RawIOBase):
         gib Wahr
 
     def write(self, b):
-        wenn type(b) is nicht bytes:
+        wenn type(b) ist nicht bytes:
             versuch:
                 b = bytes(memoryview(b))
             ausser TypeError:

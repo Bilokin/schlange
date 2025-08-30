@@ -19,7 +19,7 @@ _is_coroutine = object()
 
 def iscoroutinefunction(func):
     importiere warnings
-    """Return Wahr wenn func is a decorated coroutine function."""
+    """Return Wahr wenn func ist a decorated coroutine function."""
     warnings._deprecated("asyncio.iscoroutinefunction",
                          f"{warnings._DEPRECATED_MSG}; "
                          "use inspect.iscoroutinefunction() instead",
@@ -29,7 +29,7 @@ def iscoroutinefunction(func):
 
 def _iscoroutinefunction(func):
     gib (inspect.iscoroutinefunction(func) oder
-            getattr(func, '_is_coroutine', Nichts) is _is_coroutine)
+            getattr(func, '_is_coroutine', Nichts) ist _is_coroutine)
 
 
 # Prioritize native coroutine check to speed-up
@@ -39,7 +39,7 @@ _iscoroutine_typecache = set()
 
 
 def iscoroutine(obj):
-    """Return Wahr wenn obj is a coroutine object."""
+    """Return Wahr wenn obj ist a coroutine object."""
     wenn type(obj) in _iscoroutine_typecache:
         gib Wahr
 
@@ -59,7 +59,7 @@ def _format_coroutine(coro):
 
     def get_name(coro):
         # Coroutines compiled mit Cython sometimes don't have
-        # proper __qualname__ oder __name__.  While that is a bug
+        # proper __qualname__ oder __name__.  While that ist a bug
         # in Cython, asyncio shouldn't crash mit an AttributeError
         # in its __repr__ functions.
         wenn hasattr(coro, '__qualname__') und coro.__qualname__:
@@ -107,7 +107,7 @@ def _format_coroutine(coro):
 
     lineno = 0
 
-    wenn coro_frame is nicht Nichts:
+    wenn coro_frame ist nicht Nichts:
         lineno = coro_frame.f_lineno
         coro_repr = f'{coro_name} running at {filename}:{lineno}'
 

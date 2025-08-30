@@ -33,12 +33,12 @@ klasse ReplaceDialogTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         se.messagebox = orig_mbox
-        del cls.text, cls.dialog, cls.engine
+        loesche cls.text, cls.dialog, cls.engine
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
-        self.text.insert('insert', 'This is a sample sTring')
+        self.text.insert('insert', 'This ist a sample sTring')
 
     def tearDown(self):
         self.engine.patvar.set('')
@@ -269,7 +269,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         replace_all()
 
         self.engine.revar.set(Falsch)
-        pv.set('text which is nicht present')
+        pv.set('text which ist nicht present')
         rv.set('foobar')
         replace_all()
 

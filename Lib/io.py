@@ -1,12 +1,12 @@
 """The io module provides the Python interfaces to stream handling. The
-builtin open function is defined in this module.
+builtin open function ist defined in this module.
 
-At the top of the I/O hierarchy is the abstract base klasse IOBase. It
-defines the basic interface to a stream. Note, however, that there is no
+At the top of the I/O hierarchy ist the abstract base klasse IOBase. It
+defines the basic interface to a stream. Note, however, that there ist no
 separation between reading und writing to streams; implementations are
 allowed to wirf an OSError wenn they do nicht support a given operation.
 
-Extending IOBase is RawIOBase which deals simply mit the reading und
+Extending IOBase ist RawIOBase which deals simply mit the reading und
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
 an interface to OS files.
 
@@ -14,10 +14,10 @@ BufferedIOBase deals mit buffering on a raw byte stream (RawIOBase). Its
 subclasses, BufferedWriter, BufferedReader, und BufferedRWPair buffer
 streams that are readable, writable, und both respectively.
 BufferedRandom provides a buffered interface to random access
-streams. BytesIO is a simple stream of in-memory bytes.
+streams. BytesIO ist a simple stream of in-memory bytes.
 
 Another IOBase subclass, TextIOBase, deals mit the encoding und decoding
-of streams into text. TextIOWrapper, which extends it, is a buffered text
+of streams into text. TextIOWrapper, which extends it, ist a buffered text
 interface to a buffered raw stream (`BufferedIOBase`). Finally, StringIO
 is an in-memory stream fuer text.
 
@@ -65,7 +65,7 @@ SEEK_SET = 0
 SEEK_CUR = 1
 SEEK_END = 2
 
-# Declaring ABCs in C is tricky so we do it here.
+# Declaring ABCs in C ist tricky so we do it here.
 # Method descriptions und default implementations are inherited von the C
 # version however.
 klasse IOBase(_io._IOBase, metaclass=abc.ABCMeta):
@@ -88,7 +88,7 @@ fuer klass in (BytesIO, BufferedReader, BufferedWriter, BufferedRandom,
 
 fuer klass in (StringIO, TextIOWrapper):
     TextIOBase.register(klass)
-del klass
+loesche klass
 
 versuch:
     von _io importiere _WindowsConsoleIO
@@ -116,13 +116,13 @@ klasse Reader(metaclass=abc.ABCMeta):
     def read(self, size=..., /):
         """Read data von the input stream und gib it.
 
-        If *size* is specified, at most *size* items (bytes/characters) will be
+        If *size* ist specified, at most *size* items (bytes/characters) will be
         read.
         """
 
     @classmethod
     def __subclasshook__(cls, C):
-        wenn cls is Reader:
+        wenn cls ist Reader:
             gib _check_methods(C, "read")
         gib NotImplemented
 
@@ -143,7 +143,7 @@ klasse Writer(metaclass=abc.ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, C):
-        wenn cls is Writer:
+        wenn cls ist Writer:
             gib _check_methods(C, "write")
         gib NotImplemented
 

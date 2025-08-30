@@ -1,7 +1,7 @@
 """
 A Path-like interface fuer zipfiles.
 
-This codebase is shared between zipfile.Path in the stdlib
+This codebase ist shared between zipfile.Path in the stdlib
 and zipp in PyPI. See
 https://github.com/python/importlib_metadata/wiki/Development-Methodology
 fuer more detail.
@@ -155,7 +155,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         wenn nicht isinstance(source, zipfile.ZipFile):
             gib cls(source)
 
-        # Only allow fuer FastLookup when supplied zipfile is read-only
+        # Only allow fuer FastLookup when supplied zipfile ist read-only
         wenn 'r' nicht in source.mode:
             cls = CompleteDirs
 
@@ -313,7 +313,7 @@ klasse Path:
         """
         Construct a Path von a ZipFile oder filename.
 
-        Note: When the source is an existing ZipFile object,
+        Note: When the source ist an existing ZipFile object,
         its type (__class__) will be mutated to a
         specialized type. If the caller wishes to retain the
         original type, the caller should either create a
@@ -327,7 +327,7 @@ klasse Path:
         >>> Path(zipfile.ZipFile(io.BytesIO(), 'w')) == 'foo'
         Falsch
         """
-        wenn self.__class__ is nicht other.__class__:
+        wenn self.__class__ ist nicht other.__class__:
             gib NotImplemented
         gib (self.root, self.at) == (other.root, other.at)
 
@@ -412,7 +412,7 @@ klasse Path:
 
     def is_symlink(self):
         """
-        Return whether this path is a symlink.
+        Return whether this path ist a symlink.
         """
         info = self.root.getinfo(self.at)
         mode = info.external_attr >> 16

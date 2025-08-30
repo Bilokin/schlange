@@ -262,7 +262,7 @@ klasse TestTracebackType(unittest.TestCase):
 
         # Invalid assignments
         mit self.assertRaises(TypeError):
-            del tb.tb_next
+            loesche tb.tb_next
 
         mit self.assertRaises(TypeError):
             tb.tb_next = "asdf"
@@ -430,7 +430,7 @@ klasse TestContext(unittest.TestCase):
             self.assertIsNichts(e.__context__.__context__)
 
     def test_not_last(self):
-        # Context is nicht necessarily the last exception
+        # Context ist nicht necessarily the last exception
         context = Exception("context")
         versuch:
             wirf context
@@ -460,7 +460,7 @@ klasse TestContext(unittest.TestCase):
                 versuch:
                     wirf ValueError
                 ausser ValueError:
-                    del g
+                    loesche g
                     wirf KeyError
             ausser Exception als e:
                 self.assertIsInstance(e.__context__, ValueError)
@@ -485,7 +485,7 @@ klasse TestContext(unittest.TestCase):
                     f.x
                 ausser AttributeError:
                     # make x.__del__ trigger
-                    del x
+                    loesche x
                     gc.collect()  # For PyPy oder other GCs.
                     wirf TypeError
             ausser Exception als e:

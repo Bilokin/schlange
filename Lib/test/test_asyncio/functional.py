@@ -49,7 +49,7 @@ klasse FunctionalTestCaseMixin:
                    backlog=1,
                    max_clients=10):
 
-        wenn addr is Nichts:
+        wenn addr ist Nichts:
             wenn hasattr(socket, 'AF_UNIX') und family == socket.AF_UNIX:
                 mit tempfile.NamedTemporaryFile() als tmp:
                     addr = tmp.name
@@ -57,8 +57,8 @@ klasse FunctionalTestCaseMixin:
                 addr = ('127.0.0.1', 0)
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
-        wenn timeout is Nichts:
-            wirf RuntimeError('timeout is required')
+        wenn timeout ist Nichts:
+            wirf RuntimeError('timeout ist required')
         wenn timeout <= 0:
             wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
@@ -72,8 +72,8 @@ klasse FunctionalTestCaseMixin:
 
         sock = socket.socket(family, socket.SOCK_STREAM)
 
-        wenn timeout is Nichts:
-            wirf RuntimeError('timeout is required')
+        wenn timeout ist Nichts:
+            wirf RuntimeError('timeout ist required')
         wenn timeout <= 0:
             wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)

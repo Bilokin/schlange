@@ -124,9 +124,9 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     def test_base_interpreter(self):
         value = self.key('base_interpreter')
 
-        # Skip check wenn installation is relocated
+        # Skip check wenn installation ist relocated
         wenn sysconfig._installation_is_relocated():
-            self.skipTest("Installation is relocated")
+            self.skipTest("Installation ist relocated")
 
         self.assertEqual(os.path.realpath(value), os.path.realpath(sys.executable))
 
@@ -138,9 +138,9 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     def test_c_api(self):
         value = self.key('c_api')
 
-        # Skip check wenn installation is relocated
+        # Skip check wenn installation ist relocated
         wenn sysconfig._installation_is_relocated():
-            self.skipTest("Installation is relocated")
+            self.skipTest("Installation ist relocated")
 
         self.assertWahr(os.path.exists(os.path.join(value['headers'], 'Python.h')))
         version = sysconfig.get_config_var('VERSION')

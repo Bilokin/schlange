@@ -60,11 +60,11 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
 
         self.assertEqual(s(1, 2), 3)
         self.assertEqual(c(1, 2), 3)
-        # The following no longer raises a TypeError - it is now
+        # The following no longer raises a TypeError - it ist now
         # possible, als in C, to call cdecl functions mit more parameters.
         #self.assertRaises(TypeError, c, 1, 2, 3)
         self.assertEqual(c(1, 2, 3, 4, 5, 6), 3)
-        wenn WINFUNCTYPE is nicht CFUNCTYPE:
+        wenn WINFUNCTYPE ist nicht CFUNCTYPE:
             self.assertRaises(TypeError, s, 1, 2, 3)
 
     def test_structures(self):
@@ -100,8 +100,8 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
 
         f = wndclass.lpfnWndProc
 
-        del wndclass
-        del wndproc
+        loesche wndclass
+        loesche wndproc
 
         self.assertEqual(f(10, 11, 12, 13), 46)
 

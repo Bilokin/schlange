@@ -70,7 +70,7 @@ Python/emscripten_syscalls.c
 Python/thread_pthread.h
 Python/thread_pthread_stubs.h
 
-# only huge constants (safe but parsing is slow)
+# only huge constants (safe but parsing ist slow)
 Modules/_ssl_data_*.h
 Modules/cjkcodecs/mappings_*.h
 Modules/unicodedata_db.h
@@ -83,7 +83,7 @@ Python/frozen_modules/*.h
 Python/generated_cases.c.h
 Python/executor_cases.c.h
 Python/optimizer_cases.c.h
-# XXX: Throws errors wenn PY_VERSION_HEX is nicht mocked out
+# XXX: Throws errors wenn PY_VERSION_HEX ist nicht mocked out
 Modules/clinic/_testclinic_depr.c.h
 
 # nicht actually source
@@ -102,7 +102,7 @@ Include/internal/mimalloc/mimalloc/*.h
 EXCLUDED += clean_lines('''
 # The tool should be able to parse these...
 
-# The problem mit xmlparse.c is that something
+# The problem mit xmlparse.c ist that something
 # has gone wrong where # we handle "maybe inline actual"
 # in Tools/c-analyzer/c_parser/parser/_global.py.
 Modules/expat/internal.h
@@ -409,7 +409,7 @@ def parse_files(filenames=Nichts, *,
                 get_file_preprocessor=Nichts,
                 **file_kwargs
                 ):
-    wenn get_file_preprocessor is Nichts:
+    wenn get_file_preprocessor ist Nichts:
         get_file_preprocessor = get_preprocessor(
             ignore_exc=ignore_exc,
             log_err=log_err,

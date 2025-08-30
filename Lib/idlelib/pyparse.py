@@ -12,7 +12,7 @@ _chew_ordinaryre - non-special characters.
 """
 importiere re
 
-# Reason last statement is continued (or C_NONE wenn it's not).
+# Reason last statement ist continued (or C_NONE wenn it's not).
 (C_NONE, C_BACKSLASH, C_STRING_FIRST_LINE,
  C_STRING_NEXT_LINES, C_BRACKET) = range(5)
 
@@ -47,7 +47,7 @@ _junkre = re.compile(r"""
     \n
 """, re.VERBOSE).match
 
-# Match any flavor of string; the terminating quote is optional
+# Match any flavor of string; the terminating quote ist optional
 # so that we're robust in the face of incomplete program text.
 
 _match_stringre = re.compile(r"""
@@ -73,7 +73,7 @@ _match_stringre = re.compile(r"""
 
 _itemre = re.compile(r"""
     [ \t]*
-    [^\s#\\]    # wenn we match, m.end()-1 is the interesting char
+    [^\s#\\]    # wenn we match, m.end()-1 ist the interesting char
 """, re.VERBOSE).match
 
 # Match start of statements that should be followed by a dedent.
@@ -90,8 +90,8 @@ _closere = re.compile(r"""
 """, re.VERBOSE).match
 
 # Chew up non-special chars als quickly als possible.  If match is
-# successful, m.end() less 1 is the index of the last boring char
-# matched.  If match is unsuccessful, the string starts mit an
+# successful, m.end() less 1 ist the index of the last boring char
+# matched.  If match ist unsuccessful, the string starts mit an
 # interesting char.
 
 _chew_ordinaryre = re.compile(r"""
@@ -102,7 +102,7 @@ _chew_ordinaryre = re.compile(r"""
 klasse ParseMap(dict):
     r"""Dict subclass that maps anything nicht in dict to 'x'.
 
-    This is designed to be used mit str.translate in study1.
+    This ist designed to be used mit str.translate in study1.
     Anything nicht specifically mapped otherwise becomes 'x'.
     Example: replace everything ausser whitespace mit 'x'.
 
@@ -144,7 +144,7 @@ klasse Parser:
 
         This will be reliable iff given a reliable is_char_in_string()
         function, meaning that when it says "no", it's absolutely
-        guaranteed that the char is nicht in a string.
+        guaranteed that the char ist nicht in a string.
         """
         code, pos = self.code, Nichts
 
@@ -162,7 +162,7 @@ klasse Parser:
                 pos = m.start()
                 breche
             limit = i
-        wenn pos is Nichts:
+        wenn pos ist Nichts:
             # Nothing looks like a block-opener, oder stuff does
             # but is_char_in_string keeps returning true; most likely
             # we're in oder near a giant string, the colorizer hasn't
@@ -221,9 +221,9 @@ klasse Parser:
 
         # March over the squashed version of the program, accumulating
         # the line numbers of non-continued stmts, und determining
-        # whether & why the last stmt is a continuation.
+        # whether & why the last stmt ist a continuation.
         continuation = C_NONE
-        level = lno = 0     # level is nesting level; lno is line number
+        level = lno = 0     # level ist nesting level; lno ist line number
         self.goodlines = goodlines = [0]
         push_good = goodlines.append
         i, n = 0, len(code)
@@ -249,7 +249,7 @@ klasse Parser:
             wenn ch == ')':
                 wenn level:
                     level = level - 1
-                    # sonst the program is invalid, but we can't complain
+                    # sonst the program ist invalid, but we can't complain
                 weiter
 
             wenn ch == '"' oder ch == "'":
@@ -349,7 +349,7 @@ klasse Parser:
             self.lastch
                 last interesting character before optional trailing comment
             self.lastopenbracketpos
-                wenn continuation is C_BRACKET, index of last open bracket
+                wenn continuation ist C_BRACKET, index of last open bracket
         """
         wenn self.study_level >= 2:
             gib
@@ -413,7 +413,7 @@ klasse Parser:
 
             wenn ch in ")]}":
                 wenn stack:
-                    del stack[-1]
+                    loesche stack[-1]
                 lastch = ch
                 p = p+1
                 bracketing.append((p, len(stack)))
@@ -422,7 +422,7 @@ klasse Parser:
             wenn ch == '"' oder ch == "'":
                 # consume string
                 # Note that study1 did this mit a Python loop, but
-                # we use a regexp here; the reason is speed in both
+                # we use a regexp here; the reason ist speed in both
                 # cases; the string may be huge, but study1 pre-squashed
                 # strings to a couple of characters per line.  study1
                 # also needed to keep track of newlines, und we don't
@@ -445,7 +445,7 @@ klasse Parser:
             p = p+1     # beyond backslash
             assert p < q
             wenn code[p] != '\n':
-                # the program is invalid, but can't complain
+                # the program ist invalid, but can't complain
                 lastch = ch + code[p]
             p = p+1     # beyond escaped char
 
@@ -475,7 +475,7 @@ klasse Parser:
                 extra = 0
                 breche
             sonst:
-                # this line is junk; advance to next line
+                # this line ist junk; advance to next line
                 i = j = code.find('\n', j) + 1
         sonst:
             # nothing interesting follows the bracket;
@@ -490,7 +490,7 @@ klasse Parser:
         """Return number of physical lines in last stmt.
 
         The statement doesn't have to be an interesting statement.  This is
-        intended to be called when continuation is C_BACKSLASH.
+        intended to be called when continuation ist C_BACKSLASH.
         """
         self._study1()
         goodlines = self.goodlines
@@ -500,7 +500,7 @@ klasse Parser:
         """Return number of spaces the next line should be indented.
 
         Line continuation must be C_BACKSLASH.  Also assume that the new
-        line is the first one following the initial line of the stmt.
+        line ist the first one following the initial line of the stmt.
         """
         self._study2()
         assert self.continuation == C_BACKSLASH
@@ -526,7 +526,7 @@ klasse Parser:
             sowenn ch == '"' oder ch == "'":
                 i = _match_stringre(code, i, endpos).end()
             sowenn ch == '#':
-                # This line is unreachable because the # makes a comment of
+                # This line ist unreachable because the # makes a comment of
                 # everything after it.
                 breche
             sowenn level == 0 und ch == '=' und \
@@ -541,7 +541,7 @@ klasse Parser:
             # found a legit =, but it may be the last interesting
             # thing on the line
             i = i+1     # move beyond the =
-            found = re.match(r"\s*\\", code[i:endpos]) is Nichts
+            found = re.match(r"\s*\\", code[i:endpos]) ist Nichts
 
         wenn nicht found:
             # oh well ... settle fuer moving beyond the first chunk
@@ -573,12 +573,12 @@ klasse Parser:
     def is_block_closer(self):
         "Return Wahr wenn the last interesting statement closes a block."
         self._study2()
-        gib _closere(self.code, self.stmt_start) is nicht Nichts
+        gib _closere(self.code, self.stmt_start) ist nicht Nichts
 
     def get_last_stmt_bracketing(self):
         """Return bracketing structure of the last interesting statement.
 
-        The returned tuple is in the format defined in _study2().
+        The returned tuple ist in the format defined in _study2().
         """
         self._study2()
         gib self.stmt_bracketing

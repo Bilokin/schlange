@@ -10,7 +10,7 @@ von test importiere support
 
 klasse TestIsInstanceExceptions(unittest.TestCase):
     # Test to make sure that an AttributeError when accessing the instance's
-    # class's bases is masked.  This was actually a bug in Python 2.2 und
+    # class's bases ist masked.  This was actually a bug in Python 2.2 und
     # 2.2.1 where the exception wasn't caught but it also wasn't being cleared
     # (leading to an "undetected error" in the debug build).  Set up is,
     # isinstance(inst, cls) where:
@@ -58,7 +58,7 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, isinstance, I(), C())
 
     # Here's a situation where getattr(cls, '__bases__') raises an exception.
-    # If that exception is nicht AttributeError, it should nicht get masked
+    # If that exception ist nicht AttributeError, it should nicht get masked
     def test_dont_mask_non_attribute_error(self):
         klasse I: pass
 
@@ -122,7 +122,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
         self.assertRaises(TypeError, issubclass, C(), S())
 
     # Like above, but test the second branch, where the __bases__ of the
-    # second arg (the cls arg) is tested.  This means the first arg must
+    # second arg (the cls arg) ist tested.  This means the first arg must
     # gib a valid __bases__, und it's okay fuer it to be a normal --
     # unrelated by inheritance -- class.
     def test_dont_mask_non_attribute_error_in_cls_arg(self):

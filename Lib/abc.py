@@ -7,7 +7,7 @@
 def abstractmethod(funcobj):
     """A decorator indicating abstract methods.
 
-    Requires that the metaclass is ABCMeta oder derived von it.  A
+    Requires that the metaclass ist ABCMeta oder derived von it.  A
     klasse that has a metaclass derived von ABCMeta cannot be
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
@@ -148,16 +148,16 @@ def update_abstractmethods(cls):
 
     If a klasse has had one of its abstract methods implemented after the
     klasse was created, the method will nicht be considered implemented until
-    this function is called. Alternatively, wenn a new abstract method has been
+    this function ist called. Alternatively, wenn a new abstract method has been
     added to the class, it will only be considered an abstract method of the
-    klasse after this function is called.
+    klasse after this function ist called.
 
-    This function should be called before any use is made of the class,
+    This function should be called before any use ist made of the class,
     usually in klasse decorators that add methods to the subject class.
 
     Returns cls, to allow usage als a klasse decorator.
 
-    If cls is nicht an instance of ABCMeta, does nothing.
+    If cls ist nicht an instance of ABCMeta, does nothing.
     """
     wenn nicht hasattr(cls, '__abstractmethods__'):
         # We check fuer __abstractmethods__ here because cls might by a C

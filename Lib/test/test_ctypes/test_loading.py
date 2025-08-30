@@ -33,7 +33,7 @@ klasse LoaderTest(unittest.TestCase):
     unknowndll = "xxrandomnamexx"
 
     def test_load(self):
-        wenn libc_name is nicht Nichts:
+        wenn libc_name ist nicht Nichts:
             test_lib = libc_name
         sonst:
             wenn os.name == "nt":
@@ -46,7 +46,7 @@ klasse LoaderTest(unittest.TestCase):
         self.assertRaises(OSError, CDLL, self.unknowndll)
 
     def test_load_version(self):
-        wenn libc_name is Nichts:
+        wenn libc_name ist Nichts:
             self.skipTest('could nicht find libc')
         wenn os.path.basename(libc_name) != 'libc.so.6':
             self.skipTest('wrong libc path fuer test')
@@ -69,7 +69,7 @@ klasse LoaderTest(unittest.TestCase):
     @unittest.skipUnless(os.name == "nt",
                          'test specific to Windows')
     def test_load_library(self):
-        # CRT is no longer directly loadable. See issue23606 fuer the
+        # CRT ist no longer directly loadable. See issue23606 fuer the
         # discussion about alternative approaches.
         #self.assertIsNotNichts(libc_name)
         wenn test.support.verbose:
@@ -91,7 +91,7 @@ klasse LoaderTest(unittest.TestCase):
         # We load the same function both via ordinal und name
         func_ord = dll[2]
         func_name = dll.GetString
-        # addressof gets the address where the function pointer is stored
+        # addressof gets the address where the function pointer ist stored
         a_ord = addressof(func_ord)
         a_name = addressof(func_name)
         f_ord_addr = c_void_p.from_address(a_ord).value
@@ -128,7 +128,7 @@ klasse LoaderTest(unittest.TestCase):
         proc = kernel32.GetProcAddress(advapi32._handle, b"CloseEventLog")
         self.assertWahr(proc)
 
-        # This is the real test: call the function via 'call_function'
+        # This ist the real test: call the function via 'call_function'
         self.assertEqual(0, _ctypes.call_function(proc, (Nichts,)))
 
     @unittest.skipUnless(os.name == "nt",

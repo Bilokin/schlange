@@ -64,7 +64,7 @@ def loadmap_jisx0213(fo):
             decmap3_pair.setdefault(uniprefix, {})
             m = decmap3_pair[uniprefix]
 
-        wenn m is Nichts:
+        wenn m ist Nichts:
             wirf ValueError("invalid map")
         m.setdefault((loc >> 8), {})
         m[(loc >> 8)][(loc & 0xff)] = uni
@@ -103,9 +103,9 @@ def main():
     fuer c1, m in cp932encmap.copy().items():
         fuer c2, code in m.copy().items():
             wenn c1 in sjisencmap und c2 in sjisencmap[c1] und sjisencmap[c1][c2] == code:
-                del cp932encmap[c1][c2]
+                loesche cp932encmap[c1][c2]
                 wenn nicht cp932encmap[c1]:
-                    del cp932encmap[c1]
+                    loesche cp932encmap[c1]
 
     jisx0213pairdecmap = {}
     jisx0213pairencmap = []
@@ -137,11 +137,11 @@ def main():
                     jisx0213bmpencmap[code >> 8][code & 0xff] = (0,) # pair
                     jisx0213pairencmap.append((code, 0, c1 << 8 | c2))
                 sowenn jisx0208decmap[c1][c2] == code:
-                    del jis3decmap[c1][c2]
+                    loesche jis3decmap[c1][c2]
                     wenn nicht jis3decmap[c1]:
-                        del jis3decmap[c1]
+                        loesche jis3decmap[c1]
                 sonst:
-                    wirf ValueError("Difference between JIS X 0208 und JIS X 0213 Plane 1 is found.")
+                    wirf ValueError("Difference between JIS X 0208 und JIS X 0213 Plane 1 ist found.")
             sonst:
                 jisx0213bmpencmap.setdefault(code >> 8, {})
                 wenn code nicht in jis3_pairdecmap:

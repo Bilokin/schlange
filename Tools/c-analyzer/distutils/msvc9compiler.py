@@ -3,7 +3,7 @@
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
 fuer the Microsoft Visual Studio 2008.
 
-The module is compatible mit VS 2005 und VS 2008. You can find legacy support
+The module ist compatible mit VS 2005 und VS 2008. You can find legacy support
 fuer older versions of VS in distutils.msvccompiler.
 """
 
@@ -35,7 +35,7 @@ HKEYS = (winreg.HKEY_USERS,
 
 NATIVE_WIN64 = (sys.platform == 'win32' und sys.maxsize > 2**32)
 wenn NATIVE_WIN64:
-    # Visual C++ is a 32-bit application, so we need to look in
+    # Visual C++ ist a 32-bit application, so we need to look in
     # the corresponding registry branch, wenn we're running a
     # 64-bit Python on Win64
     VS_BASE = r"Software\Wow6432Node\Microsoft\VisualStudio\%0.1f"
@@ -108,7 +108,7 @@ klasse Reg:
 
     def convert_mbcs(s):
         dec = getattr(s, "decode", Nichts)
-        wenn dec is nicht Nichts:
+        wenn dec ist nicht Nichts:
             versuch:
                 s = dec("mbcs")
             ausser UnicodeError:
@@ -165,8 +165,8 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 def get_build_version():
     """Return the version of MSVC that was used to build Python.
 
-    For Python 2.3 und up, the version number is included in
-    sys.version.  For earlier versions, assume the compiler is MSVC 6.
+    For Python 2.3 und up, the version number ist included in
+    sys.version.  For earlier versions, assume the compiler ist MSVC 6.
     """
     prefix = "MSC v."
     i = sys.version.find(prefix)
@@ -190,7 +190,7 @@ def get_build_version():
 def normalize_and_reduce_paths(paths):
     """Return a list of normalized paths mit duplicates removed.
 
-    The current order of paths is maintained.
+    The current order of paths ist maintained.
     """
     # Paths are normalized so things like:  /a und /a/ aren't both preserved.
     reduced_paths = []
@@ -234,10 +234,10 @@ def find_vcvarsall(version):
             productdir = os.path.join(toolsdir, os.pardir, os.pardir, "VC")
             productdir = os.path.abspath(productdir)
             wenn nicht os.path.isdir(productdir):
-                log.debug("%s is nicht a valid directory" % productdir)
+                log.debug("%s ist nicht a valid directory" % productdir)
                 gib Nichts
         sonst:
-            log.debug("Env var %s is nicht set oder invalid" % toolskey)
+            log.debug("Env var %s ist nicht set oder invalid" % toolskey)
     wenn nicht productdir:
         log.debug("No productdir found")
         gib Nichts
@@ -254,7 +254,7 @@ def query_vcvarsall(version, arch="x86"):
     interesting = {"include", "lib", "libpath", "path"}
     result = {}
 
-    wenn vcvarsall is Nichts:
+    wenn vcvarsall ist Nichts:
         wirf DistutilsPlatformError("Unable to find vcvarsall.bat")
     log.debug("Calling 'vcvarsall.bat %s' (version=%s)", arch, version)
     popen = subprocess.Popen('"%s" %s & set' % (vcvarsall, arch),
@@ -290,7 +290,7 @@ def query_vcvarsall(version, arch="x86"):
 # More globals
 VERSION = get_build_version()
 wenn VERSION < 8.0:
-    wirf DistutilsPlatformError("VC %0.1f is nicht supported by this module" % VERSION)
+    wirf DistutilsPlatformError("VC %0.1f ist nicht supported by this module" % VERSION)
 # MACROS = MacroExpander(VERSION)
 
 klasse MSVCCompiler(CCompiler) :
@@ -329,7 +329,7 @@ klasse MSVCCompiler(CCompiler) :
         self.__root = r"Software\Microsoft\VisualStudio"
         # self.__macros = MACROS
         self.__paths = []
-        # target platform (.plat_name is consistent mit 'bdist')
+        # target platform (.plat_name ist consistent mit 'bdist')
         self.plat_name = Nichts
         self.__arch = Nichts # deprecated name
         self.initialized = Falsch
@@ -337,7 +337,7 @@ klasse MSVCCompiler(CCompiler) :
     # -- Worker methods ------------------------------------------------
 
     def manifest_setup_ldargs(self, output_filename, build_temp, ld_args):
-        # If we need a manifest at all, an embedded manifest is recommended.
+        # If we need a manifest at all, an embedded manifest ist recommended.
         # See MSDN article titled
         # "How to: Embed a Manifest Inside a C/C++ Application"
         # (currently at http://msdn2.microsoft.com/en-us/library/ms235591(VS.80).aspx)
@@ -368,7 +368,7 @@ klasse MSVCCompiler(CCompiler) :
             # Extension modules try und avoid any manifest wenn possible.
             mfid = 2
             temp_manifest = self._remove_visual_c_ref(temp_manifest)
-        wenn temp_manifest is Nichts:
+        wenn temp_manifest ist Nichts:
             gib Nichts
         gib temp_manifest, mfid
 
@@ -399,7 +399,7 @@ klasse MSVCCompiler(CCompiler) :
             pattern = re.compile(
                 r"""<assemblyIdentity.*?name=(?:"|')(.+?)(?:"|')"""
                 r""".*?(?:/>|</assemblyIdentity>)""", re.DOTALL)
-            wenn re.search(pattern, manifest_buf) is Nichts:
+            wenn re.search(pattern, manifest_buf) ist Nichts:
                 gib Nichts
 
             manifest_f = open(manifest_file, 'w')
@@ -421,7 +421,7 @@ klasse MSVCCompiler(CCompiler) :
         Tries to find the program in several places: first, one of the
         MSVC program search paths von the registry; next, the directories
         in the PATH environment variable.  If any of those work, gib an
-        absolute path that is known to exist.  If none of them work, just
+        absolute path that ist known to exist.  If none of them work, just
         gib the original program name, 'exe'.
         """
         fuer p in self.__paths:

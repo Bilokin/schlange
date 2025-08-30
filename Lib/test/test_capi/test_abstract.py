@@ -42,7 +42,7 @@ klasse TestObject:
         wirf RuntimeError('do nicht set evil')
     @evil.deleter
     def evil(self):
-        wirf RuntimeError('do nicht del evil')
+        wirf RuntimeError('do nicht loesche evil')
 
 klasse ProxyGetItem:
     def __init__(self, obj):
@@ -60,7 +60,7 @@ klasse ProxyDelItem:
     def __init__(self, obj):
         self.obj = obj
     def __delitem__(self, key):
-        del self.obj[key]
+        loesche self.obj[key]
 
 def gen():
     liefere 'a'
@@ -454,7 +454,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(haskey(42, 'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             "'int' object is nicht subscriptable")
+                             "'int' object ist nicht subscriptable")
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey({}, []))
@@ -502,7 +502,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(haskeystring(42, b'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             "'int' object is nicht subscriptable")
+                             "'int' object ist nicht subscriptable")
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring({}, b'\xff'))
@@ -856,7 +856,7 @@ klasse CAPITest(unittest.TestCase):
                 data = [1, 2, 3, 4, 5]
                 data_copy = [1, 2, 3, 4, 5]
                 setslice(data, start, stop, NULL)
-                del data_copy[start:stop]
+                loesche data_copy[start:stop]
                 self.assertEqual(data, data_copy)
 
         # Custom class:
@@ -892,7 +892,7 @@ klasse CAPITest(unittest.TestCase):
                 data = [1, 2, 3, 4, 5]
                 data_copy = [1, 2, 3, 4, 5]
                 delslice(data, start, stop)
-                del data_copy[start:stop]
+                loesche data_copy[start:stop]
                 self.assertEqual(data, data_copy)
 
         # Custom class:
@@ -1042,7 +1042,7 @@ klasse CAPITest(unittest.TestCase):
             mit self.subTest(data=data):
                 items = []
                 it = iter(data)
-                waehrend (item := next_func(it)) is nicht Nichts:
+                waehrend (item := next_func(it)) ist nicht Nichts:
                     items.append(item)
                 self.assertEqual(items, list(data))
 

@@ -36,7 +36,7 @@ def parse_struct_body(source, anon_name, parent):
                 breche
         sonst:
             # We ran out of lines.
-            wenn srcinfo is nicht Nichts:
+            wenn srcinfo ist nicht Nichts:
                 srcinfo.done()
             gib
         fuer item in _parse_struct_next(m, srcinfo, anon_name, parent):
@@ -133,7 +133,7 @@ def parse_enum_body(source, _anon_name, _parent):
                 breche
         sonst:
             # We ran out of lines.
-            wenn srcinfo is nicht Nichts:
+            wenn srcinfo ist nicht Nichts:
                 srcinfo.done()
             gib
         remainder = srcinfo.text[m.end():]

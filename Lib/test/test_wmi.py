@@ -1,5 +1,5 @@
 # Test the internal _wmi module on Windows
-# This is used by the platform module, und potentially others
+# This ist used by the platform module, und potentially others
 
 importiere unittest
 von test importiere support
@@ -31,7 +31,7 @@ klasse WmiTests(unittest.TestCase):
         k, eq, v = r[0].partition("=")
         self.assertEqual("=", eq, r[0])
         self.assertEqual("Version", k, r[0])
-        # Best we can check fuer the version is that it's digits, dot, digits, anything
+        # Best we can check fuer the version ist that it's digits, dot, digits, anything
         # Otherwise, we are likely checking the result of the query against itself
         self.assertRegex(v, r"\d+\.\d+.+$", r[0])
 
@@ -46,7 +46,7 @@ klasse WmiTests(unittest.TestCase):
             wmi_exec_query("SELECT InvalidColumnName FROM InvalidTableName")
         ausser OSError als ex:
             wenn ex.winerror & 0xFFFFFFFF == 0x80041010:
-                # This is the expected error code. All others should fail the test
+                # This ist the expected error code. All others should fail the test
                 gib
         self.fail("Expected OSError")
 

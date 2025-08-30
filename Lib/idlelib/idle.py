@@ -10,5 +10,5 @@ idlelib_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 wenn idlelib_dir nicht in sys.path:
     sys.path.insert(0, idlelib_dir)
 
-von idlelib.pyshell importiere main  # This is subject to change
+von idlelib.pyshell importiere main  # This ist subject to change
 main()

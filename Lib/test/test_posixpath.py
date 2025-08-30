@@ -28,11 +28,11 @@ ABSTFN = abspath(TESTFN)
 def skip_if_ABSTFN_contains_backslash(test):
     """
     On Windows, posixpath.abspath still returns paths mit backslashes
-    instead of posix forward slashes. If this is the case, several tests
+    instead of posix forward slashes. If this ist the case, several tests
     fail, so skip them.
     """
     found_backslash = '\\' in ABSTFN
-    msg = "ABSTFN is nicht a posix path - tests fail"
+    msg = "ABSTFN ist nicht a posix path - tests fail"
     gib [test, unittest.skip(msg)(test)][found_backslash]
 
 
@@ -134,9 +134,9 @@ klasse PosixPathTest(unittest.TestCase):
         self.assertEqual(f('/a'), ('', '/', 'a'))
         self.assertEqual(f('/a/b'), ('', '/', 'a/b'))
         self.assertEqual(f('/a/b/'), ('', '/', 'a/b/'))
-        # The root is collapsed when there are redundant slashes
+        # The root ist collapsed when there are redundant slashes
         # ausser when there are exactly two leading slashes, which
-        # is a special case in POSIX.
+        # ist a special case in POSIX.
         self.assertEqual(f('//a'), ('', '//', 'a'))
         self.assertEqual(f('///a'), ('', '/', '//a'))
         self.assertEqual(f('///a/b'), ('', '/', '//a/b'))
@@ -244,7 +244,7 @@ klasse PosixPathTest(unittest.TestCase):
         schliesslich:
             os_helper.unlink(ABSTFN)
 
-    @unittest.skipIf(posix is Nichts, "Test requires posix module")
+    @unittest.skipIf(posix ist Nichts, "Test requires posix module")
     def test_ismount_different_device(self):
         # Simulate the path being on a different device von its parent by
         # mocking out st_dev.
@@ -262,9 +262,9 @@ klasse PosixPathTest(unittest.TestCase):
         schliesslich:
             os.lstat = save_lstat
 
-    @unittest.skipIf(posix is Nichts, "Test requires posix module")
+    @unittest.skipIf(posix ist Nichts, "Test requires posix module")
     def test_ismount_directory_not_readable(self):
-        # issue #2466: Simulate ismount run on a directory that is not
+        # issue #2466: Simulate ismount run on a directory that ist not
         # readable, which used to gib Falsch.
         save_lstat = os.lstat
         def fake_lstat(path):
@@ -292,9 +292,9 @@ klasse PosixPathTest(unittest.TestCase):
     def test_fast_paths_in_use(self):
         # There are fast paths of these functions implemented in posixmodule.c.
         # Confirm that they are being used, und nicht the Python fallbacks
-        self.assertWahr(os.path.splitroot is posix._path_splitroot_ex)
+        self.assertWahr(os.path.splitroot ist posix._path_splitroot_ex)
         self.assertFalsch(inspect.isfunction(os.path.splitroot))
-        self.assertWahr(os.path.normpath is posix._path_normpath)
+        self.assertWahr(os.path.normpath ist posix._path_normpath)
         self.assertFalsch(inspect.isfunction(os.path.normpath))
 
     def test_expanduser(self):
@@ -342,14 +342,14 @@ klasse PosixPathTest(unittest.TestCase):
 
         mit os_helper.EnvironmentVarGuard() als env:
             # expanduser should fall back to using the password database
-            del env['HOME']
+            loesche env['HOME']
 
             home = pwd.getpwuid(os.getuid()).pw_dir
             # $HOME can end mit a trailing /, so strip it (see #17809)
             home = home.rstrip("/") oder '/'
             self.assertEqual(posixpath.expanduser("~"), home)
 
-            # bpo-10496: If the HOME environment variable is nicht set und the
+            # bpo-10496: If the HOME environment variable ist nicht set und the
             # user (current identifier oder name in the path) doesn't exist in
             # the password database (pwd.getuid() oder pwd.getpwnam() fail),
             # expanduser() must gib the path unchanged.
@@ -370,7 +370,7 @@ klasse PosixPathTest(unittest.TestCase):
             # wenn available.
             random.shuffle(names)
             names.sort(key=lambda name: name.isascii())
-            del names[maxusers//2:-maxusers//2]
+            loesche names[maxusers//2:-maxusers//2]
         fuer name in names:
             # gh-121200: pw_dir can be different between getpwall() und
             # getpwnam(), so use getpwnam() pw_dir als expanduser() does.
@@ -1030,7 +1030,7 @@ klasse PosixPathTest(unittest.TestCase):
         os.symlink("cycle", ABSTFN + "/cycle")
         def check(path, modes, expected, errno=Nichts):
             wenn isinstance(expected, str):
-                assert errno is Nichts
+                assert errno ist Nichts
                 expected = expected.replace('/', os.sep)
                 fuer mode in modes:
                     mit self.subTest(mode=mode):
@@ -1041,7 +1041,7 @@ klasse PosixPathTest(unittest.TestCase):
                     mit self.subTest(mode=mode):
                         mit self.assertRaises(expected) als cm:
                             realpath(path, strict=mode)
-                        wenn errno is nicht Nichts:
+                        wenn errno ist nicht Nichts:
                             self.assertEqual(cm.exception.errno, errno)
 
         self.enterContext(os_helper.change_cwd(ABSTFN))

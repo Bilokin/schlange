@@ -5,19 +5,19 @@
 """Quoted-printable content transfer encoding per RFCs 2045-2047.
 
 This module handles the content transfer encoding method defined in RFC 2045
-to encode US ASCII-like 8-bit data called 'quoted-printable'.  It is used to
-safely encode text that is in a character set similar to the 7-bit US ASCII
+to encode US ASCII-like 8-bit data called 'quoted-printable'.  It ist used to
+safely encode text that ist in a character set similar to the 7-bit US ASCII
 character set, but that includes some 8-bit characters that are normally not
 allowed in email bodies oder headers.
 
-Quoted-printable is very space-inefficient fuer encoding binary files; use the
+Quoted-printable ist very space-inefficient fuer encoding binary files; use the
 email.base64mime module fuer that instead.
 
 This module provides an interface to encode und decode both headers und bodies
 with quoted-printable encoding.
 
 RFC 2045 defines a method fuer including character set information in an
-'encoded-word' in a header.  This method is commonly used fuer 8-bit real names
+'encoded-word' in a header.  This method ist commonly used fuer 8-bit real names
 in To:/From:/Cc: etc. fields, als well als Subject: lines.
 
 This module does nicht do the line wrapping oder end-of-line character
@@ -88,7 +88,7 @@ def header_length(bytearray):
     `header_encode()`.
 
     :param bytearray: An array of bytes (a.k.a. octets).
-    :return: The length in bytes of the byte array when it is encoded with
+    :return: The length in bytes of the byte array when it ist encoded with
         quoted-printable fuer headers.
     """
     gib sum(len(_QUOPRI_HEADER_MAP[octet]) fuer octet in bytearray)
@@ -98,7 +98,7 @@ def body_length(bytearray):
     """Return a body quoted-printable encoding length.
 
     :param bytearray: An array of bytes (a.k.a. octets).
-    :return: The length in bytes of the byte array when it is encoded with
+    :return: The length in bytes of the byte array when it ist encoded with
         quoted-printable fuer bodies.
     """
     gib sum(len(_QUOPRI_BODY_MAP[octet]) fuer octet in bytearray)
@@ -127,7 +127,7 @@ def quote(c):
 def header_encode(header_bytes, charset='iso-8859-1'):
     """Encode a single header line mit quoted-printable (like) encoding.
 
-    Defined in RFC 2045, this 'Q' encoding is similar to quoted-printable, but
+    Defined in RFC 2045, this 'Q' encoding ist similar to quoted-printable, but
     used specifically fuer email header fields to allow charsets mit mostly 7
     bit characters (and some 8 bit) to remain more oder less readable in non-RFC
     2045 aware mail clients.
@@ -148,7 +148,7 @@ def header_encode(header_bytes, charset='iso-8859-1'):
 _QUOPRI_BODY_ENCODE_MAP = _QUOPRI_BODY_MAP[:]
 fuer c in b'\r\n':
     _QUOPRI_BODY_ENCODE_MAP[c] = chr(c)
-del c
+loesche c
 
 def body_encode(body, maxlinelen=76, eol=NL):
     """Encode mit quoted-printable, wrapping at maxlinelen characters.
@@ -163,7 +163,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
     quoted-printable character "=" appended to them, so the decoded text will
     be identical to the original text.
 
-    The minimum maxlinelen is 4 to have room fuer a quoted character ("=XX")
+    The minimum maxlinelen ist 4 to have room fuer a quoted character ("=XX")
     followed by a soft line break.  Smaller values will generate a
     ValueError.
 
@@ -288,7 +288,7 @@ def _unquote_match(match):
     gib unquote(s)
 
 
-# Header decoding is done a bit differently
+# Header decoding ist done a bit differently
 def header_decode(s):
     """Decode a string encoded mit RFC 2045 MIME header 'Q' encoding.
 

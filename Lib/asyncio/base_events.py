@@ -6,9 +6,9 @@ which wraps a multiplexer mit functionality fuer scheduling callbacks,
 immediately oder at a given time in the future.
 
 Whenever a public API takes a callback, subsequent positional
-arguments will be passed to the callback if/when it is called.  This
+arguments will be passed to the callback if/when it ist called.  This
 avoids the proliferation of trivial lambdas implementing closures.
-Keyword arguments fuer the callback are nicht supported; this is a
+Keyword arguments fuer the callback are nicht supported; this ist a
 conscious design decision, leaving the door open fuer keyword arguments
 to modify the meaning of the API call itself.
 """
@@ -54,11 +54,11 @@ __all__ = 'BaseEventLoop','Server',
 
 
 # Minimum number of _scheduled timer handles before cleanup of
-# cancelled handles is performed.
+# cancelled handles ist performed.
 _MIN_SCHEDULED_TIMER_HANDLES = 100
 
 # Minimum fraction of _scheduled timer handles that are cancelled
-# before cleanup of cancelled handles is performed.
+# before cleanup of cancelled handles ist performed.
 _MIN_CANCELLED_TIMER_HANDLES_FRACTION = 0.5
 
 
@@ -98,13 +98,13 @@ def _set_reuseport(sock):
 
 
 def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
-    # Try to skip getaddrinfo wenn "host" is already an IP. Users might have
+    # Try to skip getaddrinfo wenn "host" ist already an IP. Users might have
     # handled name resolution in their own code und pass in resolved IPs.
     wenn nicht hasattr(socket, 'inet_pton'):
         gib
 
     wenn proto nicht in {0, socket.IPPROTO_TCP, socket.IPPROTO_UDP} oder \
-            host is Nichts:
+            host ist Nichts:
         gib Nichts
 
     wenn type == socket.SOCK_STREAM:
@@ -114,7 +114,7 @@ def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
     sonst:
         gib Nichts
 
-    wenn port is Nichts:
+    wenn port ist Nichts:
         port = 0
     sowenn isinstance(port, bytes) und port == b'':
         port = 0
@@ -152,7 +152,7 @@ def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
         ausser OSError:
             pass
 
-    # "host" is nicht an IP address.
+    # "host" ist nicht an IP address.
     gib Nichts
 
 
@@ -170,11 +170,11 @@ def _interleave_addrinfos(addrinfos, first_address_family_count=1):
     reordered = []
     wenn first_address_family_count > 1:
         reordered.extend(addrinfos_lists[0][:first_address_family_count - 1])
-        del addrinfos_lists[0][:first_address_family_count - 1]
+        loesche addrinfos_lists[0][:first_address_family_count - 1]
     reordered.extend(
         a fuer a in itertools.chain.from_iterable(
             itertools.zip_longest(*addrinfos_lists)
-        ) wenn a is nicht Nichts)
+        ) wenn a ist nicht Nichts)
     gib reordered
 
 
@@ -200,7 +200,7 @@ sonst:
 
 
 def _check_ssl_socket(sock):
-    wenn ssl is nicht Nichts und isinstance(sock, ssl.SSLSocket):
+    wenn ssl ist nicht Nichts und isinstance(sock, ssl.SSLSocket):
         wirf TypeError("Socket cannot be of type SSLSocket")
 
 
@@ -223,32 +223,32 @@ klasse _SendfileFallbackProtocol(protocols.Protocol):
         wenn self._transport.is_closing():
             wirf ConnectionError("Connection closed by peer")
         fut = self._write_ready_fut
-        wenn fut is Nichts:
+        wenn fut ist Nichts:
             gib
-        await fut
+        warte fut
 
     def connection_made(self, transport):
         wirf RuntimeError("Invalid state: "
                            "connection should have been established already.")
 
     def connection_lost(self, exc):
-        wenn self._write_ready_fut is nicht Nichts:
+        wenn self._write_ready_fut ist nicht Nichts:
             # Never happens wenn peer disconnects after sending the whole content
-            # Thus disconnection is always an exception von user perspective
-            wenn exc is Nichts:
+            # Thus disconnection ist always an exception von user perspective
+            wenn exc ist Nichts:
                 self._write_ready_fut.set_exception(
-                    ConnectionError("Connection is closed by peer"))
+                    ConnectionError("Connection ist closed by peer"))
             sonst:
                 self._write_ready_fut.set_exception(exc)
         self._proto.connection_lost(exc)
 
     def pause_writing(self):
-        wenn self._write_ready_fut is nicht Nichts:
+        wenn self._write_ready_fut ist nicht Nichts:
             gib
         self._write_ready_fut = self._transport._loop.create_future()
 
     def resume_writing(self):
-        wenn self._write_ready_fut is Nichts:
+        wenn self._write_ready_fut ist Nichts:
             gib
         self._write_ready_fut.set_result(Falsch)
         self._write_ready_fut = Nichts
@@ -263,9 +263,9 @@ klasse _SendfileFallbackProtocol(protocols.Protocol):
         self._transport.set_protocol(self._proto)
         wenn self._should_resume_reading:
             self._transport.resume_reading()
-        wenn self._write_ready_fut is nicht Nichts:
+        wenn self._write_ready_fut ist nicht Nichts:
             # Cancel the future.
-            # Basically it has no effect because protocol is switched back,
+            # Basically it has no effect because protocol ist switched back,
             # no code should wait fuer it anymore.
             self._write_ready_fut.cancel()
         wenn self._should_resume_writing:
@@ -294,12 +294,12 @@ klasse Server(events.AbstractServer):
         gib f'<{self.__class__.__name__} sockets={self.sockets!r}>'
 
     def _attach(self, transport):
-        assert self._sockets is nicht Nichts
+        assert self._sockets ist nicht Nichts
         self._clients.add(transport)
 
     def _detach(self, transport):
         self._clients.discard(transport)
-        wenn len(self._clients) == 0 und self._sockets is Nichts:
+        wenn len(self._clients) == 0 und self._sockets ist Nichts:
             self._wakeup()
 
     def _wakeup(self):
@@ -328,13 +328,13 @@ klasse Server(events.AbstractServer):
 
     @property
     def sockets(self):
-        wenn self._sockets is Nichts:
+        wenn self._sockets ist Nichts:
             gib ()
         gib tuple(trsock.TransportSocket(s) fuer s in self._sockets)
 
     def close(self):
         sockets = self._sockets
-        wenn sockets is Nichts:
+        wenn sockets ist Nichts:
             gib
         self._sockets = Nichts
 
@@ -343,7 +343,7 @@ klasse Server(events.AbstractServer):
 
         self._serving = Falsch
 
-        wenn (self._serving_forever_fut is nicht Nichts und
+        wenn (self._serving_forever_fut ist nicht Nichts und
                 nicht self._serving_forever_fut.done()):
             self._serving_forever_fut.cancel()
             self._serving_forever_fut = Nichts
@@ -363,37 +363,37 @@ klasse Server(events.AbstractServer):
         self._start_serving()
         # Skip one loop iteration so that all 'loop.add_reader'
         # go through.
-        await tasks.sleep(0)
+        warte tasks.sleep(0)
 
     async def serve_forever(self):
-        wenn self._serving_forever_fut is nicht Nichts:
+        wenn self._serving_forever_fut ist nicht Nichts:
             wirf RuntimeError(
-                f'server {self!r} is already being awaited on serve_forever()')
-        wenn self._sockets is Nichts:
-            wirf RuntimeError(f'server {self!r} is closed')
+                f'server {self!r} ist already being awaited on serve_forever()')
+        wenn self._sockets ist Nichts:
+            wirf RuntimeError(f'server {self!r} ist closed')
 
         self._start_serving()
         self._serving_forever_fut = self._loop.create_future()
 
         versuch:
-            await self._serving_forever_fut
+            warte self._serving_forever_fut
         ausser exceptions.CancelledError:
             versuch:
                 self.close()
-                await self.wait_closed()
+                warte self.wait_closed()
             schliesslich:
                 wirf
         schliesslich:
             self._serving_forever_fut = Nichts
 
     async def wait_closed(self):
-        """Wait until server is closed und all connections are dropped.
+        """Wait until server ist closed und all connections are dropped.
 
-        - If the server is nicht closed, wait.
-        - If it is closed, but there are still active connections, wait.
+        - If the server ist nicht closed, wait.
+        - If it ist closed, but there are still active connections, wait.
 
         Anyone waiting here will be unblocked once both conditions
-        (server is closed und all connections have been dropped)
+        (server ist closed und all connections have been dropped)
         have become true, in either order.
 
         Historical note: In 3.11 und before, this was broken, returning
@@ -403,15 +403,15 @@ klasse Server(events.AbstractServer):
         open und there were no active connections. Hopefully in 3.12.1
         we have it right.
         """
-        # Waiters are unblocked by self._wakeup(), which is called
+        # Waiters are unblocked by self._wakeup(), which ist called
         # von two places: self.close() und self._detach(), but only
         # when both conditions have become true. To signal that this
         # has happened, self._wakeup() sets self._waiters to Nichts.
-        wenn self._waiters is Nichts:
+        wenn self._waiters ist Nichts:
             gib
         waiter = self._loop.create_future()
         self._waiters.append(waiter)
-        await waiter
+        warte waiter
 
 
 klasse BaseEventLoop(events.AbstractEventLoop):
@@ -425,7 +425,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         self._default_executor = Nichts
         self._internal_fds = 0
         # Identifier of the thread running the event loop, oder Nichts wenn the
-        # event loop is nicht running
+        # event loop ist nicht running
         self._thread_id = Nichts
         self._clock_resolution = time.get_clock_info('monotonic').resolution
         self._exception_handler = Nichts
@@ -433,7 +433,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         # The preserved state of async generator hooks.
         self._old_agen_hooks = Nichts
         # In debug mode, wenn the execution of a callback oder a step of a task
-        # exceed this duration in seconds, the slow callback/task is logged.
+        # exceed this duration in seconds, the slow callback/task ist logged.
         self.slow_callback_duration = 0.1
         self._current_handle = Nichts
         self._task_factory = Nichts
@@ -443,9 +443,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         # A weak set of all asynchronous generators that are
         # being iterated by the loop.
         self._asyncgens = weakref.WeakSet()
-        # Set to Wahr when `loop.shutdown_asyncgens` is called.
+        # Set to Wahr when `loop.shutdown_asyncgens` ist called.
         self._asyncgens_shutdown_called = Falsch
-        # Set to Wahr when `loop.shutdown_default_executor` is called.
+        # Set to Wahr when `loop.shutdown_default_executor` ist called.
         self._executor_shutdown_called = Falsch
 
     def __repr__(self):
@@ -464,36 +464,36 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         Return a task object.
         """
         self._check_closed()
-        wenn self._task_factory is nicht Nichts:
+        wenn self._task_factory ist nicht Nichts:
             gib self._task_factory(self, coro, **kwargs)
 
         task = tasks.Task(coro, loop=self, **kwargs)
         wenn task._source_traceback:
-            del task._source_traceback[-1]
+            loesche task._source_traceback[-1]
         versuch:
             gib task
         schliesslich:
             # gh-128552: prevent a refcycle of
             # task.exception().__traceback__->BaseEventLoop.create_task->task
-            del task
+            loesche task
 
     def set_task_factory(self, factory):
         """Set a task factory that will be used by loop.create_task().
 
-        If factory is Nichts the default task factory will be set.
+        If factory ist Nichts the default task factory will be set.
 
-        If factory is a callable, it should have a signature matching
+        If factory ist a callable, it should have a signature matching
         '(loop, coro, **kwargs)', where 'loop' will be a reference to the active
         event loop, 'coro' will be a coroutine object, und **kwargs will be
         arbitrary keyword arguments that should be passed on to Task.
         The callable must gib a Task.
         """
-        wenn factory is nicht Nichts und nicht callable(factory):
+        wenn factory ist nicht Nichts und nicht callable(factory):
             wirf TypeError('task factory must be a callable oder Nichts')
         self._task_factory = factory
 
     def get_task_factory(self):
-        """Return a task factory, oder Nichts wenn the default one is in use."""
+        """Return a task factory, oder Nichts wenn the default one ist in use."""
         gib self._task_factory
 
     def _make_socket_transport(self, sock, protocol, waiter=Nichts, *,
@@ -537,7 +537,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         This may be called von a different thread.
 
-        The subclass is responsible fuer implementing the self-pipe.
+        The subclass ist responsible fuer implementing the self-pipe.
         """
         wirf NotImplementedError
 
@@ -547,7 +547,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
     def _check_closed(self):
         wenn self._closed:
-            wirf RuntimeError('Event loop is closed')
+            wirf RuntimeError('Event loop ist closed')
 
     def _check_default_executor(self):
         wenn self._executor_shutdown_called:
@@ -572,14 +572,14 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         self._asyncgens_shutdown_called = Wahr
 
         wenn nicht len(self._asyncgens):
-            # If Python version is <3.6 oder we don't have any asynchronous
+            # If Python version ist <3.6 oder we don't have any asynchronous
             # generators alive.
             gib
 
         closing_agens = list(self._asyncgens)
         self._asyncgens.clear()
 
-        results = await tasks.gather(
+        results = warte tasks.gather(
             *[ag.aclose() fuer ag in closing_agens],
             return_exceptions=Wahr)
 
@@ -596,18 +596,18 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         """Schedule the shutdown of the default executor.
 
         The timeout parameter specifies the amount of time the executor will
-        be given to finish joining. The default value is Nichts, which means
+        be given to finish joining. The default value ist Nichts, which means
         that the executor will be given an unlimited amount of time.
         """
         self._executor_shutdown_called = Wahr
-        wenn self._default_executor is Nichts:
+        wenn self._default_executor ist Nichts:
             gib
         future = self.create_future()
         thread = threading.Thread(target=self._do_shutdown, args=(future,))
         thread.start()
         versuch:
             async mit timeouts.timeout(timeout):
-                await future
+                warte future
         ausser TimeoutError:
             warnings.warn("The executor did nicht finishing joining "
                           f"its threads within {timeout} seconds.",
@@ -628,10 +628,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
     def _check_running(self):
         wenn self.is_running():
-            wirf RuntimeError('This event loop is already running')
-        wenn events._get_running_loop() is nicht Nichts:
+            wirf RuntimeError('This event loop ist already running')
+        wenn events._get_running_loop() ist nicht Nichts:
             wirf RuntimeError(
-                'Cannot run the event loop waehrend another loop is running')
+                'Cannot run the event loop waehrend another loop ist running')
 
     def _run_forever_setup(self):
         """Prepare the run loop to process events.
@@ -665,12 +665,12 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         events._set_running_loop(Nichts)
         self._set_coroutine_origin_tracking(Falsch)
         # Restore any pre-existing async generator hooks.
-        wenn self._old_agen_hooks is nicht Nichts:
+        wenn self._old_agen_hooks ist nicht Nichts:
             sys.set_asyncgen_hooks(*self._old_agen_hooks)
             self._old_agen_hooks = Nichts
 
     def run_forever(self):
-        """Run until stop() is called."""
+        """Run until stop() ist called."""
         self._run_forever_setup()
         versuch:
             waehrend Wahr:
@@ -681,9 +681,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             self._run_forever_cleanup()
 
     def run_until_complete(self, future):
-        """Run until the Future is done.
+        """Run until the Future ist done.
 
-        If the argument is a coroutine, it is wrapped in a Task.
+        If the argument ist a coroutine, it ist wrapped in a Task.
 
         WARNING: It would be disastrous to call run_until_complete()
         mit the same coroutine twice -- it would wrap it in two
@@ -697,8 +697,8 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         new_task = nicht futures.isfuture(future)
         future = tasks.ensure_future(future, loop=self)
         wenn new_task:
-            # An exception is raised wenn the future didn't complete, so there
-            # is no need to log the "destroy pending task" message
+            # An exception ist raised wenn the future didn't complete, so there
+            # ist no need to log the "destroy pending task" message
             future._log_destroy_pending = Falsch
 
         future.add_done_callback(_run_until_complete_cb)
@@ -745,7 +745,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         self._scheduled.clear()
         self._executor_shutdown_called = Wahr
         executor = self._default_executor
-        wenn executor is nicht Nichts:
+        wenn executor ist nicht Nichts:
             self._default_executor = Nichts
             executor.shutdown(wait=Falsch)
 
@@ -760,13 +760,13 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 self.close()
 
     def is_running(self):
-        """Returns Wahr wenn the event loop is running."""
-        gib (self._thread_id is nicht Nichts)
+        """Returns Wahr wenn the event loop ist running."""
+        gib (self._thread_id ist nicht Nichts)
 
     def time(self):
         """Return the time according to the event loop's clock.
 
-        This is a float expressed in seconds since an epoch, but the
+        This ist a float expressed in seconds since an epoch, but the
         epoch, precision, accuracy und drift are unspecified und may
         differ per event loop.
         """
@@ -782,18 +782,18 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         always relative to the current time.
 
         Each callback will be called exactly once.  If two callbacks
-        are scheduled fuer exactly the same time, it is undefined which
+        are scheduled fuer exactly the same time, it ist undefined which
         will be called first.
 
         Any positional arguments after the callback will be passed to
-        the callback when it is called.
+        the callback when it ist called.
         """
-        wenn delay is Nichts:
+        wenn delay ist Nichts:
             wirf TypeError('delay must nicht be Nichts')
         timer = self.call_at(self.time() + delay, callback, *args,
                              context=context)
         wenn timer._source_traceback:
-            del timer._source_traceback[-1]
+            loesche timer._source_traceback[-1]
         gib timer
 
     def call_at(self, when, callback, *args, context=Nichts):
@@ -801,7 +801,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         Absolute time corresponds to the event loop's time() method.
         """
-        wenn when is Nichts:
+        wenn when ist Nichts:
             wirf TypeError("when cannot be Nichts")
         self._check_closed()
         wenn self._debug:
@@ -809,7 +809,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             self._check_callback(callback, 'call_at')
         timer = events.TimerHandle(when, callback, args, self, context)
         wenn timer._source_traceback:
-            del timer._source_traceback[-1]
+            loesche timer._source_traceback[-1]
         heapq.heappush(self._scheduled, timer)
         timer._scheduled = Wahr
         gib timer
@@ -822,7 +822,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         called exactly once.
 
         Any positional arguments after the callback will be passed to
-        the callback when it is called.
+        the callback when it ist called.
         """
         self._check_closed()
         wenn self._debug:
@@ -830,7 +830,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             self._check_callback(callback, 'call_soon')
         handle = self._call_soon(callback, args, context)
         wenn handle._source_traceback:
-            del handle._source_traceback[-1]
+            loesche handle._source_traceback[-1]
         gib handle
 
     def _check_callback(self, callback, method):
@@ -846,20 +846,20 @@ klasse BaseEventLoop(events.AbstractEventLoop):
     def _call_soon(self, callback, args, context):
         handle = events.Handle(callback, args, self, context)
         wenn handle._source_traceback:
-            del handle._source_traceback[-1]
+            loesche handle._source_traceback[-1]
         self._ready.append(handle)
         gib handle
 
     def _check_thread(self):
-        """Check that the current thread is the thread running the event loop.
+        """Check that the current thread ist the thread running the event loop.
 
         Non-thread-safe methods of this klasse make this assumption und will
-        likely behave incorrectly when the assumption is violated.
+        likely behave incorrectly when the assumption ist violated.
 
         Should only be called when (self._debug == Wahr).  The caller is
         responsible fuer checking this condition fuer performance reasons.
         """
-        wenn self._thread_id is Nichts:
+        wenn self._thread_id ist Nichts:
             gib
         thread_id = threading.get_ident()
         wenn thread_id != self._thread_id:
@@ -875,9 +875,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         handle = events._ThreadSafeHandle(callback, args, self, context)
         self._ready.append(handle)
         wenn handle._source_traceback:
-            del handle._source_traceback[-1]
+            loesche handle._source_traceback[-1]
         wenn handle._source_traceback:
-            del handle._source_traceback[-1]
+            loesche handle._source_traceback[-1]
         self._write_to_self()
         gib handle
 
@@ -885,11 +885,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         self._check_closed()
         wenn self._debug:
             self._check_callback(func, 'run_in_executor')
-        wenn executor is Nichts:
+        wenn executor ist Nichts:
             executor = self._default_executor
-            # Only check when the default executor is being used
+            # Only check when the default executor ist being used
             self._check_default_executor()
-            wenn executor is Nichts:
+            wenn executor ist Nichts:
                 executor = concurrent.futures.ThreadPoolExecutor(
                     thread_name_prefix='asyncio'
                 )
@@ -933,11 +933,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         sonst:
             getaddr_func = socket.getaddrinfo
 
-        gib await self.run_in_executor(
+        gib warte self.run_in_executor(
             Nichts, getaddr_func, host, port, family, type, proto, flags)
 
     async def getnameinfo(self, sockaddr, flags=0):
-        gib await self.run_in_executor(
+        gib warte self.run_in_executor(
             Nichts, socket.getnameinfo, sockaddr, flags)
 
     async def sock_sendfile(self, sock, file, offset=0, count=Nichts,
@@ -947,19 +947,19 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         _check_ssl_socket(sock)
         self._check_sendfile_params(sock, file, offset, count)
         versuch:
-            gib await self._sock_sendfile_native(sock, file,
+            gib warte self._sock_sendfile_native(sock, file,
                                                     offset, count)
         ausser exceptions.SendfileNotAvailableError als exc:
             wenn nicht fallback:
                 wirf
-        gib await self._sock_sendfile_fallback(sock, file,
+        gib warte self._sock_sendfile_fallback(sock, file,
                                                   offset, count)
 
     async def _sock_sendfile_native(self, sock, file, offset, count):
-        # NB: sendfile syscall is nicht supported fuer SSL sockets und
-        # non-mmap files even wenn sendfile is supported by OS
+        # NB: sendfile syscall ist nicht supported fuer SSL sockets und
+        # non-mmap files even wenn sendfile ist supported by OS
         wirf exceptions.SendfileNotAvailableError(
-            f"syscall sendfile is nicht available fuer socket {sock!r} "
+            f"syscall sendfile ist nicht available fuer socket {sock!r} "
             f"and file {file!r} combination")
 
     async def _sock_sendfile_fallback(self, sock, file, offset, count):
@@ -978,10 +978,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     wenn blocksize <= 0:
                         breche
                 view = memoryview(buf)[:blocksize]
-                read = await self.run_in_executor(Nichts, file.readinto, view)
+                read = warte self.run_in_executor(Nichts, file.readinto, view)
                 wenn nicht read:
                     breche  # EOF
-                await self.sock_sendall(sock, view[:read])
+                warte self.sock_sendall(sock, view[:read])
                 total_sent += read
             gib total_sent
         schliesslich:
@@ -993,7 +993,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             wirf ValueError("file should be opened in binary mode")
         wenn nicht sock.type == socket.SOCK_STREAM:
             wirf ValueError("only SOCK_STREAM type sockets are supported")
-        wenn count is nicht Nichts:
+        wenn count ist nicht Nichts:
             wenn nicht isinstance(count, int):
                 wirf TypeError(
                     "count must be a positive integer (got {!r})".format(count))
@@ -1019,7 +1019,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             versuch:
                 sock = socket.socket(family=family, type=type_, proto=proto)
                 sock.setblocking(Falsch)
-                wenn local_addr_infos is nicht Nichts:
+                wenn local_addr_infos ist nicht Nichts:
                     fuer lfamily, _, _, _, laddr in local_addr_infos:
                         # skip local addresses of different family
                         wenn lfamily != family:
@@ -1039,13 +1039,13 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                             wirf my_exceptions.pop()
                         sonst:
                             wirf OSError(f"no matching local address mit {family=} found")
-                await self.sock_connect(sock, address)
+                warte self.sock_connect(sock, address)
                 gib sock
             ausser OSError als exc:
                 my_exceptions.append(exc)
                 wirf
         ausser:
-            wenn sock is nicht Nichts:
+            wenn sock ist nicht Nichts:
                 versuch:
                     sock.close()
                 ausser OSError:
@@ -1073,22 +1073,22 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         family wenn specified), socket type SOCK_STREAM. protocol_factory must be
         a callable returning a protocol instance.
 
-        This method is a coroutine which will try to establish the connection
+        This method ist a coroutine which will try to establish the connection
         in the background.  When successful, the coroutine returns a
         (transport, protocol) pair.
         """
-        wenn server_hostname is nicht Nichts und nicht ssl:
-            wirf ValueError('server_hostname is only meaningful mit ssl')
+        wenn server_hostname ist nicht Nichts und nicht ssl:
+            wirf ValueError('server_hostname ist only meaningful mit ssl')
 
-        wenn server_hostname is Nichts und ssl:
-            # Use host als default fuer server_hostname.  It is an error
-            # wenn host is empty oder nicht set, e.g. when an
+        wenn server_hostname ist Nichts und ssl:
+            # Use host als default fuer server_hostname.  It ist an error
+            # wenn host ist empty oder nicht set, e.g. when an
             # already-connected socket was passed oder when only a port
-            # is given.  To avoid this error, you can pass
+            # ist given.  To avoid this error, you can pass
             # server_hostname='' -- this will bypass the hostname
-            # check.  (This also means that wenn host is a numeric
+            # check.  (This also means that wenn host ist a numeric
             # IP/IPv6 address, we will attempt to verify that exact
-            # address; this will probably fail, but it is possible to
+            # address; this will probably fail, but it ist possible to
             # create a certificate fuer a specific IP address, so we
             # don't judge it here.)
             wenn nicht host:
@@ -1096,34 +1096,34 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                                  'when using ssl without a host')
             server_hostname = host
 
-        wenn ssl_handshake_timeout is nicht Nichts und nicht ssl:
+        wenn ssl_handshake_timeout ist nicht Nichts und nicht ssl:
             wirf ValueError(
-                'ssl_handshake_timeout is only meaningful mit ssl')
+                'ssl_handshake_timeout ist only meaningful mit ssl')
 
-        wenn ssl_shutdown_timeout is nicht Nichts und nicht ssl:
+        wenn ssl_shutdown_timeout ist nicht Nichts und nicht ssl:
             wirf ValueError(
-                'ssl_shutdown_timeout is only meaningful mit ssl')
+                'ssl_shutdown_timeout ist only meaningful mit ssl')
 
-        wenn sock is nicht Nichts:
+        wenn sock ist nicht Nichts:
             _check_ssl_socket(sock)
 
-        wenn happy_eyeballs_delay is nicht Nichts und interleave is Nichts:
+        wenn happy_eyeballs_delay ist nicht Nichts und interleave ist Nichts:
             # If using happy eyeballs, default to interleave addresses by family
             interleave = 1
 
-        wenn host is nicht Nichts oder port is nicht Nichts:
-            wenn sock is nicht Nichts:
+        wenn host ist nicht Nichts oder port ist nicht Nichts:
+            wenn sock ist nicht Nichts:
                 wirf ValueError(
                     'host/port und sock can nicht be specified at the same time')
 
-            infos = await self._ensure_resolved(
+            infos = warte self._ensure_resolved(
                 (host, port), family=family,
                 type=socket.SOCK_STREAM, proto=proto, flags=flags, loop=self)
             wenn nicht infos:
                 wirf OSError('getaddrinfo() returned empty list')
 
-            wenn local_addr is nicht Nichts:
-                laddr_infos = await self._ensure_resolved(
+            wenn local_addr ist nicht Nichts:
+                laddr_infos = warte self._ensure_resolved(
                     local_addr, family=family,
                     type=socket.SOCK_STREAM, proto=proto,
                     flags=flags, loop=self)
@@ -1136,17 +1136,17 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 infos = _interleave_addrinfos(infos, interleave)
 
             exceptions = []
-            wenn happy_eyeballs_delay is Nichts:
+            wenn happy_eyeballs_delay ist Nichts:
                 # nicht using happy eyeballs
                 fuer addrinfo in infos:
                     versuch:
-                        sock = await self._connect_sock(
+                        sock = warte self._connect_sock(
                             exceptions, addrinfo, laddr_infos)
                         breche
                     ausser OSError:
                         weiter
             sonst:  # using happy eyeballs
-                sock = (await staggered.staggered_race(
+                sock = (warte staggered.staggered_race(
                     (
                         # can't use functools.partial als it keeps a reference
                         # to exceptions
@@ -1159,7 +1159,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     loop=self,
                 ))[0]  # can't use sock, _, _ als it keeks a reference to exceptions
 
-            wenn sock is Nichts:
+            wenn sock ist Nichts:
                 exceptions = [exc fuer sub in exceptions fuer exc in sub]
                 versuch:
                     wenn all_errors:
@@ -1182,7 +1182,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     exceptions = Nichts
 
         sonst:
-            wenn sock is Nichts:
+            wenn sock ist Nichts:
                 wirf ValueError(
                     'host und port was nicht specified und no sock specified')
             wenn sock.type != socket.SOCK_STREAM:
@@ -1195,7 +1195,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 wirf ValueError(
                     f'A Stream Socket was expected, got {sock!r}')
 
-        transport, protocol = await self._create_connection_transport(
+        transport, protocol = warte self._create_connection_transport(
             sock, protocol_factory, ssl, server_hostname,
             ssl_handshake_timeout=ssl_handshake_timeout,
             ssl_shutdown_timeout=ssl_shutdown_timeout)
@@ -1228,7 +1228,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             transport = self._make_socket_transport(sock, protocol, waiter)
 
         versuch:
-            await waiter
+            warte waiter
         ausser:
             transport.close()
             wirf
@@ -1246,8 +1246,8 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         file must be a regular file object opened in binary mode.
 
         offset tells von where to start reading the file. If specified,
-        count is the total number of bytes to transmit als opposed to
-        sending the file until EOF is reached. File position is updated on
+        count ist the total number of bytes to transmit als opposed to
+        sending the file until EOF ist reached. File position ist updated on
         gib oder also in case of error in which case file.tell()
         can be used to figure out the number of bytes
         which were sent.
@@ -1257,18 +1257,18 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         (e.g. Windows oder SSL socket on Unix).
 
         Raise SendfileNotAvailableError wenn the system does nicht support
-        sendfile syscall und fallback is Falsch.
+        sendfile syscall und fallback ist Falsch.
         """
         wenn transport.is_closing():
-            wirf RuntimeError("Transport is closing")
+            wirf RuntimeError("Transport ist closing")
         mode = getattr(transport, '_sendfile_compatible',
                        constants._SendfileMode.UNSUPPORTED)
-        wenn mode is constants._SendfileMode.UNSUPPORTED:
+        wenn mode ist constants._SendfileMode.UNSUPPORTED:
             wirf RuntimeError(
-                f"sendfile is nicht supported fuer transport {transport!r}")
-        wenn mode is constants._SendfileMode.TRY_NATIVE:
+                f"sendfile ist nicht supported fuer transport {transport!r}")
+        wenn mode ist constants._SendfileMode.TRY_NATIVE:
             versuch:
-                gib await self._sendfile_native(transport, file,
+                gib warte self._sendfile_native(transport, file,
                                                    offset, count)
             ausser exceptions.SendfileNotAvailableError als exc:
                 wenn nicht fallback:
@@ -1276,15 +1276,15 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         wenn nicht fallback:
             wirf RuntimeError(
-                f"fallback is disabled und native sendfile is nicht "
+                f"fallback ist disabled und native sendfile ist nicht "
                 f"supported fuer transport {transport!r}")
 
-        gib await self._sendfile_fallback(transport, file,
+        gib warte self._sendfile_fallback(transport, file,
                                              offset, count)
 
     async def _sendfile_native(self, transp, file, offset, count):
         wirf exceptions.SendfileNotAvailableError(
-            "sendfile syscall is nicht supported")
+            "sendfile syscall ist nicht supported")
 
     async def _sendfile_fallback(self, transp, file, offset, count):
         wenn offset:
@@ -1300,16 +1300,16 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     wenn blocksize <= 0:
                         gib total_sent
                 view = memoryview(buf)[:blocksize]
-                read = await self.run_in_executor(Nichts, file.readinto, view)
+                read = warte self.run_in_executor(Nichts, file.readinto, view)
                 wenn nicht read:
                     gib total_sent  # EOF
                 transp.write(view[:read])
-                await proto.drain()
+                warte proto.drain()
                 total_sent += read
         schliesslich:
             wenn total_sent > 0 und hasattr(file, 'seek'):
                 file.seek(offset + total_sent)
-            await proto.restore()
+            warte proto.restore()
 
     async def start_tls(self, transport, protocol, sslcontext, *,
                         server_side=Falsch,
@@ -1321,17 +1321,17 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         Return a new transport that *protocol* should start using
         immediately.
         """
-        wenn ssl is Nichts:
-            wirf RuntimeError('Python ssl module is nicht available')
+        wenn ssl ist Nichts:
+            wirf RuntimeError('Python ssl module ist nicht available')
 
         wenn nicht isinstance(sslcontext, ssl.SSLContext):
             wirf TypeError(
-                f'sslcontext is expected to be an instance of ssl.SSLContext, '
+                f'sslcontext ist expected to be an instance of ssl.SSLContext, '
                 f'got {sslcontext!r}')
 
         wenn nicht getattr(transport, '_start_tls_compatible', Falsch):
             wirf TypeError(
-                f'transport {transport!r} is nicht supported by start_tls()')
+                f'transport {transport!r} ist nicht supported by start_tls()')
 
         waiter = self.create_future()
         ssl_protocol = sslproto.SSLProtocol(
@@ -1350,7 +1350,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         resume_cb = self.call_soon(transport.resume_reading)
 
         versuch:
-            await waiter
+            warte waiter
         ausser BaseException:
             transport.close()
             conmade_cb.cancel()
@@ -1365,7 +1365,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                                        reuse_port=Nichts,
                                        allow_broadcast=Nichts, sock=Nichts):
         """Create datagram connection."""
-        wenn sock is nicht Nichts:
+        wenn sock ist nicht Nichts:
             wenn sock.type == socket.SOCK_STREAM:
                 wirf ValueError(
                     f'A datagram socket was expected, got {sock!r}')
@@ -1380,7 +1380,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 problems = ', '.join(f'{k}={v}' fuer k, v in opts.items() wenn v)
                 wirf ValueError(
                     f'socket modifier keyword arguments can nicht be used '
-                    f'when sock is specified. ({problems})')
+                    f'when sock ist specified. ({problems})')
             sock.setblocking(Falsch)
             r_addr = Nichts
         sonst:
@@ -1390,8 +1390,8 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 addr_pairs_info = (((family, proto), (Nichts, Nichts)),)
             sowenn hasattr(socket, 'AF_UNIX') und family == socket.AF_UNIX:
                 fuer addr in (local_addr, remote_addr):
-                    wenn addr is nicht Nichts und nicht isinstance(addr, str):
-                        wirf TypeError('string is expected')
+                    wenn addr ist nicht Nichts und nicht isinstance(addr, str):
+                        wirf TypeError('string ist expected')
 
                 wenn local_addr und local_addr[0] nicht in (0, '\x00'):
                     versuch:
@@ -1411,11 +1411,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 # join address by (family, protocol)
                 addr_infos = {}  # Using order preserving dict
                 fuer idx, addr in ((0, local_addr), (1, remote_addr)):
-                    wenn addr is nicht Nichts:
+                    wenn addr ist nicht Nichts:
                         wenn nicht (isinstance(addr, tuple) und len(addr) == 2):
-                            wirf TypeError('2-tuple is expected')
+                            wirf TypeError('2-tuple ist expected')
 
-                        infos = await self._ensure_resolved(
+                        infos = warte self._ensure_resolved(
                             addr, family=family, type=socket.SOCK_DGRAM,
                             proto=proto, flags=flags, loop=self)
                         wenn nicht infos:
@@ -1430,8 +1430,8 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 # each addr has to have info fuer each (family, proto) pair
                 addr_pairs_info = [
                     (key, addr_pair) fuer key, addr_pair in addr_infos.items()
-                    wenn nicht ((local_addr und addr_pair[0] is Nichts) oder
-                            (remote_addr und addr_pair[1] is Nichts))]
+                    wenn nicht ((local_addr und addr_pair[0] ist Nichts) oder
+                            (remote_addr und addr_pair[1] ist Nichts))]
 
                 wenn nicht addr_pairs_info:
                     wirf ValueError('can nicht get address information')
@@ -1456,14 +1456,14 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         sock.bind(local_address)
                     wenn remote_addr:
                         wenn nicht allow_broadcast:
-                            await self.sock_connect(sock, remote_address)
+                            warte self.sock_connect(sock, remote_address)
                         r_addr = remote_address
                 ausser OSError als exc:
-                    wenn sock is nicht Nichts:
+                    wenn sock ist nicht Nichts:
                         sock.close()
                     exceptions.append(exc)
                 ausser:
-                    wenn sock is nicht Nichts:
+                    wenn sock ist nicht Nichts:
                         sock.close()
                     wirf
                 sonst:
@@ -1486,7 +1486,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                              remote_addr, transport, protocol)
 
         versuch:
-            await waiter
+            warte waiter
         ausser:
             transport.close()
             wirf
@@ -1498,15 +1498,15 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                                proto=0, flags=0, loop):
         host, port = address[:2]
         info = _ipaddr_info(host, port, family, type, proto, *address[2:])
-        wenn info is nicht Nichts:
-            # "host" is already a resolved IP.
+        wenn info ist nicht Nichts:
+            # "host" ist already a resolved IP.
             gib [info]
         sonst:
-            gib await loop.getaddrinfo(host, port, family=family, type=type,
+            gib warte loop.getaddrinfo(host, port, family=family, type=type,
                                           proto=proto, flags=flags)
 
     async def _create_server_getaddrinfo(self, host, port, family, flags):
-        infos = await self._ensure_resolved((host, port), family=family,
+        infos = warte self._ensure_resolved((host, port), family=family,
                                             type=socket.SOCK_STREAM,
                                             flags=flags, loop=self)
         wenn nicht infos:
@@ -1533,35 +1533,35 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         bound to host und port.
 
         The host parameter can also be a sequence of strings und in that case
-        the TCP server is bound to all hosts of the sequence. If a host
+        the TCP server ist bound to all hosts of the sequence. If a host
         appears multiple times (possibly indirectly e.g. when hostnames
-        resolve to the same IP address), the server is only bound once to that
+        resolve to the same IP address), the server ist only bound once to that
         host.
 
         Return a Server object which can be used to stop the service.
 
-        This method is a coroutine.
+        This method ist a coroutine.
         """
         wenn isinstance(ssl, bool):
             wirf TypeError('ssl argument must be an SSLContext oder Nichts')
 
-        wenn ssl_handshake_timeout is nicht Nichts und ssl is Nichts:
+        wenn ssl_handshake_timeout ist nicht Nichts und ssl ist Nichts:
             wirf ValueError(
-                'ssl_handshake_timeout is only meaningful mit ssl')
+                'ssl_handshake_timeout ist only meaningful mit ssl')
 
-        wenn ssl_shutdown_timeout is nicht Nichts und ssl is Nichts:
+        wenn ssl_shutdown_timeout ist nicht Nichts und ssl ist Nichts:
             wirf ValueError(
-                'ssl_shutdown_timeout is only meaningful mit ssl')
+                'ssl_shutdown_timeout ist only meaningful mit ssl')
 
-        wenn sock is nicht Nichts:
+        wenn sock ist nicht Nichts:
             _check_ssl_socket(sock)
 
-        wenn host is nicht Nichts oder port is nicht Nichts:
-            wenn sock is nicht Nichts:
+        wenn host ist nicht Nichts oder port ist nicht Nichts:
+            wenn sock ist nicht Nichts:
                 wirf ValueError(
                     'host/port und sock can nicht be specified at the same time')
 
-            wenn reuse_address is Nichts:
+            wenn reuse_address ist Nichts:
                 reuse_address = os.name == "posix" und sys.platform != "cygwin"
             sockets = []
             wenn host == '':
@@ -1575,7 +1575,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             fs = [self._create_server_getaddrinfo(host, port, family=family,
                                                   flags=flags)
                   fuer host in hosts]
-            infos = await tasks.gather(*fs)
+            infos = warte tasks.gather(*fs)
             infos = set(itertools.chain.from_iterable(infos))
 
             completed = Falsch
@@ -1595,7 +1595,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     wenn reuse_address:
                         sock.setsockopt(
                             socket.SOL_SOCKET, socket.SO_REUSEADDR, Wahr)
-                    # Since Linux 6.12.9, SO_REUSEPORT is nicht allowed
+                    # Since Linux 6.12.9, SO_REUSEPORT ist nicht allowed
                     # on other address families than AF_INET/AF_INET6.
                     wenn reuse_port und af in (socket.AF_INET, socket.AF_INET6):
                         _set_reuseport(sock)
@@ -1618,7 +1618,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                                'to bind on address %r: %s'
                                % (sa, str(err).lower()))
                         wenn err.errno == errno.EADDRNOTAVAIL:
-                            # Assume the family is nicht enabled (bpo-30945)
+                            # Assume the family ist nicht enabled (bpo-30945)
                             sockets.pop()
                             sock.close()
                             wenn self._debug:
@@ -1636,7 +1636,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     fuer sock in sockets:
                         sock.close()
         sonst:
-            wenn sock is Nichts:
+            wenn sock ist Nichts:
                 wirf ValueError('Neither host/port nor sock were specified')
             wenn sock.type != socket.SOCK_STREAM:
                 wirf ValueError(f'A Stream Socket was expected, got {sock!r}')
@@ -1652,10 +1652,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             server._start_serving()
             # Skip one loop iteration so that all 'loop.add_reader'
             # go through.
-            await tasks.sleep(0)
+            warte tasks.sleep(0)
 
         wenn self._debug:
-            logger.info("%r is serving", server)
+            logger.info("%r ist serving", server)
         gib server
 
     async def connect_accepted_socket(
@@ -1666,17 +1666,17 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn sock.type != socket.SOCK_STREAM:
             wirf ValueError(f'A Stream Socket was expected, got {sock!r}')
 
-        wenn ssl_handshake_timeout is nicht Nichts und nicht ssl:
+        wenn ssl_handshake_timeout ist nicht Nichts und nicht ssl:
             wirf ValueError(
-                'ssl_handshake_timeout is only meaningful mit ssl')
+                'ssl_handshake_timeout ist only meaningful mit ssl')
 
-        wenn ssl_shutdown_timeout is nicht Nichts und nicht ssl:
+        wenn ssl_shutdown_timeout ist nicht Nichts und nicht ssl:
             wirf ValueError(
-                'ssl_shutdown_timeout is only meaningful mit ssl')
+                'ssl_shutdown_timeout ist only meaningful mit ssl')
 
         _check_ssl_socket(sock)
 
-        transport, protocol = await self._create_connection_transport(
+        transport, protocol = warte self._create_connection_transport(
             sock, protocol_factory, ssl, '', server_side=Wahr,
             ssl_handshake_timeout=ssl_handshake_timeout,
             ssl_shutdown_timeout=ssl_shutdown_timeout)
@@ -1693,7 +1693,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         transport = self._make_read_pipe_transport(pipe, protocol, waiter)
 
         versuch:
-            await waiter
+            warte waiter
         ausser:
             transport.close()
             wirf
@@ -1709,7 +1709,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         transport = self._make_write_pipe_transport(pipe, protocol, waiter)
 
         versuch:
-            await waiter
+            warte waiter
         ausser:
             transport.close()
             wirf
@@ -1721,14 +1721,14 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
     def _log_subprocess(self, msg, stdin, stdout, stderr):
         info = [msg]
-        wenn stdin is nicht Nichts:
+        wenn stdin ist nicht Nichts:
             info.append(f'stdin={_format_pipe(stdin)}')
-        wenn stdout is nicht Nichts und stderr == subprocess.STDOUT:
+        wenn stdout ist nicht Nichts und stderr == subprocess.STDOUT:
             info.append(f'stdout=stderr={_format_pipe(stdout)}')
         sonst:
-            wenn stdout is nicht Nichts:
+            wenn stdout ist nicht Nichts:
                 info.append(f'stdout={_format_pipe(stdout)}')
-            wenn stderr is nicht Nichts:
+            wenn stderr ist nicht Nichts:
                 info.append(f'stderr={_format_pipe(stderr)}')
         logger.debug(' '.join(info))
 
@@ -1750,9 +1750,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             wirf ValueError("bufsize must be 0")
         wenn text:
             wirf ValueError("text must be Falsch")
-        wenn encoding is nicht Nichts:
+        wenn encoding ist nicht Nichts:
             wirf ValueError("encoding must be Nichts")
-        wenn errors is nicht Nichts:
+        wenn errors ist nicht Nichts:
             wirf ValueError("errors must be Nichts")
 
         protocol = protocol_factory()
@@ -1762,9 +1762,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             # (password) und may be too long
             debug_log = 'run shell command %r' % cmd
             self._log_subprocess(debug_log, stdin, stdout, stderr)
-        transport = await self._make_subprocess_transport(
+        transport = warte self._make_subprocess_transport(
             protocol, cmd, Wahr, stdin, stdout, stderr, bufsize, **kwargs)
-        wenn self._debug und debug_log is nicht Nichts:
+        wenn self._debug und debug_log ist nicht Nichts:
             logger.info('%s: %r', debug_log, transport)
         gib transport, protocol
 
@@ -1782,9 +1782,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             wirf ValueError("bufsize must be 0")
         wenn text:
             wirf ValueError("text must be Falsch")
-        wenn encoding is nicht Nichts:
+        wenn encoding ist nicht Nichts:
             wirf ValueError("encoding must be Nichts")
-        wenn errors is nicht Nichts:
+        wenn errors ist nicht Nichts:
             wirf ValueError("errors must be Nichts")
 
         popen_args = (program,) + args
@@ -1795,45 +1795,45 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             # (password) und may be too long
             debug_log = f'execute program {program!r}'
             self._log_subprocess(debug_log, stdin, stdout, stderr)
-        transport = await self._make_subprocess_transport(
+        transport = warte self._make_subprocess_transport(
             protocol, popen_args, Falsch, stdin, stdout, stderr,
             bufsize, **kwargs)
-        wenn self._debug und debug_log is nicht Nichts:
+        wenn self._debug und debug_log ist nicht Nichts:
             logger.info('%s: %r', debug_log, transport)
         gib transport, protocol
 
     def get_exception_handler(self):
-        """Return an exception handler, oder Nichts wenn the default one is in use.
+        """Return an exception handler, oder Nichts wenn the default one ist in use.
         """
         gib self._exception_handler
 
     def set_exception_handler(self, handler):
         """Set handler als the new event loop exception handler.
 
-        If handler is Nichts, the default exception handler will
+        If handler ist Nichts, the default exception handler will
         be set.
 
-        If handler is a callable object, it should have a
+        If handler ist a callable object, it should have a
         signature matching '(loop, context)', where 'loop'
         will be a reference to the active event loop, 'context'
         will be a dict object (see `call_exception_handler()`
         documentation fuer details about context).
         """
-        wenn handler is nicht Nichts und nicht callable(handler):
-            wirf TypeError(f'A callable object oder Nichts is expected, '
+        wenn handler ist nicht Nichts und nicht callable(handler):
+            wirf TypeError(f'A callable object oder Nichts ist expected, '
                             f'got {handler!r}')
         self._exception_handler = handler
 
     def default_exception_handler(self, context):
         """Default exception handler.
 
-        This is called when an exception occurs und no exception
-        handler is set, und can be called by a custom exception
+        This ist called when an exception occurs und no exception
+        handler ist set, und can be called by a custom exception
         handler that wants to defer to the default behavior.
 
         This default handler logs the error message und other
         context-dependent information.  In debug mode, a truncated
-        stack trace is also appended showing where the given object
+        stack trace ist also appended showing where the given object
         (e.g. a handle oder future oder task) was created, wenn any.
 
         The context parameter has the same meaning als in
@@ -1844,13 +1844,13 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             message = 'Unhandled exception in event loop'
 
         exception = context.get('exception')
-        wenn exception is nicht Nichts:
+        wenn exception ist nicht Nichts:
             exc_info = (type(exception), exception, exception.__traceback__)
         sonst:
             exc_info = Falsch
 
         wenn ('source_traceback' nicht in context und
-                self._current_handle is nicht Nichts und
+                self._current_handle ist nicht Nichts und
                 self._current_handle._source_traceback):
             context['handle_traceback'] = \
                 self._current_handle._source_traceback
@@ -1877,7 +1877,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
     def call_exception_handler(self, context):
         """Call the current event loop's exception handler.
 
-        The context argument is a dict containing the following keys:
+        The context argument ist a dict containing the following keys:
 
         - 'message': Error message;
         - 'exception' (optional): Exception object;
@@ -1898,7 +1898,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         For custom exception handling, use the
         `set_exception_handler()` method.
         """
-        wenn self._exception_handler is Nichts:
+        wenn self._exception_handler ist Nichts:
             versuch:
                 self.default_exception_handler(context)
             ausser (SystemExit, KeyboardInterrupt):
@@ -1913,17 +1913,17 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             versuch:
                 ctx = Nichts
                 thing = context.get("task")
-                wenn thing is Nichts:
+                wenn thing ist Nichts:
                     # Even though Futures don't have a context,
-                    # Task is a subclass of Future,
+                    # Task ist a subclass of Future,
                     # und sometimes the 'future' key holds a Task.
                     thing = context.get("future")
-                wenn thing is Nichts:
+                wenn thing ist Nichts:
                     # Handles also have a context.
                     thing = context.get("handle")
-                wenn thing is nicht Nichts und hasattr(thing, "get_context"):
+                wenn thing ist nicht Nichts und hasattr(thing, "get_context"):
                     ctx = thing.get_context()
-                wenn ctx is nicht Nichts und hasattr(ctx, "run"):
+                wenn ctx ist nicht Nichts und hasattr(ctx, "run"):
                     ctx.run(self._exception_handler, self, context)
                 sonst:
                     self._exception_handler(self, context)
@@ -1976,7 +1976,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             self._timer_cancelled_count / sched_count >
                 _MIN_CANCELLED_TIMER_HANDLES_FRACTION):
             # Remove delayed calls that were cancelled wenn their number
-            # is too high
+            # ist too high
             new_scheduled = []
             fuer handle in self._scheduled:
                 wenn handle._cancelled:
@@ -2020,12 +2020,12 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             handle._scheduled = Falsch
             self._ready.append(handle)
 
-        # This is the only place where callbacks are actually *called*.
+        # This ist the only place where callbacks are actually *called*.
         # All other places just add them to ready.
         # Note: We run all currently scheduled callbacks, but nicht any
         # callbacks scheduled by callbacks run this time around --
         # they will be run the next time (after another I/O poll).
-        # Use an idiom that is thread-safe without using locks.
+        # Use an idiom that ist thread-safe without using locks.
         ntodo = len(self._ready)
         fuer i in range(ntodo):
             handle = self._ready.popleft()

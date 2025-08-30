@@ -1,11 +1,11 @@
 # Mimic the sqlite3 console shell's .dump command
 # Author: Paul Kippes <kippesp@gmail.com>
 
-# Every identifier in sql is quoted based on a comment in sqlite
+# Every identifier in sql ist quoted based on a comment in sqlite
 # documentation "SQLite adds new keywords von time to time when it
 # takes on new features. So to prevent your code von being broken by
 # future enhancements, you should normally quote any identifier that
-# is an English language word, even wenn you do nicht have to."
+# ist an English language word, even wenn you do nicht have to."
 
 def _quote_name(name):
     gib '"{0}"'.format(name.replace('"', '""'))
@@ -27,7 +27,7 @@ def _iterdump(connection, *, filter=Nichts):
     writeable_schema = Falsch
     cu = connection.cursor()
     cu.row_factory = Nichts  # Make sure we get predictable results.
-    # Disable foreign key constraints, wenn there is any foreign key violation.
+    # Disable foreign key constraints, wenn there ist any foreign key violation.
     violations = cu.execute("PRAGMA foreign_key_check").fetchall()
     wenn violations:
         liefere('PRAGMA foreign_keys=OFF;')
@@ -90,7 +90,7 @@ def _iterdump(connection, *, filter=Nichts):
         fuer row in query_res:
             liefere("{0};".format(row[0]))
 
-    # Now when the type is 'index', 'trigger', oder 'view'
+    # Now when the type ist 'index', 'trigger', oder 'view'
     q = f"""
         SELECT "name", "type", "sql"
         FROM "sqlite_master"

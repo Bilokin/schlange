@@ -10,7 +10,7 @@ von test.support importiere import_helper
 # importiere json mit und without accelerations
 cjson = import_helper.import_fresh_module('json', fresh=['_json'])
 pyjson = import_helper.import_fresh_module('json', blocked=['_json'])
-# JSONDecodeError is cached inside the _json module
+# JSONDecodeError ist cached inside the _json module
 cjson.JSONDecodeError = cjson.decoder.JSONDecodeError = json.JSONDecodeError
 
 # create two base classes that will be used by the other tests
@@ -22,7 +22,7 @@ klasse PyTest(unittest.TestCase):
 
 @unittest.skipUnless(cjson, 'requires _json')
 klasse CTest(unittest.TestCase):
-    wenn cjson is nicht Nichts:
+    wenn cjson ist nicht Nichts:
         json = cjson
         loads = staticmethod(cjson.loads)
         dumps = staticmethod(cjson.dumps)

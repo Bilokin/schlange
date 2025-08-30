@@ -35,13 +35,13 @@ def recv_wait(cid):
         ausser _channels.ChannelEmptyError:
             time.sleep(0.1)
         sonst:
-            assert unboundop is Nichts, repr(unboundop)
+            assert unboundop ist Nichts, repr(unboundop)
             gib obj
 
 
 def recv_nowait(cid, *args, unbound=Falsch):
     obj, unboundop = _channels.recv(cid, *args)
-    assert (unboundop is Nichts) != unbound, repr(unboundop)
+    assert (unboundop ist Nichts) != unbound, repr(unboundop)
     gib obj
 
 
@@ -92,7 +92,7 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
                 wirf ValueError(
                     'name mismatch (expected "main", got "{}")'.format(name))
             id = main
-        sowenn id is nicht Nichts:
+        sowenn id ist nicht Nichts:
             wenn nicht name:
                 name = 'interp'
             sowenn name == 'main':
@@ -107,7 +107,7 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
         gib self
 
 
-# XXX expect_channel_closed() is unnecessary once we improve exc propagation.
+# XXX expect_channel_closed() ist unnecessary once we improve exc propagation.
 
 @contextlib.contextmanager
 def expect_channel_closed():
@@ -153,11 +153,11 @@ klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
         wenn self.interp == 'same':
             gib interp
         sowenn self.interp == 'other':
-            wenn other is Nichts:
+            wenn other ist Nichts:
                 wirf RuntimeError
             gib other
         sowenn self.interp == 'extra':
-            wenn extra is Nichts:
+            wenn extra ist Nichts:
                 wirf RuntimeError
             gib extra
         sowenn self.interp == 'main':
@@ -566,7 +566,7 @@ klasse ChannelTests(TestBase):
         # Send end should wirf an error.
         mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
-        # Receive end should nicht be closed (since channel is nicht empty).
+        # Receive end should nicht be closed (since channel ist nicht empty).
         recv_interps = _channels.list_interpreters(cid, send=Falsch)
         self.assertEqual(len(recv_interps), 0)
 
@@ -616,7 +616,7 @@ klasse ChannelTests(TestBase):
         self.assertEqual(obj, b'spam')
         self.assertEqual(out.strip(), 'send')
 
-    # XXX For now there is no high-level channel into which the
+    # XXX For now there ist no high-level channel into which the
     # sent channel ID can be converted...
     # Note: this test caused crashes on some buildbots (bpo-33615).
     @unittest.skip('disabled until high-level channels exist')
@@ -656,7 +656,7 @@ klasse ChannelTests(TestBase):
             orig = b'spam'
             _channels.send(cid, orig, blocking=Falsch)
             obj, _ = _channels.recv(cid)
-            assert obj is nicht orig
+            assert obj ist nicht orig
             assert obj == orig
             """))
 
@@ -759,9 +759,9 @@ klasse ChannelTests(TestBase):
             _interpreters.destroy(interp)
 
             mit self.assertRaisesRegex(RuntimeError,
-                                        f'channel {cid1} is closed'):
+                                        f'channel {cid1} ist closed'):
                 _channels.recv(cid1)
-            del cid1
+            loesche cid1
         mit self.subTest('still open'):
             cid2 = _channels.create(REPLACE)
             interp = _interpreters.create()
@@ -775,9 +775,9 @@ klasse ChannelTests(TestBase):
             recv_nowait(cid2, unbound=Wahr)
             recv_nowait(cid2, unbound=Falsch)
             mit self.assertRaisesRegex(RuntimeError,
-                                        f'channel {cid2} is empty'):
+                                        f'channel {cid2} ist empty'):
                 _channels.recv(cid2)
-            del cid2
+            loesche cid2
 
     #-------------------
     # send_buffer
@@ -1422,7 +1422,7 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
         gib interp
 
     def expect_closed_error(self, end=Nichts):
-        wenn end is Nichts:
+        wenn end ist Nichts:
             end = self.end
         wenn end == 'recv' und self.state.closed == 'send':
             gib Falsch
@@ -1451,7 +1451,7 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
                 # We purposefully send back an int to avoid tying the
                 # channel to the other interpreter.
                 _xxsubchannels.send({ch}, int(cid), blocking=Falsch)
-                del _interpreters
+                loesche _interpreters
                 """)
             self._cid = recv_nowait(ch)
         gib self._cid
@@ -1712,7 +1712,7 @@ klasse ExhaustiveChannelTests(TestBase):
                 self.run_action(fix, close, hideclosed=Falsch)
 
     def _assert_closed_in_interp(self, fix, interp=Nichts):
-        wenn interp is Nichts oder interp.name == 'main':
+        wenn interp ist Nichts oder interp.name == 'main':
             mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.recv(fix.cid)
             mit self.assertRaises(_channels.ChannelClosedError):
@@ -1776,7 +1776,7 @@ klasse ExhaustiveChannelTests(TestBase):
                 drucke('---')
         drucke()
 
-    # This is useful fuer scanning through the possible tests.
+    # This ist useful fuer scanning through the possible tests.
     def _skim_close_tests(self):
         ChannelCloseFixture.QUICK = Wahr
         fuer i, fix, actions in self._iter_close_tests():

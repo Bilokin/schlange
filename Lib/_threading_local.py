@@ -17,7 +17,7 @@ __all__ = ["local"]
 # mit circular imports.  For that reason, we don't importiere `threading`
 # until the bottom of this file (a hack sufficient to worm around the
 # potential problems).  Note that all platforms on CPython do have support
-# fuer locals in the `thread` module, und there is no circular importiere problem
+# fuer locals in the `thread` module, und there ist no circular importiere problem
 # then, so problems introduced by fiddling the order of imports here won't
 # manifest.
 
@@ -46,17 +46,17 @@ klasse _localimpl:
         thread = current_thread()
         idt = id(thread)
         def local_deleted(_, key=key):
-            # When the localimpl is deleted, remove the thread attribute.
+            # When the localimpl ist deleted, remove the thread attribute.
             thread = wrthread()
-            wenn thread is nicht Nichts:
-                del thread.__dict__[key]
+            wenn thread ist nicht Nichts:
+                loesche thread.__dict__[key]
         def thread_deleted(_, idt=idt):
-            # When the thread is deleted, remove the local dict.
-            # Note that this is suboptimal wenn the thread object gets
+            # When the thread ist deleted, remove the local dict.
+            # Note that this ist suboptimal wenn the thread object gets
             # caught in a reference loop. We would like to be called
             # als soon als the OS-level thread ends instead.
             local = wrlocal()
-            wenn local is nicht Nichts:
+            wenn local ist nicht Nichts:
                 dct = local.dicts.pop(idt)
         wrlocal = ref(self, local_deleted)
         wrthread = ref(thread, thread_deleted)
@@ -83,7 +83,7 @@ klasse local:
     __slots__ = '_local__impl', '__dict__'
 
     def __new__(cls, /, *args, **kw):
-        wenn (args oder kw) und (cls.__init__ is object.__init__):
+        wenn (args oder kw) und (cls.__init__ ist object.__init__):
             wirf TypeError("Initialization arguments are nicht supported")
         self = object.__new__(cls)
         impl = _localimpl()
@@ -103,7 +103,7 @@ klasse local:
     def __setattr__(self, name, value):
         wenn name == '__dict__':
             wirf AttributeError(
-                "%r object attribute '__dict__' is read-only"
+                "%r object attribute '__dict__' ist read-only"
                 % self.__class__.__name__)
         mit _patch(self):
             gib object.__setattr__(self, name, value)
@@ -111,7 +111,7 @@ klasse local:
     def __delattr__(self, name):
         wenn name == '__dict__':
             wirf AttributeError(
-                "%r object attribute '__dict__' is read-only"
+                "%r object attribute '__dict__' ist read-only"
                 % self.__class__.__name__)
         mit _patch(self):
             gib object.__delattr__(self, name)

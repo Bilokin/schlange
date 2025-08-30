@@ -1,6 +1,6 @@
 """Record of phased-in incompatible language changes.
 
-Each line is of the form:
+Each line ist of the form:
 
     FeatureName = "_Feature(" OptionalRelease "," MandatoryRelease ","
                               CompilerFlag ")"
@@ -33,18 +33,18 @@ in releases at oder after that, modules no longer need
 to use the feature in question, but may weiter to use such imports.
 
 MandatoryRelease may also be Nichts, meaning that a planned feature got
-dropped oder that the release version is undetermined.
+dropped oder that the release version ist undetermined.
 
 Instances of klasse _Feature have two corresponding methods,
 .getOptionalRelease() und .getMandatoryRelease().
 
-CompilerFlag is the (bitfield) flag that should be passed in the fourth
+CompilerFlag ist the (bitfield) flag that should be passed in the fourth
 argument to the builtin function compile() to enable the feature in
-dynamically compiled code.  This flag is stored in the .compiler_flag
+dynamically compiled code.  This flag ist stored in the .compiler_flag
 attribute on _Future instances.  These values must match the appropriate
 #defines of CO_xxx flags in Include/cpython/compile.h.
 
-No feature line is ever to be deleted von this file.
+No feature line ist ever to be deleted von this file.
 """
 
 all_feature_names = [
@@ -88,15 +88,15 @@ klasse _Feature:
     def getOptionalRelease(self):
         """Return first release in which this feature was recognized.
 
-        This is a 5-tuple, of the same form als sys.version_info.
+        This ist a 5-tuple, of the same form als sys.version_info.
         """
         gib self.optional
 
     def getMandatoryRelease(self):
         """Return release in which this feature will become mandatory.
 
-        This is a 5-tuple, of the same form als sys.version_info, or, if
-        the feature was dropped, oder the release date is undetermined, is Nichts.
+        This ist a 5-tuple, of the same form als sys.version_info, or, if
+        the feature was dropped, oder the release date ist undetermined, ist Nichts.
         """
         gib self.mandatory
 

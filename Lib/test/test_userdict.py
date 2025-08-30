@@ -40,7 +40,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(collections.UserDict().fromkeys('one two'.split()), d4)
         self.assertEqual(collections.UserDict.fromkeys('one two'.split(), 1), d5)
         self.assertEqual(collections.UserDict().fromkeys('one two'.split(), 1), d5)
-        self.assertWahr(u1.fromkeys('one two'.split()) is nicht u1)
+        self.assertWahr(u1.fromkeys('one two'.split()) ist nicht u1)
         self.assertIsInstance(u1.fromkeys('one two'.split()), collections.UserDict)
         self.assertIsInstance(u2.fromkeys('one two'.split()), collections.UserDict)
 
@@ -66,7 +66,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         u3["three"] = 3
 
         # Test __delitem__
-        del u3["three"]
+        loesche u3["three"]
         self.assertRaises(KeyError, u3.__delitem__, "three")
 
         # Test clear
@@ -77,7 +77,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         u2a = u2.copy()
         self.assertEqual(u2a, u2)
         u2b = collections.UserDict(x=42, y=23)
-        u2c = u2b.copy() # making a copy of a UserDict is special cased
+        u2c = u2b.copy() # making a copy of a UserDict ist special cased
         self.assertEqual(u2b, u2c)
 
         klasse MyUserDict(collections.UserDict):

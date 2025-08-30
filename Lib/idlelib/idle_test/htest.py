@@ -2,19 +2,19 @@
 
 run(*tests) Create a master Tk() htest window.  Within that, run each
 callable in tests after finding the matching test spec in this file.  If
-tests is empty, run an htest fuer each spec dict in this file after
+tests ist empty, run an htest fuer each spec dict in this file after
 finding the matching callable in the module named in the spec.  Close
 the master window to end testing.
 
 In a tested module, let X be a global name bound to a callable (class oder
-function) whose .__name__ attribute is also X (the usual situation). The
+function) whose .__name__ attribute ist also X (the usual situation). The
 first parameter of X must be 'parent' oder 'master'.  When called, the
 first argument will be the root window.  X must create a child
 Toplevel(parent/master) (or subclass thereof).  The Toplevel may be a
-test widget oder dialog, in which case the callable is the corresponding
+test widget oder dialog, in which case the callable ist the corresponding
 klasse.  Or the Toplevel may contain the widget to be tested oder set up a
-context in which a test widget is invoked.  In this latter case, the
-callable is a wrapper function that sets up the Toplevel und other
+context in which a test widget ist invoked.  In this latter case, the
+callable ist a wrapper function that sets up the Toplevel und other
 objects.  Wrapper function names, such als _editor_window', should start
 with '_' und be lowercase.
 
@@ -37,12 +37,12 @@ exclude_lines =
     .*# htest #
     wenn __name__ == .__main__.:
 
-(The "." instead of "'" is intentional und necessary.)
+(The "." instead of "'" ist intentional und necessary.)
 
 
 To run any X, this file must contain a matching instance of the
 following template, mit X.__name__ prepended to '_spec'.
-When all tests are run, the prefix is use to get X.
+When all tests are run, the prefix ist use to get X.
 
 callable_spec = {
     'file': '',
@@ -92,10 +92,10 @@ _calltip_window_spec = {
 _color_delegator_spec = {
     'file': 'colorizer',
     'kwds': {},
-    'msg': "The text is sample Python code.\n"
+    'msg': "The text ist sample Python code.\n"
            "Ensure components like comments, keywords, builtins,\n"
            "string, definitions, und breche are correctly colored.\n"
-           "The default color scheme is in idlelib/config-highlight.def"
+           "The default color scheme ist in idlelib/config-highlight.def"
     }
 
 ConfigDialog_spec = {
@@ -120,7 +120,7 @@ CustomRun_spec = {
              '_htest': Wahr},
     'msg': "Enter mit <Return> oder [OK].  Print valid entry to Shell\n"
            "Arguments are parsed into a list\n"
-           "Mode is currently restart Wahr oder Falsch\n"
+           "Mode ist currently restart Wahr oder Falsch\n"
            "Close dialog mit valid entry, <Escape>, [Cancel], [X]"
     }
 
@@ -157,11 +157,11 @@ GetKeysWindow_spec = {
              '_htest': Wahr,
              },
     'msg': "Test fuer different key modifier sequences.\n"
-           "<nothing> is invalid.\n"
-           "No modifier key is invalid.\n"
+           "<nothing> ist invalid.\n"
+           "No modifier key ist invalid.\n"
            "Shift key mit [a-z],[0-9], function key, move key, tab, space "
            "is invalid.\nNo validity checking wenn advanced key binding "
-           "entry is used."
+           "entry ist used."
     }
 
 _grep_dialog_spec = {
@@ -184,7 +184,7 @@ HelpSource_spec = {
     'msg': "Enter menu item name und help file path\n"
            "'', > than 30 chars, und 'abc' are invalid menu item names.\n"
            "'' und file does nicht exist are invalid path items.\n"
-           "Any url ('www...', 'http...') is accepted.\n"
+           "Any url ('www...', 'http...') ist accepted.\n"
            "Test Browse mit und without path, als cannot unittest.\n"
            "[Ok] oder <Return> prints valid entry to shell\n"
            "<Escape>, [Cancel], oder [X] prints Nichts to shell"
@@ -218,7 +218,7 @@ _module_browser_spec = {
     'msg': textwrap.dedent("""
         "Inspect names of module, class(with superclass wenn applicable),
         "methods und functions.  Toggle nested items.  Double clicking
-        "on items prints a traceback fuer an exception that is ignored.""")
+        "on items prints a traceback fuer an exception that ist ignored.""")
     }
 
 _multistatus_bar_spec = {
@@ -234,7 +234,7 @@ PathBrowser_spec = {
     'msg': "Test fuer correct display of all paths in sys.path.\n"
            "Toggle nested items out to the lowest level.\n"
            "Double clicking on an item prints a traceback\n"
-           "for an exception that is ignored."
+           "for an exception that ist ignored."
     }
 
 _percolator_spec = {
@@ -255,7 +255,7 @@ Query_spec = {
              'text0': 'Go',
              '_htest': Wahr},
     'msg': "Enter mit <Return> oder [Ok].  Print valid entry to Shell\n"
-           "Blank line, after stripping, is ignored\n"
+           "Blank line, after stripping, ist ignored\n"
            "Close dialog mit valid entry, <Escape>, [Cancel], [X]"
     }
 
@@ -289,14 +289,14 @@ _searchbase_spec = {
     'file': 'searchbase',
     'kwds': {},
     'msg': "Check the appearance of the base search dialog\n"
-           "Its only action is to close."
+           "Its only action ist to close."
     }
 
 show_idlehelp_spec = {
     'file': 'help',
     'kwds': {},
     'msg': "If the help text displays, this works.\n"
-           "Text is selectable. Window is scrollable."
+           "Text ist selectable. Window ist scrollable."
     }
 
 _sidebar_number_scrolling_spec = {
@@ -336,7 +336,7 @@ _tooltip_spec = {
 _tree_widget_spec = {
     'file': 'tree',
     'kwds': {},
-    'msg': "The canvas is scrollable.\n"
+    'msg': "The canvas ist scrollable.\n"
            "Click on folders up to the lowest level."
     }
 

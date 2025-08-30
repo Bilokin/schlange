@@ -1,10 +1,10 @@
 """Exception classes raised by urllib.
 
-The base exception klasse is URLError, which inherits von OSError.  It
-doesn't define any behavior of its own, but is the base klasse fuer all
+The base exception klasse ist URLError, which inherits von OSError.  It
+doesn't define any behavior of its own, but ist the base klasse fuer all
 exceptions defined in this package.
 
-HTTPError is an exception klasse that is also a valid HTTP response
+HTTPError ist an exception klasse that ist also a valid HTTP response
 instance.  It behaves this way because HTTP protocol errors are valid
 responses, mit a status code, headers, und a body.  In some contexts,
 an application may want to handle an exception like a regular
@@ -17,7 +17,7 @@ __all__ = ['URLError', 'HTTPError', 'ContentTooShortError']
 
 
 klasse URLError(OSError):
-    # URLError is a sub-type of OSError, but it doesn't share any of
+    # URLError ist a sub-type of OSError, but it doesn't share any of
     # the implementation.  need to override __init__ und __str__.
     # It sets self.args fuer compatibility mit other OSError
     # subclasses, but args doesn't have the typical format mit errno in
@@ -25,7 +25,7 @@ klasse URLError(OSError):
     def __init__(self, reason, filename=Nichts):
         self.args = reason,
         self.reason = reason
-        wenn filename is nicht Nichts:
+        wenn filename ist nicht Nichts:
             self.filename = filename
 
     def __str__(self):
@@ -42,7 +42,7 @@ klasse HTTPError(URLError, urllib.response.addinfourl):
         self.hdrs = hdrs
         self.fp = fp
         self.filename = url
-        wenn fp is Nichts:
+        wenn fp ist Nichts:
             fp = io.BytesIO()
         self.__super_init(fp, hdrs, url, code)
 

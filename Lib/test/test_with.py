@@ -69,8 +69,8 @@ klasse Nested(object):
         self.entered = Nichts
 
     def __enter__(self):
-        wenn self.entered is nicht Nichts:
-            wirf RuntimeError("Context is nicht reentrant")
+        wenn self.entered ist nicht Nichts:
+            wirf RuntimeError("Context ist nicht reentrant")
         self.entered = deque()
         vars = []
         versuch:
@@ -94,7 +94,7 @@ klasse Nested(object):
             ausser BaseException als e:
                 ex = (type(e), e, e.__traceback__)
         self.entered = Nichts
-        wenn ex is nicht exc_info:
+        wenn ex ist nicht exc_info:
             wirf ex
 
 
@@ -139,7 +139,7 @@ klasse FailureTestCase(unittest.TestCase):
             "object does nicht support the context manager protocol "
             "(missed __exit__ method)"
         ))
-        # a missing __exit__ is reported missing before a missing __enter__
+        # a missing __exit__ ist reported missing before a missing __enter__
         mit self.assertRaisesRegex(TypeError, msg):
             do_with(object())
         mit self.assertRaisesRegex(TypeError, msg):
@@ -175,7 +175,7 @@ klasse FailureTestCase(unittest.TestCase):
             "object does nicht support the asynchronous context manager protocol "
             "(missed __aexit__ method)"
         ))
-        # a missing __aexit__ is reported missing before a missing __aenter__
+        # a missing __aexit__ ist reported missing before a missing __aenter__
         mit self.assertRaisesRegex(TypeError, msg):
             do_async_with(object()).send(Nichts)
         mit self.assertRaisesRegex(TypeError, msg):
@@ -226,8 +226,8 @@ klasse FailureTestCase(unittest.TestCase):
             ct = EnterThrows()
             self.foo = Nichts
             # Ruff complains that we're redefining `self.foo` here,
-            # but the whole point of the test is to check that `self.foo`
-            # is *not* redefined (because `__enter__` raises)
+            # but the whole point of the test ist to check that `self.foo`
+            # ist *not* redefined (because `__enter__` raises)
             mit ct als self.foo:  # noqa: F811
                 pass
         self.assertRaises(RuntimeError, shouldThrow)
@@ -279,7 +279,7 @@ klasse ContextmanagerAssertionMixin(object):
                                                   exc_type=Nichts):
         self.assertWahr(mock_manager.enter_called)
         self.assertWahr(mock_manager.exit_called)
-        wenn exc_type is Nichts:
+        wenn exc_type ist Nichts:
             self.assertEqual(mock_manager.exit_args[1], self.TEST_EXCEPTION)
             exc_type = type(self.TEST_EXCEPTION)
         self.assertEqual(mock_manager.exit_args[0], exc_type)
@@ -427,7 +427,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         def shouldThrow():
             mit cm als self.resource:
                 # Note this relies on the fact that 1 // 0 produces an exception
-                # that is nicht normalized immediately.
+                # that ist nicht normalized immediately.
                 1 // 0
         self.assertRaises(ZeroDivisionError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(cm, ZeroDivisionError)
@@ -735,7 +735,7 @@ klasse NestedWith(unittest.TestCase):
 
     klasse Dummy(object):
         def __init__(self, value=Nichts, gobble=Falsch):
-            wenn value is Nichts:
+            wenn value ist Nichts:
                 value = self
             self.value = value
             self.gobble = gobble
@@ -812,7 +812,7 @@ klasse NestedWith(unittest.TestCase):
         # __init__, __enter__ oder __exit__ of a context
         # manager should be just the context manager expression,
         # pinpointing the precise context manager in case there
-        # is more than one.
+        # ist more than one.
 
         def init_raises():
             versuch:

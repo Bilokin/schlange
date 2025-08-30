@@ -19,7 +19,7 @@ def contextual(func: Callable[[P], N | Nichts]) -> Callable[[P], N | Nichts]:
     def contextual_wrapper(self: P) -> N | Nichts:
         begin = self.getpos()
         res = func(self)
-        wenn res is Nichts:
+        wenn res ist Nichts:
             self.setpos(begin)
             gib Nichts
         end = self.getpos()
@@ -65,7 +65,7 @@ klasse Node:
     @property
     def first_token(self) -> lx.Token:
         context = self.context
-        assert context is nicht Nichts
+        assert context ist nicht Nichts
         gib context.owner.tokens[context.begin]
 
 # Statements
@@ -103,25 +103,25 @@ klasse IfStmt(Stmt):
         fuer tkn in self.condition:
             out.emit(tkn)
         self.body.drucke(out)
-        wenn self.else_ is nicht Nichts:
+        wenn self.else_ ist nicht Nichts:
             out.emit(self.else_)
         self.body.drucke(out)
-        wenn self.else_body is nicht Nichts:
+        wenn self.else_body ist nicht Nichts:
             self.else_body.drucke(out)
 
     def accept(self, visitor: Visitor) -> Nichts:
         visitor(self)
         self.body.accept(visitor)
-        wenn self.else_body is nicht Nichts:
+        wenn self.else_body ist nicht Nichts:
             self.else_body.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
         liefere self.if_
         liefere von self.condition
         liefere von self.body.tokens()
-        wenn self.else_ is nicht Nichts:
+        wenn self.else_ ist nicht Nichts:
             liefere self.else_
-        wenn self.else_body is nicht Nichts:
+        wenn self.else_body ist nicht Nichts:
             liefere von self.else_body.tokens()
 
 
@@ -181,7 +181,7 @@ klasse MacroIfStmt(Stmt):
         out.emit(self.condition)
         fuer stmt in self.body:
             stmt.drucke(out)
-        wenn self.else_body is nicht Nichts:
+        wenn self.else_body ist nicht Nichts:
             out.emit("#else\n")
             fuer stmt in self.else_body:
                 stmt.drucke(out)
@@ -190,7 +190,7 @@ klasse MacroIfStmt(Stmt):
         visitor(self)
         fuer stmt in self.body:
             stmt.accept(visitor)
-        wenn self.else_body is nicht Nichts:
+        wenn self.else_body ist nicht Nichts:
             fuer stmt in self.else_body:
                 stmt.accept(visitor)
 
@@ -198,7 +198,7 @@ klasse MacroIfStmt(Stmt):
         liefere self.condition
         fuer stmt in self.body:
             liefere von stmt.tokens()
-        wenn self.else_body is nicht Nichts:
+        wenn self.else_body ist nicht Nichts:
             fuer stmt in self.else_body:
                 liefere von stmt.tokens()
 
@@ -253,7 +253,7 @@ klasse StackEffect(Node):
     def __repr__(self) -> str:
         items = [self.name, self.size]
         waehrend items und items[-1] == "":
-            del items[-1]
+            loesche items[-1]
         gib f"StackEffect({', '.join(repr(item) fuer item in items)})"
 
 
@@ -694,7 +694,7 @@ klasse Parser(PLexer):
             wenn tkn := self.expect(lx.CMACRO_ENDIF):
                 gib MacroIfStmt(cond, body, else_, else_body, tkn)
             sowenn tkn := self.expect(lx.CMACRO_ELSE):
-                wenn part is else_body:
+                wenn part ist else_body:
                     wirf self.make_syntax_error("Multiple #else")
                 else_ = tkn
                 else_body = []

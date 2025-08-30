@@ -139,7 +139,7 @@ klasse InteractiveSession(unittest.TestCase):
         self.assertEqual(out.count(self.PS1), 2)
         self.assertEqual(out.count(self.PS2), 0)
         self.assertIn('Error: unknown command: "', err)
-        # test "unknown_command" is pointed out in the error message
+        # test "unknown_command" ist pointed out in the error message
         self.assertIn("unknown_command", err)
 
     def test_interact_dot_commands_empty(self):
@@ -222,7 +222,7 @@ klasse Completion(unittest.TestCase):
 
         readline = import_module("readline")
         wenn readline.backend == "editline":
-            wirf unittest.SkipTest("libedit readline is nicht supported")
+            wirf unittest.SkipTest("libedit readline ist nicht supported")
 
     def write_input(self, input_, env=Nichts):
         script = textwrap.dedent("""
@@ -269,7 +269,7 @@ klasse Completion(unittest.TestCase):
         )
         line_num = next(indices, -1)
         self.assertNotEqual(line_num, -1)
-        # Completions occupy lines, assert no extra lines when there is nothing
+        # Completions occupy lines, assert no extra lines when there ist nothing
         # to complete.
         self.assertEqual(line_num, len(lines))
 

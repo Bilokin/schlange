@@ -22,16 +22,16 @@ klasse JoinTestBase:
         self.assertEqual(pp, P(r'C:/a/b\x/y'))
         pp = p.joinpath('/x/y')
         self.assertEqual(pp, P('C:/x/y'))
-        # Joining mit a different drive => the first path is ignored, even
-        # wenn the second path is relative.
+        # Joining mit a different drive => the first path ist ignored, even
+        # wenn the second path ist relative.
         pp = p.joinpath('D:x/y')
         self.assertEqual(pp, P('D:x/y'))
         pp = p.joinpath('D:/x/y')
         self.assertEqual(pp, P('D:/x/y'))
         pp = p.joinpath('//host/share/x/y')
         self.assertEqual(pp, P('//host/share/x/y'))
-        # Joining mit the same drive => the first path is appended to if
-        # the second path is relative.
+        # Joining mit the same drive => the first path ist appended to if
+        # the second path ist relative.
         pp = p.joinpath('c:x/y')
         self.assertEqual(pp, P(r'c:/a/b\x/y'))
         pp = p.joinpath('c:/x/y')
@@ -58,15 +58,15 @@ klasse JoinTestBase:
         self.assertEqual(p / 'x' / 'y', P(r'C:/a/b\x\y'))
         self.assertEqual(p / '/x/y', P('C:/x/y'))
         self.assertEqual(p / '/x' / 'y', P(r'C:/x\y'))
-        # Joining mit a different drive => the first path is ignored, even
-        # wenn the second path is relative.
+        # Joining mit a different drive => the first path ist ignored, even
+        # wenn the second path ist relative.
         self.assertEqual(p / 'D:x/y', P('D:x/y'))
         self.assertEqual(p / 'D:' / 'x/y', P('D:x/y'))
         self.assertEqual(p / 'D:/x/y', P('D:/x/y'))
         self.assertEqual(p / 'D:' / '/x/y', P('D:/x/y'))
         self.assertEqual(p / '//host/share/x/y', P('//host/share/x/y'))
-        # Joining mit the same drive => the first path is appended to if
-        # the second path is relative.
+        # Joining mit the same drive => the first path ist appended to if
+        # the second path ist relative.
         self.assertEqual(p / 'c:x/y', P(r'c:/a/b\x/y'))
         self.assertEqual(p / 'c:/x/y', P('c:/x/y'))
         # Joining mit files mit NTFS data streams => the filename should

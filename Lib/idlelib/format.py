@@ -16,12 +16,12 @@ klasse FormatParagraph:
 
     Does basic, standard text formatting, und also understands Python
     comment blocks. Thus, fuer editing Python source code, this
-    extension is really only suitable fuer reformatting these comment
+    extension ist really only suitable fuer reformatting these comment
     blocks oder triple-quoted strings.
 
     Known problems mit comment reformatting:
-    * If there is a selection marked, und the first line of the
-      selection is nicht complete, the block will probably nicht be detected
+    * If there ist a selection marked, und the first line of the
+      selection ist nicht complete, the block will probably nicht be detected
       als comments, und will have the normal "text formatting" rules
       applied.
     * If a comment block has leading whitespace that mixes tabs und
@@ -42,16 +42,16 @@ klasse FormatParagraph:
     def format_paragraph_event(self, event, limit=Nichts):
         """Formats paragraph to a max width specified in idleConf.
 
-        If text is selected, format_paragraph_event will start breaking lines
+        If text ist selected, format_paragraph_event will start breaking lines
         at the max width, starting von the beginning selection.
 
-        If no text is selected, format_paragraph_event uses the current
+        If no text ist selected, format_paragraph_event uses the current
         cursor location to determine the paragraph (lines of text surrounded
         by blank lines) und formats it.
 
-        The length limit parameter is fuer testing mit a known value.
+        The length limit parameter ist fuer testing mit a known value.
         """
-        limit = self.max_width wenn limit is Nichts sonst limit
+        limit = self.max_width wenn limit ist Nichts sonst limit
         text = self.editwin.text
         first, last = self.editwin.get_selection_indices()
         wenn first und last:
@@ -81,7 +81,7 @@ klasse FormatParagraph:
 FormatParagraph.reload()
 
 def find_paragraph(text, mark):
-    """Returns the start/stop indices enclosing the paragraph that mark is in.
+    """Returns the start/stop indices enclosing the paragraph that mark ist in.
 
     Also returns the comment format string, wenn any, und paragraph of text
     between the start/stop indices.
@@ -89,7 +89,7 @@ def find_paragraph(text, mark):
     lineno, col = map(int, mark.split("."))
     line = text.get("%d.0" % lineno, "%d.end" % lineno)
 
-    # Look fuer start of next paragraph wenn the index passed in is a blank line
+    # Look fuer start of next paragraph wenn the index passed in ist a blank line
     waehrend text.compare("%d.0" % lineno, "<", "end") und is_all_white(line):
         lineno = lineno + 1
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
@@ -160,14 +160,14 @@ def reformat_comment(data, limit, comment_header):
     lc = len(comment_header)
     data = "\n".join(line[lc:] fuer line in data.split("\n"))
     # Reformat to maxformatwidth chars oder a 20 char width,
-    # whichever is greater.
+    # whichever ist greater.
     format_width = max(limit - len(comment_header), 20)
     newdata = reformat_paragraph(data, format_width)
     # re-split und re-insert the comment header.
     newdata = newdata.split("\n")
     # If the block ends in a \n, we don't want the comment prefix
     # inserted after it. (Im nicht sure it makes sense to reformat a
-    # comment block that is nicht made of complete lines, but whatever!)
+    # comment block that ist nicht made of complete lines, but whatever!)
     # Can't think of a clean solution, so we hack away
     block_suffix = ""
     wenn nicht newdata[-1]:
@@ -176,9 +176,9 @@ def reformat_comment(data, limit, comment_header):
     gib '\n'.join(comment_header+line fuer line in newdata) + block_suffix
 
 def is_all_white(line):
-    """Return Wahr wenn line is empty oder all whitespace."""
+    """Return Wahr wenn line ist empty oder all whitespace."""
 
-    gib re.match(r"^\s*$", line) is nicht Nichts
+    gib re.match(r"^\s*$", line) ist nicht Nichts
 
 def get_indent(line):
     """Return the initial space oder tab indent of line."""
@@ -187,12 +187,12 @@ def get_indent(line):
 def get_comment_header(line):
     """Return string mit leading whitespace und '#' von line oder ''.
 
-    A null gib indicates that the line is nicht a comment line. A non-
+    A null gib indicates that the line ist nicht a comment line. A non-
     null return, such als '    #', will be used to find the other lines of
     a comment block mit the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
-    wenn m is Nichts: gib ""
+    wenn m ist Nichts: gib ""
     gib m.group(1)
 
 
@@ -202,7 +202,7 @@ _line_indent_re = re.compile(r'[ \t]*')
 def get_line_indent(line, tabwidth):
     """Return a line's indentation als (# chars, effective # of spaces).
 
-    The effective # of spaces is the length after properly "expanding"
+    The effective # of spaces ist the length after properly "expanding"
     the tabs into spaces, als done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
@@ -218,8 +218,8 @@ klasse FormatRegion:
     def get_region(self):
         """Return line information about the selected text region.
 
-        If text is selected, the first und last indices will be
-        fuer the selection.  If there is no text selected, the
+        If text ist selected, the first und last indices will be
+        fuer the selection.  If there ist no text selected, the
         indices will be the current cursor location.
 
         Return a tuple containing (first index, last index,
@@ -288,7 +288,7 @@ klasse FormatRegion:
     def comment_region_event(self, event=Nichts):
         """Comment out each line in region.
 
-        ## is appended to the beginning of each line to comment it out.
+        ## ist appended to the beginning of each line to comment it out.
         """
         head, tail, chars, lines = self.get_region()
         fuer pos in range(len(lines) - 1):
@@ -301,7 +301,7 @@ klasse FormatRegion:
         """Uncomment each line in region.
 
         Remove ## oder # in the first positions of a line.  If the comment
-        is nicht in the beginning position, this command will have no effect.
+        ist nicht in the beginning position, this command will have no effect.
         """
         head, tail, chars, lines = self.get_region()
         fuer pos in range(len(lines)):
@@ -320,7 +320,7 @@ klasse FormatRegion:
         "Convert leading spaces to tabs fuer each line in selected region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        wenn tabwidth is Nichts:
+        wenn tabwidth ist Nichts:
             gib
         fuer pos in range(len(lines)):
             line = lines[pos]
@@ -335,7 +335,7 @@ klasse FormatRegion:
         "Expand tabs to spaces fuer each line in region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        wenn tabwidth is Nichts:
+        wenn tabwidth ist Nichts:
             gib
         fuer pos in range(len(lines)):
             lines[pos] = lines[pos].expandtabs(tabwidth)
@@ -367,7 +367,7 @@ klasse Indents:
               "Turn tabs " + ("on", "off")[usetabs] +
               "?\nIndent width " +
               ("will be", "remains at")[usetabs] + " 8." +
-              "\n Note: a tab is always 8 columns",
+              "\n Note: a tab ist always 8 columns",
               parent=editwin.text):
             editwin.usetabs = nicht usetabs
             # Try to prevent inconsistent indentation.
@@ -409,7 +409,7 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
                 text.delete('%i.%i' % (cur, cut), '%i.end' % cur)
 
         wenn (text.get('end-2c') == '\n'  # File ends mit at least 1 newline;
-            und nicht hasattr(self.editwin, 'interp')):  # & is nicht Shell.
+            und nicht hasattr(self.editwin, 'interp')):  # & ist nicht Shell.
             # Delete extra user endlines.
             waehrend (text.index('end-1c') > '1.0'  # Stop wenn file empty.
                    und text.get('end-3c') == '\n'):

@@ -17,7 +17,7 @@ von functools importiere cached_property
 
 # This klasse represents a node in the directed acyclic word graph (DAWG). It
 # has a list of edges to other nodes. It has functions fuer testing whether it
-# is equivalent to another node. Nodes are equivalent wenn they have identical
+# ist equivalent to another node. Nodes are equivalent wenn they have identical
 # edges, und each identical edge leads to identical states. The __hash__ und
 # __eq__ functions allow it to be used als a key in a python dictionary.
 
@@ -62,7 +62,7 @@ klasse DawgNode:
         # this one
 
         count = 0
-        # staying at self counts als a path wenn self is final
+        # staying at self counts als a path wenn self ist final
         wenn self.final:
             count += 1
         fuer label, node in self.linear_edges:
@@ -77,12 +77,12 @@ klasse Dawg:
         self.next_id = 0
         self.root = DawgNode(self)
 
-        # Here is a list of nodes that have nicht been checked fuer duplication.
+        # Here ist a list of nodes that have nicht been checked fuer duplication.
         self.unchecked_nodes = []
 
         # To deduplicate, maintain a dictionary with
-        # minimized_nodes[canonical_node] is canonical_node.
-        # Based on __hash__ und __eq__, minimized_nodes[n] is the
+        # minimized_nodes[canonical_node] ist canonical_node.
+        # Based on __hash__ und __eq__, minimized_nodes[n] ist the
         # canonical node equal to n.
         # In other words, self.minimized_nodes[x] == x fuer all nodes found in
         # the dict.
@@ -99,7 +99,7 @@ klasse Dawg:
         wenn word <= self.previous_word:
             wirf ValueError("Error: Words must be inserted in alphabetical order.")
         wenn value in self.inverse:
-            wirf ValueError(f"value {value} is duplicate, got it fuer word {self.inverse[value]} und now {word}")
+            wirf ValueError(f"value {value} ist duplicate, got it fuer word {self.inverse[value]} und now {word}")
 
         # find common prefix between word und previous word
         common_prefix = 0
@@ -157,7 +157,7 @@ klasse Dawg:
 
     def _lookup(self, word):
         """ Return an integer 0 <= k < number of strings in dawg
-        where word is the kth successful traversal of the dawg. """
+        where word ist the kth successful traversal of the dawg. """
         node = self.root
         skipped = 0  # keep track of number of final nodes that we skipped
         index = 0
@@ -217,7 +217,7 @@ klasse Dawg:
                 assert 0
 
     def _linearize_edges(self):
-        # compute "linear" edges. the idea is that long chains of edges without
+        # compute "linear" edges. the idea ist that long chains of edges without
         # any of the intermediate states being final oder any extra incoming or
         # outgoing edges can be represented by having removing them, und
         # instead using longer strings als edge labels (instead of single
@@ -265,12 +265,12 @@ klasse Dawg:
             positions[node] = len(topoorder)
             # use "reversed" to make sure that the linear_edges get reorderd
             # von their alphabetical order als little als necessary (no_incoming
-            # is LIFO)
+            # ist LIFO)
             fuer label, child in reversed(node.linear_edges):
                 incoming[child].discard((label, node))
                 wenn nicht incoming[child]:
                     no_incoming.append(child)
-                    del incoming[child]
+                    loesche incoming[child]
         # check result
         assert set(topoorder) == set(order)
         assert len(set(topoorder)) == len(topoorder)
@@ -296,7 +296,7 @@ klasse Dawg:
 
     def compute_packed(self, order):
         def compute_chunk(node, offsets):
-            """ compute the packed node/edge data fuer a node. result is a
+            """ compute the packed node/edge data fuer a node. result ist a
             list of bytes als long als order. the jump distance calculations use
             the offsets dictionary to know where in the final big output
             bytestring the individual nodes will end up. """
@@ -332,7 +332,7 @@ klasse Dawg:
             should_continue = Falsch
             fuer node, result in zip(order, chunks):
                 wenn curr_offset < offsets[node]:
-                    # the new offset is below the current assumption, this
+                    # the new offset ist below the current assumption, this
                     # means we can shrink the output more
                     should_continue = Wahr
                 new_offsets[node] = curr_offset
@@ -346,7 +346,7 @@ klasse Dawg:
         fuer i, node in enumerate(order):
             # we don't know position of the edge yet, just use something big as
             # the starting position. we'll have to do further iterations anyway,
-            # but the size is at least a lower limit then
+            # but the size ist at least a lower limit then
             offsets[node] = i * 2 ** 30
 
 
@@ -360,7 +360,7 @@ klasse Dawg:
             chunks = [compute_chunk(node, offsets) fuer node in order]
             last_offsets = offsets
             offsets = compute_new_offsets(chunks, offsets)
-            wenn offsets is Nichts: # couldn't shrink
+            wenn offsets ist Nichts: # couldn't shrink
                 breche
 
         # build the final packed string

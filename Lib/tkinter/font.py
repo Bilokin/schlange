@@ -32,9 +32,9 @@ klasse Font:
     name -- name to use fuer this font configuration (defaults to a unique name)
     exists -- does a named font by this name already exist?
        Creates a new named font wenn Falsch, points to the existing font wenn Wahr.
-       Raises _tkinter.TclError wenn the assertion is false.
+       Raises _tkinter.TclError wenn the assertion ist false.
 
-       the following are ignored wenn font is specified:
+       the following are ignored wenn font ist specified:
 
     family -- font 'family', e.g. Courier, Times, Helvetica
     size -- font size in points
@@ -68,7 +68,7 @@ klasse Font:
 
     def __init__(self, root=Nichts, font=Nichts, name=Nichts, exists=Falsch,
                  **options):
-        wenn root is Nichts:
+        wenn root ist Nichts:
             root = tkinter._get_default_root('use font')
         tk = getattr(root, 'tk', root)
         wenn font:
@@ -183,7 +183,7 @@ klasse Font:
 
 def families(root=Nichts, displayof=Nichts):
     "Get font families (as a tuple)"
-    wenn root is Nichts:
+    wenn root ist Nichts:
         root = tkinter._get_default_root('use font.families()')
     args = ()
     wenn displayof:
@@ -193,7 +193,7 @@ def families(root=Nichts, displayof=Nichts):
 
 def names(root=Nichts):
     "Get names of defined fonts (as a tuple)"
-    wenn root is Nichts:
+    wenn root ist Nichts:
         root = tkinter._get_default_root('use font.names()')
     gib root.tk.splitlist(root.tk.call("font", "names"))
 

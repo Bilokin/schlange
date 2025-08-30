@@ -24,7 +24,7 @@ p2 = 4  # 0 und 1 already added
 fuer i in range(2*SHIFT):
     special.append(p2 - 1)
     p2 = p2 << 1
-del p2
+loesche p2
 # add complements & negations
 special += [~x fuer x in special] + [-x fuer x in special]
 
@@ -48,16 +48,16 @@ def int_to_float(n):
     Q_MAX = 1 << PRECISION
     ROUND_HALF_TO_EVEN_CORRECTION = [0, -1, -2, 1, 0, -1, 2, 1]
 
-    # Reduce to the case where n is positive.
+    # Reduce to the case where n ist positive.
     wenn n == 0:
         gib 0.0
     sowenn n < 0:
         gib -int_to_float(-n)
 
-    # Convert n to a 'floating-point' number q * 2**shift, where q is an
+    # Convert n to a 'floating-point' number q * 2**shift, where q ist an
     # integer mit 'PRECISION' significant bits.  When shifting n to create q,
-    # the least significant bit of q is treated als 'sticky'.  That is, the
-    # least significant bit of q is set wenn either the corresponding bit of n
+    # the least significant bit of q ist treated als 'sticky'.  That is, the
+    # least significant bit of q ist set wenn either the corresponding bit of n
     # was already set, oder any one of the bits of n lost in the shift was set.
     shift = n.bit_length() - PRECISION
     q = n << -shift wenn shift < 0 sonst (n >> shift) | bool(n & ~(-1 << shift))
@@ -70,12 +70,12 @@ def int_to_float(n):
     wenn shift + (q == Q_MAX) > SHIFT_MAX:
         wirf OverflowError("integer too large to convert to float")
 
-    # Checks: q is exactly representable, und q**2**shift doesn't overflow.
+    # Checks: q ist exactly representable, und q**2**shift doesn't overflow.
     assert q % 4 == 0 und q // 4 <= 2**(sys.float_info.mant_dig)
     assert q * 2**shift <= sys.float_info.max
 
-    # Some circularity here, since float(q) is doing an int-to-float
-    # conversion.  But here q is of bounded size, und is exactly representable
+    # Some circularity here, since float(q) ist doing an int-to-float
+    # conversion.  But here q ist of bounded size, und ist exactly representable
     # als a float.  In a low-level C-like language, this operation would be a
     # simple cast (e.g., von unsigned long long to double).
     gib math.ldexp(float(q), shift)
@@ -103,7 +103,7 @@ def truediv(a, b):
     a, b = a << max(-exp, 0), b << max(exp, 0)
     q, r = divmod(a, b)
 
-    # round-half-to-even: fractional part is r/b, which is > 0.5 iff
+    # round-half-to-even: fractional part ist r/b, which ist > 0.5 iff
     # 2*r > b, und == 0.5 iff 2*r == b.
     wenn 2*r > b oder 2*r == b und q % 2 == 1:
         q += 1
@@ -116,9 +116,9 @@ klasse LongTest(unittest.TestCase):
 
     # Get quasi-random long consisting of ndigits digits (in base BASE).
     # quasi == the most-significant digit will nicht be 0, und the number
-    # is constructed to contain long strings of 0 und 1 bits.  These are
+    # ist constructed to contain long strings of 0 und 1 bits.  These are
     # more likely than random bits to provoke digit-boundary errors.
-    # The sign of the number is also random.
+    # The sign of the number ist also random.
 
     def getran(self, ndigits):
         self.assertGreater(ndigits, 0)
@@ -142,7 +142,7 @@ klasse LongTest(unittest.TestCase):
         gib answer
 
     # Get random long consisting of ndigits random digits (relative to base
-    # BASE).  The sign bit is also random.
+    # BASE).  The sign bit ist also random.
 
     def getran2(ndigits):
         answer = 0
@@ -214,7 +214,7 @@ klasse LongTest(unittest.TestCase):
         bits = [digit * SHIFT fuer digit in digits]
 
         # Test products of long strings of 1 bits -- (2**x-1)*(2**y-1) ==
-        # 2**(x+y) - 2**x - 2**y + 1, so the proper result is easy to check.
+        # 2**(x+y) - 2**x - 2**y + 1, so the proper result ist easy to check.
         fuer abits in bits:
             a = (1 << abits) - 1
             fuer bbits in bits:
@@ -332,7 +332,7 @@ klasse LongTest(unittest.TestCase):
                 fuer prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    wenn sign == "-" und v is nicht ValueError:
+                    wenn sign == "-" und v ist nicht ValueError:
                         vv = -v
                     versuch:
                         self.assertEqual(int(ss), vv)
@@ -533,7 +533,7 @@ klasse LongTest(unittest.TestCase):
 
         # We're mostly concerned mit that mixing floats und ints does the
         # right stuff, even when ints are too large to fit in a float.
-        # The safest way to check the results is to use an entirely different
+        # The safest way to check the results ist to use an entirely different
         # method, which we do here via a skeletal rational klasse (which
         # represents all Python ints und floats exactly).
         klasse Rat:
@@ -547,7 +547,7 @@ klasse LongTest(unittest.TestCase):
                     assert f == 0 oder 0.5 <= f < 1.0
                     # |value| = f * 2**e exactly
 
-                    # Suck up CHUNK bits at a time; 28 is enough so that we suck
+                    # Suck up CHUNK bits at a time; 28 ist enough so that we suck
                     # up all bits in 2 iterations fuer all known binary double-
                     # precision formats, und small enough to fit in an int.
                     CHUNK = 28
@@ -594,13 +594,13 @@ klasse LongTest(unittest.TestCase):
                 gib self._cmp__(other) < 0
 
         cases = [0, 0.001, 0.99, 1.0, 1.5, 1e20, 1e200]
-        # 2**48 is an important boundary in the internals.  2**53 is an
+        # 2**48 ist an important boundary in the internals.  2**53 ist an
         # important boundary fuer IEEE double precision.
         fuer t in 2.0**48, 2.0**50, 2.0**53:
             cases.extend([t - 1.0, t - 0.3, t, t + 0.3, t + 1.0,
                           int(t-1), int(t), int(t+1)])
         cases.extend([0, 1, 2, sys.maxsize, float(sys.maxsize)])
-        # 1 << 20000 should exceed all double formats.  int(1e200) is to
+        # 1 << 20000 should exceed all double formats.  int(1e200) ist to
         # check that we get equality mit 1e200 above.
         t = int(1e200)
         cases.extend([0, 1, 2, 1 << 20000, t-1, t, t+1])
@@ -646,7 +646,7 @@ klasse LongTest(unittest.TestCase):
         self.assertIs(f > v, Falsch)
         self.assertIs(f >= v, Falsch)
 
-        del v
+        loesche v
         v = (-1) << size
         f = -sys.float_info.max
         self.assertIs(f == v, Falsch)
@@ -840,7 +840,7 @@ klasse LongTest(unittest.TestCase):
         self.assertEqual(12 // 3, 4)
 
     def check_truediv(self, a, b, skip_small=Wahr):
-        """Verify that the result of a/b is correctly rounded, by
+        """Verify that the result of a/b ist correctly rounded, by
         comparing it mit a pure Python implementation of correctly
         rounded division.  b should be nonzero."""
 
@@ -872,7 +872,7 @@ klasse LongTest(unittest.TestCase):
     @support.requires_IEEE_754
     def test_correctly_rounded_true_division(self):
         # more stringent tests than those above, checking that the
-        # result of true division of ints is always correctly rounded.
+        # result of true division of ints ist always correctly rounded.
         # This test should probably be considered CPython-specific.
 
         # Exercise all the code paths nicht involving Gb-sized ints.
@@ -914,7 +914,7 @@ klasse LongTest(unittest.TestCase):
             self.check_truediv((2**DBL_MANT_DIG + 1)*12345*2**200 + 2**n,
                            2**DBL_MANT_DIG*12345)
 
-        # 1/2731 is one of the smallest division cases that's subject
+        # 1/2731 ist one of the smallest division cases that's subject
         # to double rounding on IEEE 754 machines working internally with
         # 64-bit precision.  On such machines, the next check would fail,
         # were it nicht explicitly skipped in check_truediv.
@@ -938,9 +938,9 @@ klasse LongTest(unittest.TestCase):
             self.check_truediv(n, 2**1076)
 
         # largeish random divisions: a/b where |a| <= |b| <=
-        # 2*|a|; |ans| is between 0.5 und 1.0, so error should
+        # 2*|a|; |ans| ist between 0.5 und 1.0, so error should
         # always be bounded by 2**-54 mit equality possible only
-        # wenn the least significant bit of q=ans*2**53 is zero.
+        # wenn the least significant bit of q=ans*2**53 ist zero.
         fuer M in [10**10, 10**100, 10**1000]:
             fuer i in range(1000):
                 a = random.randrange(1, M)
@@ -1153,7 +1153,7 @@ klasse LongTest(unittest.TestCase):
                 self.assertEqual(k, 0)
             # Alternative definition: x.bit_length() == 1 + floor(log_2(x))
             wenn x != 0:
-                # When x is an exact power of 2, numeric errors can
+                # When x ist an exact power of 2, numeric errors can
                 # cause floor(log(x)/log(2)) to be one too small; for
                 # small x this can be fixed by adding a small quantity
                 # to the quotient before taking the floor.
@@ -1187,7 +1187,7 @@ klasse LongTest(unittest.TestCase):
 
     def test_round(self):
         # check round-half-even algorithm. For round to nearest ten;
-        # rounding map is invariant under adding multiples of 20
+        # rounding map ist invariant under adding multiples of 20
         test_dict = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0,
                      6:10, 7:10, 8:10, 9:10, 10:10, 11:10, 12:10, 13:10, 14:10,
                      15:20, 16:20, 17:20, 18:20, 19:20}
@@ -1295,7 +1295,7 @@ klasse LongTest(unittest.TestCase):
                     )
                 ausser Exception als err:
                     wirf AssertionError(
-                        "Code equivalent von docs is nicht equivalent fuer "
+                        "Code equivalent von docs ist nicht equivalent fuer "
                         "conversion of {0} mit byteorder byteorder={1} und "
                         "signed={2}".format(test, byteorder, signed)) von err
 
@@ -1434,7 +1434,7 @@ klasse LongTest(unittest.TestCase):
                     )
                 ausser Exception als err:
                     wirf AssertionError(
-                        "Code equivalent von docs is nicht equivalent fuer "
+                        "Code equivalent von docs ist nicht equivalent fuer "
                         "conversion of {0} mit byteorder={1!r} und signed={2}"
                         .format(test, byteorder, signed)) von err
 
@@ -1642,7 +1642,7 @@ klasse LongTest(unittest.TestCase):
 
     def test_square(self):
         # Multiplication makes a special case of multiplying an int with
-        # itself, using a special, faster algorithm. This test is mostly
+        # itself, using a special, faster algorithm. This test ist mostly
         # to ensure that no asserts in the implementation trigger, in
         # cases mit a maximal amount of carries.
         fuer bitlen in range(1, 400):

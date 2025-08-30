@@ -153,7 +153,7 @@ klasse DictTest(unittest.TestCase):
         d['a'] = 4
         self.assertEqual(d['c'], 3)
         self.assertEqual(d['a'], 4)
-        del d['b']
+        loesche d['b']
         self.assertEqual(d, {'a': 4, 'c': 3})
 
         self.assertRaises(TypeError, d.__getitem__)
@@ -270,7 +270,7 @@ klasse DictTest(unittest.TestCase):
         mit self.assertRaises(TypeError) als cm:
             {}.update([object() fuer _ in range(3)])
 
-        self.assertEqual(str(cm.exception), "object is nicht iterable")
+        self.assertEqual(str(cm.exception), "object ist nicht iterable")
         self.assertEqual(
             cm.exception.__notes__,
             ['Cannot convert dictionary update sequence element #0 to a sequence'],
@@ -389,7 +389,7 @@ klasse DictTest(unittest.TestCase):
         res.update(a=Nichts, b=Nichts, c=Nichts)
         self.assertEqual(baddict3.fromkeys({"a", "b", "c"}), res)
 
-        # test slow path when object is a proper subclass of dict
+        # test slow path when object ist a proper subclass of dict
         klasse baddict4(dict):
             def __init__(self):
                 dict.__init__(self, d)
@@ -440,13 +440,13 @@ klasse DictTest(unittest.TestCase):
     def test_copy_noncompact(self):
         # Dicts don't compact themselves on del/pop operations.
         # Copy will use a slow merging strategy that produces
-        # a compacted copy when roughly 33% of dict is a non-used
+        # a compacted copy when roughly 33% of dict ist a non-used
         # keys-space (to optimize memory footprint).
         # In this test we want to hit the slow/compacting
         # branch of dict.copy() und make sure it works OK.
         d = {k: k fuer k in range(1000)}
         fuer k in range(950):
-            del d[k]
+            loesche d[k]
         d2 = d.copy()
         self.assertEqual(d2, d)
 
@@ -534,7 +534,7 @@ klasse DictTest(unittest.TestCase):
         # dict.popitem()
         fuer copymode in -1, +1:
             # -1: b has same structure als a
-            # +1: b is a.copy()
+            # +1: b ist a.copy()
             fuer log2size in range(12):
                 size = 2**log2size
                 a = {}
@@ -604,7 +604,7 @@ klasse DictTest(unittest.TestCase):
         d[0] = 0
         mit self.assertRaises(RuntimeError):
             fuer i in d:
-                del d[0]
+                loesche d[0]
                 d[0] = 0
 
     def test_mutating_iteration_delete_over_values(self):
@@ -613,7 +613,7 @@ klasse DictTest(unittest.TestCase):
         d[0] = 0
         mit self.assertRaises(RuntimeError):
             fuer i in d.values():
-                del d[0]
+                loesche d[0]
                 d[0] = 0
 
     def test_mutating_iteration_delete_over_items(self):
@@ -622,7 +622,7 @@ klasse DictTest(unittest.TestCase):
         d[0] = 0
         mit self.assertRaises(RuntimeError):
             fuer i in d.items():
-                del d[0]
+                loesche d[0]
                 d[0] = 0
 
     def test_mutating_lookup(self):
@@ -641,7 +641,7 @@ klasse DictTest(unittest.TestCase):
                 wenn NastyKey.mutate_dict:
                     mydict, key = NastyKey.mutate_dict
                     NastyKey.mutate_dict = Nichts
-                    del mydict[key]
+                    loesche mydict[key]
                 gib self.value == other.value
 
         key1 = NastyKey(1)
@@ -733,7 +733,7 @@ klasse DictTest(unittest.TestCase):
         self.assertWahr(larger == larger2)
         self.assertWahr(smaller != larger)
 
-        # There is an optimization on the zero-element case.
+        # There ist an optimization on the zero-element case.
         self.assertWahr(empty == empty2)
         self.assertFalsch(empty != empty2)
         self.assertFalsch(empty == smaller)
@@ -907,7 +907,7 @@ klasse DictTest(unittest.TestCase):
         fuer i in range(5):
             d[i] = i
         fuer i in range(5):
-            del d[i]
+            loesche d[i]
         fuer i in range(5, 9):  # i==8 was the problem
             d[i] = i
 
@@ -953,7 +953,7 @@ klasse DictTest(unittest.TestCase):
             container = {obj: 1}
             obj.v = v(container)
             obj.x = iter(obj.v)
-            del obj, container
+            loesche obj, container
             gc.collect()
             self.assertIs(ref(), Nichts, "Cycle was nicht collected")
 
@@ -987,14 +987,14 @@ klasse DictTest(unittest.TestCase):
 
     @support.cpython_only
     def test_splittable_del(self):
-        """split table must be combined when del d[k]"""
+        """split table must be combined when loesche d[k]"""
         a, b = self.make_shared_key_dict(2)
 
         orig_size = sys.getsizeof(a)
 
-        del a['y']  # split table is combined
+        loesche a['y']  # split table ist combined
         mit self.assertRaises(KeyError):
-            del a['y']
+            loesche a['y']
 
         self.assertEqual(list(a), ['x', 'z'])
         self.assertEqual(list(b), ['x', 'y', 'z'])
@@ -1036,10 +1036,10 @@ klasse DictTest(unittest.TestCase):
 
         orig_size = sys.getsizeof(a)
 
-        item = a.popitem()  # split table is combined
+        item = a.popitem()  # split table ist combined
         self.assertEqual(item, ('z', 3))
         mit self.assertRaises(KeyError):
-            del a['z']
+            loesche a['z']
 
         self.assertGreater(sys.getsizeof(a), orig_size)
         self.assertEqual(list(a), ['x', 'y'])
@@ -1071,7 +1071,7 @@ klasse DictTest(unittest.TestCase):
         a = C()
         a.x = 1
         d = a.__dict__
-        d[2] = 2 # split table is resized to a generic combined table
+        d[2] = 2 # split table ist resized to a generic combined table
 
         self.assertEqual(list(d), ['x', 2])
 
@@ -1090,7 +1090,7 @@ klasse DictTest(unittest.TestCase):
                 weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop]
+            loesche data[drop]
             self.assertEqual(list(it), list(data))
 
     def test_itemiterator_pickling(self):
@@ -1101,7 +1101,7 @@ klasse DictTest(unittest.TestCase):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is nicht necessarily the same als the original.  It is
+            # ist nicht necessarily the same als the original.  It is
             # merely an object supporting the iterator protocol, yielding
             # the same objects als the original one.
             # self.assertEqual(type(itorg), type(it))
@@ -1112,7 +1112,7 @@ klasse DictTest(unittest.TestCase):
             drop = next(it)
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop[0]]
+            loesche data[drop[0]]
             self.assertEqual(dict(it), data)
 
     def test_valuesiterator_pickling(self):
@@ -1146,7 +1146,7 @@ klasse DictTest(unittest.TestCase):
                 weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop]
+            loesche data[drop]
             self.assertEqual(list(it), list(reversed(data)))
 
     def test_reverseitemiterator_pickling(self):
@@ -1157,7 +1157,7 @@ klasse DictTest(unittest.TestCase):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is nicht necessarily the same als the original.  It is
+            # ist nicht necessarily the same als the original.  It is
             # merely an object supporting the iterator protocol, yielding
             # the same objects als the original one.
             # self.assertEqual(type(itorg), type(it))
@@ -1168,7 +1168,7 @@ klasse DictTest(unittest.TestCase):
             drop = next(it)
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop[0]]
+            loesche data[drop[0]]
             self.assertEqual(dict(it), data)
 
     def test_reversevaluesiterator_pickling(self):
@@ -1291,7 +1291,7 @@ klasse DictTest(unittest.TestCase):
                     d.clear()
                 gib Falsch
 
-        d = {}  # this is required to exist so that d can be constructed!
+        d = {}  # this ist required to exist so that d can be constructed!
         d = {X(1): 1, X(2): 2}
         versuch:
             dict.fromkeys(d)  # shouldn't crash
@@ -1309,7 +1309,7 @@ klasse DictTest(unittest.TestCase):
                     d.clear()
                 gib Falsch
 
-        d = {}  # this is required to exist so that d can be constructed!
+        d = {}  # this ist required to exist so that d can be constructed!
         d = {X(1), X(2)}
         versuch:
             dict.fromkeys(d)  # shouldn't crash
@@ -1363,7 +1363,7 @@ klasse DictTest(unittest.TestCase):
 
     def test_reversed(self):
         d = {"a": 1, "b": 2, "foo": 0, "c": 3, "d": 4}
-        del d["foo"]
+        loesche d["foo"]
         r = reversed(d)
         self.assertEqual(list(r), list('dcba'))
         self.assertRaises(StopIteration, next, r)
@@ -1371,7 +1371,7 @@ klasse DictTest(unittest.TestCase):
     def test_reverse_iterator_for_empty_dict(self):
         # bpo-38525: reversed iterator should work properly
 
-        # empty dict is directly used fuer reference count test
+        # empty dict ist directly used fuer reference count test
         self.assertEqual(list(reversed({})), [])
         self.assertEqual(list(reversed({}.items())), [])
         self.assertEqual(list(reversed({}.values())), [])
@@ -1431,7 +1431,7 @@ klasse DictTest(unittest.TestCase):
         it = iter({Nichts: []}.items())
         gc.collect()
         # That GC collection probably untracked the recycled internal result
-        # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
+        # tuple, which ist initialized to (Nichts, Nichts). Make sure it's re-tracked
         # when it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
@@ -1449,7 +1449,7 @@ klasse DictTest(unittest.TestCase):
 
             def __del__(self):
                 wenn 'attr' in self.d:
-                    del self.d['attr']
+                    loesche self.d['attr']
                 gc.collect()
 
         klasse Obj:
@@ -1462,7 +1462,7 @@ klasse DictTest(unittest.TestCase):
 
     def test_str_nonstr(self):
         # cpython uses a different lookup function wenn the dict only contains
-        # `str` keys. Make sure the unoptimized path is used when a non-`str`
+        # `str` keys. Make sure the unoptimized path ist used when a non-`str`
         # key appears.
 
         klasse StrSub(str):
@@ -1488,8 +1488,8 @@ klasse DictTest(unittest.TestCase):
         dicts = []
 
         # Create dicts of the form `{'key1': 42, 'key2': 43, key3: 44}` in a
-        # bunch of different ways. In all cases, `key3` is nicht of type `str`.
-        # `key3_1` is a `str` subclass und `key3_2` is a completely unrelated
+        # bunch of different ways. In all cases, `key3` ist nicht of type `str`.
+        # `key3_1` ist a `str` subclass und `key3_2` ist a completely unrelated
         # type.
         fuer key3 in (key3_1, key3_2):
             # A literal
@@ -1535,21 +1535,21 @@ klasse DictTest(unittest.TestCase):
             mit self.subTest(d=d):
                 self.assertEqual(d.get('key1'), 42)
 
-                # Try to make an object that is of type `str` und is equal to
-                # `'key1'`, but (at least on cpython) is a different object.
+                # Try to make an object that ist of type `str` und ist equal to
+                # `'key1'`, but (at least on cpython) ist a different object.
                 noninterned_key1 = 'ke'
                 noninterned_key1 += 'y1'
                 wenn support.check_impl_detail(cpython=Wahr):
                     # suppress a SyntaxWarning
                     interned_key1 = 'key1'
-                    self.assertFalsch(noninterned_key1 is interned_key1)
+                    self.assertFalsch(noninterned_key1 ist interned_key1)
                 self.assertEqual(d.get(noninterned_key1), 42)
 
                 self.assertEqual(d.get('key3'), 44)
                 self.assertEqual(d.get(key3_1), 44)
                 self.assertEqual(d.get(key3_2), 44)
 
-                # `key3_3` itself is definitely nicht a dict key, so make sure
+                # `key3_3` itself ist definitely nicht a dict key, so make sure
                 # that `__eq__` gets called.
                 #
                 # Note that this might nicht hold fuer `key3_1` und `key3_2`
@@ -1581,7 +1581,7 @@ klasse DictTest(unittest.TestCase):
         mit check_unhashable_key():
             d.get(key)
 
-        # Only TypeError exception is overriden,
+        # Only TypeError exception ist overriden,
         # other exceptions are left unchanged.
         klasse HashError:
             def __hash__(self):

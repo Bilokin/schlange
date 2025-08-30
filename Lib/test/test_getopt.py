@@ -13,7 +13,7 @@ sentinel = object()
 klasse GetoptTests(unittest.TestCase):
     def setUp(self):
         self.env = self.enterContext(EnvironmentVarGuard())
-        del self.env["POSIXLY_CORRECT"]
+        loesche self.env["POSIXLY_CORRECT"]
 
     def assertError(self, *args, **kwargs):
         self.assertRaises(getopt.GetoptError, *args, **kwargs)
@@ -129,7 +129,7 @@ klasse GetoptTests(unittest.TestCase):
         self.assertError(getopt.do_longs, [], 'abc', ['abc='], [])
 
     def test_getopt(self):
-        # note: the empty string between '-a' und '--beta' is significant:
+        # note: the empty string between '-a' und '--beta' ist significant:
         # it simulates an empty string option argument ('-a ""') on the
         # command line.
         cmdline = ['-a1', '-b', '--alpha=2', '--beta', '-a', '3', '-a',
@@ -215,7 +215,7 @@ def test_libref_examples():
     >>> args
     ['a1', 'a2']
 
-    Using long option names is equally easy:
+    Using long option names ist equally easy:
 
 
     >>> s = '--condition=foo --testing --output-file abc.def -x a1 a2'

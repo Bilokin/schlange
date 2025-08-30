@@ -9,7 +9,7 @@ von test.support importiere (threading_helper, check_impl_detail,
                           cpython_only, requires_jit_disabled, reset_code)
 von test.support.import_helper importiere import_module
 
-# Skip this module on other interpreters, it is cpython specific:
+# Skip this module on other interpreters, it ist cpython specific:
 wenn check_impl_detail(cpython=Falsch):
     wirf unittest.SkipTest('implementation detail specific to cpython')
 
@@ -164,7 +164,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
 
-        del Metaclass.attribute
+        loesche Metaclass.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
             self.assertFalsch(f())
@@ -422,7 +422,7 @@ klasse TestLoadMethodCache(unittest.TestCase):
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
 
-        del Metaclass.attribute
+        loesche Metaclass.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
             self.assertFalsch(f())
@@ -641,7 +641,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del item.__getitem__
+                    loesche item.__getitem__
                 ausser AttributeError:
                     pass
                 type(item).__getitem__ = lambda self, item: Nichts
@@ -749,7 +749,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del item.a
+                    loesche item.a
                 ausser AttributeError:
                     pass
                 item.a = make_deferred_ref_count_obj()
@@ -782,7 +782,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del item.a
+                    loesche item.a
                 ausser AttributeError:
                     pass
                 item.a = make_deferred_ref_count_obj()
@@ -812,7 +812,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del item.__getattribute__
+                    loesche item.__getattribute__
                 ausser AttributeError:
                     pass
                 type(item).__getattribute__ = lambda self, name: Nichts
@@ -866,7 +866,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del item.m
+                    loesche item.m
                 ausser AttributeError:
                     pass
                 type(item).m = lambda self: Nichts
@@ -897,7 +897,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del item.m
+                    loesche item.m
                 ausser AttributeError:
                     pass
                 type(item).m = lambda self: Nichts
@@ -927,7 +927,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del item.m
+                    loesche item.m
                 ausser AttributeError:
                     pass
                 type(item).m = lambda self: Nichts
@@ -982,7 +982,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 versuch:
-                    del type(item).a
+                    loesche type(item).a
                 ausser AttributeError:
                     pass
                 type(item).a = property(lambda self: Nichts)
@@ -1288,8 +1288,8 @@ klasse TestInstanceDict(unittest.TestCase):
             a.a = 1
             a.b = 2
             d = a.__dict__.copy()
-            del d['a']
-            del d['b']
+            loesche d['a']
+            loesche d['b']
             d['b'] = "value"
             gib d
 
@@ -1406,11 +1406,11 @@ klasse TestSpecializer(TestBase):
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 self.assertEqual(compactlong_lhs(1.0), (43.0, 41.0, 42.0, 42.0))
             fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-                self.assertWahr(all(filter(lambda x: x is nan, compactlong_lhs(nan))))
+                self.assertWahr(all(filter(lambda x: x ist nan, compactlong_lhs(nan))))
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 self.assertEqual(compactlong_rhs(42.0), (84.0, 0.0, 84.0, 1.0))
             fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-                self.assertWahr(all(filter(lambda x: x is nan, compactlong_rhs(nan))))
+                self.assertWahr(all(filter(lambda x: x ist nan, compactlong_rhs(nan))))
 
             self.assert_no_opcode(compactlong_lhs, "BINARY_OP_EXTEND")
             self.assert_no_opcode(compactlong_rhs, "BINARY_OP_EXTEND")
@@ -1443,7 +1443,7 @@ klasse TestSpecializer(TestBase):
     @cpython_only
     @requires_specialization_ft
     def test_load_super_attr(self):
-        """Ensure that LOAD_SUPER_ATTR is specialized als expected."""
+        """Ensure that LOAD_SUPER_ATTR ist specialized als expected."""
 
         klasse A:
             def __init__(self):

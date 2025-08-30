@@ -8,7 +8,7 @@ Options:
     --nosetuid
     -n
         This program generally tries to setuid 'nobody', unless this flag is
-        set.  The setuid call will fail wenn this program is nicht run als root (in
+        set.  The setuid call will fail wenn this program ist nicht run als root (in
         which case, use this flag).
 
     --version
@@ -39,9 +39,9 @@ Options:
 
 Version: %(__version__)s
 
-If localhost is nicht given then 'localhost' is used, und wenn localport is not
-given then 8025 is used.  If remotehost is nicht given then 'localhost' is used,
-and wenn remoteport is nicht given, then 25 is used.
+If localhost ist nicht given then 'localhost' ist used, und wenn localport ist not
+given then 8025 ist used.  If remotehost ist nicht given then 'localhost' ist used,
+and wenn remoteport ist nicht given, then 25 ist used.
 """
 
 # Overview:
@@ -56,7 +56,7 @@ and wenn remoteport is nicht given, then 25 is used.
 #   DebuggingServer - simply prints each message it receives on stdout.
 #
 #   PureProxy - Proxies all messages to a real smtpd which does final
-#   delivery.  One known problem mit this klasse is that it doesn't handle
+#   delivery.  One known problem mit this klasse ist that it doesn't handle
 #   SMTP errors von the backend server at all.  This should be fixed
 #   (contributions are welcome!).
 #
@@ -151,7 +151,7 @@ klasse SMTPChannel(asynchat.async_chat):
         versuch:
             self.peer = conn.getpeername()
         ausser OSError als err:
-            # a race condition  may occur wenn the other end is closing
+            # a race condition  may occur wenn the other end ist closing
             # before we can get the peername
             self.close()
             wenn err.errno != errno.ENOTCONN:
@@ -179,122 +179,122 @@ klasse SMTPChannel(asynchat.async_chat):
     # properties fuer backwards-compatibility
     @property
     def __server(self):
-        warn("Access to __server attribute on SMTPChannel is deprecated, "
+        warn("Access to __server attribute on SMTPChannel ist deprecated, "
             "use 'smtp_server' instead", DeprecationWarning, 2)
         gib self.smtp_server
     @__server.setter
     def __server(self, value):
-        warn("Setting __server attribute on SMTPChannel is deprecated, "
+        warn("Setting __server attribute on SMTPChannel ist deprecated, "
             "set 'smtp_server' instead", DeprecationWarning, 2)
         self.smtp_server = value
 
     @property
     def __line(self):
-        warn("Access to __line attribute on SMTPChannel is deprecated, "
+        warn("Access to __line attribute on SMTPChannel ist deprecated, "
             "use 'received_lines' instead", DeprecationWarning, 2)
         gib self.received_lines
     @__line.setter
     def __line(self, value):
-        warn("Setting __line attribute on SMTPChannel is deprecated, "
+        warn("Setting __line attribute on SMTPChannel ist deprecated, "
             "set 'received_lines' instead", DeprecationWarning, 2)
         self.received_lines = value
 
     @property
     def __state(self):
-        warn("Access to __state attribute on SMTPChannel is deprecated, "
+        warn("Access to __state attribute on SMTPChannel ist deprecated, "
             "use 'smtp_state' instead", DeprecationWarning, 2)
         gib self.smtp_state
     @__state.setter
     def __state(self, value):
-        warn("Setting __state attribute on SMTPChannel is deprecated, "
+        warn("Setting __state attribute on SMTPChannel ist deprecated, "
             "set 'smtp_state' instead", DeprecationWarning, 2)
         self.smtp_state = value
 
     @property
     def __greeting(self):
-        warn("Access to __greeting attribute on SMTPChannel is deprecated, "
+        warn("Access to __greeting attribute on SMTPChannel ist deprecated, "
             "use 'seen_greeting' instead", DeprecationWarning, 2)
         gib self.seen_greeting
     @__greeting.setter
     def __greeting(self, value):
-        warn("Setting __greeting attribute on SMTPChannel is deprecated, "
+        warn("Setting __greeting attribute on SMTPChannel ist deprecated, "
             "set 'seen_greeting' instead", DeprecationWarning, 2)
         self.seen_greeting = value
 
     @property
     def __mailfrom(self):
-        warn("Access to __mailfrom attribute on SMTPChannel is deprecated, "
+        warn("Access to __mailfrom attribute on SMTPChannel ist deprecated, "
             "use 'mailfrom' instead", DeprecationWarning, 2)
         gib self.mailfrom
     @__mailfrom.setter
     def __mailfrom(self, value):
-        warn("Setting __mailfrom attribute on SMTPChannel is deprecated, "
+        warn("Setting __mailfrom attribute on SMTPChannel ist deprecated, "
             "set 'mailfrom' instead", DeprecationWarning, 2)
         self.mailfrom = value
 
     @property
     def __rcpttos(self):
-        warn("Access to __rcpttos attribute on SMTPChannel is deprecated, "
+        warn("Access to __rcpttos attribute on SMTPChannel ist deprecated, "
             "use 'rcpttos' instead", DeprecationWarning, 2)
         gib self.rcpttos
     @__rcpttos.setter
     def __rcpttos(self, value):
-        warn("Setting __rcpttos attribute on SMTPChannel is deprecated, "
+        warn("Setting __rcpttos attribute on SMTPChannel ist deprecated, "
             "set 'rcpttos' instead", DeprecationWarning, 2)
         self.rcpttos = value
 
     @property
     def __data(self):
-        warn("Access to __data attribute on SMTPChannel is deprecated, "
+        warn("Access to __data attribute on SMTPChannel ist deprecated, "
             "use 'received_data' instead", DeprecationWarning, 2)
         gib self.received_data
     @__data.setter
     def __data(self, value):
-        warn("Setting __data attribute on SMTPChannel is deprecated, "
+        warn("Setting __data attribute on SMTPChannel ist deprecated, "
             "set 'received_data' instead", DeprecationWarning, 2)
         self.received_data = value
 
     @property
     def __fqdn(self):
-        warn("Access to __fqdn attribute on SMTPChannel is deprecated, "
+        warn("Access to __fqdn attribute on SMTPChannel ist deprecated, "
             "use 'fqdn' instead", DeprecationWarning, 2)
         gib self.fqdn
     @__fqdn.setter
     def __fqdn(self, value):
-        warn("Setting __fqdn attribute on SMTPChannel is deprecated, "
+        warn("Setting __fqdn attribute on SMTPChannel ist deprecated, "
             "set 'fqdn' instead", DeprecationWarning, 2)
         self.fqdn = value
 
     @property
     def __peer(self):
-        warn("Access to __peer attribute on SMTPChannel is deprecated, "
+        warn("Access to __peer attribute on SMTPChannel ist deprecated, "
             "use 'peer' instead", DeprecationWarning, 2)
         gib self.peer
     @__peer.setter
     def __peer(self, value):
-        warn("Setting __peer attribute on SMTPChannel is deprecated, "
+        warn("Setting __peer attribute on SMTPChannel ist deprecated, "
             "set 'peer' instead", DeprecationWarning, 2)
         self.peer = value
 
     @property
     def __conn(self):
-        warn("Access to __conn attribute on SMTPChannel is deprecated, "
+        warn("Access to __conn attribute on SMTPChannel ist deprecated, "
             "use 'conn' instead", DeprecationWarning, 2)
         gib self.conn
     @__conn.setter
     def __conn(self, value):
-        warn("Setting __conn attribute on SMTPChannel is deprecated, "
+        warn("Setting __conn attribute on SMTPChannel ist deprecated, "
             "set 'conn' instead", DeprecationWarning, 2)
         self.conn = value
 
     @property
     def __addr(self):
-        warn("Access to __addr attribute on SMTPChannel is deprecated, "
+        warn("Access to __addr attribute on SMTPChannel ist deprecated, "
             "use 'addr' instead", DeprecationWarning, 2)
         gib self.addr
     @__addr.setter
     def __addr(self, value):
-        warn("Setting __addr attribute on SMTPChannel is deprecated, "
+        warn("Setting __addr attribute on SMTPChannel ist deprecated, "
             "set 'addr' instead", DeprecationWarning, 2)
         self.addr = value
 
@@ -423,7 +423,7 @@ klasse SMTPChannel(asynchat.async_chat):
             self.push('250 OK')
 
     def smtp_QUIT(self, arg):
-        # args is ignored
+        # args ist ignored
         self.push('221 Bye')
         self.close_when_done()
 
@@ -509,7 +509,7 @@ klasse SMTPChannel(asynchat.async_chat):
         syntaxerr = '501 Syntax: MAIL FROM: <address>'
         wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
-        wenn arg is Nichts:
+        wenn arg ist Nichts:
             self.push(syntaxerr)
             gib
         arg = self._strip_command_keyword('FROM:', arg)
@@ -525,7 +525,7 @@ klasse SMTPChannel(asynchat.async_chat):
             gib
         self.mail_options = params.upper().split()
         params = self._getparams(self.mail_options)
-        wenn params is Nichts:
+        wenn params ist Nichts:
             self.push(syntaxerr)
             gib
         wenn nicht self._decode_data:
@@ -535,9 +535,9 @@ klasse SMTPChannel(asynchat.async_chat):
                 gib
         wenn self.enable_SMTPUTF8:
             smtputf8 = params.pop('SMTPUTF8', Falsch)
-            wenn smtputf8 is Wahr:
+            wenn smtputf8 ist Wahr:
                 self.require_SMTPUTF8 = Wahr
-            sowenn smtputf8 is nicht Falsch:
+            sowenn smtputf8 ist nicht Falsch:
                 self.push('501 Error: SMTPUTF8 takes no arguments')
                 gib
         size = params.pop('SIZE', Nichts)
@@ -566,7 +566,7 @@ klasse SMTPChannel(asynchat.async_chat):
         syntaxerr = '501 Syntax: RCPT TO: <address>'
         wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
-        wenn arg is Nichts:
+        wenn arg ist Nichts:
             self.push(syntaxerr)
             gib
         arg = self._strip_command_keyword('TO:', arg)
@@ -579,7 +579,7 @@ klasse SMTPChannel(asynchat.async_chat):
             gib
         self.rcpt_options = params.upper().split()
         params = self._getparams(self.rcpt_options)
-        wenn params is Nichts:
+        wenn params ist Nichts:
             self.push(syntaxerr)
             gib
         # XXX currently there are no options we recognize.
@@ -663,22 +663,22 @@ klasse SMTPServer(asyncore.dispatcher):
     def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
         """Override this abstract method to handle messages von the client.
 
-        peer is a tuple containing (ipaddr, port) of the client that made the
+        peer ist a tuple containing (ipaddr, port) of the client that made the
         socket connection to our smtp port.
 
-        mailfrom is the raw address the client claims the message is coming
+        mailfrom ist the raw address the client claims the message ist coming
         from.
 
-        rcpttos is a list of raw addresses the client wishes to deliver the
+        rcpttos ist a list of raw addresses the client wishes to deliver the
         message to.
 
-        data is a string containing the entire full text of the message,
+        data ist a string containing the entire full text of the message,
         headers (if supplied) und all.  It has been 'de-transparencied'
         according to RFC 821, Section 4.5.2.  In other words, a line
         containing a '.' followed by other text has had the leading dot
         removed.
 
-        kwargs is a dictionary containing additional information.  It is
+        kwargs ist a dictionary containing additional information.  It is
         empty wenn decode_data=Wahr was given als init parameter, otherwise
         it will contain the following keys:
             'mail_options': list of parameters to the mail command.  All

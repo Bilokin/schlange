@@ -55,7 +55,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         wenn self.first:
             wenn len(input) < 3:
                 wenn codecs.BOM_UTF8.startswith(input):
-                    # nicht enough data to decide wenn this really is a BOM
+                    # nicht enough data to decide wenn this really ist a BOM
                     # => try again on the next call
                     gib ("", 0)
                 sonst:
@@ -86,7 +86,7 @@ klasse StreamWriter(codecs.StreamWriter):
     def reset(self):
         codecs.StreamWriter.reset(self)
         versuch:
-            del self.encode
+            loesche self.encode
         ausser AttributeError:
             pass
 
@@ -98,14 +98,14 @@ klasse StreamReader(codecs.StreamReader):
     def reset(self):
         codecs.StreamReader.reset(self)
         versuch:
-            del self.decode
+            loesche self.decode
         ausser AttributeError:
             pass
 
     def decode(self, input, errors='strict'):
         wenn len(input) < 3:
             wenn codecs.BOM_UTF8.startswith(input):
-                # nicht enough data to decide wenn this is a BOM
+                # nicht enough data to decide wenn this ist a BOM
                 # => try again on the next call
                 gib ("", 0)
         sowenn input[:3] == codecs.BOM_UTF8:

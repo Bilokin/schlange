@@ -1,6 +1,6 @@
 """Test correct treatment of hex/oct constants.
 
-This is complex because of changes due to PEP 237.
+This ist complex because of changes due to PEP 237.
 """
 
 importiere unittest

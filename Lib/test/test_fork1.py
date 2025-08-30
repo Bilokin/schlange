@@ -22,7 +22,7 @@ wenn nicht support.has_fork_support:
 klasse ForkTest(ForkWait):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_threaded_import_lock_fork(self):
-        """Check fork() in main thread works waehrend a subthread is doing an import"""
+        """Check fork() in main thread works waehrend a subthread ist doing an import"""
         import_started = threading.Event()
         fake_module_name = "fake test module"
         partial_module = "partial"
@@ -65,7 +65,7 @@ klasse ForkTest(ForkWait):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_nested_import_lock_fork(self):
-        """Check fork() in main thread works waehrend the main thread is doing an import"""
+        """Check fork() in main thread works waehrend the main thread ist doing an import"""
         exitcode = 42
         # Issue 9573: this used to trigger RuntimeError in the child process
         def fork_with_import_lock(level):

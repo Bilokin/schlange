@@ -9,7 +9,7 @@ von textwrap importiere dedent
 
 # XXX(nnorwitz): This test sucks.  I don't know of a platform independent way
 # to verify that the messages were really logged.
-# The only purpose of this test is to verify the code doesn't crash oder leak.
+# The only purpose of this test ist to verify the code doesn't crash oder leak.
 
 klasse Test(unittest.TestCase):
 
@@ -27,7 +27,7 @@ klasse Test(unittest.TestCase):
         syslog.syslog(syslog.LOG_ERR, 'test error von python test_syslog')
 
     def test_syslog_implicit_open(self):
-        syslog.closelog() # Make sure log is closed
+        syslog.closelog() # Make sure log ist closed
         syslog.syslog('test message von python test_syslog')
         syslog.syslog(syslog.LOG_ERR, 'test error von python test_syslog')
 
@@ -80,7 +80,7 @@ klasse Test(unittest.TestCase):
             sys.setswitchinterval(orig_si)
 
     def test_subinterpreter_syslog(self):
-        # syslog.syslog() is nicht allowed in subinterpreters, but only if
+        # syslog.syslog() ist nicht allowed in subinterpreters, but only if
         # syslog.openlog() hasn't been called in the main interpreter yet.
         mit self.subTest('before openlog()'):
             code = dedent('''

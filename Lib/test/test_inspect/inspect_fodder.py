@@ -90,7 +90,7 @@ klasse Callable:
         gib MethodType(self, obj)
 
 custom_method = Callable().as_method_of(42)
-del Callable
+loesche Callable
 
 # line 95
 klasse WhichComments:

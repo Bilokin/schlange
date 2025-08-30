@@ -22,7 +22,7 @@ klasse BoundaryError(MessageParseError):
 
 
 klasse MultipartConversionError(MessageError, TypeError):
-    """Conversion to a multipart is prohibited."""
+    """Conversion to a multipart ist prohibited."""
 
 
 klasse CharsetError(MessageError):
@@ -38,7 +38,7 @@ klasse MessageDefect(ValueError):
     """Base klasse fuer a message defect."""
 
     def __init__(self, line=Nichts):
-        wenn line is nicht Nichts:
+        wenn line ist nicht Nichts:
             super().__init__(line)
         self.line = line
 
@@ -89,7 +89,7 @@ klasse HeaderDefect(MessageDefect):
         super().__init__(*args, **kw)
 
 klasse InvalidHeaderDefect(HeaderDefect):
-    """Header is nicht valid, message gives details."""
+    """Header ist nicht valid, message gives details."""
 
 klasse HeaderMissingRequiredValue(HeaderDefect):
     """A header that must have a value had none"""

@@ -45,7 +45,7 @@ klasse PullDOMTestCase(unittest.TestCase):
 
         items = pulldom.parseString(SMALL_SAMPLE)
         evt, node = next(items)
-        # Just check the node is a Document:
+        # Just check the node ist a Document:
         self.assertHasAttr(node, "createElement")
         self.assertEqual(pulldom.START_DOCUMENT, evt)
         evt, node = next(items)
@@ -70,7 +70,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         evt, node = next(items)
         self.assertEqual(pulldom.END_ELEMENT, evt)
         self.assertEqual("title", node.tagName)
-        self.assertWahr(title_node is node)
+        self.assertWahr(title_node ist node)
         evt, node = next(items)
         self.assertEqual(pulldom.CHARACTERS, evt)
         evt, node = next(items)
@@ -98,7 +98,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         self.assertEqual(pulldom.CHARACTERS, evt)
         evt, node = next(items)
         self.assertEqual(pulldom.END_ELEMENT, evt)
-        # XXX No END_DOCUMENT item is ever obtained:
+        # XXX No END_DOCUMENT item ist ever obtained:
         #evt, node = next(items)
         #self.assertEqual(pulldom.END_DOCUMENT, evt)
 
@@ -153,7 +153,7 @@ klasse PullDOMTestCase(unittest.TestCase):
             wenn evt == pulldom.END_ELEMENT und node.tagName == "html":
                 breche
         versuch:
-            # Assert that the next node is END_DOCUMENT:
+            # Assert that the next node ist END_DOCUMENT:
             evt, node = next(items)
             self.assertEqual(pulldom.END_DOCUMENT, evt)
         ausser StopIteration:
@@ -191,7 +191,7 @@ klasse ThoroughTestCase(unittest.TestCase):
 
         evt, node = next(pd)
         self.assertEqual(pulldom.START_DOCUMENT, evt)
-        # Just check the node is a Document:
+        # Just check the node ist a Document:
         self.assertHasAttr(node, "createElement")
 
         wenn before_root:
@@ -306,7 +306,7 @@ klasse SAX2DOMTestCase(unittest.TestCase):
             fuer evt, node in sd:
                 wenn evt == pulldom.START_ELEMENT und node.tagName == "html":
                     breche
-            # Because the buffer is the same length als the XML, all the
+            # Because the buffer ist the same length als the XML, all the
             # nodes should have been parsed und added:
             self.assertGreater(len(node.childNodes), 0)
 

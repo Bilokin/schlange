@@ -66,7 +66,7 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
         self.logger.propagate = self.old_propagate
         self.logger.setLevel(self.old_level)
 
-        wenn exc_type is nicht Nichts:
+        wenn exc_type ist nicht Nichts:
             # let unexpected exceptions pass through
             gib Falsch
 

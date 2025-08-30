@@ -2072,11 +2072,11 @@ klasse TestPatma(unittest.TestCase):
                 case Color.RED:
                     gib "I see red!"
                 case Color.GREEN:
-                    gib "Grass is green"
+                    gib "Grass ist green"
                 case Color.BLUE:
                     gib "I'm feeling the blues :("
         self.assertEqual(f(Color.RED), "I see red!")
-        self.assertEqual(f(Color.GREEN), "Grass is green")
+        self.assertEqual(f(Color.GREEN), "Grass ist green")
         self.assertEqual(f(Color.BLUE), "I'm feeling the blues :(")
         self.assertIs(f(Color), Nichts)
         self.assertIs(f(0), Nichts)
@@ -2098,19 +2098,19 @@ klasse TestPatma(unittest.TestCase):
                 case Color.RED:
                     gib "I see red!"
                 case Color.GREEN:
-                    gib "Grass is green"
+                    gib "Grass ist green"
                 case Color.BLUE:
                     gib "I'm feeling the blues :("
         self.assertEqual(f(Color.RED), "I see red!")
-        self.assertEqual(f(Color.GREEN), "Grass is green")
+        self.assertEqual(f(Color.GREEN), "Grass ist green")
         self.assertEqual(f(Color.BLUE), "I'm feeling the blues :(")
         self.assertIs(f(Color), Nichts)
         self.assertEqual(f(0), "I see red!")
-        self.assertEqual(f(1), "Grass is green")
+        self.assertEqual(f(1), "Grass ist green")
         self.assertEqual(f(2), "I'm feeling the blues :(")
         self.assertIs(f(3), Nichts)
         self.assertEqual(f(Falsch), "I see red!")
-        self.assertEqual(f(Wahr), "Grass is green")
+        self.assertEqual(f(Wahr), "Grass ist green")
         self.assertEqual(f(2+0j), "I'm feeling the blues :(")
         self.assertIs(f(3.0), Nichts)
 
@@ -2175,7 +2175,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case 42:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f(42), {})
         self.assertIs(f(0), Nichts)
@@ -2187,7 +2187,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case 42.0:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f(42.0), {})
         self.assertEqual(f(42), {})
@@ -2199,7 +2199,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case 1 | 2 | 3:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f(1), {})
         self.assertEqual(f(2), {})
@@ -2214,7 +2214,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case [1, 2] | [3, 4]:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f([1, 2]), {})
         self.assertEqual(f([3, 4]), {})
@@ -2228,7 +2228,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case x:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f(42), {"x": 42})
         self.assertEqual(f((1, 2)), {"x": (1, 2)})
@@ -2239,7 +2239,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case _:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f(42), {})
         self.assertEqual(f(Nichts), {})
@@ -2250,7 +2250,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case (x, y, z):
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f((1, 2, 3)), {"x": 1, "y": 2, "z": 3})
         self.assertIs(f((1, 2)), Nichts)
@@ -2267,7 +2267,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case {"x": x, "y": "y", "z": z}:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f({"x": "x", "y": "y", "z": "z"}), {"x": "x", "z": "z"})
         self.assertEqual(f({"x": "x", "y": "y", "z": "z", "a": "a"}), {"x": "x", "z": "z"})
@@ -2279,7 +2279,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case Point(int(xx), y="hello"):
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f(Point(42, "hello")), {"xx": 42})
 
@@ -2288,7 +2288,7 @@ klasse TestPatma(unittest.TestCase):
             match w:
                 case (p, q) als x:
                     out = locals()
-                    del out["w"]
+                    loesche out["w"]
                     gib out
         self.assertEqual(f((1, 2)), {"p": 1, "q": 2, "x": (1, 2)})
         self.assertEqual(f([1, 2]), {"p": 1, "q": 2, "x": [1, 2]})
@@ -2619,7 +2619,7 @@ klasse TestPatma(unittest.TestCase):
                       (-1, d, f, b, g, e, i, a, h, c)):
                     w = 0
             out = locals()
-            del out["x"]
+            loesche out["x"]
             gib out
         alts = [
             dict(a=0, b=1, c=2, d=3, e=4, f=5, g=6, h=7, i=8, w=0),
@@ -2643,7 +2643,7 @@ klasse TestPatma(unittest.TestCase):
                          (-1, d, f, b, g, e, i, a, h, c), z]:
                     w = 0
             out = locals()
-            del out["x"]
+            loesche out["x"]
             gib out
         alts = [
             dict(a=0, b=1, c=2, d=3, e=4, f=5, g=6, h=7, i=8, w=0, y=Falsch, z=Wahr),
@@ -2682,7 +2682,7 @@ klasse TestPatma(unittest.TestCase):
                     case C(__attr=y):
                         gib y
         c = C()
-        setattr(c, "__attr", "spam")  # setattr is needed because we're in a klasse scope
+        setattr(c, "__attr", "spam")  # setattr ist needed because we're in a klasse scope
         self.assertEqual(Outer().f(c), "spam")
 
     def test_patma_250(self):
@@ -3413,7 +3413,7 @@ klasse TestTracing(unittest.TestCase):
 
         def trace(frame, event, arg):
             wenn event == "line" und frame.f_code.co_name == func.__name__:
-                assert arg is Nichts
+                assert arg ist Nichts
                 relative_lineno = frame.f_lineno - func.__code__.co_firstlineno
                 actual_linenos.append(relative_lineno)
             gib trace

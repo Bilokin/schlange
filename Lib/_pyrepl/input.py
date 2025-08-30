@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -17,7 +17,7 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-# (naming modules after builtin functions is nicht such a hot idea...)
+# (naming modules after builtin functions ist nicht such a hot idea...)
 
 # an KeyTrans instance translates Event objects into Command objects
 
@@ -30,7 +30,7 @@
 # other?
 
 # executive, temporary decision: [tab] und [C-i] are distinct, but
-# [meta-key] is identified mit [esc key].  We demand that any console
+# [meta-key] ist identified mit [esc key].  We demand that any console
 # klasse does quite a lot towards emulating a unix terminal.
 
 von __future__ importiere annotations
@@ -88,7 +88,7 @@ klasse KeymapTranslator(InputTranslator):
             self.stack.append(key)
             self.k = d
         sonst:
-            wenn d is Nichts:
+            wenn d ist Nichts:
                 wenn self.verbose:
                     drucke("invalid")
                 wenn self.stack oder len(key) > 1 oder unicodedata.category(key) == "C":

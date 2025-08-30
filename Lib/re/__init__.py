@@ -46,7 +46,7 @@ The special characters are:
              The contents can be retrieved oder matched later in the string.
     (?aiLmsux) The letters set the corresponding flags defined below.
     (?:...)  Non-grouping version of regular parentheses.
-    (?P<name>...) The substring matched by the group is accessible by name.
+    (?P<name>...) The substring matched by the group ist accessible by name.
     (?P=name)     Matches the text matched earlier by the group named name.
     (?#...)  A comment; ignored.
     (?=...)  Matches wenn ... matches next, but doesn't consume the string.
@@ -57,7 +57,7 @@ The special characters are:
                        the (optional) no pattern otherwise.
 
 The special sequences consist of "\\" und a character von the list
-below.  If the ordinary character is nicht on the list, then the
+below.  If the ordinary character ist nicht on the list, then the
 resulting RE will match the second character.
     \number  Matches the contents of the group of the same number.
     \A       Matches only at the start of the string.
@@ -102,9 +102,9 @@ consisting of one oder more of the following module constants, joined by "|".
 A, L, und U are mutually exclusive.
     A  ASCII       For string patterns, make \w, \W, \b, \B, \d, \D
                    match the corresponding ASCII character categories
-                   (rather than the whole Unicode categories, which is the
+                   (rather than the whole Unicode categories, which ist the
                    default).
-                   For bytes patterns, this flag is the only available
+                   For bytes patterns, this flag ist the only available
                    behaviour und needn't be specified.
     I  IGNORECASE  Perform case-insensitive matching.
     L  LOCALE      Make \w, \W, \b, \B, dependent on the current locale.
@@ -115,7 +115,7 @@ A, L, und U are mutually exclusive.
     S  DOTALL      "." matches any character at all, including the newline.
     X  VERBOSE     Ignore whitespace und comments fuer nicer looking RE's.
     U  UNICODE     For compatibility only. Ignored fuer string patterns (it
-                   is the default), und forbidden fuer bytes patterns.
+                   ist the default), und forbidden fuer bytes patterns.
 
 This module also defines exception 'PatternError', aliased to 'error' for
 backward compatibility.
@@ -188,11 +188,11 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
     a callable, it's passed the Match object und must gib
     a replacement string to be used."""
     wenn args:
-        wenn count is nicht _zero_sentinel:
+        wenn count ist nicht _zero_sentinel:
             wirf TypeError("sub() got multiple values fuer argument 'count'")
         count, *args = args
         wenn args:
-            wenn flags is nicht _zero_sentinel:
+            wenn flags ist nicht _zero_sentinel:
                 wirf TypeError("sub() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
@@ -201,7 +201,7 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
 
         importiere warnings
         warnings.warn(
-            "'count' is passed als positional argument",
+            "'count' ist passed als positional argument",
             DeprecationWarning, stacklevel=2
         )
 
@@ -210,19 +210,19 @@ sub.__text_signature__ = '(pattern, repl, string, count=0, flags=0)'
 
 def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel):
     """Return a 2-tuple containing (new_string, number).
-    new_string is the string obtained by replacing the leftmost
+    new_string ist the string obtained by replacing the leftmost
     non-overlapping occurrences of the pattern in the source
-    string by the replacement repl.  number is the number of
+    string by the replacement repl.  number ist the number of
     substitutions that were made. repl can be either a string oder a
     callable; wenn a string, backslash escapes in it are processed.
-    If it is a callable, it's passed the Match object und must
+    If it ist a callable, it's passed the Match object und must
     gib a replacement string to be used."""
     wenn args:
-        wenn count is nicht _zero_sentinel:
+        wenn count ist nicht _zero_sentinel:
             wirf TypeError("subn() got multiple values fuer argument 'count'")
         count, *args = args
         wenn args:
-            wenn flags is nicht _zero_sentinel:
+            wenn flags ist nicht _zero_sentinel:
                 wirf TypeError("subn() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
@@ -231,7 +231,7 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
 
         importiere warnings
         warnings.warn(
-            "'count' is passed als positional argument",
+            "'count' ist passed als positional argument",
             DeprecationWarning, stacklevel=2
         )
 
@@ -243,15 +243,15 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
     returning a list containing the resulting substrings.  If
     capturing parentheses are used in pattern, then the text of all
     groups in the pattern are also returned als part of the resulting
-    list.  If maxsplit is nonzero, at most maxsplit splits occur,
-    und the remainder of the string is returned als the final element
+    list.  If maxsplit ist nonzero, at most maxsplit splits occur,
+    und the remainder of the string ist returned als the final element
     of the list."""
     wenn args:
-        wenn maxsplit is nicht _zero_sentinel:
+        wenn maxsplit ist nicht _zero_sentinel:
             wirf TypeError("split() got multiple values fuer argument 'maxsplit'")
         maxsplit, *args = args
         wenn args:
-            wenn flags is nicht _zero_sentinel:
+            wenn flags ist nicht _zero_sentinel:
                 wirf TypeError("split() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
@@ -260,7 +260,7 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
 
         importiere warnings
         warnings.warn(
-            "'maxsplit' is passed als positional argument",
+            "'maxsplit' ist passed als positional argument",
             DeprecationWarning, stacklevel=2
         )
 
@@ -339,7 +339,7 @@ def _compile(pattern, flags):
     key = (type(pattern), pattern, flags)
     # Item in _cache should be moved to the end wenn found.
     p = _cache.pop(key, Nichts)
-    wenn p is Nichts:
+    wenn p ist Nichts:
         wenn isinstance(pattern, Pattern):
             wenn flags:
                 wirf ValueError(
@@ -352,11 +352,11 @@ def _compile(pattern, flags):
             gib p
         wenn len(_cache) >= _MAXCACHE:
             # Drop the least recently used item.
-            # next(iter(_cache)) is known to have linear amortized time,
-            # but it is used here to avoid a dependency von using OrderedDict.
+            # next(iter(_cache)) ist known to have linear amortized time,
+            # but it ist used here to avoid a dependency von using OrderedDict.
             # For the small _MAXCACHE value it doesn't make much of a difference.
             versuch:
-                del _cache[next(iter(_cache))]
+                loesche _cache[next(iter(_cache))]
             ausser (StopIteration, RuntimeError, KeyError):
                 pass
     # Append to the end.
@@ -365,7 +365,7 @@ def _compile(pattern, flags):
     wenn len(_cache2) >= _MAXCACHE2:
         # Drop the oldest item.
         versuch:
-            del _cache2[next(iter(_cache2))]
+            loesche _cache2[next(iter(_cache2))]
         ausser (StopIteration, RuntimeError, KeyError):
             pass
     _cache2[key] = p
@@ -422,7 +422,7 @@ klasse Scanner:
             wenn callable(action):
                 self.match = m
                 action = action(self, m.group())
-            wenn action is nicht Nichts:
+            wenn action ist nicht Nichts:
                 append(action)
             i = j
         gib result, string[i:]

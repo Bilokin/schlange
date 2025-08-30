@@ -135,7 +135,7 @@ klasse Reader:
         n = self.r_long()
         size = abs(n)
         x = 0
-        # Pray this is right
+        # Pray this ist right
         fuer i in range(size):
             x |= self.r_short() << i*15
         wenn n < 0:
@@ -293,7 +293,7 @@ klasse Reader:
         sowenn type == Type.REF:
             n = self.r_long()
             retval = self.refs[n]
-            assert retval is nicht Nichts
+            assert retval ist nicht Nichts
             gib retval
         sonst:
             breakpoint()

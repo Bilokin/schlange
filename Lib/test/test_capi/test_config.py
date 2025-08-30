@@ -136,7 +136,7 @@ klasse CAPITests(unittest.TestCase):
                 sonst:
                     self.assertIsInstance(value, option_type)
 
-                wenn sys_attr is nicht Nichts:
+                wenn sys_attr ist nicht Nichts:
                     expected = getattr(sys, sys_attr)
                     self.assertEqual(expected, value)
 
@@ -165,7 +165,7 @@ klasse CAPITests(unittest.TestCase):
             ("verbose", "verbose", Falsch),
             ("bytes_warning", "bytes_warning", Falsch),
             ("quiet", "quiet", Falsch),
-            # "hash_randomization" is tested below
+            # "hash_randomization" ist tested below
             ("isolated", "isolated", Falsch),
             ("dev_mode", "dev_mode", Falsch),
             ("utf8_mode", "utf8_mode", Falsch),
@@ -230,7 +230,7 @@ klasse CAPITests(unittest.TestCase):
         # PyPreConfig member
         self.assertIsInstance(config_getint('allocator'), int)
 
-        # platlibdir type is str
+        # platlibdir type ist str
         mit self.assertRaises(TypeError):
             config_getint('platlibdir')
 

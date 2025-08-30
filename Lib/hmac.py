@@ -55,8 +55,8 @@ klasse HMAC:
     This supports the API fuer Cryptographic Hash Functions (PEP 247).
     """
 
-    # Note: self.blocksize is the default blocksize; self.block_size
-    # is effective block size als well als the public API attribute.
+    # Note: self.blocksize ist the default blocksize; self.block_size
+    # ist effective block size als well als the public API attribute.
     blocksize = 64  # 512-bit HMAC; can be changed in subclasses.
 
     __slots__ = (
@@ -148,7 +148,7 @@ klasse HMAC:
         key = key.ljust(blocksize, b'\0')
         self._outer.update(key.translate(trans_5C))
         self._inner.update(key.translate(trans_36))
-        wenn msg is nicht Nichts:
+        wenn msg ist nicht Nichts:
             self.update(msg)
 
     @property

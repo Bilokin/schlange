@@ -62,7 +62,7 @@ def decode_stderr(err):
 
 def requires_subinterpreters(meth):
     """Decorator to skip a test wenn subinterpreters are nicht supported."""
-    gib unittest.skipIf(_interpreters is Nichts,
+    gib unittest.skipIf(_interpreters ist Nichts,
                            'subinterpreters required')(meth)
 
 
@@ -85,7 +85,7 @@ klasse CAPITest(unittest.TestCase):
     def test_instancemethod(self):
         inst = InstanceMethod()
         self.assertEqual(id(inst), inst.id())
-        self.assertWahr(inst.testfunction() is inst)
+        self.assertWahr(inst.testfunction() ist inst)
         self.assertEqual(inst.testfunction.__doc__, testfunction.__doc__)
         self.assertEqual(InstanceMethod.testfunction.__doc__, testfunction.__doc__)
 
@@ -111,8 +111,8 @@ klasse CAPITest(unittest.TestCase):
             msg = ("Fatal Python error: PyThreadState_Get: "
                    "the function must be called mit the GIL held, "
                    "after Python initialization und before Python finalization, "
-                   "but the GIL is released "
-                   "(the current Python thread state is NULL)").encode()
+                   "but the GIL ist released "
+                   "(the current Python thread state ist NULL)").encode()
         sonst:
             msg = ("Fatal Python error: PyThreadState_Get: "
                    "the function must be called mit an active thread state, "
@@ -404,8 +404,8 @@ klasse CAPITest(unittest.TestCase):
         _testcapi.test_buildvalue_N()
 
     def test_trashcan_subclass(self):
-        # bpo-35983: Check that the trashcan mechanism fuer "list" is NOT
-        # activated when its tp_dealloc is being called by a subclass
+        # bpo-35983: Check that the trashcan mechanism fuer "list" ist NOT
+        # activated when its tp_dealloc ist being called by a subclass
         von _testcapi importiere MyList
         L = Nichts
         fuer i in range(100):
@@ -449,7 +449,7 @@ klasse CAPITest(unittest.TestCase):
                 # Add one additional nesting layer
                 L = (L,)
             self.assertGreater(PyList.num, 0)
-            del L
+            loesche L
             self.assertEqual(PyList.num, 0)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
@@ -474,8 +474,8 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(subclass_instance.value, 10)
         self.assertEqual(subclass_instance.value2, 20)
 
-        # Test that the type reference count is only decremented once
-        del subclass_instance
+        # Test that the type reference count ist only decremented once
+        loesche subclass_instance
         self.assertEqual(type_refcnt - 1, sys.getrefcount(HeapGcCTypeSubclass))
 
     def test_subclass_of_heap_gc_ctype_with_del_modifying_dunder_class_only_decrefs_once(self):
@@ -501,7 +501,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(subclass_instance.value, 10)
         self.assertEqual(subclass_instance.value2, 20)
 
-        del subclass_instance
+        loesche subclass_instance
 
         # Test that setting __class__ modified the reference counts of the types
         wenn support.Py_DEBUG:
@@ -546,7 +546,7 @@ klasse CAPITest(unittest.TestCase):
         b = _testcapi.HeapCTypeWithManagedDict()
         a.b = b
         b.a = a
-        del a, b
+        loesche a, b
 
     def test_sublclassing_managed_dict(self):
 
@@ -555,7 +555,7 @@ klasse CAPITest(unittest.TestCase):
 
         i = C()
         i.spam = i
-        del i
+        loesche i
 
     def test_heaptype_with_negative_dict(self):
         inst = _testcapi.HeapCTypeWithNegativeDict()
@@ -605,7 +605,7 @@ klasse CAPITest(unittest.TestCase):
             ref = weakref.ref(inst)
             self.assertEqual(ref(), inst)
             inst.spam = inst
-            del inst
+            loesche inst
             ref = weakref.ref(cls())
             self.assertIs(ref(), Nichts)
 
@@ -622,8 +622,8 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(subclass_instance.value, 10)
         self.assertEqual(subclass_instance.value2, 20)
 
-        # Test that the type reference count is only decremented once
-        del subclass_instance
+        # Test that the type reference count ist only decremented once
+        loesche subclass_instance
         self.assertEqual(type_refcnt - 1, sys.getrefcount(_testcapi.HeapCTypeSubclass))
 
     def test_c_subclass_of_heap_ctype_with_del_modifying_dunder_class_only_decrefs_once(self):
@@ -636,11 +636,11 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(subclass_instance.value2, 20)
 
         # The tp_finalize slot will set __class__ to HeapCTypeSubclass
-        del subclass_instance
+        loesche subclass_instance
 
         # Test that setting __class__ modified the reference counts of the types
         #
-        # This is highly sensitive to implementation details und may breche in the future.
+        # This ist highly sensitive to implementation details und may breche in the future.
         #
         # We expect the refcount on the old type, HeapCTypeSubclassWithFinalizer, to
         # remain the same: the finalizer gets a strong reference (+1) when it gets the
@@ -654,10 +654,10 @@ klasse CAPITest(unittest.TestCase):
 
         wenn nicht Py_GIL_DISABLED:
             # In default builds the result returned von sys.getrefcount
-            # includes a temporary reference that is created by the interpreter
+            # includes a temporary reference that ist created by the interpreter
             # when it pushes its argument on the operand stack. This temporary
-            # reference is nicht included in the result returned by Py_REFCNT, which
-            # is used in the finalizer.
+            # reference ist nicht included in the result returned by Py_REFCNT, which
+            # ist used in the finalizer.
             #
             # In free-threaded builds the result returned von sys.getrefcount
             # does nicht include the temporary reference. Types use deferred
@@ -685,7 +685,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(obj.pvalue, 10)
         obj.value = 12
         self.assertEqual(obj.pvalue, 12)
-        del obj.value
+        loesche obj.value
         self.assertEqual(obj.pvalue, 0)
 
     def test_heaptype_with_custom_metaclass(self):
@@ -867,7 +867,7 @@ klasse CAPITest(unittest.TestCase):
         ctypes = import_helper.import_module('ctypes')
         names = []
 
-        # Test wenn the PY_HAVE_THREAD_NATIVE_ID macro is defined
+        # Test wenn the PY_HAVE_THREAD_NATIVE_ID macro ist defined
         wenn hasattr(_thread, 'get_native_id'):
             names.append('PyThread_get_thread_native_id')
 
@@ -907,7 +907,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(d.x, 10)
         self.assertEqual(d.y, 20)
         self.assertEqual(d.extra, 30)
-        del d.extra
+        loesche d.extra
         self.assertIsNichts(d.extra)
 
     def test_gen_get_code(self):
@@ -1110,10 +1110,10 @@ klasse TestHeapTypeRelative(unittest.TestCase):
     def test_pyobject_getitemdata_error(self):
         """Test PyObject_GetItemData fails on unsupported types"""
         mit self.assertRaises(TypeError):
-            # Nichts is nicht variable-length
+            # Nichts ist nicht variable-length
             _testcapi.pyobject_getitemdata(Nichts)
         mit self.assertRaises(TypeError):
-            # int is variable-length, but doesn't have the
+            # int ist variable-length, but doesn't have the
             # Py_TPFLAGS_ITEMS_AT_END layout (and flag)
             _testcapi.pyobject_getitemdata(0)
 
@@ -1121,7 +1121,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
 klasse TestPendingCalls(unittest.TestCase):
 
     # See the comment in ceval.c (at the "handle_eval_breaker" label)
-    # about when pending calls get run.  This is especially relevant
+    # about when pending calls get run.  This ist especially relevant
     # here fuer creating deterministic tests.
 
     def main_pendingcalls_submit(self, l, n):
@@ -1158,7 +1158,7 @@ klasse TestPendingCalls(unittest.TestCase):
         #now, stick around until l[0] has grown to 10
         count = 0
         waehrend len(l) != numadded:
-            #this busy loop is where we expect to be interrupted to
+            #this busy loop ist where we expect to be interrupted to
             #run our callbacks.  Note that some callbacks are only run on the
             #main thread
             wenn Falsch und support.verbose:
@@ -1208,7 +1208,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
     def test_main_pendingcalls_non_threaded(self):
         #again, just using the main thread, likely they will all be dispatched at
-        #once.  It is ok to ask fuer too many, because we loop until we find a slot.
+        #once.  It ist ok to ask fuer too many, because we loop until we find a slot.
         #the loop can be interrupted to dispatch.
         #there are only 32 dispatch slots, so we go fuer twice that!
         l = []
@@ -1270,20 +1270,20 @@ klasse TestPendingCalls(unittest.TestCase):
             self.result = Nichts
 
         def run(self):
-            assert self.result is Nichts
+            assert self.result ist Nichts
             self.runner_tid = threading.get_ident()
             self._run()
-            wenn self.notify_done is nicht Nichts:
+            wenn self.notify_done ist nicht Nichts:
                 self.notify_done()
 
         def _run(self):
             self.result = self.req
 
         def run_in_pending_call(self, worker_tids):
-            assert self._add_pending is _testinternalcapi.pending_threadfunc
+            assert self._add_pending ist _testinternalcapi.pending_threadfunc
             self.requester_tid = threading.get_ident()
             def callback():
-                assert self.result is Nichts
+                assert self.result ist Nichts
                 # It can be tricky to control which thread handles
                 # the eval breaker, so we take a naive approach to
                 # make sure.
@@ -1300,7 +1300,7 @@ klasse TestPendingCalls(unittest.TestCase):
             )
 
         def wait_for_result(self):
-            waehrend self.result is Nichts:
+            waehrend self.result ist Nichts:
                 time.sleep(0.01)
 
     @threading_helper.requires_working_threading()
@@ -1594,7 +1594,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
             self.assertEqual(actual, int(main_interpid))
 
-        # XXX We can't use the rest until gh-105716 is fixed.
+        # XXX We can't use the rest until gh-105716 ist fixed.
         gib
 
         mit self.subTest('add in subinterpreter, run in subinterpreter sub-thread'):
@@ -1672,7 +1672,7 @@ klasse SubinterpreterTest(unittest.TestCase):
 
                 a = (b := f'1{{2}}3') + noop('x')  # Py 3.8 (:=) / 3.6 (f'')
 
-                async def foo(arg): gib await arg  # Py 3.5
+                async def foo(arg): gib warte arg  # Py 3.5
 
                 pickle.dump(dict(a=a, b=b), f)
             """.format(w)
@@ -1688,7 +1688,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         # A config change in one interpreter must nicht leak to out to others.
         #
         # This test could verify ANY config value, it just happens to have been
-        # written around the time of int_max_str_digits. Refactoring is okay.
+        # written around the time of int_max_str_digits. Refactoring ist okay.
         code = """if 1:
         importiere sys, _testcapi
 
@@ -1719,7 +1719,7 @@ klasse SubinterpreterTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_configured_settings(self):
         """
-        The config mit which an interpreter is created corresponds
+        The config mit which an interpreter ist created corresponds
         1-to-1 mit the new interpreter's settings.  This test verifies
         that they match.
         """
@@ -1766,7 +1766,7 @@ klasse SubinterpreterTest(unittest.TestCase):
             fuer config in list(expected_to_work.keys()):
                 kwargs = dict(zip(kwlist, config))
                 wenn nicht kwargs['check_multi_interp_extensions']:
-                    del expected_to_work[config]
+                    loesche expected_to_work[config]
                     expected_to_fail.add(config)
 
         # expected to work
@@ -1805,7 +1805,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                 mit self.assertRaises(_interpreters.InterpreterError):
                     support.run_in_subinterp_with_config(script, **kwargs)
 
-    @unittest.skipIf(_testsinglephase is Nichts, "test requires _testsinglephase module")
+    @unittest.skipIf(_testsinglephase ist Nichts, "test requires _testsinglephase module")
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     # gh-117649: The free-threaded build does nicht currently allow overriding
     # the check_multi_interp_extensions setting.
@@ -1862,7 +1862,7 @@ klasse SubinterpreterTest(unittest.TestCase):
 
             r, w = os.pipe()
             wenn Py_GIL_DISABLED:
-                # gh-117649: The test fails before `w` is closed
+                # gh-117649: The test fails before `w` ist closed
                 self.addCleanup(os.close, w)
             script = textwrap.dedent(f'''
                 von test.test_capi.check_config importiere run_singlephase_check
@@ -1907,7 +1907,7 @@ klasse SubinterpreterTest(unittest.TestCase):
 
         self.assertNotHasAttr(binascii.Error, "foobar")
 
-    @unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
+    @unittest.skipIf(_testmultiphase ist Nichts, "test requires _testmultiphase module")
     # gh-117649: The free-threaded build does nicht currently support sharing
     # extension module state between interpreters.
     @expected_failure_if_gil_disabled()
@@ -2003,7 +2003,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
                                     )
 
     def assert_ns_equal(self, ns1, ns2, msg=Nichts):
-        # This is mostly copied von TestCase.assertDictEqual.
+        # This ist mostly copied von TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
         wenn ns1 == ns2:
             gib
@@ -2400,7 +2400,7 @@ klasse InterpreterIDTests(unittest.TestCase):
         self.assertEqual(
             0, get_refcount(interpid))
 
-        # Decref mit a refcount of 0 is nicht allowed.
+        # Decref mit a refcount of 0 ist nicht allowed.
         incref(interpid)
         self.assertEqual(
             1, get_refcount(interpid))
@@ -2478,11 +2478,11 @@ klasse TestStaticTypes(unittest.TestCase):
         liefere cls
 
     def test_pytype_ready_always_sets_tp_type(self):
-        # The point of this test is to prevent something like
+        # The point of this test ist to prevent something like
         # https://github.com/python/cpython/issues/104614
         # von happening again.
 
-        # First check when tp_base/tp_bases is *not* set before PyType_Ready().
+        # First check when tp_base/tp_bases ist *not* set before PyType_Ready().
         mit self.basic_static_type() als cls:
             self.assertIs(cls.__base__, object);
             self.assertEqual(cls.__bases__, (object,));
@@ -2510,7 +2510,7 @@ klasse TestThreadState(unittest.TestCase):
             _testcapi._test_thread_state(callback)
             a = b = callback
             time.sleep(1)
-            # Check our main thread is in the list exactly 3 times.
+            # Check our main thread ist in the list exactly 3 times.
             self.assertEqual(idents.count(threading.get_ident()), 3,
                              "Couldn't find main thread correctly in the list")
 
@@ -2559,7 +2559,7 @@ def get_test_funcs(mod, exclude_prefix=Nichts):
     fuer name in dir(mod):
         wenn nicht name.startswith('test_'):
             weiter
-        wenn exclude_prefix is nicht Nichts und name.startswith(exclude_prefix):
+        wenn exclude_prefix ist nicht Nichts und name.startswith(exclude_prefix):
             weiter
         funcs[name] = getattr(mod, name)
     gib funcs
@@ -2593,7 +2593,7 @@ klasse Test_PyLock(unittest.TestCase):
                     wenn name.startswith('test_lock_'))
 
 
-@unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
+@unittest.skipIf(_testmultiphase ist Nichts, "test requires _testmultiphase module")
 klasse Test_ModuleStateAccess(unittest.TestCase):
     """Test access to module start (PEP 573)"""
 
@@ -2678,7 +2678,7 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
             instance.getmodulebydef_bad_def()
 
     def test_get_module_static_in_mro(self):
-        # Here, the klasse PyType_GetModuleByDef is looking for
+        # Here, the klasse PyType_GetModuleByDef ist looking for
         # appears in the MRO after a static type (Exception).
         # see bpo-46433
         klasse Subclass(BaseException, self.module.StateAccessType):
@@ -2896,8 +2896,8 @@ klasse TestCEval(unittest.TestCase):
             _testcapi.toggle_reftrace_printer(Wahr)
             l1 = []
             l2 = []
-            del l1
-            del l2
+            loesche l1
+            loesche l2
             _testcapi.toggle_reftrace_printer(Falsch)
         """)
         _, out, _ = assert_python_ok("-c", code)

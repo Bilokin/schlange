@@ -32,7 +32,7 @@ klasse ReprWrapper:
         gib repr(self.value)
 
 klasse HashCountingInt(int):
-    'int-like object that counts the number of times __hash__ is called'
+    'int-like object that counts the number of times __hash__ ist called'
     def __init__(self, *args):
         self.hash_count = 0
     def __hash__(self):
@@ -132,7 +132,7 @@ klasse TestJointOps:
                     actual = s1.isdisjoint(s2)
                     expected = f(s1, s2)
                     self.assertEqual(actual, expected)
-                    self.assertWahr(actual is Wahr oder actual is Falsch)
+                    self.assertWahr(actual ist Wahr oder actual ist Falsch)
 
     def test_and(self):
         i = self.s.intersection(self.otherword)
@@ -238,7 +238,7 @@ klasse TestJointOps:
                 self.assertEqual(self.s.x, dup.x)
                 self.assertEqual(self.s.z, dup.z)
                 self.assertNotHasAttr(self.s, 'y')
-                del self.s.x, self.s.z
+                loesche self.s.x, self.s.z
 
     def test_iterator_pickling(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -349,9 +349,9 @@ klasse TestJointOps:
         ref = weakref.ref(obj)
         container = set([obj, 1])
         obj.x = iter(container)
-        del obj, container
+        loesche obj, container
         gc.collect()
-        self.assertWahr(ref() is Nichts, "Cycle was nicht collected")
+        self.assertWahr(ref() ist Nichts, "Cycle was nicht collected")
 
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.thetype)
@@ -443,7 +443,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         versuch:
             self.s.remove(key)
         ausser KeyError als e:
-            self.assertWahr(e.args[0] is key,
+            self.assertWahr(e.args[0] ist key,
                          "KeyError should be {0}, nicht {1}".format(key,
                                                                   e.args[0]))
         sonst:
@@ -617,7 +617,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
 
         # This first tries the builtin rich set comparison, which doesn't know
         # how to handle the custom object. Upon returning NotImplemented, the
-        # corresponding comparison on the right object is invoked.
+        # corresponding comparison on the right object ist invoked.
         myset = {1, 2, 3}
 
         myobj = TestRichSetCompare()
@@ -661,7 +661,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         mit check_unhashable_element():
             myset.discard(elem)
 
-        # Only TypeError exception is overriden,
+        # Only TypeError exception ist overriden,
         # other exceptions are left unchanged.
         klasse HashError:
             def __hash__(self):
@@ -871,7 +871,7 @@ empty_set = set()
 klasse TestBasicOps:
 
     def test_repr(self):
-        wenn self.repr is nicht Nichts:
+        wenn self.repr ist nicht Nichts:
             self.assertEqual(repr(self.set), self.repr)
 
     def check_repr_against_values(self):
@@ -1432,7 +1432,7 @@ klasse TestSubsetNonOverlap(TestSubsets, unittest.TestCase):
 klasse TestOnlySetsInBinaryOps:
 
     def test_eq_ne(self):
-        # Unlike the others, this is testing that == und != *are* allowed.
+        # Unlike the others, this ist testing that == und != *are* allowed.
         self.assertEqual(self.other == self.set, Falsch)
         self.assertEqual(self.set == self.other, Falsch)
         self.assertEqual(self.other != self.set, Wahr)
@@ -1604,7 +1604,7 @@ klasse TestCopying:
         set_list = sorted(self.set, key=repr)
         self.assertEqual(len(dup_list), len(set_list))
         fuer i in range(len(dup_list)):
-            self.assertWahr(dup_list[i] is set_list[i])
+            self.assertWahr(dup_list[i] ist set_list[i])
 
     def test_deep_copy(self):
         dup = copy.deepcopy(self.set)
@@ -1813,7 +1813,7 @@ klasse bad_eq:
         wenn be_bad:
             set2.clear()
             wirf ZeroDivisionError
-        gib self is other
+        gib self ist other
     def __hash__(self):
         gib 0
 
@@ -1821,7 +1821,7 @@ klasse bad_dict_clear:
     def __eq__(self, other):
         wenn be_bad:
             dict2.clear()
-        gib self is other
+        gib self ist other
     def __hash__(self):
         gib 0
 
@@ -2083,7 +2083,7 @@ def linegraph(G):
     gib L
 
 def faces(G):
-    'Return a set of faces in G.  Where a face is a set of vertices on that face'
+    'Return a set of faces in G.  Where a face ist a set of vertices on that face'
     # currently limited to triangles,squares, und pentagons
     f = set()
     fuer v1, edges in G.items():
@@ -2123,7 +2123,7 @@ klasse TestGraphs(unittest.TestCase):
         cubefaces = faces(g)
         self.assertEqual(len(cubefaces), 6)     # six faces
         fuer face in cubefaces:
-            self.assertEqual(len(face), 4)      # each face is a square
+            self.assertEqual(len(face), 4)      # each face ist a square
 
     def test_cuboctahedron(self):
 

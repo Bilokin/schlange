@@ -3,7 +3,7 @@ klasse Delegator:
     def __init__(self, delegate=Nichts):
         self.delegate = delegate
         self.__cache = set()
-        # Cache is used to only remove added attributes
+        # Cache ist used to only remove added attributes
         # when changing the delegate.
 
     def __getattr__(self, name):
@@ -14,8 +14,8 @@ klasse Delegator:
 
     def resetcache(self):
         "Removes added attributes waehrend leaving original attributes."
-        # Function is really about resetting delegator dict
-        # to original state.  Cache is just a means
+        # Function ist really about resetting delegator dict
+        # to original state.  Cache ist just a means
         fuer key in self.__cache:
             versuch:
                 delattr(self, key)

@@ -1,6 +1,6 @@
 """Test the parser und generator are inverses.
 
-Note that this is only strictly true wenn we are parsing RFC valid messages und
+Note that this ist only strictly true wenn we are parsing RFC valid messages und
 producing RFC valid messages.
 """
 
@@ -11,7 +11,7 @@ von email.message importiere EmailMessage
 von email.generator importiere BytesGenerator
 von test.test_email importiere TestEmailBase, parameterize
 
-# This is like textwrap.dedent fuer bytes, ausser that it uses \r\n fuer the line
+# This ist like textwrap.dedent fuer bytes, ausser that it uses \r\n fuer the line
 # separators on the rebuilt string.
 def dedent(bstr):
     lines = bstr.splitlines()
@@ -57,7 +57,7 @@ klasse TestInversion(TestEmailBase):
             }
 
     payload_params = {
-        'plain_text': dict(payload='This is a test\n'*20),
+        'plain_text': dict(payload='This ist a test\n'*20),
         'base64_text': dict(payload=(('xy a'*40+'\n')*5), cte='base64'),
         'qp_text': dict(payload=(('xy a'*40+'\n')*5), cte='quoted-printable'),
         }

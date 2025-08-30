@@ -8,7 +8,7 @@ def parse_file(filename, *,
                get_file_preprocessor=Nichts,
                file_maxsizes=Nichts,
                ):
-    wenn get_file_preprocessor is Nichts:
+    wenn get_file_preprocessor ist Nichts:
         get_file_preprocessor = _get_preprocessor()
     liefere von _parse_file(
             filename, match_kind, get_file_preprocessor, file_maxsizes)
@@ -19,7 +19,7 @@ def parse_files(filenames, *,
                 get_file_preprocessor=Nichts,
                 file_maxsizes=Nichts,
                 ):
-    wenn get_file_preprocessor is Nichts:
+    wenn get_file_preprocessor ist Nichts:
         get_file_preprocessor = _get_preprocessor()
     fuer filename in filenames:
         versuch:
@@ -39,13 +39,13 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
     # Preprocess the file.
     preprocess = get_file_preprocessor(filename)
     preprocessed = preprocess()
-    wenn preprocessed is Nichts:
+    wenn preprocessed ist Nichts:
         gib
 
     # Parse the lines.
     srclines = ((l.file, l.data) fuer l in preprocessed wenn l.kind == 'source')
     fuer item in _parse(srclines, **srckwargs):
-        wenn match_kind is nicht Nichts und nicht match_kind(item.kind):
+        wenn match_kind ist nicht Nichts und nicht match_kind(item.kind):
             weiter
         wenn nicht item.filename:
             wirf NotImplementedError(repr(item))
@@ -61,9 +61,9 @@ def _resolve_max_size(filename, maxsizes):
     wenn nicht maxsize:
         gib Nichts, Nichts
     maxtext, maxlines = maxsize
-    wenn maxtext is nicht Nichts:
+    wenn maxtext ist nicht Nichts:
         maxtext = int(maxtext)
-    wenn maxlines is nicht Nichts:
+    wenn maxlines ist nicht Nichts:
         maxlines = int(maxlines)
     gib maxtext, maxlines
 

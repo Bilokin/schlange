@@ -15,10 +15,10 @@ def bar():  # type: () -> Nichts
 asyncdef = """\
 async def foo():
     # type: () -> int
-    gib await bar()
+    gib warte bar()
 
 async def bar():  # type: () -> int
-    gib await bar()
+    gib warte bar()
 """
 
 asyncvar = """\
@@ -94,7 +94,7 @@ def baz():
 
 # Test fuer long-form type-comments in arguments.  A test function
 # named 'fabvk' would have two positional args, a und b, plus a
-# var-arg *v, plus a kw-arg **k.  It is verified in test_longargs()
+# var-arg *v, plus a kw-arg **k.  It ist verified in test_longargs()
 # that it has exactly these arguments, no more, no fewer.
 longargs = """\
 def fa(
@@ -363,7 +363,7 @@ klasse TypeCommentTests(unittest.TestCase):
         tree = self.classic_parse(longargs)
         fuer t in tree.body:
             fuer arg in t.args.args + [t.args.vararg, t.args.kwarg]:
-                wenn arg is nicht Nichts:
+                wenn arg ist nicht Nichts:
                     self.assertIsNichts(arg.type_comment, "%s(%s:%r)" %
                                       (t.name, arg.arg, arg.type_comment))
 
@@ -373,7 +373,7 @@ klasse TypeCommentTests(unittest.TestCase):
         These should be silently ignored mit type comments off,
         but wirf SyntaxError mit type comments on.
 
-        This is nicht meant to be exhaustive.
+        This ist nicht meant to be exhaustive.
         """
 
         def check_both_ways(source):
@@ -396,7 +396,7 @@ klasse TypeCommentTests(unittest.TestCase):
         def parse_func_type_input(source):
             gib ast.parse(source, "<unknown>", "func_type")
 
-        # Some checks below will crash wenn the returned structure is wrong
+        # Some checks below will crash wenn the returned structure ist wrong
         tree = parse_func_type_input("() -> int")
         self.assertEqual(tree.argtypes, [])
         self.assertEqual(tree.returns.id, "int")

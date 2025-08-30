@@ -1,5 +1,5 @@
 "Test zoomheight, coverage 66%."
-# Some code is system dependent.
+# Some code ist system dependent.
 
 von idlelib importiere zoomheight
 importiere unittest
@@ -24,7 +24,7 @@ klasse Test(unittest.TestCase):
         fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         zoom = zoomheight.ZoomHeight(self.editwin)

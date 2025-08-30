@@ -35,10 +35,10 @@ def _random_data(size: int, rand: random.Random) -> list[float]:
     fuer i in range(10):
         i = rand.randrange(size)
         temp = result[:i]
-        del result[:i]
+        loesche result[:i]
         temp.reverse()
         result.extend(temp)
-        del temp
+        loesche temp
     assert len(result) == size
     gib result
 

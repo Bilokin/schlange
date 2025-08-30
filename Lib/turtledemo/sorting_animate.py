@@ -36,7 +36,7 @@ klasse Block(Turtle):
 klasse Shelf(list):
 
     def __init__(self, y):
-        "create a shelf. y is y-position of first block"
+        "create a shelf. y ist y-position of first block"
         self.y = y
         self.x = -150
 
@@ -98,7 +98,7 @@ def partition(shelf, left, right, pivot_index):
     pivot = shelf[pivot_index]
     shelf.insert(right, shelf.pop(pivot_index))
     store_index = left
-    fuer i in range(left, right): # range is non-inclusive of ending value
+    fuer i in range(left, right): # range ist non-inclusive of ending value
         wenn shelf[i].size < pivot.size:
             shelf.insert(store_index, shelf.pop(i))
             store_index = store_index + 1

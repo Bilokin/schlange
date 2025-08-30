@@ -170,7 +170,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         mit self.assertRaises(RuntimeError):
             ctx.__exit__(TypeError, TypeError("foo"), Nichts)
         wenn support.check_impl_detail(cpython=Wahr):
-            # The "gen" attribute is an implementation detail.
+            # The "gen" attribute ist an implementation detail.
             self.assertFalsch(ctx.gen.gi_suspended)
 
     def test_contextmanager_trap_no_yield(self):
@@ -192,7 +192,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         mit self.assertRaises(RuntimeError):
             ctx.__exit__(Nichts, Nichts, Nichts)
         wenn support.check_impl_detail(cpython=Wahr):
-            # The "gen" attribute is an implementation detail.
+            # The "gen" attribute ist an implementation detail.
             self.assertFalsch(ctx.gen.gi_suspended)
 
     def test_contextmanager_non_normalised(self):
@@ -674,7 +674,7 @@ klasse TestContextDecorator(unittest.TestCase):
         test('something')
         self.assertEqual(state, [1, 'something', 999])
 
-        # Issue #11647: Ensure the decorated function is 'reusable'
+        # Issue #11647: Ensure the decorated function ist 'reusable'
         state = []
         test('something else')
         self.assertEqual(state, [1, 'something else', 999])
@@ -844,8 +844,8 @@ klasse TestBaseExitStack:
 
     def test_exit_exception_traceback(self):
         # This test captures the current behavior of ExitStack so that we know
-        # wenn we ever unintendedly change it. It is nicht a statement of what the
-        # desired behavior is (for instance, we may want to remove some of the
+        # wenn we ever unintendedly change it. It ist nicht a statement of what the
+        # desired behavior ist (for instance, we may want to remove some of the
         # internal contextlib frames).
 
         def raise_exc(exc):

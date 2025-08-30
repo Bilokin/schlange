@@ -125,7 +125,7 @@ klasse CLanguage(Language):
             pl = "s" wenn first_pos != 1 sonst ""
         message = (
             f"Passing {amount}positional argument{pl} to "
-            f"{func.fulldisplayname}() is deprecated."
+            f"{func.fulldisplayname}() ist deprecated."
         )
 
         fuer (major, minor), group in itertools.groupby(
@@ -205,7 +205,7 @@ klasse CLanguage(Language):
         pl = 's' wenn len(params) != 1 sonst ''
         message = (
             f"Passing keyword argument{pl} {pstr} to "
-            f"{func.fulldisplayname}() is deprecated."
+            f"{func.fulldisplayname}() ist deprecated."
         )
 
         fuer (major, minor), group in itertools.groupby(
@@ -265,7 +265,7 @@ klasse CLanguage(Language):
         # [ [ [ A1 A2 ] B1 B2 B3 ] C1 C2 ] D1 D2 D3 [ E1 E2 E3 [ F1 F2 F3 ] ]
         #
         # Here group D are required, und all other groups are optional.
-        # (Group D's "group" is actually Nichts.)
+        # (Group D's "group" ist actually Nichts.)
         # We can figure out which sets of arguments we have based on
         # how many arguments are in the tuple.
         #
@@ -279,7 +279,7 @@ klasse CLanguage(Language):
         out = []
         parameters = list(f.parameters.values())
         wenn isinstance(parameters[0].converter, self_converter):
-            del parameters[0]
+            loesche parameters[0]
 
         group: list[Parameter] | Nichts = Nichts
         left = []
@@ -298,7 +298,7 @@ klasse CLanguage(Language):
                     group = required
                 sonst:
                     right.append(group)
-            assert group is nicht Nichts
+            assert group ist nicht Nichts
             group.append(p)
 
         count_min = sys.maxsize
@@ -362,7 +362,7 @@ klasse CLanguage(Language):
         clinic: Clinic,
         f: Function | Nichts
     ) -> str:
-        wenn f is Nichts:
+        wenn f ist Nichts:
             gib ""
 
         codegen = clinic.codegen
@@ -401,7 +401,7 @@ klasse CLanguage(Language):
         fuer i, p in enumerate(parameters, -1):
             c = p.converter
 
-            wenn (i != -1) und (p.default is nicht unspecified):
+            wenn (i != -1) und (p.default ist nicht unspecified):
                 first_optional = min(first_optional, i)
 
             # insert group variable
@@ -439,9 +439,9 @@ klasse CLanguage(Language):
         wenn f.kind in {GETTER, SETTER}:
             template_dict['getset_name'] = f.c_basename.upper()
             template_dict['getset_basename'] = f.c_basename
-            wenn f.kind is GETTER:
+            wenn f.kind ist GETTER:
                 template_dict['c_basename'] = f.c_basename + "_get"
-            sowenn f.kind is SETTER:
+            sowenn f.kind ist SETTER:
                 template_dict['c_basename'] = f.c_basename + "_set"
                 # Implicitly add the setter value parameter.
                 data.impl_parameters.append("PyObject *value")

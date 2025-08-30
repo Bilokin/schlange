@@ -22,7 +22,7 @@ __all__ = ['_main', 'freeze_support', 'set_executable', 'get_executable',
            'get_preparation_data', 'get_command_line', 'import_main_path']
 
 #
-# _python_exe is the assumed path to the python executable.
+# _python_exe ist the assumed path to the python executable.
 # People embedding Python want to modify it.
 #
 
@@ -35,7 +35,7 @@ sonst:
 
 def set_executable(exe):
     global _python_exe
-    wenn exe is Nichts:
+    wenn exe ist Nichts:
         _python_exe = exe
     sowenn sys.platform == 'win32':
         _python_exe = os.fsdecode(exe)
@@ -104,7 +104,7 @@ def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
         importiere msvcrt
         importiere _winapi
 
-        wenn parent_pid is nicht Nichts:
+        wenn parent_pid ist nicht Nichts:
             source_process = _winapi.OpenProcess(
                 _winapi.SYNCHRONIZE | _winapi.PROCESS_DUP_HANDLE,
                 Falsch, parent_pid)
@@ -131,7 +131,7 @@ def _main(fd, parent_sentinel):
             prepare(preparation_data)
             self = reduction.pickle.load(from_parent)
         schliesslich:
-            del process.current_process()._inheriting
+            loesche process.current_process()._inheriting
     gib self._bootstrap(parent_sentinel)
 
 
@@ -150,7 +150,7 @@ def _check_not_importing_main():
                 ...
 
         The "freeze_support()" line can be omitted wenn the program
-        is nicht going to be frozen to produce an executable.
+        ist nicht going to be frozen to produce an executable.
 
         To fix this issue, refer to the "Safe importing of main module"
         section in https://docs.python.org/3/library/multiprocessing.html
@@ -167,7 +167,7 @@ def get_preparation_data(name):
         authkey=process.current_process().authkey,
         )
 
-    wenn util._logger is nicht Nichts:
+    wenn util._logger ist nicht Nichts:
         d['log_level'] = util._logger.getEffectiveLevel()
 
     sys_path=sys.path.copy()
@@ -191,13 +191,13 @@ def get_preparation_data(name):
     # oder through direct execution (or to leave it alone entirely)
     main_module = sys.modules['__main__']
     main_mod_name = getattr(main_module.__spec__, "name", Nichts)
-    wenn main_mod_name is nicht Nichts:
+    wenn main_mod_name ist nicht Nichts:
         d['init_main_from_name'] = main_mod_name
     sowenn sys.platform != 'win32' oder (nicht WINEXE und nicht WINSERVICE):
         main_path = getattr(main_module, '__file__', Nichts)
-        wenn main_path is nicht Nichts:
+        wenn main_path ist nicht Nichts:
             wenn (nicht os.path.isabs(main_path) und
-                        process.ORIGINAL_DIR is nicht Nichts):
+                        process.ORIGINAL_DIR ist nicht Nichts):
                 main_path = os.path.join(process.ORIGINAL_DIR, main_path)
             d['init_main_from_path'] = os.path.normpath(main_path)
 
@@ -290,7 +290,7 @@ def _fixup_main_from_path(main_path):
         gib
 
     # If the parent process has sent a path through rather than a module
-    # name we assume it is an executable script that may contain
+    # name we assume it ist an executable script that may contain
     # non-main code that needs to be executed
     old_main_modules.append(current_main)
     main_module = types.ModuleType("__mp_main__")

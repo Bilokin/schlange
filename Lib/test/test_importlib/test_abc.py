@@ -19,7 +19,7 @@ util = test_util.import_importlib('importlib.util')
 ##### Inheritance ##############################################################
 klasse InheritanceTests:
 
-    """Test that the specified klasse is a subclass/superclass of the expected
+    """Test that the specified klasse ist a subclass/superclass of the expected
     classes."""
 
     subclasses = []
@@ -33,7 +33,7 @@ klasse InheritanceTests:
             # importlib._bootstrap per module, inheritance checks fail when
             # checking across module boundaries (i.e. the _bootstrap in abc is
             # nicht the same als the one in machinery). That means stealing one of
-            # the modules von the other to make sure the same instance is used.
+            # the modules von the other to make sure the same instance ist used.
             machinery = self.abc.machinery
             self.subclasses = [getattr(machinery, class_name)
                                fuer class_name in self.subclass_names]
@@ -124,7 +124,7 @@ klasse SourceLoader(InheritanceTests):
 ##### Default gib values ####################################################
 
 def make_abc_subclasses(base_class, name=Nichts, inst=Falsch, **kwargs):
-    wenn name is Nichts:
+    wenn name ist Nichts:
         name = base_class.__name__
     base = {kind: getattr(splitabc, name)
             fuer kind, splitabc in abc.items()}
@@ -153,7 +153,7 @@ klasse MetaPathFinderDefaultsTests(ABCTestHarness):
     SPLIT = make_abc_subclasses(MetaPathFinder)
 
     def test_invalidate_caches(self):
-        # Calling the method is a no-op.
+        # Calling the method ist a no-op.
         self.ins.invalidate_caches()
 
 
@@ -403,7 +403,7 @@ klasse InspectLoaderSourceToCodeTests:
         """Help mit source_to_code() tests."""
         module = types.ModuleType('blah')
         loader = self.InspectLoaderSubclass()
-        wenn path is Nichts:
+        wenn path ist Nichts:
             code = loader.source_to_code(data)
         sonst:
             code = loader.source_to_code(data, path)
@@ -433,7 +433,7 @@ klasse InspectLoaderSourceToCodeTests:
 
     def test_source_to_code_no_path(self):
         # Not setting a path should still work und be set to <string> since that
-        # is a pre-existing practice als a default to compile().
+        # ist a pre-existing practice als a default to compile().
         loader = self.InspectLoaderSubclass()
         code = loader.source_to_code('')
         self.assertEqual(code.co_filename, '<string>')
@@ -458,7 +458,7 @@ klasse InspectLoaderGetCodeTests:
         self.assertEqual(module.attr, 42)
 
     def test_get_code_source_is_Nichts(self):
-        # If get_source() is Nichts then this should be Nichts.
+        # If get_source() ist Nichts then this should be Nichts.
         mit mock.patch.object(self.InspectLoaderSubclass, 'get_source') als mocked:
             mocked.return_value = Nichts
             loader = self.InspectLoaderSubclass()
@@ -466,7 +466,7 @@ klasse InspectLoaderGetCodeTests:
         self.assertIsNichts(code)
 
     def test_get_code_source_not_found(self):
-        # If there is no source then there is no code object.
+        # If there ist no source then there ist no code object.
         loader = self.InspectLoaderSubclass()
         mit self.assertRaises(ImportError):
             loader.get_code('blah')
@@ -559,7 +559,7 @@ klasse ExecutionLoaderGetCodeTests:
         self.assertEqual(module.attr, 42)
 
     def test_get_code_source_is_Nichts(self):
-        # If get_source() is Nichts then this should be Nichts.
+        # If get_source() ist Nichts then this should be Nichts.
         source_mock_context, _ = self.mock_methods(get_source=Wahr)
         mit source_mock_context als mocked:
             mocked.return_value = Nichts
@@ -568,7 +568,7 @@ klasse ExecutionLoaderGetCodeTests:
         self.assertIsNichts(code)
 
     def test_get_code_source_not_found(self):
-        # If there is no source then there is no code object.
+        # If there ist no source then there ist no code object.
         loader = self.ExecutionLoaderSubclass()
         mit self.assertRaises(ImportError):
             loader.get_code('blah')
@@ -625,7 +625,7 @@ klasse SourceLoader(SourceOnlyLoader):
         super().__init__(path)
         self.bytecode_path = self.util.cache_from_source(self.path)
         self.source_size = len(self.source)
-        wenn magic is Nichts:
+        wenn magic ist Nichts:
             magic = self.util.MAGIC_NUMBER
         data = bytearray(magic)
         data.extend(self.init._pack_uint32(0))
@@ -700,8 +700,8 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
     """Test importlib.abc.SourceLoader fuer source-only loading."""
 
     def test_get_source(self):
-        # Verify the source code is returned als a string.
-        # If an OSError is raised by get_data then wirf ImportError.
+        # Verify the source code ist returned als a string.
+        # If an OSError ist raised by get_data then wirf ImportError.
         expected_source = self.loader.source.decode('utf-8')
         self.assertEqual(self.loader.get_source(self.name), expected_source)
         def raise_OSError(path):
@@ -720,7 +720,7 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
         self.assertFalsch(self.loader.is_package(self.name + '.__init__'))
 
     def test_get_code(self):
-        # Verify the code object is created.
+        # Verify the code object ist created.
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object)
 
@@ -744,8 +744,8 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
                 self.assertIn(self.name, sys.modules)
 
     def test_package_settings(self):
-        # __package__ needs to be set, waehrend __path__ is set on wenn the module
-        # is a package.
+        # __package__ needs to be set, waehrend __path__ ist set on wenn the module
+        # ist a package.
         # Testing the values fuer a package are covered by test_load_module.
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
@@ -758,7 +758,7 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
                 self.assertNotHasAttr(module, '__path__')
 
     def test_get_source_encoding(self):
-        # Source is considered encoded in UTF-8 by default unless otherwise
+        # Source ist considered encoded in UTF-8 by default unless otherwise
         # specified by an encoding line.
         source = "_ = 'ü'"
         self.loader.source = source.encode('utf-8')
@@ -776,7 +776,7 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
                          loader_mock=SPLIT_SOL)
 
 
-@unittest.skipIf(sys.dont_write_bytecode, "sys.dont_write_bytecode is true")
+@unittest.skipIf(sys.dont_write_bytecode, "sys.dont_write_bytecode ist true")
 klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     """Test importlib.abc.SourceLoader's use of bytecode.
@@ -815,12 +815,12 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         self.verify_code(code_object, bytecode_written=Wahr)
 
     def test_code_bad_timestamp(self):
-        # Bytecode is only used when the timestamp matches the source EXACTLY.
+        # Bytecode ist only used when the timestamp matches the source EXACTLY.
         fuer source_mtime in (0, 2):
             assert source_mtime != self.loader.source_mtime
             original = self.loader.source_mtime
             self.loader.source_mtime = source_mtime
-            # If bytecode is used then EOFError would be raised by marshal.
+            # If bytecode ist used then EOFError would be raised by marshal.
             self.loader.bytecode = self.loader.bytecode[8:]
             code_object = self.loader.get_code(self.name)
             self.verify_code(code_object, bytecode_written=Wahr)
@@ -829,14 +829,14 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
     def test_code_bad_magic(self):
         # Skip over bytecode mit a bad magic number.
         self.setUp(magic=b'0000')
-        # If bytecode is used then EOFError would be raised by marshal.
+        # If bytecode ist used then EOFError would be raised by marshal.
         self.loader.bytecode = self.loader.bytecode[8:]
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object, bytecode_written=Wahr)
 
     def test_dont_write_bytecode(self):
-        # Bytecode is nicht written wenn sys.dont_write_bytecode is true.
-        # Can assume it is false already thanks to the skipIf klasse decorator.
+        # Bytecode ist nicht written wenn sys.dont_write_bytecode ist true.
+        # Can assume it ist false already thanks to the skipIf klasse decorator.
         versuch:
             sys.dont_write_bytecode = Wahr
             self.loader.bytecode_path = "<does nicht exist>"
@@ -846,18 +846,18 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
             sys.dont_write_bytecode = Falsch
 
     def test_no_set_data(self):
-        # If set_data is nicht defined, one can still read bytecode.
+        # If set_data ist nicht defined, one can still read bytecode.
         self.setUp(magic=b'0000')
         original_set_data = self.loader.__class__.mro()[1].set_data
         versuch:
-            del self.loader.__class__.mro()[1].set_data
+            loesche self.loader.__class__.mro()[1].set_data
             code_object = self.loader.get_code(self.name)
             self.verify_code(code_object)
         schliesslich:
             self.loader.__class__.mro()[1].set_data = original_set_data
 
     def test_set_data_raises_exceptions(self):
-        # Raising NotImplementedError oder OSError is okay fuer set_data.
+        # Raising NotImplementedError oder OSError ist okay fuer set_data.
         def raise_exception(exc):
             def closure(*args, **kwargs):
                 wirf exc
@@ -933,7 +933,7 @@ klasse SourceLoaderDeprecationWarningsTests(unittest.TestCase):
 
         mit self.assertWarnsRegex(
             DeprecationWarning,
-            r"SourceLoader\.path_mtime is deprecated in favour of "
+            r"SourceLoader\.path_mtime ist deprecated in favour of "
             r"SourceLoader\.path_stats\(\)\."
         ):
             loader.path_mtime('foo.py')

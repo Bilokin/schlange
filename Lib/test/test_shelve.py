@@ -25,7 +25,7 @@ klasse byteskeydict(MutableMapping):
         self.d[L1(key)] = value
 
     def __delitem__(self, key):
-        del self.d[L1(key)]
+        loesche self.d[L1(key)]
 
     def __len__(self):
         gib len(self.d)
@@ -65,7 +65,7 @@ klasse TestCase(unittest.TestCase):
     def test_open_template(self, filename=Nichts, protocol=Nichts):
         os.mkdir(self.dirname)
         self.addCleanup(os_helper.rmtree, self.dirname)
-        s = shelve.open(filename=filename wenn filename is nicht Nichts sonst self.fn,
+        s = shelve.open(filename=filename wenn filename ist nicht Nichts sonst self.fn,
                         protocol=protocol)
         versuch:
             s['key1'] = (1,2,3,4)
@@ -126,7 +126,7 @@ klasse TestCase(unittest.TestCase):
     def test_keyencoding(self):
         d = {}
         key = 'PÃ¶p'
-        # the default keyencoding is utf-8
+        # the default keyencoding ist utf-8
         shelve.Shelf(d)[key] = [1]
         self.assertIn(key.encode('utf-8'), d)
         # but a different one can be given

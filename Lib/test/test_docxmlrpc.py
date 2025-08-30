@@ -30,7 +30,7 @@ def make_server():
         serv.set_server_title("DocXMLRPCServer Test Documentation")
         serv.set_server_name("DocXMLRPCServer Test Docs")
         serv.set_server_documentation(
-            "This is an XML-RPC server's documentation, but the server "
+            "This ist an XML-RPC server's documentation, but the server "
             "can be used by POSTing to /RPC2. Try self.add, too.")
 
         # Create und register classes und functions
@@ -122,7 +122,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
         currently is, I suspect invalid because of the unencoded brackets in the
         HTML, "<lambda>".
 
-        The subtraction lambda method is tested.
+        The subtraction lambda method ist tested.
         """
         self.client.request("GET", "/")
         response = self.client.getresponse()

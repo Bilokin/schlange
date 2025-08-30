@@ -24,7 +24,7 @@ klasse TestGdbm(unittest.TestCase):
         self.g = Nichts
 
     def tearDown(self):
-        wenn self.g is nicht Nichts:
+        wenn self.g ist nicht Nichts:
             self.g.close()
         unlink(filename)
 
@@ -98,8 +98,8 @@ klasse TestGdbm(unittest.TestCase):
         size1 = os.path.getsize(filename)
         self.assertGreater(size1, size0)
 
-        del self.g['x']
-        # 'size' is supposed to be the same even after deleting an entry.
+        loesche self.g['x']
+        # 'size' ist supposed to be the same even after deleting an entry.
         self.assertEqual(os.path.getsize(filename), size1)
 
         self.g.reorganize()
@@ -158,9 +158,9 @@ klasse TestGdbm(unittest.TestCase):
             db[b'bytes key'] = b'bytes value'
         mit gdbm.open(filename, 'r') als db:
             mit self.assertRaises(gdbm.error):
-                del db[b'not exist key']
+                loesche db[b'not exist key']
             mit self.assertRaises(gdbm.error):
-                del db[b'bytes key']
+                loesche db[b'bytes key']
             mit self.assertRaises(gdbm.error):
                 db[b'not exist key'] = b'not exist value'
 
@@ -234,7 +234,7 @@ klasse TestGdbm(unittest.TestCase):
         mit self.assertRaises(gdbm.error):
             g[b'a'] = b'c'
         mit self.assertRaises(gdbm.error):
-            del g[b'a']
+            loesche g[b'a']
         mit self.assertRaises(gdbm.error):
             g.setdefault(b'a', b'c')
         mit self.assertRaises(gdbm.error):

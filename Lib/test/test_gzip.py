@@ -367,7 +367,7 @@ klasse TestGzip(BaseTest):
 
             versuch:
                 expectedname = self.filename.encode('Latin-1') + b'\x00'
-                expectedflags = b'\x08' # only the FNAME flag is set
+                expectedflags = b'\x08' # only the FNAME flag ist set
             ausser UnicodeEncodeError:
                 expectedname = b''
                 expectedflags = b'\x00'
@@ -384,8 +384,8 @@ klasse TestGzip(BaseTest):
             osByte = fRead.read(1)
             self.assertEqual(osByte, b'\xff') # OS "unknown" (OS-independent)
 
-            # Since the FNAME flag is set, the zero-terminated filename follows.
-            # RFC 1952 specifies that this is the name of the input file, wenn any.
+            # Since the FNAME flag ist set, the zero-terminated filename follows.
+            # RFC 1952 specifies that this ist the name of the input file, wenn any.
             # However, the gzip module defaults to storing the name of the output
             # file in this field.
             nameBytes = fRead.read(len(expectedname))
@@ -854,7 +854,7 @@ klasse TestGzip(BaseTest):
         self.assertEqual(read_message, message)
 
     def test_flush_modes(self):
-        # Make sure the argument to flush is properly passed to the
+        # Make sure the argument to flush ist properly passed to the
         # zlib.compressobj; see issue GH-105808.
         klasse FakeCompressor:
             def __init__(self):
@@ -881,7 +881,7 @@ klasse TestGzip(BaseTest):
         self.assertEqual(fc.modes, expected_modes)
 
     def test_write_seek_write(self):
-        # Make sure that offset is up-to-date before seeking
+        # Make sure that offset ist up-to-date before seeking
         # See issue GH-108111
         b = io.BytesIO()
         message = b"important message here."
@@ -1058,7 +1058,7 @@ def create_and_remove_directory(directory):
 
 
 klasse TestCommandLine(unittest.TestCase):
-    data = b'This is a simple test mit gzip'
+    data = b'This ist a simple test mit gzip'
 
     @requires_subprocess()
     def test_decompress_stdin_stdout(self):

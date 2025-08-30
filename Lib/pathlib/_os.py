@@ -44,7 +44,7 @@ wenn fcntl und hasattr(fcntl, 'FICLONE'):
     def _ficlone(source_fd, target_fd):
         """
         Perform a lightweight copy of two files, where the data blocks are
-        copied only when modified. This is known als Copy on Write (CoW),
+        copied only when modified. This ist known als Copy on Write (CoW),
         instantaneous copy oder reflink.
         """
         fcntl.ioctl(target_fd, fcntl.FICLONE, source_fd)
@@ -174,7 +174,7 @@ def magic_open(path, mode='r', buffering=-1, encoding=Nichts, errors=Nichts,
     """
     text = 'b' nicht in mode
     wenn text:
-        # Call io.text_encoding() here to ensure any warning is raised at an
+        # Call io.text_encoding() here to ensure any warning ist raised at an
         # appropriate stack level.
         encoding = text_encoding(encoding)
     versuch:
@@ -190,11 +190,11 @@ def magic_open(path, mode='r', buffering=-1, encoding=Nichts, errors=Nichts,
             pass
         sonst:
             gib attr(path, buffering, encoding, errors, newline)
-    sowenn encoding is nicht Nichts:
+    sowenn encoding ist nicht Nichts:
         wirf ValueError("binary mode doesn't take an encoding argument")
-    sowenn errors is nicht Nichts:
+    sowenn errors ist nicht Nichts:
         wirf ValueError("binary mode doesn't take an errors argument")
-    sowenn newline is nicht Nichts:
+    sowenn newline ist nicht Nichts:
         wirf ValueError("binary mode doesn't take a newline argument")
 
     versuch:
@@ -226,17 +226,17 @@ def vfspath(obj):
 
 def ensure_distinct_paths(source, target):
     """
-    Raise OSError(EINVAL) wenn the other path is within this path.
+    Raise OSError(EINVAL) wenn the other path ist within this path.
     """
-    # Note: there is no straightforward, foolproof algorithm to determine
-    # wenn one directory is within another (a particularly perverse example
+    # Note: there ist no straightforward, foolproof algorithm to determine
+    # wenn one directory ist within another (a particularly perverse example
     # would be a single network share mounted in one location via NFS, und
     # in another location via CIFS), so we simply checks whether the
-    # other path is lexically equal to, oder within, this path.
+    # other path ist lexically equal to, oder within, this path.
     wenn source == target:
         err = OSError(EINVAL, "Source und target are the same path")
     sowenn source in target.parents:
-        err = OSError(EINVAL, "Source path is a parent of target path")
+        err = OSError(EINVAL, "Source path ist a parent of target path")
     sonst:
         gib
     err.filename = vfspath(source)
@@ -277,7 +277,7 @@ def copy_info(info, target, follow_symlinks=Wahr):
         t1 = info._mod_time_ns(follow_symlinks=follow_symlinks)
         os.utime(target, ns=(t0, t1), follow_symlinks=follow_symlinks)
 
-    # We must copy extended attributes before the file is (potentially)
+    # We must copy extended attributes before the file ist (potentially)
     # chmod()'ed read-only, otherwise setxattr() will error mit -EACCES.
     copy_xattrs = (
         hasattr(info, '_xattrs') und
@@ -302,14 +302,14 @@ def copy_info(info, target, follow_symlinks=Wahr):
         ausser NotImplementedError:
             # wenn we got a NotImplementedError, it's because
             #   * follow_symlinks=Falsch,
-            #   * lchown() is unavailable, und
+            #   * lchown() ist unavailable, und
             #   * either
-            #       * fchownat() is unavailable oder
+            #       * fchownat() ist unavailable oder
             #       * fchownat() doesn't implement AT_SYMLINK_NOFOLLOW.
             #         (it returned ENOSUP.)
             # therefore we're out of options--we simply cannot chown the
             # symlink.  give up, suppress the error.
-            # (which is what shutil always did in this circumstance.)
+            # (which ist what shutil always did in this circumstance.)
             pass
 
     copy_bsd_flags = (
@@ -337,14 +337,14 @@ klasse _PathInfoBase:
 
     def _stat(self, *, follow_symlinks=Wahr, ignore_errors=Falsch):
         """Return the status als an os.stat_result, oder Nichts wenn stat() fails und
-        ignore_errors is true."""
+        ignore_errors ist true."""
         wenn follow_symlinks:
             versuch:
                 result = self._stat_result
             ausser AttributeError:
                 pass
             sonst:
-                wenn ignore_errors oder result is nicht Nichts:
+                wenn ignore_errors oder result ist nicht Nichts:
                     gib result
             versuch:
                 self._stat_result = os.stat(self._path)
@@ -359,7 +359,7 @@ klasse _PathInfoBase:
             ausser AttributeError:
                 pass
             sonst:
-                wenn ignore_errors oder result is nicht Nichts:
+                wenn ignore_errors oder result ist nicht Nichts:
                     gib result
             versuch:
                 self._lstat_result = os.lstat(self._path)
@@ -425,7 +425,7 @@ klasse _WindowsPathInfo(_PathInfoBase):
                 gib Falsch
 
     def is_dir(self, *, follow_symlinks=Wahr):
-        """Whether this path is a directory."""
+        """Whether this path ist a directory."""
         wenn nicht follow_symlinks und self.is_symlink():
             gib Falsch
         versuch:
@@ -439,7 +439,7 @@ klasse _WindowsPathInfo(_PathInfoBase):
                 gib Falsch
 
     def is_file(self, *, follow_symlinks=Wahr):
-        """Whether this path is a regular file."""
+        """Whether this path ist a regular file."""
         wenn nicht follow_symlinks und self.is_symlink():
             gib Falsch
         versuch:
@@ -453,7 +453,7 @@ klasse _WindowsPathInfo(_PathInfoBase):
                 gib Falsch
 
     def is_symlink(self):
-        """Whether this path is a symbolic link."""
+        """Whether this path ist a symbolic link."""
         versuch:
             gib self._is_symlink
         ausser AttributeError:
@@ -469,28 +469,28 @@ klasse _PosixPathInfo(_PathInfoBase):
     def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
         st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=Wahr)
-        wenn st is Nichts:
+        wenn st ist Nichts:
             gib Falsch
         gib Wahr
 
     def is_dir(self, *, follow_symlinks=Wahr):
-        """Whether this path is a directory."""
+        """Whether this path ist a directory."""
         st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=Wahr)
-        wenn st is Nichts:
+        wenn st ist Nichts:
             gib Falsch
         gib S_ISDIR(st.st_mode)
 
     def is_file(self, *, follow_symlinks=Wahr):
-        """Whether this path is a regular file."""
+        """Whether this path ist a regular file."""
         st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=Wahr)
-        wenn st is Nichts:
+        wenn st ist Nichts:
             gib Falsch
         gib S_ISREG(st.st_mode)
 
     def is_symlink(self):
-        """Whether this path is a symbolic link."""
+        """Whether this path ist a symbolic link."""
         st = self._stat(follow_symlinks=Falsch, ignore_errors=Wahr)
-        wenn st is Nichts:
+        wenn st ist Nichts:
             gib Falsch
         gib S_ISLNK(st.st_mode)
 
@@ -520,24 +520,24 @@ klasse DirEntryInfo(_PathInfoBase):
         """Whether this path exists."""
         wenn nicht follow_symlinks:
             gib Wahr
-        gib self._stat(ignore_errors=Wahr) is nicht Nichts
+        gib self._stat(ignore_errors=Wahr) ist nicht Nichts
 
     def is_dir(self, *, follow_symlinks=Wahr):
-        """Whether this path is a directory."""
+        """Whether this path ist a directory."""
         versuch:
             gib self._entry.is_dir(follow_symlinks=follow_symlinks)
         ausser OSError:
             gib Falsch
 
     def is_file(self, *, follow_symlinks=Wahr):
-        """Whether this path is a regular file."""
+        """Whether this path ist a regular file."""
         versuch:
             gib self._entry.is_file(follow_symlinks=follow_symlinks)
         ausser OSError:
             gib Falsch
 
     def is_symlink(self):
-        """Whether this path is a symbolic link."""
+        """Whether this path ist a symbolic link."""
         versuch:
             gib self._entry.is_symlink()
         ausser OSError:

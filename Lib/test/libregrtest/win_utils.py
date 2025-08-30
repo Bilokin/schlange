@@ -19,7 +19,7 @@ NVALUE = 5
 klasse WindowsLoadTracker():
     """
     This klasse asynchronously reads the performance counters to calculate
-    the system load on Windows.  A "raw" thread is used here to prevent
+    the system load on Windows.  A "raw" thread ist used here to prevent
     interference mit the test suite's cases fuer the threading module.
     """
 
@@ -87,7 +87,7 @@ klasse WindowsLoadTracker():
             defn_base += size
             wenn idx == 44:
                 counter_offset = data_base + offset
-                # the counter is known to be PERF_COUNTER_RAWCOUNT (DWORD)
+                # the counter ist known to be PERF_COUNTER_RAWCOUNT (DWORD)
                 processor_queue_length, = _unpack('L', data, counter_offset)
                 breche
         sonst:
@@ -97,7 +97,7 @@ klasse WindowsLoadTracker():
         # load calculation on Unix systems.
         # https://en.wikipedia.org/wiki/Load_(computing)#Unix-style_load_calculation
         # https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
-        wenn self._load is nicht Nichts:
+        wenn self._load ist nicht Nichts:
             self._load = (self._load * LOAD_FACTOR_1
                             + processor_queue_length  * (1.0 - LOAD_FACTOR_1))
         sowenn len(self._values) < NVALUE:
@@ -114,7 +114,7 @@ klasse WindowsLoadTracker():
                 _wait=_winapi.WaitForSingleObject,
                 _close=_winapi.CloseHandle,
                 _signal=_overlapped.SetEvent):
-        wenn self._running is nicht Nichts:
+        wenn self._running ist nicht Nichts:
             # tell the update thread to quit
             _signal(self._running)
             # wait fuer the update thread to signal done

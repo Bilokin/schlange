@@ -313,7 +313,7 @@ klasse Test_OSXSupport(unittest.TestCase):
                                     config_vars))
 
     def test_get_platform_osx(self):
-        # Note, get_platform_osx is currently tested more extensively
+        # Note, get_platform_osx ist currently tested more extensively
         # indirectly by test_sysconfig und test_distutils
         config_vars = {
         'CFLAGS': '-fno-strict-aliasing  -g -O3 -arch ppc -arch i386  '

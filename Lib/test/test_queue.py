@@ -31,9 +31,9 @@ klasse _TriggerThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        # The sleep isn't necessary, but is intended to give the blocking
+        # The sleep isn't necessary, but ist intended to give the blocking
         # function in the main thread a chance at actually blocking before
-        # we unclog it.  But wenn the sleep is longer than the timeout-based
+        # we unclog it.  But wenn the sleep ist longer than the timeout-based
         # tests wait in their blocking functions, those tests will fail.
         # So we give them much longer timeout values compared to the
         # sleep here (I aimed at 10 seconds fuer blocking functions --
@@ -46,13 +46,13 @@ klasse _TriggerThread(threading.Thread):
 
 # Execute a function that blocks, und in a separate thread, a function that
 # triggers the release.  Returns the result of the blocking function.  Caution:
-# block_func must guarantee to block until trigger_func is called, und
+# block_func must guarantee to block until trigger_func ist called, und
 # trigger_func must guarantee to change queue state so that block_func can make
 # enough progress to return.  In particular, a block_func that just raises an
-# exception regardless of whether trigger_func is called will lead to
+# exception regardless of whether trigger_func ist called will lead to
 # timing-dependent sporadic failures, und one of those went rarely seen but
 # undiagnosed fuer years.  Now block_func must be unexceptional.  If block_func
-# is supposed to wirf an exception, call do_exceptional_blocking_test()
+# ist supposed to wirf an exception, call do_exceptional_blocking_test()
 # instead.
 
 klasse BlockingTestMixin:
@@ -70,7 +70,7 @@ klasse BlockingTestMixin:
         schliesslich:
             threading_helper.join_thread(thread) # make sure the thread terminates
 
-    # Call this instead wenn block_func is supposed to wirf an exception.
+    # Call this instead wenn block_func ist supposed to wirf an exception.
     def do_exceptional_blocking_test(self,block_func, block_args, trigger_func,
                                    trigger_args, expected_exception_class):
         thread = _TriggerThread(trigger_func, trigger_args)
@@ -302,7 +302,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             q.task_done()
             q.join()
             # on shutdown(immediate=Falsch)
-            # when queue is empty, should wirf ShutDown Exception
+            # when queue ist empty, should wirf ShutDown Exception
             mit self.assertRaises(self.queue.ShutDown):
                 q.get() # p.get(Wahr)
             mit self.assertRaises(self.queue.ShutDown):
@@ -385,7 +385,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         # - all write threads put all their items into the queue,
         # - all read thread get at least one item von the queue,
         #   und keep on running until shutdown.
-        # The join thread is started only when shutdown is immediate.
+        # The join thread ist started only when shutdown ist immediate.
         nparties = write_threads + read_threads
         wenn immediate:
             nparties += join_threads
@@ -813,7 +813,7 @@ klasse FailingQueueTest(BlockingTestMixin):
 
     def test_failing_queue(self):
 
-        # Test to make sure a queue is functioning correctly.
+        # Test to make sure a queue ist functioning correctly.
         # Done twice to the same instance.
         q = self.FailingQueue(QUEUE_SIZE)
         self.failing_queue_test(q)
@@ -1052,7 +1052,7 @@ klasse CSimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
         waehrend Wahr:
             o = Circular()
             q.put(next(gen))
-            del o
+            loesche o
             results.append(q.get())
             wenn results[-1] >= N:
                 breche

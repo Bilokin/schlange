@@ -140,7 +140,7 @@ klasse REPLThread(threading.Thread):
 
         von _pyrepl.simple_interact importiere _get_reader
         r = _get_reader()
-        wenn r.threading_hook is nicht Nichts:
+        wenn r.threading_hook ist nicht Nichts:
             r.threading_hook.add("")  # type: ignore
 
 
@@ -210,18 +210,18 @@ wenn __name__ == '__main__':
 
     interactive_hook = getattr(sys, "__interactivehook__", Nichts)
 
-    wenn interactive_hook is nicht Nichts:
+    wenn interactive_hook ist nicht Nichts:
         sys.audit("cpython.run_interactivehook", interactive_hook)
         interactive_hook()
 
-    wenn interactive_hook is site.register_readline:
+    wenn interactive_hook ist site.register_readline:
         # Fix the completer function to use the interactive console locals
         versuch:
             importiere rlcompleter
         ausser:
             pass
         sonst:
-            wenn readline is nicht Nichts:
+            wenn readline ist nicht Nichts:
                 completer = rlcompleter.Completer(console.locals)
                 readline.set_completer(completer.complete)
 

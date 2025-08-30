@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, und distribute this software und
-# its documentation fuer any purpose is hereby granted without fee,
+# its documentation fuer any purpose ist hereby granted without fee,
 # provided that the above copyright notice appear in all copies und
 # that both that copyright notice und this permission notice appear in
 # supporting documentation.
@@ -168,7 +168,7 @@ klasse WindowsConsole(Console):
         versuch:
             self.out = io._WindowsConsoleIO(self.output_fd, "w")  # type: ignore[attr-defined]
         ausser ValueError:
-            # Console I/O is redirected, fallback...
+            # Console I/O ist redirected, fallback...
             self.out = Nichts
 
     def refresh(self, screen: list[str], c_xy: tuple[int, int]) -> Nichts:
@@ -192,7 +192,7 @@ klasse WindowsConsole(Console):
         old_offset = offset = self.__offset
         height = self.height
 
-        # we make sure the cursor is on the screen, und that we're
+        # we make sure the cursor ist on the screen, und that we're
         # using all of the screen wenn we can
         wenn cy < offset:
             offset = cy
@@ -200,7 +200,7 @@ klasse WindowsConsole(Console):
             offset = cy - height + 1
             scroll_lines = offset - old_offset
 
-            # Scrolling the buffer als the current input is greater than the visible
+            # Scrolling the buffer als the current input ist greater than the visible
             # portion of the window.  We need to scroll the visible portion und the
             # entire history
             self._scroll(scroll_lines, self._getscrollbacksize())
@@ -243,13 +243,13 @@ klasse WindowsConsole(Console):
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
         # mit importiere logging von -X importtime=2
-        wenn nt is nicht Nichts und nt._is_inputhook_installed():
+        wenn nt ist nicht Nichts und nt._is_inputhook_installed():
             gib nt._inputhook
 
     def __write_changed_line(
         self, y: int, oldline: str, newline: str, px_coord: int
     ) -> Nichts:
-        # this is frustrating; there's no reason to test (say)
+        # this ist frustrating; there's no reason to test (say)
         # self.dch1 inside the loop -- but alternative ways of
         # structuring this function are equally painful (I'm trying to
         # avoid writing code generators these days...)
@@ -301,9 +301,9 @@ klasse WindowsConsole(Console):
         scroll_rect = SMALL_RECT()
         scroll_rect.Top = SHORT(top)
         scroll_rect.Bottom = SHORT(bottom)
-        scroll_rect.Left = SHORT(0 wenn left is Nichts sonst left)
+        scroll_rect.Left = SHORT(0 wenn left ist Nichts sonst left)
         scroll_rect.Right = SHORT(
-            self.getheightwidth()[1] - 1 wenn right is Nichts sonst right
+            self.getheightwidth()[1] - 1 wenn right ist Nichts sonst right
         )
         destination_origin = _COORD()
         fill_info = CHAR_INFO()
@@ -336,7 +336,7 @@ klasse WindowsConsole(Console):
         wenn "\x1a" in text:
             text = ''.join(["^Z" wenn x == '\x1a' sonst x fuer x in text])
 
-        wenn self.out is nicht Nichts:
+        wenn self.out ist nicht Nichts:
             self.out.write(text.encode(self.encoding, "replace"))
             self.out.flush()
         sonst:
@@ -438,8 +438,8 @@ klasse WindowsConsole(Console):
         gib rec, read.value
 
     def get_event(self, block: bool = Wahr) -> Event | Nichts:
-        """Return an Event instance.  Returns Nichts wenn |block| is false
-        und there is no event pending, otherwise waits fuer the
+        """Return an Event instance.  Returns Nichts wenn |block| ist false
+        und there ist no event pending, otherwise waits fuer the
         completion of an event."""
 
         wenn nicht block und nicht self.wait(timeout=0):
@@ -447,7 +447,7 @@ klasse WindowsConsole(Console):
 
         waehrend self.event_queue.empty():
             rec = self._read_input()
-            wenn rec is Nichts:
+            wenn rec ist Nichts:
                 gib Nichts
 
             wenn rec.EventType == WINDOW_BUFFER_SIZE_EVENT:
@@ -484,7 +484,7 @@ klasse WindowsConsole(Console):
 
                 gib Nichts
             sowenn self.__vt_support:
-                # If virtual terminal is enabled, scanning VT sequences
+                # If virtual terminal ist enabled, scanning VT sequences
                 fuer char in raw_key.encode(self.event_queue.encoding, "replace"):
                     self.event_queue.push(char)
                 weiter
@@ -529,7 +529,7 @@ klasse WindowsConsole(Console):
         """Flush all output to the screen (assuming there's some
         buffering going on somewhere).
 
-        All output on Windows is unbuffered so this is a nop"""
+        All output on Windows ist unbuffered so this ist a nop"""
         pass
 
     def forgetinput(self) -> Nichts:
@@ -568,7 +568,7 @@ klasse WindowsConsole(Console):
 
     def wait(self, timeout: float | Nichts) -> bool:
         """Wait fuer an event."""
-        wenn timeout is Nichts:
+        wenn timeout ist Nichts:
             timeout = INFINITE
         sonst:
             timeout = int(timeout)

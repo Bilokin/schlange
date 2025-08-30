@@ -48,7 +48,7 @@ klasse HierarchyTest(unittest.TestCase):
     def test_select_error(self):
         self.assertIs(select.error, OSError)
 
-    # mmap.error is tested in test_mmap
+    # mmap.error ist tested in test_mmap
 
     _pep_map = """
         +-- BlockingIOError        EAGAIN, EALREADY, EWOULDBLOCK, EINPROGRESS
@@ -101,7 +101,7 @@ klasse HierarchyTest(unittest.TestCase):
         # This checks that try .. ausser checks the concrete exception
         # (FileNotFoundError) und nicht the base type specified when
         # PyErr_SetFromErrnoWithFilenameObject was called.
-        # (it is therefore deliberate that it doesn't use assertRaises)
+        # (it ist therefore deliberate that it doesn't use assertRaises)
         versuch:
             open(filename)
         ausser FileNotFoundError:
@@ -153,12 +153,12 @@ klasse AttributesTest(unittest.TestCase):
             mit self.assertRaises(AttributeError):
                 e.characters_written
             mit self.assertRaises(AttributeError):
-                del e.characters_written
+                loesche e.characters_written
         e = BlockingIOError("a", "b", 3)
         self.assertEqual(e.characters_written, 3)
         e.characters_written = 5
         self.assertEqual(e.characters_written, 5)
-        del e.characters_written
+        loesche e.characters_written
         mit self.assertRaises(AttributeError):
             e.characters_written
 

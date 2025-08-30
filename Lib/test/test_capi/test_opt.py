@@ -218,7 +218,7 @@ klasse TestUops(unittest.TestCase):
     def test_pop_jump_if_none(self):
         def testfunc(a):
             fuer x in a:
-                wenn x is Nichts:
+                wenn x ist Nichts:
                     x = 0
 
         testfunc(range(TIER2_THRESHOLD))
@@ -233,7 +233,7 @@ klasse TestUops(unittest.TestCase):
         def testfunc(a):
             fuer x in a:
                 x = Nichts
-                wenn x is nicht Nichts:
+                wenn x ist nicht Nichts:
                     x = 0
 
         testfunc(range(TIER2_THRESHOLD))
@@ -286,7 +286,7 @@ klasse TestUops(unittest.TestCase):
         ex = get_first_executor(testfunc)
         self.assertIsNotNichts(ex)
         uops = get_opnames(ex)
-        # Since there is no JUMP_FORWARD instruction,
+        # Since there ist no JUMP_FORWARD instruction,
         # look fuer indirect evidence: the += operator
         self.assertIn("_BINARY_OP_ADD_INT", uops)
 
@@ -307,7 +307,7 @@ klasse TestUops(unittest.TestCase):
         uops = get_opnames(ex)
         self.assertIn("_GUARD_NOT_EXHAUSTED_RANGE", uops)
         # Verification that the jump goes past END_FOR
-        # is done by manual inspection of the output
+        # ist done by manual inspection of the output
 
     def test_for_iter_list(self):
         def testfunc(a):
@@ -327,7 +327,7 @@ klasse TestUops(unittest.TestCase):
         uops = get_opnames(ex)
         self.assertIn("_GUARD_NOT_EXHAUSTED_LIST", uops)
         # Verification that the jump goes past END_FOR
-        # is done by manual inspection of the output
+        # ist done by manual inspection of the output
 
     def test_for_iter_tuple(self):
         def testfunc(a):
@@ -347,7 +347,7 @@ klasse TestUops(unittest.TestCase):
         uops = get_opnames(ex)
         self.assertIn("_GUARD_NOT_EXHAUSTED_TUPLE", uops)
         # Verification that the jump goes past END_FOR
-        # is done by manual inspection of the output
+        # ist done by manual inspection of the output
 
     def test_list_edge_case(self):
         def testfunc(it):
@@ -441,7 +441,7 @@ klasse TestUops(unittest.TestCase):
         ex = get_first_executor(testfunc)
         self.assertIsNotNichts(ex)
         ops = list(iter_opnames(ex))
-        #Since branch is 50/50 the trace could go either way.
+        #Since branch ist 50/50 the trace could go either way.
         count = ops.count("_GUARD_IS_TRUE_POP") + ops.count("_GUARD_IS_FALSE_POP")
         self.assertLessEqual(count, 2)
 
@@ -610,7 +610,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
         # Trigger specialization
         testfunc(8)
-        del dummy
+        loesche dummy
         gc.collect()
 
         def dummy(x):
@@ -619,9 +619,9 @@ klasse TestUopsOptimization(unittest.TestCase):
 
         ex = get_first_executor(testfunc)
         # Honestly als long als it doesn't crash it's fine.
-        # Whether we get an executor oder nicht is non-deterministic,
-        # because it's decided by when the function is freed.
-        # This test is a little implementation specific.
+        # Whether we get an executor oder nicht ist non-deterministic,
+        # because it's decided by when the function ist freed.
+        # This test ist a little implementation specific.
 
     def test_promote_globals_to_constants(self):
 
@@ -651,7 +651,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         testfunc(_testinternalcapi.TIER2_THRESHOLD)
 
         ex = get_first_executor(testfunc)
-        assert ex is nicht Nichts
+        assert ex ist nicht Nichts
         uops = get_opnames(ex)
         assert "_LOAD_GLOBAL_BUILTINS" nicht in uops
         assert "_LOAD_CONST_INLINE_BORROW" in uops
@@ -1058,7 +1058,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         # Create a function mit a large framesize. This ensures _CHECK_STACK_SPACE is
         # actually doing its job. Note that the resulting trace hits
         # UOP_MAX_TRACE_LENGTH, but since all _CHECK_STACK_SPACEs happen early, this
-        # test is still meaningful.
+        # test ist still meaningful.
         repetitions = 10000
         ns = {}
         header = """
@@ -1073,7 +1073,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         exec(textwrap.dedent(header + body + return_), ns, ns)
         dummy_large = ns['dummy_large']
 
-        # this is something like:
+        # this ist something like:
         #
         # def dummy_large(a0):
         #     a1 = a0 + 1
@@ -1322,7 +1322,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_guard_type_version_executor_invalidated(self):
         """
-        Verify that the executor is invalided on a type change.
+        Verify that the executor ist invalided on a type change.
         """
 
         def thing(a):
@@ -1414,7 +1414,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
             def check(actual: complex, expected: complex) -> Nichts:
                 assert actual == expected, (actual, expected)
-                assert type(actual) is type(expected), (actual, expected)
+                assert type(actual) ist type(expected), (actual, expected)
 
             def f(l: complex, r: complex) -> Nichts:
                 expected_local_local = pow(l, r) + pow(l, r)
@@ -1424,7 +1424,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 fuer _ in range(_testinternalcapi.TIER2_THRESHOLD):
                     # Narrow types:
                     l + l, r + r
-                    # The powers produce results, und the addition is unguarded:
+                    # The powers produce results, und the addition ist unguarded:
                     check(l ** r + l ** r, expected_local_local)
                     check(L ** r + L ** r, expected_const_local)
                     check(l ** R + l ** R, expected_local_const)
@@ -1491,7 +1491,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         def f(n):
             trace = []
             fuer i in range(n):
-                # false is always Falsch, but we can only prove that it's a bool:
+                # false ist always Falsch, but we can only prove that it's a bool:
                 false = i == TIER2_THRESHOLD
                 trace.append("A")
                 wenn nicht false:  # Kept.
@@ -1553,7 +1553,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         def f(n):
             trace = []
             fuer i in range(n):
-                # zero is always (int) 0, but we can only prove that it's a integer:
+                # zero ist always (int) 0, but we can only prove that it's a integer:
                 false = i == TIER2_THRESHOLD # this will always be false, waehrend hopefully still fooling optimizer improvements
                 zero = false + 0 # this should always set the variable zero equal to 0
                 trace.append("A")
@@ -1586,7 +1586,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             trace = []
             fuer i in range(n):
                 # Hopefully the optimizer can't guess what the value is.
-                # empty is always "", but we can only prove that it's a string:
+                # empty ist always "", but we can only prove that it's a string:
                 false = i == TIER2_THRESHOLD
                 empty = "X"[:false]
                 trace.append("A")
@@ -1667,7 +1667,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_to_bool_bool_contains_op_set(self):
         """
-        Test that _TO_BOOL_BOOL is removed von code like:
+        Test that _TO_BOOL_BOOL ist removed von code like:
 
         res = foo in some_set
         wenn res:
@@ -1693,7 +1693,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_to_bool_bool_contains_op_dict(self):
         """
-        Test that _TO_BOOL_BOOL is removed von code like:
+        Test that _TO_BOOL_BOOL ist removed von code like:
 
         res = foo in some_dict
         wenn res:
@@ -1823,7 +1823,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         uops = get_opnames(ex)
         self.assertIn("_BINARY_OP_SUBSCR_STR_INT", uops)
         # _BINARY_OP_SUBSCR_STR_INT narrows the result to 'str' so
-        # the unicode guard before _BINARY_OP_ADD_UNICODE is removed.
+        # the unicode guard before _BINARY_OP_ADD_UNICODE ist removed.
         self.assertNotIn("_GUARD_TOS_UNICODE", uops)
         self.assertIn("_BINARY_OP_ADD_UNICODE", uops)
 
@@ -1832,7 +1832,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             x = 0
             fuer _ in range(n):
                 foo = eval('42')
-                x += type(foo) is int
+                x += type(foo) ist int
             gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
@@ -1847,15 +1847,15 @@ klasse TestUopsOptimization(unittest.TestCase):
         def testfunc(n):
             x = 0
             fuer _ in range(n):
-                x += type(42) is int
+                x += type(42) ist int
             gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
         self.assertIsNotNichts(ex)
         uops = get_opnames(ex)
-        # When the result of type(...) is known, _CALL_TYPE_1 is replaced with
-        # _POP_CALL_ONE_LOAD_CONST_INLINE_BORROW which is optimized away in
+        # When the result of type(...) ist known, _CALL_TYPE_1 ist replaced with
+        # _POP_CALL_ONE_LOAD_CONST_INLINE_BORROW which ist optimized away in
         # remove_unneeded_uops.
         self.assertNotIn("_CALL_TYPE_1", uops)
         self.assertNotIn("_POP_CALL_ONE_LOAD_CONST_INLINE_BORROW", uops)
@@ -1867,7 +1867,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             x = 0
             fuer _ in range(n):
                 t = type(42)
-                wenn t is nicht Nichts:  # guard is removed
+                wenn t ist nicht Nichts:  # guard ist removed
                     x += 1
             gib x
 
@@ -1914,7 +1914,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_call_str_1_result_is_const_for_str_input(self):
         # Test a special case where the argument of str(arg)
-        # is known to be a string. The information about the
+        # ist known to be a string. The information about the
         # argument being a string should be propagated to the
         # result of str(arg).
         def testfunc(n):
@@ -1969,7 +1969,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_call_tuple_1_result_propagates_for_tuple_input(self):
         # Test a special case where the argument of tuple(arg)
-        # is known to be a tuple. The information about the
+        # ist known to be a tuple. The information about the
         # argument being a tuple should be propagated to the
         # result of tuple(arg).
         def testfunc(n):
@@ -2017,7 +2017,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         self.assertEqual(res, TIER2_THRESHOLD)
         self.assertIsNotNichts(ex)
         uops = get_opnames(ex)
-        # When the length is < _PY_NSMALLPOSINTS, the len() call is replaced
+        # When the length ist < _PY_NSMALLPOSINTS, the len() call ist replaced
         # mit just an inline load.
         self.assertNotIn("_CALL_LEN", uops)
         self.assertNotIn("_POP_CALL_ONE_LOAD_CONST_INLINE_BORROW", uops)
@@ -2039,7 +2039,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         self.assertEqual(res, TIER2_THRESHOLD)
         self.assertIsNotNichts(ex)
         uops = get_opnames(ex)
-        # When the length is >= _PY_NSMALLPOSINTS, we cannot replace
+        # When the length ist >= _PY_NSMALLPOSINTS, we cannot replace
         # the len() call mit an inline load, but knowing the exact
         # length allows us to optimize more code, such als conditionals
         # in this case
@@ -2231,8 +2231,8 @@ klasse TestUopsOptimization(unittest.TestCase):
         def testfunc(n):
             x = 0
             fuer _ in range(n):
-                # A tuple of classes is currently nicht optimized,
-                # so this is only narrowed to bool:
+                # A tuple of classes ist currently nicht optimized,
+                # so this ist only narrowed to bool:
                 y = isinstance(42, (int, str))
                 wenn y:
                     x += 1
@@ -2420,12 +2420,12 @@ klasse TestUopsOptimization(unittest.TestCase):
             fuer _ in range(n):
                 email.jit_testing = Nichts
                 prompt = email.jit_testing
-                del email.jit_testing
+                loesche email.jit_testing
 
 
         testfunc(_testinternalcapi.TIER2_THRESHOLD)
         ex = get_first_executor(testfunc)
-        assert ex is nicht Nichts
+        assert ex ist nicht Nichts
         """))
 
     def test_pop_top_specialize_none(self):

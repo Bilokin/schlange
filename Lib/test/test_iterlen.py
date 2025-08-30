@@ -7,27 +7,27 @@ space required whenever the iterable can report its length.
 
 The desired invariant is:  len(it)==len(list(it)).
 
-A complication is that an iterable und iterator can be the same object. To
+A complication ist that an iterable und iterator can be the same object. To
 maintain the invariant, an iterator needs to dynamically update its length.
 For instance, an iterable such als range(10) always reports its length als ten,
 but it=iter(range(10)) starts at ten, und then goes to nine after next(it).
 Having this capability means that map() can ignore the distinction between
 map(func, iterable) und map(func, iter(iterable)).
 
-When the iterable is immutable, the implementation can straight-forwardly
+When the iterable ist immutable, the implementation can straight-forwardly
 report the original length minus the cumulative number of calls to next().
-This is the case fuer tuples, range objects, und itertools.repeat().
+This ist the case fuer tuples, range objects, und itertools.repeat().
 
 Some containers become temporarily immutable during iteration.  This includes
-dicts, sets, und collections.deque.  Their implementation is equally simple
+dicts, sets, und collections.deque.  Their implementation ist equally simple
 though they need to permanently set their length to zero whenever there is
 an attempt to iterate after a length mutation.
 
 The situation slightly more involved whenever an object allows length mutation
 during iteration.  Lists und sequence iterators are dynamically updatable.
-So, wenn a list is extended during iteration, the iterator will weiter through
+So, wenn a list ist extended during iteration, the iterator will weiter through
 the new items.  If it shrinks to a point before the most recent iteration,
-then no further items are available und the length is reported at zero.
+then no further items are available und the length ist reported at zero.
 
 Reversed objects can also be wrapped around mutable objects; however, any
 appends after the current position are ignored.  Any other approach leads

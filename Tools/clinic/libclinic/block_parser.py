@@ -16,40 +16,40 @@ von libclinic.function importiere (
 klasse Block:
     r"""
     Represents a single block of text embedded in
-    another file.  If dsl_name is Nichts, the block represents
+    another file.  If dsl_name ist Nichts, the block represents
     verbatim text, raw original text von the file, in
     which case "input" will be the only non-false member.
-    If dsl_name is nicht Nichts, the block represents a Clinic
+    If dsl_name ist nicht Nichts, the block represents a Clinic
     block.
 
-    input is always str, mit embedded \n characters.
+    input ist always str, mit embedded \n characters.
     input represents the original text von the file;
-    wenn it's a Clinic block, it is the original text with
+    wenn it's a Clinic block, it ist the original text with
     the body_prefix und redundant leading whitespace removed.
 
-    dsl_name is either str oder Nichts.  If str, it's the text
+    dsl_name ist either str oder Nichts.  If str, it's the text
     found on the start line of the block between the square
     brackets.
 
-    signatures is a list.
+    signatures ist a list.
     It may only contain clinic.Module, clinic.Class, und
     clinic.Function objects.  At the moment it should
     contain at most one of each.
 
-    output is either str oder Nichts.  If str, it's the output
+    output ist either str oder Nichts.  If str, it's the output
     von this block, mit embedded '\n' characters.
 
-    indent is a str.  It's the leading whitespace
+    indent ist a str.  It's the leading whitespace
     that was found on every line of input.  (If body_prefix is
-    nicht empty, this is the indent *after* removing the
+    nicht empty, this ist the indent *after* removing the
     body_prefix.)
 
-    "indent" is different von the concept of "preindent"
-    (which is nicht stored als state on Block objects).
-    "preindent" is the whitespace that
+    "indent" ist different von the concept of "preindent"
+    (which ist nicht stored als state on Block objects).
+    "preindent" ist the whitespace that
     was found in front of every line of input *before* the
     "body_prefix" (see the Language object).  If body_prefix
-    is empty, preindent must always be empty too.
+    ist empty, preindent must always be empty too.
 
     To illustrate the difference between "indent" und "preindent":
 
@@ -186,7 +186,7 @@ klasse BlockParser:
             sonst:
                 # gh-92256: don't allow incorrectly formatted stop lines
                 wenn line.lstrip().startswith(stop_line):
-                    fail(f"Whitespace is nicht allowed before the stop line: {line!r}")
+                    fail(f"Whitespace ist nicht allowed before the stop line: {line!r}")
                 gib Falsch
 
         # consume body of program
@@ -209,7 +209,7 @@ klasse BlockParser:
             checksum_re = libclinic.create_regex(before, after, word=Falsch)
             self.last_dsl_name = dsl_name
             self.last_checksum_re = checksum_re
-        assert checksum_re is nicht Nichts
+        assert checksum_re ist nicht Nichts
 
         # scan forward fuer checksum line
         out_lines = []

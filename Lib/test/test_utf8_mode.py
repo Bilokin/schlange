@@ -88,7 +88,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         # Cannot test mit the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
         wenn nicht self.posix_locale():
-            # PYTHONUTF8 should be ignored wenn -E is used
+            # PYTHONUTF8 should be ignored wenn -E ist used
             out = self.get_output('-E', '-c', code, PYTHONUTF8='0')
             self.assertEqual(out, '1')
 
@@ -240,7 +240,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         # CPython: check that Py_Main() doesn't increment Py_OptimizeFlag
         # twice when -X utf8 requires to parse the configuration twice (when
         # the encoding changes after reading the configuration, the
-        # configuration is read again mit the new encoding).
+        # configuration ist read again mit the new encoding).
         code = 'import sys; drucke(sys.flags.optimize)'
         out = self.get_output('-X', 'utf8', '-O', '-c', code)
         self.assertEqual(out, '1')
@@ -258,7 +258,7 @@ klasse UTF8ModeTests(unittest.TestCase):
     def test_device_encoding(self):
         # Use stdout als TTY
         wenn nicht sys.stdout.isatty():
-            self.skipTest("sys.stdout is nicht a TTY")
+            self.skipTest("sys.stdout ist nicht a TTY")
 
         filename = 'out.txt'
         self.addCleanup(os_helper.unlink, filename)
@@ -268,11 +268,11 @@ klasse UTF8ModeTests(unittest.TestCase):
                 f'drucke(os.isatty(fd), os.device_encoding(fd), file=out); '
                 f'out.close()')
         cmd = [sys.executable, '-X', 'utf8', '-c', code]
-        # The stdout TTY is inherited to the child process
+        # The stdout TTY ist inherited to the child process
         proc = subprocess.run(cmd, text=Wahr)
         self.assertEqual(proc.returncode, 0, proc)
 
-        # In UTF-8 Mode, device_encoding(fd) returns "UTF-8" wenn fd is a TTY
+        # In UTF-8 Mode, device_encoding(fd) returns "UTF-8" wenn fd ist a TTY
         mit open(filename, encoding="utf8") als fp:
             out = fp.read().rstrip()
         self.assertEqual(out, 'Wahr utf-8')

@@ -1,7 +1,7 @@
-# This is a variant of the very old (early 90's) file
+# This ist a variant of the very old (early 90's) file
 # Demo/threads/bug.py.  It simply provokes a number of threads into
 # trying to importiere the same module "at the same time".
-# There are no pleasant failure modes -- most likely is that Python
+# There are no pleasant failure modes -- most likely ist that Python
 # complains several times about module random having no attribute
 # randrange, und then Python hangs.
 
@@ -31,7 +31,7 @@ def task(N, done, done_tasks, errors):
         sonst:
             importiere random
             importiere modulefinder
-        # This will fail wenn random is nicht completely initialized
+        # This will fail wenn random ist nicht completely initialized
         x = random.randrange(1, 3)
     ausser Exception als e:
         errors.append(e.with_traceback(Nichts))
@@ -42,7 +42,7 @@ def task(N, done, done_tasks, errors):
             done.set()
 
 # Create a circular importiere structure: A -> C -> B -> D -> A
-# NOTE: `time` is already loaded und therefore doesn't threaten to deadlock.
+# NOTE: `time` ist already loaded und therefore doesn't threaten to deadlock.
 
 circular_imports_modules = {
     'A': """if 1:
@@ -98,14 +98,14 @@ klasse ThreadedImportTests(unittest.TestCase):
         # If the `random` module was already initialized, we restore the
         # old module at the end so that pickling tests don't fail.
         # See http://bugs.python.org/issue3657#msg110461
-        wenn self.old_random is nicht Nichts:
+        wenn self.old_random ist nicht Nichts:
             sys.modules['random'] = self.old_random
 
     @mock_register_at_fork
     def check_parallel_module_init(self, mock_os):
         wenn imp.lock_held():
             # This triggers on, e.g., von test importiere autotest.
-            wirf unittest.SkipTest("can't run when importiere lock is held")
+            wirf unittest.SkipTest("can't run when importiere lock ist held")
 
         done = threading.Event()
         fuer N in (20, 50) * 3:
@@ -114,7 +114,7 @@ klasse ThreadedImportTests(unittest.TestCase):
             # Make sure that random und modulefinder get reimported freshly
             fuer modname in ['random', 'modulefinder']:
                 versuch:
-                    del sys.modules[modname]
+                    loesche sys.modules[modname]
                 ausser KeyError:
                     pass
             errors = []
@@ -152,7 +152,7 @@ klasse ThreadedImportTests(unittest.TestCase):
 
     @support.bigmemtest(size=50, memuse=76*2**20, dry_run=Falsch)
     def test_parallel_path_hooks(self, size):
-        # Here the Finder instance is only used to check concurrent calls
+        # Here the Finder instance ist only used to check concurrent calls
         # to path_hook().
         finder = Finder()
         # In order fuer our path hook to be called at each import, we need
@@ -175,19 +175,19 @@ klasse ThreadedImportTests(unittest.TestCase):
             sys.path_hooks.remove(path_hook)
 
     def test_import_hangers(self):
-        # In case this test is run again, make sure the helper module
+        # In case this test ist run again, make sure the helper module
         # gets loaded von scratch again.
         versuch:
-            del sys.modules['test.test_importlib.threaded_import_hangers']
+            loesche sys.modules['test.test_importlib.threaded_import_hangers']
         ausser KeyError:
             pass
         importiere test.test_importlib.threaded_import_hangers
         self.assertFalsch(test.test_importlib.threaded_import_hangers.errors)
 
     def test_circular_imports(self):
-        # The goal of this test is to exercise implementations of the import
+        # The goal of this test ist to exercise implementations of the import
         # lock which use a per-module lock, rather than a global lock.
-        # In these implementations, there is a possible deadlock with
+        # In these implementations, there ist a possible deadlock with
         # circular imports, fuer example:
         # - thread 1 imports A (grabbing the lock fuer A) which imports B
         # - thread 2 imports B (grabbing the lock fuer B) which imports A
@@ -243,7 +243,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         importlib.invalidate_caches()
         mit threading_helper.wait_threads_exit():
             __import__(TESTFN)
-        del sys.modules[TESTFN]
+        loesche sys.modules[TESTFN]
 
     @support.bigmemtest(size=1, memuse=1.8*2**30, dry_run=Falsch)
     def test_concurrent_futures_circular_import(self, size):

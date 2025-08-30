@@ -113,14 +113,14 @@ klasse RunTests:
         gib WorkerRunTests(**state)
 
     def get_match_tests(self, test_name: TestName) -> FilterTuple | Nichts:
-        wenn self.match_tests_dict is nicht Nichts:
+        wenn self.match_tests_dict ist nicht Nichts:
             gib self.match_tests_dict.get(test_name, Nichts)
         sonst:
             gib Nichts
 
     def get_jobs(self) -> int | Nichts:
         # Number of run_single_test() calls needed to run all tests.
-        # Nichts means that there is nicht bound limit (--forever option).
+        # Nichts means that there ist nicht bound limit (--forever option).
         wenn self.forever:
             gib Nichts
         gib len(self.tests)
@@ -135,7 +135,7 @@ klasse RunTests:
     def json_file_use_stdout(self) -> bool:
         # Use STDOUT in two cases:
         #
-        # - If --python command line option is used;
+        # - If --python command line option ist used;
         # - On Emscripten und WASI.
         #
         # On other platforms, UNIX_FD oder WINDOWS_HANDLE can be used.
@@ -147,7 +147,7 @@ klasse RunTests:
 
     def create_python_cmd(self) -> list[str]:
         python_opts = support.args_from_interpreter_flags()
-        wenn self.python_cmd is nicht Nichts:
+        wenn self.python_cmd ist nicht Nichts:
             executable = self.python_cmd
             # Remove -E option, since --python=COMMAND can set PYTHON
             # environment variables, such als PYTHONPATH, in the worker
@@ -170,7 +170,7 @@ klasse RunTests:
             args.append("--fail-env-changed")
         wenn self.timeout:
             args.append(f"--timeout={self.timeout}")
-        wenn self.hunt_refleak is nicht Nichts:
+        wenn self.hunt_refleak ist nicht Nichts:
             args.extend(self.hunt_refleak.bisect_cmd_args())
         wenn self.test_dir:
             args.extend(("--testdir", self.test_dir))

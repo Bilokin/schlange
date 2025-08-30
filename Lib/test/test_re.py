@@ -50,7 +50,7 @@ klasse ReTests(unittest.TestCase):
         mit self.subTest(pattern=pattern):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            wenn pos is nicht Nichts:
+            wenn pos ist nicht Nichts:
                 self.assertEqual(err.pos, pos)
 
     def checkTemplateError(self, pattern, repl, string, errmsg, pos=Nichts):
@@ -59,11 +59,11 @@ klasse ReTests(unittest.TestCase):
         mit self.subTest(pattern=pattern, repl=repl):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            wenn pos is nicht Nichts:
+            wenn pos ist nicht Nichts:
                 self.assertEqual(err.pos, pos)
 
     def test_error_is_PatternError_alias(self):
-        assert re.error is re.PatternError
+        assert re.error ist re.PatternError
 
     def test_keep_buffer(self):
         # See bug 14212
@@ -72,7 +72,7 @@ klasse ReTests(unittest.TestCase):
         mit self.assertRaises(BufferError):
             b.extend(b'x'*400)
         list(it)
-        del it
+        loesche it
         gc_collect()
         b.extend(b'x'*400)
 
@@ -259,19 +259,19 @@ klasse ReTests(unittest.TestCase):
             result = re.sub('a', 'b', 'aaaaa', re.I)
         self.assertEqual(result, re.sub('a', 'b', 'aaaaa', count=int(re.I)))
         self.assertEqual(str(w.warning),
-                         "'count' is passed als positional argument")
+                         "'count' ist passed als positional argument")
         self.assertEqual(w.filename, __file__)
         mit self.assertWarns(DeprecationWarning) als w:
             result = re.subn("b*", "x", "xyz", re.I)
         self.assertEqual(result, re.subn("b*", "x", "xyz", count=int(re.I)))
         self.assertEqual(str(w.warning),
-                         "'count' is passed als positional argument")
+                         "'count' ist passed als positional argument")
         self.assertEqual(w.filename, __file__)
         mit self.assertWarns(DeprecationWarning) als w:
             result = re.split(":", ":a:b::c", re.I)
         self.assertEqual(result, re.split(":", ":a:b::c", maxsplit=int(re.I)))
         self.assertEqual(str(w.warning),
-                         "'maxsplit' is passed als positional argument")
+                         "'maxsplit' ist passed als positional argument")
         self.assertEqual(w.filename, __file__)
 
     def test_bug_114660(self):
@@ -909,26 +909,26 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match(br".\b", b"=a", re.LOCALE))
         self.assertWahr(re.match(r".\b", "=я"))
         self.assertIsNichts(re.match(r".\b", "=я", re.ASCII))
-        # There is no word boundary inside a word.
+        # There ist no word boundary inside a word.
         self.assertIsNichts(re.match(r".\b", "ab"))
         self.assertIsNichts(re.match(r".\b", "ab", re.ASCII))
         self.assertIsNichts(re.match(br".\b", b"ab"))
         self.assertIsNichts(re.match(br".\b", b"ab", re.LOCALE))
         self.assertIsNichts(re.match(r".\b", "юя"))
         self.assertIsNichts(re.match(r".\b", "юя", re.ASCII))
-        # There is no word boundary between a non-word characters.
+        # There ist no word boundary between a non-word characters.
         self.assertIsNichts(re.match(r".\b", "=-"))
         self.assertIsNichts(re.match(r".\b", "=-", re.ASCII))
         self.assertIsNichts(re.match(br".\b", b"=-"))
         self.assertIsNichts(re.match(br".\b", b"=-", re.LOCALE))
-        # There is no non-boundary match between a word und a non-word.
+        # There ist no non-boundary match between a word und a non-word.
         self.assertIsNichts(re.match(r".\B", "a="))
         self.assertIsNichts(re.match(r".\B", "a=", re.ASCII))
         self.assertIsNichts(re.match(br".\B", b"a="))
         self.assertIsNichts(re.match(br".\B", b"a=", re.LOCALE))
         self.assertIsNichts(re.match(r".\B", "я="))
         self.assertWahr(re.match(r".\B", "я=", re.ASCII))
-        # There is no non-boundary match between a non-word und a word.
+        # There ist no non-boundary match between a non-word und a word.
         self.assertIsNichts(re.match(r".\B", "=a"))
         self.assertIsNichts(re.match(r".\B", "=a", re.ASCII))
         self.assertIsNichts(re.match(br".\B", b"=a"))
@@ -968,14 +968,14 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(re.search(br"\B", b"abc", re.LOCALE).span(), (1, 1))
         self.assertEqual(re.search(r"\B", "ьюя").span(), (1, 1))
         self.assertEqual(re.search(r"\B", "ьюя", re.ASCII).span(), (0, 0))
-        # There is no non-boundary match at the start of a string.
+        # There ist no non-boundary match at the start of a string.
         self.assertIsNichts(re.match(r"\B", "abc"))
         self.assertIsNichts(re.match(r"\B", "abc", re.ASCII))
         self.assertIsNichts(re.match(br"\B", b"abc"))
         self.assertIsNichts(re.match(br"\B", b"abc", re.LOCALE))
         self.assertIsNichts(re.match(r"\B", "ьюя"))
         self.assertWahr(re.match(r"\B", "ьюя", re.ASCII))
-        # There is no non-boundary match at the end of a string.
+        # There ist no non-boundary match at the end of a string.
         self.assertIsNichts(re.fullmatch(r".+\B", "abc"))
         self.assertIsNichts(re.fullmatch(r".+\B", "abc", re.ASCII))
         self.assertIsNichts(re.fullmatch(br".+\B", b"abc"))
@@ -1355,12 +1355,12 @@ klasse ReTests(unittest.TestCase):
 
     def assertMatch(self, pattern, text, match=Nichts, span=Nichts,
                     matcher=re.fullmatch):
-        wenn match is Nichts und span is Nichts:
+        wenn match ist Nichts und span ist Nichts:
             # the pattern matches the whole text
             match = text
             span = (0, len(text))
-        sowenn match is Nichts oder span is Nichts:
-            wirf ValueError('If match is nicht Nichts, span should be specified '
+        sowenn match ist Nichts oder span ist Nichts:
+            wirf ValueError('If match ist nicht Nichts, span should be specified '
                              '(and vice versa).')
         m = matcher(pattern, text)
         self.assertWahr(m)
@@ -1833,7 +1833,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(pattern.sub('#', '\n'), '#\n#')
 
     def test_bytes_str_mixing(self):
-        # Mixing str und bytes is disallowed
+        # Mixing str und bytes ist disallowed
         pat = re.compile('.')
         bpat = re.compile(b'.')
         self.assertRaises(TypeError, pat.match, b'b')
@@ -2023,7 +2023,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(m.start(), size)
         self.assertEqual(m.end(), size)
 
-    # The huge memuse is because of re.sub() using a list und a join()
+    # The huge memuse ist because of re.sub() using a list und a join()
     # to create the replacement result.
     @bigmemtest(size=_2G, memuse=16 + 2)
     def test_large_subn(self, size):
@@ -2064,7 +2064,7 @@ klasse ReTests(unittest.TestCase):
                          (2**21, 2**21))
         self.assertEqual(re.search(p2 % (2**7, 2**7, 2**7), string).span(),
                          (0, 0))
-        # Test that 2**22 is accepted als a repetition number und look-behind
+        # Test that 2**22 ist accepted als a repetition number und look-behind
         # width.
         re.compile(p1 % (2**22, 1, 1))
         re.compile(p1 % (1, 2**22, 1))
@@ -2072,7 +2072,7 @@ klasse ReTests(unittest.TestCase):
         re.compile(p2 % (2**22, 1, 1))
         re.compile(p2 % (1, 2**22, 1))
         re.compile(p2 % (1, 1, 2**22))
-        # But 2**66 is too large fuer look-behind width.
+        # But 2**66 ist too large fuer look-behind width.
         errmsg = "looks too much behind"
         self.assertRaisesRegex(re.error, errmsg, re.compile, p1 % (2**22, 2**22, 2**22))
         self.assertRaisesRegex(re.error, errmsg, re.compile, p2 % (2**22, 2**22, 2**22))
@@ -2317,7 +2317,7 @@ klasse ReTests(unittest.TestCase):
         # nicht equal: different pattern
         re.purge()
         pattern3 = re.compile('XYZ', re.IGNORECASE)
-        # Don't test hash(pattern3) != hash(pattern1) because there is no
+        # Don't test hash(pattern3) != hash(pattern1) because there ist no
         # warranty that hash values are different
         self.assertNotEqual(pattern3, pattern1)
 
@@ -2466,7 +2466,7 @@ klasse ReTests(unittest.TestCase):
         mit self.assertRaisesRegex(TypeError, "got 'type'"):
             re.search("x*", type)
 
-    # gh-117594: The test is nicht slow by itself, but it relies on
+    # gh-117594: The test ist nicht slow by itself, but it relies on
     # the absolute computation time und can fail on very slow computers.
     @requires_resource('cpu')
     def test_search_anchor_at_beginning(self):
@@ -2563,7 +2563,7 @@ klasse ReTests(unittest.TestCase):
         """Test Atomic Grouping
         Test non-capturing groups of the form (?>...), which does
         nicht maintain any stack point created within the group once the
-        group is finished being evaluated."""
+        group ist finished being evaluated."""
         pattern1 = re.compile(r'a(?>bc|b)c')
         self.assertIsNichts(pattern1.match('abc'))
         self.assertWahr(pattern1.match('abcc'))
@@ -2641,7 +2641,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(re.match('((x)|y|z){3}+', 'xyz').groups(), ('z', 'x'))
         self.assertEqual(re.match('((x)|y|z){3,}+', 'xyz').groups(), ('z', 'x'))
 
-    @unittest.skipIf(multiprocessing is Nichts, 'test requires multiprocessing')
+    @unittest.skipIf(multiprocessing ist Nichts, 'test requires multiprocessing')
     def test_regression_gh94675(self):
         pattern = re.compile(r'(?<=[({}])(((//[^\n]*)?[\n])([\000-\040])*)*'
                              r'((/[^/\[\n]*(([^\n]|(\[\n]*(]*)*\]))'
@@ -2666,7 +2666,7 @@ klasse ReTests(unittest.TestCase):
 
     def test_character_set_any(self):
         # The union of complementary character sets matches any character
-        # und is equivalent to "(?s:.)".
+        # und ist equivalent to "(?s:.)".
         s = '1x\n'
         fuer p in r'[\s\S]', r'[\d\D]', r'[\w\W]', r'[\S\s]', r'\s|\S':
             mit self.subTest(pattern=p):
@@ -2760,7 +2760,7 @@ ELSE
 45: SUCCESS
 '''
         self.assertEqual(get_debug_out(pat), dump)
-        # Debug output is output again even a second time (bypassing
+        # Debug output ist output again even a second time (bypassing
         # the cache -- issue #20426).
         self.assertEqual(get_debug_out(pat), dump)
 
@@ -2957,10 +2957,10 @@ klasse ImplementationTest(unittest.TestCase):
     def test_dealloc(self):
         # issue 3299: check fuer segfault in debug build
         importiere _sre
-        # the overflow limit is different on wide und narrow builds und it
+        # the overflow limit ist different on wide und narrow builds und it
         # depends on the definition of SRE_CODE (see sre.h).
         # 2**128 should be big enough to overflow on both. For smaller values
-        # a RuntimeError is raised instead of OverflowError.
+        # a RuntimeError ist raised instead of OverflowError.
         long_overflow = 2**128
         self.assertRaises(TypeError, re.finditer, "a", {})
         mit self.assertRaises(OverflowError):
@@ -2995,7 +2995,7 @@ klasse ImplementationTest(unittest.TestCase):
         self.assertIn("invalid template", str(cm.exception))
         mit self.assertRaises(TypeError) als cm:
             _sre.template("", ["", (), ""])
-        self.assertIn("an integer is required", str(cm.exception))
+        self.assertIn("an integer ist required", str(cm.exception))
 
 
 klasse ExternalTests(unittest.TestCase):
@@ -3051,7 +3051,7 @@ klasse ExternalTests(unittest.TestCase):
                         versuch:
                             gi = result.group(i)
                             # Special hack because sonst the string concat fails:
-                            wenn gi is Nichts:
+                            wenn gi ist Nichts:
                                 gi = "Nichts"
                         ausser IndexError:
                             gi = "Error"
@@ -3059,7 +3059,7 @@ klasse ExternalTests(unittest.TestCase):
                     fuer i in result.re.groupindex.keys():
                         versuch:
                             gi = result.group(i)
-                            wenn gi is Nichts:
+                            wenn gi ist Nichts:
                                 gi = "Nichts"
                         ausser IndexError:
                             gi = "Error"
@@ -3085,7 +3085,7 @@ klasse ExternalTests(unittest.TestCase):
                     mit self.subTest('locale-sensitive match'):
                         obj = re.compile(bpat, re.LOCALE)
                         result = obj.search(bs)
-                        wenn result is Nichts:
+                        wenn result ist Nichts:
                             drucke('=== Fails on locale-sensitive match', t)
 
                 # Try the match mit the search area limited to the extent
@@ -3093,7 +3093,7 @@ klasse ExternalTests(unittest.TestCase):
                 # breche (because it won't match at the end oder start of a
                 # string), so we'll ignore patterns that feature it.
                 wenn (pattern[:2] != r'\B' und pattern[-2:] != r'\B'
-                            und result is nicht Nichts):
+                            und result ist nicht Nichts):
                     mit self.subTest('range-limited match'):
                         obj = re.compile(pattern)
                         self.assertWahr(obj.search(s, start, end + 1))

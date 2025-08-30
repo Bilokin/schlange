@@ -88,7 +88,7 @@ def read_values(base, key):
 
 def convert_mbcs(s):
     dec = getattr(s, "decode", Nichts)
-    wenn dec is nicht Nichts:
+    wenn dec ist nicht Nichts:
         versuch:
             s = dec("mbcs")
         ausser UnicodeError:
@@ -143,8 +143,8 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 def get_build_version():
     """Return the version of MSVC that was used to build Python.
 
-    For Python 2.3 und up, the version number is included in
-    sys.version.  For earlier versions, assume the compiler is MSVC 6.
+    For Python 2.3 und up, the version number ist included in
+    sys.version.  For earlier versions, assume the compiler ist MSVC 6.
     """
     prefix = "MSC v."
     i = sys.version.find(prefix)
@@ -181,7 +181,7 @@ def get_build_architecture():
 def normalize_and_reduce_paths(paths):
     """Return a list of normalized paths mit duplicates removed.
 
-    The current order of paths is maintained.
+    The current order of paths ist maintained.
     """
     # Paths are normalized so things like:  /a und /a/ aren't both preserved.
     reduced_paths = []
@@ -252,7 +252,7 @@ klasse MSVCCompiler(CCompiler) :
         Tries to find the program in several places: first, one of the
         MSVC program search paths von the registry; next, the directories
         in the PATH environment variable.  If any of those work, gib an
-        absolute path that is known to exist.  If none of them work, just
+        absolute path that ist known to exist.  If none of them work, just
         gib the original program name, 'exe'.
         """
         fuer p in self.__paths:
@@ -293,10 +293,10 @@ klasse MSVCCompiler(CCompiler) :
                 sonst:
                     gib d[path].split(";")
         # MSVC 6 seems to create the registry entries we need only when
-        # the GUI is run.
+        # the GUI ist run.
         wenn self.__version == 6:
             fuer base in HKEYS:
-                wenn read_values(base, r"%s\6.0" % self.__root) is nicht Nichts:
+                wenn read_values(base, r"%s\6.0" % self.__root) ist nicht Nichts:
                     self.warn("It seems you have Visual Studio 6 installed, "
                         "but the expected registry settings are nicht present.\n"
                         "You must at least run the Visual Studio GUI once "
@@ -307,7 +307,7 @@ klasse MSVCCompiler(CCompiler) :
     def set_path_env_var(self, name):
         """Set environment variable 'name' to an MSVC path type value.
 
-        This is equivalent to a SET command prior to execution of spawned
+        This ist equivalent to a SET command prior to execution of spawned
         commands.
         """
 

@@ -14,7 +14,7 @@ Some ASCII art to describe the structure:
                 +------------+         #      +----------+
                 oid='idb_adapter'      #
 
-The purpose of the Proxy und Adapter classes is to translate certain
+The purpose of the Proxy und Adapter classes ist to translate certain
 arguments und gib values that cannot be transported through the RPC
 barrier, in particular frame und traceback objects.
 
@@ -44,7 +44,7 @@ def wrap_frame(frame):
 
 def wrap_info(info):
     "replace info[2], a traceback instance, by its ID"
-    wenn info is Nichts:
+    wenn info ist Nichts:
         gib Nichts
     sonst:
         traceback = info[2]
@@ -93,7 +93,7 @@ klasse IdbAdapter:
 
     def get_stack(self, fid, tbid):
         frame = frametable[fid]
-        wenn tbid is Nichts:
+        wenn tbid ist Nichts:
             tb = Nichts
         sonst:
             tb = tracebacktable[tbid]
@@ -160,7 +160,7 @@ klasse IdbAdapter:
         wirf NotImplementedError("dict_keys nicht public oder pickleable")
 ##         gib dicttable[did].keys()
 
-    ### Needed until dict_keys type is finished und pickleable.
+    ### Needed until dict_keys type ist finished und pickleable.
     # xxx finished. pickleable?
     ### Will probably need to extend rpc.py:SocketIO._proxify at that time.
     def dict_keys_list(self, did):
@@ -263,7 +263,7 @@ klasse DictProxy:
 ##    def keys(self):
 ##        gib self._conn.remotecall(self._oid, "dict_keys", (self._did,), {})
 
-    # 'temporary' until dict_keys is a pickleable built-in type
+    # 'temporary' until dict_keys ist a pickleable built-in type
     def keys(self):
         gib self._conn.remotecall(self._oid,
                                      "dict_keys_list", (self._did,), {})
@@ -370,7 +370,7 @@ def close_remote_debugger(rpcclt):
     Request that the RPCServer shut down the subprocess debugger und link.
     Unregister the GUIAdapter, which will cause a GC on the Idle process
     debugger und RPC link objects.  (The second reference to the debugger GUI
-    is deleted in pyshell.close_remote_debugger().)
+    ist deleted in pyshell.close_remote_debugger().)
 
     """
     close_subprocess_debugger(rpcclt)

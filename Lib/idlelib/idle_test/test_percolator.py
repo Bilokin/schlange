@@ -40,9 +40,9 @@ klasse PercolatorTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text
+        loesche cls.text
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.percolator = Percolator(self.text)

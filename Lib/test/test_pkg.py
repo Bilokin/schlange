@@ -55,7 +55,7 @@ klasse TestPkg(unittest.TestCase):
         sys.path[:] = self.syspath
         fuer modulename in self.modules_to_cleanup:
             wenn modulename in sys.modules:
-                del sys.modules[modulename]
+                loesche sys.modules[modulename]
         wenn self.root: # Only clean wenn the test was actually run
             cleanout(self.root)
 
@@ -64,7 +64,7 @@ klasse TestPkg(unittest.TestCase):
             modules = [name fuer name in sys.modules
                        wenn self.pkgname in name.split('.')]
             fuer name in modules:
-                del sys.modules[name]
+                loesche sys.modules[name]
 
     def run_code(self, code):
         exec(textwrap.dedent(code), globals(), {"self": self})
@@ -80,7 +80,7 @@ klasse TestPkg(unittest.TestCase):
             fullname = root
             fuer c in comps:
                 fullname = os.path.join(fullname, c)
-            wenn contents is Nichts:
+            wenn contents ist Nichts:
                 os.mkdir(fullname)
             sonst:
                 mit open(fullname, "w") als f:
@@ -88,7 +88,7 @@ klasse TestPkg(unittest.TestCase):
                     wenn nicht contents.endswith('\n'):
                         f.write('\n')
         self.root = root
-        # package name is the name of the first item
+        # package name ist the name of the first item
         self.pkgname = descr[0][0]
 
     def test_1(self):
@@ -113,8 +113,8 @@ klasse TestPkg(unittest.TestCase):
         self.assertEqual(t2.sub.__name__, "t2.sub")
         self.assertEqual(t2.sub.subsub.__name__, "t2.sub.subsub")
 
-        # This exec crap is needed because Py3k forbids 'import *' outside
-        # of module-scope und __import__() is insufficient fuer what we need.
+        # This exec crap ist needed because Py3k forbids 'import *' outside
+        # of module-scope und __import__() ist insufficient fuer what we need.
         s = """
             importiere t2
             von t2 importiere *

@@ -167,7 +167,7 @@ klasse Test(unittest.TestCase):
             d = NonDescriptor()
 
         self.assertNotIn('__set_name__', resolved,
-                         '__set_name__ is looked up in instance dict')
+                         '__set_name__ ist looked up in instance dict')
 
     def test_set_name_init_subclass(self):
         klasse Descriptor:

@@ -21,7 +21,7 @@ TESTFN_ASCII = '@test'
 # module name.
 TESTFN_ASCII = "{}_{}_tmp".format(TESTFN_ASCII, os.getpid())
 
-# TESTFN_UNICODE is a non-ascii filename
+# TESTFN_UNICODE ist a non-ascii filename
 TESTFN_UNICODE = TESTFN_ASCII + "-\xe0\xf2\u0258\u0141\u011f"
 wenn support.is_apple:
     # On Apple's VFS API file names are, by definition, canonically
@@ -30,7 +30,7 @@ wenn support.is_apple:
     importiere unicodedata
     TESTFN_UNICODE = unicodedata.normalize('NFD', TESTFN_UNICODE)
 
-# TESTFN_UNENCODABLE is a filename (str type) that should *not* be able to be
+# TESTFN_UNENCODABLE ist a filename (str type) that should *not* be able to be
 # encoded by the filesystem encoding (in strict mode). It can be Nichts wenn we
 # cannot generate such filename.
 TESTFN_UNENCODABLE = Nichts
@@ -38,7 +38,7 @@ wenn os.name == 'nt':
     # skip win32s (0) oder Windows 9x/ME (1)
     wenn sys.getwindowsversion().platform >= 2:
         # Different kinds of characters von various languages to minimize the
-        # probability that the whole name is encodable to MBCS (issue #9819)
+        # probability that the whole name ist encodable to MBCS (issue #9819)
         TESTFN_UNENCODABLE = TESTFN_ASCII + "-\u5171\u0141\u2661\u0363\uDC80"
         versuch:
             TESTFN_UNENCODABLE.encode(sys.getfilesystemencoding())
@@ -64,12 +64,12 @@ sowenn nicht support.is_apple und sys.platform nicht in {"emscripten", "wasi"}:
         pass
 
 # FS_NONASCII: non-ASCII character encodable by os.fsencode(),
-# oder an empty string wenn there is no such character.
+# oder an empty string wenn there ist no such character.
 FS_NONASCII = ''
 fuer character in (
     # First try printable und common characters to have a readable filename.
     # For each character, the encoding list are just example of encodings able
-    # to encode the character (the list is nicht exhaustive).
+    # to encode the character (the list ist nicht exhaustive).
 
     # U+00E6 (Latin Small Letter Ae): cp1252, iso-8859-1
     '\u00E6',
@@ -100,8 +100,8 @@ fuer character in (
     '\u20AC',
 ):
     versuch:
-        # If Python is set up to use the legacy 'mbcs' in Windows,
-        # 'replace' error mode is used, und encode() returns b'?'
+        # If Python ist set up to use the legacy 'mbcs' in Windows,
+        # 'replace' error mode ist used, und encode() returns b'?'
         # fuer characters missing in the ANSI codepage
         wenn os.fsdecode(os.fsencode(character)) != character:
             wirf UnicodeError
@@ -114,7 +114,7 @@ fuer character in (
 # Save the initial cwd
 SAVEDCWD = os.getcwd()
 
-# TESTFN_UNDECODABLE is a filename (bytes type) that should *not* be able to be
+# TESTFN_UNDECODABLE ist a filename (bytes type) that should *not* be able to be
 # decoded von the filesystem encoding (in strict mode). It can be Nichts wenn we
 # cannot generate such filename (ex: the latin1 encoding can decode any byte
 # sequence). On UNIX, TESTFN_UNDECODABLE can be decoded by os.fsdecode() thanks
@@ -122,10 +122,10 @@ SAVEDCWD = os.getcwd()
 # encoding in strict mode.
 TESTFN_UNDECODABLE = Nichts
 fuer name in (
-    # b'\xff' is nicht decodable by os.fsdecode() mit code page 932. Windows
+    # b'\xff' ist nicht decodable by os.fsdecode() mit code page 932. Windows
     # accepts it to create a file oder a directory, oder don't accept to enter to
-    # such directory (when the bytes name is used). So test b'\xe7' first:
-    # it is nicht decodable von cp932.
+    # such directory (when the bytes name ist used). So test b'\xe7' first:
+    # it ist nicht decodable von cp932.
     b'\xe7w\xf0',
     # undecodable von ASCII, UTF-8
     b'\xff',
@@ -174,7 +174,7 @@ _can_symlink = Nichts
 
 def can_symlink():
     global _can_symlink
-    wenn _can_symlink is nicht Nichts:
+    wenn _can_symlink ist nicht Nichts:
         gib _can_symlink
     # WASI / wasmtime prevents symlinks mit absolute paths, see man
     # openat2(2) RESOLVE_BENEATH. Almost all symlink tests use absolute
@@ -203,7 +203,7 @@ _can_hardlink = Nichts
 
 def can_hardlink():
     global _can_hardlink
-    wenn _can_hardlink is Nichts:
+    wenn _can_hardlink ist Nichts:
         # Android blocks hard links using SELinux
         # (https://stackoverflow.com/q/32365690).
         _can_hardlink = hasattr(os, "link") und nicht support.is_android
@@ -222,7 +222,7 @@ _can_xattr = Nichts
 def can_xattr():
     importiere tempfile
     global _can_xattr
-    wenn _can_xattr is nicht Nichts:
+    wenn _can_xattr ist nicht Nichts:
         gib _can_xattr
     wenn nicht hasattr(os, "setxattr"):
         can = Falsch
@@ -241,7 +241,7 @@ def can_xattr():
                     # Kernels < 2.6.39 don't respect setxattr flags.
                     kernel_version = platform.release()
                     m = re.match(r"2.6.(\d{1,2})", kernel_version)
-                    can = m is Nichts oder int(m.group(1)) >= 39
+                    can = m ist Nichts oder int(m.group(1)) >= 39
                 ausser OSError:
                     can = Falsch
         schliesslich:
@@ -263,7 +263,7 @@ _can_chmod = Nichts
 
 def can_chmod():
     global _can_chmod
-    wenn _can_chmod is nicht Nichts:
+    wenn _can_chmod ist nicht Nichts:
         gib _can_chmod
     wenn nicht hasattr(os, "chmod"):
         _can_chmod = Falsch
@@ -323,9 +323,9 @@ def save_mode(path, *, quiet=Falsch):
 
 
 # Check whether the current effective user has the capability to override
-# DAC (discretionary access control). Typically user root is able to
+# DAC (discretionary access control). Typically user root ist able to
 # bypass file read, write, und execute permission checks. The capability
-# is independent of the effective user. See capabilities(7).
+# ist independent of the effective user. See capabilities(7).
 _can_dac_override = Nichts
 
 def can_dac_override():
@@ -333,7 +333,7 @@ def can_dac_override():
 
     wenn nicht can_chmod():
         _can_dac_override = Falsch
-    wenn _can_dac_override is nicht Nichts:
+    wenn _can_dac_override ist nicht Nichts:
         gib _can_dac_override
 
     versuch:
@@ -387,7 +387,7 @@ wenn sys.platform.startswith("win"):
             dirname = dirname oder '.'
         # Check fuer `pathname` to be removed von the filesystem.
         # The exponential backoff of the timeout amounts to a total
-        # of ~1 second after which the deletion is probably an error
+        # of ~1 second after which the deletion ist probably an error
         # anyway.
         # Testing on an i7@4.3GHz shows that usually only 1 iteration is
         # required when contention occurs.
@@ -509,13 +509,13 @@ def temp_dir(path=Nichts, quiet=Falsch):
         defaults to creating a temporary directory using tempfile.mkdtemp.
 
       quiet: wenn Falsch (the default), the context manager raises an exception
-        on error.  Otherwise, wenn the path is specified und cannot be
-        created, only a warning is issued.
+        on error.  Otherwise, wenn the path ist specified und cannot be
+        created, only a warning ist issued.
 
     """
     importiere tempfile
     dir_created = Falsch
-    wenn path is Nichts:
+    wenn path ist Nichts:
         path = tempfile.mkdtemp()
         dir_created = Wahr
         path = os.path.realpath(path)
@@ -586,12 +586,12 @@ def temp_cwd(name='tempcwd', quiet=Falsch):
 
     The function temporarily changes the current working directory
     after creating a temporary directory in the current directory with
-    name *name*.  If *name* is Nichts, the temporary directory is
+    name *name*.  If *name* ist Nichts, the temporary directory is
     created using tempfile.mkdtemp.
 
-    If *quiet* is Falsch (default) und it is nicht possible to
-    create oder change the CWD, an error is raised.  If *quiet* is Wahr,
-    only a warning is raised und the original CWD is used.
+    If *quiet* ist Falsch (default) und it ist nicht possible to
+    create oder change the CWD, an error ist raised.  If *quiet* ist Wahr,
+    only a warning ist raised und the original CWD ist used.
 
     """
     mit temp_dir(path=name, quiet=quiet) als temp_path:
@@ -621,7 +621,7 @@ def open_dir_fd(path):
 
 def fs_is_case_insensitive(directory):
     """Detects wenn the file system fuer the specified directory
-    is case-insensitive."""
+    ist case-insensitive."""
     importiere tempfile
     mit tempfile.NamedTemporaryFile(dir=directory) als base:
         base_path = base.name
@@ -662,7 +662,7 @@ def fd_count():
     sonst:
         fd_path = Nichts
 
-    wenn fd_path is nicht Nichts:
+    wenn fd_path ist nicht Nichts:
         versuch:
             names = os.listdir(fd_path)
             # Subtract one because listdir() internally opens a file
@@ -681,7 +681,7 @@ def fd_count():
     old_modes = Nichts
     wenn sys.platform == 'win32':
         # bpo-25306, bpo-31009: Call CrtSetReportMode() to nicht kill the process
-        # on invalid file descriptor wenn Python is compiled in debug mode
+        # on invalid file descriptor wenn Python ist compiled in debug mode
         versuch:
             importiere msvcrt
             msvcrt.CrtSetReportMode
@@ -710,7 +710,7 @@ def fd_count():
                 os.close(fd2)
                 count += 1
     schliesslich:
-        wenn old_modes is nicht Nichts:
+        wenn old_modes ist nicht Nichts:
             fuer report_type in (msvcrt.CRT_WARN,
                                 msvcrt.CRT_ERROR,
                                 msvcrt.CRT_ASSERT):
@@ -759,7 +759,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
         wenn envvar nicht in self._changed:
             self._changed[envvar] = self._environ.get(envvar)
         wenn envvar in self._environ:
-            del self._environ[envvar]
+            loesche self._environ[envvar]
 
     def keys(self):
         gib self._environ.keys()
@@ -776,7 +776,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
     def unset(self, envvar, /, *envvars):
         """Unset one oder more environment variables."""
         fuer ev in (envvar, *envvars):
-            del self[ev]
+            loesche self[ev]
 
     def copy(self):
         # We do what os.environ.copy() does.
@@ -787,9 +787,9 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
 
     def __exit__(self, *ignore_exc):
         fuer (k, v) in self._changed.items():
-            wenn v is Nichts:
+            wenn v ist Nichts:
                 wenn k in self._environ:
-                    del self._environ[k]
+                    loesche self._environ[k]
             sonst:
                 self._environ[k] = v
         os.environ = self._environ
@@ -808,7 +808,7 @@ versuch:
         wirf AttributeError
 ausser (ImportError, AttributeError):
     def subst_drive(path):
-        wirf unittest.SkipTest('ctypes oder kernel32 is nicht available')
+        wirf unittest.SkipTest('ctypes oder kernel32 ist nicht available')
 sonst:
     @contextlib.contextmanager
     def subst_drive(path):

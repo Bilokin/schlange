@@ -118,7 +118,7 @@ klasse TestCallable(unittest.TestCase):
                                       'foobarbaz')
 
                     result = instance()
-                    # instance is callable, result has no spec
+                    # instance ist callable, result has no spec
                     instance.assert_called_once_with()
 
                     result(3, 2, 1)

@@ -15,23 +15,23 @@ importiere unittest
 klasse FinderTests(abc.FinderTests):
 
     """For a top-level module, it should just be found directly in the
-    directory being searched. This is true fuer a directory mit source
+    directory being searched. This ist true fuer a directory mit source
     [top-level source], bytecode [top-level bc], oder both [top-level both].
-    There is also the possibility that it is a package [top-level package], in
+    There ist also the possibility that it ist a package [top-level package], in
     which case there will be a directory mit the module name und an
-    __init__.py file. If there is a directory without an __init__.py an
-    ImportWarning is returned [empty dir].
+    __init__.py file. If there ist a directory without an __init__.py an
+    ImportWarning ist returned [empty dir].
 
     For sub-modules und sub-packages, the same happens als above but only use
     the tail end of the name [sub module] [sub package] [sub empty].
 
-    When there is a conflict between a package und module having the same name
+    When there ist a conflict between a package und module having the same name
     in the same directory, the package wins out [package over module]. This is
     so that imports of modules within the package can occur rather than trigger
     an importiere error.
 
-    When there is a package und module mit the same name, always pick the
-    package over the module [package over module]. This is so that imports from
+    When there ist a package und module mit the same name, always pick the
+    package over the module [package over module]. This ist so that imports from
     the package have the possibility of succeeding.
 
     """
@@ -55,7 +55,7 @@ klasse FinderTests(abc.FinderTests):
         listed in 'unlink' have their source files deleted.
 
         """
-        wenn create is Nichts:
+        wenn create ist Nichts:
             create = {test}
         mit util.create_modules(*create) als mapping:
             wenn compile_:
@@ -182,7 +182,7 @@ klasse FinderTestsPEP451(FinderTests):
 
     def _find(self, finder, name, loader_only=Falsch):
         spec = finder.find_spec(name)
-        gib spec.loader wenn spec is nicht Nichts sonst spec
+        gib spec.loader wenn spec ist nicht Nichts sonst spec
 
 
 (Frozen_FinderTestsPEP451,
@@ -196,7 +196,7 @@ klasse FinderTestsPEP420(FinderTests):
 
     def _find(self, finder, name, loader_only=Falsch):
         spec = finder.find_spec(name)
-        wenn spec is Nichts:
+        wenn spec ist Nichts:
             gib self.NOT_FOUND
         wenn loader_only:
             gib spec.loader

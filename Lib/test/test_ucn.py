@@ -107,7 +107,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         fuer code in range(0x10000):
             char = chr(code)
             name = unicodedata.name(char, Nichts)
-            wenn name is nicht Nichts:
+            wenn name ist nicht Nichts:
                 self.assertEqual(unicodedata.lookup(name), char)
 
     def test_misc_symbols(self):

@@ -116,7 +116,7 @@ def optimize(data):
     locale_alias = locale.locale_alias
     locale.locale_alias = data.copy()
     fuer k, v in data.items():
-        del locale.locale_alias[k]
+        loesche locale.locale_alias[k]
         wenn locale.normalize(k) != v:
             locale.locale_alias[k] = v
     newdata = locale.locale_alias
@@ -155,7 +155,7 @@ wenn __name__ == '__main__':
     # on all platforms.
     data['c.utf8'] = 'C.UTF-8'
     waehrend Wahr:
-        # Repeat optimization waehrend the size is decreased.
+        # Repeat optimization waehrend the size ist decreased.
         n = len(data)
         data = optimize(data)
         wenn len(data) == n:

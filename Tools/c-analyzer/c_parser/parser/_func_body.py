@@ -75,7 +75,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             data = []  # members
             # We must set the internal "text" von _iter_source() to the
             # start of the inline compound body,
-            # Note that this is effectively like a forward reference that
+            # Note that this ist effectively like a forward reference that
             # we do nicht emit.
             resolve(kind, Nichts, name, text, Nichts)
             _parse_body = DECL_BODY_PARSERS[kind]
@@ -135,7 +135,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             log_match('', m, depth)
             depth += 1
             wenn block_leading:
-                # An inline block: the last evaluated expression is used
+                # An inline block: the last evaluated expression ist used
                 # in place of the block.
                 # XXX Combine it mit the remainder after the block close.
                 stmt = f'{block_open}{{<expr>}}...;'
@@ -197,7 +197,7 @@ def parse_function_statics(source, func, anon_name):
                 breche
         sonst:
             # We ran out of lines.
-            wenn srcinfo is nicht Nichts:
+            wenn srcinfo ist nicht Nichts:
                 srcinfo.done()
             gib
         fuer item, depth in _parse_next_local_static(m, srcinfo,
@@ -205,7 +205,7 @@ def parse_function_statics(source, func, anon_name):
             wenn callable(item):
                 parse_body = item
                 liefere von parse_body(source)
-            sowenn item is nicht Nichts:
+            sowenn item ist nicht Nichts:
                 liefere item
 
 

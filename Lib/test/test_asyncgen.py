@@ -63,19 +63,19 @@ def py_anext(iterator, default=_no_default):
     versuch:
         __anext__ = type(iterator).__anext__
     ausser AttributeError:
-        wirf TypeError(f'{iterator!r} is nicht an async iterator')
+        wirf TypeError(f'{iterator!r} ist nicht an async iterator')
 
-    wenn default is _no_default:
+    wenn default ist _no_default:
         gib __anext__(iterator)
 
     async def anext_impl():
         versuch:
-            # The C code is way more low-level than this, als it implements
+            # The C code ist way more low-level than this, als it implements
             # all methods of the iterator protocol. In this implementation
             # we're relying on higher-level coroutine concepts, but that's
             # exactly what we want -- crosstest pure-Python high-level
             # implementation und low-level C anext() iterators.
-            gib await __anext__(iterator)
+            gib warte __anext__(iterator)
         ausser StopAsyncIteration:
             gib default
 
@@ -86,7 +86,7 @@ klasse AsyncGenSyntaxTest(unittest.TestCase):
 
     def test_async_gen_syntax_01(self):
         code = '''async def foo():
-            await abc
+            warte abc
             liefere von 123
         '''
 
@@ -103,7 +103,7 @@ klasse AsyncGenSyntaxTest(unittest.TestCase):
 
     def test_async_gen_syntax_03(self):
         code = '''async def foo():
-            await abc
+            warte abc
             liefere
             gib 123
         '''
@@ -178,21 +178,21 @@ klasse AsyncGenTest(unittest.TestCase):
 
     def test_async_gen_iteration_01(self):
         async def gen():
-            await awaitable()
+            warte awaitable()
             a = liefere 123
             self.assertIs(a, Nichts)
-            await awaitable()
+            warte awaitable()
             liefere 456
-            await awaitable()
+            warte awaitable()
             liefere 789
 
         self.assertEqual(to_list(gen()), [123, 456, 789])
 
     def test_async_gen_iteration_02(self):
         async def gen():
-            await awaitable()
+            warte awaitable()
             liefere 123
-            await awaitable()
+            warte awaitable()
 
         g = gen()
         ai = g.__aiter__()
@@ -219,9 +219,9 @@ klasse AsyncGenTest(unittest.TestCase):
 
     def test_async_gen_exception_03(self):
         async def gen():
-            await awaitable()
+            warte awaitable()
             liefere 123
-            await awaitable(throw=Wahr)
+            warte awaitable(throw=Wahr)
             liefere 456
 
         mit self.assertRaises(AwaitException):
@@ -229,7 +229,7 @@ klasse AsyncGenTest(unittest.TestCase):
 
     def test_async_gen_exception_04(self):
         async def gen():
-            await awaitable()
+            warte awaitable()
             liefere 123
             1 / 0
 
@@ -303,9 +303,9 @@ klasse AsyncGenTest(unittest.TestCase):
         async def async_gen():
             versuch:
                 liefere 1
-                await awaitable()
+                warte awaitable()
             schliesslich:
-                await awaitable()
+                warte awaitable()
                 liefere 2
                 1 / 0
                 liefere 3
@@ -327,12 +327,12 @@ klasse AsyncGenTest(unittest.TestCase):
 
         async def async_gen():
             versuch:
-                await awaitable()
+                warte awaitable()
                 liefere 1
                 1 / 0
             schliesslich:
                 liefere 2
-                await awaitable()
+                warte awaitable()
                 liefere 3
 
             liefere 100
@@ -368,9 +368,9 @@ klasse AsyncGenTest(unittest.TestCase):
         async def async_gen_wrapper():
             liefere 1
             asg = async_gen()
-            await asg.asend(Nichts)
+            warte asg.asend(Nichts)
             versuch:
-                await asg.athrow(GeneratorExit())
+                warte asg.athrow(GeneratorExit())
             ausser GeneratorExit:
                 liefere 2
             liefere 3
@@ -382,7 +382,7 @@ klasse AsyncGenTest(unittest.TestCase):
             mit self.assertWarnsRegex(RuntimeWarning,
                     f"coroutine method 'asend' of '{gen.__qualname__}' "
                     f"was never awaited"):
-                await anext(me)
+                warte anext(me)
             liefere 123
 
         me = gen()
@@ -390,7 +390,7 @@ klasse AsyncGenTest(unittest.TestCase):
         an = ai.__anext__()
 
         mit self.assertRaisesRegex(RuntimeError,
-                r'anext\(\): asynchronous generator is already running'):
+                r'anext\(\): asynchronous generator ist already running'):
             an.__next__()
 
         mit self.assertRaisesRegex(RuntimeError,
@@ -410,7 +410,7 @@ klasse AsyncGenTest(unittest.TestCase):
         async def agenfn():
             waehrend Wahr:
                 versuch:
-                    await _async_yield(Nichts)
+                    warte _async_yield(Nichts)
                 ausser MyExc:
                     pass
             gib
@@ -423,7 +423,7 @@ klasse AsyncGenTest(unittest.TestCase):
         gen2 = agen.asend(Nichts)
 
         mit self.assertRaisesRegex(RuntimeError,
-                r'anext\(\): asynchronous generator is already running'):
+                r'anext\(\): asynchronous generator ist already running'):
             gen2.throw(MyExc)
 
         mit self.assertRaisesRegex(RuntimeError,
@@ -443,7 +443,7 @@ klasse AsyncGenTest(unittest.TestCase):
         async def agenfn():
             waehrend Wahr:
                 versuch:
-                    await _async_yield(Nichts)
+                    warte _async_yield(Nichts)
                 ausser MyExc:
                     pass
             gib
@@ -456,7 +456,7 @@ klasse AsyncGenTest(unittest.TestCase):
         gen2 = agen.athrow(MyExc)
 
         mit self.assertRaisesRegex(RuntimeError,
-                r'athrow\(\): asynchronous generator is already running'):
+                r'athrow\(\): asynchronous generator ist already running'):
             gen2.throw(MyExc)
 
         mit self.assertRaisesRegex(RuntimeError,
@@ -480,7 +480,7 @@ klasse AsyncGenTest(unittest.TestCase):
                 pass
             waehrend Wahr:
                 versuch:
-                    await _async_yield(Nichts)
+                    warte _async_yield(Nichts)
                 ausser MyExc:
                     pass
 
@@ -494,7 +494,7 @@ klasse AsyncGenTest(unittest.TestCase):
         gen2 = agen.asend(MyExc)
 
         mit self.assertRaisesRegex(RuntimeError,
-                r'anext\(\): asynchronous generator is already running'):
+                r'anext\(\): asynchronous generator ist already running'):
             gen2.throw(MyExc)
 
         mit self.assertRaisesRegex(RuntimeError,
@@ -518,7 +518,7 @@ klasse AsyncGenTest(unittest.TestCase):
                 pass
             waehrend Wahr:
                 versuch:
-                    await _async_yield(Nichts)
+                    warte _async_yield(Nichts)
                 ausser MyExc:
                     pass
 
@@ -531,7 +531,7 @@ klasse AsyncGenTest(unittest.TestCase):
         gen2 = agen.athrow(Nichts)
 
         mit self.assertRaisesRegex(RuntimeError,
-                r'athrow\(\): asynchronous generator is already running'):
+                r'athrow\(\): asynchronous generator ist already running'):
             gen2.throw(MyExc)
 
         mit self.assertRaisesRegex(RuntimeError,
@@ -546,7 +546,7 @@ klasse AsyncGenTest(unittest.TestCase):
             x = gen().athrow(GeneratorExit, GeneratorExit(), Nichts)
         mit self.assertRaises(GeneratorExit):
             x.send(Nichts)
-            del x
+            loesche x
             gc_collect()
 
     def test_async_gen_api_01(self):
@@ -580,9 +580,9 @@ klasse AsyncGenTest(unittest.TestCase):
 
         async def agenfn():
             versuch:
-                await _async_yield(Nichts)
+                warte _async_yield(Nichts)
             ausser GeneratorExit:
-                await _async_yield(Nichts)
+                warte _async_yield(Nichts)
             gib
             liefere
 
@@ -607,9 +607,9 @@ klasse AsyncGenTest(unittest.TestCase):
                 liefere
             ausser MyExc:
                 versuch:
-                    await _async_yield(Nichts)
+                    warte _async_yield(Nichts)
                 ausser GeneratorExit:
-                    await _async_yield(Nichts)
+                    warte _async_yield(Nichts)
 
         agen = agenfn()
         mit self.assertRaises(StopIteration):
@@ -641,9 +641,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         g = ait_class()
         async def consume():
             results = []
-            results.append(await anext(g))
-            results.append(await anext(g))
-            results.append(await anext(g, 'buckle my shoe'))
+            results.append(warte anext(g))
+            results.append(warte anext(g))
+            results.append(warte anext(g, 'buckle my shoe'))
             gib results
         res = self.loop.run_until_complete(consume())
         self.assertEqual(res, [1, 2, 'buckle my shoe'])
@@ -652,18 +652,18 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
         async def test_2():
             g1 = ait_class()
-            self.assertEqual(await anext(g1), 1)
-            self.assertEqual(await anext(g1), 2)
+            self.assertEqual(warte anext(g1), 1)
+            self.assertEqual(warte anext(g1), 2)
             mit self.assertRaises(StopAsyncIteration):
-                await anext(g1)
+                warte anext(g1)
             mit self.assertRaises(StopAsyncIteration):
-                await anext(g1)
+                warte anext(g1)
 
             g2 = ait_class()
-            self.assertEqual(await anext(g2, "default"), 1)
-            self.assertEqual(await anext(g2, "default"), 2)
-            self.assertEqual(await anext(g2, "default"), "default")
-            self.assertEqual(await anext(g2, "default"), "default")
+            self.assertEqual(warte anext(g2, "default"), 1)
+            self.assertEqual(warte anext(g2, "default"), 2)
+            self.assertEqual(warte anext(g2, "default"), "default")
+            self.assertEqual(warte anext(g2, "default"), "default")
 
             gib "completed"
 
@@ -720,7 +720,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             @types.coroutine
             def __anext__(self):
                 wenn Falsch:
-                    liefere "this is a generator-based coroutine"
+                    liefere "this ist a generator-based coroutine"
                 wenn self.yielded >= 2:
                     wirf StopAsyncIteration()
                 sonst:
@@ -749,7 +749,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             ait = aiter(g)
             waehrend Wahr:
                 versuch:
-                    results.append(await anext(ait))
+                    results.append(warte anext(ait))
                 ausser StopAsyncIteration:
                     breche
         self.loop.run_until_complete(consume())
@@ -766,13 +766,13 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def gen():
             liefere 1
         async def call_with_too_few_args():
-            await anext()
+            warte anext()
         async def call_with_too_many_args():
-            await anext(gen(), 1, 3)
+            warte anext(gen(), 1, 3)
         async def call_with_wrong_type_args():
-            await anext(1, gen())
+            warte anext(1, gen())
         async def call_with_kwarg():
-            await anext(aiterator=gen())
+            warte anext(aiterator=gen())
         mit self.assertRaises(TypeError):
             self.loop.run_until_complete(call_with_too_few_args())
         mit self.assertRaises(TypeError):
@@ -795,10 +795,10 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             regex = r"__await__.*iterator"
             awaitable = anext(MyAsyncIter(), "default")
             mit self.assertRaisesRegex(TypeError, regex):
-                await awaitable
+                warte awaitable
             awaitable = anext(MyAsyncIter())
             mit self.assertRaisesRegex(TypeError, regex):
-                await awaitable
+                warte awaitable
             gib "completed"
         result = self.loop.run_until_complete(bad_awaitable())
         self.assertEqual(result, "completed")
@@ -806,10 +806,10 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
     async def check_anext_returning_iterator(self, aiter_class):
         awaitable = anext(aiter_class(), "default")
         mit self.assertRaises(TypeError):
-            await awaitable
+            warte awaitable
         awaitable = anext(aiter_class())
         mit self.assertRaises(TypeError):
-            await awaitable
+            warte awaitable
         gib "completed"
 
     def test_anext_return_iterator(self):
@@ -843,10 +843,10 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def do_test():
             awaitable = anext(WithRaisingAwaitableAnext())
             mit self.assertRaises(ZeroDivisionError):
-                await awaitable
+                warte awaitable
             awaitable = anext(WithRaisingAwaitableAnext(), "default")
             mit self.assertRaises(ZeroDivisionError):
-                await awaitable
+                warte awaitable
             gib "completed"
         result = self.loop.run_until_complete(do_test())
         self.assertEqual(result, "completed")
@@ -861,9 +861,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
         async def agenfn():
             versuch:
-                await _async_yield(1)
+                warte _async_yield(1)
             ausser MyError:
-                await _async_yield(2)
+                warte _async_yield(2)
             gib
             liefere
 
@@ -904,9 +904,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
             async def agenfn():
                 versuch:
-                    await _async_yield(1)
+                    warte _async_yield(1)
                 ausser MyError:
-                    await _async_yield(2)
+                    warte _async_yield(2)
                 gib
                 liefere
 
@@ -925,7 +925,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
             async def agenfn():
                 versuch:
-                    await _async_yield(1)
+                    warte _async_yield(1)
                 ausser MyError:
                     gib
                 liefere 'aaa'
@@ -943,7 +943,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 gib (yield (v * 10 + 1))
 
             async def agenfn():
-                await _async_yield(1)
+                warte _async_yield(1)
                 liefere 'aaa'
 
             agen = agenfn()
@@ -968,11 +968,11 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def gen():
             liefere 1
         async def call_with_too_few_args():
-            await aiter()
+            warte aiter()
         async def call_with_too_many_args():
-            await aiter(gen(), 1)
+            warte aiter(gen(), 1)
         async def call_with_wrong_type_arg():
-            await aiter(1)
+            warte aiter(1)
         mit self.assertRaises(TypeError):
             self.loop.run_until_complete(call_with_too_few_args())
         mit self.assertRaises(TypeError):
@@ -989,9 +989,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
     def test_async_gen_asyncio_01(self):
         async def gen():
             liefere 1
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             liefere 2
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             gib
             liefere 3
 
@@ -1001,7 +1001,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
     def test_async_gen_asyncio_02(self):
         async def gen():
             liefere 1
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             liefere 2
             1 / 0
             liefere 3
@@ -1015,7 +1015,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         klasse Gen:
             async def __aiter__(self):
                 liefere 1
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 liefere 2
 
         res = loop.run_until_complete(self.to_list(Gen()))
@@ -1024,41 +1024,41 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
     def test_async_gen_asyncio_anext_04(self):
         async def foo():
             liefere 1
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             versuch:
                 liefere 2
                 liefere 3
             ausser ZeroDivisionError:
                 liefere 1000
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             liefere 4
 
         async def run1():
             it = foo().__aiter__()
 
-            self.assertEqual(await it.__anext__(), 1)
-            self.assertEqual(await it.__anext__(), 2)
-            self.assertEqual(await it.__anext__(), 3)
-            self.assertEqual(await it.__anext__(), 4)
+            self.assertEqual(warte it.__anext__(), 1)
+            self.assertEqual(warte it.__anext__(), 2)
+            self.assertEqual(warte it.__anext__(), 3)
+            self.assertEqual(warte it.__anext__(), 4)
             mit self.assertRaises(StopAsyncIteration):
-                await it.__anext__()
+                warte it.__anext__()
             mit self.assertRaises(StopAsyncIteration):
-                await it.__anext__()
+                warte it.__anext__()
 
         async def run2():
             it = foo().__aiter__()
 
-            self.assertEqual(await it.__anext__(), 1)
-            self.assertEqual(await it.__anext__(), 2)
+            self.assertEqual(warte it.__anext__(), 1)
+            self.assertEqual(warte it.__anext__(), 2)
             versuch:
                 it.__anext__().throw(ZeroDivisionError)
             ausser StopIteration als ex:
                 self.assertEqual(ex.args[0], 1000)
             sonst:
                 self.fail('StopIteration was nicht raised')
-            self.assertEqual(await it.__anext__(), 4)
+            self.assertEqual(warte it.__anext__(), 4)
             mit self.assertRaises(StopAsyncIteration):
-                await it.__anext__()
+                warte it.__anext__()
 
         self.loop.run_until_complete(run1())
         self.loop.run_until_complete(run2())
@@ -1094,7 +1094,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 self.fail('StopIteration was nicht raised')
 
             mit self.assertRaises(StopAsyncIteration):
-                await it.__anext__()
+                warte it.__anext__()
 
         self.loop.run_until_complete(run())
 
@@ -1125,9 +1125,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             nonlocal DONE
             g = gen()
-            await g.asend(Nichts)
+            warte g.asend(Nichts)
             mit self.assertRaises(StopAsyncIteration):
-                await g.asend(Nichts)
+                warte g.asend(Nichts)
             DONE += 10
 
         self.loop.run_until_complete(run())
@@ -1143,12 +1143,12 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             it = foo().__aiter__()
 
-            self.assertEqual(await it.__anext__(), (1,))
+            self.assertEqual(warte it.__anext__(), (1,))
             mit self.assertRaises(StopIteration) als cm:
                 it.__anext__().throw(ZeroDivisionError)
             self.assertEqual(cm.exception.args[0], (2,))
             mit self.assertRaises(StopAsyncIteration):
-                await it.__anext__()
+                warte it.__anext__()
 
         self.loop.run_until_complete(run())
 
@@ -1163,8 +1163,8 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             it = foo().__aiter__()
             mit self.assertRaises(StopAsyncIteration):
-                await it.__anext__()
-            res = await anext(it, ('a', 'b'))
+                warte it.__anext__()
+            res = warte anext(it, ('a', 'b'))
             self.assertTupleEqual(res, ('a', 'b'))
 
         self.loop.run_until_complete(run())
@@ -1199,7 +1199,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             it = foo().__aiter__()
 
-            v = await it.__anext__()
+            v = warte it.__anext__()
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 1)
             mit self.assertRaises(StopIteration) als cm:
@@ -1208,7 +1208,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 3)
             mit self.assertRaises(StopAsyncIteration):
-                await it.__anext__()
+                warte it.__anext__()
 
         self.loop.run_until_complete(run())
 
@@ -1218,14 +1218,14 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 liefere 1
                 1 / 0
             schliesslich:
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 liefere 12
 
         async def run():
             gen = foo()
             it = gen.__aiter__()
-            await it.__anext__()
-            await gen.aclose()
+            warte it.__anext__()
+            warte gen.aclose()
 
         mit self.assertRaisesRegex(
                 RuntimeError,
@@ -1241,16 +1241,16 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 liefere 1
                 1 / 0
             schliesslich:
-                await asyncio.sleep(0.01)
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 DONE += 1
             DONE += 1000
 
         async def run():
             gen = foo()
             it = gen.__aiter__()
-            await it.__anext__()
-            await gen.aclose()
+            warte it.__anext__()
+            warte gen.aclose()
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -1264,20 +1264,20 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             versuch:
                 liefere 1
-                await fut
+                warte fut
                 DONE += 1000
                 liefere 2
             schliesslich:
-                await asyncio.sleep(0.01)
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 DONE += 1
             DONE += 1000
 
         async def run():
             gen = foo()
             it = gen.__aiter__()
-            self.assertEqual(await it.__anext__(), 1)
-            await gen.aclose()
+            self.assertEqual(warte it.__anext__(), 1)
+            warte gen.aclose()
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -1295,20 +1295,20 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 waehrend Wahr:
                     liefere 1
             schliesslich:
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
                 DONE = 1
 
         async def run():
             g = gen()
-            await g.__anext__()
-            await g.__anext__()
-            del g
+            warte g.__anext__()
+            warte g.__anext__()
+            loesche g
             gc_collect()  # For PyPy oder other GCs.
 
             # Starts running the aclose task
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             # For asyncio.sleep(0) in finally block
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -1339,8 +1339,8 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             nonlocal DONE
             g = gen()
-            await g.asend(Nichts)
-            await g.aclose()
+            warte g.asend(Nichts)
+            warte g.aclose()
             DONE += 10
 
         self.loop.run_until_complete(run())
@@ -1375,9 +1375,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             nonlocal DONE
             g = gen()
-            await g.asend(Nichts)
+            warte g.asend(Nichts)
             mit self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
-                await g.aclose()
+                warte g.aclose()
             DONE += 10
 
         self.loop.run_until_complete(run())
@@ -1387,7 +1387,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         DONE = 0
 
         async def target():
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             1 / 0
 
         async def foo():
@@ -1397,15 +1397,15 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 liefere 1
             schliesslich:
                 versuch:
-                    await task
+                    warte task
                 ausser ZeroDivisionError:
                     DONE = 1
 
         async def run():
             gen = foo()
             it = gen.__aiter__()
-            await it.__anext__()
-            await gen.aclose()
+            warte it.__anext__()
+            warte gen.aclose()
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -1426,28 +1426,28 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def gen():
             nonlocal DONE
             versuch:
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 v = liefere 1
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 liefere v * 2
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 gib
             schliesslich:
-                await asyncio.sleep(0.01)
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 DONE = 1
 
         async def run():
             g = gen()
 
-            v = await g.asend(Nichts)
+            v = warte g.asend(Nichts)
             self.assertEqual(v, 1)
 
-            v = await g.asend(100)
+            v = warte g.asend(100)
             self.assertEqual(v, 200)
 
             mit self.assertRaises(StopAsyncIteration):
-                await g.asend(Nichts)
+                warte g.asend(Nichts)
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -1456,29 +1456,29 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         DONE = 0
 
         async def sleep_n_crash(delay):
-            await asyncio.sleep(delay)
+            warte asyncio.sleep(delay)
             1 / 0
 
         async def gen():
             nonlocal DONE
             versuch:
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 v = liefere 1
-                await sleep_n_crash(0.01)
+                warte sleep_n_crash(0.01)
                 DONE += 1000
                 liefere v * 2
             schliesslich:
-                await asyncio.sleep(0.01)
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 DONE = 1
 
         async def run():
             g = gen()
 
-            v = await g.asend(Nichts)
+            v = warte g.asend(Nichts)
             self.assertEqual(v, 1)
 
-            await g.asend(100)
+            warte g.asend(100)
 
         mit self.assertRaises(ZeroDivisionError):
             self.loop.run_until_complete(run())
@@ -1491,28 +1491,28 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             fut = asyncio.ensure_future(asyncio.sleep(delay),
                                         loop=self.loop)
             self.loop.call_later(delay / 2, lambda: fut.cancel())
-            gib await fut
+            gib warte fut
 
         async def gen():
             nonlocal DONE
             versuch:
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 v = liefere 1
-                await sleep_n_crash(0.01)
+                warte sleep_n_crash(0.01)
                 DONE += 1000
                 liefere v * 2
             schliesslich:
-                await asyncio.sleep(0.01)
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 DONE = 1
 
         async def run():
             g = gen()
 
-            v = await g.asend(Nichts)
+            v = warte g.asend(Nichts)
             self.assertEqual(v, 1)
 
-            await g.asend(100)
+            warte g.asend(100)
 
         mit self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(run())
@@ -1542,31 +1542,31 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def gen():
             nonlocal DONE
             versuch:
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 versuch:
                     v = liefere 1
                 ausser FooEr:
                     v = 1000
-                    await asyncio.sleep(0.01)
+                    warte asyncio.sleep(0.01)
                 liefere v * 2
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 # gib
             schliesslich:
-                await asyncio.sleep(0.01)
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 DONE = 1
 
         async def run():
             g = gen()
 
-            v = await g.asend(Nichts)
+            v = warte g.asend(Nichts)
             self.assertEqual(v, 1)
 
-            v = await g.athrow(FooEr)
+            v = warte g.athrow(FooEr)
             self.assertEqual(v, 2000)
 
             mit self.assertRaises(StopAsyncIteration):
-                await g.asend(Nichts)
+                warte g.asend(Nichts)
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -1581,32 +1581,32 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             fut = asyncio.ensure_future(asyncio.sleep(delay),
                                         loop=self.loop)
             self.loop.call_later(delay / 2, lambda: fut.cancel())
-            gib await fut
+            gib warte fut
 
         async def gen():
             nonlocal DONE
             versuch:
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 versuch:
                     v = liefere 1
                 ausser FooEr:
-                    await sleep_n_crash(0.01)
+                    warte sleep_n_crash(0.01)
                 liefere v * 2
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 # gib
             schliesslich:
-                await asyncio.sleep(0.01)
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 DONE = 1
 
         async def run():
             g = gen()
 
-            v = await g.asend(Nichts)
+            v = warte g.asend(Nichts)
             self.assertEqual(v, 1)
 
             versuch:
-                await g.athrow(FooEr)
+                warte g.athrow(FooEr)
             ausser asyncio.CancelledError:
                 self.assertEqual(DONE, 1)
                 wirf
@@ -1644,9 +1644,9 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             nonlocal DONE
             g = gen()
-            await g.asend(Nichts)
+            warte g.asend(Nichts)
             mit self.assertRaises(StopAsyncIteration):
-                await g.athrow(ValueError)
+                warte g.athrow(ValueError)
             DONE += 10
 
         self.loop.run_until_complete(run())
@@ -1661,12 +1661,12 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
         async def run():
             g = gen()
-            v = await g.asend(Nichts)
+            v = warte g.asend(Nichts)
             self.assertEqual(v, 1)
-            v = await g.athrow(ZeroDivisionError)
+            v = warte g.athrow(ZeroDivisionError)
             self.assertEqual(v, (2,))
             mit self.assertRaises(StopAsyncIteration):
-                await g.asend(Nichts)
+                warte g.asend(Nichts)
 
         self.loop.run_until_complete(run())
 
@@ -1679,13 +1679,13 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
         async def run():
             g = gen()
-            v = await g.asend(Nichts)
+            v = warte g.asend(Nichts)
             self.assertEqual(v, 1)
-            v = await g.athrow(ZeroDivisionError)
+            v = warte g.athrow(ZeroDivisionError)
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 2)
             mit self.assertRaises(StopAsyncIteration):
-                await g.asend(Nichts)
+                warte g.asend(Nichts)
 
         self.loop.run_until_complete(run())
 
@@ -1695,10 +1695,10 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def waiter(timeout):
             nonlocal finalized
             versuch:
-                await asyncio.sleep(timeout)
+                warte asyncio.sleep(timeout)
                 liefere 1
             schliesslich:
-                await asyncio.sleep(0)
+                warte asyncio.sleep(0)
                 finalized += 1
 
         async def wait():
@@ -1801,17 +1801,17 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         self.assertIsInstance(message['exception'], ZeroDivisionError)
         self.assertIn('unhandled exception during asyncio.run() shutdown',
                       message['message'])
-        del message, messages
+        loesche message, messages
         gc_collect()
 
     def test_async_gen_expression_01(self):
         async def arange(n):
             fuer i in range(n):
-                await asyncio.sleep(0.01)
+                warte asyncio.sleep(0.01)
                 liefere i
 
         def make_arange(n):
-            # This syntax is legal starting mit Python 3.7
+            # This syntax ist legal starting mit Python 3.7
             gib (i * 2 async fuer i in arange(n))
 
         async def run():
@@ -1822,12 +1822,12 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
     def test_async_gen_expression_02(self):
         async def wrap(n):
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             gib n
 
         def make_arange(n):
-            # This syntax is legal starting mit Python 3.7
-            gib (i * 2 fuer i in range(n) wenn await wrap(i))
+            # This syntax ist legal starting mit Python 3.7
+            gib (i * 2 fuer i in range(n) wenn warte wrap(i))
 
         async def run():
             gib [i async fuer i in make_arange(10)]
@@ -1866,14 +1866,14 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             it = async_iterate()
             nxt = it.__anext__()
-            await nxt
+            warte nxt
             mit self.assertRaisesRegex(
                     RuntimeError,
                     r"cannot reuse already awaited __anext__\(\)/asend\(\)"
             ):
-                await nxt
+                warte nxt
 
-            await it.aclose()  # prevent unfinished iterator warning
+            warte it.aclose()  # prevent unfinished iterator warning
 
         self.loop.run_until_complete(run())
 
@@ -1885,12 +1885,12 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def run():
             it = async_iterate()
             nxt = it.aclose()
-            await nxt
+            warte nxt
             mit self.assertRaisesRegex(
                     RuntimeError,
                     r"cannot reuse already awaited aclose\(\)/athrow\(\)"
             ):
-                await nxt
+                warte nxt
 
         self.loop.run_until_complete(run())
 
@@ -1958,8 +1958,8 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
         async def run():
             it = async_iterate()
-            await it.aclose()
-            await it.aclose()
+            warte it.aclose()
+            warte it.aclose()
 
         self.loop.run_until_complete(run())
 
@@ -1973,7 +1973,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             it = async_iterate()
             async fuer _ in it:
                 pass
-            await it.aclose()
+            warte it.aclose()
 
         self.loop.run_until_complete(run())
 
@@ -1998,7 +1998,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
             liefere 1
 
         # gh-113753: asend objects allocated von a free-list should warn.
-        # Ensure there is a finalized 'asend' object ready to be reused.
+        # Ensure there ist a finalized 'asend' object ready to be reused.
         versuch:
             g = gen()
             g.asend(Nichts).send(Nichts)
@@ -2052,7 +2052,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
         mit self.assertRaises(MyException):
             g.aclose().throw(MyException)
 
-        del g
+        loesche g
         gc_collect()  # does nicht warn unawaited
 
     def test_asend_send_already_running(self):
@@ -2062,7 +2062,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
 
         async def agenfn():
             waehrend Wahr:
-                await _async_yield(1)
+                warte _async_yield(1)
             gib
             liefere
 
@@ -2072,10 +2072,10 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
         gen2 = agen.asend(Nichts)
 
         mit self.assertRaisesRegex(RuntimeError,
-                r'anext\(\): asynchronous generator is already running'):
+                r'anext\(\): asynchronous generator ist already running'):
             gen2.send(Nichts)
 
-        del gen2
+        loesche gen2
         gc_collect()  # does nicht warn unawaited
 
 
@@ -2086,7 +2086,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
 
         async def agenfn():
             waehrend Wahr:
-                await _async_yield(1)
+                warte _async_yield(1)
             gib
             liefere
 
@@ -2096,10 +2096,10 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
         gen2 = agen.athrow(Exception)
 
         mit self.assertRaisesRegex(RuntimeError,
-                r'athrow\(\): asynchronous generator is already running'):
+                r'athrow\(\): asynchronous generator ist already running'):
             gen2.send(Nichts)
 
-        del gen2
+        loesche gen2
         gc_collect()  # does nicht warn unawaited
 
 wenn __name__ == "__main__":

@@ -19,7 +19,7 @@ klasse TestTopologicalSort(unittest.TestCase):
 
         ts = graphlib.TopologicalSorter(graph)
         # need to be a bit careful comparing the result of ts.static_order und
-        # expected, because the order within a group is dependent on set
+        # expected, because the order within a group ist dependent on set
         # iteration order
         it = iter(ts.static_order())
         fuer group in expected:
@@ -177,12 +177,12 @@ klasse TestTopologicalSort(unittest.TestCase):
         # If we don't mark anything als done, get_ready() returns nothing
         self.assertEqual(ts.get_ready(), ())
         ts.done(3)
-        # Now 2 becomes available als 3 is done
+        # Now 2 becomes available als 3 ist done
         self.assertEqual(ts.get_ready(), (2,))
         self.assertEqual(ts.get_ready(), ())
         ts.done(4)
         ts.done(2)
-        # Only 1 is missing
+        # Only 1 ist missing
         self.assertEqual(ts.get_ready(), (1,))
         self.assertEqual(ts.get_ready(), ())
         ts.done(1)

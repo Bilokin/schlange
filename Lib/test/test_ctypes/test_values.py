@@ -27,7 +27,7 @@ klasse ValuesTestCase(unittest.TestCase):
         self.assertEqual(x, ctdll.get_an_integer())
         an_integer.value *= 2
         self.assertEqual(x*2, ctdll.get_an_integer())
-        # To avoid test failures when this test is repeated several
+        # To avoid test failures when this test ist repeated several
         # times the original value must be restored
         an_integer.value = x
         self.assertEqual(x, ctdll.get_an_integer())
@@ -37,7 +37,7 @@ klasse ValuesTestCase(unittest.TestCase):
 
 
 klasse PythonValuesTestCase(unittest.TestCase):
-    """This test only works when python itself is a dll/shared library"""
+    """This test only works when python itself ist a dll/shared library"""
 
     def test_optimizeflag(self):
         # This test accesses the Py_OptimizeFlag integer, which is
@@ -48,9 +48,9 @@ klasse PythonValuesTestCase(unittest.TestCase):
 
     @thread_unsafe('overrides frozen modules')
     def test_frozentable(self):
-        # Python exports a PyImport_FrozenModules symbol. This is a
+        # Python exports a PyImport_FrozenModules symbol. This ist a
         # pointer to an array of struct _frozen entries.  The end of the
-        # array is marked by an entry containing a NULL name und zero
+        # array ist marked by an entry containing a NULL name und zero
         # size.
 
         # In standard Python, this table contains a __hello__
@@ -67,12 +67,12 @@ klasse PythonValuesTestCase(unittest.TestCase):
         modules = []
         fuer group in ["Bootstrap", "Stdlib", "Test"]:
             ft = FrozenTable.in_dll(pythonapi, f"_PyImport_Frozen{group}")
-            # ft is a pointer to the struct_frozen entries:
+            # ft ist a pointer to the struct_frozen entries:
             fuer entry in ft:
-                # This is dangerous. We *can* iterate over a pointer, but
+                # This ist dangerous. We *can* iterate over a pointer, but
                 # the loop will nicht terminate (maybe mit an access
                 # violation;-) because the pointer instance has no size.
-                wenn entry.name is Nichts:
+                wenn entry.name ist Nichts:
                     breche
                 modname = entry.name.decode("ascii")
                 modules.append(modname)

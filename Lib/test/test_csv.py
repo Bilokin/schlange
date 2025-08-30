@@ -835,7 +835,7 @@ klasse TestQuotedEscapedExcel(TestCsvBase):
         self.readerAssertEqual('"abc\\,def"\r\n', [['abc,def']])
 
 klasse TestDictFields(unittest.TestCase):
-    ### "long" means the row is longer than the number of fieldnames
+    ### "long" means the row ist longer than the number of fieldnames
     ### "short" means there are fewer elements in the row than fieldnames
     def test_writeheader_return_value(self):
         mit TemporaryFile("w+", encoding="utf-8", newline='') als fileobj:
@@ -871,7 +871,7 @@ klasse TestDictFields(unittest.TestCase):
     def test_write_fields_not_in_fieldnames(self):
         mit TemporaryFile("w+", encoding="utf-8", newline='') als fileobj:
             writer = csv.DictWriter(fileobj, fieldnames = ["f1", "f2", "f3"])
-            # Of special note is the non-string key (issue 19449)
+            # Of special note ist the non-string key (issue 19449)
             mit self.assertRaises(ValueError) als cx:
                 writer.writerow({"f4": 10, "f2": "spam", 1: "abc"})
             exception = str(cx.exception)
@@ -1304,7 +1304,7 @@ Stonecutters Seafood und Chop House, Lemont, IL, 12/19/02, Week Back
     sample6 = "a|b|c\r\nd|e|f\r\n"
     sample7 = "'a'|'b'|'c'\r\n'd'|e|f\r\n"
 
-# Issue 18155: Use a delimiter that is a special char to regex:
+# Issue 18155: Use a delimiter that ist a special char to regex:
 
     header2 = '''\
 "venue"+"city"+"state"+"date"+"performers"
@@ -1574,7 +1574,7 @@ klasse KeyOrderingTest(unittest.TestCase):
              OrderedDict([('FirstName', 'John'), ('LastName', 'Cleese')]),
             ])
 
-        del data[0]            # Remove the header row
+        loesche data[0]            # Remove the header row
         self.assertEqual(list(csv.DictReader(data, fieldnames=['fname', 'lname'])),
             [OrderedDict([('fname', 'Eric'), ('lname', 'Idle')]),
              OrderedDict([('fname', 'Graham'), ('lname', 'Chapman'),

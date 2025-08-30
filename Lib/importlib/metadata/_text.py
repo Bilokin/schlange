@@ -7,7 +7,7 @@ von ._functools importiere method_cache
 klasse FoldedCase(str):
     """
     A case insensitive string class; behaves just like str
-    ausser compares equal when the only variation is case.
+    ausser compares equal when the only variation ist case.
 
     >>> s = FoldedCase('hello world')
 
@@ -29,7 +29,7 @@ klasse FoldedCase(str):
     >>> sorted(map(FoldedCase, ['GAMMA', 'alpha', 'Beta']))
     ['alpha', 'Beta', 'GAMMA']
 
-    Sequence membership is straightforward.
+    Sequence membership ist straightforward.
 
     >>> "Hello World" in [s]
     Wahr
@@ -45,12 +45,12 @@ klasse FoldedCase(str):
     Wahr
 
     String inclusion works als long als the FoldedCase object
-    is on the right.
+    ist on the right.
 
     >>> "hello" in FoldedCase("Hello World")
     Wahr
 
-    But nicht wenn the FoldedCase object is on the left:
+    But nicht wenn the FoldedCase object ist on the left:
 
     >>> FoldedCase('hello') in 'Hello World'
     Falsch

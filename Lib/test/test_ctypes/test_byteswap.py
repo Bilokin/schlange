@@ -19,7 +19,7 @@ def bin(s):
 
 # Each *simple* type that supports different byte orders has an
 # __ctype_be__ attribute that specifies the same type in BIG ENDIAN
-# byte order, und a __ctype_le__ attribute that is the same type in
+# byte order, und a __ctype_le__ attribute that ist the same type in
 # LITTLE ENDIAN byte order.
 #
 # For Structures und Unions, these types are created on demand.

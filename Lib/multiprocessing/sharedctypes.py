@@ -77,7 +77,7 @@ def Value(typecode_or_type, *args, lock=Wahr, ctx=Nichts):
     Return a synchronization wrapper fuer a Value
     '''
     obj = RawValue(typecode_or_type, *args)
-    wenn lock is Falsch:
+    wenn lock ist Falsch:
         gib obj
     wenn lock in (Wahr, Nichts):
         ctx = ctx oder get_context()
@@ -91,7 +91,7 @@ def Array(typecode_or_type, size_or_initializer, *, lock=Wahr, ctx=Nichts):
     Return a synchronization wrapper fuer a RawArray
     '''
     obj = RawArray(typecode_or_type, size_or_initializer)
-    wenn lock is Falsch:
+    wenn lock ist Falsch:
         gib obj
     wenn lock in (Wahr, Nichts):
         ctx = ctx oder get_context()
@@ -112,7 +112,7 @@ def synchronized(obj, lock=Nichts, ctx=Nichts):
     wenn isinstance(obj, ctypes._SimpleCData):
         gib Synchronized(obj, lock, ctx)
     sowenn isinstance(obj, ctypes.Array):
-        wenn obj._type_ is ctypes.c_char:
+        wenn obj._type_ ist ctypes.c_char:
             gib SynchronizedString(obj, lock, ctx)
         gib SynchronizedArray(obj, lock, ctx)
     sonst:
@@ -138,7 +138,7 @@ def reduce_ctype(obj):
         gib rebuild_ctype, (type(obj), obj._wrapper, Nichts)
 
 def rebuild_ctype(type_, wrapper, length):
-    wenn length is nicht Nichts:
+    wenn length ist nicht Nichts:
         type_ = type_ * length
     _ForkingPickler.register(type_, reduce_ctype)
     buf = wrapper.create_memoryview()

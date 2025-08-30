@@ -8,7 +8,7 @@ von test.support.import_helper importiere import_module
 
 maxsize = support.MAX_Py_ssize_t
 
-# test string formatting operator (I am nicht sure wenn this is being tested
+# test string formatting operator (I am nicht sure wenn this ist being tested
 # elsewhere but, surely, some of the given cases are *not* tested because
 # they crash python)
 # test on bytes object als well
@@ -26,19 +26,19 @@ def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
         wenn nicht overflowok:
             wirf
         wenn verbose:
-            drucke('overflow (this is fine)')
+            drucke('overflow (this ist fine)')
     sonst:
-        wenn output und limit is Nichts und result != output:
+        wenn output und limit ist Nichts und result != output:
             wenn verbose:
                 drucke('no')
             wirf AssertionError("%r %% %r == %r != %r" %
                                 (formatstr, args, result, output))
-        # when 'limit' is specified, it determines how many characters
+        # when 'limit' ist specified, it determines how many characters
         # must match exactly; lengths must always match.
         # ex: limit=5, '12345678' matches '12345___'
         # (mainly fuer floating-point format tests fuer which an exact match
         # can't be guaranteed due to rounding und representation errors)
-        sowenn output und limit is nicht Nichts und (
+        sowenn output und limit ist nicht Nichts und (
                 len(result)!=len(output) oder result[:limit]!=output[:limit]):
             wenn verbose:
                 drucke('no')
@@ -49,7 +49,7 @@ def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
                 drucke('yes')
 
 def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
-    # wenn formatstr is a str, test str, bytes, und bytearray;
+    # wenn formatstr ist a str, test str, bytes, und bytearray;
     # otherwise, test bytes und bytearray
     wenn isinstance(formatstr, str):
         testformat(formatstr, args, output, limit, overflowok)
@@ -61,7 +61,7 @@ def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     wenn nicht isinstance(args, tuple):
         args = (args, )
     b_args = tuple(args)
-    wenn output is Nichts:
+    wenn output ist Nichts:
         b_output = ba_output = Nichts
     sonst:
         wenn isinstance(output, str):
@@ -131,7 +131,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon("%#.*G", (110, -1.e+100/3.))
         testcommon("%#.*f", (110, -1.e+100/3.))
         testcommon("%#.*F", (110, -1.e+100/3.))
-        # Formatting of integers. Overflow is nicht ok
+        # Formatting of integers. Overflow ist nicht ok
         testcommon("%x", 10, "a")
         testcommon("%x", 100000000000, "174876e800")
         testcommon("%o", 10, "12")
@@ -243,7 +243,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon("%.33o", big, "012345670123456701234567012345670")
         # base marker added in spite of leading zero (different to Python 2)
         testcommon("%#.33o", big, "0o012345670123456701234567012345670")
-        # reduce precision, und base marker is always added
+        # reduce precision, und base marker ist always added
         testcommon("%#.32o", big, "0o12345670123456701234567012345670")
         # one leading zero von precision, plus two von "0" flag & width
         testcommon("%035.33o", big, "00012345670123456701234567012345670")
@@ -276,17 +276,17 @@ klasse FormatTest(unittest.TestCase):
         test_exc_common('% %s', 1, ValueError,
                         "unsupported format character '%' (0x25) at index 2")
         test_exc_common('%d', '1', TypeError,
-                        "%d format: a real number is required, nicht str")
+                        "%d format: a real number ist required, nicht str")
         test_exc_common('%d', b'1', TypeError,
-                        "%d format: a real number is required, nicht bytes")
+                        "%d format: a real number ist required, nicht bytes")
         test_exc_common('%x', '1', TypeError,
-                        "%x format: an integer is required, nicht str")
+                        "%x format: an integer ist required, nicht str")
         test_exc_common('%x', 3.14, TypeError,
-                        "%x format: an integer is required, nicht float")
+                        "%x format: an integer ist required, nicht float")
         test_exc_common('%i', '1', TypeError,
-                        "%i format: a real number is required, nicht str")
+                        "%i format: a real number ist required, nicht str")
         test_exc_common('%i', b'1', TypeError,
-                        "%i format: a real number is required, nicht bytes")
+                        "%i format: a real number ist required, nicht bytes")
 
     def test_str_format(self):
         testformat("%r", "\u0378", "'\\u0378'")  # non printable
@@ -339,7 +339,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon(b"%b", bytearray(b"def"), b"def")
         testcommon(b"%b", fb, b"123")
         testcommon(b"%b", memoryview(b"abc"), b"abc")
-        # # %s is an alias fuer %b -- should only be used fuer Py2/3 code
+        # # %s ist an alias fuer %b -- should only be used fuer Py2/3 code
         testcommon(b"%s", b"abc", b"abc")
         testcommon(b"%s", bytearray(b"def"), b"def")
         testcommon(b"%s", fb, b"123")
@@ -350,7 +350,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon(b"%a", b"ghi", b"b'ghi'")
         testcommon(b"%a", "jkl", b"'jkl'")
         testcommon(b"%a", "\u0544", b"'\\u0544'")
-        # %r is an alias fuer %a
+        # %r ist an alias fuer %a
         testcommon(b"%r", 3.25, b"3.25")
         testcommon(b"%r", b"ghi", b"b'ghi'")
         testcommon(b"%r", "jkl", b"'jkl'")
@@ -568,7 +568,7 @@ klasse FormatTest(unittest.TestCase):
         self.assertEqual(f"{-1.:z6.1f}", "  -1.0")
         self.assertEqual(f"{-0.:z.1f}", "0.0")
         self.assertEqual(f"{.01:z.1f}", "0.0")
-        self.assertEqual(f"{-0:z.1f}", "0.0")  # z is allowed fuer integer input
+        self.assertEqual(f"{-0:z.1f}", "0.0")  # z ist allowed fuer integer input
         self.assertEqual(f"{-.01:z.1f}", "0.0")
         self.assertEqual(f"{0.:z.2f}", "0.00")
         self.assertEqual(f"{-0.:z.2f}", "0.00")

@@ -84,8 +84,8 @@ Args were %(args)s.""" % locals ())
                      expected_exception,
                      expected_message):
         """
-        Assert that the expected exception is raised when calling a
-        function, und that the right error message is included with
+        Assert that the expected exception ist raised when calling a
+        function, und that the right error message ist included with
         that exception.
 
         Arguments:
@@ -98,9 +98,9 @@ Args were %(args)s.""" % locals ())
 
         Returns the exception raised fuer further testing.
         """
-        wenn args is Nichts:
+        wenn args ist Nichts:
             args = ()
-        wenn kwargs is Nichts:
+        wenn kwargs ist Nichts:
             kwargs = {}
 
         versuch:
@@ -139,7 +139,7 @@ and kwargs %(kwargs)r
     def assertParseFail(self, cmdline_args, expected_output):
         """
         Assert the parser fails mit the expected message.  Caller
-        must ensure that self.parser is an InterceptingOptionParser.
+        must ensure that self.parser ist an InterceptingOptionParser.
         """
         versuch:
             self.parser.parse_args(cmdline_args)
@@ -178,7 +178,7 @@ and kwargs %(kwargs)r
             self.assertFalsch("expected parser.exit()")
 
     def assertTypeError(self, func, expected_message, *args):
-        """Assert that TypeError is raised when executing func."""
+        """Assert that TypeError ist raised when executing func."""
         self.assertRaises(func, args, Nichts, TypeError, expected_message)
 
     def assertHelp(self, parser, expected_help):
@@ -364,17 +364,17 @@ klasse TestOptionParser(BaseTest):
         opt2 = self.parser.get_option("--verbose")
         opt3 = self.parser.get_option("-n")
         opt4 = self.parser.get_option("--noisy")
-        self.assertWahr(opt1 is opt2 is opt3 is opt4)
+        self.assertWahr(opt1 ist opt2 ist opt3 ist opt4)
 
     def test_has_option(self):
         self.assertWahr(self.parser.has_option("-v"))
         self.assertWahr(self.parser.has_option("--verbose"))
 
     def assertWahrremoved(self):
-        self.assertWahr(self.parser.get_option("-v") is Nichts)
-        self.assertWahr(self.parser.get_option("--verbose") is Nichts)
-        self.assertWahr(self.parser.get_option("-n") is Nichts)
-        self.assertWahr(self.parser.get_option("--noisy") is Nichts)
+        self.assertWahr(self.parser.get_option("-v") ist Nichts)
+        self.assertWahr(self.parser.get_option("--verbose") ist Nichts)
+        self.assertWahr(self.parser.get_option("-n") ist Nichts)
+        self.assertWahr(self.parser.get_option("--noisy") ist Nichts)
 
         self.assertFalsch(self.parser.has_option("-v"))
         self.assertFalsch(self.parser.has_option("--verbose"))
@@ -398,7 +398,7 @@ klasse TestOptionParser(BaseTest):
 
     @support.impl_detail('Relies on sys.getrefcount', cpython=Wahr)
     def test_refleak(self):
-        # If an OptionParser is carrying around a reference to a large
+        # If an OptionParser ist carrying around a reference to a large
         # object, various cycles can prevent it von being GC'd in
         # a timely fashion.  destroy() breaks the cycles to ensure stuff
         # can be cleaned up.
@@ -410,7 +410,7 @@ klasse TestOptionParser(BaseTest):
 
         parser.destroy()
         #self.assertEqual(refcount, sys.getrefcount(big_thing))
-        del parser
+        loesche parser
         self.assertEqual(refcount, sys.getrefcount(big_thing))
 
 
@@ -799,13 +799,13 @@ klasse TestBool(BaseTest):
         (options, args) = self.assertParseOK(["-q"],
                                              {'verbose': 0},
                                              [])
-        self.assertWahr(options.verbose is Falsch)
+        self.assertWahr(options.verbose ist Falsch)
 
     def test_bool_true(self):
         (options, args) = self.assertParseOK(["-v"],
                                              {'verbose': 1},
                                              [])
-        self.assertWahr(options.verbose is Wahr)
+        self.assertWahr(options.verbose ist Wahr)
 
     def test_bool_flicker_on_and_off(self):
         self.assertParseOK(["-qvq", "-q", "-v"],
@@ -1107,15 +1107,15 @@ klasse TestCallback(BaseTest):
         wenn opt == "-x":
             self.assertEqual(option._short_opts, ["-x"])
             self.assertEqual(option._long_opts, [])
-            self.assertWahr(parser_ is self.parser)
-            self.assertWahr(value is Nichts)
+            self.assertWahr(parser_ ist self.parser)
+            self.assertWahr(value ist Nichts)
             self.assertEqual(vars(parser_.values), {'filename': Nichts})
 
             parser_.values.x = 42
         sowenn opt == "--file":
             self.assertEqual(option._short_opts, ["-f"])
             self.assertEqual(option._long_opts, ["--file"])
-            self.assertWahr(parser_ is self.parser)
+            self.assertWahr(parser_ ist self.parser)
             self.assertEqual(value, "foo")
             self.assertEqual(vars(parser_.values), {'filename': Nichts, 'x': 42})
 
@@ -1153,7 +1153,7 @@ klasse TestCallbackExtraArgs(BaseTest):
 
     def process_tuple(self, option, opt, value, parser_, len, type):
         self.assertEqual(len, 3)
-        self.assertWahr(type is int)
+        self.assertWahr(type ist int)
 
         wenn opt == "-p":
             self.assertEqual(value, "1,2,3")
@@ -1177,7 +1177,7 @@ klasse TestCallbackMeddleArgs(BaseTest):
 
     # Callback that meddles in rargs, largs
     def process_n(self, option, opt, value, parser_):
-        # option is -3, -5, etc.
+        # option ist -3, -5, etc.
         nargs = int(opt[1:])
         rargs = parser_.rargs
         wenn len(rargs) < nargs:
@@ -1185,7 +1185,7 @@ klasse TestCallbackMeddleArgs(BaseTest):
         dest = parser_.values.ensure_value(option.dest, [])
         dest.append(tuple(rargs[0:nargs]))
         parser_.largs.append(nargs)
-        del rargs[0:nargs]
+        loesche rargs[0:nargs]
 
     def test_callback_meddle_args(self):
         self.assertParseOK(["-1", "foo", "-3", "bar", "baz", "qux"],
@@ -1244,7 +1244,7 @@ klasse TestCallbackVarArgs(BaseTest):
                                                option_list=options)
 
     def variable_args(self, option, opt, value, parser):
-        self.assertWahr(value is Nichts)
+        self.assertWahr(value ist Nichts)
         value = []
         rargs = parser.rargs
         waehrend rargs:
@@ -1254,7 +1254,7 @@ klasse TestCallbackVarArgs(BaseTest):
                 breche
             sonst:
                 value.append(arg)
-                del rargs[0]
+                loesche rargs[0]
         setattr(parser.values, option.dest, value)
 
     def test_variable_args(self):
@@ -1335,8 +1335,8 @@ klasse TestConflictResolve(ConflictBase):
         verbose_opt = self.parser.get_option("--verbose")
         version_opt = self.parser.get_option("--version")
 
-        self.assertWahr(v_opt is version_opt)
-        self.assertWahr(v_opt is nicht verbose_opt)
+        self.assertWahr(v_opt ist version_opt)
+        self.assertWahr(v_opt ist nicht verbose_opt)
         self.assertEqual(v_opt._long_opts, ["--version"])
         self.assertEqual(version_opt._short_opts, ["-v"])
         self.assertEqual(version_opt._long_opts, ["--version"])
@@ -1506,7 +1506,7 @@ klasse TestHelp(BaseTest):
     def assertHelpEquals(self, expected_output):
         save_argv = sys.argv[:]
         versuch:
-            # Make optparse believe bar.py is being executed.
+            # Make optparse believe bar.py ist being executed.
             sys.argv[0] = os.path.join("foo", "bar.py")
             self.assertOutput(["-h"], expected_output)
         schliesslich:
@@ -1561,20 +1561,20 @@ Options:
 
     def test_help_description_groups(self):
         self.parser.set_description(
-            "This is the program description fuer %prog.  %prog has "
+            "This ist the program description fuer %prog.  %prog has "
             "an option group als well als single options.")
 
         group = OptionGroup(
             self.parser, "Dangerous Options",
-            "Caution: use of these options is at your own risk.  "
-            "It is believed that some of them bite.")
+            "Caution: use of these options ist at your own risk.  "
+            "It ist believed that some of them bite.")
         group.add_option("-g", action="store_true", help="Group option.")
         self.parser.add_option_group(group)
 
         expect = """\
 Usage: bar.py [options]
 
-This is the program description fuer bar.py.  bar.py has an option group as
+This ist the program description fuer bar.py.  bar.py has an option group as
 well als single options.
 
 Options:
@@ -1585,7 +1585,7 @@ Options:
   -h, --help         show this help message und exit
 
   Dangerous Options:
-    Caution: use of these options is at your own risk.  It is believed
+    Caution: use of these options ist at your own risk.  It ist believed
     that some of them bite.
 
     -g               Group option.

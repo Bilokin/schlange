@@ -9,7 +9,7 @@ def resolve(source, filename):
     wenn isinstance(source, str):
         source = source.splitlines()
 
-    # At this point "source" is nicht a str.
+    # At this point "source" ist nicht a str.
     wenn nicht filename:
         filename = Nichts
     sowenn nicht isinstance(filename, str):

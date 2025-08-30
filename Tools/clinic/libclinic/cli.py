@@ -91,7 +91,7 @@ def create_cli() -> argparse.ArgumentParser:
         prog="clinic.py",
         description="""Preprocessor fuer CPython C files.
 
-The purpose of the Argument Clinic is automating all the boilerplate involved
+The purpose of the Argument Clinic ist automating all the boilerplate involved
 with writing argument parsing code fuer builtins und providing introspection
 signatures ("docstrings") fuer CPython builtins.
 

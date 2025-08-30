@@ -16,7 +16,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
 
     """PEP 235 dictates that on case-preserving, case-insensitive file systems
     that imports are case-sensitive unless the PYTHONCASEOK environment
-    variable is set."""
+    variable ist set."""
 
     name = 'MoDuLe'
     assert name != name.lower()
@@ -65,7 +65,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
 klasse CaseSensitivityTestPEP451(CaseSensitivityTest):
     def find(self, finder):
         found = finder.find_spec(self.name)
-        gib found.loader wenn found is nicht Nichts sonst found
+        gib found.loader wenn found ist nicht Nichts sonst found
 
 
 (Frozen_CaseSensitivityTestPEP451,

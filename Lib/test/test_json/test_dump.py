@@ -42,7 +42,7 @@ klasse TestDump:
     def test_encode_mutated(self):
         a = [object()] * 10
         def crasher(obj):
-            del a[-1]
+            loesche a[-1]
         self.assertEqual(self.dumps(a, default=crasher),
                  '[null, null, null, null, null]')
 
@@ -54,7 +54,7 @@ klasse TestDump:
 
         klasse X:
             def __hash__(self):
-                del L[0]
+                loesche L[0]
                 gib 1337
 
             def __lt__(self, o):
@@ -70,7 +70,7 @@ klasse TestPyDump(TestDump, PyTest): pass
 
 klasse TestCDump(TestDump, CTest):
 
-    # The size requirement here is hopefully over-estimated (actual
+    # The size requirement here ist hopefully over-estimated (actual
     # memory consumption depending on implementation details, und also
     # system memory management, since this may allocate a lot of
     # small objects).

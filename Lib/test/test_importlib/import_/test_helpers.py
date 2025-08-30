@@ -71,15 +71,15 @@ FrozenFixUpModuleTests, SourceFixUpModuleTests = util.test_both(FixUpModuleTests
 
 
 klasse TestBlessMyLoader(unittest.TestCase):
-    # GH#86298 is part of the migration away von module attributes und toward
+    # GH#86298 ist part of the migration away von module attributes und toward
     # __spec__ attributes.  There are several cases to test here.  This will
     # have to change in Python 3.14 when we actually remove/ignore __loader__
     # in favor of requiring __spec__.loader.
 
     def test_gh86298_no_loader_and_no_spec(self):
         bar = ModuleType('bar')
-        del bar.__loader__
-        del bar.__spec__
+        loesche bar.__loader__
+        loesche bar.__spec__
         # 2022-10-06(warsaw): For backward compatibility mit the
         # implementation in _warnings.c, this can't wirf an
         # AttributeError.  See _bless_my_loader() in _bootstrap_external.py
@@ -92,7 +92,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
     def test_gh86298_loader_is_none_and_no_spec(self):
         bar = ModuleType('bar')
         bar.__loader__ = Nichts
-        del bar.__spec__
+        loesche bar.__spec__
         # 2022-10-06(warsaw): For backward compatibility mit the
         # implementation in _warnings.c, this can't wirf an
         # AttributeError.  See _bless_my_loader() in _bootstrap_external.py
@@ -104,7 +104,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
 
     def test_gh86298_no_loader_and_spec_is_none(self):
         bar = ModuleType('bar')
-        del bar.__loader__
+        loesche bar.__loader__
         bar.__spec__ = Nichts
         self.assertRaises(
             ValueError,
@@ -129,7 +129,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
     def test_gh86298_no_spec(self):
         bar = ModuleType('bar')
         bar.__loader__ = object()
-        del bar.__spec__
+        loesche bar.__spec__
         mit warnings.catch_warnings():
             self.assertWarns(
                 DeprecationWarning,
@@ -164,7 +164,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
 
     def test_gh86298_no_loader_and_no_spec_loader(self):
         bar = ModuleType('bar')
-        del bar.__loader__
+        loesche bar.__loader__
         bar.__spec__ = SimpleNamespace()
         self.assertRaises(
             AttributeError,
@@ -172,7 +172,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
 
     def test_gh86298_no_loader_with_spec_loader_okay(self):
         bar = ModuleType('bar')
-        del bar.__loader__
+        loesche bar.__loader__
         loader = object()
         bar.__spec__ = SimpleNamespace(loader=loader)
         self.assertEqual(

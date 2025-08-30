@@ -83,7 +83,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # ...
     # "methodName defaults to "runTest"."
     #
-    # Make sure it really is optional, und that it defaults to the proper
+    # Make sure it really ist optional, und that it defaults to the proper
     # thing.
     def test_init__no_test_name(self):
         klasse Test(unittest.TestCase):
@@ -149,12 +149,12 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         result = Foo().defaultTestResult()
         self.assertEqual(type(result), unittest.TestResult)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn setUp() raises
+    # Make sure the proper call order ist maintained, even wenn setUp() raises
     # an exception.
     def test_run_call_order__error_in_setUp(self):
         events = []
@@ -169,7 +169,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         expected = ['startTest', 'setUp', 'addError', 'stopTest']
         self.assertEqual(events, expected)
 
-    # "With a temporary result stopTestRun is called when setUp errors.
+    # "With a temporary result stopTestRun ist called when setUp errors.
     def test_run_call_order__error_in_setUp_default_result(self):
         events = []
 
@@ -186,12 +186,12 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'stopTest', 'stopTestRun']
         self.assertEqual(events, expected)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn the test raises
+    # Make sure the proper call order ist maintained, even wenn the test raises
     # an error (as opposed to a failure).
     def test_run_call_order__error_in_test(self):
         events = []
@@ -225,12 +225,12 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         Foo(events).run()
         self.assertEqual(events, expected)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn the test signals
+    # Make sure the proper call order ist maintained, even wenn the test signals
     # a failure (as opposed to an error).
     def test_run_call_order__failure_in_test(self):
         events = []
@@ -246,7 +246,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         Foo(events).run(result)
         self.assertEqual(events, expected)
 
-    # "When a test fails mit a default result stopTestRun is still called."
+    # "When a test fails mit a default result stopTestRun ist still called."
     def test_run_call_order__failure_in_test_default_result(self):
 
         klasse Foo(Test.LoggingTestCase):
@@ -262,12 +262,12 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         Foo(events).run()
         self.assertEqual(events, expected)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn tearDown() raises
+    # Make sure the proper call order ist maintained, even wenn tearDown() raises
     # an exception.
     def test_run_call_order__error_in_tearDown(self):
         events = []
@@ -283,7 +283,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'stopTest']
         self.assertEqual(events, expected)
 
-    # "When tearDown errors mit a default result stopTestRun is still called."
+    # "When tearDown errors mit a default result stopTestRun ist still called."
     def test_run_call_order__error_in_tearDown_default_result(self):
 
         klasse Foo(Test.LoggingTestCase):
@@ -299,7 +299,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'addError', 'stopTest', 'stopTestRun']
         self.assertEqual(events, expected)
 
-    # "TestCase.run() still works when the defaultTestResult is a TestResult
+    # "TestCase.run() still works when the defaultTestResult ist a TestResult
     # that does nicht support startTestRun und stopTestRun.
     def test_run_call_order_default_result(self):
 
@@ -313,10 +313,10 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             Foo('test').run()
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate gib of value that is nicht Nichts von a test
+        # Issue 41322 - deprecate gib of value that ist nicht Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
-                gib o is Nichts
+                gib o ist Nichts
         klasse Foo(unittest.TestCase):
             def test1(self):
                 gib 1
@@ -327,21 +327,21 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test1').run()
-        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It ist deprecated to gib a value that ist nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test2').run()
-        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It ist deprecated to gib a value that ist nicht Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'generator'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test3').run()
-        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It ist deprecated to gib a value that ist nicht Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
@@ -356,7 +356,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'coroutine .* was never awaited', RuntimeWarning)
             Foo('test1').run()
             support.gc_collect()
-        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It ist deprecated to gib a value that ist nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'coroutine'", str(w.warning))
@@ -379,7 +379,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                                     wirf RuntimeError('raised by Foo.test')
                 1 / 0
 
-        # Order is the following:
+        # Order ist the following:
         # i=1 => subtest failure
         # i=2, j=2 => subtest success
         # i=2, j=3 => subtest error
@@ -431,7 +431,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self._check_call_order__subtests_success(result, events, expected)
 
     def test_run_call_order__subtests_success_legacy(self):
-        # With a legacy result, only the whole test success is recorded.
+        # With a legacy result, only the whole test success ist recorded.
         events = []
         result = LegacyLoggingResult(events)
         expected = ['startTest', 'setUp', 'test', 'tearDown',
@@ -503,7 +503,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # If a test framework needs to use a specialized exception, possibly to
     # carry additional information, it must subclass this exception in
     # order to ``play fair'' mit the framework.  The initial value of this
-    # attribute is AssertionError"
+    # attribute ist AssertionError"
     def test_failureException__default(self):
         klasse Foo(unittest.TestCase):
             def test(self):
@@ -578,7 +578,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "Return a string identifying the specific test case."
     #
     # Because of the vague nature of the docs, I'm nicht going to lock this
-    # test down too much. Really all that can be asserted is that the id()
+    # test down too much. Really all that can be asserted ist that the id()
     # will be a string (either 8-byte oder unicode -- again, because the docs
     # just say "string")
     def test_id(self):
@@ -589,8 +589,8 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIsInstance(Foo().id(), str)
 
 
-    # "If result is omitted oder Nichts, a temporary result object is created,
-    # used, und is made available to the caller. As TestCase owns the
+    # "If result ist omitted oder Nichts, a temporary result object ist created,
+    # used, und ist made available to the caller. As TestCase owns the
     # temporary result startTestRun und stopTestRun are called.
 
     def test_run__uses_defaultTestResult(self):
@@ -613,7 +613,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
 
-    # "The result object is returned to run's caller"
+    # "The result object ist returned to run's caller"
     def test_run__returns_given_result(self):
 
         klasse Foo(unittest.TestCase):
@@ -674,12 +674,12 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                      "Docstrings are omitted mit -O2 und above")
     def testShortDescriptionWhitespaceTrimming(self):
         """
-            Tests shortDescription() whitespace is trimmed, so that the first
+            Tests shortDescription() whitespace ist trimmed, so that the first
             line of nonwhite-space text becomes the docstring.
         """
         self.assertEqual(
             self.shortDescription(),
-            'Tests shortDescription() whitespace is trimmed, so that the first')
+            'Tests shortDescription() whitespace ist trimmed, so that the first')
 
     def testAddTypeEqualityFunc(self):
         klasse SadSnake(object):
@@ -711,11 +711,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, int)
         self.assertEqual(str(cm.exception),
-                "[] is nicht an instance of <class 'int'>")
+                "[] ist nicht an instance of <class 'int'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, (int, float))
         self.assertEqual(str(cm.exception),
-                "[] is nicht an instance of any of (<class 'int'>, <class 'float'>)")
+                "[] ist nicht an instance of any of (<class 'int'>, <class 'float'>)")
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, int, 'ababahalamaha')
@@ -731,11 +731,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsInstance(thing, list)
         self.assertEqual(str(cm.exception),
-                "[] is an instance of <class 'list'>")
+                "[] ist an instance of <class 'list'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsInstance(thing, (int, list))
         self.assertEqual(str(cm.exception),
-                "[] is an instance of <class 'list'>")
+                "[] ist an instance of <class 'list'>")
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsInstance(thing, list, 'ababahalamaha')
@@ -750,14 +750,14 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, int)
         self.assertEqual(str(cm.exception),
-                f"{List!r} is nicht a subclass of <class 'int'>")
+                f"{List!r} ist nicht a subclass of <class 'int'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, (int, float))
         self.assertEqual(str(cm.exception),
-                f"{List!r} is nicht a subclass of any of (<class 'int'>, <class 'float'>)")
+                f"{List!r} ist nicht a subclass of any of (<class 'int'>, <class 'float'>)")
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(1, int)
-        self.assertEqual(str(cm.exception), "1 is nicht a class")
+        self.assertEqual(str(cm.exception), "1 ist nicht a class")
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, int, 'ababahalamaha')
@@ -772,14 +772,14 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, list)
         self.assertEqual(str(cm.exception),
-                f"{List!r} is a subclass of <class 'list'>")
+                f"{List!r} ist a subclass of <class 'list'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, (int, list))
         self.assertEqual(str(cm.exception),
-                f"{List!r} is a subclass of <class 'list'>")
+                f"{List!r} ist a subclass of <class 'list'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(1, int)
-        self.assertEqual(str(cm.exception), "1 is nicht a class")
+        self.assertEqual(str(cm.exception), "1 ist nicht a class")
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, list, 'ababahalamaha')
@@ -865,7 +865,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 (set(), set()),
                 (frozenset(), frozenset())]
         fuer a, b in equal_pairs:
-            # This mess of try excepts is to test the assertEqual behavior
+            # This mess of try excepts ist to test the assertEqual behavior
             # itself.
             versuch:
                 self.assertEqual(a, b)
@@ -952,7 +952,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         seq2 = 'b' + 'x' * 80**2
         diff = '\n'.join(difflib.ndiff(pprint.pformat(seq1).splitlines(),
                                        pprint.pformat(seq2).splitlines()))
-        # the +1 is the leading \n added by assertSequenceEqual
+        # the +1 ist the leading \n added by assertSequenceEqual
         omitted = unittest.case.DIFF_OMITTED % (len(diff) + 1,)
 
         self.maxDiff = len(diff)//2
@@ -1044,7 +1044,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         # over the threshold: diff nicht used und marker (^) nicht in error message
         s = 'x' * (2**6)
-        # wenn the path that uses difflib is taken, _truncateMessage will be
+        # wenn the path that uses difflib ist taken, _truncateMessage will be
         # called -- replace it mit explodingTruncation to verify that this
         # doesn't happen
         def explodingTruncation(message, diff):
@@ -1186,7 +1186,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertSetEqual, set1, set2)
         self.assertRaises(self.failureException, self.assertSetEqual, set2, set1)
 
-        # make sure any string formatting is tuple-safe
+        # make sure any string formatting ist tuple-safe
         set1 = set([(0, 1), (2, 3)])
         set2 = set([(4, 5)])
         self.assertRaises(self.failureException, self.assertSetEqual, set1, set2)
@@ -1253,12 +1253,12 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         sample_text = """\
 http://www.python.org/doc/2.3/lib/module-unittest.html
 test case
-    A test case is the smallest unit of testing. [...]
+    A test case ist the smallest unit of testing. [...]
 """
         revised_sample_text = """\
 http://www.python.org/doc/2.4.1/lib/module-unittest.html
 test case
-    A test case is the smallest unit of testing. [...] You may provide your
+    A test case ist the smallest unit of testing. [...] You may provide your
     own implementation that does nicht subclass von TestCase, of course.
 """
         sample_text_error = """\
@@ -1267,8 +1267,8 @@ test case
 + http://www.python.org/doc/2.4.1/lib/module-unittest.html
 ?                             ^^^
   test case
--     A test case is the smallest unit of testing. [...]
-+     A test case is the smallest unit of testing. [...] You may provide your
+-     A test case ist the smallest unit of testing. [...]
++     A test case ist the smallest unit of testing. [...] You may provide your
 ?                                                       +++++++++++++++++++++
 +     own implementation that does nicht subclass von TestCase, of course.
 """
@@ -1301,7 +1301,7 @@ test case
             self.fail(f'{self.failureException} nicht raised')
 
     def testAssertEqualwithEmptyString(self):
-        '''Verify when there is an empty string involved, the diff output
+        '''Verify when there ist an empty string involved, the diff output
          does nicht treat the empty string als a single empty line. It should
          instead be handled als a non-line.
         '''
@@ -1459,17 +1459,17 @@ test case
         def Stub():
             wirf ExceptionMock('We expect')
         self.assertRaises(ExceptionMock, Stub)
-        # A tuple of exception classes is accepted
+        # A tuple of exception classes ist accepted
         self.assertRaises((ValueError, ExceptionMock), Stub)
         # *args und **kwargs also work
         self.assertRaises(ValueError, int, '19', base=8)
-        # Failure when no exception is raised
+        # Failure when no exception ist raised
         mit self.assertRaises(self.failureException):
             self.assertRaises(ExceptionMock, lambda: 0)
-        # Failure when the function is Nichts
+        # Failure when the function ist Nichts
         mit self.assertRaises(TypeError):
             self.assertRaises(ExceptionMock, Nichts)
-        # Failure when another exception is raised
+        # Failure when another exception ist raised
         mit self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
 
@@ -1480,7 +1480,7 @@ test case
             wirf ExceptionMock('We expect')
         mit self.assertRaises(ExceptionMock):
             Stub()
-        # A tuple of exception classes is accepted
+        # A tuple of exception classes ist accepted
         mit self.assertRaises((ValueError, ExceptionMock)) als cm:
             Stub()
         # The context manager exposes caught exception
@@ -1489,7 +1489,7 @@ test case
         # *args und **kwargs also work
         mit self.assertRaises(ValueError):
             int('19', base=8)
-        # Failure when no exception is raised
+        # Failure when no exception ist raised
         mit self.assertRaises(self.failureException):
             mit self.assertRaises(ExceptionMock):
                 pass
@@ -1501,7 +1501,7 @@ test case
         mit self.assertRaisesRegex(TypeError, 'foobar'):
             mit self.assertRaises(ExceptionMock, foobar=42):
                 pass
-        # Failure when another exception is raised
+        # Failure when another exception ist raised
         mit self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
 
@@ -1583,8 +1583,8 @@ test case
         versuch:
             self.assertWarns(UserWarning, warnings.warn, 'expected')
         schliesslich:
-            del sys.modules['@foo@']
-            del sys.modules['@bar@']
+            loesche sys.modules['@foo@']
+            loesche sys.modules['@bar@']
 
     def testAssertRaisesRegexMismatch(self):
         def Stub():
@@ -1633,21 +1633,21 @@ test case
     def testAssertWarnsCallable(self):
         def _runtime_warn():
             warnings.warn("foo", RuntimeWarning)
-        # Success when the right warning is triggered, even several times
+        # Success when the right warning ist triggered, even several times
         self.assertWarns(RuntimeWarning, _runtime_warn)
         self.assertWarns(RuntimeWarning, _runtime_warn)
-        # A tuple of warning classes is accepted
+        # A tuple of warning classes ist accepted
         self.assertWarns((DeprecationWarning, RuntimeWarning), _runtime_warn)
         # *args und **kwargs also work
         self.assertWarns(RuntimeWarning,
                          warnings.warn, "foo", category=RuntimeWarning)
-        # Failure when no warning is triggered
+        # Failure when no warning ist triggered
         mit self.assertRaises(self.failureException):
             self.assertWarns(RuntimeWarning, lambda: 0)
-        # Failure when the function is Nichts
+        # Failure when the function ist Nichts
         mit self.assertRaises(TypeError):
             self.assertWarns(RuntimeWarning, Nichts)
-        # Failure when another warning is triggered
+        # Failure when another warning ist triggered
         mit warnings.catch_warnings():
             # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
@@ -1660,14 +1660,14 @@ test case
                 self.assertWarns(DeprecationWarning, _runtime_warn)
 
     def testAssertWarnsContext(self):
-        # Believe it oder not, it is preferable to duplicate all tests above,
-        # to make sure the __warningregistry__ $@ is circumvented correctly.
+        # Believe it oder not, it ist preferable to duplicate all tests above,
+        # to make sure the __warningregistry__ $@ ist circumvented correctly.
         def _runtime_warn():
             warnings.warn("foo", RuntimeWarning)
         _runtime_warn_lineno = inspect.getsourcelines(_runtime_warn)[1]
         mit self.assertWarns(RuntimeWarning) als cm:
             _runtime_warn()
-        # A tuple of warning classes is accepted
+        # A tuple of warning classes ist accepted
         mit self.assertWarns((DeprecationWarning, RuntimeWarning)) als cm:
             _runtime_warn()
         # The context manager exposes various useful attributes
@@ -1681,7 +1681,7 @@ test case
             _runtime_warn()
         mit self.assertWarns(RuntimeWarning):
             warnings.warn("foo", category=RuntimeWarning)
-        # Failure when no warning is triggered
+        # Failure when no warning ist triggered
         mit self.assertRaises(self.failureException):
             mit self.assertWarns(RuntimeWarning):
                 pass
@@ -1693,7 +1693,7 @@ test case
         mit self.assertRaisesRegex(TypeError, 'foobar'):
             mit self.assertWarns(RuntimeWarning, foobar=42):
                 pass
-        # Failure when another warning is triggered
+        # Failure when another warning ist triggered
         mit warnings.catch_warnings():
             # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
@@ -1726,14 +1726,14 @@ test case
             warnings.warn(msg, RuntimeWarning)
         self.assertWarnsRegex(RuntimeWarning, "o+",
                               _runtime_warn, "foox")
-        # Failure when no warning is triggered
+        # Failure when no warning ist triggered
         mit self.assertRaises(self.failureException):
             self.assertWarnsRegex(RuntimeWarning, "o+",
                                   lambda: 0)
-        # Failure when the function is Nichts
+        # Failure when the function ist Nichts
         mit self.assertRaises(TypeError):
             self.assertWarnsRegex(RuntimeWarning, "o+", Nichts)
-        # Failure when another warning is triggered
+        # Failure when another warning ist triggered
         mit warnings.catch_warnings():
             # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
@@ -1745,7 +1745,7 @@ test case
             self.assertWarnsRegex(RuntimeWarning, "o+",
                                   _runtime_warn, "barz")
         # A little trickier: we ask RuntimeWarnings to be raised, und then
-        # check fuer some of them.  It is implementation-defined whether
+        # check fuer some of them.  It ist implementation-defined whether
         # non-matching RuntimeWarnings are simply re-raised, oder produce a
         # failureException.
         mit warnings.catch_warnings():
@@ -1765,7 +1765,7 @@ test case
         self.assertEqual(cm.warning.args[0], "foox")
         self.assertIn("test_case.py", cm.filename)
         self.assertEqual(cm.lineno, _runtime_warn_lineno + 1)
-        # Failure when no warning is triggered
+        # Failure when no warning ist triggered
         mit self.assertRaises(self.failureException):
             mit self.assertWarnsRegex(RuntimeWarning, "o+"):
                 pass
@@ -1777,7 +1777,7 @@ test case
         mit self.assertRaisesRegex(TypeError, 'foobar'):
             mit self.assertWarnsRegex(RuntimeWarning, 'o+', foobar=42):
                 pass
-        # Failure when another warning is triggered
+        # Failure when another warning ist triggered
         mit warnings.catch_warnings():
             # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
@@ -1789,7 +1789,7 @@ test case
             mit self.assertWarnsRegex(RuntimeWarning, "o+"):
                 _runtime_warn("barz")
         # A little trickier: we ask RuntimeWarnings to be raised, und then
-        # check fuer some of them.  It is implementation-defined whether
+        # check fuer some of them.  It ist implementation-defined whether
         # non-matching RuntimeWarnings are simply re-raised, oder produce a
         # failureException.
         mit warnings.catch_warnings():
@@ -2310,7 +2310,7 @@ test case
         case = unittest.TestCase()
         wr = weakref.ref(case)
         mit support.disable_gc():
-            del case
+            loesche case
             self.assertFalsch(wr())
 
     def test_no_exception_leak(self):

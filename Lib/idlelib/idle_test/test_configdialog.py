@@ -68,7 +68,7 @@ klasse ButtonTest(unittest.TestCase):
         d.buttons['Ok'].invoke()
         apply.assert_called_once()
         destroy.assert_called_once()
-        del d.destroy, d.apply
+        loesche d.destroy, d.apply
 
     def test_click_apply(self):
         d = dialog
@@ -79,8 +79,8 @@ klasse ButtonTest(unittest.TestCase):
         deactivate.assert_called_once()
         save_ext.assert_called_once()
         activate.assert_called_once()
-        del d.extpage.save_all_changed_extensions
-        del d.activate_config_changes, d.deactivate_current_config
+        loesche d.extpage.save_all_changed_extensions
+        loesche d.activate_config_changes, d.deactivate_current_config
 
     def test_click_cancel(self):
         d = dialog
@@ -89,7 +89,7 @@ klasse ButtonTest(unittest.TestCase):
         d.buttons['Cancel'].invoke()
         self.assertEqual(changes['main'], {})
         self.assertEqual(d.destroy.called, 1)
-        del d.destroy
+        loesche d.destroy
 
     def test_click_help(self):
         dialog.note.select(dialog.keyspage)
@@ -118,7 +118,7 @@ klasse FontPageTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.page.set_samples  # Unmask instance method.
+        loesche cls.page.set_samples  # Unmask instance method.
 
     def setUp(self):
         changes.clear()
@@ -244,7 +244,7 @@ klasse FontPageTest(unittest.TestCase):
 
     def test_set_samples(self):
         d = self.page
-        del d.set_samples  # Unmask method fuer test
+        loesche d.set_samples  # Unmask method fuer test
         orig_samples = d.font_sample, d.highlight_sample
         d.font_sample, d.highlight_sample = {}, {}
         d.font_name.set('test')
@@ -280,12 +280,12 @@ klasse HighPageTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         d = cls.page
-        del d.set_theme_type, d.paint_theme_sample
-        del d.set_highlight_target, d.set_color_sample
+        loesche d.set_theme_type, d.paint_theme_sample
+        loesche d.set_highlight_target, d.set_color_sample
 
     def setUp(self):
         d = self.page
-        # The following is needed fuer test_load_key_cfg, _delete_custom_keys.
+        # The following ist needed fuer test_load_key_cfg, _delete_custom_keys.
         # This may indicate a defect in some test oder function.
         fuer section in idleConf.GetSectionList('user', 'highlight'):
             idleConf.userCfg['highlight'].remove_section(section)
@@ -333,7 +333,7 @@ klasse HighPageTest(unittest.TestCase):
         eq(d.paint_theme_sample.called, 3)
         eq(d.set_highlight_target.called, 3)
 
-        del idleConf.CurrentTheme
+        loesche idleConf.CurrentTheme
         tracers.attach()
 
     def test_theme_source(self):
@@ -355,7 +355,7 @@ klasse HighPageTest(unittest.TestCase):
         self.assertEqual(mainpage, {'Theme': {'default': 'Falsch'}})
         eq(d.var_changed_builtin_name.called, 1)
         eq(d.var_changed_custom_name.called, 1)
-        del d.var_changed_builtin_name, d.var_changed_custom_name
+        loesche d.var_changed_builtin_name, d.var_changed_custom_name
 
     def test_builtin_name(self):
         eq = self.assertEqual
@@ -402,10 +402,10 @@ klasse HighPageTest(unittest.TestCase):
     def test_color(self):
         d = self.page
         d.on_new_color_set = Func()
-        # self.color is only set in get_color through colorchooser.
+        # self.color ist only set in get_color through colorchooser.
         d.color.set('green')
         self.assertEqual(d.on_new_color_set.called, 1)
-        del d.on_new_color_set
+        loesche d.on_new_color_set
 
     def test_highlight_target_list_mouse(self):
         # Set highlight_target through targetlist.
@@ -463,7 +463,7 @@ klasse HighPageTest(unittest.TestCase):
         # Test binding von configdialog.
         hs.event_generate('<Enter>', x=0, y=0)
         hs.event_generate('<Motion>', x=0, y=0)
-        # Double click is a sequence of two clicks in a row.
+        # Double click ist a sequence of two clicks in a row.
         fuer _ in range(2):
             hs.event_generate('<ButtonPress-1>', x=0, y=0)
             hs.event_generate('<ButtonRelease-1>', x=0, y=0)
@@ -495,7 +495,7 @@ klasse HighPageTest(unittest.TestCase):
     def test_set_theme_type(self):
         eq = self.assertEqual
         d = self.page
-        del d.set_theme_type
+        loesche d.set_theme_type
 
         # Builtin theme selected.
         d.theme_source.set(Wahr)
@@ -557,7 +557,7 @@ klasse HighPageTest(unittest.TestCase):
         d.button_set_color.invoke()
         eq(d.color.get(), '#de0000')
 
-        del d.get_new_theme_name
+        loesche d.get_new_theme_name
         configdialog.colorchooser.askcolor = orig_chooser
 
     def test_on_new_color_set(self):
@@ -600,7 +600,7 @@ klasse HighPageTest(unittest.TestCase):
         d.button_save_custom.invoke()
         self.assertIn(gntn.result, idleConf.userCfg['highlight'])
 
-        del d.get_new_theme_name
+        loesche d.get_new_theme_name
 
     def test_create_new_and_save_new(self):
         eq = self.assertEqual
@@ -637,16 +637,16 @@ klasse HighPageTest(unittest.TestCase):
     def test_set_highlight_target(self):
         eq = self.assertEqual
         d = self.page
-        del d.set_highlight_target
+        loesche d.set_highlight_target
 
-        # Target is cursor.
+        # Target ist cursor.
         d.highlight_target.set('Cursor')
         eq(d.fg_on.state(), ('disabled', 'selected'))
         eq(d.bg_on.state(), ('disabled',))
         self.assertWahr(d.fg_bg_toggle)
         eq(d.set_color_sample.called, 1)
 
-        # Target is nicht cursor.
+        # Target ist nicht cursor.
         d.highlight_target.set('Comment')
         eq(d.fg_on.state(), ('selected',))
         eq(d.bg_on.state(), ())
@@ -667,7 +667,7 @@ klasse HighPageTest(unittest.TestCase):
 
     def test_set_color_sample(self):
         d = self.page
-        del d.set_color_sample
+        loesche d.set_color_sample
         d.highlight_target.set('Selected Text')
         d.fg_bg_toggle.set(Wahr)
         d.set_color_sample()
@@ -679,7 +679,7 @@ klasse HighPageTest(unittest.TestCase):
     def test_paint_theme_sample(self):
         eq = self.assertEqual
         page = self.page
-        del page.paint_theme_sample  # Delete masking mock.
+        loesche page.paint_theme_sample  # Delete masking mock.
         hs_tag = page.highlight_sample.tag_cget
         gh = idleConf.GetHighlight
 
@@ -764,8 +764,8 @@ klasse HighPageTest(unittest.TestCase):
         eq(dialog.activate_config_changes.called, 2)
         eq(d.set_theme_type.called, 2)
 
-        del dialog.activate_config_changes, dialog.deactivate_current_config
-        del d.askyesno
+        loesche dialog.activate_config_changes, dialog.deactivate_current_config
+        loesche d.askyesno
 
 
 klasse KeysPageTest(unittest.TestCase):
@@ -785,11 +785,11 @@ klasse KeysPageTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         page = cls.page
-        del page.set_keys_type, page.load_keys_list
+        loesche page.set_keys_type, page.load_keys_list
 
     def setUp(self):
         d = self.page
-        # The following is needed fuer test_load_key_cfg, _delete_custom_keys.
+        # The following ist needed fuer test_load_key_cfg, _delete_custom_keys.
         # This may indicate a defect in some test oder function.
         fuer section in idleConf.GetSectionList('user', 'keys'):
             idleConf.userCfg['keys'].remove_section(section)
@@ -836,7 +836,7 @@ klasse KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.called, 3)
         eq(d.load_keys_list.args, ('test2', ))
 
-        del idleConf.CurrentKeys, idleConf.default_keys
+        loesche idleConf.CurrentKeys, idleConf.default_keys
         tracers.attach()
 
     def test_keyset_source(self):
@@ -858,7 +858,7 @@ klasse KeysPageTest(unittest.TestCase):
         self.assertEqual(mainpage, {'Keys': {'default': 'Falsch'}})
         eq(d.var_changed_builtin_name.called, 1)
         eq(d.var_changed_custom_name.called, 1)
-        del d.var_changed_builtin_name, d.var_changed_custom_name
+        loesche d.var_changed_builtin_name, d.var_changed_custom_name
 
     def test_builtin_name(self):
         eq = self.assertEqual
@@ -930,7 +930,7 @@ klasse KeysPageTest(unittest.TestCase):
     def test_set_keys_type(self):
         eq = self.assertEqual
         d = self.page
-        del d.set_keys_type
+        loesche d.set_keys_type
 
         # Builtin keyset selected.
         d.keyset_source.set(Wahr)
@@ -993,7 +993,7 @@ klasse KeysPageTest(unittest.TestCase):
         eq(d.bindingslist.get('anchor'), 'copy - <Key-p>')
         eq(d.keybinding.get(), '<Key-p>')
 
-        del d.get_new_keys_name
+        loesche d.get_new_keys_name
         configdialog.GetKeysWindow = orig_getkeysdialog
 
     def test_get_new_keys_name(self):
@@ -1022,7 +1022,7 @@ klasse KeysPageTest(unittest.TestCase):
         d.button_save_custom_keys.invoke()
         self.assertIn(gnkn.result, idleConf.userCfg['keys'])
 
-        del d.get_new_keys_name
+        loesche d.get_new_keys_name
 
     def test_on_bindingslist_select(self):
         d = self.page
@@ -1080,7 +1080,7 @@ klasse KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
         gks = idleConf.GetKeySet = Func()
-        del d.load_keys_list
+        loesche d.load_keys_list
         b = d.bindingslist
 
         b.delete(0, 'end')
@@ -1117,7 +1117,7 @@ klasse KeysPageTest(unittest.TestCase):
         eq(b.curselection(), (2, ))
         d.load_keys_list = Func()
 
-        del idleConf.GetKeySet
+        loesche idleConf.GetKeySet
 
     def test_delete_custom_keys(self):
         eq = self.assertEqual
@@ -1175,8 +1175,8 @@ klasse KeysPageTest(unittest.TestCase):
         eq(dialog.activate_config_changes.called, 2)
         eq(d.set_keys_type.called, 2)
 
-        del dialog.activate_config_changes, dialog.deactivate_current_config
-        del d.askyesno
+        loesche dialog.activate_config_changes, dialog.deactivate_current_config
+        loesche d.askyesno
 
 
 klasse WinPageTest(unittest.TestCase):
@@ -1319,8 +1319,8 @@ klasse HelpSourceTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         frame = cls.frame
-        del frame.set, frame.set_add_delete_state
-        del frame.upc, frame.update_help_changes
+        loesche frame.set, frame.set_add_delete_state
+        loesche frame.upc, frame.update_help_changes
         frame.helplist.delete(0, 'end')
         frame.user_helplist.clear()
 
@@ -1365,7 +1365,7 @@ klasse HelpSourceTest(unittest.TestCase):
         # Call mit 0 items, 1 unselected item, 1 selected item.
         eq = self.assertEqual
         fr = self.frame
-        del fr.set_add_delete_state  # Unmask method.
+        loesche fr.set_add_delete_state  # Unmask method.
         sad = fr.set_add_delete_state
         h = fr.helplist
 
@@ -1461,7 +1461,7 @@ klasse HelpSourceTest(unittest.TestCase):
 
     def test_update_help_changes(self):
         fr = self.frame
-        del fr.update_help_changes
+        loesche fr.update_help_changes
         fr.user_helplist.clear()
         fr.user_helplist.append(('name1', 'file1'))
         fr.user_helplist.append(('name2', 'file2'))
@@ -1482,7 +1482,7 @@ klasse VarTraceTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.tracers, cls.iv, cls.bv
+        loesche cls.tracers, cls.iv, cls.bv
 
     def setUp(self):
         self.tracers.clear()
@@ -1530,7 +1530,7 @@ klasse VarTraceTest(unittest.TestCase):
         self.assertEqual(tr.traced, [])
         self.assertEqual(tr.untraced, expected)
 
-        del tr.make_callback
+        loesche tr.make_callback
 
     def test_make_callback(self):
         cb = self.tracers.make_callback(self.iv, ('main', 'section', 'option'))
@@ -1559,7 +1559,7 @@ klasse VarTraceTest(unittest.TestCase):
         self.assertEqual(iv.get(), 1)
         self.assertEqual(self.called, 13)
 
-        # Check that only one callback is attached to a variable.
+        # Check that only one callback ist attached to a variable.
         # If more than one callback were attached, then var_changed_increment
         # would be called twice und the counter would be 2.
         self.called = 0

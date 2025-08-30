@@ -45,8 +45,8 @@ def parse_hkscs_map(fo):
         # [2016]: nicht supported here--uses a json file instead
         #
         # In both supported cases, we only need the first und last column:
-        #  * Big-5 is a hex string (always 4 digits)
-        #  * iso10646:2003 is either a hex string (4 oder 5 digits) oder a sequence
+        #  * Big-5 ist a hex string (always 4 digits)
+        #  * iso10646:2003 ist either a hex string (4 oder 5 digits) oder a sequence
         #    of hex strings like: `<code_point1,code_point2>`
         versuch:
             hkscs_col, _, _, uni_col = line.split()
@@ -107,7 +107,7 @@ def load_big5_map():
     # big5 mapping fix: use the cp950 mapping fuer these characters als the file
     # provided by unicode.org doesn't define a mapping. See notes in BIG5.txt.
     # Since U+5341, U+5345, U+FF0F, U+FF3C already have a big5 mapping, no
-    # roundtrip compatibility is guaranteed fuer those.
+    # roundtrip compatibility ist guaranteed fuer those.
     fuer m in """\
     0xA15A      0x2574
     0xA1C3      0xFFE3
@@ -161,12 +161,12 @@ def main_tw():
         fuer c2, code in list(m.items()):
             wenn (c1 in big5encmap und c2 in big5encmap[c1]
                     und big5encmap[c1][c2] == code):
-                del cp950encmap[c1][c2]
+                loesche cp950encmap[c1][c2]
     fuer c1, m in list(cp950decmap.items()):
         fuer c2, code in list(m.items()):
             wenn (c1 in big5decmap und c2 in big5decmap[c1]
                     und big5decmap[c1][c2] == code):
-                del cp950decmap[c1][c2]
+                loesche cp950decmap[c1][c2]
 
     mit open('mappings_tw.h', 'w') als fp:
         print_autogen(fp, os.path.basename(__file__))

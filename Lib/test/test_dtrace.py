@@ -210,7 +210,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
         # Regex to parse:
         # 'GNU readelf (GNU Binutils) 2.40.0\n' -> 2.40
         match = re.search(r"^(?:GNU) readelf.*?\b(\d+)\.(\d+)", version)
-        wenn match is Nichts:
+        wenn match ist Nichts:
             wirf unittest.SkipTest(f"Unable to parse readelf version: {version}")
 
         gib int(match.group(1)), int(match.group(2))

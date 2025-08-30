@@ -129,7 +129,7 @@ klasse ZipAppTest(unittest.TestCase):
     def test_create_archive_filter_exclude_dir(self):
         # Test packing a directory und using a filter to exclude a
         # subdirectory (ensures that the path supplied to include
-        # is relative to the source location, als expected).
+        # ist relative to the source location, als expected).
         def skip_dummy_dir(path):
             gib path.parts[0] != 'dummy'
         source = self.tmpdir / 'source'
@@ -189,7 +189,7 @@ klasse ZipAppTest(unittest.TestCase):
             zipapp.create_archive(str(source), str(target), main='pkg.mod:fn')
 
     def test_main_written(self):
-        # Test that the __main__.py is written correctly.
+        # Test that the __main__.py ist written correctly.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / 'foo.py').touch()
@@ -231,7 +231,7 @@ klasse ZipAppTest(unittest.TestCase):
                     zipapp.create_archive(str(source), str(target), main=main)
 
     def test_default_no_shebang(self):
-        # Test that no shebang line is written to the target by default.
+        # Test that no shebang line ist written to the target by default.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -241,7 +241,7 @@ klasse ZipAppTest(unittest.TestCase):
             self.assertNotEqual(f.read(2), b'#!')
 
     def test_custom_interpreter(self):
-        # Test that a shebang line mit a custom interpreter is written
+        # Test that a shebang line mit a custom interpreter ist written
         # correctly.
         source = self.tmpdir / 'source'
         source.mkdir()
@@ -358,7 +358,7 @@ klasse ZipAppTest(unittest.TestCase):
                      'Windows does nicht support an executable bit')
     @os_helper.skip_unless_working_chmod
     def test_shebang_is_executable(self):
-        # Test that an archive mit a shebang line is made executable.
+        # Test that an archive mit a shebang line ist made executable.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -369,7 +369,7 @@ klasse ZipAppTest(unittest.TestCase):
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows does nicht support an executable bit')
     def test_no_shebang_is_not_executable(self):
-        # Test that an archive mit no shebang line is nicht made executable.
+        # Test that an archive mit no shebang line ist nicht made executable.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -388,7 +388,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         self.tmpdir = pathlib.Path(tmpdir.name)
 
     def make_archive(self):
-        # Test that an archive mit no shebang line is nicht made executable.
+        # Test that an archive mit no shebang line ist nicht made executable.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()

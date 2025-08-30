@@ -71,7 +71,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     def test_stack_size(self):
         # Various stack size tests.
-        self.assertEqual(thread.stack_size(), 0, "initial stack size is nicht 0")
+        self.assertEqual(thread.stack_size(), 0, "initial stack size ist nicht 0")
 
         thread.stack_size(0)
         self.assertEqual(thread.stack_size(), 0, "stack_size nicht reset to default")
@@ -130,11 +130,11 @@ klasse ThreadRunningTests(BasicThreadTest):
             mut.release()
 
             # The only reliable way to be sure that the thread ended von the
-            # interpreter's point of view is to wait fuer the function object to
+            # interpreter's point of view ist to wait fuer the function object to
             # be destroyed.
             done = []
             wr = weakref.ref(task, lambda _: done.append(Nichts))
-            del task
+            loesche task
 
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
                 wenn done:
@@ -201,7 +201,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
         mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(task)
-            del handle
+            loesche handle
             handle_destroyed.release()
 
     def test_join_from_self(self):

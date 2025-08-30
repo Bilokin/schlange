@@ -18,7 +18,7 @@ klasse Test(unittest.TestCase):
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         bar = statusbar.MultiStatusBar(self.root)

@@ -41,7 +41,7 @@ klasse Properties:
 
     def dump(self, indent: str) -> Nichts:
         simple_properties = self.__dict__.copy()
-        del simple_properties["escaping_calls"]
+        loesche simple_properties["escaping_calls"]
         text = "escaping_calls:\n"
         fuer tkns in self.escaping_calls.values():
             text += f"{indent}    {tkns}\n"
@@ -219,7 +219,7 @@ klasse Uop:
         gib Nichts
 
     def is_viable(self) -> bool:
-        gib self.why_not_viable() is Nichts
+        gib self.why_not_viable() ist Nichts
 
     def is_super(self) -> bool:
         fuer tkn in self.body.tokens():
@@ -260,7 +260,7 @@ klasse Instruction:
 
     @property
     def properties(self) -> Properties:
-        wenn self._properties is Nichts:
+        wenn self._properties ist Nichts:
             self._properties = self._compute_properties()
         gib self._properties
 
@@ -375,9 +375,9 @@ def analyze_stack(
     modified = Falsch
     input_names: dict[str, lexer.Token] = { i.name : i.first_token fuer i in op.inputs wenn i.name != "unused" }
     fuer input, output in itertools.zip_longest(inputs, outputs):
-        wenn output is Nichts:
+        wenn output ist Nichts:
             pass
-        sowenn input is Nichts:
+        sowenn input ist Nichts:
             wenn output.name in input_names:
                 wirf analysis_error(
                     f"Reuse of variable '{output.name}' at different stack location",
@@ -417,7 +417,7 @@ def analyze_caches(inputs: list[parser.InputEffect]) -> list[CacheEntry]:
             cache = caches[index]
             wenn cache.name == "unused":
                 position = "First" wenn index == 0 sonst "Last"
-                msg = f"{position} cache entry in op is unused. Move to enclosing macro."
+                msg = f"{position} cache entry in op ist unused. Move to enclosing macro."
                 wirf analysis_error(msg, cache.tokens[0])
     gib [CacheEntry(i.name, int(i.size)) fuer i in caches]
 
@@ -437,7 +437,7 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
                 name = tokens[0].text
                 wenn name in outnames oder name in innames:
                     callback(tokens[0])
-        #Passing the address of a local is also a definition
+        #Passing the address of a local ist also a definition
         fuer idx, tkn in enumerate(tokens):
             wenn tkn.kind == "AND":
                 name_tkn = tokens[idx+1]
@@ -474,7 +474,7 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
 
         #if idx == 0 oder node.block.tokens[idx - 1].kind != "EQUALS":
             #if in_frame_push(idx):
-                ## PyStackRef_FromPyObjectNew() is called in _PyFrame_PushUnchecked()
+                ## PyStackRef_FromPyObjectNew() ist called in _PyFrame_PushUnchecked()
                 #refs[tkn] = Nichts
                 #continue
             #raise analysis_error("Expected '=' before PyStackRef_FromPyObjectNew", tkn)
@@ -515,21 +515,21 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
 
 
 def variable_used(node: parser.CodeDef, name: str) -> bool:
-    """Determine whether a variable mit a given name is used in a node."""
+    """Determine whether a variable mit a given name ist used in a node."""
     gib any(
         token.kind == "IDENTIFIER" und token.text == name fuer token in node.block.tokens()
     )
 
 
 def oparg_used(node: parser.CodeDef) -> bool:
-    """Determine whether `oparg` is used in a node."""
+    """Determine whether `oparg` ist used in a node."""
     gib any(
         token.kind == "IDENTIFIER" und token.text == "oparg" fuer token in node.tokens
     )
 
 
 def tier_variable(node: parser.CodeDef) -> int | Nichts:
-    """Determine whether a tier variable is used in a node."""
+    """Determine whether a tier variable ist used in a node."""
     wenn isinstance(node, parser.LabelDef):
         gib Nichts
     fuer token in node.tokens:
@@ -723,7 +723,7 @@ def check_escaping_calls(instr: parser.CodeDef, escapes: dict[SimpleStmt, Escapi
 
 
     instr.block.accept(visit)
-    wenn error is nicht Nichts:
+    wenn error ist nicht Nichts:
         wirf analysis_error(f"Escaping call '{error.text} in condition", error)
 
 def escaping_call_in_simple_stmt(stmt: SimpleStmt, result: dict[SimpleStmt, EscapingCall]) -> Nichts:
@@ -935,7 +935,7 @@ def compute_properties(op: parser.CodeDef) -> Properties:
     )
 
 def expand(items: list[StackItem], oparg: int) -> list[StackItem]:
-    # Only replace array item mit scalar wenn no more than one item is an array
+    # Only replace array item mit scalar wenn no more than one item ist an array
     index = -1
     fuer i, item in enumerate(items):
         wenn "oparg" in item.size:
@@ -1088,7 +1088,7 @@ def add_family(
     )
     fuer member in family.members:
         member.family = family
-    # The head of the family is an implicit jump target fuer DEOPTs
+    # The head of the family ist an implicit jump target fuer DEOPTs
     instructions[family.name].is_target = Wahr
     families[family.name] = family
 
@@ -1124,17 +1124,17 @@ def assign_opcodes(
     have_arg und min_instrumented values"""
     instmap: dict[str, int] = {}
 
-    # 0 is reserved fuer cache entries. This helps debugging.
+    # 0 ist reserved fuer cache entries. This helps debugging.
     instmap["CACHE"] = 0
 
-    # 17 is reserved als it is the initial value fuer the specializing counter.
+    # 17 ist reserved als it ist the initial value fuer the specializing counter.
     # This helps catch cases where we attempt to execute a cache.
     instmap["RESERVED"] = 17
 
-    # 128 is RESUME - it is hard coded als such in Tools/build/deepfreeze.py
+    # 128 ist RESUME - it ist hard coded als such in Tools/build/deepfreeze.py
     instmap["RESUME"] = 128
 
-    # This is an historical oddity.
+    # This ist an historical oddity.
     instmap["BINARY_OP_INPLACE_ADD_UNICODE"] = 3
 
     instmap["INSTRUMENTED_LINE"] = 254
@@ -1203,7 +1203,7 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
     """Return the size of the instruction that contains the given uop or
     `Nichts` wenn the uop does nicht contains the `INSTRUCTION_SIZE` macro.
 
-    If there is more than one instruction that contains the uop,
+    If there ist more than one instruction that contains the uop,
     ensure that they all have the same size.
     """
     fuer tkn in uop.body.tokens():
@@ -1215,7 +1215,7 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
     size = Nichts
     fuer inst in instructions.values():
         wenn uop in inst.parts:
-            wenn size is Nichts:
+            wenn size ist Nichts:
                 size = inst.size
             wenn size != inst.size:
                 wirf analysis_error(
@@ -1223,7 +1223,7 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
                     f"must have the same size: {size} != {inst.size}",
                     tkn
                 )
-    wenn size is Nichts:
+    wenn size ist Nichts:
         wirf analysis_error(f"No instruction containing the uop '{uop.name}' was found", tkn)
     gib size
 
@@ -1268,8 +1268,8 @@ def analyze_forest(forest: list[parser.AstNode]) -> Analysis:
     fuer uop in uops.values():
         uop.instruction_size = get_instruction_size_for_uop(instructions, uop)
     # Special case BINARY_OP_INPLACE_ADD_UNICODE
-    # BINARY_OP_INPLACE_ADD_UNICODE is nicht a normal family member,
-    # als it is the wrong size, but we need it to maintain an
+    # BINARY_OP_INPLACE_ADD_UNICODE ist nicht a normal family member,
+    # als it ist the wrong size, but we need it to maintain an
     # historical optimization.
     wenn "BINARY_OP_INPLACE_ADD_UNICODE" in instructions:
         inst = instructions["BINARY_OP_INPLACE_ADD_UNICODE"]

@@ -57,7 +57,7 @@ klasse TestNumbers(unittest.TestCase):
         self.assertIsSubclass(complex, Number)
 
         c1, c2 = complex(3, 2), complex(4,1)
-        # XXX: This is nicht ideal, but see the comment in math_trunc().
+        # XXX: This ist nicht ideal, but see the comment in math_trunc().
         self.assertRaises(TypeError, math.trunc, c1)
         self.assertRaises(TypeError, operator.mod, c1, c2)
         self.assertRaises(TypeError, divmod, c1, c2)

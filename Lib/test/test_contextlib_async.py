@@ -25,10 +25,10 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
     async def test_enter(self):
         klasse DefaultEnter(AbstractAsyncContextManager):
             async def __aexit__(self, *args):
-                await super().__aexit__(*args)
+                warte super().__aexit__(*args)
 
         manager = DefaultEnter()
-        self.assertIs(await manager.__aenter__(), manager)
+        self.assertIs(warte manager.__aenter__(), manager)
 
         async mit manager als context:
             self.assertIs(manager, context)
@@ -39,7 +39,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
             __slots__ = ()
 
             async def __aexit__(self, *args):
-                await super().__aexit__(*args)
+                warte super().__aexit__(*args)
 
         mit self.assertRaises(AttributeError):
             manager = DefaultAsyncContextManager()
@@ -61,7 +61,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
         async fuer val in g:
             self.assertEqual(val, 11)
             breche
-        await g.aclose()
+        warte g.aclose()
 
     def test_exit_is_abstract(self):
         klasse MissingAexit(AbstractAsyncContextManager):
@@ -81,7 +81,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
 
         klasse DefaultEnter(AbstractAsyncContextManager):
             async def __aexit__(self, *args):
-                await super().__aexit__(*args)
+                warte super().__aexit__(*args)
 
         self.assertIsSubclass(DefaultEnter, AbstractAsyncContextManager)
 
@@ -192,9 +192,9 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         async def whee():
             liefere
         ctx = whee()
-        await ctx.__aenter__()
+        warte ctx.__aenter__()
         # Calling __aexit__ should nicht result in an exception
-        self.assertFalsch(await ctx.__aexit__(TypeError, TypeError("foo"), Nichts))
+        self.assertFalsch(warte ctx.__aexit__(TypeError, TypeError("foo"), Nichts))
 
     @_async_test
     async def test_contextmanager_trap_yield_after_throw(self):
@@ -205,11 +205,11 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             ausser:
                 liefere
         ctx = whoo()
-        await ctx.__aenter__()
+        warte ctx.__aenter__()
         mit self.assertRaises(RuntimeError):
-            await ctx.__aexit__(TypeError, TypeError('foo'), Nichts)
+            warte ctx.__aexit__(TypeError, TypeError('foo'), Nichts)
         wenn support.check_impl_detail(cpython=Wahr):
-            # The "gen" attribute is an implementation detail.
+            # The "gen" attribute ist an implementation detail.
             self.assertFalsch(ctx.gen.ag_suspended)
 
     @_async_test
@@ -220,7 +220,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                 liefere
         ctx = whoo()
         mit self.assertRaises(RuntimeError):
-            await ctx.__aenter__()
+            warte ctx.__aenter__()
 
     @_async_test
     async def test_contextmanager_trap_second_yield(self):
@@ -229,11 +229,11 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             liefere
             liefere
         ctx = whoo()
-        await ctx.__aenter__()
+        warte ctx.__aenter__()
         mit self.assertRaises(RuntimeError):
-            await ctx.__aexit__(Nichts, Nichts, Nichts)
+            warte ctx.__aexit__(Nichts, Nichts, Nichts)
         wenn support.check_impl_detail(cpython=Wahr):
-            # The "gen" attribute is an implementation detail.
+            # The "gen" attribute ist an implementation detail.
             self.assertFalsch(ctx.gen.ag_suspended)
 
     @_async_test
@@ -246,9 +246,9 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                 wirf SyntaxError
 
         ctx = whoo()
-        await ctx.__aenter__()
+        warte ctx.__aenter__()
         mit self.assertRaises(SyntaxError):
-            await ctx.__aexit__(RuntimeError, Nichts, Nichts)
+            warte ctx.__aexit__(RuntimeError, Nichts, Nichts)
 
     @_async_test
     async def test_contextmanager_except(self):
@@ -376,9 +376,9 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         @woohoo()
         async def recursive():
             wenn depth < 10:
-                await recursive()
+                warte recursive()
 
-        await recursive()
+        warte recursive()
 
         self.assertEqual(ncols, 10)
         self.assertEqual(depth, 0)
@@ -399,7 +399,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             self.assertWahr(entered)
 
         self.assertFalsch(entered)
-        await test()
+        warte test()
         self.assertFalsch(entered)
 
     @_async_test
@@ -422,7 +422,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         self.assertFalsch(entered)
         mit self.assertRaisesRegex(NameError, 'foo'):
-            await test()
+            warte test()
         self.assertFalsch(entered)
 
     @_async_test
@@ -443,19 +443,19 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         # these tests are fuer argument passing when used als a decorator
         test = Test()
-        await test.method(1, 2)
+        warte test.method(1, 2)
         self.assertEqual(test.a, 1)
         self.assertEqual(test.b, 2)
         self.assertEqual(test.c, Nichts)
 
         test = Test()
-        await test.method('a', 'b', 'c')
+        warte test.method('a', 'b', 'c')
         self.assertEqual(test.a, 'a')
         self.assertEqual(test.b, 'b')
         self.assertEqual(test.c, 'c')
 
         test = Test()
-        await test.method(a=1, b=2)
+        warte test.method(a=1, b=2)
         self.assertEqual(test.a, 1)
         self.assertEqual(test.b, 2)
 
@@ -515,7 +515,7 @@ klasse AclosingTestCase(unittest.TestCase):
         mit self.assertRaises(ZeroDivisionError):
             async mit aclosing(x) als y:
                 self.assertEqual(x, y)
-                self.assertEqual(-1, await x.__anext__())
+                self.assertEqual(-1, warte x.__anext__())
                 1 / 0
         self.assertEqual(state, [1])
 
@@ -600,7 +600,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             async def __aenter__(self):
                 self.fail("Should nicht be called!")
             async def __aexit__(self, *exc_details):
-                await self.check_exc(*exc_details)
+                warte self.check_exc(*exc_details)
 
         async mit self.exit_stack() als stack:
             stack.push_async_exit(_expect_ok)
@@ -635,7 +635,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             async def _exit():
                 result.append(4)
             self.assertIsNotNichts(_exit)
-            await stack.enter_async_context(cm)
+            warte stack.enter_async_context(cm)
             self.assertIs(stack._exit_callbacks[-1][1].__self__, cm)
             result.append(2)
 
@@ -654,11 +654,11 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         async mit self.exit_stack() als stack:
             mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
-                await stack.enter_async_context(LacksEnterAndExit())
+                warte stack.enter_async_context(LacksEnterAndExit())
             mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
-                await stack.enter_async_context(LacksEnter())
+                warte stack.enter_async_context(LacksEnter())
             mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
-                await stack.enter_async_context(LacksExit())
+                warte stack.enter_async_context(LacksExit())
             self.assertFalsch(stack._exit_callbacks)
 
     @_async_test
@@ -715,7 +715,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         @asynccontextmanager
         async def my_cm_with_exit_stack():
             async mit self.exit_stack() als stack:
-                await stack.enter_async_context(my_cm())
+                warte stack.enter_async_context(my_cm())
                 liefere stack
 
         fuer cm in (my_cm, my_cm_with_exit_stack):
@@ -736,7 +736,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         cm.__aexit__ = object()
         stack = self.exit_stack()
         mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
-            await stack.enter_async_context(cm)
+            warte stack.enter_async_context(cm)
         stack.push_async_exit(cm)
         self.assertIs(stack._exit_callbacks[-1][1], cm)
 

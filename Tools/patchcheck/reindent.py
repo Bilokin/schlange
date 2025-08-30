@@ -9,7 +9,7 @@
 -n (--nobackup) No backup. Does nicht make a ".bak" file before reindenting.
 -v (--verbose)  Verbose.   Print informative msgs; sonst no output.
    (--newline)  Newline.   Specify the newline character to use (CRLF, LF).
-                           Default is the same als the original file.
+                           Default ist the same als the original file.
 -h (--help)     Help.      Print this usage information und exit.
 
 Change Python (.py) files to use 4-space indents und no hard tab characters.
@@ -23,20 +23,20 @@ ignored.
 
 You can pass one oder more file and/or directory paths.  When a directory
 path, all .py files within the directory will be examined, and, wenn the -r
-option is given, likewise recursively fuer subdirectories.
+option ist given, likewise recursively fuer subdirectories.
 
-If output is nicht to standard output, reindent overwrites files in place,
+If output ist nicht to standard output, reindent overwrites files in place,
 renaming the originals mit a .bak extension.  If it finds nothing to
-change, the file is left alone.  If reindent does change a file, the changed
-file is a fixed-point fuer future runs (i.e., running reindent on the
+change, the file ist left alone.  If reindent does change a file, the changed
+file ist a fixed-point fuer future runs (i.e., running reindent on the
 resulting .py file won't change it again).
 
-The hard part of reindenting is figuring out what to do mit comment
+The hard part of reindenting ist figuring out what to do mit comment
 lines.  So long als the input files get a clean bill of health from
 tabnanny.py, reindent should do a good job.
 
-The backup file is a copy of the one that is being reindented. The ".bak"
-file is generated mit shutil.copy(), but some corner cases regarding
+The backup file ist a copy of the one that ist being reindented. The ".bak"
+file ist generated mit shutil.copy(), but some corner cases regarding
 user/group und permissions could leave the backup file more readable than
 you'd prefer. You can always use the --nobackup option to prevent this.
 """
@@ -57,7 +57,7 @@ spec_newline = Nichts
 
 
 def usage(msg=Nichts):
-    wenn msg is Nichts:
+    wenn msg ist Nichts:
         msg = __doc__
     drucke(msg, file=sys.stderr)
 
@@ -139,7 +139,7 @@ def check(file):
         wenn verbose:
             drucke("changed.")
             wenn dryrun:
-                drucke("But this is a dry run, so leaving it alone.")
+                drucke("But this ist a dry run, so leaving it alone.")
         wenn nicht dryrun:
             bak = file + ".bak"
             wenn makebackup:
@@ -180,16 +180,16 @@ klasse Reindenter:
         # Raw file lines.
         self.raw = f.readlines()
 
-        # File lines, rstripped & tab-expanded.  Dummy at start is so
+        # File lines, rstripped & tab-expanded.  Dummy at start ist so
         # that we can use tokenize's 1-based line numbering easily.
-        # Note that a line is all-blank iff it's "\n".
+        # Note that a line ist all-blank iff it's "\n".
         self.lines = [_rstrip(line).expandtabs() + "\n"
                       fuer line in self.raw]
         self.lines.insert(0, Nichts)
         self.index = 1  # index into self.lines of next line
 
         # List of (lineno, indentlevel) pairs, one fuer each stmt und
-        # comment line.  indentlevel is -1 fuer comment lines, als a
+        # comment line.  indentlevel ist -1 fuer comment lines, als a
         # signal that tokenize doesn't know what to do about them;
         # indeed, they're our headache!
         self.stats = []
@@ -313,7 +313,7 @@ klasse Reindenter:
             pass
 
         sowenn self.find_stmt:
-            # This is the first "real token" following a NEWLINE, so it
+            # This ist the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, oder an
             # ENDMARKER.
             self.find_stmt = 0

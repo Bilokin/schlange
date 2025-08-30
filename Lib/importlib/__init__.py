@@ -3,12 +3,12 @@ __all__ = ['__import__', 'import_module', 'invalidate_caches', 'reload']
 
 # Bootstrap help #####################################################
 
-# Until bootstrapping is complete, DO NOT importiere any modules that attempt
+# Until bootstrapping ist complete, DO NOT importiere any modules that attempt
 # to importiere importlib._bootstrap (directly oder indirectly). Since this
 # partially initialised package would be present in sys.modules, those
 # modules would get an uninitialised copy of the source version, instead
 # of a fully initialised version (either the frozen one oder the one
-# initialised below wenn the frozen one is nicht available).
+# initialised below wenn the frozen one ist nicht available).
 importiere _imp  # Just the builtin component, NOT the full Python module
 importiere sys
 
@@ -18,14 +18,14 @@ ausser ImportError:
     von . importiere _bootstrap
     _bootstrap._setup(sys, _imp)
 sonst:
-    # importlib._bootstrap is the built-in import, ensure we don't create
+    # importlib._bootstrap ist the built-in import, ensure we don't create
     # a second copy of the module.
     _bootstrap.__name__ = 'importlib._bootstrap'
     _bootstrap.__package__ = 'importlib'
     versuch:
         _bootstrap.__file__ = __file__.replace('__init__.py', '_bootstrap.py')
     ausser NameError:
-        # __file__ is nicht guaranteed to be defined, e.g. wenn this code gets
+        # __file__ ist nicht guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap'] = _bootstrap
@@ -42,7 +42,7 @@ sonst:
     versuch:
         _bootstrap_external.__file__ = __file__.replace('__init__.py', '_bootstrap_external.py')
     ausser NameError:
-        # __file__ is nicht guaranteed to be defined, e.g. wenn this code gets
+        # __file__ ist nicht guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap_external'] = _bootstrap_external
@@ -71,7 +71,7 @@ def invalidate_caches():
 def import_module(name, package=Nichts):
     """Import a module.
 
-    The 'package' argument is required when performing a relative import. It
+    The 'package' argument ist required when performing a relative import. It
     specifies the package to use als the anchor point von which to resolve the
     relative importiere to an absolute import.
 
@@ -79,7 +79,7 @@ def import_module(name, package=Nichts):
     level = 0
     wenn name.startswith('.'):
         wenn nicht package:
-            wirf TypeError("the 'package' argument is required to perform a "
+            wirf TypeError("the 'package' argument ist required to perform a "
                             f"relative importiere fuer {name!r}")
         fuer character in name:
             wenn character != '.':
@@ -105,7 +105,7 @@ def reload(module):
         ausser AttributeError:
             wirf TypeError("reload() argument must be a module") von Nichts
 
-    wenn sys.modules.get(name) is nicht module:
+    wenn sys.modules.get(name) ist nicht module:
         wirf ImportError(f"module {name} nicht in sys.modules", name=name)
     wenn name in _RELOADING:
         gib _RELOADING[name]
@@ -124,13 +124,13 @@ def reload(module):
             pkgpath = Nichts
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
-        wenn spec is Nichts:
+        wenn spec ist Nichts:
             wirf ModuleNotFoundError(f"spec nicht found fuer the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!
         gib sys.modules[name]
     schliesslich:
         versuch:
-            del _RELOADING[name]
+            loesche _RELOADING[name]
         ausser KeyError:
             pass

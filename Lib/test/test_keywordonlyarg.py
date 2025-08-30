@@ -135,7 +135,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         foo.__kwdefaults__ = {"k1":0}
         versuch:
             foo(1,k1=10)
-            self.fail("__kwdefaults__ is nicht properly changed")
+            self.fail("__kwdefaults__ ist nicht properly changed")
         ausser TypeError:
             pass
 
@@ -168,10 +168,10 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         mit self.assertRaises(NameError) als err:
             def f(v=a, x=b, *, y=c, z=d):
                 pass
-        self.assertEqual(str(err.exception), "name 'b' is nicht defined")
+        self.assertEqual(str(err.exception), "name 'b' ist nicht defined")
         mit self.assertRaises(NameError) als err:
             g = lambda v=a, x=b, *, y=c, z=d: Nichts
-        self.assertEqual(str(err.exception), "name 'b' is nicht defined")
+        self.assertEqual(str(err.exception), "name 'b' ist nicht defined")
 
 
 wenn __name__ == "__main__":

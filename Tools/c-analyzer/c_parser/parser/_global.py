@@ -48,7 +48,7 @@ def parse_globals(source, anon_name):
                 liefere item
     sonst:
         # We ran out of lines.
-        wenn srcinfo is nicht Nichts:
+        wenn srcinfo ist nicht Nichts:
             srcinfo.done()
         gib
 

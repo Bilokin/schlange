@@ -5,9 +5,9 @@ combinerefs path
 
 A helper fuer analyzing PYTHONDUMPREFS output.
 
-When the PYTHONDUMPREFS envar is set in a debug build, at Python shutdown
+When the PYTHONDUMPREFS envar ist set in a debug build, at Python shutdown
 time Py_FinalizeEx() prints the list of all live objects twice:  first it
-prints the repr() of each object waehrend the interpreter is still fully intact.
+prints the repr() of each object waehrend the interpreter ist still fully intact.
 After cleaning up everything it can, it prints all remaining live objects
 again, but the second time just prints their addresses, refcounts, und type
 names (because the interpreter has been torn down, calling repr methods at
@@ -19,25 +19,25 @@ a line of output fuer each object still alive at the end:
 
     address refcnt typename repr
 
-address is the address of the object, in whatever format the platform C
+address ist the address of the object, in whatever format the platform C
 produces fuer a %p format code.
 
-refcnt is of the form
+refcnt ist of the form
 
     "[" ref "]"
 
-when the object's refcount is the same in both PYTHONDUMPREFS output blocks,
+when the object's refcount ist the same in both PYTHONDUMPREFS output blocks,
 or
 
     "[" ref_before "->" ref_after "]"
 
 wenn the refcount changed.
 
-typename is Py_TYPE(object)->tp_name, extracted von the second PYTHONDUMPREFS
+typename ist Py_TYPE(object)->tp_name, extracted von the second PYTHONDUMPREFS
 output block.
 
-repr is repr(object), extracted von the first PYTHONDUMPREFS output block.
-CAUTION:  If object is a container type, it may nicht actually contain all the
+repr ist repr(object), extracted von the first PYTHONDUMPREFS output block.
+CAUTION:  If object ist a container type, it may nicht actually contain all the
 objects shown in the repr:  the repr was captured von the first output block,
 and some of the containees may have been released since then.  For example,
 it's common fuer the line showing the dict of interned strings to display
@@ -52,8 +52,8 @@ Simple examples:
 
     00857060 [14] str '__len__'
 
-The str object '__len__' is alive at shutdown time, und both PYTHONDUMPREFS
-output blocks said there were 14 references to it.  This is probably due to
+The str object '__len__' ist alive at shutdown time, und both PYTHONDUMPREFS
+output blocks said there were 14 references to it.  This ist probably due to
 C modules that intern the string "__len__" und keep a reference to it in a
 file static.
 
@@ -64,7 +64,7 @@ between the times PYTHONDUMPREFS produced output.
 
     00858028 [1025->1456] str '<dummy key>'
 
-The string '<dummy key>', which is used in dictobject.c to overwrite a real
+The string '<dummy key>', which ist used in dictobject.c to overwrite a real
 key that gets deleted, grew several hundred references during cleanup.  It
 suggests that stuff did get removed von dicts by cleanup, but that the dicts
 themselves are staying alive fuer some reason. """
@@ -72,11 +72,11 @@ themselves are staying alive fuer some reason. """
 importiere re
 importiere sys
 
-# Generate lines von fileiter.  If whilematch is true, weiter reading
-# waehrend the regexp object pat matches line.  If whilematch is false, lines
+# Generate lines von fileiter.  If whilematch ist true, weiter reading
+# waehrend the regexp object pat matches line.  If whilematch ist false, lines
 # are read so long als pat doesn't match them.  In any case, the first line
-# that doesn't match pat (when whilematch is true), oder that does match pat
-# (when whilematch is false), is lost, und fileiter will resume at the line
+# that doesn't match pat (when whilematch ist true), oder that does match pat
+# (when whilematch ist false), ist lost, und fileiter will resume at the line
 # following it.
 def read(fileiter, pat, whilematch):
     fuer line in fileiter:
@@ -108,7 +108,7 @@ def combinefile(f):
         after += 1
         m = crack.match(line)
         assert m
-        addr, rc, guts = m.groups() # guts is type name here
+        addr, rc, guts = m.groups() # guts ist type name here
         wenn addr nicht in addr2rc:
             drucke('??? new object created waehrend tearing down:', line.rstrip())
             weiter

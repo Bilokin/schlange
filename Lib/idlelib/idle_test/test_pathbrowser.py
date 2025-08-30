@@ -29,7 +29,7 @@ klasse PathBrowserTest(unittest.TestCase):
         cls.pb.close()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root, cls.pb
+        loesche cls.root, cls.pb
 
     def test_init(self):
         pb = self.pb
@@ -56,7 +56,7 @@ klasse PathBrowserTest(unittest.TestCase):
         pb.close()
         self.assertWahr(pb.top.destroy.called)
         self.assertWahr(pb.node.destroy.called)
-        del pb.top.destroy, pb.node.destroy
+        loesche pb.top.destroy, pb.node.destroy
 
 
 klasse DirBrowserTreeItemTest(unittest.TestCase):

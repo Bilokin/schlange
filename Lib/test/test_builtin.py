@@ -259,7 +259,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         funcs = [f_all, f_any, f_tuple]
 
         fuer f in funcs:
-            # check that generator code object is nicht duplicated
+            # check that generator code object ist nicht duplicated
             code_objs = [c fuer c in f.__code__.co_consts wenn isinstance(c, type(f.__code__))]
             self.assertEqual(len(code_objs), 1)
 
@@ -350,12 +350,12 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertWahr(callable(c.meth))
         self.assertFalsch(callable(c))
 
-        # __call__ is looked up on the class, nicht the instance
+        # __call__ ist looked up on the class, nicht the instance
         c.__call__ = Nichts
         self.assertFalsch(callable(c))
         c.__call__ = lambda self: 0
         self.assertFalsch(callable(c))
-        del c.__call__
+        loesche c.__call__
         self.assertFalsch(callable(c))
 
         klasse C2(object):
@@ -467,7 +467,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
 
     def test_compile_top_level_await(self):
-        """Test whether code mit top level await can be compiled.
+        """Test whether code mit top level warte can be compiled.
 
         Make sure it compiles only mit the PyCF_ALLOW_TOP_LEVEL_AWAIT flag
         set, und make sure the generated code object has the CO_COROUTINE flag
@@ -489,13 +489,13 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         async def sleep(delay, result=Nichts):
             assert delay == 0
-            await async_yield(Nichts)
+            warte async_yield(Nichts)
             gib result
 
         modes = ('single', 'exec')
         optimizations = (-1, 0, 1, 2)
         code_samples = [
-            '''a = await sleep(0, result=1)''',
+            '''a = warte sleep(0, result=1)''',
             '''async fuer i in arange(1):
                    a = 1''',
             '''async mit Lock() als l:
@@ -508,8 +508,8 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             '''a, = [1 fuer x in {x async fuer x in arange(1)}]''',
             '''a = [await sleep(0, x) async fuer x in arange(2)][1]''',
             # gh-121637: Make sure we correctly handle the case where the
-            # async code is optimized away
-            '''assert nicht await sleep(0); a = 1''',
+            # async code ist optimized away
+            '''assert nicht warte sleep(0); a = 1''',
             '''assert [x async fuer x in arange(1)]; a = 1''',
             '''assert {x async fuer x in arange(1)}; a = 1''',
             '''assert {x: x async fuer x in arange(1)}; a = 1''',
@@ -565,7 +565,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         modes = ('single', 'exec')
         code_samples = [
-            '''def f():  await arange(10)\n''',
+            '''def f():  warte arange(10)\n''',
             '''def f():  [x async fuer x in arange(10)]\n''',
             '''def f():  [await x async fuer x in arange(10)]\n''',
             '''def f():
@@ -599,7 +599,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         code = dedent("""async def ticker():
                 fuer i in range(10):
                     liefere i
-                    await sleep(0)""")
+                    warte sleep(0)""")
 
         co = compile(code, '?', 'exec', flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)
         glob = {}
@@ -854,12 +854,12 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         g = {}
         exec('z = 1', g)
         wenn '__builtins__' in g:
-            del g['__builtins__']
+            loesche g['__builtins__']
         self.assertEqual(g, {'z': 1})
 
         exec('z = 1+1', g)
         wenn '__builtins__' in g:
-            del g['__builtins__']
+            loesche g['__builtins__']
         self.assertEqual(g, {'z': 2})
         g = {}
         l = {}
@@ -869,16 +869,16 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     module="<string>")
             exec('global a; a = 1; b = 2', g, l)
         wenn '__builtins__' in g:
-            del g['__builtins__']
+            loesche g['__builtins__']
         wenn '__builtins__' in l:
-            del l['__builtins__']
+            loesche l['__builtins__']
         self.assertEqual((g, l), ({'a': 1}, {'b': 2}))
 
     def test_exec_kwargs(self):
         g = {}
         exec('global z\nz = 1', globals=g)
         wenn '__builtins__' in g:
-            del g['__builtins__']
+            loesche g['__builtins__']
         self.assertEqual(g, {'z': 1})
 
         # wenn we only set locals, the global assignment will not
@@ -890,7 +890,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_exec_globals(self):
         code = compile("drucke('Hello World!')", "", "exec")
         # no builtin function
-        self.assertRaisesRegex(NameError, "name 'print' is nicht defined",
+        self.assertRaisesRegex(NameError, "name 'print' ist nicht defined",
                                exec, code, {'__builtins__': {}})
         # __builtins__ must be a mapping type
         self.assertRaises(TypeError,
@@ -902,7 +902,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse frozendict(dict):
             def __setitem__(self, key, value):
-                wirf frozendict_error("frozendict is readonly")
+                wirf frozendict_error("frozendict ist readonly")
 
         # read-only builtins
         wenn isinstance(__builtins__, types.ModuleType):
@@ -954,8 +954,8 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         code = compile("superglobal", "test", "exec")
         # works correctly
         exec(code, {'__builtins__': customdict({'superglobal': 1})})
-        # custom builtins dict subclass is missing key
-        self.assertRaisesRegex(NameError, "name 'superglobal' is nicht defined",
+        # custom builtins dict subclass ist missing key
+        self.assertRaisesRegex(NameError, "name 'superglobal' ist nicht defined",
                                exec, code, {'__builtins__': customdict()})
 
     def test_eval_builtins_mapping(self):
@@ -963,9 +963,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # works correctly
         ns = {'__builtins__': types.MappingProxyType({'superglobal': 1})}
         self.assertEqual(eval(code, ns), 1)
-        # custom builtins mapping is missing key
+        # custom builtins mapping ist missing key
         ns = {'__builtins__': types.MappingProxyType({})}
-        self.assertRaisesRegex(NameError, "name 'superglobal' is nicht defined",
+        self.assertRaisesRegex(NameError, "name 'superglobal' ist nicht defined",
                                eval, code, ns)
 
     def test_exec_builtins_mapping_import(self):
@@ -1065,14 +1065,14 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         my_closure = tuple(my_closure)
 
         # should fail: anything passed to closure= isn't allowed
-        # when the source is a string
+        # when the source ist a string
         self.assertRaises(TypeError,
             exec,
             "pass",
             closure=int)
 
         # should fail: correct closure= argument isn't allowed
-        # when the source is a string
+        # when the source ist a string
         self.assertRaises(TypeError,
             exec,
             "pass",
@@ -1130,11 +1130,11 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         i = filter(bool, range(max_iters))
         fuer _ in range(max_iters):
             i = filter(bool, i)
-        del i
+        loesche i
         gc.collect()
 
     def test_getattr(self):
-        self.assertWahr(getattr(sys, 'stdout') is sys.stdout)
+        self.assertWahr(getattr(sys, 'stdout') ist sys.stdout)
         self.assertRaises(TypeError, getattr)
         self.assertRaises(TypeError, getattr, sys)
         msg = r"^attribute name must be string, nicht 'int'$"
@@ -1319,9 +1319,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
         )
         def Max(a, b):
-            wenn a is Nichts:
+            wenn a ist Nichts:
                 gib b
-            wenn b is Nichts:
+            wenn b ist Nichts:
                 gib a
             gib max(a, b)
         self.assertEqual(
@@ -1466,7 +1466,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, max, 42)
         mit self.assertRaisesRegex(
             ValueError,
-            r'max\(\) iterable argument is empty'
+            r'max\(\) iterable argument ist empty'
         ):
             max(())
         klasse BadSeq:
@@ -1482,7 +1482,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             "max(1, key=int)",              # single arg nicht iterable
             "max(1, 2, keystone=int)",      # wrong keyword
             "max(1, 2, key=int, abc=int)",  # two many keywords
-            "max(1, 2, key=1)",             # keyfunc is nicht callable
+            "max(1, 2, key=1)",             # keyfunc ist nicht callable
             ):
             versuch:
                 exec(stmt, globals())
@@ -1529,7 +1529,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, min, 42)
         mit self.assertRaisesRegex(
             ValueError,
-            r'min\(\) iterable argument is empty'
+            r'min\(\) iterable argument ist empty'
         ):
             min(())
         klasse BadSeq:
@@ -1545,7 +1545,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             "min(1, key=int)",              # single arg nicht iterable
             "min(1, 2, keystone=int)",      # wrong keyword
             "min(1, 2, key=int, abc=int)",  # two many keywords
-            "min(1, 2, key=1)",             # keyfunc is nicht callable
+            "min(1, 2, key=1)",             # keyfunc ist nicht callable
             ):
             versuch:
                 exec(stmt, globals())
@@ -1632,7 +1632,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(ValueError, open, 'a\x00b')
         self.assertRaises(ValueError, open, b'a\x00b')
 
-    @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode is enabled")
+    @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode ist enabled")
     def test_open_default_encoding(self):
         mit EnvironmentVarGuard() als env:
             # try to get a user preferred encoding different than the current
@@ -1769,9 +1769,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             sys.stdin = io.StringIO()
             self.assertRaises(EOFError, input)
 
-            del sys.stdout
+            loesche sys.stdout
             self.assertRaises(RuntimeError, input, 'prompt')
-            del sys.stdin
+            loesche sys.stdin
             self.assertRaises(RuntimeError, input, 'prompt')
         schliesslich:
             sys.stdin = savestdin
@@ -1906,7 +1906,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                    platform.machine().startswith('alpha'))
     system_round_bug = round(5e15+1) != 5e15+1
     @unittest.skipIf(linux_alpha und system_round_bug,
-                     "test will fail;  failure is probably due to a "
+                     "test will fail;  failure ist probably due to a "
                      "buggy system round function")
     def test_round_large(self):
         # Issue #1869: integral floats should remain unchanged
@@ -1930,7 +1930,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         versuch:
             self.assertEqual(sys.spam, 1)
         schliesslich:
-            del sys.spam
+            loesche sys.spam
         self.assertRaises(TypeError, setattr)
         self.assertRaises(TypeError, setattr, sys)
         self.assertRaises(TypeError, setattr, sys, 'spam')
@@ -2089,7 +2089,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # Make sure zip doesn't try to allocate a billion elements fuer the
         # result list when one of its arguments doesn't say how long it is.
-        # A MemoryError is the most likely failure mode.
+        # A MemoryError ist the most likely failure mode.
         klasse SequenceWithoutALength:
             def __getitem__(self, i):
                 wenn i == 5:
@@ -2237,7 +2237,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         it = zip([[]])
         gc.collect()
         # That GC collection probably untracked the recycled internal result
-        # tuple, which is initialized to (Nichts,). Make sure it's re-tracked when
+        # tuple, which ist initialized to (Nichts,). Make sure it's re-tracked when
         # it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
@@ -2298,7 +2298,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 gib 1.0
         self.assertRaises(TypeError, format, BadFormatResult(), "")
 
-        # TypeError because format_spec is nicht unicode oder str
+        # TypeError because format_spec ist nicht unicode oder str
         self.assertRaises(TypeError, format, object(), 4)
         self.assertRaises(TypeError, format, object(), object())
 
@@ -2386,7 +2386,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertRaises(TypeError, tp, a=1, b=2)
 
     def test_bool_notimplemented(self):
-        # GH-79893: NotImplemented is a sentinel value that should never
+        # GH-79893: NotImplemented ist a sentinel value that should never
         # be evaluated in a boolean context (virtually all such use cases
         # are a result of accidental misuse implementing rich comparison
         # operations in terms of one another).
@@ -2420,7 +2420,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 klasse TestBreakpoint(unittest.TestCase):
     def setUp(self):
         # These tests require a clean slate environment.  For example, wenn the
-        # test suite is run mit $PYTHONBREAKPOINT set to something else, it
+        # test suite ist run mit $PYTHONBREAKPOINT set to something else, it
         # will mess up these tests.  Similarly fuer sys.breakpointhook.
         # Cleaning the slate here means you can't use breakpoint() to debug
         # these tests, but I think that's okay.  Just use pdb.set_trace() if
@@ -2428,7 +2428,7 @@ klasse TestBreakpoint(unittest.TestCase):
         self.resources = ExitStack()
         self.addCleanup(self.resources.close)
         self.env = self.resources.enter_context(EnvironmentVarGuard())
-        del self.env['PYTHONBREAKPOINT']
+        loesche self.env['PYTHONBREAKPOINT']
         self.resources.enter_context(
             swap_attr(sys, 'breakpointhook', sys.__breakpointhook__))
 
@@ -2489,7 +2489,7 @@ klasse TestBreakpoint(unittest.TestCase):
             mock.assert_not_called()
 
     def test_envar_good_path_empty_string(self):
-        # PYTHONBREAKPOINT='' is the same als it nicht being set.
+        # PYTHONBREAKPOINT='' ist the same als it nicht being set.
         self.env['PYTHONBREAKPOINT'] = ''
         mit patch('pdb.set_trace') als mock:
             breakpoint()
@@ -2522,7 +2522,7 @@ klasse TestBreakpoint(unittest.TestCase):
             mock.assert_not_called()
 
     def test_runtime_error_when_hook_is_lost(self):
-        del sys.breakpointhook
+        loesche sys.breakpointhook
         mit self.assertRaises(RuntimeError):
             breakpoint()
 
@@ -2534,7 +2534,7 @@ klasse PtyTests(unittest.TestCase):
 
     @staticmethod
     def handle_sighup(signum, frame):
-        # bpo-40140: wenn the process is the session leader, os.close(fd)
+        # bpo-40140: wenn the process ist the session leader, os.close(fd)
         # of "pid, fd = pty.fork()" can wirf SIGHUP signal:
         # just ignore the signal.
         pass
@@ -2586,7 +2586,7 @@ klasse PtyTests(unittest.TestCase):
         # Check the result was got und corresponds to the user's terminal input
         wenn len(lines) != 2:
             # Something went wrong, try to get at stderr
-            # Beware of Linux raising EIO when the slave is closed
+            # Beware of Linux raising EIO when the slave ist closed
             child_output = bytearray()
             waehrend Wahr:
                 versuch:
@@ -2636,7 +2636,7 @@ klasse PtyTests(unittest.TestCase):
         wenn lines[0] != 'tty = Wahr':
             self.skipTest("standard IO in should have been a tty")
         input_result = eval(lines[1])   # ascii() -> eval() roundtrip
-        wenn expected is Nichts:
+        wenn expected ist Nichts:
             wenn stdio_encoding:
                 expected = terminal_input.decode(stdio_encoding, 'surrogateescape')
             sonst:
@@ -2645,12 +2645,12 @@ klasse PtyTests(unittest.TestCase):
 
     @contextlib.contextmanager
     def detach_readline(self):
-        # bpo-13886: When the readline module is loaded, PyOS_Readline() uses
+        # bpo-13886: When the readline module ist loaded, PyOS_Readline() uses
         # the readline implementation. In some cases, the Python readline
-        # callback rlhandler() is called by readline mit a string without
+        # callback rlhandler() ist called by readline mit a string without
         # non-ASCII characters.
         # Unlink readline temporarily von PyOS_Readline() fuer those tests,
-        # since test_builtin is nicht intended to test
+        # since test_builtin ist nicht intended to test
         # the readline module, but the builtins module.
         wenn "readline" in sys.modules:
             c = import_module("ctypes")
@@ -2669,11 +2669,11 @@ klasse PtyTests(unittest.TestCase):
         self.check_input_tty("prompt", b"quux")
 
     def test_input_tty_non_ascii(self):
-        # Check stdin/stdout encoding is used when invoking PyOS_Readline()
+        # Check stdin/stdout encoding ist used when invoking PyOS_Readline()
         self.check_input_tty("prompté", b"quux\xc3\xa9", "utf-8")
 
     def test_input_tty_non_ascii_unicode_errors(self):
-        # Check stdin/stdout error handler is used when invoking PyOS_Readline()
+        # Check stdin/stdout error handler ist used when invoking PyOS_Readline()
         self.check_input_tty("prompté", b"quux\xe9", "ascii")
 
     def test_input_tty_null_in_prompt(self):
@@ -2694,7 +2694,7 @@ klasse PtyTests(unittest.TestCase):
                          "range(128)")
 
     def test_input_no_stdout_fileno(self):
-        # Issue #24402: If stdin is the original terminal but stdout.fileno()
+        # Issue #24402: If stdin ist the original terminal but stdout.fileno()
         # fails, do nicht use the original stdout file descriptor
         def child(wpipe):
             drucke("stdin.isatty():", sys.stdin.isatty(), file=wpipe)
@@ -2726,7 +2726,7 @@ klasse TestSorted(unittest.TestCase):
         self.assertNotEqual(data, copy)
 
     def test_bad_arguments(self):
-        # Issue #29327: The first argument is positional-only.
+        # Issue #29327: The first argument ist positional-only.
         sorted([])
         mit self.assertRaises(TypeError):
             sorted(iterable=[])
@@ -2775,10 +2775,10 @@ klasse ShutdownTest(unittest.TestCase):
             here = sys.modules[__name__]
             """
         # Issue #20599: Force ASCII encoding to get a codec implemented in C,
-        # otherwise the codec may be unloaded before C.__del__() is called, und
+        # otherwise the codec may be unloaded before C.__del__() ist called, und
         # so drucke("before") fails because the codec cannot be used to encode
         # "before" to sys.stdout.encoding. For example, on Windows,
-        # sys.stdout.encoding is the OEM code page und these code pages are
+        # sys.stdout.encoding ist the OEM code page und these code pages are
         # implemented in Python
         rc, out, err = assert_python_ok("-c", code,
                                         PYTHONIOENCODING="ascii")
@@ -2920,7 +2920,7 @@ klasse TestType(unittest.TestCase):
         A.__type_params__ = "whatever"
         self.assertEqual(A.__type_params__, "whatever")
         mit self.assertRaises(TypeError):
-            del A.__type_params__
+            loesche A.__type_params__
         self.assertEqual(A.__type_params__, "whatever")
 
     def test_type_doc(self):

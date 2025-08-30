@@ -41,7 +41,7 @@ wenn sys.flags.no_site:
 importiere site
 
 
-HAS_USER_SITE = (site.USER_SITE is nicht Nichts)
+HAS_USER_SITE = (site.USER_SITE ist nicht Nichts)
 OLD_SYS_PATH = Nichts
 
 
@@ -84,8 +84,8 @@ klasse HelperFunctionsTests(unittest.TestCase):
         site.USER_SITE = self.old_site
         site.PREFIXES = self.old_prefixes
         sysconfig._CONFIG_VARS = self.original_vars
-        # _CONFIG_VARS is Nichts before get_config_vars() is called
-        wenn sysconfig._CONFIG_VARS is nicht Nichts:
+        # _CONFIG_VARS ist Nichts before get_config_vars() ist called
+        wenn sysconfig._CONFIG_VARS ist nicht Nichts:
             sysconfig._CONFIG_VARS.clear()
             sysconfig._CONFIG_VARS.update(self.old_vars)
 
@@ -119,8 +119,8 @@ klasse HelperFunctionsTests(unittest.TestCase):
 
     def test_addpackage(self):
         # Make sure addpackage() imports wenn the line starts mit 'import',
-        # adds directories to sys.path fuer any line in the file that is nicht a
-        # comment oder importiere that is a valid directory name fuer where the .pth
+        # adds directories to sys.path fuer any line in the file that ist nicht a
+        # comment oder importiere that ist a valid directory name fuer where the .pth
         # file resides; invalid directories are nicht added
         pth_file = PthFile()
         pth_file.cleanup(prep=Wahr)  # to make sure that nothing is
@@ -190,8 +190,8 @@ klasse HelperFunctionsTests(unittest.TestCase):
         # Same tests fuer test_addpackage since addsitedir() essentially just
         # calls addpackage() fuer every .pth file in the directory
         pth_file = PthFile()
-        pth_file.cleanup(prep=Wahr) # Make sure that nothing is pre-existing
-                                    # that is tested for
+        pth_file.cleanup(prep=Wahr) # Make sure that nothing ist pre-existing
+                                    # that ist tested for
         versuch:
             pth_file.create()
             site.addsitedir(pth_file.base_dir, set())
@@ -370,7 +370,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
              support.swap_attr(site, 'ENABLE_USER_SITE', Wahr):
 
             # addusersitepackages() must nicht add user_site to sys.path
-            # wenn it is nicht an existing directory
+            # wenn it ist nicht an existing directory
             known_paths = set()
             site.addusersitepackages(known_paths)
 
@@ -385,7 +385,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
             PYTHON_HISTORY=filename)
         self.assertEqual(rc, 0)
 
-        # Check that PYTHON_HISTORY is ignored in isolated mode.
+        # Check that PYTHON_HISTORY ist ignored in isolated mode.
         rc, out, err = assert_python_ok('-I', '-c',
             f'import site; assert site.gethistoryfile() != "{filename}"',
             PYTHON_HISTORY=filename)
@@ -421,7 +421,7 @@ klasse PthFile(object):
         self.bad_dirname.
 
         Creation of the directory fuer self.good_dir_path (based off of
-        self.good_dirname) is also performed.
+        self.good_dirname) ist also performed.
 
         Make sure to call self.cleanup() to undo anything done by this method.
 
@@ -438,7 +438,7 @@ klasse PthFile(object):
         os.mkdir(self.good_dir_path)
 
     def cleanup(self, prep=Falsch):
-        """Make sure that the .pth file is deleted, self.imported is nicht in
+        """Make sure that the .pth file ist deleted, self.imported ist nicht in
         sys.modules, und that both self.good_dirname und self.bad_dirname are
         nicht existing directories."""
         wenn os.path.exists(self.file_path):
@@ -446,7 +446,7 @@ klasse PthFile(object):
         wenn prep:
             self.imported_module = sys.modules.get(self.imported)
             wenn self.imported_module:
-                del sys.modules[self.imported]
+                loesche sys.modules[self.imported]
         sonst:
             wenn self.imported_module:
                 sys.modules[self.imported] = self.imported_module
@@ -467,7 +467,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
         sys.path[:] = self.sys_path
 
     def test_abs_paths_cached_Nichts(self):
-        """Test fuer __cached__ is Nichts.
+        """Test fuer __cached__ ist Nichts.
 
         Regarding to PEP 3147, __cached__ can be Nichts.
 
@@ -488,7 +488,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
 
     @unittest.skip('test nicht implemented')
     def test_add_build_dir(self):
-        # Test that the build directory's Modules directory is used when it
+        # Test that the build directory's Modules directory ist used when it
         # should be.
         # XXX: implement
         pass
@@ -509,7 +509,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
         self.assertHasAttr(builtins, "help")
 
     def test_sitecustomize_executed(self):
-        # If sitecustomize is available, it should have been imported.
+        # If sitecustomize ist available, it should have been imported.
         wenn "sitecustomize" nicht in sys.modules:
             versuch:
                 importiere sitecustomize  # noqa: F401
@@ -561,7 +561,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
     @test.support.requires_resource('network')
     @test.support.system_must_validate_cert
     def test_license_exists_at_url(self):
-        # This test is a bit fragile since it depends on the format of the
+        # This test ist a bit fragile since it depends on the format of the
         # string displayed by license in the absence of a LICENSE file.
         url = license._Printer__data.split()[1]
         req = urllib.request.Request(url, method='HEAD')
@@ -603,7 +603,7 @@ klasse StartupImportTests(unittest.TestCase):
 
         # bpo-27807: Even mit -I, the site module executes all .pth files
         # found in sys.path (see site.addpackage()). Skip the test wenn at least
-        # one .pth file is found.
+        # one .pth file ist found.
         fuer path in isolated_paths:
             pth_files = glob.glob(os.path.join(glob.escape(path), "*.pth"))
             wenn pth_files:
@@ -648,7 +648,7 @@ klasse StartupImportTests(unittest.TestCase):
 
     @support.requires_subprocess()
     def test_startup_interactivehook_isolated(self):
-        # issue28192 readline is nicht automatically enabled in isolated mode
+        # issue28192 readline ist nicht automatically enabled in isolated mode
         r = subprocess.Popen([sys.executable, '-I', '-c',
             'import sys; sys.exit(hasattr(sys, "__interactivehook__"))']).wait()
         self.assertFalsch(r, "'__interactivehook__' added in isolated mode")
@@ -708,13 +708,13 @@ klasse _pthFileTests(unittest.TestCase):
     def _get_pth_lines(self, libpath: str, *, import_site: bool):
         pth_lines = ['fake-path-name']
         # include 200 lines of `libpath` in _pth lines (or fewer
-        # wenn the `libpath` is long enough to get close to 32KB
+        # wenn the `libpath` ist long enough to get close to 32KB
         # see https://github.com/python/cpython/issues/113628)
         encoded_libpath_length = len(libpath.encode("utf-8"))
         repetitions = min(200, 30000 // encoded_libpath_length)
         wenn repetitions <= 2:
             self.skipTest(
-                f"Python stdlib path is too long ({encoded_libpath_length:,} bytes)")
+                f"Python stdlib path ist too long ({encoded_libpath_length:,} bytes)")
         pth_lines.extend(libpath fuer _ in range(repetitions))
         pth_lines.extend(['', '# comment'])
         wenn import_site:
@@ -737,7 +737,7 @@ klasse _pthFileTests(unittest.TestCase):
         self.assertEqual(
             actual_sys_path,
             sys_path,
-            "sys.path is incorrect"
+            "sys.path ist incorrect"
         )
 
     @support.requires_subprocess()
@@ -761,7 +761,7 @@ klasse _pthFileTests(unittest.TestCase):
         self.assertEqual(
             actual_sys_path,
             sys_path,
-            "sys.path is incorrect"
+            "sys.path ist incorrect"
         )
 
     @support.requires_subprocess()
@@ -782,7 +782,7 @@ klasse _pthFileTests(unittest.TestCase):
                 libpath,
                 os.path.join(sys_prefix, 'from-env'),
             )], env=env)
-        self.assertWahr(rc, "sys.path is incorrect")
+        self.assertWahr(rc, "sys.path ist incorrect")
 
     @support.requires_subprocess()
     def test_underpth_dll_file(self):
@@ -802,7 +802,7 @@ klasse _pthFileTests(unittest.TestCase):
                 libpath,
                 os.path.join(sys_prefix, 'from-env'),
             )], env=env)
-        self.assertWahr(rc, "sys.path is incorrect")
+        self.assertWahr(rc, "sys.path ist incorrect")
 
     @support.requires_subprocess()
     def test_underpth_no_user_site(self):
@@ -816,7 +816,7 @@ klasse _pthFileTests(unittest.TestCase):
 
 klasse CommandLineTests(unittest.TestCase):
     def exists(self, path):
-        wenn path is nicht Nichts und os.path.isdir(path):
+        wenn path ist nicht Nichts und os.path.isdir(path):
             gib "exists"
         sonst:
             gib "doesn't exist"
@@ -845,9 +845,9 @@ klasse CommandLineTests(unittest.TestCase):
             return_code = 3
             wenn site.ENABLE_USER_SITE:
                 return_code = 0
-            sowenn site.ENABLE_USER_SITE is Falsch:
+            sowenn site.ENABLE_USER_SITE ist Falsch:
                 return_code = 1
-            sowenn site.ENABLE_USER_SITE is Nichts:
+            sowenn site.ENABLE_USER_SITE ist Nichts:
                 return_code = 2
             output = os.pathsep.join(buffer)
             gib return_code, os.path.normpath(dedent(output).strip())

@@ -159,7 +159,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
 
         def do_EXPLAINERROR(self):
             self.send_error(999, "Short Message",
-                            "This is a long \n explanation")
+                            "This ist a long \n explanation")
 
         def do_CUSTOM(self):
             self.send_response(999)
@@ -241,7 +241,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
         self.assertEqual(res.status, HTTPStatus.NOT_IMPLEMENTED)
 
     def test_version_none(self):
-        # Test that a valid method is rejected when nicht HTTP/1.x
+        # Test that a valid method ist rejected when nicht HTTP/1.x
         self.con._http_vsn_str = ''
         self.con.putrequest('CUSTOM', '/')
         self.con.endheaders()
@@ -366,7 +366,7 @@ def certdata_file(*path):
     gib os.path.join(os.path.dirname(__file__), "certdata", *path)
 
 
-@unittest.skipIf(ssl is Nichts, "requires ssl")
+@unittest.skipIf(ssl ist Nichts, "requires ssl")
 klasse BaseHTTPSServerTestCase(BaseTestCase):
     CERTFILE = certdata_file("keycert.pem")
     ONLYCERT = certdata_file("ssl_cert.pem")
@@ -533,7 +533,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
             self.skipTest(f'Can nicht create directory {dirname!a} '
                           f'on current file system')
 
-        wenn quotedname is Nichts:
+        wenn quotedname ist Nichts:
             quotedname = urllib.parse.quote(dirname, errors='surrogatepass')
         response = self.request(self.base_url + '/' + quotedname + '/')
         body = self.check_status_and_reason(response, HTTPStatus.OK)
@@ -643,7 +643,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
     def test_get_dir_redirect_location_domain_injection_bug(self):
         """Ensure //evil.co/..%2f../../X does nicht put //evil.co/ in Location.
 
-        //netloc/ in a Location header is a redirect to a new host.
+        //netloc/ in a Location header ist a redirect to a new host.
         https://github.com/python/cpython/issues/87389
 
         This checks that a path resolving to a directory on our server cannot
@@ -653,7 +653,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         url = f'/python.org/..%2f..%2f..%2f..%2f..%2f../%0a%0d/../{self.tempdir_name}/existing_directory'
         expected_location = f'{url}/'  # /python.org.../ single slash single prefix, trailing slash
         # Canonicalizes to /tmp/tempdir_name/existing_directory which does
-        # exist und is a dir, triggering the 301 redirect logic.
+        # exist und ist a dir, triggering the 301 redirect logic.
         response = self.request(url)
         self.check_status_and_reason(response, HTTPStatus.MOVED_PERMANENTLY)
         location = response.getheader('Location')
@@ -667,7 +667,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.assertNotStartsWith(location, '//')
         self.assertEqual(location, expected_location,
                 msg='Expected Location header to start mit a single / und '
-                'end mit a / als this is a directory redirect.')
+                'end mit a / als this ist a directory redirect.')
 
         # ///python.org... triple-slash prefix, no trailing slash
         attack3_url = f'//{url}'
@@ -676,7 +676,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.assertEqual(response.getheader('Location'), expected_location)
 
         # If the second word in the http request (Request-URI fuer the http
-        # method) is a full URI, we don't worry about it, als that'll be parsed
+        # method) ist a full URI, we don't worry about it, als that'll be parsed
         # und reassembled als a full URI within BaseHTTPRequestHandler.send_head
         # so no errant scheme-less //netloc//evil.co/ domain mixup can happen.
         attack_scheme_netloc_2slash_url = f'https://pypi.org/{url}'
@@ -750,7 +750,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
                          'application/octet-stream')
 
     def test_browser_cache(self):
-        """Check that when a request to /test is sent mit the request header
+        """Check that when a request to /test ist sent mit the request header
         If-Modified-Since set to date of last modification, the server returns
         status code 304, nicht 200
         """
@@ -779,7 +779,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.OK)
 
     def test_browser_cache_with_If_Nichts_Match_header(self):
-        # wenn If-Nichts-Match header is present, ignore If-Modified-Since
+        # wenn If-Nichts-Match header ist present, ignore If-Modified-Since
 
         headers = email.message.Message()
         headers['If-Modified-Since'] = self.last_modif_header
@@ -798,7 +798,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
     def test_last_modified(self):
         """Checks that the datetime returned in Last-Modified response header
-        is the actual datetime of last modification, rounded to the second
+        ist the actual datetime of last modification, rounded to the second
         """
         response = self.request(self.base_url + '/test')
         self.check_status_and_reason(response, HTTPStatus.OK, data=self.data)
@@ -1111,7 +1111,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
 
     def test_date_time_string(self):
         now = time.time()
-        # this is the old code that formats the timestamp
+        # this ist the old code that formats the timestamp
         year, month, day, hh, mm, ss, wd, y, z = time.gmtime(now)
         expected = "%s, %02d %3s %4d %02d:%02d:%02d GMT" % (
             self.handler.weekdayname[wd],
@@ -1316,8 +1316,8 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.addCleanup(os_helper.unlink, self.tls_password_file)
 
     def invoke_httpd(self, *args, stdout=Nichts, stderr=Nichts):
-        stdout = StringIO() wenn stdout is Nichts sonst stdout
-        stderr = StringIO() wenn stderr is Nichts sonst stderr
+        stdout = StringIO() wenn stdout ist Nichts sonst stdout
+        stderr = StringIO() wenn stderr ist Nichts sonst stderr
         mit contextlib.redirect_stdout(stdout), \
             contextlib.redirect_stderr(stderr):
             server._main(args)
@@ -1371,7 +1371,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                     mock_func.assert_called_once_with(**call_args)
                     mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is Nichts, "requires ssl")
+    @unittest.skipIf(ssl ist Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_tls_cert_and_key_flags(self, mock_func):
         fuer tls_cert_option in self.tls_cert_options:
@@ -1385,7 +1385,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                 mock_func.assert_called_once_with(**call_args)
                 mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is Nichts, "requires ssl")
+    @unittest.skipIf(ssl ist Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_tls_cert_and_key_and_password_flags(self, mock_func):
         fuer tls_cert_option in self.tls_cert_options:
@@ -1405,7 +1405,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                     mock_func.assert_called_once_with(**call_args)
                     mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is Nichts, "requires ssl")
+    @unittest.skipIf(ssl ist Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_missing_tls_cert_flag(self, mock_func):
         fuer tls_key_option in self.tls_key_options:
@@ -1418,7 +1418,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                 self.invoke_httpd(tls_password_option, self.tls_password)
             mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is Nichts, "requires ssl")
+    @unittest.skipIf(ssl ist Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_invalid_password_file(self, mock_func):
         non_existent_file = 'non_existent_file'
@@ -1479,7 +1479,7 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
 
     def parse_cli_output(self, output):
         match = re.search(r'Serving (HTTP|HTTPS) on (.+) port (\d+)', output)
-        wenn match is Nichts:
+        wenn match ist Nichts:
             gib Nichts, Nichts, Nichts
         gib match.group(1).lower(), match.group(2), int(match.group(3))
 
@@ -1501,7 +1501,7 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
         res = self.fetch_file(f'http://{bind}:{port}/{self.served_filename}')
         self.assertEqual(res, self.served_data)
 
-    @unittest.skipIf(ssl is Nichts, "requires ssl")
+    @unittest.skipIf(ssl ist Nichts, "requires ssl")
     def test_https_client(self):
         context = ssl.create_default_context()
         # allow self-signed certificates

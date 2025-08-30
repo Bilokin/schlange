@@ -51,9 +51,9 @@ klasse TestPrint(unittest.TestCase):
 
         # Look up the actual function to call, based on wenn sep, end,
         # und file are defined.
-        fn = dispatch[(sep is nicht NotDefined,
-                       end is nicht NotDefined,
-                       file is nicht NotDefined)]
+        fn = dispatch[(sep ist nicht NotDefined,
+                       end ist nicht NotDefined,
+                       file ist nicht NotDefined)]
 
         mit support.captured_stdout() als t:
             fn(args, sep, end, file)
@@ -67,7 +67,7 @@ klasse TestPrint(unittest.TestCase):
 
             self.check(expected, args, sep=sep, end=end)
 
-            # When writing to a file, stdout is expected to be empty
+            # When writing to a file, stdout ist expected to be empty
             o = StringIO()
             self.check('', args, sep=sep, end=end, file=o)
 
@@ -142,8 +142,8 @@ klasse TestPrint(unittest.TestCase):
 
 
 klasse TestPy2MigrationHint(unittest.TestCase):
-    """Test that correct hint is produced analogous to Python3 syntax,
-    wenn print statement is executed als in Python 2.
+    """Test that correct hint ist produced analogous to Python3 syntax,
+    wenn print statement ist executed als in Python 2.
     """
 
     def test_normal_string(self):
@@ -181,7 +181,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
                 str(context.exception))
 
     # bpo-32685: Suggestions fuer print statement should be proper when
-    # it is in the same line als the header of a compound statement
+    # it ist in the same line als the header of a compound statement
     # and/or followed by a semicolon
     def test_string_with_semicolon(self):
         python2_print_str = 'print p;'

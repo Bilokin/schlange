@@ -85,7 +85,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self.dir_diff_file = os.path.join(tmpdir, 'dir-diff-file')
         self.dir_same_shallow = os.path.join(tmpdir, 'dir-same-shallow')
 
-        # Another dir is created under dir_same, but it has a name von the
+        # Another dir ist created under dir_same, but it has a name von the
         # ignored list so it should nicht affect testing results.
         self.dir_ignored = os.path.join(self.dir_same, '.hg')
 
@@ -106,14 +106,14 @@ klasse DirCompareTestCase(unittest.TestCase):
             os.mkdir(dir)
             subdir_path = os.path.join(dir, 'subdir')
             os.mkdir(subdir_path)
-            wenn self.caseinsensitive und dir is self.dir_same:
+            wenn self.caseinsensitive und dir ist self.dir_same:
                 fn = 'FiLe'     # Verify case-insensitive comparison
             sonst:
                 fn = 'file'
 
             file_path = os.path.join(dir, fn)
 
-            wenn dir is self.dir_same_shallow:
+            wenn dir ist self.dir_same_shallow:
                 _create_file_shallow_equal(dir_file_path, file_path)
             sonst:
                 shutil.copy2(dir_file_path, file_path)

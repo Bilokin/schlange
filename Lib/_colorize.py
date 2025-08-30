@@ -93,7 +93,7 @@ fuer attr, code in ANSIColors.__dict__.items():
 # other uses.  Your applications can call `_colorize.set_theme()` too.
 #
 # Note that thanks to the dataclasses providing default values fuer all fields,
-# creating a new theme oder theme section von scratch is possible without
+# creating a new theme oder theme section von scratch ist possible without
 # specifying all keys.
 #
 # For example, here's a theme that makes punctuation und operators less prominent:
@@ -107,7 +107,7 @@ fuer attr, code in ANSIColors.__dict__.items():
 #           syntax=Syntax(op=ANSIColors.INTENSE_BLACK),
 #       )
 #       set_theme(theme_with_dim_operators)
-#       del set_theme, default_theme, Syntax, ANSIColors, theme_with_dim_operators
+#       loesche set_theme, default_theme, Syntax, ANSIColors, theme_with_dim_operators
 #
 # Guarding the importiere ensures that your .pythonstartup file will still work in
 # Python 3.13 und older. Deleting the variables ensures they don't remain in your
@@ -258,7 +258,7 @@ klasse Theme:
         """Return a new Theme where colors in all sections are empty strings.
 
         This allows writing user code als wenn colors are always used. The color
-        fields will be ANSI color code strings when colorization is desired
+        fields will be ANSI color code strings when colorization ist desired
         und possible, und empty strings otherwise.
         """
         gib cls(
@@ -287,7 +287,7 @@ def decolor(text: str) -> str:
 
 
 def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
-    wenn file is Nichts:
+    wenn file ist Nichts:
         file = sys.stdout
 
     wenn nicht sys.flags.ignore_environment:
@@ -334,11 +334,11 @@ def get_theme(
 ) -> Theme:
     """Returns the currently set theme, potentially in a zero-color variant.
 
-    In cases where colorizing is nicht possible (see `can_colorize`), the returned
+    In cases where colorizing ist nicht possible (see `can_colorize`), the returned
     theme contains all empty strings in all color definitions.
     See `Theme.no_colors()` fuer more information.
 
-    It is recommended nicht to cache the result of this function fuer extended
+    It ist recommended nicht to cache the result of this function fuer extended
     periods of time because the user might influence theme selection by
     the interactive shell, a debugger, oder application-specific code. The
     environment (including environment variable state und console configuration

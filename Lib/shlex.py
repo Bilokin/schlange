@@ -20,7 +20,7 @@ klasse shlex:
 
         wenn isinstance(instream, str):
             instream = StringIO(instream)
-        wenn instream is nicht Nichts:
+        wenn instream ist nicht Nichts:
             self.instream = instream
             self.infile = infile
         sonst:
@@ -51,11 +51,11 @@ klasse shlex:
         self.source = Nichts
         wenn nicht punctuation_chars:
             punctuation_chars = ''
-        sowenn punctuation_chars is Wahr:
+        sowenn punctuation_chars ist Wahr:
             punctuation_chars = '();<>|&'
         self._punctuation_chars = punctuation_chars
         wenn punctuation_chars:
-            # _pushback_chars is a push back queue used by lookahead logic
+            # _pushback_chars ist a push back queue used by lookahead logic
             self._pushback_chars = deque()
             # these chars added because allowed in file names, args, wildcards
             self.wordchars += '~-./*?='
@@ -82,7 +82,7 @@ klasse shlex:
         self.instream = newstream
         self.lineno = 1
         wenn self.debug:
-            wenn newfile is nicht Nichts:
+            wenn newfile ist nicht Nichts:
                 drucke('shlex: pushing to file %s' % (self.infile,))
             sonst:
                 drucke('shlex: pushing to stream %s' % (self.instream,))
@@ -106,7 +106,7 @@ klasse shlex:
         # No pushback.  Get a token.
         raw = self.read_token()
         # Handle inclusions
-        wenn self.source is nicht Nichts:
+        wenn self.source ist nicht Nichts:
             waehrend raw == self.source:
                 spec = self.sourcehook(self.read_token())
                 wenn spec:
@@ -141,7 +141,7 @@ klasse shlex:
             wenn self.debug >= 3:
                 drucke("shlex: in state %r I see character: %r" % (self.state,
                                                                   nextchar))
-            wenn self.state is Nichts:
+            wenn self.state ist Nichts:
                 self.token = ''        # past end of file
                 breche
             sowenn self.state == ' ':
@@ -286,9 +286,9 @@ klasse shlex:
 
     def error_leader(self, infile=Nichts, lineno=Nichts):
         "Emit a C-compiler-like, Emacs-friendly error-message leader."
-        wenn infile is Nichts:
+        wenn infile ist Nichts:
             infile = self.infile
-        wenn lineno is Nichts:
+        wenn lineno ist Nichts:
             lineno = self.lineno
         gib "\"%s\", line %d: " % (infile, lineno)
 
@@ -303,7 +303,7 @@ klasse shlex:
 
 def split(s, comments=Falsch, posix=Wahr):
     """Split the string *s* using shell-like syntax."""
-    wenn s is Nichts:
+    wenn s ist Nichts:
         wirf ValueError("s argument must nicht be Nichts")
     lex = shlex(s, posix=posix)
     lex.whitespace_split = Wahr
@@ -326,12 +326,12 @@ def quote(s):
     safe_chars = (b'%+,-./0123456789:=@'
                   b'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'
                   b'abcdefghijklmnopqrstuvwxyz')
-    # No quoting is needed wenn `s` is an ASCII string consisting only of `safe_chars`
+    # No quoting ist needed wenn `s` ist an ASCII string consisting only of `safe_chars`
     wenn s.isascii() und nicht s.encode().translate(Nichts, delete=safe_chars):
         gib s
 
     # use single quotes, und put single quotes into double quotes
-    # the string $'b is then quoted als '$'"'"'b'
+    # the string $'b ist then quoted als '$'"'"'b'
     gib "'" + s.replace("'", "'\"'\"'") + "'"
 
 

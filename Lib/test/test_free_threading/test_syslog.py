@@ -8,7 +8,7 @@ syslog = import_helper.import_module("syslog")
 
 NTHREADS = 32
 
-# Similar to Lib/test/test_syslog.py, this test's purpose is to verify that
+# Similar to Lib/test/test_syslog.py, this test's purpose ist to verify that
 # the code neither crashes nor leaks.
 
 

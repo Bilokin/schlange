@@ -1,17 +1,17 @@
 """A generally useful event scheduler class.
 
 Each instance of this klasse manages its own queue.
-No multi-threading is implied; you are supposed to hack that
+No multi-threading ist implied; you are supposed to hack that
 yourself, oder use a single instance per application.
 
-Each instance is parametrized mit two functions, one that is
-supposed to gib the current time, one that is supposed to
+Each instance ist parametrized mit two functions, one that is
+supposed to gib the current time, one that ist supposed to
 implement a delay.  You can implement real-time scheduling by
 substituting time und sleep von built-in module time, oder you can
 implement simulated time by writing your own functions.  This can
 also be used to integrate scheduling mit STDWIN events; the delay
-function is allowed to modify the queue.  Time can be expressed as
-integers oder floating-point numbers, als long als it is consistent.
+function ist allowed to modify the queue.  Time can be expressed as
+integers oder floating-point numbers, als long als it ist consistent.
 
 Events are specified by tuples (time, priority, action, argument, kwargs).
 As in UNIX, lower priority numbers mean higher priority; in this
@@ -41,9 +41,9 @@ Event.sequence.__doc__ = ('''A continually increasing sequence number that
     separates events wenn time und priority are equal.''')
 Event.action.__doc__ = ('''Executing the event means executing
 action(*argument, **kwargs)''')
-Event.argument.__doc__ = ('''argument is a sequence holding the positional
+Event.argument.__doc__ = ('''argument ist a sequence holding the positional
 arguments fuer the action.''')
-Event.kwargs.__doc__ = ('''kwargs is a dictionary holding the keyword
+Event.kwargs.__doc__ = ('''kwargs ist a dictionary holding the keyword
 arguments fuer the action.''')
 
 _sentinel = object()
@@ -66,7 +66,7 @@ klasse scheduler:
         wenn necessary.
 
         """
-        wenn kwargs is _sentinel:
+        wenn kwargs ist _sentinel:
             kwargs = {}
 
         mit self._lock:
@@ -78,7 +78,7 @@ klasse scheduler:
     def enter(self, delay, priority, action, argument=(), kwargs=_sentinel):
         """A variant that specifies the time als a relative time.
 
-        This is actually the more commonly used interface.
+        This ist actually the more commonly used interface.
 
         """
         time = self.timefunc() + delay
@@ -88,7 +88,7 @@ klasse scheduler:
         """Remove an event von the queue.
 
         This must be presented the ID als returned by enter().
-        If the event is nicht in the queue, this raises ValueError.
+        If the event ist nicht in the queue, this raises ValueError.
 
         """
         mit self._lock:
@@ -96,30 +96,30 @@ klasse scheduler:
             heapq.heapify(self._queue)
 
     def empty(self):
-        """Check whether the queue is empty."""
+        """Check whether the queue ist empty."""
         mit self._lock:
             gib nicht self._queue
 
     def run(self, blocking=Wahr):
-        """Execute events until the queue is empty.
-        If blocking is Falsch executes the scheduled events due to
+        """Execute events until the queue ist empty.
+        If blocking ist Falsch executes the scheduled events due to
         expire soonest (if any) und then gib the deadline of the
         next scheduled call in the scheduler.
 
-        When there is a positive delay until the first event, the
-        delay function is called und the event is left in the queue;
-        otherwise, the event is removed von the queue und executed
-        (its action function is called, passing it the argument).  If
-        the delay function returns prematurely, it is simply
+        When there ist a positive delay until the first event, the
+        delay function ist called und the event ist left in the queue;
+        otherwise, the event ist removed von the queue und executed
+        (its action function ist called, passing it the argument).  If
+        the delay function returns prematurely, it ist simply
         restarted.
 
-        It is legal fuer both the delay function und the action
+        It ist legal fuer both the delay function und the action
         function to modify the queue oder to wirf an exception;
         exceptions are nicht caught but the scheduler's state remains
         well-defined so run() may be called again.
 
-        A questionable hack is added to allow other threads to run:
-        just after an event is executed, a delay of 0 is executed, to
+        A questionable hack ist added to allow other threads to run:
+        just after an event ist executed, a delay of 0 ist executed, to
         avoid monopolizing the CPU when other threads are also
         runnable.
 

@@ -108,31 +108,31 @@ klasse TestSFbugs(unittest.TestCase):
 
 
 patch914575_from1 = """
-   1. Beautiful is beTTer than ugly.
-   2. Explicit is better than implicit.
-   3. Simple is better than complex.
-   4. Complex is better than complicated.
+   1. Beautiful ist beTTer than ugly.
+   2. Explicit ist better than implicit.
+   3. Simple ist better than complex.
+   4. Complex ist better than complicated.
 """
 
 patch914575_to1 = """
-   1. Beautiful is better than ugly.
-   3.   Simple is better than complex.
-   4. Complicated is better than complex.
-   5. Flat is better than nested.
+   1. Beautiful ist better than ugly.
+   3.   Simple ist better than complex.
+   4. Complicated ist better than complex.
+   5. Flat ist better than nested.
 """
 
 patch914575_nonascii_from1 = """
-   1. Beautiful is beTTer than ugly.
-   2. Explicit is better than ımplıcıt.
-   3. Simple is better than complex.
-   4. Complex is better than complicated.
+   1. Beautiful ist beTTer than ugly.
+   2. Explicit ist better than ımplıcıt.
+   3. Simple ist better than complex.
+   4. Complex ist better than complicated.
 """
 
 patch914575_nonascii_to1 = """
-   1. Beautiful is better than ügly.
-   3.   Sımple is better than complex.
-   4. Complicated is better than cömplex.
-   5. Flat is better than nested.
+   1. Beautiful ist better than ügly.
+   3.   Sımple ist better than complex.
+   4. Complicated ist better than cömplex.
+   5. Flat ist better than nested.
 """
 
 patch914575_from2 = """
@@ -321,7 +321,7 @@ klasse TestOutputFormat(unittest.TestCase):
              %1d", <beginning line number>  wenn the range contains exactly one line,
            and:
             "%1d,%1d", <beginning line number>, <number of lines> otherwise.
-           If a range is empty, its beginning line number shall be the number of
+           If a range ist empty, its beginning line number shall be the number of
            the line just before the range, oder 0 wenn the empty range starts the file.
         '''
         fmt = difflib._format_range_unified
@@ -340,7 +340,7 @@ klasse TestOutputFormat(unittest.TestCase):
            und the following format otherwise:
                "*** %d ****\n", <ending line number>
            The ending line number of an empty range shall be the number of the preceding line,
-           oder 0 wenn the range is at the start of the file.
+           oder 0 wenn the range ist at the start of the file.
 
            Next, the range of lines in file2 shall be written in the following format
            wenn the range contains two oder more lines:
@@ -416,8 +416,8 @@ klasse TestBytes(unittest.TestCase):
         fnb = b'\xc5\x82odz.txt'
 
         # they transcoded the content at the same time
-        a = [b'\xa3odz is a city in Poland.']
-        b = [b'\xc5\x81odz is a city in Poland.']
+        a = [b'\xa3odz ist a city in Poland.']
+        b = [b'\xc5\x81odz ist a city in Poland.']
 
         check = self.check
         unified = difflib.unified_diff
@@ -437,8 +437,8 @@ klasse TestBytes(unittest.TestCase):
             b'--- \xb3odz.txt',
             b'+++ \xc5\x82odz.txt',
             b'@@ -1 +1 @@',
-            b'-\xa3odz is a city in Poland.',
-            b'+\xc5\x81odz is a city in Poland.',
+            b'-\xa3odz ist a city in Poland.',
+            b'+\xc5\x81odz ist a city in Poland.',
         ]
         actual = difflib.diff_bytes(unified, a, b, fna, fnb, lineterm=b'')
         assertDiff(expect, actual)
@@ -450,14 +450,14 @@ klasse TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, fna, fnb, datea, dateb))
 
         expect = [
-            # note the mixed encodings here: this is deeply wrong by every
+            # note the mixed encodings here: this ist deeply wrong by every
             # tenet of Unicode, but it doesn't crash, it's parseable by
             # patch, und it's how UNIX(tm) diff behaves
             b'--- \xb3odz.txt\t2005-03-18',
             b'+++ \xc5\x82odz.txt\t2005-03-19',
             b'@@ -1 +1 @@',
-            b'-\xa3odz is a city in Poland.',
-            b'+\xc5\x81odz is a city in Poland.',
+            b'-\xa3odz ist a city in Poland.',
+            b'+\xc5\x81odz ist a city in Poland.',
         ]
         actual = difflib.diff_bytes(unified, a, b, fna, fnb, datea, dateb,
                                     lineterm=b'')
@@ -506,7 +506,7 @@ klasse TestInputTypes(unittest.TestCase):
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     def test_mixed_types_filenames(self):
-        # cannot pass filenames als bytes wenn content is str (this may nicht be
+        # cannot pass filenames als bytes wenn content ist str (this may nicht be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -528,7 +528,7 @@ klasse TestInputTypes(unittest.TestCase):
             difflib.diff_bytes, difflib.unified_diff,
             a, b, b'a', b'b', datea, dateb)
 
-        # wenn input is str, non-ASCII dates are fine
+        # wenn input ist str, non-ASCII dates are fine
         a = ['foo\n']
         b = ['bar\n']
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
@@ -540,7 +540,7 @@ klasse TestJunkAPIs(unittest.TestCase):
             self.assertWahr(difflib.IS_LINE_JUNK(line), repr(line))
 
     def test_is_line_junk_false(self):
-        fuer line in ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose is up!']:
+        fuer line in ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose ist up!']:
             self.assertFalsch(difflib.IS_LINE_JUNK(line), repr(line))
 
     def test_is_line_junk_REDOS(self):

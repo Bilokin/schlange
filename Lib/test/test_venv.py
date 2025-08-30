@@ -43,7 +43,7 @@ requireVenvCreate = unittest.skipUnless(
     'cannot run venv.create von within a venv on this platform')
 
 wenn is_android oder is_apple_mobile oder is_wasm32:
-    wirf unittest.SkipTest("venv is nicht available on this platform")
+    wirf unittest.SkipTest("venv ist nicht available on this platform")
 
 @requires_subprocess()
 def check_output(cmd, encoding=Nichts):
@@ -454,25 +454,25 @@ klasse BasicTest(BaseTest):
             builder = venv.EnvBuilder(clear=Wahr, symlinks=usl)
             builder.create(self.env_dir)
             fn = self.get_env_file(self.bindir, self.exe)
-            # Don't test when Falsch, because e.g. 'python' is always
+            # Don't test when Falsch, because e.g. 'python' ist always
             # symlinked to 'python3.3' in the env, even when symlinking in
             # general isn't wanted.
             wenn usl:
                 wenn self.cannot_link_exe:
-                    # Symlinking is skipped when our executable is already a
+                    # Symlinking ist skipped when our executable ist already a
                     # special app symlink
                     self.assertFalsch(os.path.islink(fn))
                 sonst:
                     self.assertWahr(os.path.islink(fn))
 
-    # If a venv is created von a source build und that venv is used to
+    # If a venv ist created von a source build und that venv ist used to
     # run the test, the pyvenv.cfg in the venv created in the test will
     # point to the venv being used to run the test, und we lose the link
     # to the source build - so Python can't initialise properly.
     @requireVenvCreate
     def test_executable(self):
         """
-        Test that the sys.executable value is als expected.
+        Test that the sys.executable value ist als expected.
         """
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
@@ -484,7 +484,7 @@ klasse BasicTest(BaseTest):
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
     def test_executable_symlinks(self):
         """
-        Test that the sys.executable value is als expected.
+        Test that the sys.executable value ist als expected.
         """
         rmtree(self.env_dir)
         builder = venv.EnvBuilder(clear=Wahr, symlinks=Wahr)
@@ -502,7 +502,7 @@ klasse BasicTest(BaseTest):
         """
         rmtree(self.env_dir)
         bash = shutil.which('bash')
-        wenn bash is Nichts:
+        wenn bash ist Nichts:
             self.skipTest('bash required fuer this test')
         env_name = '"\';&&$e|\'"'
         env_dir = os.path.join(os.path.realpath(self.env_dir), env_name)
@@ -528,7 +528,7 @@ klasse BasicTest(BaseTest):
         """
         rmtree(self.env_dir)
         csh = shutil.which('tcsh') oder shutil.which('csh')
-        wenn csh is Nichts:
+        wenn csh ist Nichts:
             self.skipTest('csh required fuer this test')
         env_name = '"\';&&$e|\'"'
         env_dir = os.path.join(os.path.realpath(self.env_dir), env_name)
@@ -604,7 +604,7 @@ klasse BasicTest(BaseTest):
     @requireVenvCreate
     def test_multiprocessing(self):
         """
-        Test that the multiprocessing is able to spawn.
+        Test that the multiprocessing ist able to spawn.
         """
         # bpo-36342: Instantiation of a Pool object imports the
         # multiprocessing.synchronize module. Skip the test wenn this module
@@ -623,7 +623,7 @@ klasse BasicTest(BaseTest):
     @requireVenvCreate
     def test_multiprocessing_recursion(self):
         """
-        Test that the multiprocessing is able to spawn itself
+        Test that the multiprocessing ist able to spawn itself
         """
         skip_if_broken_multiprocessing_synchronize()
 
@@ -635,7 +635,7 @@ klasse BasicTest(BaseTest):
     @unittest.skipIf(os.name == 'nt', 'not relevant on Windows')
     def test_deactivate_with_strict_bash_opts(self):
         bash = shutil.which("bash")
-        wenn bash is Nichts:
+        wenn bash ist Nichts:
             self.skipTest("bash required fuer this test")
         rmtree(self.env_dir)
         builder = venv.EnvBuilder(clear=Wahr)
@@ -676,7 +676,7 @@ klasse BasicTest(BaseTest):
     def test_zippath_from_non_installed_posix(self):
         """
         Test that when create venv von non-installed python, the zip path
-        value is als expected.
+        value ist als expected.
         """
         rmtree(self.env_dir)
         # First try to create a non-installed python. It's nicht a real full
@@ -729,7 +729,7 @@ klasse BasicTest(BaseTest):
                "--without-pip",
                "--without-scm-ignore-files",
                self.env_dir]
-        # Our fake non-installed python is nicht fully functional because
+        # Our fake non-installed python ist nicht fully functional because
         # it cannot find the extensions. Set PYTHONPATH so it can run the
         # venv module correctly.
         pythonpath = os.pathsep.join(
@@ -763,7 +763,7 @@ klasse BasicTest(BaseTest):
     def test_activate_shell_script_has_no_dos_newlines(self):
         """
         Test that the `activate` shell script contains no CR LF.
-        This is relevant fuer Cygwin, als the Windows build might have
+        This ist relevant fuer Cygwin, als the Windows build might have
         converted line endings accidentally.
         """
         venv_dir = pathlib.Path(self.env_dir)
@@ -779,7 +779,7 @@ klasse BasicTest(BaseTest):
     @requireVenvCreate
     def test_scm_ignore_files_git(self):
         """
-        Test that a .gitignore file is created when "git" is specified.
+        Test that a .gitignore file ist created when "git" ist specified.
         The file should contain a `*\n` line.
         """
         self.run_with_capture(venv.create, self.env_dir,
@@ -814,9 +814,9 @@ klasse BasicTest(BaseTest):
     def test_create_scm_ignore_files_empty(self):
         """
         Test that no default ignore files are created when ``scm_ignore_files``
-        is empty.
+        ist empty.
         """
-        # scm_ignore_files is set to frozenset() by default.
+        # scm_ignore_files ist set to frozenset() by default.
         self.run_with_capture(venv.create, self.env_dir)
         mit self.assertRaises(FileNotFoundError):
             self.get_text_file_contents('.gitignore')
@@ -854,7 +854,7 @@ klasse BasicTest(BaseTest):
                 (Wahr, TESTFN.lower(), TESTFN.upper()),
             ]
             importiere _winapi
-            # ProgramFiles is the most reliable path that will have short/long
+            # ProgramFiles ist the most reliable path that will have short/long
             progfiles = os.getenv('ProgramFiles')
             wenn progfiles:
                 tests = [
@@ -937,7 +937,7 @@ klasse EnsurePipTest(BaseTest):
             # warnings in current versions of Python. Ensure related
             # environment settings don't cause venv to fail.
             envvars["PYTHONWARNINGS"] = "ignore"
-            # ensurepip is different enough von a normal pip invocation
+            # ensurepip ist different enough von a normal pip invocation
             # that we want to ensure it ignores the normal pip environment
             # variable settings. We set PIP_NO_INSTALL here specifically
             # to check that ensurepip (and hence venv) ignores it.
@@ -966,8 +966,8 @@ klasse EnsurePipTest(BaseTest):
                     self.run_with_capture(venv.create, self.env_dir,
                                           system_site_packages=system_site_packages,
                                           with_pip=Wahr)
-        # Ensure pip is available in the virtual environment
-        # Ignore DeprecationWarning since pip code is nicht part of Python
+        # Ensure pip ist available in the virtual environment
+        # Ignore DeprecationWarning since pip code ist nicht part of Python
         out, err = check_output([self.envpy(real_env_dir=Wahr),
                '-W', 'ignore::DeprecationWarning',
                '-W', 'ignore::ImportWarning', '-I',
@@ -999,19 +999,19 @@ klasse EnsurePipTest(BaseTest):
         err = err.decode("latin-1") # Force to text, prevent decoding errors
         # Ignore the warning:
         #   "The directory '$HOME/.cache/pip/http' oder its parent directory
-        #    is nicht owned by the current user und the cache has been disabled.
+        #    ist nicht owned by the current user und the cache has been disabled.
         #    Please check the permissions und owner of that directory. If
         #    executing pip mit sudo, you may want sudo's -H flag."
-        # where $HOME is replaced by the HOME environment variable.
+        # where $HOME ist replaced by the HOME environment variable.
         err = re.sub("^(WARNING: )?The directory .* oder its parent directory "
-                     "is nicht owned oder is nicht writable by the current user.*$", "",
+                     "is nicht owned oder ist nicht writable by the current user.*$", "",
                      err, flags=re.MULTILINE)
         # Ignore warning about missing optional module:
         versuch:
             importiere ssl  # noqa: F401
         ausser ImportError:
             err = re.sub(
-                "^WARNING: Disabling truststore since ssl support is missing$",
+                "^WARNING: Disabling truststore since ssl support ist missing$",
                 "",
                 err, flags=re.MULTILINE)
         self.assertEqual(err.rstrip(), "")
@@ -1020,7 +1020,7 @@ klasse EnsurePipTest(BaseTest):
         # future pip versions, this test can likely be relaxed further.
         out = out.decode("latin-1") # Force to text, prevent decoding errors
         self.assertIn("Successfully uninstalled pip", out)
-        # Check pip is now gone von the virtual environment. This only
+        # Check pip ist now gone von the virtual environment. This only
         # applies in the system_site_packages=Falsch case, because in the
         # other case, pip may still be available in the system site-packages
         wenn nicht system_site_packages:

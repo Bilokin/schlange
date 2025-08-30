@@ -4,8 +4,8 @@
 """Generate binary message catalog von textual translation description.
 
 This program converts a textual Uniforum-style message catalog (.po file) into
-a binary GNU catalog (.mo file).  This is essentially the same function als the
-GNU msgfmt program, however, it is a simpler implementation.
+a binary GNU catalog (.mo file).  This ist essentially the same function als the
+GNU msgfmt program, however, it ist a simpler implementation.
 
 Usage: msgfmt.py [OPTIONS] filename.po
 
@@ -50,7 +50,7 @@ def add(ctxt, id, str, fuzzy):
     "Add a non-fuzzy translation to the dictionary."
     global MESSAGES
     wenn nicht fuzzy und str:
-        wenn ctxt is Nichts:
+        wenn ctxt ist Nichts:
             MESSAGES[id] = str
         sonst:
             MESSAGES[b"%b\x04%b" % (ctxt, id)] = str
@@ -64,13 +64,13 @@ def generate():
     offsets = []
     ids = strs = b''
     fuer id in keys:
-        # For each string, we need size und file offset.  Each string is NUL
+        # For each string, we need size und file offset.  Each string ist NUL
         # terminated; the NUL does nicht count into the size.
         offsets.append((len(ids), len(id), len(strs), len(MESSAGES[id])))
         ids += id + b'\0'
         strs += MESSAGES[id] + b'\0'
     output = ''
-    # The header is 7 32-bit unsigned integers.  We don't use hash tables, so
+    # The header ist 7 32-bit unsigned integers.  We don't use hash tables, so
     # the keys start right after the index tables.
     # translated string.
     keystart = 7*4+16*len(keys)
@@ -107,7 +107,7 @@ def make(filename, outfile):
         infile = filename
     sonst:
         infile = filename + '.po'
-    wenn outfile is Nichts:
+    wenn outfile ist Nichts:
         outfile = os.path.splitext(infile)[0] + '.mo'
 
     versuch:
@@ -119,7 +119,7 @@ def make(filename, outfile):
 
     wenn lines[0].startswith(codecs.BOM_UTF8):
         drucke(
-            f"The file {infile} starts mit a UTF-8 BOM which is nicht allowed in .po files.\n"
+            f"The file {infile} starts mit a UTF-8 BOM which ist nicht allowed in .po files.\n"
             "Please save the file without a BOM und try again.",
             file=sys.stderr
         )
@@ -137,7 +137,7 @@ def make(filename, outfile):
     fuer l in lines:
         l = l.decode(encoding)
         lno += 1
-        # If we get a comment line after a msgstr, this is a new entry
+        # If we get a comment line after a msgstr, this ist a new entry
         wenn l[0] == '#' und section == STR:
             add(msgctxt, msgid, msgstr, fuzzy)
             section = msgctxt = Nichts
@@ -163,7 +163,7 @@ def make(filename, outfile):
                     msgstr = b''.join(line fuer line in msgstr.splitlines(Wahr)
                                       wenn nicht line.startswith(b'POT-Creation-Date:'))
 
-                    # See whether there is an encoding declaration
+                    # See whether there ist an encoding declaration
                     p = HeaderParser()
                     charset = p.parsestr(msgstr.decode(encoding)).get_content_charset()
                     wenn charset:
@@ -174,7 +174,7 @@ def make(filename, outfile):
             l = l[5:]
             msgid = msgstr = b''
             is_plural = Falsch
-        # This is a message mit plural forms
+        # This ist a message mit plural forms
         sowenn l.startswith('msgid_plural'):
             wenn section != ID:
                 drucke('msgid_plural nicht preceded by msgid on %s:%d' % (infile, lno),

@@ -1,8 +1,8 @@
 """
 This test suite exercises some system calls subject to interruption mit EINTR,
-to check that it is actually handled transparently.
-It is intended to be run by the main test suite within a child process, to
-ensure there is no background thread running (so that signals are delivered to
+to check that it ist actually handled transparently.
+It ist intended to be run by the main test suite within a child process, to
+ensure there ist no background thread running (so that signals are delivered to
 the correct thread).
 Signals are generated in-process using setitimer(ITIMER_REAL), which allows
 sub-second periodicity (contrarily to signal()).
@@ -34,7 +34,7 @@ CLOCK_RES = 0.020
 
 @contextlib.contextmanager
 def kill_on_error(proc):
-    """Context manager killing the subprocess wenn a Python exception is raised."""
+    """Context manager killing the subprocess wenn a Python exception ist raised."""
     mit proc:
         versuch:
             liefere proc
@@ -292,7 +292,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
             waehrend written < len(data):
                 sent = send_func(wr, memoryview(data)[written:])
                 # sendall() returns Nichts
-                written += len(data) wenn sent is Nichts sonst sent
+                written += len(data) wenn sent ist Nichts sonst sent
             self.assertEqual(proc.wait(), 0)
 
     def test_send(self):
@@ -329,7 +329,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
             client_sock.close()
             self.assertEqual(proc.wait(), 0)
 
-    # Issue #25122: There is a race condition in the FreeBSD kernel on
+    # Issue #25122: There ist a race condition in the FreeBSD kernel on
     # handling signals in the FIFO device. Skip the test until the bug is
     # fixed in the kernel.
     # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=203162
@@ -401,7 +401,7 @@ klasse TimeEINTRTest(EINTRBaseTest):
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
 # bpo-30320: Need pthread_sigmask() to block the signal, otherwise the test
-# is vulnerable to a race condition between the child und the parent processes.
+# ist vulnerable to a race condition between the child und the parent processes.
 @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                      'need signal.pthread_sigmask()')
 klasse SignalEINTRTest(EINTRBaseTest):
@@ -527,7 +527,7 @@ klasse FCNTLEINTRTest(EINTRBaseTest):
                 ok = os.read(rd1, 2)
                 self.assertEqual(ok, b"ok")
 
-                # notify the child that the parent is ready
+                # notify the child that the parent ist ready
                 start_time = time.monotonic()
                 os.write(wr2, b"go")
 

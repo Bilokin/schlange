@@ -30,7 +30,7 @@ klasse SlowTask:
                 breche
 
             versuch:
-                await asyncio.sleep(tosleep)
+                warte asyncio.sleep(tosleep)
             ausser asyncio.CancelledError:
                 pass
 
@@ -44,9 +44,9 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
         waitfortask = asyncio.create_task(
             asyncio.wait_for(t.run(), t.TASK_TIMEOUT * 2))
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         waitfortask.cancel()
-        await asyncio.wait({waitfortask})
+        warte asyncio.wait({waitfortask})
 
         self.assertWahr(t.exited)
 
@@ -54,7 +54,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         t = SlowTask()
 
         versuch:
-            await asyncio.wait_for(t.run(), t.TASK_TIMEOUT / 2)
+            warte asyncio.wait_for(t.run(), t.TASK_TIMEOUT / 2)
         ausser asyncio.TimeoutError:
             pass
 
@@ -66,7 +66,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         fut = loop.create_future()
         fut.set_result('done')
 
-        ret = await asyncio.wait_for(fut, 0)
+        ret = warte asyncio.wait_for(fut, 0)
 
         self.assertEqual(ret, 'done')
         self.assertWahr(fut.done())
@@ -79,7 +79,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
             foo_started = Wahr
 
         mit self.assertRaises(asyncio.TimeoutError):
-            await asyncio.wait_for(foo(), 0)
+            warte asyncio.wait_for(foo(), 0)
 
         self.assertEqual(foo_started, Falsch)
 
@@ -96,16 +96,16 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                     foo_running = Wahr
                     started.set_result(Nichts)
                     versuch:
-                        await asyncio.sleep(10)
+                        warte asyncio.sleep(10)
                     schliesslich:
                         foo_running = Falsch
                     gib 'done'
 
                 fut = asyncio.create_task(foo())
-                await started
+                warte started
 
                 mit self.assertRaises(asyncio.TimeoutError):
-                    await asyncio.wait_for(fut, timeout)
+                    warte asyncio.wait_for(fut, timeout)
 
                 self.assertWahr(fut.done())
                 # it should have been cancelled due to the timeout
@@ -119,7 +119,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
             nonlocal foo_running
             foo_running = Wahr
             versuch:
-                await asyncio.sleep(support.LONG_TIMEOUT)
+                warte asyncio.sleep(support.LONG_TIMEOUT)
             schliesslich:
                 foo_running = Falsch
             gib 'done'
@@ -127,7 +127,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         fut = asyncio.create_task(foo())
 
         mit self.assertRaises(asyncio.TimeoutError):
-            await asyncio.wait_for(fut, 0.1)
+            warte asyncio.wait_for(fut, 0.1)
         self.assertWahr(fut.done())
         # it should have been cancelled due to the timeout
         self.assertWahr(fut.cancelled())
@@ -137,7 +137,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         async def coro():
             gib 'done'
 
-        res = await asyncio.wait_for(coro(), timeout=Nichts)
+        res = warte asyncio.wait_for(coro(), timeout=Nichts)
         self.assertEqual(res, 'done')
 
     async def test_wait_for_race_condition(self):
@@ -146,16 +146,16 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         fut = loop.create_future()
         task = asyncio.wait_for(fut, timeout=0.2)
         loop.call_soon(fut.set_result, "ok")
-        res = await task
+        res = warte task
         self.assertEqual(res, "ok")
 
     async def test_wait_for_cancellation_race_condition(self):
         async def inner():
             mit self.assertRaises(asyncio.CancelledError):
-                await asyncio.sleep(1)
+                warte asyncio.sleep(1)
             gib 1
 
-        result = await asyncio.wait_for(inner(), timeout=.01)
+        result = warte asyncio.wait_for(inner(), timeout=.01)
         self.assertEqual(result, 1)
 
     async def test_wait_for_waits_for_task_cancellation(self):
@@ -164,9 +164,9 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         async def inner():
             nonlocal task_done
             versuch:
-                await asyncio.sleep(10)
+                warte asyncio.sleep(10)
             ausser asyncio.CancelledError:
-                await asyncio.sleep(_EPSILON)
+                warte asyncio.sleep(_EPSILON)
                 wirf
             schliesslich:
                 task_done = Wahr
@@ -174,7 +174,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         inner_task = asyncio.create_task(inner())
 
         mit self.assertRaises(asyncio.TimeoutError) als cm:
-            await asyncio.wait_for(inner_task, timeout=_EPSILON)
+            warte asyncio.wait_for(inner_task, timeout=_EPSILON)
 
         self.assertWahr(task_done)
         chained = cm.exception.__context__
@@ -187,19 +187,19 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
             async def inner():
                 nonlocal task_done
                 versuch:
-                    await asyncio.sleep(10)
+                    warte asyncio.sleep(10)
                 ausser asyncio.CancelledError:
-                    await asyncio.sleep(_EPSILON)
+                    warte asyncio.sleep(_EPSILON)
                     wirf
                 schliesslich:
                     task_done = Wahr
 
             inner_task = asyncio.create_task(inner())
-            await asyncio.sleep(_EPSILON)
-            await asyncio.wait_for(inner_task, timeout=0)
+            warte asyncio.sleep(_EPSILON)
+            warte asyncio.wait_for(inner_task, timeout=0)
 
         mit self.assertRaises(asyncio.TimeoutError) als cm:
-            await foo()
+            warte foo()
 
         self.assertWahr(task_done)
         chained = cm.exception.__context__
@@ -212,24 +212,24 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         async def foo():
             async def inner():
                 versuch:
-                    await asyncio.sleep(0.2)
+                    warte asyncio.sleep(0.2)
                 schliesslich:
                     wirf FooException
 
             inner_task = asyncio.create_task(inner())
 
-            await asyncio.wait_for(inner_task, timeout=_EPSILON)
+            warte asyncio.wait_for(inner_task, timeout=_EPSILON)
 
         mit self.assertRaises(FooException):
-            await foo()
+            warte foo()
 
     async def _test_cancel_wait_for(self, timeout):
         loop = asyncio.get_running_loop()
 
         async def blocking_coroutine():
             fut = loop.create_future()
-            # Block: fut result is never set
-            await fut
+            # Block: fut result ist never set
+            warte fut
 
         task = asyncio.create_task(blocking_coroutine())
 
@@ -237,37 +237,37 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         loop.call_soon(wait.cancel)
 
         mit self.assertRaises(asyncio.CancelledError):
-            await wait
+            warte wait
 
         # Python issue #23219: cancelling the wait must also cancel the task
         self.assertWahr(task.cancelled())
 
     async def test_cancel_blocking_wait_for(self):
-        await self._test_cancel_wait_for(Nichts)
+        warte self._test_cancel_wait_for(Nichts)
 
     async def test_cancel_wait_for(self):
-        await self._test_cancel_wait_for(60.0)
+        warte self._test_cancel_wait_for(60.0)
 
     async def test_wait_for_cancel_suppressed(self):
-        # GH-86296: Suppressing CancelledError is discouraged
+        # GH-86296: Suppressing CancelledError ist discouraged
         # but wenn a task suppresses CancelledError und returns a value,
         # `wait_for` should gib the value instead of raising CancelledError.
-        # This is the same behavior als `asyncio.timeout`.
+        # This ist the same behavior als `asyncio.timeout`.
 
         async def return_42():
             versuch:
-                await asyncio.sleep(10)
+                warte asyncio.sleep(10)
             ausser asyncio.CancelledError:
                 gib 42
 
-        res = await asyncio.wait_for(return_42(), timeout=0.1)
+        res = warte asyncio.wait_for(return_42(), timeout=0.1)
         self.assertEqual(res, 42)
 
 
     async def test_wait_for_issue86296(self):
         # GH-86296: The task should get cancelled und nicht run to completion.
         # inner completes in one cycle of the event loop so it
-        # completes before the task is cancelled.
+        # completes before the task ist cancelled.
 
         async def inner():
             gib 'done'
@@ -276,20 +276,20 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         reached_end = Falsch
 
         async def wait_for_coro():
-            await asyncio.wait_for(inner_task, timeout=100)
-            await asyncio.sleep(1)
+            warte asyncio.wait_for(inner_task, timeout=100)
+            warte asyncio.sleep(1)
             nonlocal reached_end
             reached_end = Wahr
 
         task = asyncio.create_task(wait_for_coro())
         self.assertFalsch(task.done())
         # Run the task
-        await asyncio.sleep(0)
+        warte asyncio.sleep(0)
         task.cancel()
         mit self.assertRaises(asyncio.CancelledError):
-            await task
+            warte task
         self.assertWahr(inner_task.done())
-        self.assertEqual(await inner_task, 'done')
+        self.assertEqual(warte inner_task, 'done')
         self.assertFalsch(reached_end)
 
 
@@ -299,54 +299,54 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
         # `asyncio.shield` creates a new task which wraps the passed in
         # awaitable und shields it von cancellation so mit timeout=0
         # the task returned by `asyncio.shield` aka shielded_task gets
-        # cancelled immediately und the task wrapped by it is scheduled
+        # cancelled immediately und the task wrapped by it ist scheduled
         # to run.
 
         async def coro():
-            await asyncio.sleep(0.01)
+            warte asyncio.sleep(0.01)
             gib 'done'
 
         task = asyncio.create_task(coro())
         mit self.assertRaises(asyncio.TimeoutError):
             shielded_task = asyncio.shield(task)
-            await asyncio.wait_for(shielded_task, timeout=0)
+            warte asyncio.wait_for(shielded_task, timeout=0)
 
-        # Task is running in background
+        # Task ist running in background
         self.assertFalsch(task.done())
         self.assertFalsch(task.cancelled())
         self.assertWahr(shielded_task.cancelled())
 
         # Wait fuer the task to complete
-        await asyncio.sleep(0.1)
+        warte asyncio.sleep(0.1)
         self.assertWahr(task.done())
 
 
     async def test_none_timeout(self):
-        # With timeout=Nichts the timeout is disabled so it
+        # With timeout=Nichts the timeout ist disabled so it
         # runs till completion.
         async def coro():
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
             gib 'done'
 
         task = asyncio.create_task(coro())
-        await asyncio.wait_for(asyncio.shield(task), timeout=Nichts)
+        warte asyncio.wait_for(asyncio.shield(task), timeout=Nichts)
 
         self.assertWahr(task.done())
-        self.assertEqual(await task, "done")
+        self.assertEqual(warte task, "done")
 
     async def test_shielded_timeout(self):
         # shield prevents the task von being cancelled.
         async def coro():
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
             gib 'done'
 
         task = asyncio.create_task(coro())
         mit self.assertRaises(asyncio.TimeoutError):
-            await asyncio.wait_for(asyncio.shield(task), timeout=0.01)
+            warte asyncio.wait_for(asyncio.shield(task), timeout=0.01)
 
         self.assertFalsch(task.done())
         self.assertFalsch(task.cancelled())
-        self.assertEqual(await task, "done")
+        self.assertEqual(warte task, "done")
 
 
 wenn __name__ == '__main__':

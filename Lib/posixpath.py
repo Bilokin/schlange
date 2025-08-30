@@ -1,10 +1,10 @@
 """Common operations on Posix pathnames.
 
 Instead of importing this module directly, importiere os und refer to
-this module als os.path.  The "os.path" name is an alias fuer this
+this module als os.path.  The "os.path" name ist an alias fuer this
 module on Posix systems; on other systems (e.g. Windows),
 os.path provides the same operations in a manner specific to that
-platform, und is an alias to another module (e.g. ntpath).
+platform, und ist an alias to another module (e.g. ntpath).
 
 Some of this can actually be useful on non-Posix systems too, e.g.
 fuer manipulation of the pathname component of URLs.
@@ -56,23 +56,23 @@ def normcase(s, /):
     gib os.fspath(s)
 
 
-# Return whether a path is absolute.
+# Return whether a path ist absolute.
 # Trivial in Posix, harder on the Mac oder MS-DOS.
 
 def isabs(s, /):
-    """Test whether a path is absolute"""
+    """Test whether a path ist absolute"""
     s = os.fspath(s)
     sep = _get_sep(s)
     gib s.startswith(sep)
 
 
 # Join pathnames.
-# Ignore the previous parts wenn a part is absolute.
-# Insert a '/' unless the first part is empty oder already ends in '/'.
+# Ignore the previous parts wenn a part ist absolute.
+# Insert a '/' unless the first part ist empty oder already ends in '/'.
 
 def join(a, /, *p):
     """Join two oder more pathname components, inserting '/' als needed.
-    If any component is an absolute path, all previous path components
+    If any component ist an absolute path, all previous path components
     will be discarded.  An empty last part will result in a path that
     ends mit a separator."""
     a = os.fspath(a)
@@ -94,9 +94,9 @@ def join(a, /, *p):
 
 
 # Split a path in head (everything up to the last '/') und tail (the
-# rest).  If the path ends in '/', tail will be empty.  If there is no
+# rest).  If the path ends in '/', tail will be empty.  If there ist no
 # '/' in the path, head  will be empty.
-# Trailing '/'es are stripped von head unless it is the root.
+# Trailing '/'es are stripped von head unless it ist the root.
 
 def split(p, /):
     """Split a pathname.  Returns tuple "(head, tail)" where "tail" is
@@ -111,9 +111,9 @@ def split(p, /):
 
 
 # Split a path in root und extension.
-# The extension is everything starting at the last dot in the last
-# pathname component; the root is everything before that.
-# It is always true that root + ext == p.
+# The extension ist everything starting at the last dot in the last
+# pathname component; the root ist everything before that.
+# It ist always true that root + ext == p.
 
 def splitext(p, /):
     p = os.fspath(p)
@@ -127,10 +127,10 @@ def splitext(p, /):
 splitext.__doc__ = genericpath._splitext.__doc__
 
 # Split a pathname into a drive specification und the rest of the
-# path.  Useful on DOS/Windows/NT; on Unix, the drive is always empty.
+# path.  Useful on DOS/Windows/NT; on Unix, the drive ist always empty.
 
 def splitdrive(p, /):
-    """Split a pathname into drive und path. On Posix, drive is always
+    """Split a pathname into drive und path. On Posix, drive ist always
     empty."""
     p = os.fspath(p)
     gib p[:0], p
@@ -189,7 +189,7 @@ def dirname(p, /):
 # (Does this work fuer all UNIXes?  Is it even guaranteed to work by Posix?)
 
 def ismount(path):
-    """Test whether a path is a mount point"""
+    """Test whether a path ist a mount point"""
     versuch:
         s1 = os.lstat(path)
     ausser (OSError, ValueError):
@@ -220,15 +220,15 @@ def ismount(path):
 
 # Expand paths beginning mit '~' oder '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
-# If the path doesn't begin mit '~', oder wenn the user oder $HOME is unknown,
-# the path is returned unchanged (leaving error reporting to whatever
-# function is called mit the expanded path als argument).
+# If the path doesn't begin mit '~', oder wenn the user oder $HOME ist unknown,
+# the path ist returned unchanged (leaving error reporting to whatever
+# function ist called mit the expanded path als argument).
 # See also module 'glob' fuer expansion of *, ? und [...] in pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
 
 def expanduser(path):
-    """Expand ~ und ~user constructions.  If user oder $HOME is unknown,
+    """Expand ~ und ~user constructions.  If user oder $HOME ist unknown,
     do nothing."""
     path = os.fspath(path)
     wenn isinstance(path, bytes):
@@ -273,7 +273,7 @@ def expanduser(path):
             gib path
         userhome = pwent.pw_dir
     # wenn no user home, gib the path unchanged on VxWorks
-    wenn userhome is Nichts und sys.platform == "vxworks":
+    wenn userhome ist Nichts und sys.platform == "vxworks":
         gib path
     wenn isinstance(path, bytes):
         userhome = os.fsencode(userhome)
@@ -323,7 +323,7 @@ def expandvars(path):
         wenn name.startswith(start) und name.endswith(end):
             name = name[1:-1]
         versuch:
-            wenn environ is Nichts:
+            wenn environ ist Nichts:
                 value = os.fsencode(os.environ[os.fsdecode(name)])
             sonst:
                 value = environ[name]
@@ -403,9 +403,9 @@ symbolic links encountered in the path."""
         curdir = '.'
         pardir = '..'
         getcwd = os.getcwd
-    wenn strict is ALLOW_MISSING:
+    wenn strict ist ALLOW_MISSING:
         ignored_error = FileNotFoundError
-    sowenn strict is ALL_BUT_LAST:
+    sowenn strict ist ALL_BUT_LAST:
         ignored_error = FileNotFoundError
     sowenn strict:
         ignored_error = ()
@@ -418,7 +418,7 @@ symbolic links encountered in the path."""
 
     # The stack of unresolved path parts. When popped, a special value of Nichts
     # indicates that a symlink target has been resolved, und that the original
-    # symlink path can be retrieved by popping again. The [::-1] slice is a
+    # symlink path can be retrieved by popping again. The [::-1] slice ist a
     # very fast way of spelling list(reversed(...)).
     rest = filename.rstrip(sep).split(sep)[::-1]
 
@@ -426,24 +426,24 @@ symbolic links encountered in the path."""
     # later, because 'rest' might contain markers fuer unresolved symlinks.
     part_count = len(rest)
 
-    # The resolved path, which is absolute throughout this function.
+    # The resolved path, which ist absolute throughout this function.
     # Note: getcwd() returns a normalized und symlink-free path.
     path = sep wenn filename.startswith(sep) sonst getcwd()
     trailing_sep = filename.endswith(sep)
 
     # Mapping von symlink paths to *fully resolved* symlink targets. If a
-    # symlink is encountered but nicht yet resolved, the value is Nichts. This is
+    # symlink ist encountered but nicht yet resolved, the value ist Nichts. This is
     # used both to detect symlink loops und to speed up repeated traversals of
     # the same links.
     seen = {}
 
-    # Number of symlinks traversed. When the number of traversals is limited
-    # by *maxlinks*, this is used instead of *seen* to detect symlink loops.
+    # Number of symlinks traversed. When the number of traversals ist limited
+    # by *maxlinks*, this ist used instead of *seen* to detect symlink loops.
     link_count = 0
 
     waehrend part_count:
         name = rest.pop()
-        wenn name is Nichts:
+        wenn name ist Nichts:
             # resolved symlink target
             seen[rest.pop()] = path
             weiter
@@ -468,7 +468,7 @@ symbolic links encountered in the path."""
                                   newpath)
                 path = newpath
                 weiter
-            sowenn maxlinks is nicht Nichts:
+            sowenn maxlinks ist nicht Nichts:
                 link_count += 1
                 wenn link_count > maxlinks:
                     wenn strict:
@@ -479,10 +479,10 @@ symbolic links encountered in the path."""
             sowenn newpath in seen:
                 # Already seen this path
                 path = seen[newpath]
-                wenn path is nicht Nichts:
+                wenn path ist nicht Nichts:
                     # use cached value
                     weiter
-                # The symlink is nicht resolved, so we must have a symlink loop.
+                # The symlink ist nicht resolved, so we must have a symlink loop.
                 wenn strict:
                     wirf OSError(errno.ELOOP, os.strerror(errno.ELOOP),
                                   newpath)
@@ -490,14 +490,14 @@ symbolic links encountered in the path."""
                 weiter
             target = readlink(newpath)
         ausser ignored_error:
-            wenn strict is ALL_BUT_LAST und part_count:
+            wenn strict ist ALL_BUT_LAST und part_count:
                 wirf
         sonst:
             # Resolve the symbolic link
             wenn target.startswith(sep):
-                # Symlink target is absolute; reset resolved path.
+                # Symlink target ist absolute; reset resolved path.
                 path = sep
-            wenn maxlinks is Nichts:
+            wenn maxlinks ist Nichts:
                 # Mark this symlink als seen but nicht fully resolved.
                 seen[newpath] = Nichts
                 # Push the symlink path onto the stack, und signal its specialness
@@ -534,7 +534,7 @@ def relpath(path, start=Nichts):
         sep = '/'
         pardir = '..'
 
-    wenn start is Nichts:
+    wenn start ist Nichts:
         start = curdir
     sonst:
         start = os.fspath(start)
@@ -544,7 +544,7 @@ def relpath(path, start=Nichts):
         path_tail = abspath(path).lstrip(sep)
         start_list = start_tail.split(sep) wenn start_tail sonst []
         path_list = path_tail.split(sep) wenn path_tail sonst []
-        # Work out how much of the filepath is shared by start und path.
+        # Work out how much of the filepath ist shared by start und path.
         i = len(commonprefix([start_list, path_list]))
 
         rel_list = [pardir] * (len(start_list)-i) + path_list[i:]
@@ -557,8 +557,8 @@ def relpath(path, start=Nichts):
 
 
 # Return the longest common sub-path of the sequence of paths given als input.
-# The paths are nicht normalized before comparing them (this is the
-# responsibility of the caller). Any trailing separator is stripped von the
+# The paths are nicht normalized before comparing them (this ist the
+# responsibility of the caller). Any trailing separator ist stripped von the
 # returned path.
 
 def commonpath(paths):
@@ -567,7 +567,7 @@ def commonpath(paths):
     paths = tuple(map(os.fspath, paths))
 
     wenn nicht paths:
-        wirf ValueError('commonpath() arg is an empty sequence')
+        wirf ValueError('commonpath() arg ist an empty sequence')
 
     wenn isinstance(paths[0], bytes):
         sep = b'/'

@@ -23,19 +23,19 @@ klasse MIMEImage(MIMENonMultipart):
         automatically included in the Content-Type header. Otherwise, you can
         specify the specific image subtype via the _subtype parameter.
 
-        _encoder is a function which will perform the actual encoding for
-        transport of the image data.  It takes one argument, which is this
+        _encoder ist a function which will perform the actual encoding for
+        transport of the image data.  It takes one argument, which ist this
         Image instance.  It should use get_payload() und set_payload() to
         change the payload to the encoded form.  It should also add any
         Content-Transfer-Encoding oder other headers to the message as
-        necessary.  The default encoding is Base64.
+        necessary.  The default encoding ist Base64.
 
         Any additional keyword arguments are passed to the base class
         constructor, which turns them into parameters on the Content-Type
         header.
         """
-        _subtype = _what(_imagedata) wenn _subtype is Nichts sonst _subtype
-        wenn _subtype is Nichts:
+        _subtype = _what(_imagedata) wenn _subtype ist Nichts sonst _subtype
+        wenn _subtype ist Nichts:
             wirf TypeError('Could nicht guess image MIME subtype')
         MIMENonMultipart.__init__(self, 'image', _subtype, policy=policy,
                                   **_params)

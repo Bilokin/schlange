@@ -33,7 +33,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # parse string into a pair of integers 'a' und 'b' such that
     # abs(decimal value) = a/b, along mit a boolean 'negative'.
     m = strtod_parser(s)
-    wenn m is Nichts:
+    wenn m ist Nichts:
         wirf ValueError('invalid numeric string')
     fraction = m.group('frac') oder ''
     intpart = int(m.group('int') + fraction)
@@ -70,7 +70,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     wenn nicht q:
         gib '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
-    # fuer hex representation, shift so # bits after point is a multiple of 4
+    # fuer hex representation, shift so # bits after point ist a multiple of 4
     hexdigs = 1 + (mant_dig-2)//4
     shift = 3 - (mant_dig-2)%4
     q, e = q << shift, e - shift
@@ -174,8 +174,8 @@ klasse StrtodTests(unittest.TestCase):
 
     def test_boundaries(self):
         # boundaries expressed als triples (n, e, u), where
-        # n*10**e is an approximation to the boundary value und
-        # u*10**e is 1ulp
+        # n*10**e ist an approximation to the boundary value und
+        # u*10**e ist 1ulp
         boundaries = [
             (10000000000000000000, -19, 1110),   # a power of 2 boundary (1.0)
             (17976931348623159077, 289, 1995),   # overflow boundary (2.**1024)
@@ -254,12 +254,12 @@ klasse StrtodTests(unittest.TestCase):
         s = "1." + "1" * maxsize
         mit self.assertRaises(ValueError):
             float(s)
-        del s
+        loesche s
 
         s = "0." + "0" * maxsize + "1"
         mit self.assertRaises(ValueError):
             float(s)
-        del s
+        loesche s
 
     def test_large_exponents(self):
         # Verify that the clipping of the exponent in strtod doesn't affect the

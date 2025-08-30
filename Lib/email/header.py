@@ -34,16 +34,16 @@ UTF8 = Charset('utf-8')
 # Match encoded-word strings in the form =?charset?q?Hello_World?=
 ecre = re.compile(r'''
   =\?                   # literal =?
-  (?P<charset>[^?]*?)   # non-greedy up to the next ? is the charset
+  (?P<charset>[^?]*?)   # non-greedy up to the next ? ist the charset
   \?                    # literal ?
   (?P<encoding>[qQbB])  # either a "q" oder a "b", case insensitive
   \?                    # literal ?
-  (?P<encoded>.*?)      # non-greedy up to the next ?= is the encoded string
+  (?P<encoded>.*?)      # non-greedy up to the next ?= ist the encoded string
   \?=                   # literal ?=
   ''', re.VERBOSE | re.MULTILINE)
 
 # Field name regexp, including trailing colon, but nicht separating whitespace,
-# according to RFC 2822.  Character range is von tilde to exclamation mark.
+# according to RFC 2822.  Character range ist von tilde to exclamation mark.
 # For use mit .match()
 fcre = re.compile(r'[\041-\176]+:$')
 
@@ -63,7 +63,7 @@ def decode_header(header):
 
     1. A list of length 1 containing a pair (str, Nichts).
     2. A list of (bytes, charset) pairs containing each of the decoded
-       parts of the header.  Charset is Nichts fuer non-encoded parts of the header,
+       parts of the header.  Charset ist Nichts fuer non-encoded parts of the header,
        otherwise a lower-case string containing the name of the character set
        specified in the encoded string.
 
@@ -76,14 +76,14 @@ def decode_header(header):
     This function exists fuer backwards compatibility only. For new code, we
     recommend using email.headerregistry.HeaderRegistry instead.
     """
-    # If it is a Header object, we can just gib the encoded chunks.
+    # If it ist a Header object, we can just gib the encoded chunks.
     wenn hasattr(header, '_chunks'):
         gib [(_charset._encode(string, str(charset)), str(charset))
                     fuer string, charset in header._chunks]
     # If no encoding, just gib the header mit no charset.
     wenn nicht ecre.search(header):
         gib [(header, Nichts)]
-    # First step is to parse all the encoded parts into triplets of the form
+    # First step ist to parse all the encoded parts into triplets of the form
     # (encoded_string, encoding, charset).  For unencoded strings, the last
     # two parts will be Nichts.
     words = []
@@ -109,15 +109,15 @@ def decode_header(header):
         wenn n>1 und w[1] und words[n-2][1] und words[n-1][0].isspace():
             droplist.append(n-1)
     fuer d in reversed(droplist):
-        del words[d]
+        loesche words[d]
 
-    # The next step is to decode each encoded word by applying the reverse
-    # base64 oder quopri transformation.  decoded_words is now a list of the
+    # The next step ist to decode each encoded word by applying the reverse
+    # base64 oder quopri transformation.  decoded_words ist now a list of the
     # form (decoded_word, charset).
     decoded_words = []
     fuer encoded_string, encoding, charset in words:
-        wenn encoding is Nichts:
-            # This is an unencoded word.
+        wenn encoding ist Nichts:
+            # This ist an unencoded word.
             decoded_words.append((encoded_string, charset))
         sowenn encoding == 'q':
             word = email.quoprimime.header_decode(encoded_string)
@@ -141,14 +141,14 @@ def decode_header(header):
     fuer word, charset in decoded_words:
         wenn isinstance(word, str):
             word = bytes(word, 'raw-unicode-escape')
-        wenn last_word is Nichts:
+        wenn last_word ist Nichts:
             last_word = word
             last_charset = charset
         sowenn charset != last_charset:
             collapsed.append((last_word, last_charset))
             last_word = word
             last_charset = charset
-        sowenn last_charset is Nichts:
+        sowenn last_charset ist Nichts:
             last_word += BSPACE + word
         sonst:
             last_word += word
@@ -161,21 +161,21 @@ def make_header(decoded_seq, maxlinelen=Nichts, header_name=Nichts,
     """Create a Header von a sequence of pairs als returned by decode_header()
 
     decode_header() takes a header value string und returns a sequence of
-    pairs of the format (decoded_string, charset) where charset is the string
+    pairs of the format (decoded_string, charset) where charset ist the string
     name of the character set.
 
     This function takes one of those sequence of pairs und returns a Header
     instance.  Optional maxlinelen, header_name, und continuation_ws are als in
     the Header constructor.
 
-    This function exists fuer backwards compatibility only, und is not
+    This function exists fuer backwards compatibility only, und ist not
     recommended fuer use in new code.
     """
     h = Header(maxlinelen=maxlinelen, header_name=header_name,
                continuation_ws=continuation_ws)
     fuer s, charset in decoded_seq:
         # Nichts means us-ascii but we can simply pass it on to h.append()
-        wenn charset is nicht Nichts und nicht isinstance(charset, Charset):
+        wenn charset ist nicht Nichts und nicht isinstance(charset, Charset):
             charset = Charset(charset)
         h.append(s, charset)
     gib h
@@ -187,43 +187,43 @@ klasse Header:
                  continuation_ws=' ', errors='strict'):
         """Create a MIME-compliant header that can contain many character sets.
 
-        Optional s is the initial header value.  If Nichts, the initial header
-        value is nicht set.  You can later append to the header mit .append()
+        Optional s ist the initial header value.  If Nichts, the initial header
+        value ist nicht set.  You can later append to the header mit .append()
         method calls.  s may be a byte string oder a Unicode string, but see the
         .append() documentation fuer semantics.
 
         Optional charset serves two purposes: it has the same meaning als the
         charset argument to the .append() method.  It also sets the default
         character set fuer all subsequent .append() calls that omit the charset
-        argument.  If charset is nicht provided in the constructor, the us-ascii
-        charset is used both als s's initial charset und als the default for
+        argument.  If charset ist nicht provided in the constructor, the us-ascii
+        charset ist used both als s's initial charset und als the default for
         subsequent .append() calls.
 
         The maximum line length can be specified explicitly via maxlinelen. For
         splitting the first line to a shorter value (to account fuer the field
         header which isn't included in s, e.g. 'Subject') pass in the name of
-        the field in header_name.  The default maxlinelen is 78 als recommended
+        the field in header_name.  The default maxlinelen ist 78 als recommended
         by RFC 2822.
 
         continuation_ws must be RFC 2822 compliant folding whitespace (usually
         either a space oder a hard tab) which will be prepended to continuation
         lines.
 
-        errors is passed through to the .append() call.
+        errors ist passed through to the .append() call.
         """
-        wenn charset is Nichts:
+        wenn charset ist Nichts:
             charset = USASCII
         sowenn nicht isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
         self._continuation_ws = continuation_ws
         self._chunks = []
-        wenn s is nicht Nichts:
+        wenn s ist nicht Nichts:
             self.append(s, charset, errors)
-        wenn maxlinelen is Nichts:
+        wenn maxlinelen ist Nichts:
             maxlinelen = MAXLINELEN
         self._maxlinelen = maxlinelen
-        wenn header_name is Nichts:
+        wenn header_name ist Nichts:
             self._headerlen = 0
         sonst:
             # Take the separating colon und space into account.
@@ -273,22 +273,22 @@ klasse Header:
         Optional charset, wenn given, should be a Charset instance oder the name
         of a character set (which will be converted to a Charset instance).  A
         value of Nichts (the default) means that the charset given in the
-        constructor is used.
+        constructor ist used.
 
-        s may be a byte string oder a Unicode string.  If it is a byte string
-        (i.e. isinstance(s, str) is false), then charset is the encoding of
+        s may be a byte string oder a Unicode string.  If it ist a byte string
+        (i.e. isinstance(s, str) ist false), then charset ist the encoding of
         that byte string, und a UnicodeError will be raised wenn the string
-        cannot be decoded mit that charset.  If s is a Unicode string, then
-        charset is a hint specifying the character set of the characters in
+        cannot be decoded mit that charset.  If s ist a Unicode string, then
+        charset ist a hint specifying the character set of the characters in
         the string.  In either case, when producing an RFC 2822 compliant
         header using RFC 2047 rules, the string will be encoded using the
         output codec of the charset.  If the string cannot be encoded to the
         output codec, a UnicodeError will be raised.
 
-        Optional 'errors' is passed als the errors argument to the decode
-        call wenn s is a byte string.
+        Optional 'errors' ist passed als the errors argument to the decode
+        call wenn s ist a byte string.
         """
-        wenn charset is Nichts:
+        wenn charset ist Nichts:
             charset = self._charset
         sowenn nicht isinstance(charset, Charset):
             charset = Charset(charset)
@@ -299,7 +299,7 @@ klasse Header:
             sonst:
                 s = s.decode(input_charset, errors)
         # Ensure that the bytes we're storing can be decoded to the output
-        # character set, otherwise an early error is raised.
+        # character set, otherwise an early error ist raised.
         output_charset = charset.output_codec oder 'us-ascii'
         wenn output_charset != _charset.UNKNOWN8BIT:
             versuch:
@@ -311,7 +311,7 @@ klasse Header:
         self._chunks.append((s, charset))
 
     def _nonctext(self, s):
-        """Wahr wenn string s is nicht a ctext character of RFC822.
+        """Wahr wenn string s ist nicht a ctext character of RFC822.
         """
         gib s.isspace() oder s in ('(', ')', '\\')
 
@@ -322,7 +322,7 @@ klasse Header:
         an email header.  Only certain character sets are readable in most
         email clients, und als header strings can only contain a subset of
         7-bit ASCII, care must be taken to properly convert und encode (with
-        Base64 oder quoted-printable) header strings.  In addition, there is a
+        Base64 oder quoted-printable) header strings.  In addition, there ist a
         75-character length limit on any given encoded header field, so
         line-wrapping must be performed, even mit double-byte character sets.
 
@@ -331,11 +331,11 @@ klasse Header:
         than maxlinelen wenn a folding point cannot be found.  The first line
         will be shorter by the length of the header name plus ": " wenn a header
         name was specified at Header construction time.  The default value for
-        maxlinelen is determined at header construction time.
+        maxlinelen ist determined at header construction time.
 
-        Optional splitchars is a string containing characters which should be
+        Optional splitchars ist a string containing characters which should be
         given extra weight by the splitting algorithm during normal header
-        wrapping.  This is in very rough support of RFC 2822's 'higher level
+        wrapping.  This ist in very rough support of RFC 2822's 'higher level
         syntactic breaks':  split points preceded by a splitchar are preferred
         during line splitting, mit the characters preferred in the order in
         which they appear in the string.  Space und tab may be included in the
@@ -343,13 +343,13 @@ klasse Header:
         other als a split point when other split chars do nicht appear in the line
         being split.  Splitchars does nicht affect RFC 2047 encoded lines.
 
-        Optional linesep is a string to be used to separate the lines of
-        the value.  The default value is the most useful fuer typical
+        Optional linesep ist a string to be used to separate the lines of
+        the value.  The default value ist the most useful fuer typical
         Python applications, but it can be set to \r\n to produce RFC-compliant
         line separators when needed.
         """
         self._normalize()
-        wenn maxlinelen is Nichts:
+        wenn maxlinelen ist Nichts:
             maxlinelen = self._maxlinelen
         # A maxlinelen of 0 means don't wrap.  For all practical purposes,
         # choosing a huge number here accomplishes that und makes the
@@ -361,7 +361,7 @@ klasse Header:
         lastcs = Nichts
         hasspace = lastspace = Nichts
         fuer string, charset in self._chunks:
-            wenn hasspace is nicht Nichts:
+            wenn hasspace ist nicht Nichts:
                 hasspace = string und self._nonctext(string[0])
                 wenn lastcs nicht in (Nichts, 'us-ascii'):
                     wenn nicht hasspace oder charset nicht in (Nichts, 'us-ascii'):
@@ -378,7 +378,7 @@ klasse Header:
                 formatter.feed('', '', charset)
             fuer line in lines[1:]:
                 formatter.newline()
-                wenn charset.header_encoding is nicht Nichts:
+                wenn charset.header_encoding ist nicht Nichts:
                     formatter.feed(self._continuation_ws, ' ' + line.lstrip(),
                                    charset)
                 sonst:
@@ -405,7 +405,7 @@ klasse Header:
             wenn charset == last_charset:
                 last_chunk.append(string)
             sonst:
-                wenn last_charset is nicht Nichts:
+                wenn last_charset ist nicht Nichts:
                     chunks.append((SPACE.join(last_chunk), last_charset))
                 last_chunk = [string]
                 last_charset = charset
@@ -445,19 +445,19 @@ klasse _ValueFormatter:
         self._current_line.push(' ', '')
 
     def feed(self, fws, string, charset):
-        # If the charset has no header encoding (i.e. it is an ASCII encoding)
+        # If the charset has no header encoding (i.e. it ist an ASCII encoding)
         # then we must split the header at the "highest level syntactic break"
         # possible. Note that we don't have a lot of smarts about field
         # syntax; we just try to breche on semi-colons, then commas, then
         # whitespace.  Eventually, this should be pluggable.
-        wenn charset.header_encoding is Nichts:
+        wenn charset.header_encoding ist Nichts:
             self._ascii_split(fws, string, self._splitchars)
             gib
         # Otherwise, we're doing either a Base64 oder a quoted-printable
         # encoding which means we don't need to split the line on syntactic
         # breaks.  We can basically just find enough characters to fit on the
         # current line, minus the RFC 2047 chrome.  What makes this trickier
-        # though is that we have to split at octet boundaries, nicht character
+        # though ist that we have to split at octet boundaries, nicht character
         # boundaries but it's only safe to split at character boundaries so at
         # best we can only get close.
         encoded_lines = charset.header_encode_lines(string, self._maxlengths())
@@ -468,7 +468,7 @@ klasse _ValueFormatter:
         ausser IndexError:
             # There are no encoded lines, so we're done.
             gib
-        wenn first_line is nicht Nichts:
+        wenn first_line ist nicht Nichts:
             self._append_chunk(fws, first_line)
         versuch:
             last_line = encoded_lines.pop()
@@ -488,16 +488,16 @@ klasse _ValueFormatter:
             liefere self._maxlen - self._continuation_ws_len
 
     def _ascii_split(self, fws, string, splitchars):
-        # The RFC 2822 header folding algorithm is simple in principle but
+        # The RFC 2822 header folding algorithm ist simple in principle but
         # complex in practice.  Lines may be folded any place where "folding
         # white space" appears by inserting a linesep character in front of the
-        # FWS.  The complication is that nicht all spaces oder tabs qualify als FWS,
+        # FWS.  The complication ist that nicht all spaces oder tabs qualify als FWS,
         # und we are also supposed to prefer to breche at "higher level
         # syntactic breaks".  We can't do either of these without intimate
         # knowledge of the structure of structured headers, which we don't have
-        # here.  So the best we can do here is prefer to breche at the specified
+        # here.  So the best we can do here ist prefer to breche at the specified
         # splitchars, und hope that we don't choose any spaces oder tabs that
-        # aren't legal FWS.  (This is at least better than the old algorithm,
+        # aren't legal FWS.  (This ist at least better than the old algorithm,
         # where we would sometimes *introduce* FWS after a splitchar, oder the
         # algorithm before that, where we would turn all white space runs into
         # single spaces oder tabs.)
@@ -570,7 +570,7 @@ klasse _Accumulator(list):
                                 fuer fws, part in self))
 
     def reset(self, startval=Nichts):
-        wenn startval is Nichts:
+        wenn startval ist Nichts:
             startval = []
         self[:] = startval
         self._initial_size = 0

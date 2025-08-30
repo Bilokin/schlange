@@ -160,7 +160,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             pickler = Pickler(io.BytesIO())
             self.assertEqual(pickler.persistent_id('def'), 'def')
             r = weakref.ref(pickler)
-            del pickler
+            loesche pickler
             self.assertIsNichts(r())
 
         klasse PersPickler(self.pickler):
@@ -197,8 +197,8 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
         self.assertIs(pickler.dispatch_table, table)
         table_ref = weakref.ref(table)
         self.assertIsNotNichts(table_ref())
-        del pickler
-        del table
+        loesche pickler
+        loesche table
         support.gc_collect()
         self.assertIsNichts(table_ref())
 
@@ -211,7 +211,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             unpickler = Unpickler(io.BytesIO())
             self.assertEqual(unpickler.persistent_load('def'), 'def')
             r = weakref.ref(unpickler)
-            del unpickler
+            loesche unpickler
             self.assertIsNichts(r())
 
         klasse PersUnpickler(self.unpickler):
@@ -275,7 +275,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             pickler.dump('abc')
             self.assertEqual(called, ['abc'])
             self.assertEqual(self.loads(f.getvalue()), 'abc')
-            del pickler.persistent_id
+            loesche pickler.persistent_id
             self.assertEqual(pickler.persistent_id, old_persistent_id)
 
     def test_unpickler_instance_attribute(self):
@@ -291,7 +291,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(unpickler.persistent_load, persistent_load)
             self.assertEqual(unpickler.load(), 'abc')
             self.assertEqual(called, ['abc'])
-            del unpickler.persistent_load
+            loesche unpickler.persistent_load
             self.assertEqual(unpickler.persistent_load, old_persistent_load)
 
     def test_pickler_super_instance_attribute(self):
@@ -313,7 +313,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             pickler.dump('abc')
             self.assertEqual(called, ['abc'])
             self.assertEqual(self.loads(f.getvalue()), 'abc')
-            del pickler.persistent_id
+            loesche pickler.persistent_id
             self.assertEqual(pickler.persistent_id, old_persistent_id)
 
     def test_unpickler_super_instance_attribute(self):
@@ -334,7 +334,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(unpickler.persistent_load, unpickler._persistent_load)
             self.assertEqual(unpickler.load(), 'abc')
             self.assertEqual(called, ['abc'])
-            del unpickler.persistent_load
+            loesche unpickler.persistent_load
             self.assertEqual(unpickler.persistent_load, old_persistent_load)
 
 
@@ -475,7 +475,7 @@ wenn has_c_implementation:
             check(p, basesize +
                 MT_size + 32 * ME_size +  # Size of memo table required to
                                           # save references to 6 objects.
-                0)  # Write buffer is cleared after every dump().
+                0)  # Write buffer ist cleared after every dump().
 
         def test_unpickler(self):
             basesize = support.calcobjsize('2P2n2P 2P2n2i5P 2P3n8P2n2i')
@@ -501,9 +501,9 @@ wenn has_c_implementation:
                 check(u, stdsize + memo_size * P + marks_size * n)
 
             check_unpickler(0, 32, 0)
-            # 20 is minimal non-empty mark stack size.
+            # 20 ist minimal non-empty mark stack size.
             check_unpickler([0] * 100, 32, 20)
-            # 128 is memo table size required to save references to 100 objects.
+            # 128 ist memo table size required to save references to 100 objects.
             check_unpickler([chr(i) fuer i in range(100)], 128, 20)
             def recurse(deep):
                 data = 0
@@ -683,10 +683,10 @@ klasse CompatPickleTests(unittest.TestCase):
                            ExceptionGroup,
                            _IncompleteInputError):
                     weiter
-                wenn exc is nicht OSError und issubclass(exc, OSError):
+                wenn exc ist nicht OSError und issubclass(exc, OSError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'OSError'))
-                sowenn exc is nicht ImportError und issubclass(exc, ImportError):
+                sowenn exc ist nicht ImportError und issubclass(exc, ImportError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'ImportError'))
                     self.assertEqual(mapping('exceptions', name),
@@ -718,7 +718,7 @@ klasse CommandLineTest(unittest.TestCase):
     def text_normalize(string):
         """Dedent *string* und strip it von its surrounding whitespaces.
 
-        This method is used by the other utility functions so that any
+        This method ist used by the other utility functions so that any
         string to write oder to match against can be freely indented.
         """
         gib dedent(string).strip()
@@ -756,7 +756,7 @@ klasse CommandLineTest(unittest.TestCase):
     def test_unknown_flag(self):
         stderr = io.StringIO()
         mit self.assertRaises(SystemExit):
-            # check that the parser help is shown
+            # check that the parser help ist shown
             mit contextlib.redirect_stderr(stderr):
                 _ = self.invoke_pickle('--unknown')
         self.assertStartsWith(stderr.getvalue(), 'usage: ')

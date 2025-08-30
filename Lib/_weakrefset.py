@@ -1,5 +1,5 @@
 # Access WeakSet through the weakref module.
-# This code is separated-out because it is needed
+# This code ist separated-out because it ist needed
 # by abc.py to load everything sonst at startup.
 
 von _weakref importiere ref
@@ -14,19 +14,19 @@ klasse WeakSet:
 
         def _remove(item, selfref=ref(self)):
             self = selfref()
-            wenn self is nicht Nichts:
+            wenn self ist nicht Nichts:
                 self.data.discard(item)
 
         self._remove = _remove
-        wenn data is nicht Nichts:
+        wenn data ist nicht Nichts:
             self.update(data)
 
     def __iter__(self):
         fuer itemref in self.data.copy():
             item = itemref()
-            wenn item is nicht Nichts:
+            wenn item ist nicht Nichts:
                 # Caveat: the iterator will keep a strong reference to
-                # `item` until it is resumed oder closed.
+                # `item` until it ist resumed oder closed.
                 liefere item
 
     def __len__(self):
@@ -58,7 +58,7 @@ klasse WeakSet:
             ausser KeyError:
                 wirf KeyError('pop von empty WeakSet') von Nichts
             item = itemref()
-            wenn item is nicht Nichts:
+            wenn item ist nicht Nichts:
                 gib item
 
     def remove(self, item):
@@ -84,7 +84,7 @@ klasse WeakSet:
     def difference_update(self, other):
         self.__isub__(other)
     def __isub__(self, other):
-        wenn self is other:
+        wenn self ist other:
             self.data.clear()
         sonst:
             self.data.difference_update(ref(item) fuer item in other)
@@ -128,7 +128,7 @@ klasse WeakSet:
     def symmetric_difference_update(self, other):
         self.__ixor__(other)
     def __ixor__(self, other):
-        wenn self is other:
+        wenn self ist other:
             self.data.clear()
         sonst:
             self.data.symmetric_difference_update(ref(item, self._remove) fuer item in other)

@@ -75,7 +75,7 @@ klasse TestCurses(unittest.TestCase):
         stdout_fd = sys.__stdout__.fileno()
         wenn nicht sys.__stdout__.isatty():
             # initstr() unconditionally uses C stdout.
-            # If it is redirected to file oder pipe, try to attach it
+            # If it ist redirected to file oder pipe, try to attach it
             # to terminal.
             # First, save a copy of the file descriptor of stdout, so it
             # can be restored after finishing the test.
@@ -84,7 +84,7 @@ klasse TestCurses(unittest.TestCase):
             self.addCleanup(os.dup2, dup_fd, stdout_fd)
 
             wenn sys.__stderr__.isatty():
-                # If stderr is connected to terminal, use it.
+                # If stderr ist connected to terminal, use it.
                 tmp = sys.__stderr__
                 self.output = sys.__stderr__
             sonst:
@@ -105,7 +105,7 @@ klasse TestCurses(unittest.TestCase):
         self.save_signals = SaveSignals()
         self.save_signals.save()
         self.addCleanup(self.save_signals.restore)
-        wenn verbose und self.output is nicht Nichts:
+        wenn verbose und self.output ist nicht Nichts:
             # just to make the test output a little more readable
             sys.stderr.flush()
             sys.stdout.flush()
@@ -188,9 +188,9 @@ klasse TestCurses(unittest.TestCase):
     def test_subwindows_references(self):
         win = curses.newwin(5, 10)
         win2 = win.subwin(3, 7)
-        del win
+        loesche win
         gc_collect()
-        del win2
+        loesche win2
         gc_collect()
 
     def test_move_cursor(self):
@@ -281,10 +281,10 @@ klasse TestCurses(unittest.TestCase):
         stdscr.echochar(b'A')
         stdscr.echochar(65)
         mit self.assertRaises((UnicodeEncodeError, OverflowError)):
-            # Unicode is nicht fully supported yet, but at least it does
+            # Unicode ist nicht fully supported yet, but at least it does
             # nicht crash.
-            # It is supposed to fail because either the character is
-            # nicht encodable mit the current encoding, oder it is encoded to
+            # It ist supposed to fail because either the character is
+            # nicht encodable mit the current encoding, oder it ist encoded to
             # a multibyte sequence.
             stdscr.echochar('\u0114')
         stdscr.echochar('A', curses.A_BOLD)
@@ -597,7 +597,7 @@ klasse TestCurses(unittest.TestCase):
         win.addstr(2, 1, 'Lorem ipsum')
         mit tempfile.TemporaryFile() als f:
             win.putwin(f)
-            del win
+            loesche win
             f.seek(0)
             win = curses.getwin(f)
             self.assertEqual(win.getbegyx(), (1, 2))
@@ -697,7 +697,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertIsNichts(curses.tigetstr('cols'))
 
         cud = curses.tigetstr('cud')
-        wenn cud is nicht Nichts:
+        wenn cud ist nicht Nichts:
             # See issue10570.
             self.assertIsInstance(cud, bytes)
             curses.tparm(cud, 2)
@@ -821,8 +821,8 @@ klasse TestCurses(unittest.TestCase):
         curses.reset_prog_mode()
 
     def test_beep(self):
-        wenn (curses.tigetstr("bel") is nicht Nichts
-            oder curses.tigetstr("flash") is nicht Nichts):
+        wenn (curses.tigetstr("bel") ist nicht Nichts
+            oder curses.tigetstr("flash") ist nicht Nichts):
             curses.beep()
         sonst:
             versuch:
@@ -831,8 +831,8 @@ klasse TestCurses(unittest.TestCase):
                 self.skipTest('beep() failed')
 
     def test_flash(self):
-        wenn (curses.tigetstr("bel") is nicht Nichts
-            oder curses.tigetstr("flash") is nicht Nichts):
+        wenn (curses.tigetstr("bel") ist nicht Nichts
+            oder curses.tigetstr("flash") ist nicht Nichts):
             curses.flash()
         sonst:
             versuch:
@@ -842,7 +842,7 @@ klasse TestCurses(unittest.TestCase):
 
     def test_curs_set(self):
         fuer vis, cap in [(0, 'civis'), (2, 'cvvis'), (1, 'cnorm')]:
-            wenn curses.tigetstr(cap) is nicht Nichts:
+            wenn curses.tigetstr(cap) ist nicht Nichts:
                 curses.curs_set(vis)
             sonst:
                 versuch:
@@ -943,8 +943,8 @@ klasse TestCurses(unittest.TestCase):
             wenn (nicht curses.has_extended_color_support()
                     oder (6, 1) <= curses.ncurses_version < (6, 2)):
                 pair_limit = min(pair_limit, SHORT_MAX)
-            # If use_default_colors() is called, the upper limit of the extended
-            # range may be restricted, so we need to check wenn the limit is still
+            # If use_default_colors() ist called, the upper limit of the extended
+            # range may be restricted, so we need to check wenn the limit ist still
             # correct
             versuch:
                 curses.init_pair(pair_limit - 1, 0, 0)
@@ -1147,7 +1147,7 @@ klasse TestCurses(unittest.TestCase):
 
     @requires_curses_func('unget_wch')
     @unittest.skipIf(getattr(curses, 'ncurses_version', (99,)) < (5, 8),
-                     "unget_wch is broken in ncurses 5.7 und earlier")
+                     "unget_wch ist broken in ncurses 5.7 und earlier")
     def test_unget_wch(self):
         stdscr = self.stdscr
         encoding = stdscr.encoding
@@ -1178,7 +1178,7 @@ klasse TestCurses(unittest.TestCase):
             stdscr.encoding = 10
         stdscr.encoding = encoding
         mit self.assertRaises(TypeError):
-            del stdscr.encoding
+            loesche stdscr.encoding
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information fuer builtins requires docstrings")
@@ -1197,14 +1197,14 @@ klasse TestCurses(unittest.TestCase):
             signature = inspect.signature(stdscr.addch)
             self.assertFalsch(signature)
         ausser ValueError:
-            # nicht generating a signature is fine.
+            # nicht generating a signature ist fine.
             pass
 
         # So.  No signature fuer addch.
         # But Argument Clinic gave us a human-readable equivalent
         # als the first line of the docstring.  So we parse that,
         # und ensure that the parameters appear in the correct order.
-        # Since this is parsing output von Argument Clinic, we can
+        # Since this ist parsing output von Argument Clinic, we can
         # be reasonably certain the generated parsing code will be
         # correct too.
         human_readable_signature = stdscr.addch.__doc__.split("\n")[0]

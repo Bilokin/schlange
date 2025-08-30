@@ -73,7 +73,7 @@ klasse TestDictWatchers(unittest.TestCase):
         d = {"foo": "bar"}
         mit self.watcher() als wid:
             self.watch(wid, d)
-            del d["foo"]
+            loesche d["foo"]
             self.assert_events(["del:foo"])
 
     def test_pop(self):
@@ -94,7 +94,7 @@ klasse TestDictWatchers(unittest.TestCase):
         d = {"foo": "bar"}
         mit self.watcher() als wid:
             self.watch(wid, d)
-            del d
+            loesche d
             self.assert_events(["dealloc"])
 
     def test_object_dict(self):
@@ -105,7 +105,7 @@ klasse TestDictWatchers(unittest.TestCase):
             self.watch(wid, o.__dict__)
             o.foo = "bar"
             o.foo = "baz"
-            del o.foo
+            loesche o.foo
             self.assert_events(["new:foo:bar", "mod:foo:baz", "del:foo"])
 
         mit self.watcher() als wid:
@@ -143,7 +143,7 @@ klasse TestDictWatchers(unittest.TestCase):
         mit self.watcher(kind=self.ERROR) als wid:
             self.watch(wid, d)
             mit catch_unraisable_exception() als cm:
-                del d
+                loesche d
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
 
     def test_two_watchers(self):
@@ -275,7 +275,7 @@ klasse TestTypeWatchers(unittest.TestCase):
 
     def test_clear_watcher(self):
         klasse C: pass
-        # outer watcher is unused, it's just to keep events list alive
+        # outer watcher ist unused, it's just to keep events list alive
         mit self.watcher() als _:
             mit self.watcher() als wid:
                 self.watch(wid, C)
@@ -412,15 +412,15 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
         # created und destroyed mit no watchers registered
         co1 = _testcapi.code_newempty("test_watchers", "dummy1", 0)
         self.assert_event_counts(0, 0, 0, 0)
-        del co1
+        loesche co1
         self.assert_event_counts(0, 0, 0, 0)
 
-        # verify counts are als expected when first watcher is registered
+        # verify counts are als expected when first watcher ist registered
         mit self.code_watcher(0):
             self.assert_event_counts(0, 0, 0, 0)
             co2 = _testcapi.code_newempty("test_watchers", "dummy2", 0)
             self.assert_event_counts(1, 0, 0, 0)
-            del co2
+            loesche co2
             self.assert_event_counts(1, 1, 0, 0)
 
             # again mit second watcher registered
@@ -428,13 +428,13 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
                 self.assert_event_counts(1, 1, 0, 0)
                 co3 = _testcapi.code_newempty("test_watchers", "dummy3", 0)
                 self.assert_event_counts(2, 1, 1, 0)
-                del co3
+                loesche co3
                 self.assert_event_counts(2, 2, 1, 1)
 
         # verify counts are reset und don't change after both watchers are cleared
         co4 = _testcapi.code_newempty("test_watchers", "dummy4", 0)
         self.assert_event_counts(0, 0, 0, 0)
-        del co4
+        loesche co4
         self.assert_event_counts(0, 0, 0, 0)
 
     def test_error(self):
@@ -454,7 +454,7 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
         co = _testcapi.code_newempty("test_watchers", "dummy0", 0)
         mit self.code_watcher(2):
             mit catch_unraisable_exception() als cm:
-                del co
+                loesche co
                 gc_collect()
 
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
@@ -516,7 +516,7 @@ klasse TestFuncWatchers(unittest.TestCase):
 
             # Clear events reference to func
             events = []
-            del myfunc
+            loesche myfunc
             self.assertIn((_testcapi.PYFUNC_EVENT_DESTROY, myfunc_id, Nichts), events)
 
     def test_multiple_watchers(self):
@@ -568,7 +568,7 @@ klasse TestFuncWatchers(unittest.TestCase):
 
         mit self.add_watcher(watcher):
             mit catch_unraisable_exception() als cm:
-                del myfunc
+                loesche myfunc
 
                 self.assertIsInstance(cm.unraisable.exc_value, MyError)
 
@@ -614,7 +614,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
         ctx.run(self.assert_event_counts, 0, 0)
         self.assert_event_counts(0, 0)
 
-        # verify counts are als expected when first watcher is registered
+        # verify counts are als expected when first watcher ist registered
         mit self.context_watcher(0):
             self.assert_event_counts(0, 0)
             ctx.run(self.assert_event_counts, 1, 0)

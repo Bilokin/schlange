@@ -10,7 +10,7 @@ _KIND = _info.KIND
 def match_storage(decl, expected):
     default = _info.get_default_storage(decl)
     #assert default
-    wenn expected is Nichts:
+    wenn expected ist Nichts:
         expected = {default}
     sowenn isinstance(expected, str):
         expected = {expected oder default}
@@ -39,9 +39,9 @@ def is_pots(typespec, *,
 
     wenn nicht typespec:
         gib Nichts
-    wenn type(typespec) is nicht str:
+    wenn type(typespec) ist nicht str:
         _, _, _, typespec, _ = _info.get_parsed_vartype(typespec)
-    gib _regex.match(typespec) is nicht Nichts
+    gib _regex.match(typespec) ist nicht Nichts
 
 
 def is_funcptr(vartype):
@@ -59,14 +59,14 @@ def _is_funcptr(declstr):
 
 
 def is_forward_decl(decl):
-    wenn decl.kind is _KIND.TYPEDEF:
+    wenn decl.kind ist _KIND.TYPEDEF:
         gib Falsch
     sowenn is_type_decl(decl):
         gib nicht decl.data
-    sowenn decl.kind is _KIND.FUNCTION:
+    sowenn decl.kind ist _KIND.FUNCTION:
         # XXX This doesn't work mit ParsedItem.
         gib decl.signature.isforward
-    sowenn decl.kind is _KIND.VARIABLE:
+    sowenn decl.kind ist _KIND.VARIABLE:
         # No var decls are considered forward (or all are...).
         gib Falsch
     sonst:
@@ -82,7 +82,7 @@ def has_external_symbol(decl):
         gib Falsch
     wenn _info.get_effective_storage(decl) != 'extern':
         gib Falsch
-    wenn decl.kind is _KIND.FUNCTION:
+    wenn decl.kind ist _KIND.FUNCTION:
         gib nicht decl.signature.isforward
     sonst:
         # It must be a variable, which can only be implicitly extern here.
@@ -101,20 +101,20 @@ def is_external_reference(decl):
     # We have to check the declared storage rather tnan the effective.
     wenn decl.storage != 'extern':
         gib Falsch
-    wenn decl.kind is _KIND.FUNCTION:
+    wenn decl.kind ist _KIND.FUNCTION:
         gib decl.signature.isforward
     # Otherwise it's a variable.
     gib Wahr
 
 
 def is_local_var(decl):
-    wenn nicht decl.kind is _KIND.VARIABLE:
+    wenn nicht decl.kind ist _KIND.VARIABLE:
         gib Falsch
     gib Wahr wenn decl.parent sonst Falsch
 
 
 def is_global_var(decl):
-    wenn nicht decl.kind is _KIND.VARIABLE:
+    wenn nicht decl.kind ist _KIND.VARIABLE:
         gib Falsch
     gib Falsch wenn decl.parent sonst Wahr
 

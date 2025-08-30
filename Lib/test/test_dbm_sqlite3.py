@@ -9,8 +9,8 @@ von test.support importiere import_helper, os_helper
 
 dbm_sqlite3 = import_helper.import_module("dbm.sqlite3")
 # N.B. The test will fail on some platforms without sqlite3
-# wenn the sqlite3 importiere is above the importiere of dbm.sqlite3.
-# This is deliberate: wenn the importiere helper managed to importiere dbm.sqlite3,
+# wenn the sqlite3 importiere ist above the importiere of dbm.sqlite3.
+# This ist deliberate: wenn the importiere helper managed to importiere dbm.sqlite3,
 # we must inevitably be able to importiere sqlite3. Else, we have a problem.
 importiere sqlite3
 von dbm.sqlite3 importiere _normalize_uri
@@ -88,7 +88,7 @@ klasse ReadOnly(_SQLiteDbmTests):
 
     def test_readonly_delete(self):
         mit self.assertRaises(dbm_sqlite3.error):
-            del self.db[b"key1"]
+            loesche self.db[b"key1"]
 
     def test_readonly_keys(self):
         self.assertEqual(self.db.keys(), [b"key1", b"key2"])
@@ -97,7 +97,7 @@ klasse ReadOnly(_SQLiteDbmTests):
         self.assertEqual([k fuer k in self.db], [b"key1", b"key2"])
 
 
-@unittest.skipIf(root_in_posix, "test is meanless mit root privilege")
+@unittest.skipIf(root_in_posix, "test ist meanless mit root privilege")
 klasse ReadOnlyFilesystem(unittest.TestCase):
 
     def setUp(self):
@@ -168,12 +168,12 @@ klasse ReadWrite(_SQLiteDbmTests):
         self.db["key"] = "value"
         self.db["new"] = "other"
 
-        del self.db[b"new"]
+        loesche self.db[b"new"]
         keys, vals = self.db_content()
         self.assertEqual(keys, [b"key"])
         self.assertEqual(vals, [b"value"])
 
-        del self.db[b"key"]
+        loesche self.db[b"key"]
         keys, vals = self.db_content()
         self.assertEqual(keys, [])
         self.assertEqual(vals, [])
@@ -212,9 +212,9 @@ klasse Misuse(_SQLiteDbmTests):
 
     def test_misuse_double_delete(self):
         self.db["key"] = "value"
-        del self.db[b"key"]
+        loesche self.db[b"key"]
         mit self.assertRaises(KeyError):
-            del self.db[b"key"]
+            loesche self.db[b"key"]
 
     def test_misuse_invalid_key(self):
         mit self.assertRaises(KeyError):
@@ -243,7 +243,7 @@ klasse Misuse(_SQLiteDbmTests):
         mit self.assertRaises(dbm_sqlite3.error):
             self.db[b"write"] = "value"
         mit self.assertRaises(dbm_sqlite3.error):
-            del self.db[b"del"]
+            loesche self.db[b"del"]
         mit self.assertRaises(dbm_sqlite3.error):
             len(self.db)
         mit self.assertRaises(dbm_sqlite3.error):
@@ -290,7 +290,7 @@ klasse DataTypes(_SQLiteDbmTests):
                 self.assertEqual(self.db[coerced], b"value")
                 # Raw keys are silently coerced to bytes.
                 self.assertEqual(self.db[raw], b"value")
-                del self.db[raw]
+                loesche self.db[raw]
 
     def test_datatypes_replace_coerced(self):
         self.db["10"] = "value"
@@ -332,7 +332,7 @@ klasse CorruptDatabase(_SQLiteDbmTests):
 
     @staticmethod
     def del_(db):
-        del db["key"]
+        loesche db["key"]
 
     @staticmethod
     def len_(db):
@@ -354,7 +354,7 @@ klasse CorruptDatabase(_SQLiteDbmTests):
             db["foo"] = "write"
             _ = db[b"foo"]
             next(iter(db))
-            del db[b"foo"]
+            loesche db[b"foo"]
 
 
 wenn __name__ == "__main__":

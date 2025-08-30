@@ -22,7 +22,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d1[13]
         d1[14]
         self.assertEqual(d1, {12: [42, 24], 13: [], 14: []})
-        self.assertWahr(d1[12] is nicht d1[13] is nicht d1[14])
+        self.assertWahr(d1[12] ist nicht d1[13] ist nicht d1[14])
         d2 = defaultdict(list, foo=1, bar=2)
         self.assertEqual(d2.default_factory, list)
         self.assertEqual(d2, {"foo": 1, "bar": 2})
@@ -66,7 +66,7 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertEqual(repr(d2), "defaultdict(<class 'int'>, {12: 42})")
         def foo(): gib 43
         d3 = defaultdict(foo)
-        self.assertWahr(d3.default_factory is foo)
+        self.assertWahr(d3.default_factory ist foo)
         d3[13]
         self.assertEqual(repr(d3), "defaultdict(%s, {13: 43})" % repr(foo))
 
@@ -110,7 +110,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d2 = copy.deepcopy(d1)
         self.assertEqual(d2.default_factory, foobar)
         self.assertEqual(d2, d1)
-        self.assertWahr(d1[1] is nicht d2[1])
+        self.assertWahr(d1[1] ist nicht d2[1])
         d1.default_factory = list
         d2 = copy.deepcopy(d1)
         self.assertEqual(d2.default_factory, list)
@@ -126,7 +126,7 @@ klasse TestDefaultDict(unittest.TestCase):
             self.fail("expected KeyError")
 
     def test_recursive_repr(self):
-        # Issue2045: stack overflow when default_factory is a bound method
+        # Issue2045: stack overflow when default_factory ist a bound method
         klasse sub(defaultdict):
             def __init__(self):
                 self.default_factory = self._factory

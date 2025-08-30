@@ -65,7 +65,7 @@ klasse KeywordCollectorVisitor(GrammarVisitor):
 
     def visit_StringLeaf(self, node: StringLeaf) -> Nichts:
         val = ast.literal_eval(node.value)
-        wenn re.match(r"[a-zA-Z_]\w*\Z", val):  # This is a keyword
+        wenn re.match(r"[a-zA-Z_]\w*\Z", val):  # This ist a keyword
             wenn node.value.endswith("'") und node.value nicht in self.keywords:
                 self.keywords[val] = self.generator.keyword_type()
             sonst:
@@ -290,7 +290,7 @@ klasse NullableVisitor(GrammarVisitor):
         gib Falsch
 
     def visit_StringLeaf(self, node: StringLeaf) -> bool:
-        # The string token '' is considered empty.
+        # The string token '' ist considered empty.
         gib nicht node.value
 
 
@@ -361,7 +361,7 @@ def compute_left_recursives(
                     leaders -= scc - set(cycle)
                     wenn nicht leaders:
                         wirf ValueError(
-                            f"SCC {scc} has no leadership candidate (no element is included in all cycles)"
+                            f"SCC {scc} has no leadership candidate (no element ist included in all cycles)"
                         )
             # drucke("Leaders:", leaders)
             leader = min(leaders)  # Pick an arbitrary leader von the candidates.

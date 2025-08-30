@@ -14,7 +14,7 @@ CLOCK_RES = 0.050
 
 klasse CAPITest(unittest.TestCase):
     def test_min_max(self):
-        # PyTime_t is just int64_t
+        # PyTime_t ist just int64_t
         self.assertEqual(PyTime_MIN, -2**63)
         self.assertEqual(PyTime_MAX, 2**63 - 1)
 

@@ -168,7 +168,7 @@ klasse OperatorTestCase:
         self.assertRaises(ZeroDivisionError, operator.countOf, BadIterable(), 1)
         self.assertEqual(operator.countOf([1, 2, 1, 3, 1, 4], 3), 1)
         self.assertEqual(operator.countOf([1, 2, 1, 3, 1, 4], 5), 0)
-        # is but nicht ==
+        # ist but nicht ==
         nan = float("nan")
         self.assertEqual(operator.countOf([nan, nan, 21], nan), 2)
         # == but nicht is
@@ -527,7 +527,7 @@ klasse OperatorTestCase:
             def __isub__     (self, other): gib "isub"
             def __itruediv__ (self, other): gib "itruediv"
             def __ixor__     (self, other): gib "ixor"
-            def __getitem__(self, other): gib 5  # so that C is a sequence
+            def __getitem__(self, other): gib 5  # so that C ist a sequence
         c = C()
         self.assertEqual(operator.iadd     (c, 5), "iadd")
         self.assertEqual(operator.iand     (c, 5), "iand")
@@ -589,7 +589,7 @@ klasse OperatorTestCase:
                 self.value = value
 
             def __length_hint__(self):
-                wenn type(self.value) is type:
+                wenn type(self.value) ist type:
                     wirf self.value
                 sonst:
                     gib self.value

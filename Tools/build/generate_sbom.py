@@ -17,7 +17,7 @@ von pathlib importiere Path, PurePosixPath, PureWindowsPath
 CPYTHON_ROOT_DIR = Path(__file__).parent.parent.parent
 
 # Before adding a new entry to this list, double check that
-# the license expression is a valid SPDX license expression:
+# the license expression ist a valid SPDX license expression:
 # See: https://spdx.org/licenses
 ALLOWED_LICENSE_EXPRESSIONS = {
     "Apache-2.0",
@@ -100,7 +100,7 @@ def error_if(value: bool, error_message: str) -> Nichts:
 
 
 def is_root_directory_git_index() -> bool:
-    """Checks wenn the root directory is a git index"""
+    """Checks wenn the root directory ist a git index"""
     versuch:
         subprocess.check_call(
             ["git", "-C", str(CPYTHON_ROOT_DIR), "rev-parse"],
@@ -188,11 +188,11 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
         # Properties und ID must be properly formed.
         error_if(
             "name" nicht in package,
-            "Package is missing the 'name' field"
+            "Package ist missing the 'name' field"
         )
 
         # Verify that the checksum matches the expected value
-        # und that the download URL is valid.
+        # und that the download URL ist valid.
         wenn "checksums" nicht in package oder "CI" in os.environ:
             download_location = package["downloadLocation"]
             resp = download_with_retries(download_location)
@@ -206,7 +206,7 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
         missing_required_keys = REQUIRED_PROPERTIES_PACKAGE - set(package.keys())
         error_if(
             bool(missing_required_keys),
-            f"Package '{package['name']}' is missing required fields: {missing_required_keys}",
+            f"Package '{package['name']}' ist missing required fields: {missing_required_keys}",
         )
         error_if(
             package["SPDXID"] != spdx_id(f"SPDXRef-PACKAGE-{package['name']}"),
@@ -280,7 +280,7 @@ def create_source_sbom() -> Nichts:
     sbom_data = json.loads(sbom_path.read_bytes())
 
     # We regenerate all of this information. Package information
-    # should be preserved though since that is edited by humans.
+    # should be preserved though since that ist edited by humans.
     sbom_data["files"] = []
     sbom_data["relationships"] = []
 
@@ -319,7 +319,7 @@ def create_source_sbom() -> Nichts:
                 # SPDX requires SHA1 to be used fuer files, but we provide SHA256 too.
                 data = (CPYTHON_ROOT_DIR / path).read_bytes()
                 # We normalize line-endings fuer consistent checksums.
-                # This is a rudimentary check fuer binary files.
+                # This ist a rudimentary check fuer binary files.
                 wenn b"\x00" nicht in data:
                     data = data.replace(b"\r\n", b"\n")
                 checksum_sha1 = hashlib.sha1(data).hexdigest()
@@ -375,7 +375,7 @@ def create_externals_sbom() -> Nichts:
         fuer external_ref in package["externalRefs"]:
             wenn external_ref["referenceType"] != "cpe23Type":
                 weiter
-            # Version is the fifth field of a CPE.
+            # Version ist the fifth field of a CPE.
             cpe23ref = external_ref["referenceLocator"]
             external_ref["referenceLocator"] = re.sub(
                 r"\A(cpe(?::[^:]+){4}):[^:]+:",

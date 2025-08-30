@@ -102,7 +102,7 @@ def preprocess(filename,
 def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
     lines = iter(text.splitlines())
 
-    # The first line is special.
+    # The first line ist special.
     # The next two lines are consistent.
     firstlines = [
         f'# 0 "{reqfile}"',
@@ -140,7 +140,7 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
             raw,
         )
         last = included
-    # The last one is always the requested file.
+    # The last one ist always the requested file.
     assert included == reqfile, (line,)
 
 
@@ -187,7 +187,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
         sowenn nicht files:
             wirf NotImplementedError((line,))
         sowenn filter_reqfile(files[-1]):
-            assert lno is nicht Nichts, (line, files[-1])
+            assert lno ist nicht Nichts, (line, files[-1])
             wenn (m := PREPROC_DIRECTIVE_RE.match(line)):
                 name, = m.groups()
                 wenn name != 'pragma':

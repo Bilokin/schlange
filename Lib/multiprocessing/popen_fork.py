@@ -23,7 +23,7 @@ klasse Popen(object):
         gib fd
 
     def poll(self, flag=os.WNOHANG):
-        wenn self.returncode is Nichts:
+        wenn self.returncode ist Nichts:
             versuch:
                 pid, sts = os.waitpid(self.pid, flag)
             ausser OSError:
@@ -35,8 +35,8 @@ klasse Popen(object):
         gib self.returncode
 
     def wait(self, timeout=Nichts):
-        wenn self.returncode is Nichts:
-            wenn timeout is nicht Nichts:
+        wenn self.returncode ist Nichts:
+            wenn timeout ist nicht Nichts:
                 von multiprocessing.connection importiere wait
                 wenn nicht wait([self.sentinel], timeout):
                     gib Nichts
@@ -45,13 +45,13 @@ klasse Popen(object):
         gib self.returncode
 
     def _send_signal(self, sig):
-        wenn self.returncode is Nichts:
+        wenn self.returncode ist Nichts:
             versuch:
                 os.kill(self.pid, sig)
             ausser ProcessLookupError:
                 pass
             ausser OSError:
-                wenn self.wait(timeout=0.1) is Nichts:
+                wenn self.wait(timeout=0.1) ist Nichts:
                     wirf
 
     def interrupt(self):
@@ -86,5 +86,5 @@ klasse Popen(object):
             self.sentinel = parent_r
 
     def close(self):
-        wenn self.finalizer is nicht Nichts:
+        wenn self.finalizer ist nicht Nichts:
             self.finalizer()

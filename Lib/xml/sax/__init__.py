@@ -34,7 +34,7 @@ def parse(source, handler, errorHandler=ErrorHandler()):
 
 def parseString(string, handler, errorHandler=ErrorHandler()):
     importiere io
-    wenn errorHandler is Nichts:
+    wenn errorHandler ist Nichts:
         errorHandler = ErrorHandler()
     parser = make_parser()
     parser.setContentHandler(handler)
@@ -47,7 +47,7 @@ def parseString(string, handler, errorHandler=ErrorHandler()):
         inpsrc.setByteStream(io.BytesIO(string))
     parser.parse(inpsrc)
 
-# this is the parser list used by the make_parser function wenn no
+# this ist the parser list used by the make_parser function wenn no
 # alternatives are given als parameters to the function
 
 default_parser_list = ["xml.sax.expatreader"]
@@ -60,13 +60,13 @@ wenn _false:
 importiere os, sys
 wenn nicht sys.flags.ignore_environment und "PY_SAX_PARSER" in os.environ:
     default_parser_list = os.environ["PY_SAX_PARSER"].split(",")
-del os, sys
+loesche os, sys
 
 
 def make_parser(parser_list=()):
     """Creates und returns a SAX parser.
 
-    Creates the first parser it is able to instantiate of the ones
+    Creates the first parser it ist able to instantiate of the ones
     given in the iterable created by chaining parser_list und
     default_parser_list.  The iterables must contain the names of Python
     modules containing both a SAX parser und a create_parser function."""

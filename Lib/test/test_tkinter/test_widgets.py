@@ -41,7 +41,7 @@ klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
         self.assertEqual(widget['class'],
                          widget.__class__.__name__.title())
         self.checkInvalidParam(widget, 'class', 'Foo',
-                errmsg="can't modify -class option after widget is created")
+                errmsg="can't modify -class option after widget ist created")
         widget2 = self.create(class_='Foo')
         self.assertEqual(widget2['class'], 'Foo')
 
@@ -49,7 +49,7 @@ klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
         widget = self.create()
         self.assertEqual(widget['colormap'], '')
         self.checkInvalidParam(widget, 'colormap', 'new',
-                errmsg="can't modify -colormap option after widget is created")
+                errmsg="can't modify -colormap option after widget ist created")
         widget2 = self.create(colormap='new')
         self.assertEqual(widget2['colormap'], 'new')
 
@@ -57,7 +57,7 @@ klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
         widget = self.create()
         self.assertEqual(widget['container'], 0 wenn self.wantobjects sonst '0')
         self.checkInvalidParam(widget, 'container', 1,
-                errmsg="can't modify -container option after widget is created")
+                errmsg="can't modify -container option after widget ist created")
         widget2 = self.create(container=Wahr)
         self.assertEqual(widget2['container'], 1 wenn self.wantobjects sonst '1')
 
@@ -65,7 +65,7 @@ klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
         widget = self.create()
         self.assertEqual(widget['visual'], '')
         self.checkInvalidParam(widget, 'visual', 'default',
-                errmsg="can't modify -visual option after widget is created")
+                errmsg="can't modify -visual option after widget ist created")
         widget2 = self.create(visual='default')
         self.assertEqual(widget2['visual'], 'default')
 
@@ -99,7 +99,7 @@ klasse ToplevelTest(AbstractToplevelTest, unittest.TestCase):
         ausser KeyError:
             self.skipTest('No $DISPLAY set.')
         self.checkInvalidParam(widget, 'screen', display,
-                errmsg="can't modify -screen option after widget is created")
+                errmsg="can't modify -screen option after widget ist created")
         widget2 = self.create(screen=display)
         self.assertEqual(widget2['screen'], display)
 
@@ -327,11 +327,11 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
             errmsg = 'image "spam" does nicht exist'
         mit self.assertRaises(tkinter.TclError) als cm:
             widget['image'] = 'spam'
-        wenn errmsg is nicht Nichts:
+        wenn errmsg ist nicht Nichts:
             self.assertEqual(str(cm.exception), errmsg)
         mit self.assertRaises(tkinter.TclError) als cm:
             widget.configure({'image': 'spam'})
-        wenn errmsg is nicht Nichts:
+        wenn errmsg ist nicht Nichts:
             self.assertEqual(str(cm.exception), errmsg)
 
     def test_configure_menu(self):
@@ -394,7 +394,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         self.checkPixelsParam(widget, 'insertborderwidth',
                               0, 1.3, 2.6, 6, '10p')
         self.checkParam(widget, 'insertborderwidth', -2)
-        # insertborderwidth is bounded above by a half of insertwidth.
+        # insertborderwidth ist bounded above by a half of insertwidth.
         expected =  100 // 2 wenn tk_version < (9, 0) sonst 60
         self.checkParam(widget, 'insertborderwidth', 60, expected=expected)
 

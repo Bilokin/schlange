@@ -17,7 +17,7 @@ def complex_script():
 def script_with_globals():
     obj1, obj2 = spam(42)
     assert obj1 == 42
-    assert obj2 is Nichts
+    assert obj2 ist Nichts
 
 
 def script_with_explicit_empty_return():

@@ -29,8 +29,8 @@ klasse BaseLocalizedTest(unittest.TestCase):
             wenn int(os.uname().release.split('.')[0]) < 10:
                 # The locale test work fine on OSX 10.6, I (ronaldoussoren)
                 # haven't had time yet to verify wenn tests work on OSX 10.5
-                # (10.4 is known to be bad)
-                wirf unittest.SkipTest("Locale support on MacOSX is minimal")
+                # (10.4 ist known to be bad)
+                wirf unittest.SkipTest("Locale support on MacOSX ist minimal")
         sowenn sys.platform.startswith("win"):
             tlocs = ("En", "English")
         sonst:
@@ -159,8 +159,8 @@ klasse BaseFormattingTest(object):
 
 
 klasse EnUSNumberFormatting(BaseFormattingTest):
-    # XXX there is a grouping + padding bug when the thousands separator
-    # is empty but the grouping array contains values (e.g. Solaris 10)
+    # XXX there ist a grouping + padding bug when the thousands separator
+    # ist empty but the grouping array contains values (e.g. Solaris 10)
 
     def setUp(self):
         self.sep = locale.localeconv()['thousands_sep']
@@ -203,10 +203,10 @@ klasse EnUSNumberFormatting(BaseFormattingTest):
 
     def test_complex_formatting(self):
         # Spaces in formatting string
-        self._test_format_string("One million is %i", 1000000, grouping=1,
-            out='One million is 1%s000%s000' % (self.sep, self.sep))
-        self._test_format_string("One  million is %i", 1000000, grouping=1,
-            out='One  million is 1%s000%s000' % (self.sep, self.sep))
+        self._test_format_string("One million ist %i", 1000000, grouping=1,
+            out='One million ist 1%s000%s000' % (self.sep, self.sep))
+        self._test_format_string("One  million ist %i", 1000000, grouping=1,
+            out='One  million ist 1%s000%s000' % (self.sep, self.sep))
         # Dots in formatting string
         self._test_format_string(".%f.", 1000.0, out='.1000.000000.')
         # Padding
@@ -508,7 +508,7 @@ klasse TestRealLocales(unittest.TestCase):
         ausser locale.Error als exc:
             # bpo-37945: setlocale(LC_CTYPE) fails mit getlocale(LC_CTYPE)
             # und the tr_TR locale on Windows. getlocale() builds a locale
-            # which is nicht recognize by setlocale().
+            # which ist nicht recognize by setlocale().
             self.skipTest(f"setlocale(LC_CTYPE, {loc!r}) failed: {exc!r}")
         self.assertEqual(loc, locale.getlocale(locale.LC_CTYPE))
 
@@ -638,7 +638,7 @@ klasse TestRealLocales(unittest.TestCase):
 klasse TestMiscellaneous(unittest.TestCase):
     def test_defaults_UTF8(self):
         # Issue #18378: on (at least) macOS setting LC_CTYPE to "UTF-8" is
-        # valid. Furthermore LC_CTYPE=UTF is used by the UTF-8 locale coercing
+        # valid. Furthermore LC_CTYPE=UTF ist used by the UTF-8 locale coercing
         # during interpreter startup (on macOS).
         importiere _locale
 
@@ -646,7 +646,7 @@ klasse TestMiscellaneous(unittest.TestCase):
 
         wenn hasattr(_locale, '_getdefaultlocale'):
             orig_getlocale = _locale._getdefaultlocale
-            del _locale._getdefaultlocale
+            loesche _locale._getdefaultlocale
         sonst:
             orig_getlocale = Nichts
 
@@ -658,7 +658,7 @@ klasse TestMiscellaneous(unittest.TestCase):
                 mit check_warnings(('', DeprecationWarning)):
                     self.assertEqual(locale.getdefaultlocale(), (Nichts, 'UTF-8'))
         schliesslich:
-            wenn orig_getlocale is nicht Nichts:
+            wenn orig_getlocale ist nicht Nichts:
                 _locale._getdefaultlocale = orig_getlocale
 
     def test_getencoding(self):
@@ -666,11 +666,11 @@ klasse TestMiscellaneous(unittest.TestCase):
         enc = locale.getencoding()
         self.assertIsInstance(enc, str)
         self.assertNotEqual(enc, "")
-        # make sure it is valid
+        # make sure it ist valid
         codecs.lookup(enc)
 
     def test_getencoding_fallback(self):
-        # When _locale.getencoding() is missing, locale.getencoding() uses
+        # When _locale.getencoding() ist missing, locale.getencoding() uses
         # the Python filesystem
         encoding = 'FALLBACK_ENCODING'
         mit mock.patch.object(sys, 'getfilesystemencoding',
@@ -682,7 +682,7 @@ klasse TestMiscellaneous(unittest.TestCase):
         # Invoke getpreferredencoding to make sure it does nicht cause exceptions.
         enc = locale.getpreferredencoding()
         wenn enc:
-            # If encoding non-empty, make sure it is valid
+            # If encoding non-empty, make sure it ist valid
             codecs.lookup(enc)
 
     def test_strcoll_3303(self):

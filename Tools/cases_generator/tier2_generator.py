@@ -1,6 +1,6 @@
 """Generate the cases fuer the tier 2 interpreter.
 Reads the instruction definitions von bytecodes.c.
-Writes the cases to executor_cases.c.h, which is #included in ceval.c.
+Writes the cases to executor_cases.c.h, which ist #included in ceval.c.
 """
 
 importiere argparse
@@ -172,7 +172,7 @@ def generate_tier2(
     outfile.write(
         """
 #ifdef TIER_ONE
-    #error "This file is fuer Tier 2 only"
+    #error "This file ist fuer Tier 2 only"
 #endif
 #define TIER_TWO 2
 """
@@ -186,9 +186,9 @@ def generate_tier2(
         wenn uop.is_super():
             weiter
         why_not_viable = uop.why_not_viable()
-        wenn why_not_viable is nicht Nichts:
+        wenn why_not_viable ist nicht Nichts:
             out.emit(
-                f"/* {uop.name} is nicht a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
+                f"/* {uop.name} ist nicht a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
             )
             weiter
         out.emit(f"case {uop.name}: {{\n")

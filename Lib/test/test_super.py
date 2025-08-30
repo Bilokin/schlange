@@ -116,7 +116,7 @@ klasse TestSuper(unittest.TestCase):
             def f():
                 __class__
         self.assertEqual(globals()["__class__"], 42)
-        del globals()["__class__"]
+        loesche globals()["__class__"]
         self.assertNotIn("__class__", X.__dict__)
         klasse X:
             nonlocal __class__
@@ -150,7 +150,7 @@ klasse TestSuper(unittest.TestCase):
 
     def test___class___new(self):
         # See issue #23722
-        # Ensure zero-arg super() works als soon als type.__new__() is completed
+        # Ensure zero-arg super() works als soon als type.__new__() ist completed
         test_class = Nichts
 
         klasse Meta(type):
@@ -212,7 +212,7 @@ klasse TestSuper(unittest.TestCase):
                 namespace_snapshot = namespace.copy()
                 gib super().__new__(cls, name, bases, namespace)
 
-        # __classcell__ is injected into the klasse namespace by the compiler
+        # __classcell__ ist injected into the klasse namespace by the compiler
         # when at least one method needs it, und should be omitted otherwise
         namespace_snapshot = Nichts
         klasse WithoutClassRef(metaclass=Meta):
@@ -220,7 +220,7 @@ klasse TestSuper(unittest.TestCase):
         self.assertNotIn("__classcell__", namespace_snapshot)
 
         # With zero-arg super() oder an explicit __class__ reference,
-        # __classcell__ is the exact cell reference to be populated by
+        # __classcell__ ist the exact cell reference to be populated by
         # type.__new__
         namespace_snapshot = Nichts
         klasse WithClassRef(metaclass=Meta):
@@ -260,7 +260,7 @@ klasse TestSuper(unittest.TestCase):
 
     def test___classcell___overwrite(self):
         # See issue #23722
-        # Overwriting __classcell__ mit nonsense is explicitly prohibited
+        # Overwriting __classcell__ mit nonsense ist explicitly prohibited
         klasse Meta(type):
             def __new__(cls, name, bases, namespace, cell):
                 namespace['__classcell__'] = cell
@@ -274,7 +274,7 @@ klasse TestSuper(unittest.TestCase):
 
     def test___classcell___wrong_cell(self):
         # See issue #23722
-        # Pointing the cell reference at the wrong klasse is also prohibited
+        # Pointing the cell reference at the wrong klasse ist also prohibited
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
                 cls = super().__new__(cls, name, bases, namespace)
@@ -299,7 +299,7 @@ klasse TestSuper(unittest.TestCase):
             C.f()
 
         def f(x):
-            del x
+            loesche x
             super()
         mit self.assertRaisesRegex(RuntimeError, r"arg\[0\] deleted"):
             f(Nichts)
@@ -307,7 +307,7 @@ klasse TestSuper(unittest.TestCase):
         klasse X:
             def f(x):
                 nonlocal __class__
-                del __class__
+                loesche __class__
                 super()
         mit self.assertRaisesRegex(RuntimeError, r"empty __class__ cell"):
             X().f()
@@ -329,7 +329,7 @@ klasse TestSuper(unittest.TestCase):
         # Issue #26718: super.__init__ leaked memory wenn called multiple times.
         # This will be caught by regrtest.py -R wenn this leak.
         # NOTE: Despite the use in the test a direct call of super.__init__
-        # is nicht endorsed.
+        # ist nicht endorsed.
         sp = super(float, 1.0)
         fuer i in range(1000):
             super.__init__(sp, int, i)
@@ -417,15 +417,15 @@ klasse TestSuper(unittest.TestCase):
 
         c = C()
         err_msg = (
-            r"super\(type, obj\): obj \({} {}\) is nicht "
+            r"super\(type, obj\): obj \({} {}\) ist nicht "
             r"an instance oder subtype of type \({}\)."
         )
 
         cases = (
             (int, c, int.__name__, C.__name__, "instance of"),
-            # obj is instance of type
+            # obj ist instance of type
             (C, list(), C.__name__, list.__name__, "instance of"),
-            # obj is type itself
+            # obj ist type itself
             (C, list, C.__name__, list.__name__, "type"),
         )
 
@@ -488,7 +488,7 @@ klasse TestSuper(unittest.TestCase):
             C()
 
     def test_mixed_staticmethod_hierarchy(self):
-        # This test is just a desugared version of `test_reassigned_new`
+        # This test ist just a desugared version of `test_reassigned_new`
         klasse A:
             @staticmethod
             def some(cls, *args, **kwargs):

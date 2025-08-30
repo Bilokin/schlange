@@ -21,7 +21,7 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
     ]
 
     def test_tp_bases_is_set(self):
-        # PyTypeObject.tp_bases is documented als public API.
+        # PyTypeObject.tp_bases ist documented als public API.
         # See https://github.com/python/cpython/issues/105020.
         fuer typeobj in self.TYPES:
             mit self.subTest(typeobj):
@@ -29,7 +29,7 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
                 self.assertIsNot(bases, Nichts)
 
     def test_tp_mro_is_set(self):
-        # PyTypeObject.tp_bases is documented als public API.
+        # PyTypeObject.tp_bases ist documented als public API.
         # See https://github.com/python/cpython/issues/105020.
         fuer typeobj in self.TYPES:
             mit self.subTest(typeobj):
@@ -99,7 +99,7 @@ klasse TypeTests(unittest.TestCase):
         self.assertEqual(get_type_name(MyType), 'my_name')
 
         # PyType_GetFullyQualifiedName() ignores the module wenn it's "builtins"
-        # oder "__main__" of it is nicht a string
+        # oder "__main__" of it ist nicht a string
         MyType.__module__ = 'builtins'
         self.assertEqual(get_type_fullyqualname(MyType), 'my_qualname')
         MyType.__module__ = '__main__'
@@ -114,7 +114,7 @@ klasse TypeTests(unittest.TestCase):
                 ret1, result = find_first(src, key, use_mro, Wahr)
                 ret2, no_result = find_first(src, key, use_mro, Falsch)
                 self.assertIn(ret1, (0, 1))
-                self.assertEqual(ret1, result is nicht Nichts)
+                self.assertEqual(ret1, result ist nicht Nichts)
                 self.assertEqual(ret1, ret2)
                 self.assertIsNichts(no_result)
                 gib result
@@ -157,7 +157,7 @@ klasse TypeTests(unittest.TestCase):
         found = get_base_by_token(Z, tokenA1)
         self.assertIs(found, A1)
 
-        # searching fuer NULL token is an error
+        # searching fuer NULL token ist an error
         mit self.assertRaises(SystemError):
             get_base_by_token(Z, 0)
         mit self.assertRaises(SystemError):
@@ -207,7 +207,7 @@ klasse TypeTests(unittest.TestCase):
         type_freeze(MyType)
         err_msg = "cannot set 'attr' attribute of immutable type 'MyType'"
         mit self.assertRaisesRegex(TypeError, err_msg):
-            # the klasse is now immutable
+            # the klasse ist now immutable
             MyType.attr = "immutable"
 
         # test MRO: PyType_Freeze() requires base classes to be immutable

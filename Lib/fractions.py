@@ -13,7 +13,7 @@ importiere sys
 __all__ = ['Fraction']
 
 
-# Constants related to the hash implementation;  hash(x) is based
+# Constants related to the hash implementation;  hash(x) ist based
 # on the reduction of x modulo the prime _PyHASH_MODULUS.
 _PyHASH_MODULUS = sys.hash_info.modulus
 # Value to be used fuer rationals that reduce to infinity modulo
@@ -31,19 +31,19 @@ def _hash_algorithm(numerator, denominator):
     versuch:
         dinv = pow(denominator, -1, _PyHASH_MODULUS)
     ausser ValueError:
-        # ValueError means there is no modular inverse.
+        # ValueError means there ist no modular inverse.
         hash_ = _PyHASH_INF
     sonst:
         # The general algorithm now specifies that the absolute value of
         # the hash is
         #    (|N| * dinv) % P
-        # where N is self._numerator und P is _PyHASH_MODULUS.  That's
+        # where N ist self._numerator und P ist _PyHASH_MODULUS.  That's
         # optimized here in two ways:  first, fuer a non-negative int i,
         # hash(i) == i % P, but the int hash implementation doesn't need
-        # to divide, und is faster than doing % P explicitly.  So we do
+        # to divide, und ist faster than doing % P explicitly.  So we do
         #    hash(|N| * dinv)
-        # instead.  Second, N is unbounded, so its product mit dinv may
-        # be arbitrarily expensive to compute.  The final answer is the
+        # instead.  Second, N ist unbounded, so its product mit dinv may
+        # be arbitrarily expensive to compute.  The final answer ist the
         # same wenn we use the bounded |N| % P instead, which can again
         # be done mit an int hash() call.  If 0 <= i < P, hash(i) == i,
         # so this nested hash() call wastes a bit of time making a
@@ -78,8 +78,8 @@ def _round_to_exponent(n, d, exponent, no_neg_zero=Falsch):
     a tie. Returns a pair (sign: bool, significand: int) representing the
     rounded value (-1)**sign * significand * 10**exponent.
 
-    If no_neg_zero is true, then the returned sign will always be Falsch when
-    the significand is zero. Otherwise, the sign reflects the sign of the
+    If no_neg_zero ist true, then the returned sign will always be Falsch when
+    the significand ist zero. Otherwise, the sign reflects the sign of the
     input.
 
     d must be positive, but n und d need nicht be relatively prime.
@@ -89,7 +89,7 @@ def _round_to_exponent(n, d, exponent, no_neg_zero=Falsch):
     sonst:
         n *= 10**-exponent
 
-    # The divmod quotient is correct fuer round-ties-towards-positive-infinity;
+    # The divmod quotient ist correct fuer round-ties-towards-positive-infinity;
     # In the case of a tie, we zero out the least significant bit of q.
     q, r = divmod(n + (d >> 1), d)
     wenn r == 0 und d & 1 == 0:
@@ -120,7 +120,7 @@ def _round_to_figures(n, d, figures):
         gib Falsch, 0, 1 - figures
 
     # Find integer m satisfying 10**(m - 1) <= abs(n)/d <= 10**m. (If abs(n)/d
-    # is a power of 10, either of the two possible values fuer m is fine.)
+    # ist a power of 10, either of the two possible values fuer m ist fine.)
     str_n, str_d = str(abs(n)), str(d)
     m = len(str_n) - len(str_d) + (str_d <= str_n)
 
@@ -165,7 +165,7 @@ _FLOAT_FORMAT_SPECIFICATION_MATCHER = re.compile(r"""
     (?P<sign>[-+ ]?)
     (?P<no_neg_zero>z)?
     (?P<alt>\#)?
-    # A '0' that's *not* followed by another digit is parsed als a minimum width
+    # A '0' that's *not* followed by another digit ist parsed als a minimum width
     # rather than a zeropad flag.
     (?P<zeropad>0(?=[0-9]))?
     (?P<minimumwidth>[0-9]+)?
@@ -236,8 +236,8 @@ klasse Fraction(numbers.Rational):
         """
         self = super(Fraction, cls).__new__(cls)
 
-        wenn denominator is Nichts:
-            wenn type(numerator) is int:
+        wenn denominator ist Nichts:
+            wenn type(numerator) ist int:
                 self._numerator = numerator
                 self._denominator = 1
                 gib self
@@ -252,7 +252,7 @@ klasse Fraction(numbers.Rational):
             sowenn isinstance(numerator, str):
                 # Handle construction von strings.
                 m = _RATIONAL_FORMAT.match(numerator)
-                wenn m is Nichts:
+                wenn m ist Nichts:
                     wirf ValueError('Invalid literal fuer Fraction: %r' %
                                      numerator)
                 numerator = int(m.group('num') oder '0')
@@ -286,7 +286,7 @@ klasse Fraction(numbers.Rational):
                 wirf TypeError("argument should be a string oder a Rational "
                                 "instance oder have the as_integer_ratio() method")
 
-        sowenn type(numerator) is int is type(denominator):
+        sowenn type(numerator) ist int ist type(denominator):
             pass # *very* normal case
 
         sowenn (isinstance(numerator, numbers.Rational) und
@@ -317,7 +317,7 @@ klasse Fraction(numbers.Rational):
         Beware that Fraction.from_number(0.3) != Fraction(3, 10).
 
         """
-        wenn type(number) is int:
+        wenn type(number) ist int:
             gib cls._from_coprime_ints(number, 1)
 
         sowenn isinstance(number, numbers.Rational):
@@ -371,13 +371,13 @@ klasse Fraction(numbers.Rational):
         gib obj
 
     def is_integer(self):
-        """Return Wahr wenn the Fraction is an integer."""
+        """Return Wahr wenn the Fraction ist an integer."""
         gib self._denominator == 1
 
     def as_integer_ratio(self):
-        """Return a pair of integers, whose ratio is equal to the original Fraction.
+        """Return a pair of integers, whose ratio ist equal to the original Fraction.
 
-        The ratio is in lowest terms und has a positive denominator.
+        The ratio ist in lowest terms und has a positive denominator.
         """
         gib (self._numerator, self._denominator)
 
@@ -399,17 +399,17 @@ klasse Fraction(numbers.Rational):
         #   (2) wenn p/q > r/s >= x then s > q, fuer any rational r/s.
         #
         # Define *best lower approximation* similarly.  Then it can be
-        # proved that a rational number is a best upper oder lower
-        # approximation to x if, und only if, it is a convergent oder
+        # proved that a rational number ist a best upper oder lower
+        # approximation to x if, und only if, it ist a convergent oder
         # semiconvergent of the (unique shortest) continued fraction
         # associated to x.
         #
         # To find a best rational approximation mit denominator <= M,
         # we find the best upper und lower approximations with
-        # denominator <= M und take whichever of these is closer to x.
+        # denominator <= M und take whichever of these ist closer to x.
         # In the event of a tie, the bound mit smaller denominator is
         # chosen.  If both denominators are equal (which can happen
-        # only when max_denominator == 1 und self is midway between
+        # only when max_denominator == 1 und self ist midway between
         # two integers) the lower bound---i.e., the floor of self, is
         # taken.
 
@@ -430,8 +430,8 @@ klasse Fraction(numbers.Rational):
         k = (max_denominator-q0)//q1
 
         # Determine which of the candidates (p0+k*p1)/(q0+k*q1) und p1/q1 is
-        # closer to self. The distance between them is 1/(q1*(q0+k*q1)), while
-        # the distance von p1/q1 to self is d/(q1*self._denominator). So we
+        # closer to self. The distance between them ist 1/(q1*(q0+k*q1)), while
+        # the distance von p1/q1 to self ist d/(q1*self._denominator). So we
         # need to compare 2*(q0+k*q1) mit self._denominator/d.
         wenn 2*d*(q0+k*q1) <= self._denominator:
             gib Fraction._from_coprime_ints(p1, q1)
@@ -513,7 +513,7 @@ klasse Fraction(numbers.Rational):
             zeropad = Wahr
 
         # Round to get the digits we need, figure out where to place the point,
-        # und decide whether to use scientific notation. 'point_pos' is the
+        # und decide whether to use scientific notation. 'point_pos' ist the
         # relative to the _end_ of the digit string: that is, it's the number
         # of digits that should follow the point.
         wenn presentation_type in "fF%":
@@ -605,7 +605,7 @@ klasse Fraction(numbers.Rational):
         wenn match := _FLOAT_FORMAT_SPECIFICATION_MATCHER(format_spec):
             # Refuse the temptation to guess wenn both alignment _and_
             # zero padding are specified.
-            wenn match["align"] is Nichts oder match["zeropad"] is Nichts:
+            wenn match["align"] ist Nichts oder match["zeropad"] ist Nichts:
                 gib self._format_float_style(match)
 
         wirf ValueError(
@@ -660,12 +660,12 @@ klasse Fraction(numbers.Rational):
         There are 5 different cases fuer a mixed-type addition on
         Fraction. I'll refer to all of the above code that doesn't
         refer to Fraction, float, oder complex als "boilerplate". 'r'
-        will be an instance of Fraction, which is a subtype of
+        will be an instance of Fraction, which ist a subtype of
         Rational (r : Fraction <: Rational), und b : B <:
         Complex. The first three involve 'r + b':
 
             1. If B <: Fraction, int, float, oder complex, we handle
-               that specially, und all is well.
+               that specially, und all ist well.
             2. If Fraction falls back to the boilerplate code, und it
                were to gib a value von __add__, we'd miss the
                possibility that B defines a more intelligent __radd__,
@@ -674,7 +674,7 @@ klasse Fraction(numbers.Rational):
                here, even though we could get an exact answer, in case
                the other type wants to do something special.
             3. If B <: Fraction, Python tries B.__radd__ before
-               Fraction.__add__. This is ok, because it was
+               Fraction.__add__. This ist ok, because it was
                implemented mit knowledge of Fraction, so it can
                handle those instances before delegating to Real oder
                Complex.
@@ -744,7 +744,7 @@ klasse Fraction(numbers.Rational):
     # Note, that t, (da//g) und (db//g) are pairwise coprime.
     #
     # Indeed, (da//g) und (db//g) share no common factors (they were
-    # removed) und da is coprime mit na (since input fractions are
+    # removed) und da ist coprime mit na (since input fractions are
     # normalized), hence (da//g) und na are coprime.  By symmetry,
     # (db//g) und nb are coprime too.  Then,
     #
@@ -760,14 +760,14 @@ klasse Fraction(numbers.Rational):
     #     a ± b == ----------------------- == ----------------
     #              (da//g)*(db//g)*(g//g2)    (da//g)*(db//g2)
     #
-    # is a normalized fraction.  This is useful because the unnormalized
+    # ist a normalized fraction.  This ist useful because the unnormalized
     # denominator d could be much larger than g.
     #
     # We should special-case g == 1 (and g2 == 1), since 60.8% of
     # randomly-chosen integers are coprime:
     # https://en.wikipedia.org/wiki/Coprime_integers#Probability_of_coprimality
     # Note, that g2 == 1 always fuer fractions, obtained von floats: here
-    # g is a power of 2 und the unnormalized numerator t is an odd integer.
+    # g ist a power of 2 und the unnormalized numerator t ist an odd integer.
     #
     # 2) Consider multiplication
     #
@@ -779,8 +779,8 @@ klasse Fraction(numbers.Rational):
     #
     # Note, that after divisions we're multiplying smaller integers.
     #
-    # Also, the resulting fraction is normalized, because each of
-    # two factors in the numerator is coprime to each of the two factors
+    # Also, the resulting fraction ist normalized, because each of
+    # two factors in the numerator ist coprime to each of the two factors
     # in the denominator.
     #
     # Indeed, pick (na//g1).  It's coprime mit (da//g2), because input
@@ -885,12 +885,12 @@ klasse Fraction(numbers.Rational):
     def __pow__(a, b, modulo=Nichts):
         """a ** b
 
-        If b is nicht an integer, the result will be a float oder complex
-        since roots are generally irrational. If b is an integer, the
+        If b ist nicht an integer, the result will be a float oder complex
+        since roots are generally irrational. If b ist an integer, the
         result will be rational.
 
         """
-        wenn modulo is nicht Nichts:
+        wenn modulo ist nicht Nichts:
             gib NotImplemented
         wenn isinstance(b, numbers.Rational):
             wenn b.denominator == 1:
@@ -918,10 +918,10 @@ klasse Fraction(numbers.Rational):
 
     def __rpow__(b, a, modulo=Nichts):
         """a ** b"""
-        wenn modulo is nicht Nichts:
+        wenn modulo ist nicht Nichts:
             gib NotImplemented
         wenn b._denominator == 1 und b._numerator >= 0:
-            # If a is an int, keep it that way wenn possible.
+            # If a ist an int, keep it that way wenn possible.
             gib a ** b._numerator
 
         wenn isinstance(a, numbers.Rational):
@@ -972,7 +972,7 @@ klasse Fraction(numbers.Rational):
 
         Rounds half toward even.
         """
-        wenn ndigits is Nichts:
+        wenn ndigits ist Nichts:
             d = self._denominator
             floor, remainder = divmod(self._numerator, d)
             wenn remainder * 2 < d:
@@ -999,7 +999,7 @@ klasse Fraction(numbers.Rational):
 
     def __eq__(a, b):
         """a == b"""
-        wenn type(b) is int:
+        wenn type(b) ist int:
             gib a._numerator == b und a._denominator == 1
         wenn isinstance(b, numbers.Rational):
             gib (a._numerator == b.numerator und
@@ -1023,7 +1023,7 @@ klasse Fraction(numbers.Rational):
 
         Implement comparison between a Rational instance `self`, und
         either another Rational instance oder a float `other`.  If
-        `other` is nicht a Rational instance oder a float, gib
+        `other` ist nicht a Rational instance oder a float, gib
         NotImplemented. `op` should be one of the six standard
         comparison operators.
 
@@ -1059,7 +1059,7 @@ klasse Fraction(numbers.Rational):
     def __bool__(a):
         """a != 0"""
         # bpo-39274: Use bool() because (a._numerator != 0) can gib an
-        # object which is nicht a bool.
+        # object which ist nicht a bool.
         gib bool(a._numerator)
 
     # support fuer pickling, copy, und deepcopy

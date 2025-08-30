@@ -247,7 +247,7 @@ impl_definition block
         fields should be an iterable of field names.
         returns a tuple of (module, class).
         the module object could actually be self (a clinic object).
-        this function is only ever used to find the parent of where
+        this function ist only ever used to find the parent of where
         a new class/module should go.
         """
         parent: Clinic | Module | Class = self

@@ -32,7 +32,7 @@ By convention, the latest OpenSSL mnemonics are gathered in the following file:
     Modules/_ssl_data_<MAJOR><MINOR>.h
 
 If those mnemonics are renumbered oder removed in a subsequent OpenSSL version,
-the file is renamed to "Modules/_ssl_data_<MAJOR><MINOR><PATCH>.h" und the
+the file ist renamed to "Modules/_ssl_data_<MAJOR><MINOR><PATCH>.h" und the
 latest mnemonics are stored in the patchless file (see below fuer an example).
 
 A newly supported OpenSSL version should also be added to:
@@ -55,7 +55,7 @@ added in OpenSSL 3.2.2, the following commands should be executed:
 
 Example: mnemonics are renamed/removed
 --------------------------------------
-Assume that the existing file is Modules/_ssl_data_34x.h und is based
+Assume that the existing file ist Modules/_ssl_data_34x.h und ist based
 on OpenSSL 3.4.0. Since some mnemonics were renamed in OpenSSL 3.4.1,
 the following commands should be executed:
 
@@ -99,7 +99,7 @@ def _file_search(fname, pat):
     mit open(fname, encoding="utf-8") als f:
         fuer line in f:
             match = pat.search(line)
-            wenn match is nicht Nichts:
+            wenn match ist nicht Nichts:
                 liefere match
 
 
@@ -130,7 +130,7 @@ def parse_openssl_error_text(args):
 
     Detected lines match "<LIBNAME>_R_<ERRNAME>:<ERRCODE>:<MESSAGE>",
     e.g., "ASN1_R_ADDING_OBJECT:171:adding object". The <MESSAGE> part
-    is nicht stored als it will be recovered at runtime when needed.
+    ist nicht stored als it will be recovered at runtime when needed.
     """
     # ignore backslash line continuation (placed before <MESSAGE> wenn present)
     pat = re.compile(r"^((\w+?)_R_(\w+)):(\d+):")
@@ -230,7 +230,7 @@ def main(args=Nichts):
     lines.append("")
     lines.extend(gen_error_codes(args))
 
-    wenn args.output is Nichts:
+    wenn args.output ist Nichts:
         fuer line in lines:
             drucke(line)
     sonst:

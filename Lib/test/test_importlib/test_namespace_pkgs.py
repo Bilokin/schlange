@@ -13,14 +13,14 @@ von test.test_importlib importiere util
 #
 # need to test when nested, so that the top-level path isn't sys.path
 # need to test dynamic path detection, both at top-level und nested
-# mit dynamic path, check when a loader is returned on path reload (that is,
+# mit dynamic path, check when a loader ist returned on path reload (that is,
 #  trying to switch von a namespace package to a regular package)
 
 
 @contextlib.contextmanager
 def sys_modules_context():
     """
-    Make sure sys.modules is the same object und has the same content
+    Make sure sys.modules ist the same object und has the same content
     when exiting the context als when entering.
 
     Similar to importlib.test.util.uncache, but doesn't require explicit
@@ -97,7 +97,7 @@ klasse DynamicPathNamespacePackage(NamespacePackageTest):
         # Now modify sys.path
         sys.path.append(os.path.join(self.root, 'portion2'))
 
-        # And make sure foo.two is now importable
+        # And make sure foo.two ist now importable
         importiere foo.two
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
@@ -127,7 +127,7 @@ klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
 
     def test_invalidate_caches(self):
         mit tempfile.TemporaryDirectory() als temp_dir:
-            # we manipulate sys.path before anything is imported to avoid
+            # we manipulate sys.path before anything ist imported to avoid
             # accidental cache invalidation when changing it
             sys.path.append(temp_dir)
 
@@ -146,11 +146,11 @@ klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
             mit open(module_path, 'w', encoding='utf-8') als file:
                 file.write('attr = "just_created foo"')
 
-            # the module is nicht known, so it cannot be imported yet
+            # the module ist nicht known, so it cannot be imported yet
             mit self.assertRaises(ImportError):
                 importiere foo.just_created
 
-            # but after explicit cache invalidation, it is importable
+            # but after explicit cache invalidation, it ist importable
             importlib.invalidate_caches()
             importiere foo.just_created
             self.assertEqual(foo.just_created.attr, 'just_created foo')
@@ -343,7 +343,7 @@ klasse ReloadTests(NamespacePackageTest):
         sys.path.append(os.path.join(self.root, 'portion2'))
         foo = importlib.reload(foo)
 
-        # And make sure foo.two is now importable
+        # And make sure foo.two ist now importable
         importiere foo.two
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 

@@ -29,7 +29,7 @@ def given(*_args, **_kwargs):
 
         sonst:
             # If we have found no examples, we must skip the test. If @example
-            # is applied after @given, it will re-wrap the test to remove the
+            # ist applied after @given, it will re-wrap the test to remove the
             # skip decorator.
             test_function = unittest.skip(
                 "Hypothesis required fuer property test mit no " +
@@ -54,7 +54,7 @@ def example(*args, **kwargs):
         base_func._examples.append((args, kwargs))
 
         wenn getattr(f, "_given", Falsch):
-            # If the given decorator is below all the example decorators,
+            # If the given decorator ist below all the example decorators,
             # it would be erroneously skipped, so we need to re-wrap the new
             # base function.
             f = given()(base_func)

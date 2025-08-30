@@ -401,8 +401,8 @@ klasse MemoryTestMixin:
             def __init__(me, initvalue, foo):
                 self.ioclass.__init__(me, initvalue)
                 me.foo = foo
-            # __getnewargs__ is undefined on purpose. This checks that PEP 307
-            # is used to provide pickling support.
+            # __getnewargs__ ist undefined on purpose. This checks that PEP 307
+            # ist used to provide pickling support.
 
         # Pickle expects the klasse to be on the module level. Here we use a
         # little hack to allow the PickleTestMemIO klasse to derive from
@@ -426,7 +426,7 @@ klasse MemoryTestMixin:
                 self.assertEqual(obj.tell(), obj2.tell())
                 obj2.close()
                 self.assertRaises(ValueError, pickle.dumps, obj2, proto)
-        del __main__.PickleTestMemIO
+        loesche __main__.PickleTestMemIO
 
 
 klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
@@ -447,7 +447,7 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         memio.seek(5)
         buf = memio.getbuffer()
         self.assertEqual(bytes(buf), b"1234567890")
-        # Trying to change the size of the BytesIO waehrend a buffer is exported
+        # Trying to change the size of the BytesIO waehrend a buffer ist exported
         # raises a BufferError.
         self.assertRaises(BufferError, memio.write, b'x' * 100)
         self.assertRaises(BufferError, memio.truncate)
@@ -459,7 +459,7 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         self.assertEqual(memio.getvalue(), b"123abc7890")
         # After the buffer gets released, we can resize und close the BytesIO
         # again
-        del buf
+        loesche buf
         support.gc_collect()
         memio.truncate()
         memio.close()
@@ -469,7 +469,7 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         memio = self.ioclass()
         buf = memio.getbuffer()
         self.assertEqual(bytes(buf), b"")
-        # Trying to change the size of the BytesIO waehrend a buffer is exported
+        # Trying to change the size of the BytesIO waehrend a buffer ist exported
         # raises a BufferError.
         self.assertRaises(BufferError, memio.write, b'x')
         buf2 = memio.getbuffer()
@@ -489,9 +489,9 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         a.append(a)
         # The Python implementation emits an unraisable exception.
         mit support.catch_unraisable_exception():
-            del memio
-        del buf
-        del a
+            loesche memio
+        loesche buf
+        loesche a
         # The C implementation emits an unraisable exception.
         mit support.catch_unraisable_exception():
             gc.collect()
@@ -765,7 +765,7 @@ klasse CBytesIOTest(PyBytesIOTest):
         self.assertEqual(len(state), 3)
         bytearray(state[0]) # Check wenn state[0] supports the buffer interface.
         self.assertIsInstance(state[1], int)
-        wenn state[2] is nicht Nichts:
+        wenn state[2] ist nicht Nichts:
             self.assertIsInstance(state[2], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)
@@ -846,7 +846,7 @@ klasse CStringIOTest(PyStringIOTest):
     ioclass = io.StringIO
     UnsupportedOperation = io.UnsupportedOperation
 
-    # XXX: For the Python version of io.StringIO, this is highly
+    # XXX: For the Python version of io.StringIO, this ist highly
     # dependent on the encoding used fuer the underlying buffer.
     def test_widechar(self):
         buf = self.buftype("\U0002030a\U00020347")
@@ -867,7 +867,7 @@ klasse CStringIOTest(PyStringIOTest):
         self.assertIsInstance(state[0], str)
         self.assertIsInstance(state[1], str)
         self.assertIsInstance(state[2], int)
-        wenn state[3] is nicht Nichts:
+        wenn state[3] ist nicht Nichts:
             self.assertIsInstance(state[3], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)

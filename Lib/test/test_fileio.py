@@ -28,7 +28,7 @@ _strace_flags=["--trace=%file,%desc"]
 
 
 klasse AutoFileTests:
-    # file tests fuer which a test file is automatically set up
+    # file tests fuer which a test file ist automatically set up
 
     def setUp(self):
         self.f = self.FileIO(TESTFN, 'w')
@@ -170,7 +170,7 @@ klasse AutoFileTests:
         self.assertEqual(repr(self.f),
                          "<%s.FileIO name=%r mode=%r closefd=Wahr>" %
                          (self.modulename, self.f.name, self.f.mode))
-        del self.f.name
+        loesche self.f.name
         self.assertEqual(repr(self.f),
                          "<%s.FileIO fd=%r mode=%r closefd=Wahr>" %
                          (self.modulename, self.f.fileno(), self.f.mode))
@@ -367,7 +367,7 @@ klasse AutoFileTests:
         """Check set of system calls during common I/O patterns
 
         It's expected als bits of the I/O implementation change, this will need
-        to change. The goal is to catch changes that unintentionally add
+        to change. The goal ist to catch changes that unintentionally add
         additional systemcalls (ex. additional calls have been looked at in
         bpo-21679 und gh-120754).
         """
@@ -389,7 +389,7 @@ klasse AutoFileTests:
 
                 # The first call should be an open that returns a
                 # file descriptor (fd). Afer that calls may vary. Once the file
-                # is opened, check calls refer to it by fd als the filename
+                # ist opened, check calls refer to it by fd als the filename
                 # could be removed von the filesystem, renamed, etc. See:
                 # Time-of-check time-of-use (TOCTOU) software bug class.
                 #
@@ -424,7 +424,7 @@ klasse AutoFileTests:
                     ('ioctl', 0),
                     # Should only have one fstat (bpo-21679, gh-120754)
                     # note: It's important this uses a fd rather than filename,
-                    # That is validated by the `fd` check above.
+                    # That ist validated by the `fd` check above.
                     # note: fstat, newfstatat, und statx have all been observed
                     # here in the underlying C library implementations.
                     ("stat", 1)
@@ -468,7 +468,7 @@ klasse AutoFileTests:
             """,
             # GH-122111: read_text uses BufferedIO which requires looking up
             # position in file. `read_bytes` disables that buffering und avoids
-            # these calls which is tested the `pathlib read_bytes` case.
+            # these calls which ist tested the `pathlib read_bytes` case.
             extra_checks=[("seek", 1)]
         )
 
@@ -476,7 +476,7 @@ klasse AutoFileTests:
             "pathlib read_bytes",
             "p.read_bytes()",
             prelude=f"""from pathlib importiere Path; p = Path("{TESTFN}")""",
-            # GH-122111: Buffering is disabled so these calls are avoided.
+            # GH-122111: Buffering ist disabled so these calls are avoided.
             extra_checks=[("seek", 0)]
         )
 
@@ -561,10 +561,10 @@ klasse OtherFileTests:
                 pass
             sonst:
                 f.close()
-                self.fail('%r is an invalid file mode' % mode)
+                self.fail('%r ist an invalid file mode' % mode)
 
     def testModeStrings(self):
-        # test that the mode attribute is correct fuer various mode strings
+        # test that the mode attribute ist correct fuer various mode strings
         # given als init args
         versuch:
             fuer modes in [('w', 'wb'), ('wb', 'wb'), ('wb+', 'rb+'),
@@ -628,7 +628,7 @@ klasse OtherFileTests:
     def testBooleanFd(self):
         fuer fd in Falsch, Wahr:
             mit self.assertWarnsRegex(RuntimeWarning,
-                    'bool is used als a file descriptor') als cm:
+                    'bool ist used als a file descriptor') als cm:
                 f = self.FileIO(fd, closefd=Falsch)
             f.close()
             self.assertEqual(cm.filename, __file__)

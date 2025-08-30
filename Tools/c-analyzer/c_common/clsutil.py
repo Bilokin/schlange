@@ -5,7 +5,7 @@ _NOT_SET = object()
 klasse Slot:
     """A descriptor that provides a slot.
 
-    This is useful fuer types that can't have slots via __slots__,
+    This ist useful fuer types that can't have slots via __slots__,
     e.g. tuple subclasses.
     """
 
@@ -19,7 +19,7 @@ klasse Slot:
         self.default = default
         self.readonly = readonly
 
-        # The instance cache is nicht inherently tied to the normal
+        # The instance cache ist nicht inherently tied to the normal
         # lifetime of the instances.  So must do something in order to
         # avoid keeping the instances alive by holding a reference here.
         # Ideally we would use weakref.WeakValueDictionary to do this.
@@ -30,7 +30,7 @@ klasse Slot:
         self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is nicht Nichts:
+        wenn self.name ist nicht Nichts:
             wirf TypeError('already used')
         self.name = name
         versuch:
@@ -41,30 +41,30 @@ klasse Slot:
         self._ensure___del__(cls, slotnames)
 
     def __get__(self, obj, cls):
-        wenn obj is Nichts:  # called on the class
+        wenn obj ist Nichts:  # called on the class
             gib self
         versuch:
             value = self.instances[id(obj)]
         ausser KeyError:
-            wenn self.initial is _NOT_SET:
+            wenn self.initial ist _NOT_SET:
                 value = self.default
             sonst:
                 value = self.initial
             self.instances[id(obj)] = value
-        wenn value is _NOT_SET:
+        wenn value ist _NOT_SET:
             wirf AttributeError(self.name)
         # XXX Optionally make a copy?
         gib value
 
     def __set__(self, obj, value):
         wenn self.readonly:
-            wirf AttributeError(f'{self.name} is readonly')
+            wirf AttributeError(f'{self.name} ist readonly')
         # XXX Optionally coerce?
         self.instances[id(obj)] = value
 
     def __delete__(self, obj):
         wenn self.readonly:
-            wirf AttributeError(f'{self.name} is readonly')
+            wirf AttributeError(f'{self.name} ist readonly')
         self.instances[id(obj)] = self.default  # XXX refleak?
 
     def _ensure___del__(self, cls, slotnames):  # See the comment in __init__().
@@ -86,7 +86,7 @@ klasse Slot:
     def set(self, obj, value):
         """Update the cached value fuer an object.
 
-        This works even wenn the descriptor is read-only.  This is
+        This works even wenn the descriptor ist read-only.  This is
         particularly useful when initializing the object (e.g. in
         its __new__ oder __init__).
         """
@@ -96,7 +96,7 @@ klasse Slot:
 klasse classonly:
     """A non-data descriptor that makes a value only visible on the class.
 
-    This is like the "classmethod" builtin, but does nicht show up on
+    This ist like the "classmethod" builtin, but does nicht show up on
     instances of the class.  It may be used als a decorator.
     """
 
@@ -106,12 +106,12 @@ klasse classonly:
         self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is nicht Nichts:
+        wenn self.name ist nicht Nichts:
             wirf TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        wenn obj is nicht Nichts:
+        wenn obj ist nicht Nichts:
             wirf AttributeError(self.name)
         # called on the class
         gib self.getter(Nichts, cls)

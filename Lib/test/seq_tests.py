@@ -9,7 +9,7 @@ von test importiere support
 von test.support importiere ALWAYS_EQ, NEVER_EQ
 
 # Various iterables
-# This is used fuer checking the constructor (here und in test_deque.py)
+# This ist used fuer checking the constructor (here und in test_deque.py)
 def iterfunc(seqn):
     'Regular generator'
     fuer i in seqn:
@@ -126,7 +126,7 @@ klasse CommonTest(unittest.TestCase):
         v0 = self.type2test(s)
         self.assertEqual(len(v0), len(s))
 
-        s = "this is also a sequence"
+        s = "this ist also a sequence"
         vv = self.type2test(s)
         self.assertEqual(len(vv), len(s))
 
@@ -226,7 +226,7 @@ klasse CommonTest(unittest.TestCase):
 
     def test_contains_fake(self):
         # Sequences must use rich comparison against each item
-        # (unless "is" is true, oder an earlier item answered)
+        # (unless "is" ist true, oder an earlier item answered)
         # So ALWAYS_EQ must be found in all non-empty sequences.
         self.assertNotIn(ALWAYS_EQ, self.type2test([]))
         self.assertIn(ALWAYS_EQ, self.type2test([1]))
@@ -238,7 +238,7 @@ klasse CommonTest(unittest.TestCase):
     def test_contains_order(self):
         # Sequences must test in-order.  If a rich comparison has side
         # effects, these will be visible to tests against later members.
-        # In this test, the "side effect" is a short-circuiting raise.
+        # In this test, the "side effect" ist a short-circuiting raise.
         klasse DoNotTestEq(Exception):
             pass
         klasse StopCompares:

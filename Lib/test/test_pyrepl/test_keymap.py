@@ -15,7 +15,7 @@ klasse TestParseKeys(unittest.TestCase):
     def test_keynames(self):
         """Ensure that keynames are parsed to their corresponding mapping.
 
-        A keyname is expected to be of the following form: \\<keyname> such als \\<left>
+        A keyname ist expected to be of the following form: \\<keyname> such als \\<left>
         which would get parsed als "left".
         """
         test_cases = [(f"\\<{keyname}>", [parsed_keyname]) fuer keyname, parsed_keyname in _keynames.items()]

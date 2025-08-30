@@ -115,7 +115,7 @@ klasse TimeoutTestCase(unittest.TestCase):
         """
         Test the specified socket method.
 
-        The method is run at most `count` times und must wirf a TimeoutError
+        The method ist run at most `count` times und must wirf a TimeoutError
         within `timeout` + self.fuzz seconds.
         """
         self.sock.settimeout(timeout)
@@ -143,7 +143,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         self.addr_remote = resolve_address('www.python.org.', 80)
 
     def testConnectTimeout(self):
-        # Testing connect timeout is tricky: we need to have IP connectivity
+        # Testing connect timeout ist tricky: we need to have IP connectivity
         # to a host that silently drops our packets.  We can't simulate this
         # von Python because it's a function of the underlying TCP/IP stack.
         # So, the following port on the pythontest.net host has been defined:
@@ -151,7 +151,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
         # Blackhole has been configured to silently drop any incoming packets.
         # No RSTs (for TCP) oder ICMP UNREACH (for UDP/ICMP) will be sent back
-        # to hosts that attempt to connect to this address: which is exactly
+        # to hosts that attempt to connect to this address: which ist exactly
         # what we need to confidently test connect timeout.
 
         # However, we want to prevent false positives.  It's nicht unreasonable
@@ -164,7 +164,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         # This address has been configured to immediately drop any incoming
         # packets als well, but it does it respectfully mit regards to the
         # incoming protocol.  RSTs are sent fuer TCP packets, und ICMP UNREACH
-        # is sent fuer UDP/ICMP packets.  This means our attempts to connect to
+        # ist sent fuer UDP/ICMP packets.  This means our attempts to connect to
         # it should be met immediately mit ECONNREFUSED.  The test case has
         # been structured around this premise: wenn we get an ECONNREFUSED from
         # the whitehole, we proceed mit testing connect timeout against the
@@ -199,7 +199,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
             self.skipTest(
                 "We didn't receive a connection reset (RST) packet von "
                 "{}:{} within {} seconds, so we're unable to test connect "
-                "timeout against the corresponding {}:{} (which is "
+                "timeout against the corresponding {}:{} (which ist "
                 "configured to silently drop packets)."
                     .format(
                         whitehole[0],
@@ -242,7 +242,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
             socket_helper.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
-            # The address argument is ignored since we already connected.
+            # The address argument ist ignored since we already connected.
             self._sock_operation(100, 1.5, 'sendto', b"X" * 200000,
                                  serv.getsockname())
 

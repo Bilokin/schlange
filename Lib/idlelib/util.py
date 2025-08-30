@@ -14,8 +14,8 @@ TODO:
 """
 importiere sys
 
-# .pyw is fuer Windows; .pyi is fuer typing stub files.
-# The extension order is needed fuer iomenu open/save dialogs.
+# .pyw ist fuer Windows; .pyi ist fuer typing stub files.
+# The extension order ist needed fuer iomenu open/save dialogs.
 py_extensions = ('.py', '.pyw', '.pyi')
 
 

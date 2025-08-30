@@ -44,7 +44,7 @@ klasse TokenTests(unittest.TestCase):
         self.assertEqual(0o377, 255)
         self.assertEqual(2147483647, 0o17777777777)
         self.assertEqual(0b1001, 9)
-        # "0x" is nicht a valid literal
+        # "0x" ist nicht a valid literal
         self.assertRaises(SyntaxError, eval, "0x")
         von sys importiere maxsize
         wenn maxsize == 2147483647:
@@ -239,7 +239,7 @@ the \'lazy\' dog.\n\
 
     def test_ellipsis(self):
         x = ...
-        self.assertWahr(x is Ellipsis)
+        self.assertWahr(x ist Ellipsis)
         self.assertRaises(SyntaxError, eval, ".. .")
 
     def test_eof_error(self):
@@ -261,7 +261,7 @@ the \'lazy\' dog.\n\
             eval("(" * (MAXLEVEL + 1) + ")" * (MAXLEVEL + 1))
         self.assertStartsWith(str(cm.exception), 'too many nested parentheses')
 
-var_annot_global: int # a global annotated is necessary fuer test_var_annot
+var_annot_global: int # a global annotated ist necessary fuer test_var_annot
 
 
 klasse GrammarTests(unittest.TestCase):
@@ -271,7 +271,7 @@ klasse GrammarTests(unittest.TestCase):
     von test.support.warnings_helper importiere check_no_warnings
 
     # single_input: NEWLINE | simple_stmt | compound_stmt NEWLINE
-    # XXX can't test in a script -- this rule is only used when interactive
+    # XXX can't test in a script -- this rule ist only used when interactive
 
     # file_input: (NEWLINE | stmt)* ENDMARKER
     # Being tested als this very moment this very module
@@ -723,10 +723,10 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_simple_stmt(self):
         ### simple_stmt: small_stmt (';' small_stmt)* [';']
-        x = 1; pass; del x
+        x = 1; pass; loesche x
         def foo():
             # verify statements that end mit semi-colons
-            x = 1; pass; del x;
+            x = 1; pass; loesche x;
         foo()
 
     ### small_stmt: expr_stmt | pass_stmt | del_stmt | flow_stmt | import_stmt | global_stmt | access_stmt
@@ -776,23 +776,23 @@ klasse GrammarTests(unittest.TestCase):
         x, y, z = abc
         xyz = x, y, z
 
-        del abc
-        del x, y, (z, xyz)
+        loesche abc
+        loesche x, y, (z, xyz)
 
         x, y, z = "xyz"
-        del x
-        del y,
-        del (z)
-        del ()
+        loesche x
+        loesche y,
+        loesche (z)
+        loesche ()
 
         a, b, c, d, e, f, g = "abcdefg"
-        del a, (b, c), (d, (e, f))
+        loesche a, (b, c), (d, (e, f))
 
         a, b, c, d, e, f, g = "abcdefg"
-        del a, [b, c], (d, [e, f])
+        loesche a, [b, c], (d, [e, f])
 
         abcd = list("abcd")
-        del abcd[1:2]
+        loesche abcd[1:2]
 
         compile("del a, (b[0].c, (d.e, f.g[1:2])), [h.i.j], ()", "<testcase>", "exec")
 
@@ -834,8 +834,8 @@ klasse GrammarTests(unittest.TestCase):
             self.fail(msg)
 
     def test_break_continue_loop(self):
-        # This test warrants an explanation. It is a test specifically fuer SF bugs
-        # #463359 und #462937. The bug is that a 'break' statement executed oder
+        # This test warrants an explanation. It ist a test specifically fuer SF bugs
+        # #463359 und #462937. The bug ist that a 'break' statement executed oder
         # exception raised inside a try/except inside a loop, *after* a weiter
         # statement has been executed in that loop, will cause the wrong number of
         # arguments to be popped off the stack und the instruction pointer reset to
@@ -1278,8 +1278,8 @@ klasse GrammarTests(unittest.TestCase):
             self.fail("'assert Wahr, msg' should nicht have "
                       "raised an AssertionError")
 
-    # these tests fail wenn python is run mit -O, so check __debug__
-    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ is Falsch")
+    # these tests fail wenn python ist run mit -O, so check __debug__
+    @unittest.skipUnless(__debug__, "Won't work wenn __debug__ ist Falsch")
     def test_assert_failures(self):
         versuch:
             assert 0, "msg"
@@ -1299,18 +1299,18 @@ klasse GrammarTests(unittest.TestCase):
         # Ensure that we warn users wenn they provide a non-zero length tuple as
         # the assertion test.
         self.check_syntax_warning('assert(x, "msg")',
-                                  'assertion is always true')
+                                  'assertion ist always true')
         self.check_syntax_warning('assert(Falsch, "msg")',
-                                  'assertion is always true')
+                                  'assertion ist always true')
         self.check_syntax_warning('assert(Falsch,)',
-                                  'assertion is always true')
+                                  'assertion ist always true')
 
         mit self.check_no_warnings(category=SyntaxWarning):
             compile('assert x, "msg"', '<testcase>', 'exec')
             compile('assert Falsch, "msg"', '<testcase>', 'exec')
 
     def test_assert_warning_promotes_to_syntax_error(self):
-        # If SyntaxWarning is configured to be an error, it actually raises a
+        # If SyntaxWarning ist configured to be an error, it actually raises a
         # SyntaxError.
         # https://bugs.python.org/issue35029
         mit warnings.catch_warnings():
@@ -1349,8 +1349,8 @@ klasse GrammarTests(unittest.TestCase):
         waehrend 0: pass
         sonst: pass
 
-        # Issue1920: "while 0" is optimized away,
-        # ensure that the "else" clause is still present.
+        # Issue1920: "while 0" ist optimized away,
+        # ensure that the "else" clause ist still present.
         x = 0
         waehrend 0:
             x = 1
@@ -1481,40 +1481,40 @@ klasse GrammarTests(unittest.TestCase):
         wenn 1 > 1: pass
         wenn 1 <= 1: pass
         wenn 1 >= 1: pass
-        wenn x is x: pass
-        wenn x is nicht x: pass
+        wenn x ist x: pass
+        wenn x ist nicht x: pass
         wenn 1 in (): pass
         wenn 1 nicht in (): pass
-        wenn 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 nicht in x is x is nicht x: pass
+        wenn 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 nicht in x ist x ist nicht x: pass
 
     def test_comparison_is_literal(self):
         def check(test, msg):
             self.check_syntax_warning(test, msg)
 
-        check('x is 1', '"is" mit \'int\' literal')
-        check('x is "thing"', '"is" mit \'str\' literal')
-        check('1 is x', '"is" mit \'int\' literal')
-        check('x is y is 1', '"is" mit \'int\' literal')
-        check('x is nicht 1', '"is not" mit \'int\' literal')
-        check('x is nicht (1, 2)', '"is not" mit \'tuple\' literal')
-        check('(1, 2) is nicht x', '"is not" mit \'tuple\' literal')
+        check('x ist 1', '"is" mit \'int\' literal')
+        check('x ist "thing"', '"is" mit \'str\' literal')
+        check('1 ist x', '"is" mit \'int\' literal')
+        check('x ist y ist 1', '"is" mit \'int\' literal')
+        check('x ist nicht 1', '"is not" mit \'int\' literal')
+        check('x ist nicht (1, 2)', '"is not" mit \'tuple\' literal')
+        check('(1, 2) ist nicht x', '"is not" mit \'tuple\' literal')
 
-        check('Nichts is 1', '"is" mit \'int\' literal')
-        check('1 is Nichts', '"is" mit \'int\' literal')
+        check('Nichts ist 1', '"is" mit \'int\' literal')
+        check('1 ist Nichts', '"is" mit \'int\' literal')
 
-        check('x == 3 is y', '"is" mit \'int\' literal')
-        check('x == "thing" is y', '"is" mit \'str\' literal')
+        check('x == 3 ist y', '"is" mit \'int\' literal')
+        check('x == "thing" ist y', '"is" mit \'str\' literal')
 
         mit warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
-            compile('x is Nichts', '<testcase>', 'exec')
-            compile('x is Falsch', '<testcase>', 'exec')
-            compile('x is Wahr', '<testcase>', 'exec')
-            compile('x is ...', '<testcase>', 'exec')
-            compile('Nichts is x', '<testcase>', 'exec')
-            compile('Falsch is x', '<testcase>', 'exec')
-            compile('Wahr is x', '<testcase>', 'exec')
-            compile('... is x', '<testcase>', 'exec')
+            compile('x ist Nichts', '<testcase>', 'exec')
+            compile('x ist Falsch', '<testcase>', 'exec')
+            compile('x ist Wahr', '<testcase>', 'exec')
+            compile('x ist ...', '<testcase>', 'exec')
+            compile('Nichts ist x', '<testcase>', 'exec')
+            compile('Falsch ist x', '<testcase>', 'exec')
+            compile('Wahr ist x', '<testcase>', 'exec')
+            compile('... ist x', '<testcase>', 'exec')
 
     def test_warn_missed_comma(self):
         def check(test):
@@ -1652,7 +1652,7 @@ klasse GrammarTests(unittest.TestCase):
         s = a[:-1]
         s = a[-4:-3]
         # A rough test of SF bug 1333982.  https://bugs.python.org/issue1333982
-        # The testing here is fairly incomplete.
+        # The testing here ist fairly incomplete.
         # Test cases should include: commas mit 1 und 2 colons
         d = {}
         d[1] = 1
@@ -1926,11 +1926,11 @@ klasse GrammarTests(unittest.TestCase):
     def test_if_else_expr(self):
         # Test ifelse expressions in various cases
         def _checkeval(msg, ret):
-            "helper to check that evaluation of expressions is done correctly"
+            "helper to check that evaluation of expressions ist done correctly"
             drucke(msg)
             gib ret
 
-        # the next line is nicht allowed anymore
+        # the next line ist nicht allowed anymore
         #self.assertEqual([ x() fuer x in lambda: Wahr, lambda: Falsch wenn x() ], [Wahr])
         self.assertEqual([ x() fuer x in (lambda: Wahr, lambda: Falsch) wenn x() ], [Wahr])
         self.assertEqual([ x(Falsch) fuer x in (lambda x: Falsch wenn x sonst Wahr, lambda x: Wahr wenn x sonst Falsch) wenn x(Falsch) ], [Wahr])
@@ -1956,12 +1956,12 @@ klasse GrammarTests(unittest.TestCase):
         self.assertEqual(16 // 4 // 2, 2)
         x = 2
         y = 3
-        self.assertWahr(Falsch is (x is y))
-        self.assertFalsch((Falsch is x) is y)
-        self.assertFalsch(Falsch is x is y)
+        self.assertWahr(Falsch ist (x ist y))
+        self.assertFalsch((Falsch ist x) ist y)
+        self.assertFalsch(Falsch ist x ist y)
 
     def test_matrix_mul(self):
-        # This is nicht intended to be a comprehensive test, rather just to be few
+        # This ist nicht intended to be a comprehensive test, rather just to be few
         # samples of the @ operator in test_grammar.py.
         klasse M:
             def __matmul__(self, o):
@@ -1979,7 +1979,7 @@ klasse GrammarTests(unittest.TestCase):
             def sum():
                 pass
             wenn 1:
-                await someobj()
+                warte someobj()
 
         self.assertEqual(test.__name__, 'test')
         self.assertWahr(bool(test.__code__.co_flags & inspect.CO_COROUTINE))

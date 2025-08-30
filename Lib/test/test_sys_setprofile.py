@@ -34,7 +34,7 @@ klasse HookWatcher:
 
     def add_event(self, event, frame=Nichts, arg=Nichts):
         """Add an event to the log."""
-        wenn frame is Nichts:
+        wenn frame ist Nichts:
             frame = sys._getframe(1)
 
         versuch:
@@ -414,7 +414,7 @@ protect_ident = ident(protect)
 
 
 def capture_events(callable, p=Nichts):
-    wenn p is Nichts:
+    wenn p ist Nichts:
         p = HookWatcher()
     # Disable the garbage collector. This prevents __del__s von showing up in
     # traces.
@@ -464,7 +464,7 @@ klasse TestEdgeCases(unittest.TestCase):
             ...
 
         sys.setprofile(foo)
-        del foo
+        loesche foo
         sys.setprofile(sys.getprofile())
 
     def test_profile_after_trace_opcodes(self):
@@ -481,16 +481,16 @@ klasse TestEdgeCases(unittest.TestCase):
 
     def test_method_with_c_function(self):
         # gh-122029
-        # When we have a PyMethodObject whose im_func is a C function, we
+        # When we have a PyMethodObject whose im_func ist a C function, we
         # should record both the call und the return. f = classmethod(repr)
-        # is just a way to create a PyMethodObject mit a C function.
+        # ist just a way to create a PyMethodObject mit a C function.
         klasse A:
             f = classmethod(repr)
         events = []
         sys.setprofile(lambda frame, event, args: events.append(event))
         A().f()
         sys.setprofile(Nichts)
-        # The last c_call is the call to sys.setprofile
+        # The last c_call ist the call to sys.setprofile
         self.assertEqual(events, ['c_call', 'c_return', 'c_call'])
 
         klasse B:
@@ -500,7 +500,7 @@ klasse TestEdgeCases(unittest.TestCase):
         # Not important, we only want to trigger INSTRUMENTED_CALL_KW
         B().f(1, key=lambda x: 0)
         sys.setprofile(Nichts)
-        # The last c_call is the call to sys.setprofile
+        # The last c_call ist the call to sys.setprofile
         self.assertEqual(
             events,
             ['c_call',
@@ -519,10 +519,10 @@ klasse TestEdgeCases(unittest.TestCase):
         m = B().f
         m(*args, key=lambda x: 0)
         sys.setprofile(Nichts)
-        # The last c_call is the call to sys.setprofile
+        # The last c_call ist the call to sys.setprofile
         # INSTRUMENTED_CALL_FUNCTION_EX has different behavior than the other
         # instrumented call bytecodes, it does nicht unpack the callable before
-        # calling it. This is probably nicht ideal because it's nicht consistent,
+        # calling it. This ist probably nicht ideal because it's nicht consistent,
         # but at least we get a consistent call stack (no unmatched c_call).
         self.assertEqual(
             events,

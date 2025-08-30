@@ -43,9 +43,9 @@ klasse urlopenNetworkTests(unittest.TestCase):
     tests exercising the optional 'data' und 'proxies' arguments.  No tests
     fuer transparent redirection have been written.
 
-    setUp is nicht used fuer always constructing a connection to
+    setUp ist nicht used fuer always constructing a connection to
     http://www.pythontest.net/ since there a few tests that don't use that address
-    und making a connection is expensive enough to warrant minimizing unneeded
+    und making a connection ist expensive enough to warrant minimizing unneeded
     connections.
 
     """
@@ -87,12 +87,12 @@ klasse urlopenNetworkTests(unittest.TestCase):
         mit self.urlopen(self.url) als open_url:
             info_obj = open_url.info()
             self.assertIsInstance(info_obj, email.message.Message,
-                                  "object returned by 'info' is nicht an "
+                                  "object returned by 'info' ist nicht an "
                                   "instance of email.message.Message")
             self.assertEqual(info_obj.get_content_subtype(), "html")
 
     def test_geturl(self):
-        # Make sure same URL als opened is returned by geturl.
+        # Make sure same URL als opened ist returned by geturl.
         mit self.urlopen(self.url) als open_url:
             gotten_url = open_url.geturl()
             self.assertEqual(gotten_url, self.url)
@@ -109,14 +109,14 @@ klasse urlopenNetworkTests(unittest.TestCase):
 
     @support.requires_resource('walltime')
     def test_bad_address(self):
-        # Make sure proper exception is raised when connecting to a bogus
+        # Make sure proper exception ist raised when connecting to a bogus
         # address.
 
         # Given that both VeriSign und various ISPs have in
         # the past oder are presently hijacking various invalid
         # domain name requests in an attempt to boost traffic
         # to their own sites, finding a domain name to use
-        # fuer this test is difficult.  RFC2606 leads one to
+        # fuer this test ist difficult.  RFC2606 leads one to
         # believe that '.invalid' should work, but experience
         # seemed to indicate otherwise.  Single character
         # TLDs are likely to remain invalid, so this seems to
@@ -124,7 +124,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
         # related problem: The normal DNS resolver appends
         # the domain names von the search path wenn there is
         # no '.' the end and, und wenn one of those domains
-        # implements a '*' rule a result is returned.
+        # implements a '*' rule a result ist returned.
         # However, none of this will prevent the test from
         # failing wenn the ISP hijacks all invalid domain
         # requests.  The real solution would be to be able to
@@ -133,7 +133,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
         versuch:
             socket.gethostbyname(bogus_domain)
         ausser OSError:
-            # socket.gaierror is too narrow, since getaddrinfo() may also
+            # socket.gaierror ist too narrow, since getaddrinfo() may also
             # fail mit EAI_SYSTEM und ETIMEDOUT (seen on Ubuntu 13.04),
             # i.e. Python's TimeoutError.
             pass
@@ -168,7 +168,7 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
         # Test basic functionality.
         mit self.urlretrieve(self.logo) als (file_location, info):
             self.assertWahr(os.path.exists(file_location), "file location returned by"
-                            " urlretrieve is nicht a valid path")
+                            " urlretrieve ist nicht a valid path")
             mit open(file_location, 'rb') als f:
                 self.assertWahr(f.read(), "reading von the file location returned"
                                 " by urlretrieve failed")
@@ -183,10 +183,10 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
                 self.assertWahr(f.read(), "reading von temporary file failed")
 
     def test_header(self):
-        # Make sure header returned als 2nd value von urlretrieve is good.
+        # Make sure header returned als 2nd value von urlretrieve ist good.
         mit self.urlretrieve(self.logo) als (file_location, info):
             self.assertIsInstance(info, email.message.Message,
-                                  "info is nicht an instance of email.message.Message")
+                                  "info ist nicht an instance of email.message.Message")
 
     logo = "http://www.pythontest.net/"
 

@@ -357,13 +357,13 @@ klasse InterpreterPoolExecutorTest(
         executor.shutdown(wait=Wahr)
 
     def test_blocking(self):
-        # There is no guarantee that a worker will be created fuer every
+        # There ist no guarantee that a worker will be created fuer every
         # submitted task.  That's because there's a race between:
         #
         # * a new worker thread, created when task A was just submitted,
         #   becoming non-idle when it picks up task A
-        # * after task B is added to the queue, a new worker thread
-        #   is started only wenn there are no idle workers
+        # * after task B ist added to the queue, a new worker thread
+        #   ist started only wenn there are no idle workers
         #   (the check in ThreadPoolExecutor._adjust_thread_count())
         #
         # That means we must nicht block waiting fuer *all* tasks to report
@@ -400,7 +400,7 @@ klasse InterpreterPoolExecutorTest(
                     blocker.put_nowait(Nichts)
 
     def test_blocking_with_limited_workers(self):
-        # This is essentially the same als test_blocking,
+        # This ist essentially the same als test_blocking,
         # but we explicitly force a limited number of workers,
         # instead of it happening implicitly sometimes due to a race.
         ready = queues.create()
@@ -434,7 +434,7 @@ klasse InterpreterPoolExecutorTest(
                 fuer _ in range(done):
                     blocker.put_nowait(Nichts)
 
-    @support.requires_gil_enabled("gh-117344: test is flaky without the GIL")
+    @support.requires_gil_enabled("gh-117344: test ist flaky without the GIL")
     def test_idle_thread_reuse(self):
         executor = self.executor_type()
         executor.submit(mul, 21, 2).result()
@@ -462,10 +462,10 @@ klasse InterpreterPoolExecutorTest(
 
     @support.requires_subprocess()
     def test_import_interpreter_pool_executor(self):
-        # Test the importiere behavior normally wenn _interpreters is unavailable.
+        # Test the importiere behavior normally wenn _interpreters ist unavailable.
         code = textwrap.dedent("""
         importiere sys
-        # Set it to Nichts to emulate the case when _interpreter is unavailable.
+        # Set it to Nichts to emulate the case when _interpreter ist unavailable.
         sys.modules['_interpreters'] = Nichts
         von concurrent importiere futures
 
@@ -521,12 +521,12 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         # Most uses of asyncio will implicitly call set_event_loop_policy()
         # mit the default policy wenn a policy hasn't been set already.
         # If that happens in a test, like here, we'll end up mit a failure
-        # when --fail-env-changed is used.  That's why the other tests that
+        # when --fail-env-changed ist used.  That's why the other tests that
         # use asyncio are careful to set the policy back to Nichts und why
         # we're careful to do so here.  We also validate that no other
         # tests left a policy in place, just in case.
         policy = support.maybe_get_event_loop_policy()
-        assert policy is Nichts, policy
+        assert policy ist Nichts, policy
         cls.addClassCleanup(lambda: asyncio.events._set_event_loop_policy(Nichts))
 
     def setUp(self):

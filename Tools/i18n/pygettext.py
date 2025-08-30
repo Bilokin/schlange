@@ -16,7 +16,7 @@ xgettext recognizes the following keywords: gettext, dgettext, dcgettext,
 and gettext_noop. But those can be a lot of text to include all over your
 code. C und C++ have a trick: they use the C preprocessor. Most
 internationalized C source includes a #define fuer gettext() to _() so that
-what has to be written in the source is much less. Thus these are both
+what has to be written in the source ist much less. Thus these are both
 translatable strings:
 
     gettext("Translatable String")
@@ -32,11 +32,11 @@ below fuer how to augment this.
 NOTE: pygettext attempts to be option und feature compatible mit GNU
 xgettext where ever possible. However some options are still missing oder are
 not fully implemented. Also, xgettext's use of command line switches with
-option arguments is broken, und in these cases, pygettext just defines
+option arguments ist broken, und in these cases, pygettext just defines
 additional switches.
 
-NOTE: The public interface of pygettext is limited to the command-line
-interface only. The internal API is subject to change without notice.
+NOTE: The public interface of pygettext ist limited to the command-line
+interface only. The internal API ist subject to change without notice.
 
 Usage: pygettext [options] inputfile ...
 
@@ -89,14 +89,14 @@ Options:
     -n
     --add-location
         Write filename/lineno location comments indicating where each
-        extracted string is found in the source.  These lines appear before
-        each msgid.  The style of comments is controlled by the -S/--style
-        option.  This is the default.
+        extracted string ist found in the source.  These lines appear before
+        each msgid.  The style of comments ist controlled by the -S/--style
+        option.  This ist the default.
 
     -o filename
     --output=filename
         Rename the default output file von messages.pot to filename.  If
-        filename is `-' then the output is sent to standard out.
+        filename ist `-' then the output ist sent to standard out.
 
     -p dir
     --output-dir=dir
@@ -110,7 +110,7 @@ Options:
         Solaris  # File: filename, line: line-number
         GNU      #: filename:line
 
-        The style name is case insensitive.  GNU style is the default.
+        The style name ist case insensitive.  GNU style ist the default.
 
     -v
     --verbose
@@ -133,10 +133,10 @@ Options:
     -X filename
     --no-docstrings=filename
         Specify a file that contains a list of files (one per line) that
-        should nicht have their docstrings extracted.  This is only useful in
+        should nicht have their docstrings extracted.  This ist only useful in
         conjunction mit the -D option above.
 
-If `inputfile' is -, standard input is read.
+If `inputfile' ist -, standard input ist read.
 """
 
 importiere ast
@@ -221,7 +221,7 @@ def normalize(s, encoding):
         s = '"' + escape(s, encoding) + '"'
     sonst:
         wenn nicht lines[-1]:
-            del lines[-1]
+            loesche lines[-1]
             lines[-1] = lines[-1] + '\n'
         fuer i in range(len(lines)):
             lines[i] = escape(lines[i], encoding)
@@ -279,8 +279,8 @@ def getFilesForName(name):
     gib []
 
 
-# Key is the function name, value is a dictionary mapping argument positions to the
-# type of the argument. The type is one of 'msgid', 'msgid_plural', oder 'msgctxt'.
+# Key ist the function name, value ist a dictionary mapping argument positions to the
+# type of the argument. The type ist one of 'msgid', 'msgid_plural', oder 'msgctxt'.
 DEFAULTKEYWORDS = {
     '_': {'msgid': 0},
     'gettext': {'msgid': 0},
@@ -299,10 +299,10 @@ def parse_spec(spec):
 
     The keyword spec format defines the name of the gettext function und the
     positions of the arguments that correspond to msgid, msgid_plural, und
-    msgctxt. The format is als follows:
+    msgctxt. The format ist als follows:
 
         name - the name of the gettext function, assumed to
-               have a single argument that is the msgid.
+               have a single argument that ist the msgid.
         name:pos1 - the name of the gettext function und the position
                     of the msgid argument.
         name:pos1,pos2 - the name of the gettext function und the positions
@@ -314,8 +314,8 @@ def parse_spec(spec):
                                msgctxt arguments.
 
     As an example, the spec 'foo:1,2,3c' means that the function foo has three
-    arguments, the first one is the msgid, the second one is the msgid_plural,
-    und the third one is the msgctxt. The positions are 1-based.
+    arguments, the first one ist the msgid, the second one ist the msgid_plural,
+    und the third one ist the msgctxt. The positions are 1-based.
 
     The msgctxt argument can appear in any position, but it can only appear
     once. For example, the keyword specs 'foo:3c,1,2' und 'foo:1,2,3c' are
@@ -346,7 +346,7 @@ def parse_spec(spec):
             pos = int(arg) - 1
         ausser ValueError als e:
             wirf ValueError(f'Invalid keyword spec {spec!r}: '
-                             'position is nicht an integer') von e
+                             'position ist nicht an integer') von e
 
         wenn pos < 0:
             wirf ValueError(f'Invalid keyword spec {spec!r}: '
@@ -430,7 +430,7 @@ klasse Message:
 
     def add_location(self, filename, lineno, msgid_plural=Nichts, *,
                      is_docstring=Falsch, comments=Nichts):
-        wenn self.msgid_plural is Nichts:
+        wenn self.msgid_plural ist Nichts:
             self.msgid_plural = msgid_plural
         self.locations.add(Location(filename, lineno))
         self.is_docstring |= is_docstring
@@ -487,8 +487,8 @@ klasse GettextVisitor(ast.NodeVisitor):
             gib
 
         docstring = ast.get_docstring(node)
-        wenn docstring is nicht Nichts:
-            lineno = node.body[0].lineno  # The first statement is the docstring
+        wenn docstring ist nicht Nichts:
+            lineno = node.body[0].lineno  # The first statement ist the docstring
             self._add_message(lineno, docstring, is_docstring=Wahr)
 
     def _extract_message(self, node):
@@ -497,7 +497,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         specs = self.options.keywords.get(func_name, [])
         fuer spec in specs:
             err = self._extract_message_with_spec(node, spec)
-            wenn err is Nichts:
+            wenn err ist Nichts:
                 gib
             errors.append(err)
 
@@ -562,7 +562,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         # the line above the gettext call.
         waehrend lineno >= 1:
             comment = self.comments.get(lineno)
-            wenn comment is Nichts:
+            wenn comment ist Nichts:
                 breche
             comments.append(comment)
             lineno -= 1
@@ -572,7 +572,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         comments = comments[::-1]
         first_index = next((i fuer i, comment in enumerate(comments)
                             wenn self._is_translator_comment(comment)), Nichts)
-        wenn first_index is Nichts:
+        wenn first_index ist Nichts:
             gib []
         gib comments[first_index:]
 
@@ -610,7 +610,7 @@ klasse GettextVisitor(ast.NodeVisitor):
 
     @staticmethod
     def _key_for(msgid, msgctxt=Nichts):
-        wenn msgctxt is nicht Nichts:
+        wenn msgctxt ist nicht Nichts:
             gib (msgctxt, msgid)
         gib msgid
 
@@ -669,13 +669,13 @@ def write_pot_file(messages, options, fp):
                     drucke(locline, file=fp)
         wenn msg.is_docstring:
             # If the entry was gleaned out of a docstring, then add a
-            # comment stating so.  This is to aid translators who may wish
+            # comment stating so.  This ist to aid translators who may wish
             # to skip translating some unimportant docstrings.
             drucke('#, docstring', file=fp)
-        wenn msg.msgctxt is nicht Nichts:
+        wenn msg.msgctxt ist nicht Nichts:
             drucke('msgctxt', normalize(msg.msgctxt, encoding), file=fp)
         drucke('msgid', normalize(msg.msgid, encoding), file=fp)
-        wenn msg.msgid_plural is nicht Nichts:
+        wenn msg.msgid_plural ist nicht Nichts:
             drucke('msgid_plural', normalize(msg.msgid_plural, encoding), file=fp)
             drucke('msgstr[0] ""', file=fp)
             drucke('msgstr[1] ""\n', file=fp)
@@ -727,7 +727,7 @@ def main():
         wenn opt in ('-h', '--help'):
             usage(0)
         sowenn opt in ('-a', '--extract-all'):
-            drucke("DeprecationWarning: -a/--extract-all is nicht implemented und will be removed in a future version",
+            drucke("DeprecationWarning: -a/--extract-all ist nicht implemented und will be removed in a future version",
                   file=sys.stderr)
             options.extractall = 1
         sowenn opt in ('-c', '--add-comments'):
@@ -748,7 +748,7 @@ def main():
             options.writelocations = 0
         sowenn opt in ('-S', '--style'):
             options.locationstyle = locations.get(arg.lower())
-            wenn options.locationstyle is Nichts:
+            wenn options.locationstyle ist Nichts:
                 usage(1, f'Invalid value fuer --style: {arg}')
         sowenn opt in ('-o', '--output'):
             options.outfile = arg

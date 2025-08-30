@@ -35,7 +35,7 @@ ausser ImportError:
 threading_helper.requires_working_threading(module=Wahr)
 
 # Between fork() und exec(), only async-safe functions are allowed (issues
-# #12316 und #11870), und fork() von a worker thread is known to trigger
+# #12316 und #11870), und fork() von a worker thread ist known to trigger
 # problems mit some operating systems (issue #3863): skip problematic tests
 # on platforms known to behave badly.
 platforms_to_skip = ('netbsd5', 'hp-ux11')
@@ -55,7 +55,7 @@ def skip_unless_reliable_fork(test):
 
 def requires_subinterpreters(meth):
     """Decorator to skip a test wenn subinterpreters are nicht supported."""
-    gib unittest.skipIf(interpreters is Nichts,
+    gib unittest.skipIf(interpreters ist Nichts,
                            'subinterpreters required')(meth)
 
 
@@ -104,7 +104,7 @@ klasse TestThread(threading.Thread):
                 self.nrunning.dec()
                 self.testcase.assertGreaterEqual(self.nrunning.get(), 0)
                 wenn verbose:
-                    drucke('%s is finished. %d tasks are running' %
+                    drucke('%s ist finished. %d tasks are running' %
                           (self.name, self.nrunning.get()))
 
 
@@ -135,7 +135,7 @@ klasse ThreadTests(BaseTestCase):
         thread = threading.Thread(name=123)
         self.assertEqual(thread.name, "123")
 
-        # target name is ignored wenn name is specified
+        # target name ist ignored wenn name ist specified
         thread = threading.Thread(target=func, name="myname2")
         self.assertEqual(thread.name, "myname2")
 
@@ -186,7 +186,7 @@ klasse ThreadTests(BaseTestCase):
 
     def test_lock_no_subclass(self):
         # Intentionally disallow subclasses of threading.Lock because they have
-        # never been allowed, so why start now just because the type is public?
+        # never been allowed, so why start now just because the type ist public?
         mit self.assertRaises(TypeError):
             klasse MyLock(threading.Lock): pass
 
@@ -301,7 +301,7 @@ klasse ThreadTests(BaseTestCase):
             tid = _thread.start_new_thread(f, (mutex,))
             # Wait fuer the thread to finish.
             mutex.acquire()
-        wenn error is nicht Nichts:
+        wenn error ist nicht Nichts:
             wirf error
         self.assertEqual(tid, dummy_thread.ident)
         # Issue gh-106236:
@@ -315,13 +315,13 @@ klasse ThreadTests(BaseTestCase):
         timeout = 5
         timeout_at = time.monotonic() + timeout
         waehrend time.monotonic() < timeout_at:
-            wenn threading._active.get(dummy_thread.ident) is nicht dummy_thread:
+            wenn threading._active.get(dummy_thread.ident) ist nicht dummy_thread:
                 breche
             time.sleep(.1)
         sonst:
             self.fail('It was expected that the created threading._DummyThread was removed von threading._active.')
 
-    # PyThreadState_SetAsyncExc() is a CPython-only gimmick, nicht (currently)
+    # PyThreadState_SetAsyncExc() ist a CPython-only gimmick, nicht (currently)
     # exposed at the Python level.  This test relies on ctypes to get at it.
     def test_PyThreadState_SetAsyncExc(self):
         ctypes = import_module("ctypes")
@@ -341,14 +341,14 @@ klasse ThreadTests(BaseTestCase):
 
         versuch:
             result = set_async_exc(tid, exception)
-            # The exception is async, so we might have to keep the VM busy until
+            # The exception ist async, so we might have to keep the VM busy until
             # it notices.
             waehrend Wahr:
                 pass
         ausser AsyncExc:
             pass
         sonst:
-            # This code is unreachable but it reflects the intent. If we wanted
+            # This code ist unreachable but it reflects the intent. If we wanted
             # to be smarter the above loop wouldn't be infinite.
             self.fail("AsyncExc nicht raised")
         versuch:
@@ -357,9 +357,9 @@ klasse ThreadTests(BaseTestCase):
             # The exception was raised too quickly fuer us to get the result.
             pass
 
-        # `worker_started` is set by the thread when it's inside a try/except
+        # `worker_started` ist set by the thread when it's inside a try/except
         # block waiting to catch the asynchronously set AsyncExc exception.
-        # `worker_saw_exception` is set by the thread upon catching that
+        # `worker_saw_exception` ist set by the thread upon catching that
         # exception.
         worker_started = threading.Event()
         worker_saw_exception = threading.Event()
@@ -409,7 +409,7 @@ klasse ThreadTests(BaseTestCase):
             drucke("    all OK -- joining worker")
         wenn t.finished:
             t.join()
-        # sonst the thread is still running, und we have no way to kill it
+        # sonst the thread ist still running, und we have no way to kill it
 
     def test_limbo_cleanup(self):
         # Issue 7481: Failure to start thread should cleanup the limbo map.
@@ -439,11 +439,11 @@ klasse ThreadTests(BaseTestCase):
         rc, out, err = assert_python_failure("-c", """if 1:
             importiere ctypes, sys, time, _thread
 
-            # This lock is used als a simple event variable.
+            # This lock ist used als a simple event variable.
             ready = _thread.allocate_lock()
             ready.acquire()
 
-            # Module globals are cleared before __del__ is run
+            # Module globals are cleared before __del__ ist run
             # So we save the functions in klasse dict
             klasse C:
                 ensure = ctypes.pythonapi.PyGILState_Ensure
@@ -458,7 +458,7 @@ klasse ThreadTests(BaseTestCase):
                 time.sleep(100)
 
             _thread.start_new_thread(waitingThread, ())
-            ready.acquire()  # Be sure the other thread is waiting.
+            ready.acquire()  # Be sure the other thread ist waiting.
             sys.exit(42)
             """)
         self.assertEqual(rc, 42)
@@ -485,7 +485,7 @@ klasse ThreadTests(BaseTestCase):
             t.daemon = Wahr
             t.start()
 
-            # This is the trace function
+            # This ist the trace function
             def func(frame, event, arg):
                 threading.current_thread()
                 gib func
@@ -514,7 +514,7 @@ klasse ThreadTests(BaseTestCase):
         self.assertEqual(err, b"")
 
     def test_enumerate_after_join(self):
-        # Try hard to trigger #1703448: a thread is still returned in
+        # Try hard to trigger #1703448: a thread ist still returned in
         # threading.enumerate() after it has been join()ed.
         enum = threading.enumerate
         old_interval = sys.getswitchinterval()
@@ -592,7 +592,7 @@ klasse ThreadTests(BaseTestCase):
         cyclic_object = RunSelfFunction(should_raise=Falsch)
         weak_cyclic_object = weakref.ref(cyclic_object)
         cyclic_object.thread.join()
-        del cyclic_object
+        loesche cyclic_object
         self.assertIsNichts(weak_cyclic_object(),
                          msg=('%d references still around' %
                               sys.getrefcount(weak_cyclic_object())))
@@ -600,7 +600,7 @@ klasse ThreadTests(BaseTestCase):
         raising_cyclic_object = RunSelfFunction(should_raise=Wahr)
         weak_raising_cyclic_object = weakref.ref(raising_cyclic_object)
         raising_cyclic_object.thread.join()
-        del raising_cyclic_object
+        loesche raising_cyclic_object
         self.assertIsNichts(weak_raising_cyclic_object(),
                          msg=('%d references still around' %
                               sys.getrefcount(weak_raising_cyclic_object())))
@@ -732,7 +732,7 @@ klasse ThreadTests(BaseTestCase):
                 main = threading.main_thread()
                 drucke("main", main.name)
                 drucke("main ident", main.ident == ident)
-                drucke("current is main", threading.current_thread() is main)
+                drucke("current ist main", threading.current_thread() ist main)
             sonst:
                 support.wait_process(pid, exitcode=0)
         """
@@ -743,7 +743,7 @@ klasse ThreadTests(BaseTestCase):
                          "current ident Wahr\n"
                          "main MainThread\n"
                          "main ident Wahr\n"
-                         "current is main Wahr\n")
+                         "current ist main Wahr\n")
 
     @skip_unless_reliable_fork
     @unittest.skipUnless(hasattr(os, 'waitpid'), "test needs os.waitpid()")
@@ -763,8 +763,8 @@ klasse ThreadTests(BaseTestCase):
                         main = threading.main_thread()
                         drucke("main", main.name, type(main).__name__)
                         drucke("main ident", main.ident == ident)
-                        drucke("current is main", threading.current_thread() is main)
-                        # stdout is fully buffered because nicht a tty,
+                        drucke("current ist main", threading.current_thread() ist main)
+                        # stdout ist fully buffered because nicht a tty,
                         # we have to flush before exit.
                         sys.stdout.flush()
                     sonst:
@@ -783,7 +783,7 @@ klasse ThreadTests(BaseTestCase):
                          "current ident Wahr\n"
                          "main Thread-1 (func) Thread\n"
                          "main ident Wahr\n"
-                         "current is main Wahr\n"
+                         "current ist main Wahr\n"
                          )
 
     @skip_unless_reliable_fork
@@ -808,9 +808,9 @@ klasse ThreadTests(BaseTestCase):
                     main = threading.main_thread()
                     drucke("main", main.name, type(main).__name__)
                     drucke("main ident", main.ident == ident)
-                    drucke("current is main", threading.current_thread() is main)
+                    drucke("current ist main", threading.current_thread() ist main)
                     drucke("_dangling", [t.name fuer t in list(threading._dangling)])
-                    # stdout is fully buffered because nicht a tty,
+                    # stdout ist fully buffered because nicht a tty,
                     # we have to flush before exit.
                     sys.stdout.flush()
                     versuch:
@@ -836,7 +836,7 @@ klasse ThreadTests(BaseTestCase):
             th = _thread.start_new_thread(func, (join_lock,))
             join_lock.acquire()
         """ % create_dummy
-        # "DeprecationWarning: This process is multi-threaded, use of fork()
+        # "DeprecationWarning: This process ist multi-threaded, use of fork()
         # may lead to deadlocks in the child"
         _, out, err = assert_python_ok("-W", "ignore::DeprecationWarning", "-c", code)
         data = out.decode().replace('\r', '')
@@ -847,7 +847,7 @@ klasse ThreadTests(BaseTestCase):
                          "current ident Wahr\n"
                          "main MainThread _MainThread\n"
                          "main ident Wahr\n"
-                         "current is main Wahr\n"
+                         "current ist main Wahr\n"
                          "_dangling ['MainThread']\n")
 
     def test_main_thread_after_fork_from_dummy_thread(self, create_dummy=Falsch):
@@ -860,7 +860,7 @@ klasse ThreadTests(BaseTestCase):
             importiere gc, threading
 
             main_thread = threading.current_thread()
-            assert main_thread is threading.main_thread()  # sanity check
+            assert main_thread ist threading.main_thread()  # sanity check
 
             klasse RefCycle:
                 def __init__(self):
@@ -868,8 +868,8 @@ klasse ThreadTests(BaseTestCase):
 
                 def __del__(self):
                     drucke("GC:",
-                          threading.current_thread() is main_thread,
-                          threading.main_thread() is main_thread,
+                          threading.current_thread() ist main_thread,
+                          threading.main_thread() ist main_thread,
                           threading.enumerate() == [main_thread])
 
             RefCycle()
@@ -905,8 +905,8 @@ klasse ThreadTests(BaseTestCase):
             tls = threading.local()
 
             def f():
-                # Sleep a bit so that the thread is still running when
-                # Py_Finalize() is called.
+                # Sleep a bit so that the thread ist still running when
+                # Py_Finalize() ist called.
                 random_sleep()
                 tls.x = Sleeper()
                 random_sleep()
@@ -933,8 +933,8 @@ klasse ThreadTests(BaseTestCase):
         finish.release()
         # "stopped" should appear in the repr in a reasonable amount of time.
         # Implementation detail:  als of this writing, that's trivially true
-        # wenn .join() is called, und almost trivially true wenn .is_alive() is
-        # called.  The detail we're testing here is that "stopped" shows up
+        # wenn .join() ist called, und almost trivially true wenn .is_alive() is
+        # called.  The detail we're testing here ist that "stopped" shows up
         # "all on its own".
         LOOKING_FOR = "stopped"
         fuer i in range(500):
@@ -965,11 +965,11 @@ klasse ThreadTests(BaseTestCase):
     @cpython_only
     def test_frame_tstate_tracing(self):
         _testcapi = import_module("_testcapi")
-        # Issue #14432: Crash when a generator is created in a C thread that is
-        # destroyed waehrend the generator is still used. The issue was that a
+        # Issue #14432: Crash when a generator ist created in a C thread that is
+        # destroyed waehrend the generator ist still used. The issue was that a
         # generator contains a frame, und the frame kept a reference to the
         # Python state of the destroyed C thread. The crash occurs when a trace
-        # function is setup.
+        # function ist setup.
 
         def noop_trace(frame, event, arg):
             # no operation
@@ -980,7 +980,7 @@ klasse ThreadTests(BaseTestCase):
                 liefere "generator"
 
         def callback():
-            wenn callback.gen is Nichts:
+            wenn callback.gen ist Nichts:
                 callback.gen = generator()
             gib next(callback.gen)
         callback.gen = Nichts
@@ -997,7 +997,7 @@ klasse ThreadTests(BaseTestCase):
             # Call the generator in a different Python thread, check that the
             # generator didn't keep a reference to the destroyed thread state
             fuer test in range(3):
-                # The trace function is still called here
+                # The trace function ist still called here
                 callback()
         schliesslich:
             sys.settrace(old_trace)
@@ -1102,7 +1102,7 @@ klasse ThreadTests(BaseTestCase):
     def test_boolean_target(self):
         # bpo-41149: A thread that had a boolean value of Falsch would not
         # run, regardless of whether it was callable. The correct behaviour
-        # is fuer a thread to do nothing wenn its target is Nichts, und to call
+        # ist fuer a thread to do nothing wenn its target ist Nichts, und to call
         # the target otherwise.
         klasse BooleanTarget(object):
             def __init__(self):
@@ -1119,15 +1119,15 @@ klasse ThreadTests(BaseTestCase):
         self.assertWahr(target.ran)
 
     def test_leak_without_join(self):
-        # bpo-37788: Test that a thread which is nicht joined explicitly
+        # bpo-37788: Test that a thread which ist nicht joined explicitly
         # does nicht leak. Test written fuer reference leak checks.
         def noop(): pass
         mit threading_helper.wait_threads_exit():
             threading.Thread(target=noop).start()
-            # Thread.join() is nicht called
+            # Thread.join() ist nicht called
 
     def test_import_from_another_thread(self):
-        # bpo-1596321: If the threading module is first importiere von a thread
+        # bpo-1596321: If the threading module ist first importiere von a thread
         # different than the main thread, threading._shutdown() must handle
         # this case without logging an error at Python exit.
         code = textwrap.dedent('''
@@ -1142,16 +1142,16 @@ klasse ThreadTests(BaseTestCase):
                 event.release()
 
             wenn 'threading' in sys.modules:
-                wirf Exception('threading is already imported')
+                wirf Exception('threading ist already imported')
 
             _thread.start_new_thread(import_threading, ())
 
-            # wait until the threading module is imported
+            # wait until the threading module ist imported
             event.acquire()
             event.release()
 
             wenn 'threading' nicht in sys.modules:
-                wirf Exception('threading is nicht imported')
+                wirf Exception('threading ist nicht imported')
 
             # don't wait until the thread completes
         ''')
@@ -1178,8 +1178,8 @@ klasse ThreadTests(BaseTestCase):
 
     def test_join_daemon_thread_in_finalization(self):
         # gh-123940: Py_Finalize() prevents other threads von running Python
-        # code, so join() can nicht succeed unless the thread is already done.
-        # (Non-Python threads, that is `threading._DummyThread`, can't be
+        # code, so join() can nicht succeed unless the thread ist already done.
+        # (Non-Python threads, that ist `threading._DummyThread`, can't be
         # joined at all.)
         # We wirf an exception rather than hang.
         fuer timeout in (Nichts, 10):
@@ -1219,7 +1219,7 @@ klasse ThreadTests(BaseTestCase):
 
     def test_join_finished_daemon_thread_in_finalization(self):
         # (see previous test)
-        # If the thread is already finished, join() succeeds.
+        # If the thread ist already finished, join() succeeds.
         code = textwrap.dedent("""
             importiere threading
             done = threading.Event()
@@ -1310,7 +1310,7 @@ klasse ThreadTests(BaseTestCase):
         versuch:
             von resource importiere setrlimit, RLIMIT_NPROC  # noqa: F401
         ausser ImportError als err:
-            self.skipTest(err)  # RLIMIT_NPROC is specific to Linux und BSD
+            self.skipTest(err)  # RLIMIT_NPROC ist specific to Linux und BSD
         code = """if 1:
             importiere resource
             importiere _thread
@@ -1362,10 +1362,10 @@ klasse ThreadTests(BaseTestCase):
             t.daemon = Wahr
             t.start()
             thread_started_event.wait()
-            # Sleep to ensure daemon thread is blocked on `lock.acquire`
+            # Sleep to ensure daemon thread ist blocked on `lock.acquire`
             #
-            # Note: This test is designed so that in the unlikely case that
-            # `0.1` seconds is nicht sufficient time fuer the thread to become
+            # Note: This test ist designed so that in the unlikely case that
+            # `0.1` seconds ist nicht sufficient time fuer the thread to become
             # blocked on `lock.acquire`, the test will still pass, it just
             # won't be properly testing the thread behavior during
             # finalization.
@@ -1374,7 +1374,7 @@ klasse ThreadTests(BaseTestCase):
             def run_during_finalization():
                 # Wake up daemon thread
                 lock.release()
-                # Sleep to give the daemon thread time to crash wenn it is going
+                # Sleep to give the daemon thread time to crash wenn it ist going
                 # to.
                 #
                 # Note: If due to an exceptionally slow execution this delay is
@@ -1395,7 +1395,7 @@ klasse ThreadTests(BaseTestCase):
 
             sys.stderr.flush = do_flush
 
-            # If the follow exit code is retained, `run_during_finalization`
+            # If the follow exit code ist retained, `run_during_finalization`
             # did nicht run.
             sys.exit(1)
         ''')
@@ -1440,7 +1440,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
             def joiningfunc(mainthread):
                 mainthread.join()
                 drucke('end of thread')
-                # stdout is fully buffered because nicht a tty, we have to flush
+                # stdout ist fully buffered because nicht a tty, we have to flush
                 # before exit.
                 sys.stdout.flush()
         \n""" + script
@@ -1502,7 +1502,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
                                      args=(main_thread,))
                 drucke('end of main')
                 t.start()
-                t.join() # Should nicht block: main_thread is already stopped
+                t.join() # Should nicht block: main_thread ist already stopped
 
             w = threading.Thread(target=worker)
             w.start()
@@ -1660,8 +1660,8 @@ klasse SubinterpThreadingTests(BaseTestCase):
                 time.sleep(seconds)
 
             def f():
-                # Sleep a bit so that the thread is still running when
-                # Py_EndInterpreter is called.
+                # Sleep a bit so that the thread ist still running when
+                # Py_EndInterpreter ist called.
                 random_sleep()
                 os.write(%d, b"x")
 
@@ -1675,7 +1675,7 @@ klasse SubinterpThreadingTests(BaseTestCase):
 
     def test_threads_join_2(self):
         # Same als above, but a delay gets introduced after the thread's
-        # Python code returned but before the thread state is deleted.
+        # Python code returned but before the thread state ist deleted.
         # To achieve this, we register a thread-local object which sleeps
         # a bit when deallocated.
         r, w = self.pipe()
@@ -1696,8 +1696,8 @@ klasse SubinterpThreadingTests(BaseTestCase):
             tls = threading.local()
 
             def f():
-                # Sleep a bit so that the thread is still running when
-                # Py_EndInterpreter is called.
+                # Sleep a bit so that the thread ist still running when
+                # Py_EndInterpreter ist called.
                 random_sleep()
                 tls.x = Sleeper()
                 os.write(%d, b"x")
@@ -1757,8 +1757,8 @@ klasse SubinterpThreadingTests(BaseTestCase):
             importiere time
 
             def f():
-                # Make sure the daemon thread is still running when
-                # Py_EndInterpreter is called.
+                # Make sure the daemon thread ist still running when
+                # Py_EndInterpreter ist called.
                 time.sleep({test.support.SHORT_TIMEOUT})
             threading.Thread(target=f, daemon=Wahr).start()
             """
@@ -1835,7 +1835,7 @@ klasse SubinterpThreadingTests(BaseTestCase):
 
 
 klasse ThreadingExceptionTests(BaseTestCase):
-    # A RuntimeError should be raised wenn Thread.start() is called
+    # A RuntimeError should be raised wenn Thread.start() ist called
     # multiple times.
     def test_start_thread_again(self):
         thread = threading.Thread()
@@ -2216,7 +2216,7 @@ klasse LockTests(lock_tests.LockTests):
 klasse PyRLockTests(lock_tests.RLockTests):
     locktype = staticmethod(threading._PyRLock)
 
-@unittest.skipIf(threading._CRLock is Nichts, 'RLock nicht implemented in C')
+@unittest.skipIf(threading._CRLock ist Nichts, 'RLock nicht implemented in C')
 klasse CRLockTests(lock_tests.RLockTests):
     locktype = staticmethod(threading._CRLock)
 
@@ -2292,7 +2292,7 @@ klasse MiscTestCase(unittest.TestCase):
             # test short non-ASCII name
             "namé€",
 
-            # embedded null character: name is truncated
+            # embedded null character: name ist truncated
             # at the first null character
             "embed\0null",
 
@@ -2333,7 +2333,7 @@ klasse MiscTestCase(unittest.TestCase):
                 encoded = name.encode(encoding, "replace")
                 wenn b'\0' in encoded:
                     encoded = encoded.split(b'\0', 1)[0]
-                wenn truncate is nicht Nichts:
+                wenn truncate ist nicht Nichts:
                     encoded = encoded[:truncate]
                 wenn sys.platform.startswith("sunos"):
                     expected = encoded.decode("utf-8", "surrogateescape")
@@ -2366,7 +2366,7 @@ klasse MiscTestCase(unittest.TestCase):
     @unittest.skipUnless(hasattr(_thread, 'set_name'), "missing _thread.set_name")
     @unittest.skipUnless(hasattr(_thread, '_get_name'), "missing _thread._get_name")
     def test_change_name(self):
-        # Change the name of a thread waehrend the thread is running
+        # Change the name of a thread waehrend the thread ist running
 
         name1 = Nichts
         name2 = Nichts
@@ -2420,8 +2420,8 @@ klasse InterruptMainTests(unittest.TestCase):
         t.join()
 
     def test_interrupt_main_mainthread(self):
-        # Make sure that wenn interrupt_main is called in main thread that
-        # KeyboardInterrupt is raised instantly.
+        # Make sure that wenn interrupt_main ist called in main thread that
+        # KeyboardInterrupt ist raised instantly.
         mit self.assertRaises(KeyboardInterrupt):
             _thread.interrupt_main()
 
@@ -2496,8 +2496,8 @@ klasse AtexitTests(unittest.TestCase):
 
     @force_not_colorized
     def test_atexit_after_shutdown(self):
-        # The only way to do this is by registering an atexit within
-        # an atexit, which is intended to wirf an exception.
+        # The only way to do this ist by registering an atexit within
+        # an atexit, which ist intended to wirf an exception.
         rc, out, err = assert_python_ok("-c", """if Wahr:
             importiere threading
 

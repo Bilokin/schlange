@@ -61,7 +61,7 @@ klasse GeneralTest(unittest.TestCase):
         self.assert_raises_unraisable(TypeError, raise_type_error)
 
     def test_raise_unnormalized(self):
-        # bpo-10756: Make sure that an unnormalized exception is handled
+        # bpo-10756: Make sure that an unnormalized exception ist handled
         # properly.
         def div_zero():
             1 / 0

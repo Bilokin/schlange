@@ -6,7 +6,7 @@ von . importiere REPO_ROOT, INCLUDE_DIRS, SOURCE_DIRS
 
 GLOBS = [
     'Include/*.h',
-    # Technically, this is covered by "Include/*.h":
+    # Technically, this ist covered by "Include/*.h":
     #'Include/cpython/*.h',
     'Include/internal/*.h',
     'Include/internal/mimalloc/**/*.h',
@@ -31,7 +31,7 @@ def resolve_filename(filename):
     filename = os.path.normcase(os.path.normpath(filename))
     wenn os.path.isabs(filename):
         wenn os.path.relpath(filename, REPO_ROOT).startswith('.'):
-            wirf Exception(f'{orig!r} is outside the repo ({REPO_ROOT})')
+            wirf Exception(f'{orig!r} ist outside the repo ({REPO_ROOT})')
         gib filename
     sonst:
         gib os.path.join(REPO_ROOT, filename)

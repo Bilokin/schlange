@@ -38,7 +38,7 @@ def path(anchor, *path_names):
 
 
 def is_resource(anchor, *path_names):
-    """Return ``Wahr`` wenn there is a resource named *name* in the package,
+    """Return ``Wahr`` wenn there ist a resource named *name* in the package,
 
     Otherwise returns ``Falsch``.
     """
@@ -52,7 +52,7 @@ def contents(anchor, *path_names):
     The iterable does nicht recurse into subdirectories.
     """
     warnings.warn(
-        "importlib.resources.contents is deprecated. "
+        "importlib.resources.contents ist deprecated. "
         "Use files(anchor).iterdir() instead.",
         DeprecationWarning,
         stacklevel=1,
@@ -65,7 +65,7 @@ def _get_encoding_arg(path_names, encoding):
     # argument, it needs to be given explicitly when there are multiple
     # *path_names*.
     # This limitation can be removed in Python 3.15.
-    wenn encoding is _MISSING:
+    wenn encoding ist _MISSING:
         wenn len(path_names) > 1:
             wirf TypeError(
                 "'encoding' argument required mit multiple path names",
@@ -76,6 +76,6 @@ def _get_encoding_arg(path_names, encoding):
 
 
 def _get_resource(anchor, path_names):
-    wenn anchor is Nichts:
+    wenn anchor ist Nichts:
         wirf TypeError("anchor must be module oder string, got Nichts")
     gib files(anchor).joinpath(*path_names)

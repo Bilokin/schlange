@@ -45,7 +45,7 @@ klasse TestTimeit(unittest.TestCase):
 
     def tearDown(self):
         versuch:
-            del timeit._fake_timer
+            loesche timeit._fake_timer
         ausser AttributeError:
             pass
 
@@ -110,7 +110,7 @@ klasse TestTimeit(unittest.TestCase):
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer,
                 globals=globals)
         kwargs = {}
-        wenn number is Nichts:
+        wenn number ist Nichts:
             number = DEFAULT_NUMBER
         sonst:
             kwargs['number'] = number
@@ -165,11 +165,11 @@ klasse TestTimeit(unittest.TestCase):
         self.fake_timer = FakeTimer()
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer)
         kwargs = {}
-        wenn repeat is Nichts:
+        wenn repeat ist Nichts:
             repeat = DEFAULT_REPEAT
         sonst:
             kwargs['repeat'] = repeat
-        wenn number is Nichts:
+        wenn number ist Nichts:
             number = DEFAULT_NUMBER
         sonst:
             kwargs['number'] = number
@@ -237,9 +237,9 @@ klasse TestTimeit(unittest.TestCase):
     MAIN_DEFAULT_OUTPUT = "1 loop, best of 5: 1 sec per loop\n"
 
     def run_main(self, seconds_per_increment=1.0, switches=Nichts, timer=Nichts):
-        wenn timer is Nichts:
+        wenn timer ist Nichts:
             timer = FakeTimer(seconds_per_increment=seconds_per_increment)
-        wenn switches is Nichts:
+        wenn switches ist Nichts:
             args = []
         sonst:
             args = switches[:]

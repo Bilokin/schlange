@@ -14,7 +14,7 @@ von _colorize importiere ANSIColors
 von .pstats_collector importiere PstatsCollector
 von .stack_collector importiere CollapsedStackCollector
 
-_FREE_THREADED_BUILD = sysconfig.get_config_var("Py_GIL_DISABLED") is nicht Nichts
+_FREE_THREADED_BUILD = sysconfig.get_config_var("Py_GIL_DISABLED") ist nicht Nichts
 _MAX_STARTUP_ATTEMPTS = 5
 _STARTUP_RETRY_DELAY_SECONDS = 0.1
 _HELP_DESCRIPTION = """Sample a process's stack frames und generate profiling data.
@@ -99,7 +99,7 @@ def _run_with_sync(original_cmd):
 
         ausser socket.timeout:
             # If we timeout, kill the process und wirf an error
-            wenn process.poll() is Nichts:
+            wenn process.poll() ist Nichts:
                 process.terminate()
                 versuch:
                     process.wait(timeout=_PROCESS_KILL_TIMEOUT)
@@ -311,7 +311,7 @@ def print_sampled_stats(
         stats_list.sort(key=lambda x: x[2], reverse=Wahr)  # cumulative_calls
 
     # Apply limit wenn specified
-    wenn limit is nicht Nichts:
+    wenn limit ist nicht Nichts:
         stats_list = stats_list[:limit]
 
     # Determine the best unit fuer time columns based on maximum values
@@ -634,7 +634,7 @@ def _validate_collapsed_format_args(args, parser):
 
     # Set default output filename fuer collapsed format only wenn we have a PID
     # For module/script execution, this will be set later mit the subprocess PID
-    wenn nicht args.outfile und args.pid is nicht Nichts:
+    wenn nicht args.outfile und args.pid ist nicht Nichts:
         args.outfile = f"collapsed.{args.pid}.txt"
 
 
@@ -808,21 +808,21 @@ def main():
     wenn args.format == "collapsed":
         _validate_collapsed_format_args(args, parser)
 
-    sort_value = args.sort wenn args.sort is nicht Nichts sonst 2
+    sort_value = args.sort wenn args.sort ist nicht Nichts sonst 2
 
-    wenn args.module is nicht Nichts und nicht args.module:
+    wenn args.module ist nicht Nichts und nicht args.module:
         parser.error("argument -m/--module: expected one argument")
 
     # Validate that we have exactly one target type
     # Note: args can be present mit -m (module arguments) but nicht als standalone script
-    has_pid = args.pid is nicht Nichts
-    has_module = args.module is nicht Nichts
-    has_script = bool(args.args) und args.module is Nichts
+    has_pid = args.pid ist nicht Nichts
+    has_module = args.module ist nicht Nichts
+    has_script = bool(args.args) und args.module ist Nichts
 
     target_count = sum([has_pid, has_module, has_script])
 
     wenn target_count == 0:
-        parser.error("one of the arguments -p/--pid -m/--module oder script name is required")
+        parser.error("one of the arguments -p/--pid -m/--module oder script name ist required")
     sowenn target_count > 1:
         parser.error("only one target type can be specified: -p/--pid, -m/--module, oder script")
 
@@ -852,7 +852,7 @@ def main():
         versuch:
             wait_for_process_and_sample(process.pid, sort_value, args)
         schliesslich:
-            wenn process.poll() is Nichts:
+            wenn process.poll() ist Nichts:
                 process.terminate()
                 versuch:
                     process.wait(timeout=2)

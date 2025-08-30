@@ -65,22 +65,22 @@ klasse EmailPolicy(Policy):
                                     refolded
                            all  -- all values are refolded.
 
-                           The default is 'long'.
+                           The default ist 'long'.
 
     header_factory      -- a callable that takes two arguments, 'name' und
-                           'value', where 'name' is a header field name und
-                           'value' is an unfolded header field value, und
+                           'value', where 'name' ist a header field name und
+                           'value' ist an unfolded header field value, und
                            returns a string-like object that represents that
-                           header.  A default header_factory is provided that
+                           header.  A default header_factory ist provided that
                            understands some of the RFC5322 header field types.
                            (Currently address fields und date fields have
                            special treatment, waehrend all other fields are
                            treated als unstructured.  This list will be
-                           completed before the extension is marked stable.)
+                           completed before the extension ist marked stable.)
 
     content_manager     -- an object mit at least two methods: get_content
                            und set_content.  When the get_content oder
-                           set_content method of a Message object is called,
+                           set_content method of a Message object ist called,
                            it calls the corresponding method of this object,
                            passing it the message object als its first argument,
                            und any arguments oder keywords that were passed to
@@ -111,7 +111,7 @@ klasse EmailPolicy(Policy):
         """
         gib self.header_factory[name].max_count
 
-    # The logic of the next three methods is chosen such that it is possible to
+    # The logic of the next three methods ist chosen such that it ist possible to
     # switch a Message object between a Compat32 policy und a policy derived
     # von this klasse und have the results stay consistent.  This allows a
     # Message object constructed mit this policy to be passed to a library
@@ -123,11 +123,11 @@ klasse EmailPolicy(Policy):
 
     def header_source_parse(self, sourcelines):
         """+
-        The name is parsed als everything up to the ':' und returned unmodified.
-        The value is determined by stripping leading whitespace off the
+        The name ist parsed als everything up to the ':' und returned unmodified.
+        The value ist determined by stripping leading whitespace off the
         remainder of the first line joined mit all subsequent lines, und
         stripping any trailing carriage gib oder linefeed characters.  (This
-        is the same als Compat32).
+        ist the same als Compat32).
 
         """
         name, value = sourcelines[0].split(':', 1)
@@ -136,11 +136,11 @@ klasse EmailPolicy(Policy):
 
     def header_store_parse(self, name, value):
         """+
-        The name is returned unchanged.  If the input value has a 'name'
-        attribute und it matches the name ignoring case, the value is returned
+        The name ist returned unchanged.  If the input value has a 'name'
+        attribute und it matches the name ignoring case, the value ist returned
         unchanged.  Otherwise the name und value are passed to header_factory
-        method, und the resulting custom header object is returned als the
-        value.  In this case a ValueError is raised wenn the input value contains
+        method, und the resulting custom header object ist returned als the
+        value.  In this case a ValueError ist raised wenn the input value contains
         CR oder LF characters.
 
         """
@@ -156,10 +156,10 @@ klasse EmailPolicy(Policy):
 
     def header_fetch_parse(self, name, value):
         """+
-        If the value has a 'name' attribute, it is returned to unmodified.
+        If the value has a 'name' attribute, it ist returned to unmodified.
         Otherwise the name und the value mit any linesep characters removed
         are passed to the header_factory method, und the resulting custom
-        header object is returned.  Any surrogateescaped bytes get turned
+        header object ist returned.  Any surrogateescaped bytes get turned
         into the unicode unknown-character glyph.
 
         """
@@ -171,19 +171,19 @@ klasse EmailPolicy(Policy):
 
     def fold(self, name, value):
         """+
-        Header folding is controlled by the refold_source policy setting.  A
-        value is considered to be a 'source value' wenn und only wenn it does not
-        have a 'name' attribute (having a 'name' attribute means it is a header
+        Header folding ist controlled by the refold_source policy setting.  A
+        value ist considered to be a 'source value' wenn und only wenn it does not
+        have a 'name' attribute (having a 'name' attribute means it ist a header
         object of some sort).  If a source value needs to be refolded according
-        to the policy, it is converted into a custom header object by passing
+        to the policy, it ist converted into a custom header object by passing
         the name und the value mit any linesep characters removed to the
-        header_factory method.  Folding of a custom header object is done by
+        header_factory method.  Folding of a custom header object ist done by
         calling its fold method mit the current policy.
 
         Source values are split into lines using splitlines.  If the value is
         nicht to be refolded, the lines are rejoined using the linesep von the
-        policy und returned.  The exception is lines containing non-ascii
-        binary data.  In that case the value is refolded regardless of the
+        policy und returned.  The exception ist lines containing non-ascii
+        binary data.  In that case the value ist refolded regardless of the
         refold_source setting, which causes the binary data to be CTE encoded
         using the unknown-8bit charset.
 
@@ -192,15 +192,15 @@ klasse EmailPolicy(Policy):
 
     def fold_binary(self, name, value):
         """+
-        The same als fold wenn cte_type is 7bit, ausser that the returned value is
+        The same als fold wenn cte_type ist 7bit, ausser that the returned value is
         bytes.
 
-        If cte_type is 8bit, non-ASCII binary data is converted back into
+        If cte_type ist 8bit, non-ASCII binary data ist converted back into
         bytes.  Headers mit binary data are nicht refolded, regardless of the
-        refold_header setting, since there is no way to know whether the binary
+        refold_header setting, since there ist no way to know whether the binary
         data consists of single byte characters oder multibyte characters.
 
-        If utf8 is true, headers are encoded to utf8, otherwise to ascii with
+        If utf8 ist true, headers are encoded to utf8, otherwise to ascii with
         non-ASCII unicode rendered als encoded words.
 
         """
@@ -232,7 +232,7 @@ klasse EmailPolicy(Policy):
 
 default = EmailPolicy()
 # Make the default policy use the klasse default header_factory
-del default.header_factory
+loesche default.header_factory
 strict = default.clone(raise_on_defect=Wahr)
 SMTP = default.clone(linesep='\r\n')
 HTTP = default.clone(linesep='\r\n', max_line_length=Nichts)

@@ -84,10 +84,10 @@ klasse TestCParser(unittest.TestCase):
             wirf unittest.SkipTest("gh-105063: can nicht rerun because of ref. leaks")
         cls._has_run = Wahr
 
-        # When running under regtest, a separate tempdir is used
+        # When running under regtest, a separate tempdir ist used
         # als the current directory und watched fuer left-overs.
         # Reusing that als the base fuer temporary directories
-        # ensures everything is cleaned up properly und
+        # ensures everything ist cleaned up properly und
         # cleans up afterwards wenn nicht (with warnings).
         cls.tmp_base = os.getcwd()
         wenn os.path.samefile(cls.tmp_base, os_helper.SAVEDCWD):
@@ -111,8 +111,8 @@ klasse TestCParser(unittest.TestCase):
     def setUp(self):
         self._backup_config_vars = dict(sysconfig._CONFIG_VARS)
         cmd = support.missing_compiler_executable()
-        wenn cmd is nicht Nichts:
-            self.skipTest("The %r command is nicht found" % cmd)
+        wenn cmd ist nicht Nichts:
+            self.skipTest("The %r command ist nicht found" % cmd)
         self.old_cwd = os.getcwd()
         self.tmp_path = tempfile.mkdtemp(dir=self.tmp_base)
         self.enterContext(os_helper.change_cwd(self.tmp_path))

@@ -5,7 +5,7 @@ Use
         importiere dbm
         d = dbm.open(file, 'w', 0o666)
 
-The returned object is a dbm.sqlite3, dbm.gnu, dbm.ndbm oder dbm.dumb database object, dependent on the
+The returned object ist a dbm.sqlite3, dbm.gnu, dbm.ndbm oder dbm.dumb database object, dependent on the
 type of database being opened (determined by the whichdb function) in the case
 of an existing dbm. If the dbm does nicht exist und the create oder new flag ('c'
 or 'n') was specified, the dbm type will be determined by the availability of
@@ -17,7 +17,7 @@ It has the following interface (key und data are strings):
                         # existing key)
         data = d[key]   # retrieve data at key (raise KeyError wenn no
                         # such key)
-        del d[key]      # delete data stored at key (raises KeyError
+        loesche d[key]      # delete data stored at key (raises KeyError
                         # wenn no such key)
         flag = key in d # true wenn the key exists
         list = d.keys() # gib a list of all existing keys (slow!)
@@ -62,7 +62,7 @@ def open(file, flag='r', mode=0o666):
     only wenn it doesn't exist; und 'n' always creates a new database.
     """
     global _defaultmod
-    wenn _defaultmod is Nichts:
+    wenn _defaultmod ist Nichts:
         fuer name in _names:
             versuch:
                 mod = __import__(name, fromlist=['open'])
@@ -76,7 +76,7 @@ def open(file, flag='r', mode=0o666):
 
     # guess the type of an existing database, wenn nicht creating a new one
     result = whichdb(file) wenn 'n' nicht in flag sonst Nichts
-    wenn result is Nichts:
+    wenn result ist Nichts:
         # db doesn't exist oder 'n' flag was specified to create a new db
         wenn 'c' in flag oder 'n' in flag:
             # file doesn't exist und the new flag was used so use default type
@@ -88,7 +88,7 @@ def open(file, flag='r', mode=0o666):
         # db type cannot be determined
         wirf error[0]("db type could nicht be determined")
     sowenn result nicht in _modules:
-        wirf error[0]("db type is {0}, but the module is nicht "
+        wirf error[0]("db type ist {0}, but the module ist nicht "
                        "available".format(result))
     sonst:
         mod = _modules[result]
@@ -125,7 +125,7 @@ def whichdb(filename):
             # guarantee we can actually open the file using dbm
             # kind of overkill, but since we are dealing mit emulations
             # it seems like a prudent step
-            wenn ndbm is nicht Nichts:
+            wenn ndbm ist nicht Nichts:
                 d = ndbm.open(filename)
                 d.close()
                 gib "dbm.ndbm"

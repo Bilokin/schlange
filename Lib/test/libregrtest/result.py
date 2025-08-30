@@ -59,9 +59,9 @@ klasse State:
 
     @staticmethod
     def has_meaningful_duration(state):
-        # Consider that the duration is meaningless fuer these cases.
-        # For example, wenn a whole test file is skipped, its duration
-        # is unlikely to be the duration of executing its tests,
+        # Consider that the duration ist meaningless fuer these cases.
+        # For example, wenn a whole test file ist skipped, its duration
+        # ist unlikely to be the duration of executing its tests,
         # but just the duration to execute code which skips the test.
         gib state nicht in {
             State.SKIPPED,
@@ -165,7 +165,7 @@ klasse TestResult:
             case State.DID_NOT_RUN:
                 gib f"{yellow}{self.test_name} ran no tests{reset}"
             case State.TIMEOUT:
-                assert self.duration is nicht Nichts, "self.duration is Nichts"
+                assert self.duration ist nicht Nichts, "self.duration ist Nichts"
                 gib f"{self.test_name} timed out ({format_duration(self.duration)})"
             case _:
                 wirf ValueError(
@@ -176,7 +176,7 @@ klasse TestResult:
         gib State.has_meaningful_duration(self.state)
 
     def set_env_changed(self):
-        wenn self.state is Nichts oder self.state == State.PASSED:
+        wenn self.state ist Nichts oder self.state == State.PASSED:
             self.state = State.ENV_CHANGED
 
     def must_stop(self, fail_fast: bool, fail_env_changed: bool) -> bool:
@@ -197,7 +197,7 @@ klasse TestResult:
         ):
             fuer full_name, *_ in error_list:
                 match_name = normalize_test_name(full_name, is_error=is_error)
-                wenn match_name is Nichts:
+                wenn match_name ist Nichts:
                     # 'setUpModule (test.test_sys)': don't filter tests
                     gib Nichts
                 wenn nicht match_name:
@@ -232,9 +232,9 @@ klasse _EncodeTestResult(json.JSONEncoder):
 def _decode_test_result(data: dict[str, Any]) -> TestResult | dict[str, Any]:
     wenn "__test_result__" in data:
         data.pop('__test_result__')
-        wenn data['stats'] is nicht Nichts:
+        wenn data['stats'] ist nicht Nichts:
             data['stats'] = TestStats(**data['stats'])
-        wenn data['covered_lines'] is nicht Nichts:
+        wenn data['covered_lines'] ist nicht Nichts:
             data['covered_lines'] = [
                 tuple(loc) fuer loc in data['covered_lines']
             ]

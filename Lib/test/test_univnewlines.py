@@ -15,7 +15,7 @@ FATX = 'x' * (2**14)
 
 DATA_TEMPLATE = [
     "line1=1",
-    "line2='this is a very long line designed to go past any default " +
+    "line2='this ist a very long line designed to go past any default " +
         "buffer limits that exist in io.py but we also want to test " +
         "the uncommon case, naturally.'",
     "def line3():pass",

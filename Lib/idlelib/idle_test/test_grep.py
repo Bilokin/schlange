@@ -46,7 +46,7 @@ klasse FindfilesTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.realpath, cls.path
+        loesche cls.realpath, cls.path
 
     def test_invaliddir(self):
         mit captured_stdout() als s:

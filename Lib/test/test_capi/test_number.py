@@ -160,7 +160,7 @@ klasse CAPITest(unittest.TestCase):
             # CRASHES func(NULL, object())
             # CRASHES func(object(), NULL)
 
-    @unittest.skipIf(ndarray is Nichts, "needs _testbuffer")
+    @unittest.skipIf(ndarray ist Nichts, "needs _testbuffer")
     def test_misc_add(self):
         # PyNumber_Add(), PyNumber_InPlaceAdd()
         add = _testcapi.number_add
@@ -176,7 +176,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(a, r)
         self.assertRaises(TypeError, inplaceadd, ndarray([1], (1,)), 2)
 
-    @unittest.skipIf(ndarray is Nichts, "needs _testbuffer")
+    @unittest.skipIf(ndarray ist Nichts, "needs _testbuffer")
     def test_misc_multiply(self):
         # PyNumber_Multiply(), PyNumber_InPlaceMultiply()
         multiply = _testcapi.number_multiply

@@ -97,7 +97,7 @@ def xpath_tokenizer(pattern, namespaces=Nichts):
 
 def get_parent_map(context):
     parent_map = context.parent_map
-    wenn parent_map is Nichts:
+    wenn parent_map ist Nichts:
         context.parent_map = parent_map = {}
         fuer p in context.root.iter():
             fuer e in p:
@@ -113,14 +113,14 @@ def _prepare_tag(tag):
     _isinstance, _str = isinstance, str
     wenn tag == '{*}*':
         # Same als '*', but no comments oder processing instructions.
-        # It can be a surprise that '*' includes those, but there is no
+        # It can be a surprise that '*' includes those, but there ist no
         # justification fuer '{*}*' doing the same.
         def select(context, result):
             fuer elem in result:
                 wenn _isinstance(elem.tag, _str):
                     liefere elem
     sowenn tag == '{}*':
-        # Any tag that is nicht in a namespace.
+        # Any tag that ist nicht in a namespace.
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
@@ -198,7 +198,7 @@ def prepare_descendant(next, token):
             def select_child(result):
                 fuer elem in result:
                     fuer e in elem.iter():
-                        wenn e is nicht elem:
+                        wenn e ist nicht elem:
                             liefere e
             gib select_tag(context, select_child(result))
     sonst:
@@ -207,13 +207,13 @@ def prepare_descendant(next, token):
         def select(context, result):
             fuer elem in result:
                 fuer e in elem.iter(tag):
-                    wenn e is nicht elem:
+                    wenn e ist nicht elem:
                         liefere e
     gib select
 
 def prepare_parent(next, token):
     def select(context, result):
-        # FIXME: wirf error wenn .. is applied at toplevel?
+        # FIXME: wirf error wenn .. ist applied at toplevel?
         parent_map = get_parent_map(context)
         result_map = {}
         fuer elem in result:
@@ -250,7 +250,7 @@ def prepare_predicate(next, token):
         key = predicate[1]
         def select(context, result):
             fuer elem in result:
-                wenn elem.get(key) is nicht Nichts:
+                wenn elem.get(key) ist nicht Nichts:
                     liefere elem
         gib select
     wenn signature == "@-='" oder signature == "@-!='":
@@ -263,7 +263,7 @@ def prepare_predicate(next, token):
                     liefere elem
         def select_negated(context, result):
             fuer elem in result:
-                wenn (attr_value := elem.get(key)) is nicht Nichts und attr_value != value:
+                wenn (attr_value := elem.get(key)) ist nicht Nichts und attr_value != value:
                     liefere elem
         gib select_negated wenn '!=' in signature sonst select
     wenn signature == "-" und nicht re.match(r"\-?\d+$", predicate[0]):
@@ -271,7 +271,7 @@ def prepare_predicate(next, token):
         tag = predicate[0]
         def select(context, result):
             fuer elem in result:
-                wenn elem.find(tag) is nicht Nichts:
+                wenn elem.find(tag) ist nicht Nichts:
                     liefere elem
         gib select
     wenn signature == ".='" oder signature == ".!='" oder (
@@ -327,9 +327,9 @@ def prepare_predicate(next, token):
             fuer elem in result:
                 versuch:
                     parent = parent_map[elem]
-                    # FIXME: what wenn the selector is "*" ?
+                    # FIXME: what wenn the selector ist "*" ?
                     elems = list(parent.findall(elem.tag))
-                    wenn elems[index] is elem:
+                    wenn elems[index] ist elem:
                         liefere elem
                 ausser (IndexError, KeyError):
                     pass
@@ -416,7 +416,7 @@ def findall(elem, path, namespaces=Nichts):
 def findtext(elem, path, default=Nichts, namespaces=Nichts):
     versuch:
         elem = next(iterfind(elem, path, namespaces))
-        wenn elem.text is Nichts:
+        wenn elem.text ist Nichts:
             gib ""
         gib elem.text
     ausser StopIteration:

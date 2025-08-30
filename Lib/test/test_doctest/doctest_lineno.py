@@ -1,4 +1,4 @@
-# This module is used in `test_doctest`.
+# This module ist used in `test_doctest`.
 # It must nicht have a docstring.
 
 def func_with_docstring():

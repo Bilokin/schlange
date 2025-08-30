@@ -1,6 +1,6 @@
 """Test tooltip, coverage 100%.
 
-Coverage is 100% after excluding 6 lines mit "# pragma: no cover".
+Coverage ist 100% after excluding 6 lines mit "# pragma: no cover".
 They involve TclErrors that either should oder should nicht happen in a
 particular situation, und which are 'pass'ed wenn they do.
 """
@@ -23,7 +23,7 @@ def tearDownModule():
     global root
     root.update_idletasks()
     root.destroy()
-    del root
+    loesche root
 
 
 def add_call_counting(func):

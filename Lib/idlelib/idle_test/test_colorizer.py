@@ -26,7 +26,7 @@ source = textwrap.dedent("""\
     sonst: float(Nichts)  # wenn in comment
     wenn iF + If + IF: 'keyword matching must respect case'
     if'': x or''  # valid keyword-string no-space combinations
-    async def f(): await g()
+    async def f(): warte g()
     # Strings should be entirely colored, including quotes.
     'x', '''x''', "x", \"""x\"""
     'abc\\
@@ -106,10 +106,10 @@ klasse ColorConfigTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text
+        loesche cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_color_config(self):
         text = self.text
@@ -135,10 +135,10 @@ klasse ColorDelegatorInstantiationTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text
+        loesche cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.color = colorizer.ColorDelegator()
@@ -147,14 +147,14 @@ klasse ColorDelegatorInstantiationTest(unittest.TestCase):
         self.color.close()
         self.text.delete('1.0', 'end')
         self.color.resetcache()
-        del self.color
+        loesche self.color
 
     def test_init(self):
         color = self.color
         self.assertIsInstance(color, colorizer.ColorDelegator)
 
     def test_init_state(self):
-        # init_state() is called during the instantiation of
+        # init_state() ist called during the instantiation of
         # ColorDelegator in setUp().
         color = self.color
         self.assertIsNichts(color.after_id)
@@ -177,10 +177,10 @@ klasse ColorDelegatorTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.percolator.close()
-        del cls.percolator, cls.text
+        loesche cls.percolator, cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.color = colorizer.ColorDelegator()
@@ -192,13 +192,13 @@ klasse ColorDelegatorTest(unittest.TestCase):
         self.percolator.removefilter(self.color)
         self.text.delete('1.0', 'end')
         self.color.resetcache()
-        del self.color
+        loesche self.color
 
     def test_setdelegate(self):
-        # Called in setUp when filter is attached to percolator.
+        # Called in setUp when filter ist attached to percolator.
         color = self.color
         self.assertIsInstance(color.delegate, colorizer.Delegator)
-        # It is too late to mock notify_range, so test side effect.
+        # It ist too late to mock notify_range, so test side effect.
         self.assertEqual(self.root.tk.call(
             'after', 'info', color.after_id)[1], 'timer')
 
@@ -222,7 +222,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
                     sonst:
                         self.assertEqual(text.tag_cget(tag, plane),
                                          highlight(element=tag.lower())[plane])
-        # 'sel' is marked als the highest priority.
+        # 'sel' ist marked als the highest priority.
         self.assertEqual(text.tag_names()[-1], 'sel')
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
@@ -285,7 +285,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         color.after_id = Nichts
         color.allow_colorizing = Falsch
         color.notify_range('1.4', '1.4+10c')
-        # Nothing scheduled when colorizing is off.
+        # Nothing scheduled when colorizing ist off.
         self.assertIsNichts(color.after_id)
 
     def test_toggle_colorize_event(self):
@@ -355,7 +355,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         mock_recmain.assert_not_called()
         color.colorizing = Falsch
 
-        # Colorizing is done, but nicht completed, so rescheduled.
+        # Colorizing ist done, but nicht completed, so rescheduled.
         color.recolorize()
         self.assertFalsch(color.stop_colorizing)
         self.assertFalsch(color.colorizing)

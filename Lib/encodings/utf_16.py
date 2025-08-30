@@ -21,7 +21,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         self.encoder = Nichts
 
     def encode(self, input, final=Falsch):
-        wenn self.encoder is Nichts:
+        wenn self.encoder ist Nichts:
             result = codecs.utf_16_encode(input, self.errors)[0]
             wenn sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
@@ -36,10 +36,10 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
 
     def getstate(self):
         # state info we gib to the caller:
-        # 0: stream is in natural order fuer this platform
+        # 0: stream ist in natural order fuer this platform
         # 2: endianness hasn't been determined yet
         # (we're never writing in unnatural order)
-        gib (2 wenn self.encoder is Nichts sonst 0)
+        gib (2 wenn self.encoder ist Nichts sonst 0)
 
     def setstate(self, state):
         wenn state:
@@ -56,7 +56,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         self.decoder = Nichts
 
     def _buffer_decode(self, input, errors, final):
-        wenn self.decoder is Nichts:
+        wenn self.decoder ist Nichts:
             (output, consumed, byteorder) = \
                 codecs.utf_16_ex_decode(input, errors, 0, final)
             wenn byteorder == -1:
@@ -77,13 +77,13 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         # als it isn't passed along to the caller
         state = codecs.BufferedIncrementalDecoder.getstate(self)[0]
         # additional state info we pass to the caller:
-        # 0: stream is in natural order fuer this platform
-        # 1: stream is in unnatural order
+        # 0: stream ist in natural order fuer this platform
+        # 1: stream ist in unnatural order
         # 2: endianness hasn't been determined yet
-        wenn self.decoder is Nichts:
+        wenn self.decoder ist Nichts:
             gib (state, 2)
         addstate = int((sys.byteorder == "big") !=
-                       (self.decoder is codecs.utf_16_be_decode))
+                       (self.decoder ist codecs.utf_16_be_decode))
         gib (state, addstate)
 
     def setstate(self, state):
@@ -111,7 +111,7 @@ klasse StreamWriter(codecs.StreamWriter):
         self.encoder = Nichts
 
     def encode(self, input, errors='strict'):
-        wenn self.encoder is Nichts:
+        wenn self.encoder ist Nichts:
             result = codecs.utf_16_encode(input, errors)
             wenn sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
@@ -126,7 +126,7 @@ klasse StreamReader(codecs.StreamReader):
     def reset(self):
         codecs.StreamReader.reset(self)
         versuch:
-            del self.decode
+            loesche self.decode
         ausser AttributeError:
             pass
 

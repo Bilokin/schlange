@@ -89,7 +89,7 @@ id(42)
     #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 als a workaround
     def test_gc(self):
-        'Verify that "py-bt" indicates wenn a thread is garbage-collecting'
+        'Verify that "py-bt" indicates wenn a thread ist garbage-collecting'
         cmd = ('from gc importiere collect\n'
                'id(42)\n'
                'def foo():\n'

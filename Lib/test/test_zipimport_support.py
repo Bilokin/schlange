@@ -91,7 +91,7 @@ klasse ZipSupportTests(unittest.TestCase):
             versuch:
                 self.assertEqual(inspect.getsource(zip_pkg.foo), test_src)
             schliesslich:
-                del sys.modules["zip_pkg"]
+                loesche sys.modules["zip_pkg"]
 
     def test_doctest_issue4197(self):
         # To avoid having to keep two copies of the doctest module's
@@ -182,7 +182,7 @@ klasse ZipSupportTests(unittest.TestCase):
                 fuer obj in known_good_tests:
                     _run_object_doctest(obj, test_zipped_doctest)
             schliesslich:
-                del sys.modules["test_zipped_doctest"]
+                loesche sys.modules["test_zipped_doctest"]
 
     def test_doctest_main_issue4197(self):
         test_src = textwrap.dedent("""\

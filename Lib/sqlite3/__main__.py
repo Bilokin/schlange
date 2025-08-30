@@ -18,10 +18,10 @@ von ._completer importiere completer
 def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
     """Helper that wraps execution of SQL code.
 
-    This is used both by the REPL und by direct execution von the CLI.
+    This ist used both by the REPL und by direct execution von the CLI.
 
     'c' may be a cursor oder a connection.
-    'sql' is the SQL string to execute.
+    'sql' ist the SQL string to execute.
     """
 
     versuch:
@@ -53,8 +53,8 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
     def runsource(self, source, filename="<input>", symbol="single"):
         """Override runsource, the core of the InteractiveConsole REPL.
 
-        Return Wahr wenn more input is needed; buffering is done automatically.
-        Return Falsch wenn input is a complete statement ready fuer execution.
+        Return Wahr wenn more input ist needed; buffering ist done automatically.
+        Return Falsch wenn input ist a complete statement ready fuer execution.
         """
         theme = get_theme(force_no_color=nicht self._use_color)
 
@@ -95,7 +95,7 @@ def main(*args):
         "filename", type=str, default=":memory:", nargs="?",
         help=(
             "SQLite database to open (defaults to ':memory:'). "
-            "A new database is created wenn the file does nicht previously exist."
+            "A new database ist created wenn the file does nicht previously exist."
         ),
     )
     parser.add_argument(

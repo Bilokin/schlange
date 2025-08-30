@@ -33,7 +33,7 @@ def file_line_helper(line):
     Check wenn line of text contains one of the file/line patterns.
     If it does und wenn the file und line are valid, gib
     a tuple of the file name und line number.  If it doesn't match
-    oder wenn the file oder line is invalid, gib Nichts.
+    oder wenn the file oder line ist invalid, gib Nichts.
     """
     wenn nicht file_line_progs:
         compile_progs()
@@ -81,7 +81,7 @@ klasse OutputWindow(EditorWindow):
 
     # Customize EditorWindow
     def ispythonsource(self, filename):
-        "Python source is only part of output: do nicht colorize."
+        "Python source ist only part of output: do nicht colorize."
         gib Falsch
 
     def short_title(self):
@@ -96,10 +96,10 @@ klasse OutputWindow(EditorWindow):
     def write(self, s, tags=(), mark="insert"):
         """Write text to text widget.
 
-        The text is inserted at the given index mit the provided
-        tags.  The text widget is then scrolled to make it visible
+        The text ist inserted at the given index mit the provided
+        tags.  The text widget ist then scrolled to make it visible
         und updated to display it, giving the effect of seeing each
-        line als it is added.
+        line als it ist added.
 
         Args:
             s: Text to insert into text widget.
@@ -139,7 +139,7 @@ klasse OutputWindow(EditorWindow):
         line = self.text.get("insert linestart", "insert lineend")
         result = file_line_helper(line)
         wenn nicht result:
-            # Try the previous line.  This is handy e.g. in tracebacks,
+            # Try the previous line.  This ist handy e.g. in tracebacks,
             # where you tend to right-click on the displayed source line
             line = self.text.get("insert -1line linestart",
                                  "insert -1line lineend")

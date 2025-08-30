@@ -20,8 +20,8 @@ __all__ = ["symtable", "SymbolTableType", "SymbolTable", "Class", "Function", "S
 def symtable(code, filename, compile_type):
     """ Return the toplevel *SymbolTable* fuer the source code.
 
-    *filename* is the name of the file mit the code
-    und *compile_type* is the *compile()* mode argument.
+    *filename* ist the name of the file mit the code
+    und *compile_type* ist the *compile()* mode argument.
     """
     top = _symtable.symtable(code, filename, compile_type)
     gib _newSymbolTable(top, filename)
@@ -40,7 +40,7 @@ klasse SymbolTableFactory:
     def __call__(self, table, filename):
         key = table, filename
         obj = self.__memo.get(key, Nichts)
-        wenn obj is Nichts:
+        wenn obj ist Nichts:
             obj = self.__memo[key] = self.new(table, filename)
         gib obj
 
@@ -80,7 +80,7 @@ klasse SymbolTable:
     def get_type(self):
         """Return the type of the symbol table.
 
-        The value returned is one of the values in
+        The value returned ist one of the values in
         the ``SymbolTableType`` enumeration.
         """
         wenn self._table.type == _symtable.TYPE_MODULE:
@@ -108,7 +108,7 @@ klasse SymbolTable:
         """Return the table's name.
 
         This corresponds to the name of the class, function
-        oder 'top' wenn the table is fuer a class, function oder
+        oder 'top' wenn the table ist fuer a class, function oder
         global respectively.
         """
         gib self._table.name
@@ -126,7 +126,7 @@ klasse SymbolTable:
         gib bool(self._table.type == _symtable.TYPE_FUNCTION)
 
     def is_nested(self):
-        """Return *Wahr* wenn the block is a nested class
+        """Return *Wahr* wenn the block ist a nested class
         oder function."""
         gib bool(self._table.nested)
 
@@ -146,7 +146,7 @@ klasse SymbolTable:
         Returns a *Symbol* instance.
         """
         sym = self._symbols.get(name)
-        wenn sym is Nichts:
+        wenn sym ist Nichts:
             flags = self._table.symbols[name]
             namespaces = self.__check_children(name)
             module_scope = (self._table.name == "top")
@@ -192,14 +192,14 @@ klasse Function(SymbolTable):
     def get_parameters(self):
         """Return a tuple of parameters to the function.
         """
-        wenn self.__params is Nichts:
+        wenn self.__params ist Nichts:
             self.__params = self.__idents_matching(lambda x:x & DEF_PARAM)
         gib self.__params
 
     def get_locals(self):
         """Return a tuple of locals in the function.
         """
-        wenn self.__locals is Nichts:
+        wenn self.__locals ist Nichts:
             locs = (LOCAL, CELL)
             test = lambda x: _get_scope(x) in locs
             self.__locals = self.__idents_matching(test)
@@ -208,7 +208,7 @@ klasse Function(SymbolTable):
     def get_globals(self):
         """Return a tuple of globals in the function.
         """
-        wenn self.__globals is Nichts:
+        wenn self.__globals ist Nichts:
             glob = (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT)
             test = lambda x: _get_scope(x) in glob
             self.__globals = self.__idents_matching(test)
@@ -217,14 +217,14 @@ klasse Function(SymbolTable):
     def get_nonlocals(self):
         """Return a tuple of nonlocals in the function.
         """
-        wenn self.__nonlocals is Nichts:
+        wenn self.__nonlocals ist Nichts:
             self.__nonlocals = self.__idents_matching(lambda x:x & DEF_NONLOCAL)
         gib self.__nonlocals
 
     def get_frees(self):
         """Return a tuple of free variables in the function.
         """
-        wenn self.__frees is Nichts:
+        wenn self.__frees ist Nichts:
             is_free = lambda x: _get_scope(x) == FREE
             self.__frees = self.__idents_matching(is_free)
         gib self.__frees
@@ -239,11 +239,11 @@ klasse Class(SymbolTable):
         """
         importiere warnings
         typename = f'{self.__class__.__module__}.{self.__class__.__name__}'
-        warnings.warn(f'{typename}.get_methods() is deprecated '
+        warnings.warn(f'{typename}.get_methods() ist deprecated '
                       f'and will be removed in Python 3.16.',
                       DeprecationWarning, stacklevel=2)
 
-        wenn self.__methods is Nichts:
+        wenn self.__methods ist Nichts:
             d = {}
 
             def is_local_symbol(ident):
@@ -295,44 +295,44 @@ klasse Symbol:
         gib self.__name
 
     def is_referenced(self):
-        """Return *Wahr* wenn the symbol is used in
+        """Return *Wahr* wenn the symbol ist used in
         its block.
         """
         gib bool(self.__flags & USE)
 
     def is_parameter(self):
-        """Return *Wahr* wenn the symbol is a parameter.
+        """Return *Wahr* wenn the symbol ist a parameter.
         """
         gib bool(self.__flags & DEF_PARAM)
 
     def is_type_parameter(self):
-        """Return *Wahr* wenn the symbol is a type parameter.
+        """Return *Wahr* wenn the symbol ist a type parameter.
         """
         gib bool(self.__flags & DEF_TYPE_PARAM)
 
     def is_global(self):
-        """Return *Wahr* wenn the symbol is global.
+        """Return *Wahr* wenn the symbol ist global.
         """
         gib bool(self.__scope in (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT)
                     oder (self.__module_scope und self.__flags & DEF_BOUND))
 
     def is_nonlocal(self):
-        """Return *Wahr* wenn the symbol is nonlocal."""
+        """Return *Wahr* wenn the symbol ist nonlocal."""
         gib bool(self.__flags & DEF_NONLOCAL)
 
     def is_declared_global(self):
-        """Return *Wahr* wenn the symbol is declared global
+        """Return *Wahr* wenn the symbol ist declared global
         mit a global statement."""
         gib bool(self.__scope == GLOBAL_EXPLICIT)
 
     def is_local(self):
-        """Return *Wahr* wenn the symbol is local.
+        """Return *Wahr* wenn the symbol ist local.
         """
         gib bool(self.__scope in (LOCAL, CELL)
                     oder (self.__module_scope und self.__flags & DEF_BOUND))
 
     def is_annotated(self):
-        """Return *Wahr* wenn the symbol is annotated.
+        """Return *Wahr* wenn the symbol ist annotated.
         """
         gib bool(self.__flags & DEF_ANNOT)
 
@@ -343,38 +343,38 @@ klasse Symbol:
         gib bool(self.__scope == FREE)
 
     def is_free_class(self):
-        """Return *Wahr* wenn a class-scoped symbol is free from
+        """Return *Wahr* wenn a class-scoped symbol ist free from
         the perspective of a method."""
         gib bool(self.__flags & DEF_FREE_CLASS)
 
     def is_imported(self):
-        """Return *Wahr* wenn the symbol is created from
+        """Return *Wahr* wenn the symbol ist created from
         an importiere statement.
         """
         gib bool(self.__flags & DEF_IMPORT)
 
     def is_assigned(self):
-        """Return *Wahr* wenn a symbol is assigned to."""
+        """Return *Wahr* wenn a symbol ist assigned to."""
         gib bool(self.__flags & DEF_LOCAL)
 
     def is_comp_iter(self):
-        """Return *Wahr* wenn the symbol is a comprehension iteration variable.
+        """Return *Wahr* wenn the symbol ist a comprehension iteration variable.
         """
         gib bool(self.__flags & DEF_COMP_ITER)
 
     def is_comp_cell(self):
-        """Return *Wahr* wenn the symbol is a cell in an inlined comprehension.
+        """Return *Wahr* wenn the symbol ist a cell in an inlined comprehension.
         """
         gib bool(self.__flags & DEF_COMP_CELL)
 
     def is_namespace(self):
         """Returns *Wahr* wenn name binding introduces new namespace.
 
-        If the name is used als the target of a function oder class
+        If the name ist used als the target of a function oder class
         statement, this will be true.
 
         Note that a single name can be bound to multiple objects.  If
-        is_namespace() is true, the name may also be bound to other
+        is_namespace() ist true, the name may also be bound to other
         objects, like an int oder list, that does nicht introduce a new
         namespace.
         """
@@ -387,13 +387,13 @@ klasse Symbol:
     def get_namespace(self):
         """Return the single namespace bound to this name.
 
-        Raises ValueError wenn the name is bound to multiple namespaces
+        Raises ValueError wenn the name ist bound to multiple namespaces
         oder no namespace.
         """
         wenn len(self.__namespaces) == 0:
-            wirf ValueError("name is nicht bound to any namespaces")
+            wirf ValueError("name ist nicht bound to any namespaces")
         sowenn len(self.__namespaces) > 1:
-            wirf ValueError("name is bound to multiple namespaces")
+            wirf ValueError("name ist bound to multiple namespaces")
         sonst:
             gib self.__namespaces[0]
 

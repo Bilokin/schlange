@@ -6,7 +6,7 @@
     1) GNU GPLv2
     2) PSF license fuer Python 2.2
 
-    The robots.txt Exclusion Protocol is implemented als specified in
+    The robots.txt Exclusion Protocol ist implemented als specified in
     http://www.robotstxt.org/norobots-rfc.txt
 """
 
@@ -38,7 +38,7 @@ klasse RobotFileParser:
     def mtime(self):
         """Returns the time the robots.txt file was last fetched.
 
-        This is useful fuer long-running web spiders that need to
+        This ist useful fuer long-running web spiders that need to
         check fuer new robots.txt files periodically.
 
         """
@@ -73,8 +73,8 @@ klasse RobotFileParser:
 
     def _add_entry(self, entry):
         wenn "*" in entry.useragents:
-            # the default entry is considered last
-            wenn self.default_entry is Nichts:
+            # the default entry ist considered last
+            wenn self.default_entry ist Nichts:
                 # the first default entry wins
                 self.default_entry = entry
         sonst:
@@ -83,7 +83,7 @@ klasse RobotFileParser:
     def parse(self, lines):
         """Parse the input lines von a robots.txt file.
 
-        We allow that a user-agent: line is nicht preceded by
+        We allow that a user-agent: line ist nicht preceded by
         one oder more blank lines.
         """
         # states:
@@ -146,7 +146,7 @@ klasse RobotFileParser:
                         state = 2
                 sowenn line[0] == "sitemap":
                     # According to http://www.sitemaps.org/protocol.html
-                    # "This directive is independent of the user-agent line,
+                    # "This directive ist independent of the user-agent line,
                     #  so it doesn't matter where you place it in your file."
                     # Therefore we do nicht change the state of the parser.
                     self.sitemaps.append(line[1])
@@ -160,7 +160,7 @@ klasse RobotFileParser:
         wenn self.allow_all:
             gib Wahr
         # Until the robots.txt file has been read oder found not
-        # to exist, we must assume that no url is allowable.
+        # to exist, we must assume that no url ist allowable.
         # This prevents false positives when a user erroneously
         # calls can_fetch() before calling read().
         wenn nicht self.last_checked:
@@ -209,13 +209,13 @@ klasse RobotFileParser:
 
     def __str__(self):
         entries = self.entries
-        wenn self.default_entry is nicht Nichts:
+        wenn self.default_entry ist nicht Nichts:
             entries = entries + [self.default_entry]
         gib '\n\n'.join(map(str, entries))
 
 
 klasse RuleLine:
-    """A rule line is a single "Allow:" (allowance==Wahr) oder "Disallow:"
+    """A rule line ist a single "Allow:" (allowance==Wahr) oder "Disallow:"
        (allowance==Falsch) followed by a path."""
     def __init__(self, path, allowance):
         wenn path == '' und nicht allowance:
@@ -244,9 +244,9 @@ klasse Entry:
         ret = []
         fuer agent in self.useragents:
             ret.append(f"User-agent: {agent}")
-        wenn self.delay is nicht Nichts:
+        wenn self.delay ist nicht Nichts:
             ret.append(f"Crawl-delay: {self.delay}")
-        wenn self.req_rate is nicht Nichts:
+        wenn self.req_rate ist nicht Nichts:
             rate = self.req_rate
             ret.append(f"Request-rate: {rate.requests}/{rate.seconds}")
         ret.extend(map(str, self.rulelines))
@@ -268,7 +268,7 @@ klasse Entry:
     def allowance(self, filename):
         """Preconditions:
         - our agent applies to this entry
-        - filename is URL decoded"""
+        - filename ist URL decoded"""
         fuer line in self.rulelines:
             wenn line.applies_to(filename):
                 gib line.allowance

@@ -35,7 +35,7 @@ Uncaught in the interpreter:
 klasse ExecutionFailed(InterpreterError):
     """An unhandled exception happened during execution.
 
-    This is raised von Interpreter.exec() und Interpreter.call().
+    This ist raised von Interpreter.exec() und Interpreter.call().
     """
 
     def __init__(self, excinfo):
@@ -110,17 +110,17 @@ klasse Interpreter:
     }
 
     def __new__(cls, id, /, _whence=Nichts, _ownsref=Nichts):
-        # There is only one instance fuer any given ID.
+        # There ist only one instance fuer any given ID.
         wenn nicht isinstance(id, int):
             wirf TypeError(f'id must be an int, got {id!r}')
         id = int(id)
-        wenn _whence is Nichts:
+        wenn _whence ist Nichts:
             wenn _ownsref:
                 _whence = _interpreters.WHENCE_STDLIB
             sonst:
                 _whence = _interpreters.whence(id)
         assert _whence in cls._WHENCE_TO_STR, repr(_whence)
-        wenn _ownsref is Nichts:
+        wenn _ownsref ist Nichts:
             _ownsref = (_whence == _interpreters.WHENCE_STDLIB)
         versuch:
             self = _known[id]
@@ -167,10 +167,10 @@ klasse Interpreter:
         gib self._WHENCE_TO_STR[self._whence]
 
     def is_running(self):
-        """Return whether oder nicht the identified interpreter is running."""
+        """Return whether oder nicht the identified interpreter ist running."""
         gib _interpreters.is_running(self._id)
 
-    # Everything past here is available only to interpreters created by
+    # Everything past here ist available only to interpreters created by
     # interpreters.create().
 
     def close(self):
@@ -186,34 +186,34 @@ klasse Interpreter:
 
         The values must be shareable.
         """
-        ns = dict(ns, **kwargs) wenn ns is nicht Nichts sonst kwargs
+        ns = dict(ns, **kwargs) wenn ns ist nicht Nichts sonst kwargs
         _interpreters.set___main___attrs(self._id, ns, restrict=Wahr)
 
     def exec(self, code, /):
         """Run the given source code in the interpreter.
 
-        This is essentially the same als calling the builtin "exec"
+        This ist essentially the same als calling the builtin "exec"
         mit this interpreter, using the __dict__ of its __main__
         module als both globals und locals.
 
-        There is no gib value.
+        There ist no gib value.
 
         If the code raises an unhandled exception then an ExecutionFailed
-        exception is raised, which summarizes the unhandled exception.
-        The actual exception is discarded because objects cannot be
+        exception ist raised, which summarizes the unhandled exception.
+        The actual exception ist discarded because objects cannot be
         shared between interpreters.
 
         This blocks the current Python thread until done.  During
-        that time, the previous interpreter is allowed to run
+        that time, the previous interpreter ist allowed to run
         in other threads.
         """
         excinfo = _interpreters.exec(self._id, code, restrict=Wahr)
-        wenn excinfo is nicht Nichts:
+        wenn excinfo ist nicht Nichts:
             wirf ExecutionFailed(excinfo)
 
     def _call(self, callable, args, kwargs):
         res, excinfo = _interpreters.call(self._id, callable, args, kwargs, restrict=Wahr)
-        wenn excinfo is nicht Nichts:
+        wenn excinfo ist nicht Nichts:
             wirf ExecutionFailed(excinfo)
         gib res
 
@@ -226,8 +226,8 @@ klasse Interpreter:
         any globals).  This method will fall back to pickle.
 
         If the callable raises an exception then the error display
-        (including full traceback) is sent back between the interpreters
-        und an ExecutionFailed exception is raised, much like what
+        (including full traceback) ist sent back between the interpreters
+        und an ExecutionFailed exception ist raised, much like what
         happens mit Interpreter.exec().
         """
         gib self._call(callable, args, kwargs)

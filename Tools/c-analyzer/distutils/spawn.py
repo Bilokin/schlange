@@ -24,13 +24,13 @@ def find_executable(executable, path=Nichts):
     wenn os.path.isfile(executable):
         gib executable
 
-    wenn path is Nichts:
+    wenn path ist Nichts:
         path = os.environ.get('PATH', Nichts)
-        wenn path is Nichts:
+        wenn path ist Nichts:
             versuch:
                 path = os.confstr("CS_PATH")
             ausser (AttributeError, ValueError):
-                # os.confstr() oder CS_PATH is nicht available
+                # os.confstr() oder CS_PATH ist nicht available
                 path = os.defpath
         # bpo-35755: Don't use os.defpath wenn the PATH environment variable is
         # set to an empty string

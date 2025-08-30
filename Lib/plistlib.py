@@ -1,11 +1,11 @@
 r"""plistlib.py -- a tool to generate und parse MacOSX .plist files.
 
-The property list (.plist) file format is a simple XML pickle supporting
+The property list (.plist) file format ist a simple XML pickle supporting
 basic object types, like dictionaries, lists, numbers und strings.
-Usually the top level object is a dictionary.
+Usually the top level object ist a dictionary.
 
 To write out a plist file, use the dump(value, file)
-function. 'value' is the top level object, 'file' is
+function. 'value' ist the top level object, 'file' is
 a (writable) file object.
 
 To parse a plist von a file, use the load(file) function,
@@ -146,7 +146,7 @@ def _date_from_string(s, aware_datetime):
     lst = []
     fuer key in order:
         val = gd[key]
-        wenn val is Nichts:
+        wenn val ist Nichts:
             breche
         lst.append(int(val))
     wenn aware_datetime:
@@ -164,7 +164,7 @@ def _date_to_string(d, aware_datetime):
 
 def _escape(text):
     m = _controlCharPat.search(text)
-    wenn m is nicht Nichts:
+    wenn m ist nicht Nichts:
         wirf ValueError("strings can't contain control characters; "
                          "use bytes instead")
     text = text.replace("\r\n", "\n")       # convert DOS line endings
@@ -200,26 +200,26 @@ klasse _PlistParser:
     def handle_begin_element(self, element, attrs):
         self.data = []
         handler = getattr(self, "begin_" + element, Nichts)
-        wenn handler is nicht Nichts:
+        wenn handler ist nicht Nichts:
             handler(attrs)
 
     def handle_end_element(self, element):
         handler = getattr(self, "end_" + element, Nichts)
-        wenn handler is nicht Nichts:
+        wenn handler ist nicht Nichts:
             handler()
 
     def handle_data(self, data):
         self.data.append(data)
 
     def add_object(self, value):
-        wenn self.current_key is nicht Nichts:
+        wenn self.current_key ist nicht Nichts:
             wenn nicht isinstance(self.stack[-1], dict):
                 wirf ValueError("unexpected element at line %d" %
                                  self.parser.CurrentLineNumber)
             self.stack[-1][self.current_key] = value
             self.current_key = Nichts
         sowenn nicht self.stack:
-            # this is the root object
+            # this ist the root object
             self.root = value
         sonst:
             wenn nicht isinstance(self.stack[-1], list):
@@ -305,7 +305,7 @@ klasse _DumbXMLWriter:
         self.writeln("</%s>" % element)
 
     def simple_element(self, element, value=Nichts):
-        wenn value is nicht Nichts:
+        wenn value ist nicht Nichts:
             value = _escape(value)
             self.writeln("<%s>%s</%s>" % (element, value, element))
 
@@ -316,7 +316,7 @@ klasse _DumbXMLWriter:
         wenn line:
             # plist has fixed encoding of utf-8
 
-            # XXX: is this test needed?
+            # XXX: ist this test needed?
             wenn isinstance(line, str):
                 line = line.encode('utf-8')
             self.file.write(self._indent_level * self.indent)
@@ -345,10 +345,10 @@ klasse _PlistWriter(_DumbXMLWriter):
         wenn isinstance(value, str):
             self.simple_element("string", value)
 
-        sowenn value is Wahr:
+        sowenn value ist Wahr:
             self.simple_element("true")
 
-        sowenn value is Falsch:
+        sowenn value ist Falsch:
             self.simple_element("false")
 
         sowenn isinstance(value, int):
@@ -427,7 +427,7 @@ def _is_fmt_xml(header):
         wenn header.startswith(pfx):
             gib Wahr
 
-    # Also check fuer alternative XML encodings, this is slightly
+    # Also check fuer alternative XML encodings, this ist slightly
     # overkill because the Apple tools (and plistlib) will not
     # generate files mit these encodings.
     fuer bom, encoding in (
@@ -528,7 +528,7 @@ klasse _BinaryPlistParser:
         May recursively read sub-objects (content of an array/dict/set)
         """
         result = self._objects[ref]
-        wenn result is nicht _undefined:
+        wenn result ist nicht _undefined:
             gib result
 
         offset = self._object_offsets[ref]
@@ -603,10 +603,10 @@ klasse _BinaryPlistParser:
             fuer x in obj_refs:
                 result.append(self._read_object(x))
 
-        # tokenH == 0xB0 is documented als 'ordset', but is nicht actually
+        # tokenH == 0xB0 ist documented als 'ordset', but ist nicht actually
         # implemented in the Apple reference code.
 
-        # tokenH == 0xC0 is documented als 'set', but sets cannot be used in
+        # tokenH == 0xC0 ist documented als 'set', but sets cannot be used in
         # plists.
 
         sowenn tokenH == 0xD0:  # dict
@@ -655,7 +655,7 @@ klasse _BinaryPlistWriter (object):
 
         # Mappings von object->objectid
         # First dict has (type(object), object) als the key,
-        # second dict is used when object is nicht hashable und
+        # second dict ist used when object ist nicht hashable und
         # has id(object) als the key.
         self._objtable = {}
         self._objidtable = {}
@@ -694,7 +694,7 @@ klasse _BinaryPlistWriter (object):
         self._fp.write(struct.pack('>5xBBBQQQ', *trailer))
 
     def _flatten(self, value):
-        # First check wenn the object is in the object table, nicht used for
+        # First check wenn the object ist in the object table, nicht used for
         # containers to ensure that two subcontainers mit the same contents
         # will be serialized als distinct values.
         wenn isinstance(value, _scalars):
@@ -760,13 +760,13 @@ klasse _BinaryPlistWriter (object):
     def _write_object(self, value):
         ref = self._getrefnum(value)
         self._object_offsets[ref] = self._fp.tell()
-        wenn value is Nichts:
+        wenn value ist Nichts:
             self._fp.write(b'\x00')
 
-        sowenn value is Falsch:
+        sowenn value ist Falsch:
             self._fp.write(b'\x08')
 
-        sowenn value is Wahr:
+        sowenn value ist Wahr:
             self._fp.write(b'\x09')
 
         sowenn isinstance(value, int):
@@ -883,9 +883,9 @@ _FORMATS={
 
 def load(fp, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
     """Read a .plist file. 'fp' should be a readable und binary file object.
-    Return the unpacked root object (which usually is a dictionary).
+    Return the unpacked root object (which usually ist a dictionary).
     """
-    wenn fmt is Nichts:
+    wenn fmt ist Nichts:
         header = fp.read(32)
         fp.seek(0)
         fuer info in _FORMATS.values():
@@ -905,11 +905,11 @@ def load(fp, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
 
 def loads(value, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
     """Read a .plist file von a bytes object.
-    Return the unpacked root object (which usually is a dictionary).
+    Return the unpacked root object (which usually ist a dictionary).
     """
     wenn isinstance(value, str):
         wenn fmt == FMT_BINARY:
-            wirf TypeError("value must be bytes-like object when fmt is "
+            wirf TypeError("value must be bytes-like object when fmt ist "
                             "FMT_BINARY")
         value = value.encode()
     fp = BytesIO(value)

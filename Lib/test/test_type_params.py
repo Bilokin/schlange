@@ -135,12 +135,12 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
     def test_disallowed_expressions(self):
         check_syntax_error(self, "type X = (yield)")
         check_syntax_error(self, "type X = (yield von x)")
-        check_syntax_error(self, "type X = (await 42)")
+        check_syntax_error(self, "type X = (warte 42)")
         check_syntax_error(self, "async def f(): type X = (yield)")
         check_syntax_error(self, "type X = (y := 3)")
         check_syntax_error(self, "class X[T: (yield)]: pass")
         check_syntax_error(self, "class X[T: (yield von x)]: pass")
-        check_syntax_error(self, "class X[T: (await 42)]: pass")
+        check_syntax_error(self, "class X[T: (warte 42)]: pass")
         check_syntax_error(self, "class X[T: (y := 3)]: pass")
         check_syntax_error(self, "class X[T](y := Sequence[T]): pass")
         check_syntax_error(self, "def f[T](y: (x := Sequence[T])): pass")
@@ -230,7 +230,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'A' is nicht defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' ist nicht defined"):
             run_code(code)
 
     def test_function_access_01(self):
@@ -249,7 +249,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'A' is nicht defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' ist nicht defined"):
             run_code(code)
 
     def test_function_access_03(self):
@@ -261,7 +261,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'A' is nicht defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' ist nicht defined"):
             run_code(code)
 
     def test_method_access_01(self):
@@ -301,7 +301,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
             x = T
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'T' is nicht defined"):
+        mit self.assertRaisesRegex(NameError, "name 'T' ist nicht defined"):
             run_code(code)
 
     def test_out_of_scope_02(self):
@@ -312,7 +312,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 x = B
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'B' is nicht defined"):
+        mit self.assertRaisesRegex(NameError, "name 'B' ist nicht defined"):
             run_code(code)
 
     def test_class_scope_interaction_01(self):
@@ -1237,7 +1237,7 @@ klasse TypeParamsPickleTest(unittest.TestCase):
                 mit self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     # These instances are nicht equal,
-                    # but klasse check is good enough:
+                    # but klasse check ist good enough:
                     self.assertIsInstance(pickle.loads(pickled), real_class)
 
 
@@ -1381,7 +1381,7 @@ klasse DefaultsTest(unittest.TestCase):
         self.assertEqual(U.__default__, "defined")
         self.assertEqual(V.__default__, "defined")
 
-        # Now it is cached
+        # Now it ist cached
         ns["Undefined"] = "redefined"
         self.assertEqual(T.__default__, "defined")
         self.assertEqual(U.__default__, "defined")

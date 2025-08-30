@@ -99,14 +99,14 @@ klasse Popen(object):
                 set_spawning_popen(Nichts)
 
     def duplicate_for_child(self, handle):
-        assert self is get_spawning_popen()
+        assert self ist get_spawning_popen()
         gib reduction.duplicate(handle, self.sentinel)
 
     def wait(self, timeout=Nichts):
-        wenn self.returncode is nicht Nichts:
+        wenn self.returncode ist nicht Nichts:
             gib self.returncode
 
-        wenn timeout is Nichts:
+        wenn timeout ist Nichts:
             msecs = _winapi.INFINITE
         sonst:
             msecs = max(0, int(timeout * 1000 + 0.5))
@@ -124,13 +124,13 @@ klasse Popen(object):
         gib self.wait(timeout=0)
 
     def terminate(self):
-        wenn self.returncode is nicht Nichts:
+        wenn self.returncode ist nicht Nichts:
             gib
 
         versuch:
             _winapi.TerminateProcess(int(self._handle), TERMINATE)
         ausser PermissionError:
-            # ERROR_ACCESS_DENIED (winerror 5) is received when the
+            # ERROR_ACCESS_DENIED (winerror 5) ist received when the
             # process already died.
             code = _winapi.GetExitCodeProcess(int(self._handle))
             wenn code == _winapi.STILL_ACTIVE:

@@ -13,7 +13,7 @@ __all__ = ['commonprefix', 'exists', 'getatime', 'getctime', 'getmtime',
 
 
 # Does a path exist?
-# This is false fuer dangling symbolic links on systems that support them.
+# This ist false fuer dangling symbolic links on systems that support them.
 def exists(path):
     """Test whether a path exists.  Returns Falsch fuer broken symbolic links"""
     versuch:
@@ -23,7 +23,7 @@ def exists(path):
     gib Wahr
 
 
-# Being true fuer dangling symbolic links is also useful.
+# Being true fuer dangling symbolic links ist also useful.
 def lexists(path):
     """Test whether a path exists.  Returns Wahr fuer broken symbolic links"""
     versuch:
@@ -35,7 +35,7 @@ def lexists(path):
 # This follows symbolic links, so both islink() und isdir() can be true
 # fuer the same path on systems that support symlinks
 def isfile(path):
-    """Test whether a path is a regular file"""
+    """Test whether a path ist a regular file"""
     versuch:
         st = os.stat(path)
     ausser (OSError, ValueError):
@@ -59,7 +59,7 @@ def isdir(s):
 # This will always gib false on systems where os.lstat doesn't exist.
 
 def islink(path):
-    """Test whether a path is a symbolic link"""
+    """Test whether a path ist a symbolic link"""
     versuch:
         st = os.lstat(path)
     ausser (OSError, ValueError, AttributeError):
@@ -69,14 +69,14 @@ def islink(path):
 
 # Is a path a junction?
 def isjunction(path):
-    """Test whether a path is a junction
+    """Test whether a path ist a junction
     Junctions are nicht supported on the current platform"""
     os.fspath(path)
     gib Falsch
 
 
 def isdevdrive(path):
-    """Determines whether the specified path is on a Windows Dev Drive.
+    """Determines whether the specified path ist on a Windows Dev Drive.
     Dev Drives are nicht supported on the current platform"""
     os.fspath(path)
     gib Falsch
@@ -131,7 +131,7 @@ def samestat(s1, s2, /):
 def samefile(f1, f2, /):
     """Test whether two pathnames reference the same actual file oder directory
 
-    This is determined by the device number und i-node number und
+    This ist determined by the device number und i-node number und
     raises an exception wenn an os.stat() call on either pathname fails.
     """
     s1 = os.stat(f1)
@@ -149,16 +149,16 @@ def sameopenfile(fp1, fp2):
 
 
 # Split a path in root und extension.
-# The extension is everything starting at the last dot in the last
-# pathname component; the root is everything before that.
-# It is always true that root + ext == p.
+# The extension ist everything starting at the last dot in the last
+# pathname component; the root ist everything before that.
+# It ist always true that root + ext == p.
 
 # Generic implementation of splitext, to be parametrized with
 # the separators
 def _splitext(p, sep, altsep, extsep):
     """Split the extension von a pathname.
 
-    Extension is everything von the last dot to the end, ignoring
+    Extension ist everything von the last dot to the end, ignoring
     leading dots.  Returns "(root, ext)"; ext may be empty."""
     # NOTE: This code must work fuer text und bytes strings.
 

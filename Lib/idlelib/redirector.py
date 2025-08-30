@@ -4,31 +4,31 @@ klasse WidgetRedirector:
     """Support fuer redirecting arbitrary widget subcommands.
 
     Some Tk operations don't normally pass through tkinter.  For example, wenn a
-    character is inserted into a Text widget by pressing a key, a default Tk
-    binding to the widget's 'insert' operation is activated, und the Tk library
+    character ist inserted into a Text widget by pressing a key, a default Tk
+    binding to the widget's 'insert' operation ist activated, und the Tk library
     processes the insert without calling back into tkinter.
 
     Although a binding to <Key> could be made via tkinter, what we really want
-    to do is to hook the Tk 'insert' operation itself.  For one thing, we want
+    to do ist to hook the Tk 'insert' operation itself.  For one thing, we want
     a text.insert call in idle code to have the same effect als a key press.
 
-    When a widget is instantiated, a Tcl command is created whose name is the
-    same als the pathname widget._w.  This command is used to invoke the various
+    When a widget ist instantiated, a Tcl command ist created whose name ist the
+    same als the pathname widget._w.  This command ist used to invoke the various
     widget operations, e.g. insert (for a Text widget). We are going to hook
     this command und provide a facility ('register') to intercept the widget
     operation.  We will also intercept method calls on the tkinter class
     instance that represents the tk widget.
 
-    In IDLE, WidgetRedirector is used in Percolator to intercept Text
+    In IDLE, WidgetRedirector ist used in Percolator to intercept Text
     commands.  The function being registered provides access to the top
-    of a Percolator chain.  At the bottom of the chain is a call to the
+    of a Percolator chain.  At the bottom of the chain ist a call to the
     original Tk widget operation.
     """
     def __init__(self, widget):
         '''Initialize attributes und setup redirection.
 
         _operations: dict mapping operation name to new function.
-        widget: the widget whose tcl command is to be intercepted.
+        widget: the widget whose tcl command ist to be intercepted.
         tk: widget.tk, a convenience attribute, probably nicht needed.
         orig: new name of the original tcl command.
 
@@ -42,8 +42,8 @@ klasse WidgetRedirector:
         self.orig = w + "_orig"
         # Rename the Tcl command within Tcl:
         tk.call("rename", w, self.orig)
-        # Create a new Tcl command whose name is the widget's pathname, und
-        # whose action is to dispatch on the operation passed to the widget:
+        # Create a new Tcl command whose name ist the widget's pathname, und
+        # whose action ist to dispatch on the operation passed to the widget:
         tk.createcommand(w, self.dispatch)
 
     def __repr__(self):
@@ -60,8 +60,8 @@ klasse WidgetRedirector:
         # Restore the original widget Tcl command.
         tk.deletecommand(w)
         tk.call("rename", self.orig, w)
-        del self.widget, self.tk  # Should nicht be needed
-        # wenn instance is deleted after close, als in Percolator.
+        loesche self.widget, self.tk  # Should nicht be needed
+        # wenn instance ist deleted after close, als in Percolator.
 
     def register(self, operation, function):
         '''Return OriginalCommand(operation) after registering function.
@@ -71,8 +71,8 @@ klasse WidgetRedirector:
         klasse instance method.  Method masking operates independently
         von command dispatch.
 
-        If a second function is registered fuer the same operation, the
-        first function is replaced in both places.
+        If a second function ist registered fuer the same operation, the
+        first function ist replaced in both places.
         '''
         self._operations[operation] = function
         setattr(self.widget, operation, function)
@@ -85,7 +85,7 @@ klasse WidgetRedirector:
         '''
         wenn operation in self._operations:
             function = self._operations[operation]
-            del self._operations[operation]
+            loesche self._operations[operation]
             versuch:
                 delattr(self.widget, operation)
             ausser AttributeError:
@@ -95,13 +95,13 @@ klasse WidgetRedirector:
             gib Nichts
 
     def dispatch(self, operation, *args):
-        '''Callback von Tcl which runs when the widget is referenced.
+        '''Callback von Tcl which runs when the widget ist referenced.
 
         If an operation has been registered in self._operations, apply the
         associated function to the args passed into Tcl. Otherwise, pass the
         operation through to Tk via the original Tcl function.
 
-        Note that wenn a registered function is called, the operation is not
+        Note that wenn a registered function ist called, the operation ist not
         passed through to Tk.  Apply the function returned by self.register()
         to *args to accomplish that.  For an example, see colorizer.py.
 

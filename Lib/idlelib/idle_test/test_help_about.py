@@ -30,10 +30,10 @@ klasse LiveDialogTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_build_bits(self):
         self.assertIn(help_about.bits, ('32', '64'))
@@ -98,10 +98,10 @@ klasse DefaultTitleTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_dialog_title(self):
         """Test about dialog title"""
@@ -122,10 +122,10 @@ klasse CloseTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.dialog
+        loesche cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_close(self):
         self.assertEqual(self.dialog.winfo_class(), 'Toplevel')

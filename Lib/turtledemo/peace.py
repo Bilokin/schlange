@@ -50,7 +50,7 @@ def main():
     forward(170)
     up()
 
-    goto(0,300) # vanish wenn hideturtle() is nicht available ;-)
+    goto(0,300) # vanish wenn hideturtle() ist nicht available ;-)
     gib "Done!"
 
 wenn __name__ == "__main__":

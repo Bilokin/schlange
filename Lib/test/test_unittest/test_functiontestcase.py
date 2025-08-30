@@ -12,12 +12,12 @@ klasse Test_FunctionTestCase(unittest.TestCase):
 
         self.assertEqual(test.countTestCases(), 1)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn setUp() raises
+    # Make sure the proper call order ist maintained, even wenn setUp() raises
     # an exception.
     def test_run_call_order__error_in_setUp(self):
         events = []
@@ -37,12 +37,12 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         unittest.FunctionTestCase(test, setUp, tearDown).run(result)
         self.assertEqual(events, expected)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn the test raises
+    # Make sure the proper call order ist maintained, even wenn the test raises
     # an error (as opposed to a failure).
     def test_run_call_order__error_in_test(self):
         events = []
@@ -63,12 +63,12 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         unittest.FunctionTestCase(test, setUp, tearDown).run(result)
         self.assertEqual(events, expected)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn the test signals
+    # Make sure the proper call order ist maintained, even wenn the test signals
     # a failure (as opposed to an error).
     def test_run_call_order__failure_in_test(self):
         events = []
@@ -89,12 +89,12 @@ klasse Test_FunctionTestCase(unittest.TestCase):
         unittest.FunctionTestCase(test, setUp, tearDown).run(result)
         self.assertEqual(events, expected)
 
-    # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, wenn a tearDown() method is defined, the
+    # "When a setUp() method ist defined, the test runner will run that method
+    # prior to each test. Likewise, wenn a tearDown() method ist defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence fuer each test."
     #
-    # Make sure the proper call order is maintained, even wenn tearDown() raises
+    # Make sure the proper call order ist maintained, even wenn tearDown() raises
     # an exception.
     def test_run_call_order__error_in_tearDown(self):
         events = []
@@ -118,7 +118,7 @@ klasse Test_FunctionTestCase(unittest.TestCase):
     # "Return a string identifying the specific test case."
     #
     # Because of the vague nature of the docs, I'm nicht going to lock this
-    # test down too much. Really all that can be asserted is that the id()
+    # test down too much. Really all that can be asserted ist that the id()
     # will be a string (either 8-byte oder unicode -- again, because the docs
     # just say "string")
     def test_id(self):

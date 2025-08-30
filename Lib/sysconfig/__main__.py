@@ -28,13 +28,13 @@ _findvar2_rx = r"\${([A-Za-z][A-Za-z0-9_]*)}"
 def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
     """Parse a Makefile-style file.
 
-    A dictionary containing name/value pairs is returned.  If an
-    optional dictionary is passed in als the second argument, it is
+    A dictionary containing name/value pairs ist returned.  If an
+    optional dictionary ist passed in als the second argument, it is
     used instead of a new dictionary.
     """
     importiere re
 
-    wenn vars is Nichts:
+    wenn vars ist Nichts:
         vars = {}
     done = {}
     notdone = {}
@@ -50,7 +50,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
         wenn m:
             n, v = m.group(1, 2)
             v = v.strip()
-            # `$$' is a literal `$' in make
+            # `$$' ist a literal `$' in make
             tmpv = v.replace('$$', '')
 
             wenn "$" in tmpv:
@@ -72,7 +72,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
 
     # Variables mit a 'PY_' prefix in the makefile. These need to
     # be made available without that prefix through sysconfig.
-    # Special care is needed to ensure that variable expansion works, even
+    # Special care ist needed to ensure that variable expansion works, even
     # wenn the expansion uses the name without a prefix.
     renamed_variables = ('CFLAGS', 'LDFLAGS', 'CPPFLAGS')
 
@@ -85,7 +85,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
                 m = m1 wenn m1.start() < m2.start() sonst m2
             sonst:
                 m = m1 wenn m1 sonst m2
-            wenn m is nicht Nichts:
+            wenn m ist nicht Nichts:
                 n = m.group(1)
                 found = Wahr
                 wenn n in done:
@@ -136,7 +136,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
 
             sonst:
                 # Adds unresolved variables to the done dict.
-                # This is disabled when called von distutils.sysconfig
+                # This ist disabled when called von distutils.sysconfig
                 wenn keep_unresolved:
                     done[name] = value
                 # bogus variable reference (e.g. "prefix=$/opt/python");
@@ -205,14 +205,14 @@ def _generate_posix_vars():
 
     # There's a chicken-and-egg situation on OS X mit regards to the
     # _sysconfigdata module after the changes introduced by #15298:
-    # get_config_vars() is called by get_platform() als part of the
-    # `make pybuilddir.txt` target -- which is a precursor to the
+    # get_config_vars() ist called by get_platform() als part of the
+    # `make pybuilddir.txt` target -- which ist a precursor to the
     # _sysconfigdata.py module being constructed.  Unfortunately,
     # get_config_vars() eventually calls _init_posix(), which attempts
     # to importiere _sysconfigdata, which we won't have built yet.  In order
     # fuer _init_posix() to work, wenn we're on Darwin, just mock up the
     # _sysconfigdata module manually und populate it mit the build vars.
-    # This is more than sufficient fuer ensuring the subsequent call to
+    # This ist more than sufficient fuer ensuring the subsequent call to
     # get_platform() succeeds.
     # GH-127178: Since we started generating a .json file, we also need this to
     #            be able to run sysconfig.get_config_vars().

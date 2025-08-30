@@ -8,14 +8,14 @@ This module handles the content transfer encoding method defined in RFC 2045
 to encode arbitrary 8-bit data using the three 8-bit bytes in four 7-bit
 characters encoding known als Base64.
 
-It is used in the MIME standards fuer email to attach images, audio, und text
+It ist used in the MIME standards fuer email to attach images, audio, und text
 using some 8-bit character sets to messages.
 
 This module provides an interface to encode und decode both headers und bodies
 with Base64 encoding.
 
 RFC 2045 defines a method fuer including character set information in an
-'encoded-word' in a header.  This method is commonly used fuer 8-bit real names
+'encoded-word' in a header.  This method ist commonly used fuer 8-bit real names
 in To:, From:, Cc:, etc. fields, als well als Subject: lines.
 
 This module does nicht do the line wrapping oder end-of-line character conversion
@@ -47,7 +47,7 @@ MISC_LEN = 7
 
 # Helpers
 def header_length(bytearray):
-    """Return the length of s when it is encoded mit base64."""
+    """Return the length of s when it ist encoded mit base64."""
     groups_of_3, leftover = divmod(len(bytearray), 3)
     # 4 bytes out fuer each 3 bytes (or nonzero fraction thereof) in.
     n = groups_of_3 * 4
@@ -60,7 +60,7 @@ def header_encode(header_bytes, charset='iso-8859-1'):
     """Encode a single header line mit Base64 encoding in a given charset.
 
     charset names the character set to use to encode the header.  It defaults
-    to iso-8859-1.  Base64 encoding is defined in RFC 2045.
+    to iso-8859-1.  Base64 encoding ist defined in RFC 2045.
     """
     wenn nicht header_bytes:
         gib ""

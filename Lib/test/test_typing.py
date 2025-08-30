@@ -59,7 +59,7 @@ von test.typinganndata importiere (
 
 
 CANNOT_SUBCLASS_TYPE = 'Cannot subclass special typing classes'
-NOT_A_BASE_TYPE = "type 'typing.%s' is nicht an acceptable base type"
+NOT_A_BASE_TYPE = "type 'typing.%s' ist nicht an acceptable base type"
 CANNOT_SUBCLASS_INSTANCE = 'Cannot subclass an instance of %s'
 
 
@@ -117,7 +117,7 @@ klasse AnyTests(BaseTestCase):
         mit self.assertRaises(TypeError):
             isinstance(42, Any)
         mit self.assertRaises(TypeError):
-            Any[int]  # Any is nicht a generic type.
+            Any[int]  # Any ist nicht a generic type.
 
     def test_can_subclass(self):
         klasse Mock(Any): pass
@@ -385,7 +385,7 @@ klasse TypeVarTests(BaseTestCase):
         T = TypeVar('T')
         # T equals itself.
         self.assertEqual(T, T)
-        # T is an instance of TypeVar
+        # T ist an instance of TypeVar
         self.assertIsInstance(T, TypeVar)
         self.assertEqual(T.__name__, 'T')
         self.assertEqual(T.__constraints__, ())
@@ -473,7 +473,7 @@ klasse TypeVarTests(BaseTestCase):
         # __or__/__ror__ itself
         self.assertEqual(X | "x", Union[X, "x"])
         self.assertEqual("x" | X, Union["x", X])
-        # make sure the order is correct
+        # make sure the order ist correct
         self.assertEqual(get_args(X | "x"), (X, EqualToForwardRef("x")))
         self.assertEqual(get_args("x" | X), (EqualToForwardRef("x"), X))
 
@@ -570,7 +570,7 @@ klasse TypeVarTests(BaseTestCase):
 
                 fuer x in range(10):
                     vals[x] = cls(str(x))
-                del vals
+                loesche vals
 
     def test_constructor(self):
         T = TypeVar(name="T")
@@ -946,13 +946,13 @@ klasse GenericAliasSubstitutionTests(BaseTestCase):
             ('generic[T]',                        '[*Ts]',                   'TypeError'),
             ('generic[T]',                        '[T, *Ts]',                'TypeError'),
             ('generic[T]',                        '[*Ts, T]',                'TypeError'),
-            # Raises TypeError because C is nicht variadic.
+            # Raises TypeError because C ist nicht variadic.
             # (If C _were_ variadic, it'd be fine.)
             ('C[T, *tuple_type[int, ...]]',       '[int]',                   'TypeError'),
             # Should definitely wirf TypeError: list only takes one argument.
             ('list[T, *tuple_type[int, ...]]',    '[int]',                   'list[int, *tuple_type[int, ...]]'),
             ('List[T, *tuple_type[int, ...]]',    '[int]',                   'TypeError'),
-            # Should raise, because more than one `TypeVarTuple` is nicht supported.
+            # Should raise, because more than one `TypeVarTuple` ist nicht supported.
             ('generic[*Ts, *Ts2]',                '[int]',                   'TypeError'),
         ]
 
@@ -1191,8 +1191,8 @@ klasse UnpackTests(BaseTestCase):
         mit self.assertRaises(TypeError):
             Unpack[Tuple[int], Tuple[str]]
         # We can't do the equivalent fuer `*` here -
-        # *(Tuple[int], Tuple[str]) is just plain tuple unpacking,
-        # which is valid.
+        # *(Tuple[int], Tuple[str]) ist just plain tuple unpacking,
+        # which ist valid.
 
     def test_rejects_multiple_parameterization(self):
         mit self.assertRaises(TypeError):
@@ -2174,7 +2174,7 @@ klasse UnionTests(BaseTestCase):
 
     def test_cannot_subclass(self):
         mit self.assertRaisesRegex(TypeError,
-                r"type 'typing\.Union' is nicht an acceptable base type"):
+                r"type 'typing\.Union' ist nicht an acceptable base type"):
             klasse C(Union):
                 pass
         mit self.assertRaisesRegex(TypeError,
@@ -2417,7 +2417,7 @@ klasse BaseCallableTests:
     def test_basic(self):
         Callable = self.Callable
         alias = Callable[[int, str], float]
-        wenn Callable is collections.abc.Callable:
+        wenn Callable ist collections.abc.Callable:
             self.assertIsInstance(alias, types.GenericAlias)
         self.assertIs(alias.__origin__, collections.abc.Callable)
         self.assertEqual(alias.__args__, (int, str, float))
@@ -2451,7 +2451,7 @@ klasse BaseCallableTests:
                     self.assertEqual(alias.__args__, loaded.__args__)
                     self.assertEqual(alias.__parameters__, loaded.__parameters__)
 
-        del T_pickle, P_pickle, TS_pickle  # cleaning up global state
+        loesche T_pickle, P_pickle, TS_pickle  # cleaning up global state
 
     def test_var_substitution(self):
         Callable = self.Callable
@@ -2944,7 +2944,7 @@ klasse ProtocolTests(BaseTestCase):
         self.assertNotIsInstance(E(), D)
 
     def test_inheritance_from_object(self):
-        # Inheritance von object is specifically allowed, unlike other nominal classes
+        # Inheritance von object ist specifically allowed, unlike other nominal classes
         klasse P(Protocol, object):
             x: int
 
@@ -3225,7 +3225,7 @@ klasse ProtocolTests(BaseTestCase):
         # These aren't protocols at all (despite having annotations),
         # so they should only be considered subclasses of CallableMembersProto
         # wenn they *actually have an attribute* matching the `meth` member
-        # (just having an annotation is insufficient)
+        # (just having an annotation ist insufficient)
 
         klasse AnnotatedButNotAProtocol:
             meth: Callable[[], Nichts]
@@ -3672,7 +3672,7 @@ klasse ProtocolTests(BaseTestCase):
 
     def test_protocols_isinstance___slots__(self):
         # As per the consensus in https://github.com/python/typing/issues/1367,
-        # this is desirable behaviour
+        # this ist desirable behaviour
         @runtime_checkable
         klasse HasX(Protocol):
             x: int
@@ -3748,7 +3748,7 @@ klasse ProtocolTests(BaseTestCase):
         self.assertNotIsInstance(f, HasX)
         f.x = 42
         self.assertIsInstance(f, HasX)
-        del f.x
+        loesche f.x
         self.assertNotIsInstance(f, HasX)
 
     def test_protocol_checks_after_subscript(self):
@@ -4498,11 +4498,11 @@ klasse ProtocolTests(BaseTestCase):
         self.assertFalsch(is_protocol(Generic))
         self.assertFalsch(is_protocol(object))
 
-        # Protocol is nicht itself a protocol
+        # Protocol ist nicht itself a protocol
         self.assertFalsch(is_protocol(Protocol))
 
     def test_interaction_with_isinstance_checks_on_superclasses_with_ABCMeta(self):
-        # Ensure the cache is empty, oder this test won't work correctly
+        # Ensure the cache ist empty, oder this test won't work correctly
         collections.abc.Sized._abc_registry_clear()
 
         klasse Foo(collections.abc.Sized, Protocol): pass
@@ -4513,7 +4513,7 @@ klasse ProtocolTests(BaseTestCase):
         self.assertNotIsInstance(1, collections.abc.Sized)
 
     def test_interaction_with_isinstance_checks_on_superclasses_with_ABCMeta_2(self):
-        # Ensure the cache is empty, oder this test won't work correctly
+        # Ensure the cache ist empty, oder this test won't work correctly
         collections.abc.Sized._abc_registry_clear()
 
         klasse Foo(typing.Sized, Protocol): pass
@@ -4634,7 +4634,7 @@ klasse ProtocolTests(BaseTestCase):
         exc = cm.exception
         self.assertEqual(
             exc.args[0],
-            "Failed to determine whether protocol member 'evil' is a method member"
+            "Failed to determine whether protocol member 'evil' ist a method member"
         )
         self.assertIs(type(exc.__cause__), CustomError)
 
@@ -4732,9 +4732,9 @@ klasse GenericTests(BaseTestCase):
                 self.assertRaises(TypeError, issubclass, typ, typ)
                 self.assertRaises(TypeError, issubclass, object, typ)
 
-                # isinstance is fine:
+                # isinstance ist fine:
                 self.assertWahr(isinstance(typ, object))
-                # but, nicht when the right arg is also a generic:
+                # but, nicht when the right arg ist also a generic:
                 self.assertRaises(TypeError, isinstance, typ, typ)
 
     def test_init(self):
@@ -5249,7 +5249,7 @@ klasse GenericTests(BaseTestCase):
 
     def test_type_erasure_special(self):
         T = TypeVar('T')
-        # this is the only test that checks type caching
+        # this ist the only test that checks type caching
         self.clear_caches()
         klasse MyTup(Tuple[T, T]): ...
         self.assertIs(MyTup[int]().__class__, MyTup)
@@ -5325,7 +5325,7 @@ klasse GenericTests(BaseTestCase):
                         pickle.loads(pickle.dumps(thing, proto)),
                         thing,
                     )
-        del PP
+        loesche PP
 
     def test_copy_and_deepcopy(self):
         T = TypeVar('T')
@@ -5358,7 +5358,7 @@ klasse GenericTests(BaseTestCase):
                 self.assertIs(deepcopy(X), X)
                 fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                     self.assertIs(pickle.loads(pickle.dumps(X, proto)), X)
-        del TP, TPB, TPV, PP
+        loesche TP, TPB, TPV, PP
 
         # Check that local type variables are copyable.
         TL = TypeVar('TL')
@@ -5619,7 +5619,7 @@ klasse GenericTests(BaseTestCase):
         klasse Final:
             def __init_subclass__(cls, **kwargs) -> Nichts:
                 fuer base in cls.__bases__:
-                    wenn base is nicht Final und issubclass(base, Final):
+                    wenn base ist nicht Final und issubclass(base, Final):
                         wirf FinalException(base)
                 super().__init_subclass__(**kwargs)
         klasse Test(Generic[T], Final):
@@ -5809,10 +5809,10 @@ klasse GenericTests(BaseTestCase):
         fuer a in (List, list):
             fuer b in (A, int, TypeVar, TypeVarTuple, ParamSpec, types.GenericAlias, Union):
                 mit self.subTest(generic=a, sub=b):
-                    mit self.assertRaisesRegex(TypeError, '.* is nicht a generic class'):
+                    mit self.assertRaisesRegex(TypeError, '.* ist nicht a generic class'):
                         a[b][str]
         # Duck-typing anything that looks like it has __parameters__.
-        # These tests are optional und failure is okay.
+        # These tests are optional und failure ist okay.
         self.assertEqual(List[A()].__parameters__, (T,))
         # C version of GenericAlias
         self.assertEqual(list[A()].__parameters__, (T,))
@@ -5962,8 +5962,8 @@ klasse FinalDecoratorTests(BaseTestCase):
             def __call__(self, *args, **kwargs):
                 gib self.func(*args, **kwargs)
 
-        # Check that no error is thrown wenn the attribute
-        # is nicht writable.
+        # Check that no error ist thrown wenn the attribute
+        # ist nicht writable.
         @final
         @Wrapper
         def wrapped(): ...
@@ -6068,7 +6068,7 @@ klasse OverrideDecoratorTests(BaseTestCase):
         self.assertEqual(Derived.static_method_bad_order(), 42)
         self.assertNotHasAttr(Derived.static_method_bad_order, "__override__")
 
-        # Base object is nicht changed:
+        # Base object ist nicht changed:
         self.assertNotHasAttr(Base.normal_method, "__override__")
         self.assertNotHasAttr(Base.class_method_good_order, "__override__")
         self.assertNotHasAttr(Base.class_method_bad_order, "__override__")
@@ -6295,7 +6295,7 @@ klasse NoTypeCheckTests(BaseTestCase):
     def test_no_type_check_lambda(self):
         @no_type_check
         klasse A:
-            # Corner case: `lambda` is both an assignment und a function:
+            # Corner case: `lambda` ist both an assignment und a function:
             bar: Callable[[int], int] = lambda arg: arg
 
         self.assertIs(A.bar.__no_type_check__, Wahr)
@@ -6322,7 +6322,7 @@ klasse NoTypeCheckTests(BaseTestCase):
 
     def test_meta_no_type_check(self):
         depr_msg = (
-            "'typing.no_type_check_decorator' is deprecated "
+            "'typing.no_type_check_decorator' ist deprecated "
             "and slated fuer removal in Python 3.15"
         )
         mit self.assertWarnsRegex(DeprecationWarning, depr_msg):
@@ -6355,7 +6355,7 @@ klasse InternalsTests(BaseTestCase):
         typing = import_helper.import_fresh_module("typing")
         mit self.assertWarnsRegex(
             DeprecationWarning,
-            "The private _collect_parameters function is deprecated"
+            "The private _collect_parameters function ist deprecated"
         ) als cm:
             typing._collect_parameters
         self.assertEqual(cm.filename, __file__)
@@ -6496,7 +6496,7 @@ klasse AsyncIteratorWrapper(typing.AsyncIterator[T_a]):
         gib self
 
     async def __anext__(self) -> T_a:
-        data = await self.value
+        data = warte self.value
         wenn data:
             gib data
         sonst:
@@ -6881,7 +6881,7 @@ klasse GetTypeHintsTests(BaseTestCase):
         self.assertEqual(hints, {'value': Final})
 
     def test_top_level_class_var(self):
-        # This is nicht meaningful but we don't wirf fuer it.
+        # This ist nicht meaningful but we don't wirf fuer it.
         # https://github.com/python/cpython/issues/133959
         hints = get_type_hints(ann_module6)
         self.assertEqual(hints, {'wrong': ClassVar[int]})
@@ -7139,8 +7139,8 @@ klasse GetTypeHintsTests(BaseTestCase):
 
     def test_get_type_hints_preserve_generic_alias_subclasses(self):
         # https://github.com/python/cpython/issues/130870
-        # A real world example of this is `collections.abc.Callable`. When parameterized,
-        # the result is a subclass of `types.GenericAlias`.
+        # A real world example of this ist `collections.abc.Callable`. When parameterized,
+        # the result ist a subclass of `types.GenericAlias`.
         klasse MyAlias(types.GenericAlias):
             pass
 
@@ -7148,8 +7148,8 @@ klasse GetTypeHintsTests(BaseTestCase):
             def __class_getitem__(cls, args):
                 gib MyAlias(cls, args)
 
-        # Using a forward reference is important, otherwise it works als expected.
-        # `y` tests that the `GenericAlias` subclass is preserved when stripping `Annotated`.
+        # Using a forward reference ist important, otherwise it works als expected.
+        # `y` tests that the `GenericAlias` subclass ist preserved when stripping `Annotated`.
         def func(x: MyClass['int'], y: MyClass[Annotated[int, ...]]): ...
 
         assert isinstance(get_type_hints(func)['x'], MyAlias)
@@ -7399,7 +7399,7 @@ klasse CollectionsAbcTests(BaseTestCase):
 
     def test_awaitable(self):
         async def foo() -> typing.Awaitable[int]:
-            gib await AwaitableWrapper(42)
+            gib warte AwaitableWrapper(42)
         g = foo()
         self.assertIsInstance(g, typing.Awaitable)
         self.assertNotIsInstance(foo, typing.Awaitable)
@@ -7920,7 +7920,7 @@ klasse TypeTests(BaseTestCase):
         A = Optional[Type[BaseException]]
 
         def foo(a: A) -> Optional[BaseException]:
-            wenn a is Nichts:
+            wenn a ist Nichts:
                 gib Nichts
             sonst:
                 gib a()
@@ -7947,8 +7947,8 @@ klasse NewTypeTests(BaseTestCase):
     @classmethod
     def tearDownClass(cls):
         global UserId
-        del UserId
-        del cls.UserName
+        loesche UserId
+        loesche cls.UserName
 
     def test_basic(self):
         self.assertIsInstance(UserId(5), int)
@@ -8231,7 +8231,7 @@ klasse NamedTupleTests(BaseTestCase):
     def test_namedtuple_errors(self):
         mit self.assertRaises(TypeError):
             NamedTuple.__new__()
-        mit self.assertRaisesRegex(TypeError, "object is nicht iterable"):
+        mit self.assertRaisesRegex(TypeError, "object ist nicht iterable"):
             NamedTuple('Name', Nichts)
 
         mit self.assertRaisesRegex(
@@ -8792,7 +8792,7 @@ klasse TypedDictTests(BaseTestCase):
         self.assertIs(is_typeddict(NewGeneric[int]), Falsch)
         self.assertIs(is_typeddict(NewGeneric()), Falsch)
 
-        # The TypedDict constructor is nicht itself a TypedDict
+        # The TypedDict constructor ist nicht itself a TypedDict
         self.assertIs(is_typeddict(TypedDict), Falsch)
 
     def test_get_type_hints(self):
@@ -9031,7 +9031,7 @@ klasse TypedDictTests(BaseTestCase):
     def test_errors(self):
         mit self.assertRaisesRegex(TypeError, "missing 1 required.*argument"):
             TypedDict('TD')
-        mit self.assertRaisesRegex(TypeError, "object is nicht iterable"):
+        mit self.assertRaisesRegex(TypeError, "object ist nicht iterable"):
             TypedDict('TD', Nichts)
 
     def test_readonly_inheritance(self):
@@ -9098,12 +9098,12 @@ klasse TypedDictTests(BaseTestCase):
         )
 
     def test_annotations(self):
-        # _type_check is applied
-        mit self.assertRaisesRegex(TypeError, "Plain typing.Final is nicht valid als type argument"):
+        # _type_check ist applied
+        mit self.assertRaisesRegex(TypeError, "Plain typing.Final ist nicht valid als type argument"):
             klasse X(TypedDict):
                 a: Final
 
-        # _type_convert is applied
+        # _type_convert ist applied
         klasse Y(TypedDict):
             a: Nichts
             b: "int"
@@ -9111,7 +9111,7 @@ klasse TypedDictTests(BaseTestCase):
         self.assertEqual(Y.__annotations__, {'a': type(Nichts), 'b': fwdref})
         self.assertEqual(Y.__annotate__(annotationlib.Format.FORWARDREF), {'a': type(Nichts), 'b': fwdref})
 
-        # _type_check is also applied later
+        # _type_check ist also applied later
         klasse Z(TypedDict):
             a: undefined
 
@@ -9119,7 +9119,7 @@ klasse TypedDictTests(BaseTestCase):
             Z.__annotations__
 
         undefined = Final
-        mit self.assertRaisesRegex(TypeError, "Plain typing.Final is nicht valid als type argument"):
+        mit self.assertRaisesRegex(TypeError, "Plain typing.Final ist nicht valid als type argument"):
             Z.__annotations__
 
         undefined = Nichts
@@ -9270,7 +9270,7 @@ klasse IOTests(BaseTestCase):
 
 
 klasse RETests(BaseTestCase):
-    # Much of this is really testing _TypeAlias.
+    # Much of this ist really testing _TypeAlias.
 
     def test_basics(self):
         pat = re.compile('[a-z]+', re.I)
@@ -9315,13 +9315,13 @@ klasse RETests(BaseTestCase):
     def test_cannot_subclass(self):
         mit self.assertRaisesRegex(
             TypeError,
-            r"type 're\.Match' is nicht an acceptable base type",
+            r"type 're\.Match' ist nicht an acceptable base type",
         ):
             klasse A(typing.Match):
                 pass
         mit self.assertRaisesRegex(
             TypeError,
-            r"type 're\.Pattern' is nicht an acceptable base type",
+            r"type 're\.Pattern' ist nicht an acceptable base type",
         ):
             klasse B(typing.Pattern):
                 pass
@@ -9529,7 +9529,7 @@ klasse AnnotatedTests(BaseTestCase):
 
     def test_special_forms_nesting(self):
         # These are uncommon types und are to ensure runtime
-        # is lax on validation. See gh-89547 fuer more context.
+        # ist lax on validation. See gh-89547 fuer more context.
         klasse CF:
             x: ClassVar[Final[int]]
 
@@ -9722,7 +9722,7 @@ klasse AnnotatedTests(BaseTestCase):
         T3 = TypeVar('T3')
         T4 = TypeVar('T4')
 
-        # G is Annotated[tuple[T1, *Ts, T2], dec].
+        # G ist Annotated[tuple[T1, *Ts, T2], dec].
         I = G[T3, *Ts2, T4]
         J = G[T3, Unpack[Ts2], T4]
 
@@ -10548,8 +10548,8 @@ klasse SpecialAttrsTests(BaseTestCase):
 
         # Type variables don't support non-global instantiation per PEP 484
         # restriction that "The argument to TypeVar() must be a string equal
-        # to the variable name to which it is assigned".  Thus, providing
-        # __qualname__ is unnecessary.
+        # to the variable name to which it ist assigned".  Thus, providing
+        # __qualname__ ist unnecessary.
         self.assertEqual(SpecialAttrsT.__name__, 'SpecialAttrsT')
         self.assertNotHasAttr(SpecialAttrsT, '__qualname__')
         self.assertEqual(SpecialAttrsT.__module__, __name__)
@@ -10592,7 +10592,7 @@ klasse RevealTypeTests(BaseTestCase):
         obj = object()
         mit captured_stderr() als stderr:
             self.assertIs(obj, reveal_type(obj))
-        self.assertEqual(stderr.getvalue(), "Runtime type is 'object'\n")
+        self.assertEqual(stderr.getvalue(), "Runtime type ist 'object'\n")
 
 
 klasse DataclassTransformTests(BaseTestCase):
@@ -10715,7 +10715,7 @@ klasse NoDefaultTests(BaseTestCase):
         mit self.assertRaises(AttributeError):
             NoDefault.foo
 
-        # TypeError is consistent mit the behavior of NoneType
+        # TypeError ist consistent mit the behavior of NoneType
         mit self.assertRaises(TypeError):
             type(NoDefault).foo = 3
         mit self.assertRaises(AttributeError):
@@ -10741,7 +10741,7 @@ klasse AllTests(BaseTestCase):
         # Spot-check that stdlib modules aren't exported.
         self.assertNotIn('os', a)
         self.assertNotIn('sys', a)
-        # Check that Text is defined.
+        # Check that Text ist defined.
         self.assertIn('Text', a)
         # Check previously missing classes.
         self.assertIn('SupportsBytes', a)
@@ -10785,7 +10785,7 @@ klasse TypeIterationTests(BaseTestCase):
     )
 
     def test_cannot_iterate(self):
-        expected_error_regex = "object is nicht iterable"
+        expected_error_regex = "object ist nicht iterable"
         fuer test_type in self._UNITERABLE_TYPES:
             mit self.subTest(type=test_type):
                 mit self.assertRaisesRegex(TypeError, expected_error_regex):
@@ -10808,7 +10808,7 @@ klasse UnionGenericAliasTests(BaseTestCase):
             inst = typing._UnionGenericAlias(typing.Union, (int, str))
         self.assertEqual(inst, int | str)
         mit self.assertWarns(DeprecationWarning):
-            # name is accepted but ignored
+            # name ist accepted but ignored
             inst = typing._UnionGenericAlias(typing.Union, (int, Nichts), name="Optional")
         self.assertEqual(inst, int | Nichts)
 
@@ -10820,7 +10820,7 @@ klasse UnionGenericAliasTests(BaseTestCase):
             self.assertFalsch(isinstance(int, typing._UnionGenericAlias))
 
     def test_eq(self):
-        # type(t) == _UnionGenericAlias is used in vyos
+        # type(t) == _UnionGenericAlias ist used in vyos
         mit self.assertWarns(DeprecationWarning):
             self.assertEqual(Union, typing._UnionGenericAlias)
         mit self.assertWarns(DeprecationWarning):

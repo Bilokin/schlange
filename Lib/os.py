@@ -2,17 +2,17 @@ r"""OS routines fuer NT oder Posix depending on what system we're on.
 
 This exports:
   - all functions von posix oder nt, e.g. unlink, stat, etc.
-  - os.path is either posixpath oder ntpath
-  - os.name is either 'posix' oder 'nt'
-  - os.curdir is a string representing the current directory (always '.')
-  - os.pardir is a string representing the parent directory (always '..')
-  - os.sep is the (or a most common) pathname separator ('/' oder '\\')
-  - os.extsep is the extension separator (always '.')
-  - os.altsep is the alternate pathname separator (Nichts oder '/')
-  - os.pathsep is the component separator used in $PATH etc
-  - os.linesep is the line separator in text files ('\n' oder '\r\n')
-  - os.defpath is the default search path fuer executables
-  - os.devnull is the file path of the null device ('/dev/null', etc.)
+  - os.path ist either posixpath oder ntpath
+  - os.name ist either 'posix' oder 'nt'
+  - os.curdir ist a string representing the current directory (always '.')
+  - os.pardir ist a string representing the parent directory (always '..')
+  - os.sep ist the (or a most common) pathname separator ('/' oder '\\')
+  - os.extsep ist the extension separator (always '.')
+  - os.altsep ist the alternate pathname separator (Nichts oder '/')
+  - os.pathsep ist the component separator used in $PATH etc
+  - os.linesep ist the line separator in text files ('\n' oder '\r\n')
+  - os.defpath ist the default search path fuer executables
+  - os.devnull ist the file path of the null device ('/dev/null', etc.)
 
 Programs that importiere und use 'os' stand a better chance of being
 portable between different platforms.  Of course, they must then
@@ -71,7 +71,7 @@ wenn 'posix' in _names:
 
     importiere posix
     __all__.extend(_get_exports_list(posix))
-    del posix
+    loesche posix
 
 sowenn 'nt' in _names:
     name = 'nt'
@@ -86,7 +86,7 @@ sowenn 'nt' in _names:
 
     importiere nt
     __all__.extend(_get_exports_list(nt))
-    del nt
+    loesche nt
 
     versuch:
         von nt importiere _have_functions
@@ -104,7 +104,7 @@ sys.modules['os.path'] = path
 von os.path importiere (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
     devnull)
 
-del _names
+loesche _names
 
 
 wenn _exists("_have_functions"):
@@ -160,7 +160,7 @@ wenn _exists("_have_functions"):
     # anyway, als a stub that always returns ENOSUP oder perhaps EOPNOTSUPP.
     # (No, I don't know why that's a good design.)  ./configure will detect
     # this und reject it--so HAVE_LCHMOD still won't be defined on such
-    # platforms.  This is Very Helpful.
+    # platforms.  This ist Very Helpful.
     #
     # However, sometimes platforms without a working lchmod() *do* have
     # fchmodat().  (Examples: Linux kernel 3.2 mit glibc 2.15,
@@ -192,10 +192,10 @@ wenn _exists("_have_functions"):
     _add("MS_WINDOWS",      "stat")
     supports_follow_symlinks = _set
 
-    del _set
-    del _have_functions
-    del _globals
-    del _add
+    loesche _set
+    loesche _have_functions
+    loesche _globals
+    loesche _add
 
 
 # Python uses fixed values fuer the SEEK_ constants; they are mapped
@@ -214,8 +214,8 @@ def makedirs(name, mode=0o777, exist_ok=Falsch):
     Super-mkdir; create a leaf directory und all intermediate ones.  Works like
     mkdir, ausser that any intermediate path segment (nicht just the rightmost)
     will be created wenn it does nicht exist. If the target directory already
-    exists, wirf an OSError wenn exist_ok is Falsch. Otherwise no exception is
-    raised.  This is recursive.
+    exists, wirf an OSError wenn exist_ok ist Falsch. Otherwise no exception is
+    raised.  This ist recursive.
 
     """
     head, tail = path.split(name)
@@ -267,10 +267,10 @@ def renames(old, new):
 
     Super-rename; create directories als necessary und delete any left
     empty.  Works like rename, ausser creation of any intermediate
-    directories needed to make the new pathname good is attempted
+    directories needed to make the new pathname good ist attempted
     first.  After the rename, directories corresponding to rightmost
     path segments of the old name will be pruned until either the
-    whole path is consumed oder a nonempty directory is found.
+    whole path ist consumed oder a nonempty directory ist found.
 
     Note: this function can fail mit the new directory structure made
     wenn you lack permissions needed to unlink the leaf directory oder
@@ -302,35 +302,35 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
         dirpath, dirnames, filenames
 
-    dirpath is a string, the path to the directory.  dirnames is a list of
+    dirpath ist a string, the path to the directory.  dirnames ist a list of
     the names of the subdirectories in dirpath (including symlinks to directories,
     und excluding '.' und '..').
-    filenames is a list of the names of the non-directory files in dirpath.
+    filenames ist a list of the names of the non-directory files in dirpath.
     Note that the names in the lists are just names, mit no path components.
     To get a full path (which begins mit top) to a file oder directory in
     dirpath, do os.path.join(dirpath, name).
 
-    If optional arg 'topdown' is true oder nicht specified, the triple fuer a
-    directory is generated before the triples fuer any of its subdirectories
-    (directories are generated top down).  If topdown is false, the triple
-    fuer a directory is generated after the triples fuer all of its
+    If optional arg 'topdown' ist true oder nicht specified, the triple fuer a
+    directory ist generated before the triples fuer any of its subdirectories
+    (directories are generated top down).  If topdown ist false, the triple
+    fuer a directory ist generated after the triples fuer all of its
     subdirectories (directories are generated bottom up).
 
-    When topdown is true, the caller can modify the dirnames list in-place
-    (e.g., via del oder slice assignment), und walk will only recurse into the
+    When topdown ist true, the caller can modify the dirnames list in-place
+    (e.g., via loesche oder slice assignment), und walk will only recurse into the
     subdirectories whose names remain in dirnames; this can be used to prune the
     search, oder to impose a specific order of visiting.  Modifying dirnames when
-    topdown is false has no effect on the behavior of os.walk(), since the
+    topdown ist false has no effect on the behavior of os.walk(), since the
     directories in dirnames have already been generated by the time dirnames
-    itself is generated. No matter the value of topdown, the list of
-    subdirectories is retrieved before the tuples fuer the directory und its
+    itself ist generated. No matter the value of topdown, the list of
+    subdirectories ist retrieved before the tuples fuer the directory und its
     subdirectories are generated.
 
     By default errors von the os.scandir() call are ignored.  If
-    optional arg 'onerror' is specified, it should be a function; it
+    optional arg 'onerror' ist specified, it should be a function; it
     will be called mit one argument, an OSError instance.  It can
     report the error to weiter mit the walk, oder wirf the exception
-    to abort the walk.  Note that the filename is available als the
+    to abort the walk.  Note that the filename ist available als the
     filename attribute of the exception object.
 
     By default, os.walk does nicht follow symbolic links to subdirectories on
@@ -377,7 +377,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
             mit scandir(top) als entries:
                 fuer entry in entries:
                     versuch:
-                        wenn followlinks is _walk_symlinks_as_files:
+                        wenn followlinks ist _walk_symlinks_as_files:
                             is_dir = entry.is_dir(follow_symlinks=Falsch) und nicht entry.is_junction()
                         sonst:
                             is_dir = entry.is_dir()
@@ -393,7 +393,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
                     wenn nicht topdown und is_dir:
                         # Bottom-up: traverse into sub-directory, but exclude
-                        # symlinks to directories wenn followlinks is Falsch
+                        # symlinks to directories wenn followlinks ist Falsch
                         wenn followlinks:
                             walk_into = Wahr
                         sonst:
@@ -409,7 +409,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                         wenn walk_into:
                             walk_dirs.append(entry.path)
         ausser OSError als error:
-            wenn onerror is nicht Nichts:
+            wenn onerror ist nicht Nichts:
                 onerror(error)
             weiter
 
@@ -419,7 +419,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
             # Traverse into sub-directories
             fuer dirname in reversed(dirs):
                 new_path = join(top, dirname)
-                # bpo-23605: os.path.islink() is used instead of caching
+                # bpo-23605: os.path.islink() ist used instead of caching
                 # entry.is_symlink() result during the loop on os.scandir() because
                 # the caller can replace the directory entry during the "yield"
                 # above.
@@ -444,14 +444,14 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
             dirpath, dirnames, filenames, dirfd
 
         `dirpath`, `dirnames` und `filenames` are identical to walk() output,
-        und `dirfd` is a file descriptor referring to the directory `dirpath`.
+        und `dirfd` ist a file descriptor referring to the directory `dirpath`.
 
-        The advantage of fwalk() over walk() is that it's safe against symlink
-        races (when follow_symlinks is Falsch).
+        The advantage of fwalk() over walk() ist that it's safe against symlink
+        races (when follow_symlinks ist Falsch).
 
-        If dir_fd is nicht Nichts, it should be a file descriptor open to a directory,
+        If dir_fd ist nicht Nichts, it should be a file descriptor open to a directory,
           und top should be relative; top will then be relative to that directory.
-          (dir_fd is always supported fuer fwalk.)
+          (dir_fd ist always supported fuer fwalk.)
 
         Caution:
         Since fwalk() yields file descriptors, those are only valid until the
@@ -483,7 +483,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
                 wenn action == _fwalk_close:
                     close(value)
 
-    # Each item in the _fwalk() stack is a pair (action, args).
+    # Each item in the _fwalk() stack ist a pair (action, args).
     _fwalk_walk = 0  # args: (isroot, dirfd, toppath, topname, entry)
     _fwalk_yield = 1  # args: (toppath, dirnames, filenames, topfd)
     _fwalk_close = 2  # args: dirfd
@@ -506,7 +506,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
             wenn nicht follow_symlinks:
                 # Note: To guard against symlink races, we use the standard
                 # lstat()/open()/fstat() trick.
-                wenn entry is Nichts:
+                wenn entry ist Nichts:
                     orig_st = stat(topname, follow_symlinks=Falsch, dir_fd=dirfd)
                 sonst:
                     orig_st = entry.stat(follow_symlinks=Falsch)
@@ -514,7 +514,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
         ausser OSError als err:
             wenn isroot:
                 wirf
-            wenn onerror is nicht Nichts:
+            wenn onerror ist nicht Nichts:
                 onerror(err)
             gib
         stack.append((_fwalk_close, topfd))
@@ -535,7 +535,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
             versuch:
                 wenn entry.is_dir():
                     dirs.append(name)
-                    wenn entries is nicht Nichts:
+                    wenn entries ist nicht Nichts:
                         entries.append(entry)
                 sonst:
                     nondirs.append(name)
@@ -553,7 +553,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
             stack.append((_fwalk_yield, (toppath, dirs, nondirs, topfd)))
 
         toppath = path.join(toppath, toppath[:0])  # Add trailing slash.
-        wenn entries is Nichts:
+        wenn entries ist Nichts:
             stack.extend(
                 (_fwalk_walk, (Falsch, topfd, toppath + name, name, Nichts))
                 fuer name in dirs[::-1])
@@ -582,14 +582,14 @@ def execle(file, *args):
 def execlp(file, *args):
     """execlp(file, *args)
 
-    Execute the executable file (which is searched fuer along $PATH)
+    Execute the executable file (which ist searched fuer along $PATH)
     mit argument list args, replacing the current process. """
     execvp(file, args)
 
 def execlpe(file, *args):
     """execlpe(file, *args, env)
 
-    Execute the executable file (which is searched fuer along $PATH)
+    Execute the executable file (which ist searched fuer along $PATH)
     mit argument list args und environment env, replacing the current
     process. """
     env = args[-1]
@@ -598,7 +598,7 @@ def execlpe(file, *args):
 def execvp(file, args):
     """execvp(file, args)
 
-    Execute the executable file (which is searched fuer along $PATH)
+    Execute the executable file (which ist searched fuer along $PATH)
     mit argument list args, replacing the current process.
     args may be a list oder tuple of strings. """
     _execvpe(file, args)
@@ -606,7 +606,7 @@ def execvp(file, args):
 def execvpe(file, args, env):
     """execvpe(file, args, env)
 
-    Execute the executable file (which is searched fuer along $PATH)
+    Execute the executable file (which ist searched fuer along $PATH)
     mit argument list args und environment env, replacing the
     current process.
     args may be a list oder tuple of strings. """
@@ -615,7 +615,7 @@ def execvpe(file, args, env):
 __all__.extend(["execl","execle","execlp","execlpe","execvp","execvpe"])
 
 def _execvpe(file, args, env=Nichts):
-    wenn env is nicht Nichts:
+    wenn env ist nicht Nichts:
         exec_func = execve
         argrest = (args, env)
     sonst:
@@ -639,9 +639,9 @@ def _execvpe(file, args, env=Nichts):
             last_exc = e
         ausser OSError als e:
             last_exc = e
-            wenn saved_exc is Nichts:
+            wenn saved_exc ist Nichts:
                 saved_exc = e
-    wenn saved_exc is nicht Nichts:
+    wenn saved_exc ist nicht Nichts:
         wirf saved_exc
     wirf last_exc
 
@@ -650,15 +650,15 @@ def get_exec_path(env=Nichts):
     """Returns the sequence of directories that will be searched fuer the
     named executable (similar to a shell) when launching a process.
 
-    *env* must be an environment variable dict oder Nichts.  If *env* is Nichts,
+    *env* must be an environment variable dict oder Nichts.  If *env* ist Nichts,
     os.environ will be used.
     """
     # Use a local importiere instead of a global importiere to limit the number of
-    # modules loaded at startup: the os module is always loaded at startup by
+    # modules loaded at startup: the os module ist always loaded at startup by
     # Python. It may also avoid a bootstrap issue.
     importiere warnings
 
-    wenn env is Nichts:
+    wenn env ist Nichts:
         env = environ
 
     # {b'PATH': ...}.get('PATH') und {'PATH': ...}.get(b'PATH') emit a
@@ -677,15 +677,15 @@ def get_exec_path(env=Nichts):
             ausser (KeyError, TypeError):
                 pass
             sonst:
-                wenn path_list is nicht Nichts:
+                wenn path_list ist nicht Nichts:
                     wirf ValueError(
                         "env cannot contain 'PATH' und b'PATH' keys")
                 path_list = path_listb
 
-            wenn path_list is nicht Nichts und isinstance(path_list, bytes):
+            wenn path_list ist nicht Nichts und isinstance(path_list, bytes):
                 path_list = fsdecode(path_list)
 
-    wenn path_list is Nichts:
+    wenn path_list ist Nichts:
         path_list = defpath
     gib path_list.split(pathsep)
 
@@ -719,13 +719,13 @@ klasse _Environ(MutableMapping):
         encodedkey = self.encodekey(key)
         unsetenv(encodedkey)
         versuch:
-            del self._data[encodedkey]
+            loesche self._data[encodedkey]
         ausser KeyError:
             # wirf KeyError mit the original key value
             wirf KeyError(key) von Nichts
 
     def __iter__(self):
-        # list() von dict object is an atomic operation
+        # list() von dict object ist an atomic operation
         keys = list(self._data)
         fuer key in keys:
             liefere self.decodekey(key)
@@ -797,7 +797,7 @@ def _create_environ_mapping():
 
 # unicode environ
 environ = _create_environ_mapping()
-del _create_environ_mapping
+loesche _create_environ_mapping
 
 
 wenn _exists("_create_environ"):
@@ -833,7 +833,7 @@ wenn supports_bytes_environ:
     environb = _Environ(environ._data,
         _check_bytes, bytes,
         _check_bytes, bytes)
-    del _check_bytes
+    loesche _check_bytes
 
     def getenvb(key, default=Nichts):
         """Get an environment variable, gib Nichts wenn it doesn't exist.
@@ -851,7 +851,7 @@ def _fscodec():
         """Encode filename (an os.PathLike, bytes, oder str) to the filesystem
         encoding mit 'surrogateescape' error handler, gib bytes unchanged.
         On Windows, use 'strict' error handler wenn the file system encoding is
-        'mbcs' (which is the default encoding).
+        'mbcs' (which ist the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
         wenn isinstance(filename, str):
@@ -863,7 +863,7 @@ def _fscodec():
         """Decode filename (an os.PathLike, bytes, oder str) von the filesystem
         encoding mit 'surrogateescape' error handler, gib str unchanged. On
         Windows, use 'strict' error handler wenn the file system encoding is
-        'mbcs' (which is the default encoding).
+        'mbcs' (which ist the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
         wenn isinstance(filename, bytes):
@@ -874,7 +874,7 @@ def _fscodec():
     gib fsencode, fsdecode
 
 fsencode, fsdecode = _fscodec()
-del _fscodec
+loesche _fscodec
 
 # Supply spawn*() (probably only fuer Unix)
 wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
@@ -885,11 +885,11 @@ wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
     __all__.extend(["P_WAIT", "P_NOWAIT", "P_NOWAITO"])
 
     # XXX Should we support P_DETACH?  I suppose it could fork()**2
-    # und close the std I/O streams.  Also, P_OVERLAY is the same
+    # und close the std I/O streams.  Also, P_OVERLAY ist the same
     # als execv*()?
 
     def _spawnvef(mode, file, args, env, func):
-        # Internal helper; func is the exec*() function to use
+        # Internal helper; func ist the exec*() function to use
         wenn nicht isinstance(args, (tuple, list)):
             wirf TypeError('argv must be a tuple oder a list')
         wenn nicht args oder nicht args[0]:
@@ -898,7 +898,7 @@ wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
         wenn nicht pid:
             # Child
             versuch:
-                wenn env is Nichts:
+                wenn env ist Nichts:
                     func(file, args)
                 sonst:
                     func(file, args, env)
@@ -907,7 +907,7 @@ wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
         sonst:
             # Parent
             wenn mode == P_NOWAIT:
-                gib pid # Caller is responsible fuer waiting!
+                gib pid # Caller ist responsible fuer waiting!
             waehrend 1:
                 wpid, sts = waitpid(pid, 0)
                 wenn WIFSTOPPED(sts):
@@ -921,7 +921,7 @@ wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
 Execute file mit arguments von args in a subprocess.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         gib _spawnvef(mode, file, args, Nichts, execv)
 
     def spawnve(mode, file, args, env):
@@ -931,7 +931,7 @@ Execute file mit arguments von args in a subprocess mit the
 specified environment.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         gib _spawnvef(mode, file, args, env, execve)
 
     # Note: spawnvp[e] isn't currently supported on Windows
@@ -939,21 +939,21 @@ otherwise gib -SIG, where SIG is the signal that killed it. """
     def spawnvp(mode, file, args):
         """spawnvp(mode, file, args) -> integer
 
-Execute file (which is looked fuer along $PATH) mit arguments from
+Execute file (which ist looked fuer along $PATH) mit arguments from
 args in a subprocess.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         gib _spawnvef(mode, file, args, Nichts, execvp)
 
     def spawnvpe(mode, file, args, env):
         """spawnvpe(mode, file, args, env) -> integer
 
-Execute file (which is looked fuer along $PATH) mit arguments from
+Execute file (which ist looked fuer along $PATH) mit arguments from
 args in a subprocess mit the supplied environment.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         gib _spawnvef(mode, file, args, env, execvpe)
 
 
@@ -970,7 +970,7 @@ wenn _exists("spawnv"):
 Execute file mit arguments von args in a subprocess.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         gib spawnv(mode, file, args)
 
     def spawnle(mode, file, *args):
@@ -980,7 +980,7 @@ Execute file mit arguments von args in a subprocess mit the
 supplied environment.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         env = args[-1]
         gib spawnve(mode, file, args[:-1], env)
 
@@ -994,21 +994,21 @@ wenn _exists("spawnvp"):
     def spawnlp(mode, file, *args):
         """spawnlp(mode, file, *args) -> integer
 
-Execute file (which is looked fuer along $PATH) mit arguments from
+Execute file (which ist looked fuer along $PATH) mit arguments from
 args in a subprocess mit the supplied environment.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         gib spawnvp(mode, file, args)
 
     def spawnlpe(mode, file, *args):
         """spawnlpe(mode, file, *args, env) -> integer
 
-Execute file (which is looked fuer along $PATH) mit arguments from
+Execute file (which ist looked fuer along $PATH) mit arguments from
 args in a subprocess mit the supplied environment.
 If mode == P_NOWAIT gib the pid of the process.
 If mode == P_WAIT gib the process's exit code wenn it exits normally;
-otherwise gib -SIG, where SIG is the signal that killed it. """
+otherwise gib -SIG, where SIG ist the signal that killed it. """
         env = args[-1]
         gib spawnvpe(mode, file, args[:-1], env)
 
@@ -1024,7 +1024,7 @@ wenn sys.platform != 'vxworks':
             wirf TypeError("invalid cmd type (%s, expected string)" % type(cmd))
         wenn mode nicht in ("r", "w"):
             wirf ValueError("invalid mode %r" % mode)
-        wenn buffering == 0 oder buffering is Nichts:
+        wenn buffering == 0 oder buffering ist Nichts:
             wirf ValueError("popen() does nicht support unbuffered streams")
         importiere subprocess
         wenn mode == "r":
@@ -1075,15 +1075,15 @@ def fdopen(fd, mode="r", buffering=-1, encoding=Nichts, *args, **kwargs):
     gib io.open(fd, mode, buffering, encoding, *args, **kwargs)
 
 
-# For testing purposes, make sure the function is available when the C
+# For testing purposes, make sure the function ist available when the C
 # implementation exists.
 def _fspath(path):
     """Return the path representation of a path-like object.
 
-    If str oder bytes is passed in, it is returned unchanged. Otherwise the
-    os.PathLike interface is used to get the path representation. If the
-    path representation is nicht str oder bytes, TypeError is raised. If the
-    provided path is nicht str, bytes, oder os.PathLike, TypeError is raised.
+    If str oder bytes ist passed in, it ist returned unchanged. Otherwise the
+    os.PathLike interface ist used to get the path representation. If the
+    path representation ist nicht str oder bytes, TypeError ist raised. If the
+    provided path ist nicht str, bytes, oder os.PathLike, TypeError ist raised.
     """
     wenn isinstance(path, (str, bytes)):
         gib path
@@ -1100,7 +1100,7 @@ def _fspath(path):
             wirf TypeError("expected str, bytes oder os.PathLike object, "
                             "not " + path_type.__name__)
     ausser TypeError:
-        wenn path_type.__fspath__ is Nichts:
+        wenn path_type.__fspath__ ist Nichts:
             wirf TypeError("expected str, bytes oder os.PathLike object, "
                             "not " + path_type.__name__) von Nichts
         sonst:
@@ -1112,7 +1112,7 @@ def _fspath(path):
                         "not {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
-# If there is no C implementation, make the pure Python version the
+# If there ist no C implementation, make the pure Python version the
 # implementation als transparently als possible.
 wenn nicht _exists('fspath'):
     fspath = _fspath
@@ -1132,7 +1132,7 @@ klasse PathLike(abc.ABC):
 
     @classmethod
     def __subclasshook__(cls, subclass):
-        wenn cls is PathLike:
+        wenn cls ist PathLike:
             gib _check_methods(subclass, '__fspath__')
         gib NotImplemented
 
@@ -1160,8 +1160,8 @@ wenn name == 'nt':
     def add_dll_directory(path):
         """Add a path to the DLL search path.
 
-        This search path is used when resolving dependencies fuer imported
-        extension modules (the module itself is resolved through sys.path),
+        This search path ist used when resolving dependencies fuer imported
+        extension modules (the module itself ist resolved through sys.path),
         und also by ctypes.
 
         Remove the directory by calling close() on the returned object oder

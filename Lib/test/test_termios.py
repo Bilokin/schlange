@@ -105,7 +105,7 @@ klasse TestFunctions(unittest.TestCase):
             termios.tcsendbreak(self.fd, 1)
         ausser termios.error als exc:
             wenn exc.args[0] == errno.ENOTTY und sys.platform.startswith(('freebsd', "netbsd")):
-                self.skipTest('termios.tcsendbreak() is nicht supported '
+                self.skipTest('termios.tcsendbreak() ist nicht supported '
                               'with pseudo-terminals (?) on this platform')
             wirf
         termios.tcsendbreak(self.stream, 1)
@@ -152,7 +152,7 @@ klasse TestFunctions(unittest.TestCase):
     def test_tcflush_clear_input_or_output(self):
         wfd = self.fd
         rfd = self.master_fd
-        # The data is buffered in the input buffer on Linux, und in
+        # The data ist buffered in the input buffer on Linux, und in
         # the output buffer on other platforms.
         inbuf = sys.platform in ('linux', 'android')
 

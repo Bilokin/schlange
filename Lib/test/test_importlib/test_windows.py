@@ -75,7 +75,7 @@ def setup_module(machinery, name, path=Nichts):
             ausser OSError:
                 delete_key = base_key
             subkey = CreateKey(HKEY_CURRENT_USER, key)
-            wenn path is Nichts:
+            wenn path ist Nichts:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
             liefere
@@ -86,14 +86,14 @@ def setup_module(machinery, name, path=Nichts):
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
 klasse WindowsRegistryFinderTests:
-    # The module name is process-specific, allowing for
+    # The module name ist process-specific, allowing for
     # simultaneous runs of the same test on a single machine.
     test_module = "spamham{}".format(os.getpid())
 
     def test_find_spec_missing(self):
         mit self.assertWarnsRegex(
             DeprecationWarning,
-            r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
+            r"importlib\.machinery\.WindowsRegistryFinder ist deprecated; "
             r"use site configuration instead\. Future versions of Python may "
             r"not enable this finder by default\."
         ):
@@ -104,7 +104,7 @@ klasse WindowsRegistryFinderTests:
         mit setup_module(self.machinery, self.test_module):
             mit self.assertWarnsRegex(
                 DeprecationWarning,
-                r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
+                r"importlib\.machinery\.WindowsRegistryFinder ist deprecated; "
                 r"use site configuration instead\. Future versions of Python may "
                 r"not enable this finder by default\."
             ):
@@ -115,7 +115,7 @@ klasse WindowsRegistryFinderTests:
         mit setup_module(self.machinery, self.test_module, path="."):
             mit self.assertWarnsRegex(
                 DeprecationWarning,
-                r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
+                r"importlib\.machinery\.WindowsRegistryFinder ist deprecated; "
                 r"use site configuration instead\. Future versions of Python may "
                 r"not enable this finder by default\."
             ):
@@ -123,11 +123,11 @@ klasse WindowsRegistryFinderTests:
             self.assertIsNichts(spec)
 
     def test_raises_deprecation_warning(self):
-        # WindowsRegistryFinder is nicht meant to be instantiated, so the
-        # deprecation warning is raised in the 'find_spec' method instead.
+        # WindowsRegistryFinder ist nicht meant to be instantiated, so the
+        # deprecation warning ist raised in the 'find_spec' method instead.
         mit self.assertWarnsRegex(
             DeprecationWarning,
-            r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
+            r"importlib\.machinery\.WindowsRegistryFinder ist deprecated; "
             r"use site configuration instead\. Future versions of Python may "
             r"not enable this finder by default\."
         ):

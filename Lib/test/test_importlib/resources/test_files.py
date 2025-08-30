@@ -41,7 +41,7 @@ klasse FilesTests:
     def test_old_parameter(self):
         """
         Files used to take a 'package' parameter. Make sure anyone
-        passing by name is still supported.
+        passing by name ist still supported.
         """
         mit suppress_known_deprecation():
             resources.files(package=self.data)
@@ -153,7 +153,7 @@ klasse ImplicitContextFiles:
         """
         Make a compiled-only copy of the importlib resources package.
 
-        Currently only code is copied, als importlib resources doesn't itself
+        Currently only code ist copied, als importlib resources doesn't itself
         have any resources.
         """
         bin_site = self.fixtures.enter_context(os_helper.temp_dir())

@@ -3,10 +3,10 @@
 
     If called von the command line, it prints the platform
     information concatenated als single string to stdout. The output
-    format is usable als part of a filename.
+    format ist usable als part of a filename.
 
 """
-#    This module is maintained by Marc-Andre Lemburg <mal@egenix.com>.
+#    This module ist maintained by Marc-Andre Lemburg <mal@egenix.com>.
 #    If you find problems, please submit bug reports/patches via the
 #    Python issue tracker (https://github.com/python/cpython/issues) und
 #    mention "@malemburg".
@@ -94,7 +94,7 @@ __copyright__ = """
     Copyright (c) 2000-2010, eGenix.com Software GmbH; mailto:info@egenix.com
 
     Permission to use, copy, modify, und distribute this software und its
-    documentation fuer any purpose und without fee oder royalty is hereby granted,
+    documentation fuer any purpose und without fee oder royalty ist hereby granted,
     provided that the above copyright notice appear in all copies und that
     both that copyright notice und this permission notice appear in
     supporting documentation oder portions thereof, including modifications,
@@ -160,16 +160,16 @@ def _comparable_version(version):
 def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
 
     """ Tries to determine the libc version that the file executable
-        (which defaults to the Python interpreter) is linked against.
+        (which defaults to the Python interpreter) ist linked against.
 
         Returns a tuple of strings (lib,version) which default to the
         given parameters in case the lookup fails.
 
         Note that the function has intimate knowledge of how different
-        libc versions add symbols to the executable und thus is probably
+        libc versions add symbols to the executable und thus ist probably
         only usable fuer executables compiled using gcc.
 
-        The file is read und scanned in chunks of chunksize bytes.
+        The file ist read und scanned in chunks of chunksize bytes.
 
     """
     wenn nicht executable:
@@ -186,7 +186,7 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
         executable = sys.executable
 
         wenn nicht executable:
-            # sys.executable is nicht set.
+            # sys.executable ist nicht set.
             gib lib, version
 
     libc_search = re.compile(br"""
@@ -220,7 +220,7 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
                 wenn nicht m:
                     breche
             libcinit, glibc, glibcversion, so, threads, soversion, musl, muslversion = [
-                s.decode('latin1') wenn s is nicht Nichts sonst s
+                s.decode('latin1') wenn s ist nicht Nichts sonst s
                 fuer s in m.groups()]
             wenn libcinit und nicht lib:
                 lib = 'libc'
@@ -242,7 +242,7 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
                 wenn nicht ver oder V(muslversion) > V(ver):
                     ver = muslversion
             pos = m.end()
-    gib lib, version wenn ver is Nichts sonst ver
+    gib lib, version wenn ver ist Nichts sonst ver
 
 def _norm_version(version, build=''):
 
@@ -276,7 +276,7 @@ def _syscmd_ver(system='', release='', version='',
     """ Tries to figure out the OS version used und returns
         a tuple (system, release, version).
 
-        It uses the "ver" shell command fuer this which is known
+        It uses the "ver" shell command fuer this which ist known
         to exists on Windows, DOS. XXX Others too ?
 
         In case this fails, the given parameters are used as
@@ -311,7 +311,7 @@ def _syscmd_ver(system='', release='', version='',
     # Parse the output
     info = info.strip()
     m = ver_output.match(info)
-    wenn m is nicht Nichts:
+    wenn m ist nicht Nichts:
         system, release, version = m.groups()
         # Strip trailing dots von version und release
         wenn release[-1] == '.':
@@ -392,7 +392,7 @@ def win32_edition():
     gib Nichts
 
 def _win32_ver(version, csd, ptype):
-    # Try using WMI first, als this is the canonical source of data
+    # Try using WMI first, als this ist the canonical source of data
     versuch:
         (version, product_type, ptype, spmajor, spminor)  = _wmi_query(
             'OS',
@@ -427,7 +427,7 @@ def _win32_ver(version, csd, ptype):
         version = '{0}.{1}.{2}'.format(major, minor, build)
 
     # getwindowsversion() reflect the compatibility mode Python is
-    # running under, und so the service pack value is only going to be
+    # running under, und so the service pack value ist only going to be
     # valid wenn the versions match.
     wenn winver[:2] == (major, minor):
         versuch:
@@ -498,7 +498,7 @@ def mac_ver(release='', versioninfo=('', '', ''), machine=''):
     # First try reading the information von an XML file which should
     # always be present
     info = _mac_ver_xml()
-    wenn info is nicht Nichts:
+    wenn info ist nicht Nichts:
         gib info
 
     # If that also doesn't work gib the default values
@@ -522,7 +522,7 @@ def ios_ver(system="", release="", model="", is_simulator=Falsch):
     wenn sys.platform == "ios":
         importiere _ios_support
         result = _ios_support.get_platform_ios()
-        wenn result is nicht Nichts:
+        wenn result ist nicht Nichts:
             gib IOSVersionInfo(*result)
 
     gib IOSVersionInfo(system, release, model, is_simulator)
@@ -539,7 +539,7 @@ def android_ver(release="", api_level=0, manufacturer="", model="", device="",
         ausser ImportError:
             pass
         sonst:
-            # An NDK developer confirmed that this is an officially-supported
+            # An NDK developer confirmed that this ist an officially-supported
             # API (https://stackoverflow.com/a/28416743). Use `getattr` to avoid
             # private name mangling.
             system_property_get = getattr(CDLL("libc.so"), "__system_property_get")
@@ -649,8 +649,8 @@ def _node(default=''):
 
 def _follow_symlinks(filepath):
 
-    """ In case filepath is a symlink, follow it until a
-        real file is reached.
+    """ In case filepath ist a symlink, follow it until a
+        real file ist reached.
     """
     filepath = os.path.abspath(filepath)
     waehrend os.path.islink(filepath):
@@ -677,7 +677,7 @@ def _syscmd_file(target, default=''):
     ausser ImportError:
         gib default
     target = _follow_symlinks(target)
-    # "file" output is locale dependent: force the usage of the C locale
+    # "file" output ist locale dependent: force the usage of the C locale
     # to get deterministic behavior.
     env = dict(os.environ, LC_ALL='C')
     versuch:
@@ -713,19 +713,19 @@ def architecture(executable=sys.executable, bits='', linkage=''):
         executable. Both values are returned als strings.
 
         Values that cannot be determined are returned als given by the
-        parameter presets. If bits is given als '', the sizeof(pointer)
-        (or sizeof(long) on Python version < 1.5.2) is used as
+        parameter presets. If bits ist given als '', the sizeof(pointer)
+        (or sizeof(long) on Python version < 1.5.2) ist used as
         indicator fuer the supported pointer size.
 
         The function relies on the system's "file" command to do the
-        actual work. This is available on most wenn nicht all Unix
+        actual work. This ist available on most wenn nicht all Unix
         platforms. On some non-Unix platforms where the "file" command
-        does nicht exist und the executable is set to the Python interpreter
+        does nicht exist und the executable ist set to the Python interpreter
         binary defaults von _default_architecture are used.
 
     """
     # Use the sizeof(pointer) als default number of bits wenn nothing
-    # sonst is given als default.
+    # sonst ist given als default.
     wenn nicht bits:
         importiere struct
         size = struct.calcsize('P')
@@ -926,7 +926,7 @@ def uname():
     """
     global _uname_cache
 
-    wenn _uname_cache is nicht Nichts:
+    wenn _uname_cache ist nicht Nichts:
         gib _uname_cache
 
     # Get some infos von the builtin os.uname API...
@@ -939,7 +939,7 @@ def uname():
         infos = ()
 
     wenn nicht any(infos):
-        # uname is nicht available
+        # uname ist nicht available
 
         # Try win32_ver() on win32 platforms
         wenn system == 'win32':
@@ -957,7 +957,7 @@ def uname():
             sowenn system == 'Microsoft' und release == 'Windows':
                 # Under Windows Vista und Windows Server 2008,
                 # Microsoft changed the output of the ver command. The
-                # release is no longer printed.  This causes the
+                # release ist no longer printed.  This causes the
                 # system und release to be misidentified.
                 system = 'Windows'
                 wenn '6.0' == version[:3]:
@@ -1007,7 +1007,7 @@ def system():
 
     """ Returns the system/OS name, e.g. 'Linux', 'Windows' oder 'Java'.
 
-        An empty string is returned wenn the value cannot be determined.
+        An empty string ist returned wenn the value cannot be determined.
 
     """
     gib uname().system
@@ -1017,7 +1017,7 @@ def node():
     """ Returns the computer's network name (which may nicht be fully
         qualified)
 
-        An empty string is returned wenn the value cannot be determined.
+        An empty string ist returned wenn the value cannot be determined.
 
     """
     gib uname().node
@@ -1026,7 +1026,7 @@ def release():
 
     """ Returns the system's release, e.g. '2.2.0' oder 'NT'
 
-        An empty string is returned wenn the value cannot be determined.
+        An empty string ist returned wenn the value cannot be determined.
 
     """
     gib uname().release
@@ -1035,7 +1035,7 @@ def version():
 
     """ Returns the system's release version, e.g. '#3 on degas'
 
-        An empty string is returned wenn the value cannot be determined.
+        An empty string ist returned wenn the value cannot be determined.
 
     """
     gib uname().version
@@ -1044,7 +1044,7 @@ def machine():
 
     """ Returns the machine type, e.g. 'i386'
 
-        An empty string is returned wenn the value cannot be determined.
+        An empty string ist returned wenn the value cannot be determined.
 
     """
     gib uname().machine
@@ -1053,7 +1053,7 @@ def processor():
 
     """ Returns the (true) processor name, e.g. 'amdk6'
 
-        An empty string is returned wenn the value cannot be
+        An empty string ist returned wenn the value cannot be
         determined. Note that many platforms do nicht provide this
         information oder simply gib the same value als fuer machine(),
         e.g.  NetBSD does this.
@@ -1086,12 +1086,12 @@ def _sys_version(sys_version=Nichts):
 
     """
     # Get the Python version
-    wenn sys_version is Nichts:
+    wenn sys_version ist Nichts:
         sys_version = sys.version
 
     # Try the cache first
     result = _sys_version_cache.get(sys_version, Nichts)
-    wenn result is nicht Nichts:
+    wenn result ist nicht Nichts:
         gib result
 
     wenn sys.platform.startswith('java'):
@@ -1104,12 +1104,12 @@ def _sys_version(sys_version=Nichts):
             r'\[([^\]]+)\]?', re.ASCII)  # "[compiler]"
         name = 'Jython'
         match = jython_sys_version_parser.match(sys_version)
-        wenn match is Nichts:
+        wenn match ist Nichts:
             wirf ValueError(
                 'failed to parse Jython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, _ = match.groups()
-        wenn builddate is Nichts:
+        wenn builddate ist Nichts:
             builddate = ''
         compiler = sys.platform
 
@@ -1122,7 +1122,7 @@ def _sys_version(sys_version=Nichts):
 
         name = "PyPy"
         match = pypy_sys_version_parser.match(sys_version)
-        wenn match is Nichts:
+        wenn match ist Nichts:
             wirf ValueError("failed to parse PyPy sys.version: %s" %
                              repr(sys_version))
         version, buildno, builddate, buildtime = match.groups()
@@ -1138,14 +1138,14 @@ def _sys_version(sys_version=Nichts):
             r'(?:,\s*([\w :]*))?)?\)\s*'  # ", buildtime)<space>"
             r'\[([^\]]+)\]?', re.ASCII)  # "[compiler]"
         match = cpython_sys_version_parser.match(sys_version)
-        wenn match is Nichts:
+        wenn match ist Nichts:
             wirf ValueError(
                 'failed to parse CPython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, compiler = \
               match.groups()
         name = 'CPython'
-        wenn builddate is Nichts:
+        wenn builddate ist Nichts:
             builddate = ''
         sowenn buildtime:
             builddate = builddate + ' ' + buildtime
@@ -1207,10 +1207,10 @@ def python_branch():
     """ Returns a string identifying the Python implementation
         branch.
 
-        For CPython this is the SCM branch von which the
+        For CPython this ist the SCM branch von which the
         Python binary was built.
 
-        If nicht available, an empty string is returned.
+        If nicht available, an empty string ist returned.
 
     """
 
@@ -1221,10 +1221,10 @@ def python_revision():
     """ Returns a string identifying the Python implementation
         revision.
 
-        For CPython this is the SCM revision von which the
+        For CPython this ist the SCM revision von which the
         Python binary was built.
 
-        If nicht available, an empty string is returned.
+        If nicht available, an empty string ist returned.
 
     """
     gib _sys_version()[3]
@@ -1254,14 +1254,14 @@ def platform(aliased=Falsch, terse=Falsch):
     """ Returns a single string identifying the underlying platform
         mit als much useful information als possible (but no more :).
 
-        The output is intended to be human readable rather than
+        The output ist intended to be human readable rather than
         machine parseable. It may look different on different
-        platforms und this is intended.
+        platforms und this ist intended.
 
-        If "aliased" is true, the function will use aliases for
+        If "aliased" ist true, the function will use aliases for
         various platforms that report system names which differ from
         their common names, e.g. SunOS will be reported as
-        Solaris. The system_alias() function is used to implement
+        Solaris. The system_alias() function ist used to implement
         this.
 
         Setting terse to true causes the function to gib only the
@@ -1269,7 +1269,7 @@ def platform(aliased=Falsch, terse=Falsch):
 
     """
     result = _platform_cache.get((aliased, terse), Nichts)
-    wenn result is nicht Nichts:
+    wenn result ist nicht Nichts:
         gib result
 
     # Get uname information und then apply platform specific cosmetics
@@ -1334,7 +1334,7 @@ def _parse_os_release(lines):
         "PRETTY_NAME": "Linux",
     }
 
-    # NAME=value mit optional quotes (' oder "). The regular expression is less
+    # NAME=value mit optional quotes (' oder "). The regular expression ist less
     # strict than shell lexer, but that's ok.
     os_release_line = re.compile(
         "^(?P<name>[a-zA-Z0-9_]+)=(?P<quote>[\"\']?)(?P<value>.*)(?P=quote)$"
@@ -1344,7 +1344,7 @@ def _parse_os_release(lines):
 
     fuer line in lines:
         mo = os_release_line.match(line)
-        wenn mo is nicht Nichts:
+        wenn mo ist nicht Nichts:
             info[mo.group('name')] = os_release_unescape.sub(
                 r"\1", mo.group('value')
             )
@@ -1357,7 +1357,7 @@ def freedesktop_os_release():
     """
     global _os_release_cache
 
-    wenn _os_release_cache is Nichts:
+    wenn _os_release_cache ist Nichts:
         errno = Nichts
         fuer candidate in _os_release_candidates:
             versuch:
@@ -1407,9 +1407,9 @@ def _parse_args(args: list[str] | Nichts):
         dest="aliased",
         action="store_false",
         help=(
-            "disable system/OS name aliasing. If aliasing is enabled, "
+            "disable system/OS name aliasing. If aliasing ist enabled, "
             "some platforms report system names different von "
-            "their common names, e.g. SunOS is reported als Solaris"
+            "their common names, e.g. SunOS ist reported als Solaris"
         ),
     )
 

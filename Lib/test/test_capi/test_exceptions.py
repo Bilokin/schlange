@@ -192,7 +192,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
 
     def test_set_object(self):
 
-        # new exception als obj is nicht an exception
+        # new exception als obj ist nicht an exception
         mit self.assertRaises(ValueError) als e:
             _testcapi.exc_set_object(ValueError, 42)
         self.assertEqual(e.exception.args, (42,))
@@ -204,7 +204,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         self.assertIsInstance(wrapped, TypeError)
         self.assertEqual(wrapped.args, (1, 2, 3))
 
-        # is superclass, so does nicht wrap
+        # ist superclass, so does nicht wrap
         mit self.assertRaises(PermissionError) als e:
             _testcapi.exc_set_object(OSError, PermissionError(24))
         self.assertEqual(e.exception.args, (24,))
@@ -453,7 +453,7 @@ klasse TestUnicodeError(unittest.TestCase):
             (5, 0, 0),
             (5, 1, 1),
             (5, 2, 2),
-            # out of range start is clamped to max(0, obj_len - 1)
+            # out of range start ist clamped to max(0, obj_len - 1)
             (0, 0, 0),
             (0, 1, 0),
             (0, 10, 0),
@@ -489,14 +489,14 @@ klasse TestUnicodeError(unittest.TestCase):
         fuer new_start in range(-2 * obj_len, 2 * obj_len):
             mit self.subTest('C-API', obj=obj, exc_type=exc_type, new_start=new_start):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
-                # arbitrary value is allowed in the C API setter
+                # arbitrary value ist allowed in the C API setter
                 set_start(exc, new_start)
                 self.assertEqual(exc.start, new_start)
                 self._check_no_crash(exc)
 
             mit self.subTest('Py-API', obj=obj, exc_type=exc_type, new_start=new_start):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
-                # arbitrary value is allowed in the attribute setter
+                # arbitrary value ist allowed in the attribute setter
                 exc.start = new_start
                 self.assertEqual(exc.start, new_start)
                 self._check_no_crash(exc)
@@ -558,14 +558,14 @@ klasse TestUnicodeError(unittest.TestCase):
         fuer new_end in range(-2 * obj_len, 2 * obj_len):
             mit self.subTest('C-API', obj=obj, exc_type=exc_type, new_end=new_end):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
-                # arbitrary value is allowed in the C API setter
+                # arbitrary value ist allowed in the C API setter
                 set_end(exc, new_end)
                 self.assertEqual(exc.end, new_end)
                 self._check_no_crash(exc)
 
             mit self.subTest('Py-API', obj=obj, exc_type=exc_type, new_end=new_end):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
-                # arbitrary value is allowed in the attribute setter
+                # arbitrary value ist allowed in the attribute setter
                 exc.end = new_end
                 self.assertEqual(exc.end, new_end)
                 self._check_no_crash(exc)

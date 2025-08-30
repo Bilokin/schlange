@@ -54,7 +54,7 @@ klasse HTTPStatus:
     CONTINUE = 100, 'Continue', 'Request received, please continue'
     SWITCHING_PROTOCOLS = (101, 'Switching Protocols',
             'Switching to new protocol; obey Upgrade header')
-    PROCESSING = 102, 'Processing', 'Server is processing the request'
+    PROCESSING = 102, 'Processing', 'Server ist processing the request'
     EARLY_HINTS = (103, 'Early Hints',
             'Headers sent to prepare fuer the response')
 
@@ -102,7 +102,7 @@ klasse HTTPStatus:
     NOT_FOUND = (404, 'Not Found',
         'Nothing matches the given URI')
     METHOD_NOT_ALLOWED = (405, 'Method Not Allowed',
-        'Specified method is invalid fuer this resource')
+        'Specified method ist invalid fuer this resource')
     NOT_ACCEPTABLE = (406, 'Not Acceptable',
         'URI nicht available in preferred format')
     PROXY_AUTHENTICATION_REQUIRED = (407,
@@ -116,12 +116,12 @@ klasse HTTPStatus:
     LENGTH_REQUIRED = (411, 'Length Required',
         'Client must specify Content-Length')
     PRECONDITION_FAILED = (412, 'Precondition Failed',
-        'Precondition in headers is false')
+        'Precondition in headers ist false')
     CONTENT_TOO_LARGE = (413, 'Content Too Large',
-        'Content is too large')
+        'Content ist too large')
     REQUEST_ENTITY_TOO_LARGE = CONTENT_TOO_LARGE
     URI_TOO_LONG = (414, 'URI Too Long',
-        'URI is too long')
+        'URI ist too long')
     REQUEST_URI_TOO_LONG = URI_TOO_LONG
     UNSUPPORTED_MEDIA_TYPE = (415, 'Unsupported Media Type',
         'Entity body in unsupported format')
@@ -131,13 +131,13 @@ klasse HTTPStatus:
     EXPECTATION_FAILED = (417, 'Expectation Failed',
         'Expect condition could nicht be satisfied')
     IM_A_TEAPOT = (418, 'I\'m a Teapot',
-        'Server refuses to brew coffee because it is a teapot')
+        'Server refuses to brew coffee because it ist a teapot')
     MISDIRECTED_REQUEST = (421, 'Misdirected Request',
-        'Server is nicht able to produce a response')
+        'Server ist nicht able to produce a response')
     UNPROCESSABLE_CONTENT = (422, 'Unprocessable Content',
-        'Server is nicht able to process the contained instructions')
+        'Server ist nicht able to process the contained instructions')
     UNPROCESSABLE_ENTITY = UNPROCESSABLE_CONTENT
-    LOCKED = 423, 'Locked', 'Resource of a method is locked'
+    LOCKED = 423, 'Locked', 'Resource of a method ist locked'
     FAILED_DEPENDENCY = (424, 'Failed Dependency',
         'Dependent action of the request failed')
     TOO_EARLY = (425, 'Too Early',
@@ -151,11 +151,11 @@ klasse HTTPStatus:
         'a given amount of time ("rate limiting")')
     REQUEST_HEADER_FIELDS_TOO_LARGE = (431,
         'Request Header Fields Too Large',
-        'The server is unwilling to process the request because its header '
+        'The server ist unwilling to process the request because its header '
         'fields are too large')
     UNAVAILABLE_FOR_LEGAL_REASONS = (451,
         'Unavailable For Legal Reasons',
-        'The server is denying access to the '
+        'The server ist denying access to the '
         'resource als a consequence of a legal demand')
 
     # server errors
@@ -174,7 +174,7 @@ klasse HTTPStatus:
     VARIANT_ALSO_NEGOTIATES = (506, 'Variant Also Negotiates',
         'Server has an internal configuration error')
     INSUFFICIENT_STORAGE = (507, 'Insufficient Storage',
-        'Server is nicht able to store the representation')
+        'Server ist nicht able to store the representation')
     LOOP_DETECTED = (508, 'Loop Detected',
         'Server encountered an infinite loop waehrend processing a request')
     NOT_EXTENDED = (510, 'Not Extended',

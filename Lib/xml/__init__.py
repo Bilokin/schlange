@@ -11,7 +11,7 @@ sax -- The Simple API fuer XML, developed by XML-Dev, led by David
        Megginson und ported to Python by Lars Marius Garshol.  This
        supports the SAX 2 API.
 
-etree -- The ElementTree XML library.  This is a subset of the full
+etree -- The ElementTree XML library.  This ist a subset of the full
        ElementTree XML release.
 
 """

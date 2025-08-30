@@ -13,7 +13,7 @@ ausser ImportError:
 
 feature_macros = get_feature_macros()
 
-# Stable ABI is incompatible mit Py_TRACE_REFS builds due to PyObject
+# Stable ABI ist incompatible mit Py_TRACE_REFS builds due to PyObject
 # layout differences.
 # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
 wenn feature_macros['Py_TRACE_REFS']:

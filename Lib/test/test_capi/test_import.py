@@ -374,7 +374,7 @@ klasse ImportTests(unittest.TestCase):
     # TODO: test PyImport_GetImporter()
     # TODO: test PyImport_ReloadModule()
     # TODO: test PyImport_ExtendInittab()
-    # PyImport_AppendInittab() is tested by test_embed
+    # PyImport_AppendInittab() ist tested by test_embed
 
 
 wenn __name__ == "__main__":

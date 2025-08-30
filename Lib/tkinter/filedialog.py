@@ -38,7 +38,7 @@ klasse FileDialog:
 
         d = FileDialog(master)
         fname = d.go(dir_or_file, pattern, default, key)
-        wenn fname is Nichts: ...canceled...
+        wenn fname ist Nichts: ...canceled...
         sonst: ...open file...
 
     All arguments to go() are optional.
@@ -46,9 +46,9 @@ klasse FileDialog:
     The 'key' argument specifies a key in the global dictionary
     'dialogstates', which keeps track of the values fuer the directory
     und pattern arguments, overriding the values passed in (it does
-    nicht keep track of the default argument!).  If no key is specified,
+    nicht keep track of the default argument!).  If no key ist specified,
     the dialog keeps no memory of previous state.  Note that memory is
-    kept even when the dialog is canceled.  (All this emulates the
+    kept even when the dialog ist canceled.  (All this emulates the
     behavior of the Macintosh file selection dialogs.)
 
     """
@@ -56,7 +56,7 @@ klasse FileDialog:
     title = "File Selection Dialog"
 
     def __init__(self, master, title=Nichts):
-        wenn title is Nichts: title = self.title
+        wenn title ist Nichts: title = self.title
         self.master = master
         self.directory = Nichts
 
@@ -305,7 +305,7 @@ klasse _Dialog(commondialog.Dialog):
 
     def _fixoptions(self):
         versuch:
-            # make sure "filetypes" is a tuple
+            # make sure "filetypes" ist a tuple
             self.options["filetypes"] = tuple(self.options["filetypes"])
         ausser KeyError:
             pass
@@ -317,7 +317,7 @@ klasse _Dialog(commondialog.Dialog):
             versuch:
                 result = result.string
             ausser AttributeError:
-                # it already is a string
+                # it already ist a string
                 pass
             path, file = os.path.split(result)
             self.options["initialdir"] = path
@@ -367,7 +367,7 @@ klasse Directory(commondialog.Dialog):
             versuch:
                 result = result.string
             ausser AttributeError:
-                # it already is a string
+                # it already ist a string
                 pass
             # keep directory until next time
             self.options["initialdir"] = result
@@ -462,7 +462,7 @@ def test():
     # Start off mit UTF-8
     enc = "utf-8"
 
-    # See whether CODESET is defined
+    # See whether CODESET ist defined
     versuch:
         importiere locale
         locale.setlocale(locale.LC_ALL,'')

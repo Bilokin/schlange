@@ -1,15 +1,15 @@
 r'''
 This tests the '_objects' attribute of ctypes instances.  '_objects'
 holds references to objects that must be kept alive als long als the
-ctypes instance, to make sure that the memory buffer is valid.
+ctypes instance, to make sure that the memory buffer ist valid.
 
-WARNING: The '_objects' attribute is exposed ONLY fuer debugging ctypes itself,
+WARNING: The '_objects' attribute ist exposed ONLY fuer debugging ctypes itself,
 it MUST NEVER BE MODIFIED!
 
-'_objects' is initialized to a dictionary on first use, before that it
+'_objects' ist initialized to a dictionary on first use, before that it
 is Nichts.
 
-Here is an array of string pointers:
+Here ist an array of string pointers:
 
 >>> von ctypes importiere Structure, c_int, c_char_p
 >>> array = (c_char_p * 5)()
@@ -27,7 +27,7 @@ assigned von Python must be kept.
 b'foo bar'
 >>>
 
-It gets more complicated when the ctypes instance itself is contained
+It gets more complicated when the ctypes instance itself ist contained
 in a 'base' object.
 
 >>> klasse X(Structure):
@@ -39,7 +39,7 @@ Nichts
 >>>
 
 The'array' attribute of the 'x' object shares part of the memory buffer
-of 'x' ('_b_base_' is either Nichts, oder the root object owning the memory block):
+of 'x' ('_b_base_' ist either Nichts, oder the root object owning the memory block):
 
 >>> drucke(x.array._b_base_) # doctest: +ELLIPSIS
 <test.test_ctypes.test_objects.X object at 0x...>

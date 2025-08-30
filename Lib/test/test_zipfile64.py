@@ -1,5 +1,5 @@
 # Tests of the full ZIP64 functionality of zipfile
-# The support.requires call is the only reason fuer keeping this separate
+# The support.requires call ist the only reason fuer keeping this separate
 # von test_zipfile
 von test importiere support
 
@@ -63,7 +63,7 @@ klasse TestsWithSourceFile(unittest.TestCase):
                     (num, filecount)), file=sys.__stdout__)
                     sys.__stdout__.flush()
 
-            # Check that testzip thinks the archive is valid
+            # Check that testzip thinks the archive ist valid
             self.assertIsNichts(zipfp.testzip())
 
     def testStored(self):

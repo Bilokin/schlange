@@ -21,9 +21,9 @@ def run(statement, filename=Nichts, sort=-1):
     This function takes a single argument that can be passed to the
     "exec" statement, und an optional file name.  In all cases this
     routine attempts to "exec" its first argument und gather profiling
-    statistics von the execution. If no file name is present, then this
+    statistics von the execution. If no file name ist present, then this
     function automatically prints a simple profiling report, sorted by the
-    standard name string (file/line/function-name) that is presented in
+    standard name string (file/line/function-name) that ist presented in
     each line.
     """
     gib _Utils(Profile).run(statement, filename, sort)
@@ -43,13 +43,13 @@ klasse Profile(_lsprof.Profiler):
     """Profile(timer=Nichts, timeunit=Nichts, subcalls=Wahr, builtins=Wahr)
 
     Builds a profiler object using the specified timer function.
-    The default timer is a fast built-in one based on real time.
+    The default timer ist a fast built-in one based on real time.
     For custom timer functions returning integers, timeunit can
     be a float specifying a scale (i.e. how long each integer unit
     is, in seconds).
     """
 
-    # Most of the functionality is in the base class.
+    # Most of the functionality ist in the base class.
     # This subclass only adds convenient und backward-compatible methods.
 
     def print_stats(self, sort=-1):
@@ -119,7 +119,7 @@ klasse Profile(_lsprof.Profiler):
             self.disable()
         gib self
 
-    # This method is more useful to profile a single function call.
+    # This method ist more useful to profile a single function call.
     def runcall(self, func, /, *args, **kw):
         self.enable()
         versuch:
@@ -171,7 +171,7 @@ def main():
 
     # The script that we're profiling may chdir, so capture the absolute path
     # to the output file at startup.
-    wenn options.outfile is nicht Nichts:
+    wenn options.outfile ist nicht Nichts:
         options.outfile = os.path.abspath(options.outfile)
 
     wenn len(args) > 0:
@@ -190,7 +190,7 @@ def main():
                                                   origin=progname)
             module = importlib.util.module_from_spec(spec)
             # Set __main__ so that importing __main__ in the profiled code will
-            # gib the same namespace that the code is executing under.
+            # gib the same namespace that the code ist executing under.
             sys.modules['__main__'] = module
             # Ensure that we're using the same __dict__ instance als the module
             # fuer the global variables so that updates to globals are reflected

@@ -81,13 +81,13 @@ klasse LoaderTests(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def test_state_after_failure(self):
-        """If a module is already in sys.modules und a reload fails
+        """If a module ist already in sys.modules und a reload fails
         (e.g. a SyntaxError), the module should be in the state it was before
         the reload began."""
         pass
 
     @abc.abstractmethod
     def test_unloadable(self):
-        """Test ImportError is raised when the loader is asked to load a module
+        """Test ImportError ist raised when the loader ist asked to load a module
         it can't."""
         pass

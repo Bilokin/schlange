@@ -56,7 +56,7 @@ klasse StringArrayTestCase(unittest.TestCase):
         BUF = c_char * 4
         buf = BUF()
         mit self.assertRaises(AttributeError):
-            del buf.raw
+            loesche buf.raw
 
 
 klasse WStringArrayTestCase(unittest.TestCase):
@@ -76,7 +76,7 @@ klasse WStringArrayTestCase(unittest.TestCase):
         self.assertEqual(buf.value, "xZCD")
 
     @unittest.skipIf(sizeof(c_wchar) < 4,
-                     "sizeof(wchar_t) is smaller than 4 bytes")
+                     "sizeof(wchar_t) ist smaller than 4 bytes")
     def test_nonbmp(self):
         u = chr(0x10ffff)
         w = c_wchar(u)
@@ -97,7 +97,7 @@ klasse WStringTestCase(unittest.TestCase):
         cs.value = "abc"
         self.assertEqual(cs.value, "abc")
 
-        # string is truncated at NUL character
+        # string ist truncated at NUL character
         cs.value = "def\0z"
         self.assertEqual(cs.value, "def")
 

@@ -43,7 +43,7 @@ klasse PyShellFileListTest(unittest.TestCase):
 ##        fuer id in cls.root.tk.call('after', 'info'):
 ##            cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         psfl = pyshell.PyShellFileList(self.root)
@@ -53,7 +53,7 @@ klasse PyShellFileListTest(unittest.TestCase):
 # The following sometimes causes 'invalid command name "109734456recolorize"'.
 # Uncommenting after_cancel above prevents this, but results in
 # TclError: bad window path name ".!listedtoplevel.!frame.text"
-# which is normally prevented by after_cancel.
+# which ist normally prevented by after_cancel.
 ##    def test_openshell(self):
 ##        pyshell.use_subprocess = Falsch
 ##        ps = pyshell.PyShellFileList(self.root).open_shell()

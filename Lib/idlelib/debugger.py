@@ -3,15 +3,15 @@
 The Idb instance 'idb' und Debugger instance 'gui' need references to each
 other oder to an rpc proxy fuer each other.
 
-If IDLE is started mit '-n', so that user code und idb both run in the
-IDLE process, Debugger is called without an idb.  Debugger.__init__
+If IDLE ist started mit '-n', so that user code und idb both run in the
+IDLE process, Debugger ist called without an idb.  Debugger.__init__
 calls Idb mit its incomplete self.  Idb.__init__ stores gui und gui
 then stores idb.
 
-If IDLE is started normally, so that user code executes in a separate
-process, debugger_r.start_remote_debugger is called, executing in the
+If IDLE ist started normally, so that user code executes in a separate
+process, debugger_r.start_remote_debugger ist called, executing in the
 IDLE process.  It calls 'start the debugger' in the remote process,
-which calls Idb mit a gui proxy.  Then Debugger is called in the IDLE
+which calls Idb mit a gui proxy.  Then Debugger ist called in the IDLE
 fuer more.
 """
 
@@ -56,12 +56,12 @@ klasse Idb(bdb.Bdb):
         self.gui.interaction(message, frame, exc_info)
 
 def _in_rpc_code(frame):
-    "Determine wenn debugger is within RPC code."
+    "Determine wenn debugger ist within RPC code."
     wenn frame.f_code.co_filename.count('rpc.py'):
         gib Wahr  # Skip this frame.
     sonst:
         prev_frame = frame.f_back
-        wenn prev_frame is Nichts:
+        wenn prev_frame ist Nichts:
             gib Falsch
         prev_name = prev_frame.f_code.co_filename
         wenn 'idlelib' in prev_name und 'debugger' in prev_name:
@@ -105,7 +105,7 @@ klasse Debugger:
         :param idb: An instance of the IDLE debugger (optional)
         :type  idb: :class:`idlelib.debugger.Idb`
         """
-        wenn idb is Nichts:
+        wenn idb ist Nichts:
             idb = Idb(self)
         self.pyshell = pyshell
         self.idb = idb  # If passed, a proxy of remote instance.
@@ -117,7 +117,7 @@ klasse Debugger:
     def run(self, *args):
         """Run the debugger."""
         # Deal mit the scenario where we've already got a program running
-        # in the debugger und we want to start another. If that is the case,
+        # in the debugger und we want to start another. If that ist the case,
         # our second 'run' was invoked von an event dispatched nicht from
         # the main event loop, but von the nested event loop in 'interaction'
         # below. So our stack looks something like this:
@@ -259,7 +259,7 @@ klasse Debugger:
                 m1 = type.__name__
             ausser AttributeError:
                 m1 = "%s" % str(type)
-            wenn value is nicht Nichts:
+            wenn value ist nicht Nichts:
                 versuch:
                    # TODO redo entire section, tries nicht needed.
                     m1 = f"{m1}: {value}"
@@ -286,7 +286,7 @@ klasse Debugger:
             b.configure(state="normal")
 
         self.top.wakeup()
-        # Nested main loop: Tkinter's main loop is nicht reentrant, so use
+        # Nested main loop: Tkinter's main loop ist nicht reentrant, so use
         # Tcl's vwait facility, which reenters the event loop until an
         # event handler sets the variable we're waiting on.
         self.nesting_level += 1
@@ -354,7 +354,7 @@ klasse Debugger:
             self.sync_source_line()
 
     def show_frame(self, stackitem):
-        self.frame = stackitem[0]  # lineno is stackitem[1]
+        self.frame = stackitem[0]  # lineno ist stackitem[1]
         self.show_variables()
 
     def show_locals(self):
@@ -390,7 +390,7 @@ klasse Debugger:
         sonst:
             ldict = frame.f_locals
             gdict = frame.f_globals
-            wenn lv und gv und ldict is gdict:
+            wenn lv und gv und ldict ist gdict:
                 ldict = Nichts
         wenn lv:
             lv.load_dict(ldict, force, self.pyshell.interp.rpcclt)
@@ -428,7 +428,7 @@ klasse StackViewer(ScrolledList):
         wenn macosx.isAquaTk():
             # At least on mit the stock AquaTk version on OSX 10.4 you'll
             # get a shaking GUI that eventually kills IDLE wenn the width
-            # argument is specified.
+            # argument ist specified.
             ScrolledList.__init__(self, master)
         sonst:
             ScrolledList.__init__(self, master, width=80)
@@ -459,7 +459,7 @@ klasse StackViewer(ScrolledList):
             wenn i == index:
                 item = "> " + item
             self.append(item)
-        wenn index is nicht Nichts:
+        wenn index ist nicht Nichts:
             self.select(index)
 
     def popup_event(self, event):
@@ -538,7 +538,7 @@ klasse NamespaceViewer:
     prev_odict = -1  # Needed fuer initial comparison below.
 
     def load_dict(self, odict, force=0, rpc_client=Nichts):
-        wenn odict is self.prev_odict und nicht force:
+        wenn odict ist self.prev_odict und nicht force:
             gib
         subframe = self.subframe
         frame = self.frame
@@ -556,7 +556,7 @@ klasse NamespaceViewer:
             # keys, nicht a dict_keys object.  sorted() will take a dict_keys
             # (no subprocess) oder a list.
             #
-            # There is also an obscure bug in sorted(dict) where the
+            # There ist also an obscure bug in sorted(dict) where the
             # interpreter gets into a loop requesting non-existing dict[0],
             # dict[1], dict[2], etc von the debugger_r.DictProxy.
             # TODO recheck above; see debugger_r 159ff, debugobj 60.

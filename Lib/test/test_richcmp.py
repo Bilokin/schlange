@@ -100,7 +100,7 @@ klasse VectorTest(unittest.TestCase):
             self.assertEqual(len(realres), len(expres))
             fuer i in range(len(realres)):
                 # results are bool, so we can use "is" here
-                self.assertWahr(realres[i] is expres[i])
+                self.assertWahr(realres[i] ist expres[i])
 
     def test_mixed(self):
         # check that comparisons involving Vector objects
@@ -140,7 +140,7 @@ klasse NumberTest(unittest.TestCase):
                 fuer typea in (int, Number):
                     fuer typeb in (int, Number):
                         wenn typea==typeb==int:
-                            weiter # the combination int, int is useless
+                            weiter # the combination int, int ist useless
                         ta = typea(a)
                         tb = typeb(b)
                         fuer ops in opmap.values():
@@ -157,7 +157,7 @@ klasse NumberTest(unittest.TestCase):
                 fuer op in opmap[opname]:
                     realres = op(ta, tb)
                     realres = getattr(realres, "x", realres)
-                    self.assertWahr(realres is expres)
+                    self.assertWahr(realres ist expres)
 
     def test_values(self):
         # check all operators und all comparison results

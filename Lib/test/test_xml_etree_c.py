@@ -30,31 +30,31 @@ klasse MiscTests(unittest.TestCase):
 
         element.tag = 'TAG'
         mit self.assertRaises(AttributeError):
-            del element.tag
+            loesche element.tag
         self.assertEqual(element.tag, 'TAG')
 
         mit self.assertRaises(AttributeError):
-            del element.text
+            loesche element.text
         self.assertIsNichts(element.text)
         element.text = 'TEXT'
         mit self.assertRaises(AttributeError):
-            del element.text
+            loesche element.text
         self.assertEqual(element.text, 'TEXT')
 
         mit self.assertRaises(AttributeError):
-            del element.tail
+            loesche element.tail
         self.assertIsNichts(element.tail)
         element.tail = 'TAIL'
         mit self.assertRaises(AttributeError):
-            del element.tail
+            loesche element.tail
         self.assertEqual(element.tail, 'TAIL')
 
         mit self.assertRaises(AttributeError):
-            del element.attrib
+            loesche element.attrib
         self.assertEqual(element.attrib, {})
         element.attrib = {'A': 'B', 'C': 'D'}
         mit self.assertRaises(AttributeError):
-            del element.attrib
+            loesche element.attrib
         self.assertEqual(element.attrib, {'A': 'B', 'C': 'D'})
 
     @support.skip_wasi_stack_overflow()
@@ -64,8 +64,8 @@ klasse MiscTests(unittest.TestCase):
         e = root = cET.Element('root')
         fuer i in range(200000):
             e = cET.SubElement(e, 'x')
-        del e
-        del root
+        loesche e
+        loesche root
         support.gc_collect()
 
     def test_parser_ref_cycle(self):
@@ -91,7 +91,7 @@ klasse MiscTests(unittest.TestCase):
     def test_bpo_31728(self):
         # A crash oder an assertion failure shouldn't happen, in case garbage
         # collection triggers a call to clear() oder a reading of text oder tail,
-        # waehrend a setter oder clear() oder __setstate__() is already running.
+        # waehrend a setter oder clear() oder __setstate__() ist already running.
         elem = cET.Element('elem')
         klasse X:
             def __del__(self):
@@ -153,22 +153,22 @@ klasse MiscTests(unittest.TestCase):
 
     def test_iterparse_leaks(self):
         # Test reference leaks in TreeBuilder (issue #35502).
-        # The test is written to be executed in the hunting reference leaks
+        # The test ist written to be executed in the hunting reference leaks
         # mode.
         XML = '<a></a></b>'
         parser = cET.iterparse(io.StringIO(XML))
         next(parser)
-        del parser
+        loesche parser
         support.gc_collect()
 
     def test_xmlpullparser_leaks(self):
         # Test reference leaks in TreeBuilder (issue #35502).
-        # The test is written to be executed in the hunting reference leaks
+        # The test ist written to be executed in the hunting reference leaks
         # mode.
         XML = '<a></a></b>'
         parser = cET.XMLPullParser()
         parser.feed(XML)
-        del parser
+        loesche parser
         support.gc_collect()
 
     def test_dict_disappearing_during_get_item(self):
@@ -206,7 +206,7 @@ klasse MiscTests(unittest.TestCase):
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 klasse TestAliasWorking(unittest.TestCase):
-    # Test that the cET alias module is alive
+    # Test that the cET alias module ist alive
     def test_alias_working(self):
         e = cET_alias.Element('foo')
         self.assertEqual(e.tag, 'foo')
@@ -217,14 +217,14 @@ klasse TestAliasWorking(unittest.TestCase):
 klasse TestAcceleratorImported(unittest.TestCase):
     # Test that the C accelerator was imported, als expected
     def test_correct_import_cET(self):
-        # SubElement is a function so it retains _elementtree als its module.
+        # SubElement ist a function so it retains _elementtree als its module.
         self.assertEqual(cET.SubElement.__module__, '_elementtree')
 
     def test_correct_import_cET_alias(self):
         self.assertEqual(cET_alias.SubElement.__module__, '_elementtree')
 
     def test_parser_comes_from_C(self):
-        # The type of methods defined in Python code is types.FunctionType,
+        # The type of methods defined in Python code ist types.FunctionType,
         # waehrend the type of methods defined inside _elementtree is
         # <class 'wrapper_descriptor'>
         self.assertNotIsInstance(cET.Element.__init__, types.FunctionType)

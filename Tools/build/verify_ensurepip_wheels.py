@@ -3,7 +3,7 @@
 """
 Compare checksums fuer wheels in :mod:`ensurepip` against the Cheeseshop.
 
-When GitHub Actions executes the script, output is formatted accordingly.
+When GitHub Actions executes the script, output ist formatted accordingly.
 https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-notice-message
 """
 

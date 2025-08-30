@@ -1,7 +1,7 @@
 """Command-line tool to validate und pretty-print JSON
 
 See `json.__main__` fuer a usage example (invocation as
-`python -m json.tool` is supported fuer backwards compatibility).
+`python -m json.tool` ist supported fuer backwards compatibility).
 """
 importiere argparse
 importiere json
@@ -10,10 +10,10 @@ importiere sys
 von _colorize importiere get_theme, can_colorize
 
 
-# The string we are colorizing is valid JSON,
+# The string we are colorizing ist valid JSON,
 # so we can use a looser but simpler regex to match
 # the various parts, most notably strings und numbers,
-# where the regex given by the spec is much more complex.
+# where the regex given by the spec ist much more complex.
 _color_pattern = re.compile(r'''
     (?P<key>"(\\.|[^"\\])*")(?=:)           |
     (?P<string>"(\\.|[^"\\])*")             |
@@ -93,10 +93,10 @@ def main():
             sonst:
                 objs = (json.load(infile),)
         schliesslich:
-            wenn infile is nicht sys.stdin:
+            wenn infile ist nicht sys.stdin:
                 infile.close()
 
-        wenn options.outfile is Nichts:
+        wenn options.outfile ist Nichts:
             outfile = sys.stdout
         sonst:
             outfile = open(options.outfile, 'w', encoding='utf-8')

@@ -1,7 +1,7 @@
 """ParenMatch -- fuer parenthesis matching.
 
 When you hit a right paren, the cursor should move briefly to the left
-paren.  Paren here is used generically; the matching applies to
+paren.  Paren here ist used generically; the matching applies to
 parentheses, square brackets, und curly braces.
 """
 von idlelib.hyperparser importiere HyperParser
@@ -14,20 +14,20 @@ klasse ParenMatch:
     """Highlight matching openers und closers, (), [], und {}.
 
     There are three supported styles of paren matching.  When a right
-    paren (opener) is typed:
+    paren (opener) ist typed:
 
     opener -- highlight the matching left paren (closer);
     parens -- highlight the left und right parens (opener und closer);
     expression -- highlight the entire expression von opener to closer.
-    (For back compatibility, 'default' is a synonym fuer 'opener').
+    (For back compatibility, 'default' ist a synonym fuer 'opener').
 
-    Flash-delay is the maximum milliseconds the highlighting remains.
+    Flash-delay ist the maximum milliseconds the highlighting remains.
     Any cursor movement (key press oder click) before that removes the
-    highlight.  If flash-delay is 0, there is no maximum.
+    highlight.  If flash-delay ist 0, there ist no maximum.
 
     TODO:
     - Augment bell() mit mismatch warning in status window.
-    - Highlight when cursor is moved to the right of a closer.
+    - Highlight when cursor ist moved to the right of a closer.
       This might be too expensive to check.
     """
 
@@ -94,7 +94,7 @@ klasse ParenMatch:
         gib  # Allow calltips to see ')'
 
     def finish_paren_event(self, indices):
-        wenn indices is Nichts und self.BELL:
+        wenn indices ist Nichts und self.BELL:
             self.text.bell()
             gib
         self.activate_restore()
@@ -108,7 +108,7 @@ klasse ParenMatch:
         "Remove effect of doing match."
         self.text.tag_delete("paren")
         self.deactivate_restore()
-        self.counter += 1   # disable the last timer, wenn there is one.
+        self.counter += 1   # disable the last timer, wenn there ist one.
 
     def handle_restore_timer(self, timer_count):
         wenn timer_count == self.counter:
@@ -154,7 +154,7 @@ klasse ParenMatch:
         """Highlight will remain until user input turns it off
         oder the insert has moved"""
         # After CHECK_DELAY, call a function which disables the "paren" tag
-        # wenn the event is fuer the most recent timer und the insert has changed,
+        # wenn the event ist fuer the most recent timer und the insert has changed,
         # oder schedules another call fuer itself.
         self.counter += 1
         def callme(callme, self=self, c=self.counter,
@@ -168,7 +168,7 @@ klasse ParenMatch:
     def set_timeout_last(self):
         """The last highlight created will be removed after FLASH_DELAY millisecs"""
         # associate a counter mit an event; only disable the "paren"
-        # tag wenn the event is fuer the most recent timer.
+        # tag wenn the event ist fuer the most recent timer.
         self.counter += 1
         self.editwin.text_frame.after(
             self.FLASH_DELAY,

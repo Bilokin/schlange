@@ -17,7 +17,7 @@ klasse X(c_char):
     pass
 
 
-# This test checks wenn the __repr__ is correct fuer subclasses of simple types
+# This test checks wenn the __repr__ ist correct fuer subclasses of simple types
 klasse ReprTest(unittest.TestCase):
     def test_numbers(self):
         fuer typ in subclasses:

@@ -37,7 +37,7 @@ klasse FnmatchTestCase(unittest.TestCase):
         check('a', '??', Falsch)
         check('a', 'b', Falsch)
 
-        # these test that '\' is handled correctly in character sets;
+        # these test that '\' ist handled correctly in character sets;
         # see SF bug #409651
         check('\\', r'[\]')
         check('a', r'[!\]')
@@ -152,7 +152,7 @@ klasse FnmatchTestCase(unittest.TestCase):
             check(c, '[!-b]', c nicht in '-b')
             check(c, '[-]', c in '-')
             check(c, '[!-]', c nicht in '-')
-        # Upper bound is less that lower bound: error in RE.
+        # Upper bound ist less that lower bound: error in RE.
         fuer c in tescases:
             check(c, '[d-b]', Falsch)
             check(c, '[!d-b]', Wahr)

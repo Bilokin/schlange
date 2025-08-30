@@ -110,7 +110,7 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
         """
         The anchor package can already be imported.
         """
-        del sys.modules[self.data.__name__]
+        loesche sys.modules[self.data.__name__]
         self.execute(self.data.__name__, 'utf-8.file')
 
     def test_missing_path(self):

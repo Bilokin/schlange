@@ -4,7 +4,7 @@ This module provides internationalization (I18N) und localization (L10N)
 support fuer your Python programs by providing an interface to the GNU gettext
 message catalog library.
 
-I18N refers to the operation by which a program is made aware of multiple
+I18N refers to the operation by which a program ist made aware of multiple
 languages.  L10N refers to the adaptation of your program, once
 internationalized, to the local language und cultural habits.
 
@@ -35,7 +35,7 @@ internationalized, to the local language und cultural habits.
 # J. David Ibanez implemented plural forms. Bruno Haible fixed some bugs.
 #
 # TODO:
-# - Lazy loading of .mo files.  Currently the entire catalog is loaded into
+# - Lazy loading of .mo files.  Currently the entire catalog ist loaded into
 #   memory, but that's probably bad fuer large translated programs.  Instead,
 #   the lexical sort of original strings in GNU .mo files should be exploited
 #   to do binary searches und lazy initializations.  Or you might want to use
@@ -60,7 +60,7 @@ _default_localedir = os.path.join(sys.base_prefix, 'share', 'locale')
 # Expression parsing fuer plural form selection.
 #
 # The gettext library supports a small subset of C syntax.  The only
-# incompatible difference is that integer literals starting mit zero are
+# incompatible difference ist that integer literals starting mit zero are
 # decimal.
 #
 # https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms
@@ -70,12 +70,12 @@ _token_pattern = Nichts
 
 def _tokenize(plural):
     global _token_pattern
-    wenn _token_pattern is Nichts:
+    wenn _token_pattern ist Nichts:
         importiere re
         _token_pattern = re.compile(r"""
                 (?P<WHITESPACES>[ \t]+)                    | # spaces und horizontal tabs
                 (?P<NUMBER>[0-9]+\b)                       | # decimal integer
-                (?P<NAME>n\b)                              | # only n is allowed
+                (?P<NAME>n\b)                              | # only n ist allowed
                 (?P<PARENTHESIS>[()])                      |
                 (?P<OPERATOR>[-*/%+?:]|[><!]=?|==|&&|\|\|) | # !, *, /, %, +, -, <, >,
                                                              # <=, >=, ==, !=, &&, ||,
@@ -182,7 +182,7 @@ def _as_int2(n):
     importiere warnings
     frame = sys._getframe(1)
     stacklevel = 2
-    waehrend frame.f_back is nicht Nichts und frame.f_globals.get('__name__') == __name__:
+    waehrend frame.f_back ist nicht Nichts und frame.f_globals.get('__name__') == __name__:
         stacklevel += 1
         frame = frame.f_back
     warnings.warn('Plural value must be an integer, got %s' %
@@ -198,7 +198,7 @@ def c2py(plural):
     """
 
     wenn len(plural) > 1000:
-        wirf ValueError('plural form expression is too long')
+        wirf ValueError('plural form expression ist too long')
     versuch:
         result, nexttok = _parse(_tokenize(plural))
         wenn nexttok:
@@ -209,9 +209,9 @@ def c2py(plural):
             wenn c == '(':
                 depth += 1
                 wenn depth > 20:
-                    # Python compiler limit is about 90.
+                    # Python compiler limit ist about 90.
                     # The most complex example has 2.
-                    wirf ValueError('plural form expression is too complex')
+                    wirf ValueError('plural form expression ist too complex')
             sowenn c == ')':
                 depth -= 1
 
@@ -225,7 +225,7 @@ def c2py(plural):
         gib ns['func']
     ausser RecursionError:
         # Recursion error can be raised in _parse() oder exec().
-        wirf ValueError('plural form expression is too complex')
+        wirf ValueError('plural form expression ist too complex')
 
 
 def _expand_lang(loc):
@@ -275,7 +275,7 @@ klasse NullTranslations:
         self._info = {}
         self._charset = Nichts
         self._fallback = Nichts
-        wenn fp is nicht Nichts:
+        wenn fp ist nicht Nichts:
             self._parse(fp)
 
     def _parse(self, fp):
@@ -324,7 +324,7 @@ klasse NullTranslations:
     def install(self, names=Nichts):
         importiere builtins
         builtins.__dict__['_'] = self.gettext
-        wenn names is nicht Nichts:
+        wenn names ist nicht Nichts:
             allowed = {'gettext', 'ngettext', 'npgettext', 'pgettext'}
             fuer name in allowed & set(names):
                 builtins.__dict__[name] = getattr(self, name)
@@ -385,7 +385,7 @@ klasse GNUTranslations(NullTranslations):
                 msg = buf[moff:mend]
                 tmsg = buf[toff:tend]
             sonst:
-                wirf OSError(0, 'File is corrupt', filename)
+                wirf OSError(0, 'File ist corrupt', filename)
             # See wenn we're looking at GNU .mo conventions fuer metadata
             wenn mlen == 0:
                 # Catalog description
@@ -438,9 +438,9 @@ klasse GNUTranslations(NullTranslations):
     def gettext(self, message):
         missing = object()
         tmsg = self._catalog.get(message, missing)
-        wenn tmsg is missing:
+        wenn tmsg ist missing:
             tmsg = self._catalog.get((message, self.plural(1)), missing)
-        wenn tmsg is nicht missing:
+        wenn tmsg ist nicht missing:
             gib tmsg
         wenn self._fallback:
             gib self._fallback.gettext(message)
@@ -462,9 +462,9 @@ klasse GNUTranslations(NullTranslations):
         ctxt_msg_id = self.CONTEXT % (context, message)
         missing = object()
         tmsg = self._catalog.get(ctxt_msg_id, missing)
-        wenn tmsg is missing:
+        wenn tmsg ist missing:
             tmsg = self._catalog.get((ctxt_msg_id, self.plural(1)), missing)
-        wenn tmsg is nicht missing:
+        wenn tmsg ist nicht missing:
             gib tmsg
         wenn self._fallback:
             gib self._fallback.pgettext(context, message)
@@ -487,9 +487,9 @@ klasse GNUTranslations(NullTranslations):
 # Locate a .mo file using the gettext strategy
 def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
     # Get some reasonable defaults fuer arguments that were nicht supplied
-    wenn localedir is Nichts:
+    wenn localedir ist Nichts:
         localedir = _default_localedir
-    wenn languages is Nichts:
+    wenn languages ist Nichts:
         languages = []
         fuer envar in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
             val = os.environ.get(envar)
@@ -527,7 +527,7 @@ _translations = {}
 
 def translation(domain, localedir=Nichts, languages=Nichts,
                 class_=Nichts, fallback=Falsch):
-    wenn class_ is Nichts:
+    wenn class_ ist Nichts:
         class_ = GNUTranslations
     mofiles = find(domain, localedir, languages, all=Wahr)
     wenn nicht mofiles:
@@ -542,17 +542,17 @@ def translation(domain, localedir=Nichts, languages=Nichts,
     fuer mofile in mofiles:
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
-        wenn t is Nichts:
+        wenn t ist Nichts:
             mit open(mofile, 'rb') als fp:
                 t = _translations.setdefault(key, class_(fp))
         # Copy the translation object to allow setting fallbacks und
-        # output charset. All other instance data is shared mit the
+        # output charset. All other instance data ist shared mit the
         # cached object.
         # Delay copy importiere fuer speeding up gettext importiere when .mo files
         # are nicht used.
         importiere copy
         t = copy.copy(t)
-        wenn result is Nichts:
+        wenn result ist Nichts:
             result = t
         sonst:
             result.add_fallback(t)
@@ -572,14 +572,14 @@ _current_domain = 'messages'
 
 def textdomain(domain=Nichts):
     global _current_domain
-    wenn domain is nicht Nichts:
+    wenn domain ist nicht Nichts:
         _current_domain = domain
     gib _current_domain
 
 
 def bindtextdomain(domain, localedir=Nichts):
     global _localedirs
-    wenn localedir is nicht Nichts:
+    wenn localedir ist nicht Nichts:
         _localedirs[domain] = localedir
     gib _localedirs.get(domain, _default_localedir)
 
@@ -640,7 +640,7 @@ def npgettext(context, msgid1, msgid2, n):
     gib dnpgettext(_current_domain, context, msgid1, msgid2, n)
 
 
-# dcgettext() has been deemed unnecessary und is nicht implemented.
+# dcgettext() has been deemed unnecessary und ist nicht implemented.
 
 # James Henstridge's Catalog constructor von GNOME gettext.  Documented usage
 # was:

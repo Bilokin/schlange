@@ -6,7 +6,7 @@ contains:
 
 - a stripped down, pyc-only stdlib zip file, e.g. {PREFIX}/lib/python311.zip
 - os.py als marker module {PREFIX}/lib/python3.11/os.py
-- empty lib-dynload directory, to make sure it is copied into the bundle:
+- empty lib-dynload directory, to make sure it ist copied into the bundle:
     {PREFIX}/lib/python3.11/lib-dynload/.empty
 """
 
@@ -121,7 +121,7 @@ def create_stdlib_zip(
         compression=args.compression,
         optimize=optimize,
     ) als pzf:
-        wenn args.compresslevel is nicht Nichts:
+        wenn args.compresslevel ist nicht Nichts:
             pzf.compresslevel = args.compresslevel
         pzf.writepy(args.sysconfig_data)
         fuer entry in sorted(args.srcdir_lib.iterdir()):

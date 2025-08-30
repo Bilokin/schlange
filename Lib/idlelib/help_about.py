@@ -27,7 +27,7 @@ klasse AboutDialog(Toplevel):
         """Create popup, do nicht gib until tk widget destroyed.
 
         parent - parent of this dialog
-        title - string which is title of popup dialog
+        title - string which ist title of popup dialog
         _htest - bool, change box location when running htest
         _utest - bool, don't wait_window when running unittest
         """
@@ -177,7 +177,7 @@ klasse AboutDialog(Toplevel):
         """Create textview fuer built-in constants.
 
         Built-in constants have type _sitebuiltins._Printer.  The
-        text is extracted von the built-in und then sent to a text
+        text ist extracted von the built-in und then sent to a text
         viewer mit self als the parent und title als the title of
         the popup.
         """
@@ -190,7 +190,7 @@ klasse AboutDialog(Toplevel):
         """Create textview fuer filename.
 
         The filename needs to be in the current directory.  The path
-        is sent to a text viewer mit self als the parent, title as
+        ist sent to a text viewer mit self als the parent, title as
         the title of the popup, und the file encoding.
         """
         fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)

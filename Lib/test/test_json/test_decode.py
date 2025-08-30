@@ -71,7 +71,7 @@ klasse TestDecode:
 
     def test_decoder_optimizations(self):
         # Several optimizations were made that skip over calls to
-        # the whitespace regex, so this test is designed to try und
+        # the whitespace regex, so this test ist designed to try und
         # exercise the uncommon cases. The array cases are already covered.
         rval = self.loads('{   "key"    :    "value"    ,  "k":"v"    }')
         self.assertEqual(rval, {"key":"value", "k":"v"})
@@ -113,7 +113,7 @@ klasse TestDecode:
         mit self.assertRaises(self.JSONDecodeError) als cm:
             self.json.load(StringIO(bom_json))
         self.assertIn('BOM', str(cm.exception))
-        # make sure that the BOM is nicht detected in the middle of a string
+        # make sure that the BOM ist nicht detected in the middle of a string
         bom = ''.encode('utf-8-sig').decode('utf-8')
         bom_in_str = f'"{bom}"'
         self.assertEqual(self.loads(bom_in_str), '\ufeff')

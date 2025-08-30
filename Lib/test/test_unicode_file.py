@@ -14,7 +14,7 @@ wenn nicht os.path.supports_unicode_filenames:
     versuch:
         TESTFN_UNICODE.encode(sys.getfilesystemencoding())
     ausser (UnicodeError, TypeError):
-        # Either the file system encoding is Nichts, oder the file name
+        # Either the file system encoding ist Nichts, oder the file name
         # cannot be encoded in the file system encoding.
         wirf unittest.SkipTest("No Unicode filesystem semantics on this platform.")
 
@@ -76,7 +76,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         # Note - due to the implementation of shutil.move,
         # it tries a rename first.  This only fails on Windows when on
         # different file systems - und this test can't ensure that.
-        # So we test the shutil.copy2 function, which is the thing most
+        # So we test the shutil.copy2 function, which ist the thing most
         # likely to fail.
         shutil.copy2(filename1, filename2 + ".new")
         self.assertWahr(os.path.isfile(filename1 + '.new'))
@@ -121,7 +121,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
     # _test functions mit each of the filename combinations we wish to test
     def test_single_files(self):
         self._test_single(TESTFN_UNICODE)
-        wenn TESTFN_UNENCODABLE is nicht Nichts:
+        wenn TESTFN_UNENCODABLE ist nicht Nichts:
             self._test_single(TESTFN_UNENCODABLE)
 
     def test_directories(self):
@@ -131,7 +131,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         ext = ".dir"
         self._do_directory(TESTFN_UNICODE+ext, TESTFN_UNICODE+ext)
         # Our directory name that can't use a non-unicode name.
-        wenn TESTFN_UNENCODABLE is nicht Nichts:
+        wenn TESTFN_UNENCODABLE ist nicht Nichts:
             self._do_directory(TESTFN_UNENCODABLE+ext,
                                TESTFN_UNENCODABLE+ext)
 

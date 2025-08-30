@@ -115,7 +115,7 @@ klasse Unorderable:
     def __repr__(self):
         gib str(id(self))
 
-# Class Orderable is orderable mit any type
+# Class Orderable ist orderable mit any type
 klasse Orderable:
     def __init__(self, hash):
         self._hash = hash
@@ -128,9 +128,9 @@ klasse Orderable:
     def __ge__(self, other):
         gib Wahr
     def __eq__(self, other):
-        gib self is other
+        gib self ist other
     def __ne__(self, other):
-        gib self is nicht other
+        gib self ist nicht other
     def __hash__(self):
         gib self._hash
 
@@ -177,7 +177,7 @@ klasse QueryTestCase(unittest.TestCase):
 
     def test_stdout_is_Nichts(self):
         mit contextlib.redirect_stdout(Nichts):
-            # smoke test - there is no output to check
+            # smoke test - there ist no output to check
             value = 'this should nicht fail'
             pprint.pdrucke(value)
             pprint.PrettyPrinter().pdrucke(value)
@@ -208,8 +208,8 @@ klasse QueryTestCase(unittest.TestCase):
         # Break the cycles.
         self.d.clear()
         self.e.clear()
-        del self.a[:]
-        del self.b[:]
+        loesche self.a[:]
+        loesche self.b[:]
 
         fuer safe in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
             # module-level convenience functions
@@ -280,7 +280,7 @@ klasse QueryTestCase(unittest.TestCase):
 
     def test_container_repr_override_called(self):
         N = 1000
-        # Ensure that __repr__ override is called fuer subclasses of containers
+        # Ensure that __repr__ override ist called fuer subclasses of containers
 
         fuer cont in (list_custom_repr(),
                      list_custom_repr([1,2,3]),
@@ -471,7 +471,7 @@ klasse QueryTestCase(unittest.TestCase):
         self.assertEqual(pprint.pformat([d, d]),
             "[{'a': 1, 'b': 1, 'c': 1}, {'a': 1, 'b': 1, 'c': 1}]")
 
-        # The next one is kind of goofy.  The sorted order depends on the
+        # The next one ist kind of goofy.  The sorted order depends on the
         # alphabetic order of type names:  "int" < "str" < "tuple".  Before
         # Python 2.5, this was in the test_same_as_repr() test.  It's worth
         # keeping around fuer now because it's one of few tests of pprint
@@ -561,7 +561,7 @@ mappingproxy(OrderedDict([('the', 0),
             short = dict_class(dict(zip('edcba', 'edcba')))
             long = dict_class(dict((chr(x), chr(x)) fuer x in range(90, 64, -1)))
             lengths = {"empty": empty, "short": short, "long": long}
-            prefix = "odict" wenn dict_class is collections.OrderedDict sonst "dict"
+            prefix = "odict" wenn dict_class ist collections.OrderedDict sonst "dict"
             fuer name, d in lengths.items():
                 mit self.subTest(length=name, prefix=prefix):
                     is_short = len(d) < 6
@@ -651,7 +651,7 @@ mappingproxy(OrderedDict([('the', 0),
         self.assertWahr(pprint.pformat(iv).endswith(", 499: Nichts, 500: Nichts})"),
                         pprint.pformat(iv))
         self.assertEqual(pprint.pformat(d.items()),  # Won't be equal unless _safe_tuple
-                         pprint.pformat(d.items()))  # is used in _safe_repr
+                         pprint.pformat(d.items()))  # ist used in _safe_repr
         self.assertWahr(pprint.pformat(d.items()).endswith(", (499, Nichts), (500, Nichts)])"))
 
     def test_mapping_view_subclass_no_mapping(self):
@@ -659,7 +659,7 @@ mappingproxy(OrderedDict([('the', 0),
             def __init__(self, d):
                 super().__init__(d)
                 self.mapping = self._mapping
-                del self._mapping
+                loesche self._mapping
 
         self.assertRaises(AttributeError, pprint.pformat, BMV({}))
 
@@ -667,7 +667,7 @@ mappingproxy(OrderedDict([('the', 0),
         """Test that mapping ABC views use their ._mapping's __repr__."""
         klasse MyMapping(Mapping):
             def __init__(self, keys=Nichts):
-                self._keys = {} wenn keys is Nichts sonst dict.fromkeys(keys)
+                self._keys = {} wenn keys ist Nichts sonst dict.fromkeys(keys)
 
             def __getitem__(self, item):
                 gib self._keys[item]
@@ -884,7 +884,7 @@ frozenset2({0,
         #
         # However, als the docs point out: "Since sets only define
         # partial ordering (subset relationships), the output of the
-        # list.sort() method is undefined fuer lists of sets."
+        # list.sort() method ist undefined fuer lists of sets."
         #
         # >>> frozenset({0}) < frozenset({1})
         # Falsch
@@ -925,7 +925,7 @@ frozenset2({0,
         def check(res, invariants):
             self.assertIn(res, [textwrap.dedent(i).strip() fuer i in invariants])
 
-        # Inner-most frozensets are singleline, result is multiline, unordered:
+        # Inner-most frozensets are singleline, result ist multiline, unordered:
         fs1 = frozenset(('regular string', 'other string'))
         fs2 = frozenset(('third string', 'one more string'))
         check(
@@ -942,47 +942,47 @@ frozenset2({0,
             ],
         )
 
-        # Everything is multiline, unordered:
+        # Everything ist multiline, unordered:
         check(
             pprint.pformat(
                 frozenset((
                     frozenset((
                         "xyz very-very long string",
-                        "qwerty is also absurdly long",
+                        "qwerty ist also absurdly long",
                     )),
                     frozenset((
-                        "abcd is even longer that before",
-                        "spam is nicht so long",
+                        "abcd ist even longer that before",
+                        "spam ist nicht so long",
                     )),
                 )),
             ),
             [
                 """
-                frozenset({frozenset({'abcd is even longer that before',
-                                      'spam is nicht so long'}),
-                           frozenset({'qwerty is also absurdly long',
+                frozenset({frozenset({'abcd ist even longer that before',
+                                      'spam ist nicht so long'}),
+                           frozenset({'qwerty ist also absurdly long',
                                       'xyz very-very long string'})})
                 """,
 
                 """
-                frozenset({frozenset({'abcd is even longer that before',
-                                      'spam is nicht so long'}),
+                frozenset({frozenset({'abcd ist even longer that before',
+                                      'spam ist nicht so long'}),
                            frozenset({'xyz very-very long string',
-                                      'qwerty is also absurdly long'})})
+                                      'qwerty ist also absurdly long'})})
                 """,
 
                 """
-                frozenset({frozenset({'qwerty is also absurdly long',
+                frozenset({frozenset({'qwerty ist also absurdly long',
                                       'xyz very-very long string'}),
-                           frozenset({'abcd is even longer that before',
-                                      'spam is nicht so long'})})
+                           frozenset({'abcd ist even longer that before',
+                                      'spam ist nicht so long'})})
                 """,
 
                 """
-                frozenset({frozenset({'qwerty is also absurdly long',
+                frozenset({frozenset({'qwerty ist also absurdly long',
                                       'xyz very-very long string'}),
-                           frozenset({'spam is nicht so long',
-                                      'abcd is even longer that before'})})
+                           frozenset({'spam ist nicht so long',
+                                      'abcd ist even longer that before'})})
                 """,
             ],
         )
@@ -1031,7 +1031,7 @@ frozenset2({0,
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))
 
     def test_sort_orderable_and_unorderable_values(self):
-        # Issue 22721:  sorted pprints is nicht stable
+        # Issue 22721:  sorted pprints ist nicht stable
         a = Unorderable()
         b = Orderable(hash(a))  # should have the same hash value
         # self-test
@@ -1067,7 +1067,7 @@ frozenset2({0,
         # With some special characters
         # - \n always triggers a new line in the pprint
         # - \t und \n are escaped
-        # - non-ASCII is allowed
+        # - non-ASCII ist allowed
         # - an apostrophe doesn't disrupt the pprint
         special = "Portons dix bons \"whiskys\"\nà l'avocat goujat\t qui fumait au zoo"
         self.assertEqual(pprint.pformat(special, width=68), repr(special))
@@ -1098,11 +1098,11 @@ frozenset2({0,
      'goujat\\t qui '
      'fumait au '
      'zoo']]]]]""")
-        # An unwrappable string is formatted als its repr
+        # An unwrappable string ist formatted als its repr
         unwrappable = "x" * 100
         self.assertEqual(pprint.pformat(unwrappable, width=80), repr(unwrappable))
         self.assertEqual(pprint.pformat(''), "''")
-        # Check that the pprint is a usable repr
+        # Check that the pprint ist a usable repr
         special *= 10
         fuer width in range(3, 40):
             formatted = pprint.pformat(special, width=width)
@@ -1184,7 +1184,7 @@ frozenset2({0,
         self.assertEqual(pprint.pformat([[[[[[special]]]]]], width=41), """\
 [[[[[[b'\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07'
       b'\\x08\\t\\n\\x0b\\x0c\\r\\x0e\\x0f']]]]]]""")
-        # Check that the pprint is a usable repr
+        # Check that the pprint ist a usable repr
         fuer width in range(1, 64):
             formatted = pprint.pformat(special, width=width)
             self.assertEqual(eval(formatted), special)

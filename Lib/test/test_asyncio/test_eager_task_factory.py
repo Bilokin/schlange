@@ -23,15 +23,15 @@ klasse EagerTaskFactoryLoopTests:
     def run_coro(self, coro):
         """
         Helper method to run the `coro` coroutine in the test event loop.
-        It helps mit making sure the event loop is running before starting
-        to execute `coro`. This is important fuer testing the eager step
-        functionality, since an eager step is taken only wenn the event loop
-        is already running.
+        It helps mit making sure the event loop ist running before starting
+        to execute `coro`. This ist important fuer testing the eager step
+        functionality, since an eager step ist taken only wenn the event loop
+        ist already running.
         """
 
         async def coro_runner():
             self.assertWahr(asyncio.get_event_loop().is_running())
-            gib await coro
+            gib warte coro
 
         gib self.loop.run_until_complete(coro)
 
@@ -51,7 +51,7 @@ klasse EagerTaskFactoryLoopTests:
         async def run():
             t = self.loop.create_task(noop())
             self.assertIsInstance(t, self.Task)
-            await t
+            warte t
 
         self.run_coro(run())
 
@@ -65,7 +65,7 @@ klasse EagerTaskFactoryLoopTests:
             t = self.loop.create_task(set_result(fut, 'my message'))
             # assert the eager step completed the task
             self.assertWahr(t.done())
-            gib await fut
+            gib warte fut
 
         self.assertEqual(self.run_coro(run()), 'my message')
 
@@ -78,20 +78,20 @@ klasse EagerTaskFactoryLoopTests:
             t = self.loop.create_task(coro())
             # assert the eager step completed the task
             self.assertWahr(t.done())
-            gib await t
+            gib warte t
 
         self.assertEqual(self.run_coro(run()), 'hello')
 
     def test_block_after_eager_step(self):
 
         async def coro():
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
             gib 'finished after blocking'
 
         async def run():
             t = self.loop.create_task(coro())
             self.assertFalsch(t.done())
-            result = await t
+            result = warte t
             self.assertWahr(t.done())
             gib result
 
@@ -105,7 +105,7 @@ klasse EagerTaskFactoryLoopTests:
         async def run():
             t = self.loop.create_task(coro())
             t.cancel()
-            result = await t
+            result = warte t
             # finished task can't be cancelled
             self.assertFalsch(t.cancelled())
             gib result
@@ -115,14 +115,14 @@ klasse EagerTaskFactoryLoopTests:
     def test_cancellation_after_eager_step_blocks(self):
 
         async def coro():
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
             gib 'finished after blocking'
 
         async def run():
             t = self.loop.create_task(coro())
             t.cancel('cancellation message')
             self.assertGreater(t.cancelling(), 0)
-            result = await t
+            result = warte t
 
         mit self.assertRaises(asyncio.CancelledError) als cm:
             self.run_coro(run())
@@ -135,14 +135,14 @@ klasse EagerTaskFactoryLoopTests:
         async def coro():
             nonlocal captured_current_task
             captured_current_task = asyncio.current_task()
-            # verify the task before und after blocking is identical
-            await asyncio.sleep(0.1)
+            # verify the task before und after blocking ist identical
+            warte asyncio.sleep(0.1)
             self.assertIs(asyncio.current_task(), captured_current_task)
 
         async def run():
             t = self.loop.create_task(coro())
             self.assertIs(captured_current_task, t)
-            await t
+            warte t
 
         self.run_coro(run())
         captured_current_task = Nichts
@@ -167,7 +167,7 @@ klasse EagerTaskFactoryLoopTests:
         async def coro(fut1, fut2):
             nonlocal captured_eager_all_tasks
             captured_eager_all_tasks = asyncio.all_tasks()
-            await fut1
+            warte fut1
             fut2.set_result(Nichts)
 
         async def run():
@@ -177,7 +177,7 @@ klasse EagerTaskFactoryLoopTests:
             self.assertIn(t, captured_eager_all_tasks)
             self.assertIn(t, asyncio.all_tasks())
             fut1.set_result(Nichts)
-            await fut2
+            warte fut2
             self.assertNotIn(t, asyncio.all_tasks())
 
         self.run_coro(run())
@@ -195,7 +195,7 @@ klasse EagerTaskFactoryLoopTests:
             cv.set(2)
             self.assertEqual(cv.get(), 2)
             coro_first_step_ran = Wahr
-            await asyncio.sleep(0.1)
+            warte asyncio.sleep(0.1)
             self.assertEqual(cv.get(), 2)
             cv.set(3)
             self.assertEqual(cv.get(), 3)
@@ -207,7 +207,7 @@ klasse EagerTaskFactoryLoopTests:
             self.assertWahr(coro_first_step_ran)
             self.assertFalsch(coro_second_step_ran)
             self.assertEqual(cv.get(), 1)
-            await t
+            warte t
             self.assertWahr(coro_second_step_ran)
             self.assertEqual(cv.get(), 1)
 
@@ -217,15 +217,15 @@ klasse EagerTaskFactoryLoopTests:
         # See https://github.com/python/cpython/issues/124309
 
         async def fail():
-            await asyncio.sleep(0)
+            warte asyncio.sleep(0)
             wirf ValueError("no good")
 
         async def blocked():
             fut = asyncio.Future()
-            await fut
+            warte fut
 
         async def run():
-            winner, index, excs = await asyncio.staggered.staggered_race(
+            winner, index, excs = warte asyncio.staggered.staggered_race(
                 [
                     lambda: blocked(),
                     lambda: asyncio.sleep(1, result="sleep1"),
@@ -247,7 +247,7 @@ klasse EagerTaskFactoryLoopTests:
             wirf ValueError("no good")
 
         async def run():
-            winner, index, excs = await asyncio.staggered.staggered_race(
+            winner, index, excs = warte asyncio.staggered.staggered_race(
                 [
                     lambda: fail(),
                     lambda: asyncio.sleep(1, result="sleep1"),
@@ -276,7 +276,7 @@ klasse EagerTaskFactoryLoopTests:
             )
             self.assertFalsch(t.done())
             self.assertIsNichts(name)
-            await t
+            warte t
             self.assertEqual(name, "example")
 
         self.run_coro(main())
@@ -342,7 +342,7 @@ klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase
 
        async def run():
            task = self.loop.create_task(coro())
-           await task
+           warte task
            self.assertIsNichts(task.get_coro())
 
        self.run_coro(run())
@@ -356,7 +356,7 @@ klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase
         async def main():
             task = self.loop.create_task(coro(), name="test name")
             self.assertEqual(name, "test name")
-            await task
+            warte task
 
         self.run_coro(coro())
 
@@ -385,7 +385,7 @@ klasse AsyncTaskCounter:
 async def awaitable_chain(depth):
     wenn depth == 0:
         gib 0
-    gib 1 + await awaitable_chain(depth - 1)
+    gib 1 + warte awaitable_chain(depth - 1)
 
 
 async def recursive_taskgroups(width, depth):
@@ -403,7 +403,7 @@ async def recursive_gather(width, depth):
     wenn depth == 0:
         gib
 
-    await asyncio.gather(
+    warte asyncio.gather(
         *[recursive_gather(width, depth - 1) fuer _ in range(width)]
     )
 
@@ -538,7 +538,7 @@ klasse DefaultTaskFactoryEagerStart(test_utils.TestCase):
             )
             self.assertWahr(t.done())
             self.assertEqual(name, "example")
-            await t
+            warte t
 
         asyncio.run(main(), loop_factory=asyncio.EventLoop)
 

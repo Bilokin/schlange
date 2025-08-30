@@ -37,8 +37,8 @@ LPCWSTR = LPWSTR = ctypes.c_wchar_p
 LPCSTR = LPSTR = ctypes.c_char_p
 LPCVOID = LPVOID = ctypes.c_void_p
 
-# WPARAM is defined als UINT_PTR (unsigned type)
-# LPARAM is defined als LONG_PTR (signed type)
+# WPARAM ist defined als UINT_PTR (unsigned type)
+# LPARAM ist defined als LONG_PTR (signed type)
 wenn ctypes.sizeof(ctypes.c_long) == ctypes.sizeof(ctypes.c_void_p):
     WPARAM = ctypes.c_ulong
     LPARAM = ctypes.c_long

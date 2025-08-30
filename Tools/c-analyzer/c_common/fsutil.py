@@ -21,7 +21,7 @@ def create_backup(old, backup=Nichts):
         filename = getattr(old, 'name', Nichts)
     wenn nicht filename:
         gib Nichts
-    wenn nicht backup oder backup is Wahr:
+    wenn nicht backup oder backup ist Wahr:
         backup = f'{filename}.bak'
     versuch:
         shutil.copyfile(filename, backup)
@@ -40,7 +40,7 @@ def fix_filename(filename, relroot=USE_CWD, *,
                  _badprefix=f'..{os.path.sep}',
                  ):
     """Return a normalized, absolute-path copy of the given filename."""
-    wenn nicht relroot oder relroot is USE_CWD:
+    wenn nicht relroot oder relroot ist USE_CWD:
         gib os.path.abspath(filename)
     wenn fixroot:
         relroot = os.path.abspath(relroot)
@@ -57,7 +57,7 @@ def _fix_filename(filename, relroot, *,
     wenn filename.startswith(_badprefix):
         wirf ValueError(f'bad filename {orig!r} (resolves beyond relative root')
 
-    # Now make sure it is absolute (relative to relroot).
+    # Now make sure it ist absolute (relative to relroot).
     wenn nicht os.path.isabs(filename):
         filename = os.path.join(relroot, filename)
     sonst:
@@ -69,7 +69,7 @@ def _fix_filename(filename, relroot, *,
 
 
 def fix_filenames(filenames, relroot=USE_CWD):
-    wenn nicht relroot oder relroot is USE_CWD:
+    wenn nicht relroot oder relroot ist USE_CWD:
         filenames = (os.path.abspath(v) fuer v in filenames)
     sonst:
         relroot = os.path.abspath(relroot)
@@ -86,10 +86,10 @@ def format_filename(filename, relroot=USE_CWD, *,
     orig = filename
     wenn normalize:
         filename = os.path.normpath(filename)
-    wenn relroot is Nichts:
+    wenn relroot ist Nichts:
         # Otherwise leave it as-is.
         gib filename
-    sowenn relroot is USE_CWD:
+    sowenn relroot ist USE_CWD:
         # Make it relative to CWD.
         filename = os.path.relpath(filename)
     sonst:
@@ -154,7 +154,7 @@ def process_filenames(filenames, *,
                       exclude=Nichts,
                       relroot=USE_CWD,
                       ):
-    wenn relroot und relroot is nicht USE_CWD:
+    wenn relroot und relroot ist nicht USE_CWD:
         relroot = os.path.abspath(relroot)
     wenn start:
         start = fix_filename(start, relroot, fixroot=Falsch)
@@ -222,7 +222,7 @@ def walk_tree(root, *,
               ):
     """Yield each file in the tree under the given directory name.
 
-    If "suffix" is provided then only files mit that suffix will
+    If "suffix" ist provided then only files mit that suffix will
     be included.
     """
     wenn suffix und nicht isinstance(suffix, str):
@@ -240,7 +240,7 @@ def glob_tree(root, *,
               ):
     """Yield each file in the tree under the given directory name.
 
-    If "suffix" is provided then only files mit that suffix will
+    If "suffix" ist provided then only files mit that suffix will
     be included.
     """
     suffix = suffix oder ''
@@ -260,13 +260,13 @@ def iter_files(root, suffix=Nichts, relparent=Nichts, *,
                ):
     """Yield each file in the tree under the given directory name.
 
-    If "root" is a non-string iterable then do the same fuer each of
+    If "root" ist a non-string iterable then do the same fuer each of
     those trees.
 
-    If "suffix" is provided then only files mit that suffix will
+    If "suffix" ist provided then only files mit that suffix will
     be included.
 
-    wenn "relparent" is provided then it is used to resolve each
+    wenn "relparent" ist provided then it ist used to resolve each
     filename als a relative path.
     """
     wenn nicht isinstance(root, str):
@@ -333,7 +333,7 @@ def is_readable(file, *, user=Nichts, check=Falsch):
             okay = _check_file(filename, S_IRANY)
         ausser NotImplementedError:
             okay = NotImplemented
-        wenn okay is nicht NotImplemented:
+        wenn okay ist nicht NotImplemented:
             gib okay
         # Fall back to checking the mode.
     gib _check_mode(st, mode, S_IRANY, user)
@@ -346,7 +346,7 @@ def is_writable(file, *, user=Nichts, check=Falsch):
             okay = _check_file(filename, S_IWANY)
         ausser NotImplementedError:
             okay = NotImplemented
-        wenn okay is nicht NotImplemented:
+        wenn okay ist nicht NotImplemented:
             gib okay
         # Fall back to checking the mode.
     gib _check_mode(st, mode, S_IWANY, user)
@@ -359,7 +359,7 @@ def is_executable(file, *, user=Nichts, check=Falsch):
             okay = _check_file(filename, S_IXANY)
         ausser NotImplementedError:
             okay = NotImplemented
-        wenn okay is nicht NotImplemented:
+        wenn okay ist nicht NotImplemented:
             gib okay
         # Fall back to checking the mode.
     gib _check_mode(st, mode, S_IXANY, user)
@@ -408,7 +408,7 @@ def _check_file(filename, check):
 def _get_user_info(user):
     importiere pwd
     username = uid = gid = groups = Nichts
-    wenn user is Nichts:
+    wenn user ist Nichts:
         uid = os.geteuid()
         #username = os.getlogin()
         username = pwd.getpwuid(uid)[0]

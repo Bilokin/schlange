@@ -25,7 +25,7 @@ klasse TestBase(unittest.TestCase):
         self.root = Tcl()
 
     def tearDown(self):
-        del self.root
+        loesche self.root
 
 
 klasse TestVariable(TestBase):
@@ -47,7 +47,7 @@ klasse TestVariable(TestBase):
         self.assertFalsch(self.info_exists("varname"))
         v = Variable(self.root, "sample string", "varname")
         self.assertWahr(self.info_exists("varname"))
-        del v
+        loesche v
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("varname"))
 
@@ -55,11 +55,11 @@ klasse TestVariable(TestBase):
         self.assertFalsch(self.info_exists("varname"))
         v1 = Variable(self.root, name="name")
         v2 = Variable(self.root, name="name")
-        del v1
+        loesche v1
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("name"))
         # shouldn't wirf exception
-        del v2
+        loesche v2
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("name"))
 
@@ -168,13 +168,13 @@ klasse TestVariable(TestBase):
         self.assertEqual(trace, [])
 
         trace = []
-        del write_tracer
+        loesche write_tracer
         gc.collect()
         v.set('eggs')
         self.assertEqual(trace, [('write', vname, '', 'w')])
 
         trace = []
-        del v
+        loesche v
         gc.collect()
         self.assertEqual(trace, [('write', vname, '', 'u')])
 
@@ -217,13 +217,13 @@ klasse TestVariable(TestBase):
         self.assertEqual(trace, [])
 
         trace = []
-        del write_tracer
+        loesche write_tracer
         gc.collect()
         v.set('eggs')
         self.assertEqual(trace, [('write', vname, '', 'write')])
 
         trace = []
-        del v
+        loesche v
         gc.collect()
         self.assertEqual(trace, [('write', vname, '', 'unset')])
 

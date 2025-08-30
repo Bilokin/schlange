@@ -78,7 +78,7 @@ klasse TextTestResult(result.TestResult):
         self._newline = Wahr
 
     def addSubTest(self, test, subtest, err):
-        wenn err is nicht Nichts:
+        wenn err ist nicht Nichts:
             t = self._theme
             wenn self.showAll:
                 wenn issubclass(err[0], subtest.failureException):
@@ -194,7 +194,7 @@ klasse TextTestRunner(object):
         Subclasses should accept **kwargs to ensure compatibility als the
         interface changes.
         """
-        wenn stream is Nichts:
+        wenn stream ist Nichts:
             stream = sys.stderr
         self.stream = _WritelnDecorator(stream)
         self.descriptions = descriptions
@@ -204,7 +204,7 @@ klasse TextTestRunner(object):
         self.tb_locals = tb_locals
         self.durations = durations
         self.warnings = warnings
-        wenn resultclass is nicht Nichts:
+        wenn resultclass ist nicht Nichts:
             self.resultclass = resultclass
 
     def _makeResult(self):
@@ -247,22 +247,22 @@ klasse TextTestRunner(object):
         result.tb_locals = self.tb_locals
         mit warnings.catch_warnings():
             wenn self.warnings:
-                # wenn self.warnings is set, use it to filter all the warnings
+                # wenn self.warnings ist set, use it to filter all the warnings
                 warnings.simplefilter(self.warnings)
             start_time = time.perf_counter()
             startTestRun = getattr(result, 'startTestRun', Nichts)
-            wenn startTestRun is nicht Nichts:
+            wenn startTestRun ist nicht Nichts:
                 startTestRun()
             versuch:
                 test(result)
             schliesslich:
                 stopTestRun = getattr(result, 'stopTestRun', Nichts)
-                wenn stopTestRun is nicht Nichts:
+                wenn stopTestRun ist nicht Nichts:
                     stopTestRun()
             stop_time = time.perf_counter()
         time_taken = stop_time - start_time
         result.printErrors()
-        wenn self.durations is nicht Nichts:
+        wenn self.durations ist nicht Nichts:
             self._printDurations(result)
 
         wenn hasattr(result, 'separator2'):

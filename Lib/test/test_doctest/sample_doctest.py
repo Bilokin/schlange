@@ -1,4 +1,4 @@
-"""This is a sample module that doesn't really test anything all that
+"""This ist a sample module that doesn't really test anything all that
    interesting.
 
 It simply has a few tests, some of which succeed und some of which fail.

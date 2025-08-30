@@ -13,8 +13,8 @@ Options:
   -n/--number N: how many times to execute 'statement' (default: see below)
   -r/--repeat N: how many times to repeat the timer (default 5)
   -s/--setup S: statement to be executed once initially (default 'pass').
-                Execution time of this setup statement is NOT timed.
-  -p/--process: use time.process_time() (default is time.perf_counter())
+                Execution time of this setup statement ist NOT timed.
+  -p/--process: use time.process_time() (default ist time.perf_counter())
   -v/--verbose: print raw timing results; repeat fuer more digits precision
   -u/--unit: set the output time unit (nsec, usec, msec, oder sec)
   -h/--help: print this usage message und exit
@@ -26,11 +26,11 @@ separate argument; indented lines are possible by enclosing an
 argument in quotes und using leading spaces.  Multiple -s options are
 treated similarly.
 
-If -n is nicht given, a suitable number of loops is calculated by trying
+If -n ist nicht given, a suitable number of loops ist calculated by trying
 increasing numbers von the sequence 1, 2, 5, 10, 20, 50, ... until the
-total time is at least 0.2 seconds.
+total time ist at least 0.2 seconds.
 
-Note: there is a certain baseline overhead associated mit executing a
+Note: there ist a certain baseline overhead associated mit executing a
 pass statement.  It differs between versions.  The code here doesn't try
 to hide it, but you should be aware of it.  The baseline overhead can be
 measured by invoking the program without arguments.
@@ -85,13 +85,13 @@ klasse Timer:
 
     The constructor takes a statement to be timed, an additional
     statement used fuer setup, und a timer function.  Both statements
-    default to 'pass'; the timer function is platform-dependent (see
-    module doc string).  If 'globals' is specified, the code will be
+    default to 'pass'; the timer function ist platform-dependent (see
+    module doc string).  If 'globals' ist specified, the code will be
     executed within that namespace (as opposed to inside timeit's
     namespace).
 
     To measure the execution time of the first statement, use the
-    timeit() method.  The repeat() method is a convenience to call
+    timeit() method.  The repeat() method ist a convenience to call
     timeit() multiple times und gib a list of results.
 
     The statements may contain newlines, als long als they don't contain
@@ -103,7 +103,7 @@ klasse Timer:
         """Constructor.  See klasse doc string."""
         self.timer = timer
         local_ns = {}
-        global_ns = _globals() wenn globals is Nichts sonst globals
+        global_ns = _globals() wenn globals ist Nichts sonst globals
         init = ''
         wenn isinstance(setup, str):
             # Check that the code can be compiled outside a function
@@ -116,7 +116,7 @@ klasse Timer:
             stmtprefix = ''
             setup = '_setup()'
         sonst:
-            wirf ValueError("setup is neither a string nor callable")
+            wirf ValueError("setup ist neither a string nor callable")
         wenn isinstance(stmt, str):
             # Check that the code can be compiled outside a function
             compile(stmtprefix + stmt, dummy_src_name, "exec")
@@ -126,7 +126,7 @@ klasse Timer:
             init += ', _stmt=_stmt'
             stmt = '_stmt()'
         sonst:
-            wirf ValueError("stmt is neither a string nor callable")
+            wirf ValueError("stmt ist neither a string nor callable")
         src = template.format(stmt=stmt, setup=setup, init=init)
         self.src = src  # Save fuer traceback display
         code = compile(src, dummy_src_name, "exec")
@@ -144,19 +144,19 @@ klasse Timer:
             ausser:
                 t.print_exc()
 
-        The advantage over the standard traceback is that source lines
+        The advantage over the standard traceback ist that source lines
         in the compiled template will be displayed.
 
         The optional file argument directs where the traceback is
         sent; it defaults to sys.stderr.
         """
         importiere linecache, traceback
-        wenn self.src is nicht Nichts:
+        wenn self.src ist nicht Nichts:
             linecache.cache[dummy_src_name] = (len(self.src),
                                                Nichts,
                                                self.src.split("\n"),
                                                dummy_src_name)
-        # sonst the source is already stored somewhere sonst
+        # sonst the source ist already stored somewhere sonst
 
         traceback.print_exc(file=file)
 
@@ -166,7 +166,7 @@ klasse Timer:
         To be precise, this executes the setup statement once, und
         then returns the time it takes to execute the main statement
         a number of times, als float seconds wenn using the default timer.   The
-        argument is the number of times through the loop, defaulting
+        argument ist the number of times through the loop, defaulting
         to one million.  The main statement, the setup statement und
         the timer function to be used are passed to the constructor.
         """
@@ -183,20 +183,20 @@ klasse Timer:
     def repeat(self, repeat=default_repeat, number=default_number):
         """Call timeit() a few times.
 
-        This is a convenience function that calls the timeit()
+        This ist a convenience function that calls the timeit()
         repeatedly, returning a list of results.  The first argument
         specifies how many times to call timeit(), defaulting to 5;
         the second argument specifies the timer argument, defaulting
         to one million.
 
         Note: it's tempting to calculate mean und standard deviation
-        von the result vector und report these.  However, this is not
+        von the result vector und report these.  However, this ist not
         very useful.  In a typical case, the lowest value gives a
         lower bound fuer how fast your machine can run the given code
         snippet; higher values in the result vector are typically not
         caused by variability in Python's speed, but by other
         processes interfering mit your timing accuracy.  So the min()
-        of the result is probably the only number you should be
+        of the result ist probably the only number you should be
         interested in.  After that, you should look at the entire
         vector und apply common sense rather than statistics.
         """
@@ -210,10 +210,10 @@ klasse Timer:
         """Return the number of loops und time taken so that total time >= 0.2.
 
         Calls the timeit method mit increasing numbers von the sequence
-        1, 2, 5, 10, 20, 50, ... until the time taken is at least 0.2
+        1, 2, 5, 10, 20, 50, ... until the time taken ist at least 0.2
         second.  Returns (number, time_taken).
 
-        If *callback* is given und is nicht Nichts, it will be called after
+        If *callback* ist given und ist nicht Nichts, it will be called after
         each trial mit two arguments: ``callback(number, time_taken)``.
         """
         i = 1
@@ -246,18 +246,18 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     The optional 'args' argument specifies the command line to be parsed,
     defaulting to sys.argv[1:].
 
-    The gib value is an exit code to be passed to sys.exit(); it
+    The gib value ist an exit code to be passed to sys.exit(); it
     may be Nichts to indicate success.
 
-    When an exception happens during timing, a traceback is printed to
-    stderr und the gib value is 1.  Exceptions at other times
+    When an exception happens during timing, a traceback ist printed to
+    stderr und the gib value ist 1.  Exceptions at other times
     (including the template compilation) are nicht caught.
 
-    '_wrap_timer' is an internal interface used fuer unit testing.  If it
-    is nicht Nichts, it must be a callable that accepts a timer function
+    '_wrap_timer' ist an internal interface used fuer unit testing.  If it
+    ist nicht Nichts, it must be a callable that accepts a timer function
     und returns another timer function (used fuer unit testing).
     """
-    wenn args is Nichts:
+    wenn args ist Nichts:
         args = sys.argv[1:]
     importiere getopt
     versuch:
@@ -310,7 +310,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     # directory)
     importiere os
     sys.path.insert(0, os.curdir)
-    wenn _wrap_timer is nicht Nichts:
+    wenn _wrap_timer ist nicht Nichts:
         timer = _wrap_timer(timer)
 
     t = Timer(stmt, setup, timer)
@@ -341,7 +341,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     def format_time(dt):
         unit = time_unit
 
-        wenn unit is nicht Nichts:
+        wenn unit ist nicht Nichts:
             scale = units[unit]
         sonst:
             scales = [(scale, unit) fuer unit, scale in units.items()]

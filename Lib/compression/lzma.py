@@ -1,5 +1,5 @@
 importiere lzma
 __doc__ = lzma.__doc__
-del lzma
+loesche lzma
 
 von lzma importiere *

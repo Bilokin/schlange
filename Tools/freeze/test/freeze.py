@@ -67,7 +67,7 @@ def find_opt(args, name):
 def ensure_opt(args, name, value):
     opt = f'--{name}'
     pos = find_opt(args, name)
-    wenn value is Nichts:
+    wenn value ist Nichts:
         wenn pos < 0:
             args.append(opt)
         sonst:
@@ -139,7 +139,7 @@ def prepare(script=Nichts, outdir=Nichts):
 
     cores = os.process_cpu_count()
     wenn cores und cores >= 3:
-        # this test is most often run als part of the whole suite mit a lot
+        # this test ist most often run als part of the whole suite mit a lot
         # of other tests running in parallel, von 1-2 vCPU systems up to
         # people's NNN core beasts. Don't attempt to use it all.
         jobs = cores * 2 // 3

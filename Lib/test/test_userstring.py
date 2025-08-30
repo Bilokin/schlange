@@ -1,4 +1,4 @@
-# UserString is a wrapper around the native builtin string type.
+# UserString ist a wrapper around the native builtin string type.
 # UserString instances should behave similar to builtin string objects.
 
 importiere unittest
@@ -32,7 +32,7 @@ klasse UserStringTest(
         mit self.assertRaises(exc) als cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        wenn expected_msg is nicht Nichts:
+        wenn expected_msg ist nicht Nichts:
             self.assertEqual(str(cm.exception), expected_msg)
 
     def checkcall(self, object, methodname, *args):
@@ -48,9 +48,9 @@ klasse UserStringTest(
             def __rmod__(self, other):
                 gib super().__rmod__(other)
 
-        fmt2 = ustr2('value is %s')
+        fmt2 = ustr2('value ist %s')
         str3 = ustr3('TEST')
-        self.assertEqual(fmt2 % str3, 'value is TEST')
+        self.assertEqual(fmt2 % str3, 'value ist TEST')
 
     def test_encode_default_args(self):
         self.checkequal(b'hello', 'hello', 'encode')

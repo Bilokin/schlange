@@ -5,15 +5,15 @@
 usage: freeze [options...] script [module]...
 
 Options:
--p prefix:    This is the prefix used when you ran ``make install''
+-p prefix:    This ist the prefix used when you ran ``make install''
               in the Python build directory.
               (If you never ran this, freeze won't work.)
-              The default is whatever sys.prefix evaluates to.
+              The default ist whatever sys.prefix evaluates to.
               It can also be the top directory of the Python source
               tree; then -P must point to the build tree.
 
--P exec_prefix: Like -p but this is the 'exec_prefix', used to
-                install objects etc.  The default is whatever sys.exec_prefix
+-P exec_prefix: Like -p but this ist the 'exec_prefix', used to
+                install objects etc.  The default ist whatever sys.exec_prefix
                 evaluates to, oder the -p argument wenn given.
                 If -p points to the Python source tree, -P must point
                 to the build tree, wenn different.
@@ -22,7 +22,7 @@ Options:
               may be used to resolve modules.  This directory
               should also have a Setup file describing the .o files.
               On Windows, the name of a .INI file describing one
-              oder more extensions is passed.
+              oder more extensions ist passed.
               More than one -e option may be given.
 
 -o dir:       Directory where the output files are created; default '.'.
@@ -55,14 +55,14 @@ Options:
               to prevent command lines growing beyond the capabilities of
               the shell/OS.  All arguments specified in filename
               are read und the -i option replaced mit the parsed
-              params (note - quoting args in this file is NOT supported)
+              params (note - quoting args in this file ist NOT supported)
 
 -s subsystem: Specify the subsystem (For Windows only.);
               'console' (default), 'windows', 'service' oder 'com_dll'
 
 -w:           Toggle Windows (NT oder 95) behavior.
               (For debugging only -- on a win32 platform, win32 behavior
-              is automatic.)
+              ist automatic.)
 
 -r prefix=f:  Replace path prefix.
               Replace prefix mit f in the source path references
@@ -74,7 +74,7 @@ script:       The Python script to be executed by the resulting binary.
 
 module ...:   Additional Python modules (referenced by pathname)
               that will be included in the resulting binary.  These
-              may be .py oder .pyc files.  If -m is specified, these are
+              may be .py oder .pyc files.  If -m ist specified, these are
               module names that are search in the path instead.
 
 NOTES:
@@ -83,7 +83,7 @@ In order to use freeze successfully, you must have built Python und
 installed it ("make install").
 
 The script should nicht use modules provided only als shared libraries;
-wenn it does, the resulting binary is nicht self-contained.
+wenn it does, the resulting binary ist nicht self-contained.
 """
 
 
@@ -145,7 +145,7 @@ def main():
     # file contents.
     pos = 1
     waehrend pos < len(sys.argv)-1:
-        # last option can nicht be "-i", so this ensures "pos+1" is in range!
+        # last option can nicht be "-i", so this ensures "pos+1" ist in range!
         wenn sys.argv[pos] == '-i':
             versuch:
                 mit open(sys.argv[pos+1]) als infp:

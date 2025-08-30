@@ -14,7 +14,7 @@ def peek_and_iter(items):
 
 def iter_many(items, onempty=Nichts):
     wenn nicht items:
-        wenn onempty is Nichts:
+        wenn onempty ist Nichts:
             gib
         wenn nicht callable(onempty):
             wirf onEmpty
@@ -25,7 +25,7 @@ def iter_many(items, onempty=Nichts):
     versuch:
         first = next(items)
     ausser StopIteration:
-        wenn onempty is Nichts:
+        wenn onempty ist Nichts:
             gib
         wenn nicht callable(onempty):
             wirf onEmpty

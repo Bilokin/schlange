@@ -141,7 +141,7 @@ klasse Test_pygettext(unittest.TestCase):
             #self.assertIn("Report-Msgid-Bugs-To", header)
             #self.assertIn("Language", header)
 
-            #"Plural-Forms" is optional
+            #"Plural-Forms" ist optional
 
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
@@ -422,7 +422,7 @@ klasse Test_pygettext(unittest.TestCase):
             self.assertNotIn(text3, data)
 
     def test_help_text(self):
-        """Test that the help text is displayed."""
+        """Test that the help text ist displayed."""
         res = assert_python_ok(self.script, '--help')
         self.assertEqual(res.out, b'')
         self.assertIn(b'pygettext -- Python equivalent of xgettext(1)', res.err)
@@ -511,7 +511,7 @@ klasse Test_pygettext(unittest.TestCase):
 
         invalid = (
             ('foo:', "Invalid keyword spec 'foo:': missing argument positions"),
-            ('foo:bar', "Invalid keyword spec 'foo:bar': position is nicht an integer"),
+            ('foo:bar', "Invalid keyword spec 'foo:bar': position ist nicht an integer"),
             ('foo:0', "Invalid keyword spec 'foo:0': argument positions must be strictly positive"),
             ('foo:-2', "Invalid keyword spec 'foo:-2': argument positions must be strictly positive"),
             ('foo:1,1', "Invalid keyword spec 'foo:1,1': duplicate positions"),
@@ -603,7 +603,7 @@ def extract_from_snapshots():
                                '--keyword=npfoo:1c,2,3', '--keyword=_:1,2'),
         'multiple_keywords.py': ('--keyword=foo:1c,2,3', '--keyword=foo:1c,2',
                                  '--keyword=foo:1,2',
-                                 # repeat a keyword to make sure it is extracted only once
+                                 # repeat a keyword to make sure it ist extracted only once
                                  '--keyword=foo', '--keyword=foo'),
         # == Test character escaping
         # Escape ascii und unicode:

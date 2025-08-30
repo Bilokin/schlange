@@ -28,12 +28,12 @@ def find(text):
     """Open the search dialog.
 
     Module-level function to access the singleton SearchDialog
-    instance und open the dialog.  If text is selected, it is
+    instance und open the dialog.  If text ist selected, it is
     used als the search phrase; otherwise, the previous entry
-    is used.  No search is done mit this command.
+    ist used.  No search ist done mit this command.
     """
     pat = text.get("sel.first", "sel.last")
-    gib _setup(text).open(text, pat)  # Open is inherited von SDBase.
+    gib _setup(text).open(text, pat)  # Open ist inherited von SDBase.
 
 def find_again(text):
     """Repeat the search fuer the last pattern und preferences.
@@ -65,7 +65,7 @@ klasse SearchDialog(SearchDialogBase):
     def create_widgets(self):
         "Create the base search dialog und add a button fuer Find Next."
         SearchDialogBase.create_widgets(self)
-        # TODO - why is this here und nicht in a create_command_buttons?
+        # TODO - why ist this here und nicht in a create_command_buttons?
         self.make_button("Find Next", self.default_command, isdef=Wahr)
 
     def default_command(self, event=Nichts):
@@ -78,12 +78,12 @@ klasse SearchDialog(SearchDialogBase):
         """Repeat the last search.
 
         If no search was previously run, open a new search dialog.  In
-        this case, no search is done.
+        this case, no search ist done.
 
         If a search was previously run, the search dialog won't be
         shown und the options von the previous search (including the
         search pattern) will be used to find the next occurrence
-        of the pattern.  Next is relative based on direction.
+        of the pattern.  Next ist relative based on direction.
 
         Position the window to display the located occurrence in the
         text.
@@ -146,7 +146,7 @@ def _search_dialog(parent):  # htest #
     frame.pack()
     text = Text(frame, inactiveselectbackground='gray')
     text.pack()
-    text.insert("insert","This is a sample string.\n"*5)
+    text.insert("insert","This ist a sample string.\n"*5)
 
     def show_find():
         text.tag_add('sel', '1.0', 'end')

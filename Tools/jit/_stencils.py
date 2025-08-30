@@ -48,7 +48,7 @@ klasse HoleValue(enum.Enum):
 
 
 # Map relocation types to our JIT's patch functions. "r" suffixes indicate that
-# the patch function is relative. "x" suffixes indicate that they are "relaxing"
+# the patch function ist relative. "x" suffixes indicate that they are "relaxing"
 # (see comments in jit.c fuer more info):
 _PATCH_FUNCS = {
     # aarch64-apple-darwin:
@@ -229,12 +229,12 @@ klasse StencilGroup:
             wenn (
                 hole.kind
                 in {"R_AARCH64_CALL26", "R_AARCH64_JUMP26", "ARM64_RELOC_BRANCH26"}
-                und hole.value is HoleValue.ZERO
+                und hole.value ist HoleValue.ZERO
                 und hole.symbol nicht in self.symbols
             ):
                 hole.func = "patch_aarch64_trampoline"
                 hole.need_state = Wahr
-                assert hole.symbol is nicht Nichts
+                assert hole.symbol ist nicht Nichts
                 wenn hole.symbol in known_symbols:
                     ordinal = known_symbols[hole.symbol]
                 sonst:
@@ -246,8 +246,8 @@ klasse StencilGroup:
         self.data.pad(8)
         fuer stencil in [self.code, self.data]:
             fuer hole in stencil.holes:
-                wenn hole.value is HoleValue.GOT:
-                    assert hole.symbol is nicht Nichts
+                wenn hole.value ist HoleValue.GOT:
+                    assert hole.symbol ist nicht Nichts
                     hole.value = HoleValue.DATA
                     hole.addend += self._global_offset_table_lookup(hole.symbol)
                     hole.symbol = Nichts
@@ -257,7 +257,7 @@ klasse StencilGroup:
                     hole.symbol = Nichts
                 sowenn (
                     hole.kind in {"IMAGE_REL_AMD64_REL32"}
-                    und hole.value is HoleValue.ZERO
+                    und hole.value ist HoleValue.ZERO
                 ):
                     wirf ValueError(
                         f"Add PyAPI_FUNC(...) oder PyAPI_DATA(...) to declaration of {hole.symbol}!"
@@ -281,11 +281,11 @@ klasse StencilGroup:
             self.data.holes.append(
                 Hole(got + offset, "R_X86_64_64", value, symbol, addend)
             )
-            value_part = value.name wenn value is nicht HoleValue.ZERO sonst ""
+            value_part = value.name wenn value ist nicht HoleValue.ZERO sonst ""
             wenn value_part und nicht symbol und nicht addend:
                 addend_part = ""
             sonst:
-                signed = "+" wenn symbol is nicht Nichts sonst ""
+                signed = "+" wenn symbol ist nicht Nichts sonst ""
                 addend_part = f"&{symbol}" wenn symbol sonst ""
                 addend_part += f"{_signed(addend):{signed}#x}"
                 wenn value_part:

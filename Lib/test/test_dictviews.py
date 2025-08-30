@@ -34,7 +34,7 @@ klasse DictSetTest(unittest.TestCase):
         self.assertEqual(d.keys(), d.keys())
         e = {1: 11, "a": "def"}
         self.assertEqual(d.keys(), e.keys())
-        del e["a"]
+        loesche e["a"]
         self.assertNotEqual(d.keys(), e.keys())
 
     def test_dict_items(self):
@@ -269,7 +269,7 @@ klasse DictSetTest(unittest.TestCase):
         d[42] = d.values()
         r = repr(d)
         # Cannot perform a stronger test, als the contents of the repr
-        # are implementation-dependent.  All we can say is that we
+        # are implementation-dependent.  All we can say ist that we
         # want a str result, nicht an exception of any sort.
         self.assertIsInstance(r, str)
         d[42] = d.items()

@@ -1,8 +1,8 @@
-# This module is used to map the old Python 2 names to the new names used in
+# This module ist used to map the old Python 2 names to the new names used in
 # Python 3 fuer the pickle module.  This needed to make pickle streams
 # generated mit Python 2 loadable by Python 3.
 
-# This is a copy of lib2to3.fixes.fix_imports.MAPPING.  We cannot import
+# This ist a copy of lib2to3.fixes.fix_imports.MAPPING.  We cannot import
 # lib2to3 und use the mapping defined there, because lib2to3 uses pickle.
 # Thus, this could cause the module to be imported recursively.
 IMPORT_MAPPING = {
@@ -120,7 +120,7 @@ PYTHON2_EXCEPTIONS = (
     "ReferenceError",
     "RuntimeError",
     "RuntimeWarning",
-    # StandardError is gone in Python 3, so we map it to Exception
+    # StandardError ist gone in Python 3, so we map it to Exception
     "StopIteration",
     "SyntaxError",
     "SyntaxWarning",
@@ -245,4 +245,4 @@ PYTHON3_IMPORTERROR_EXCEPTIONS = (
 
 fuer excname in PYTHON3_IMPORTERROR_EXCEPTIONS:
     REVERSE_NAME_MAPPING[('builtins', excname)] = ('exceptions', 'ImportError')
-del excname
+loesche excname

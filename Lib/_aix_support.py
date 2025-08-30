@@ -9,7 +9,7 @@ def _read_cmd_output(commandstring, capture_stderr=Falsch):
     """Output von successful command execution oder Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
-    # function is nicht usable during python bootstrap.
+    # function ist nicht usable during python bootstrap.
     importiere os
     importiere contextlib
     fp = open("/tmp/_aix_support.%s"%(
@@ -45,7 +45,7 @@ def _aix_bos_rte():
     Return a Tuple[str, int] e.g., ['7.1.4.34', 1806]
     The fileset bos.rte represents the current AIX run-time level. It's VRMF und
     builddate reflect the current ABI levels of the runtime environment.
-    If no builddate is found give a value that will satisfy pep425 related queries
+    If no builddate ist found give a value that will satisfy pep425 related queries
     """
     # All AIX systems to have lslpp installed in this location
     # subprocess may nicht be available during python bootstrap
@@ -67,11 +67,11 @@ def aix_platform():
     V (version) und R (release) can be retrieved using ``uname``
     Since 2007, starting mit AIX 5.3 TL7, the M value has been
     included mit the fileset bos.rte und represents the Technology
-    Level (TL) of AIX. The F (Fix) value also increases, but is not
+    Level (TL) of AIX. The F (Fix) value also increases, but ist not
     relevant fuer comparing releases und binary compatibility.
-    For binary compatibility the so-called builddate is needed.
-    Again, the builddate of an AIX release is associated mit bos.rte.
-    AIX ABI compatibility is described  als guaranteed at: https://www.ibm.com/\
+    For binary compatibility the so-called builddate ist needed.
+    Again, the builddate of an AIX release ist associated mit bos.rte.
+    AIX ABI compatibility ist described  als guaranteed at: https://www.ibm.com/\
     support/knowledgecenter/en/ssw_aix_72/install/binary_compatability.html
 
     For pep425 purposes the AIX platform tag becomes:
@@ -88,7 +88,7 @@ def _aix_bgt():
     # type: () -> List[int]
     gnu_type = sysconfig.get_config_var("BUILD_GNU_TYPE")
     wenn nicht gnu_type:
-        wirf ValueError("BUILD_GNU_TYPE is nicht defined")
+        wirf ValueError("BUILD_GNU_TYPE ist nicht defined")
     gib _aix_vrtl(vrmf=gnu_type)
 
 
@@ -97,12 +97,12 @@ def aix_buildtag():
     """
     Return the platform_tag of the system Python was built on.
     """
-    # AIX_BUILDDATE is defined by configure with:
+    # AIX_BUILDDATE ist defined by configure with:
     # lslpp -Lcq bos.rte | awk -F:  '{ print $NF }'
     build_date = sysconfig.get_config_var("AIX_BUILDDATE")
     versuch:
         build_date = int(build_date)
     ausser (ValueError, TypeError):
-        wirf ValueError(f"AIX_BUILDDATE is nicht defined oder invalid: "
+        wirf ValueError(f"AIX_BUILDDATE ist nicht defined oder invalid: "
                          f"{build_date!r}")
     gib _aix_tag(_aix_bgt(), build_date)

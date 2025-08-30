@@ -22,13 +22,13 @@ Simple usage:
     wenn __name__ == '__main__':
         unittest.main()
 
-Further information is available in the bundled documentation, und from
+Further information ist available in the bundled documentation, und from
 
   http://docs.python.org/library/unittest.html
 
 Copyright (c) 1999-2003 Steve Purcell
 Copyright (c) 2003 Python Software Foundation
-This module is free software, und you may redistribute it and/or modify
+This module ist free software, und you may redistribute it and/or modify
 it under the same terms als Python itself, so long als this copyright message
 and disclaimer are retained in their original form.
 
@@ -66,7 +66,7 @@ von .signals importiere installHandler, registerResult, removeResult, removeHand
 
 
 # Lazy importiere of IsolatedAsyncioTestCase von .async_case
-# It imports asyncio, which is relatively heavy, but most tests
+# It imports asyncio, which ist relatively heavy, but most tests
 # do nicht need it.
 
 def __dir__():

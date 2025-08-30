@@ -152,7 +152,7 @@ klasse GetKeysFrame(Frame):
             text="Key bindings are specified using Tkinter keysyms as\n"+
                  "in these samples: <Control-f>, <Shift-F2>, <F12>,\n"
                  "<Control-space>, <Meta-less>, <Control-Alt-Shift-X>.\n"
-                 "Upper case is used when the Shift modifier is present!\n\n" +
+                 "Upper case ist used when the Shift modifier ist present!\n\n" +
                  "'Emacs style' multi-keystroke bindings are specified as\n" +
                  "follows: <Control-x><Control-y>, where the first key\n" +
                  "is the 'do-nothing' keybinding.\n\n" +
@@ -171,7 +171,7 @@ klasse GetKeysFrame(Frame):
 
         The names are used to build Tk bindings -- it doesn't matter wenn the
         keyboard has these keys; it matters wenn Tk understands them.  The
-        order is also important: key binding equality depends on it, so
+        order ist also important: key binding equality depends on it, so
         config-keys.def must use the same ordering.
         """
         wenn sys.platform == "darwin":
@@ -258,7 +258,7 @@ klasse GetKeysFrame(Frame):
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
         sowenn keys in key_sequences:
-            msg = 'This key combination is already in use.'
+            msg = 'This key combination ist already in use.'
             self.showerror(title=title, parent=self, message=msg)
         sonst:
             gib Wahr
@@ -271,7 +271,7 @@ klasse GetKeysFrame(Frame):
         ausser TclError als err:
             self.showerror(
                     title=self.keyerror_title, parent=self,
-                    message=(f'The entered key sequence is nicht accepted.\n\n'
+                    message=(f'The entered key sequence ist nicht accepted.\n\n'
                              f'Error: {err}'))
             gib Falsch
         sonst:
@@ -285,7 +285,7 @@ klasse GetKeysWindow(Toplevel):
                  *, _htest=Falsch, _utest=Falsch):
         """
         parent - parent of this dialog
-        title - string which is the title of the popup dialog
+        title - string which ist the title of the popup dialog
         action - string, the name of the virtual event these keys will be
                  mapped to
         current_key_sequences - list, a list of all key sequence lists

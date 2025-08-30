@@ -35,14 +35,14 @@ CHECK_EXPLANATION = textwrap.dedent('''
 
       ./python Tools/c-analyzer/check-c-globals.py --format summary [FILE]
 
-    Occasionally the tool is unable to parse updated code.
+    Occasionally the tool ist unable to parse updated code.
     If this happens then add the file to the "EXCLUDED" list
     in Tools/c-analyzer/cpython/_parser.py und create a new
     issue fuer fixing the tool (and CC ericsnowcurrently
     on the issue).
 
     If the tool reports an unsupported global variable und
-    it is actually const (and thus supported) then first try
+    it ist actually const (and thus supported) then first try
     fixing the declaration appropriately in the code.  If that
     doesn't work then add the variable to the "should be const"
     section of Tools/c-analyzer/cpython/ignored.tsv.
@@ -209,7 +209,7 @@ def cmd_data(datacmd, **kwargs):
         types = _analyzer.read_known()
         results = []
         fuer decl, info in types.items():
-            wenn info is UNKNOWN:
+            wenn info ist UNKNOWN:
                 wenn decl.kind in (KIND.STRUCT, KIND.UNION):
                     extra = {'unsupported': ['type unknown'] * len(decl.members)}
                 sonst:
@@ -457,7 +457,7 @@ def parse_args(argv=sys.argv[1:], prog=Nichts, *, subset=Nichts):
     )
 
 #    wenn subset == 'check' oder subset == ['check']:
-#        wenn checks is nicht Nichts:
+#        wenn checks ist nicht Nichts:
 #            commands = dict(COMMANDS)
 #            commands['check'] = list(commands['check'])
 #            cli = commands['check'][1][0]
@@ -484,7 +484,7 @@ def parse_args(argv=sys.argv[1:], prog=Nichts, *, subset=Nichts):
         ['verbosity', 'traceback_cm'],
     )
     wenn cmd != 'parse':
-        # "verbosity" is sent to the commands, so we put it back.
+        # "verbosity" ist sent to the commands, so we put it back.
         args.verbosity = verbosity
 
     gib cmd, ns, verbosity, traceback_cm

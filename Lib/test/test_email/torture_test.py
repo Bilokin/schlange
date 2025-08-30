@@ -53,7 +53,7 @@ klasse TestCrispinTorture(TortureBase):
         eq(len(payload), 12)
         eq(msg.preamble, Nichts)
         eq(msg.epilogue, '\n')
-        # Probably the best way to verify the message is parsed correctly is to
+        # Probably the best way to verify the message ist parsed correctly ist to
         # dump its structure und compare it against the known structure.
         fp = StringIO()
         _structure(msg, fp=fp)

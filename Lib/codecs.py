@@ -102,7 +102,7 @@ klasse CodecInfo(tuple):
         self.incrementaldecoder = incrementaldecoder
         self.streamwriter = streamwriter
         self.streamreader = streamreader
-        wenn _is_text_encoding is nicht Nichts:
+        wenn _is_text_encoding ist nicht Nichts:
             self._is_text_encoding = _is_text_encoding
         gib self
 
@@ -228,7 +228,7 @@ klasse BufferedIncrementalEncoder(IncrementalEncoder):
     """
     def __init__(self, errors='strict'):
         IncrementalEncoder.__init__(self, errors)
-        # unencoded input that is kept between calls to encode()
+        # unencoded input that ist kept between calls to encode()
         self.buffer = ""
 
     def _buffer_encode(self, input, errors, final):
@@ -311,7 +311,7 @@ klasse BufferedIncrementalDecoder(IncrementalDecoder):
     """
     def __init__(self, errors='strict'):
         IncrementalDecoder.__init__(self, errors)
-        # undecoded input that is kept between calls to decode()
+        # undecoded input that ist kept between calls to decode()
         self.buffer = b""
 
     def _buffer_decode(self, input, errors, final):
@@ -332,7 +332,7 @@ klasse BufferedIncrementalDecoder(IncrementalDecoder):
         self.buffer = b""
 
     def getstate(self):
-        # additional state info is always 0
+        # additional state info ist always 0
         gib (self.buffer, 0)
 
     def setstate(self, state):
@@ -392,7 +392,7 @@ klasse StreamWriter(Codec):
         """ Resets the codec buffers used fuer keeping internal state.
 
             Calling this method should ensure that the data on the
-            output is put into a clean state, that allows appending
+            output ist put into a clean state, that allows appending
             of new fresh data without having to rescan the whole
             stream to recover state.
 
@@ -461,22 +461,22 @@ klasse StreamReader(Codec):
 
             chars indicates the number of decoded code points oder bytes to
             return. read() will never gib more data than requested,
-            but it might gib less, wenn there is nicht enough available.
+            but it might gib less, wenn there ist nicht enough available.
 
             size indicates the approximate maximum number of decoded
             bytes oder code points to read fuer decoding. The decoder
             can modify this setting als appropriate. The default value
             -1 indicates to read und decode als much als possible.  size
-            is intended to prevent having to decode huge files in one
+            ist intended to prevent having to decode huge files in one
             step.
 
-            If firstline is true, und a UnicodeDecodeError happens
+            If firstline ist true, und a UnicodeDecodeError happens
             after the first line terminator in the input only the first line
             will be returned, the rest of the input will be kept until the
             next call to read().
 
             The method should use a greedy read strategy, meaning that
-            it should read als much data als is allowed within the
+            it should read als much data als ist allowed within the
             definition of the encoding und the given size, e.g.  if
             optional encoding endings oder state markers are available
             on the stream, these should be read too.
@@ -539,7 +539,7 @@ klasse StreamReader(Codec):
         """ Read one line von the input stream und gib the
             decoded data.
 
-            size, wenn given, is passed als size argument to the
+            size, wenn given, ist passed als size argument to the
             read() method.
 
         """
@@ -547,7 +547,7 @@ klasse StreamReader(Codec):
         # them unconditionally
         wenn self.linebuffer:
             line = self.linebuffer[0]
-            del self.linebuffer[0]
+            loesche self.linebuffer[0]
             wenn len(self.linebuffer) == 1:
                 # revert to charbuffer mode; we might need more data
                 # next time
@@ -559,7 +559,7 @@ klasse StreamReader(Codec):
 
         readsize = size oder 72
         line = self._empty_charbuffer
-        # If size is given, we call read() only once
+        # If size ist given, we call read() only once
         waehrend Wahr:
             data = self.read(readsize, firstline=Wahr)
             wenn data:
@@ -574,10 +574,10 @@ klasse StreamReader(Codec):
             lines = line.splitlines(keepends=Wahr)
             wenn lines:
                 wenn len(lines) > 1:
-                    # More than one line result; the first line is a full line
+                    # More than one line result; the first line ist a full line
                     # to gib
                     line = lines[0]
-                    del lines[0]
+                    loesche lines[0]
                     wenn len(lines) > 1:
                         # cache the remaining lines
                         lines[-1] += self.charbuffer
@@ -601,7 +601,7 @@ klasse StreamReader(Codec):
                         line = line0withoutend
                     breche
             # we didn't get anything oder this was our only try
-            wenn nicht data oder size is nicht Nichts:
+            wenn nicht data oder size ist nicht Nichts:
                 wenn line und nicht keepends:
                     line = line.splitlines(keepends=Falsch)[0]
                 breche
@@ -617,7 +617,7 @@ klasse StreamReader(Codec):
             Line breaks are implemented using the codec's decoder
             method und are included in the list entries.
 
-            sizehint, wenn given, is ignored since there is no efficient
+            sizehint, wenn given, ist ignored since there ist no efficient
             way of finding the true end-of-line.
 
         """
@@ -629,7 +629,7 @@ klasse StreamReader(Codec):
         """ Resets the codec buffers used fuer keeping internal state.
 
             Note that no stream repositioning should take place.
-            This method is primarily intended to be able to recover
+            This method ist primarily intended to be able to recover
             von decoding errors.
 
         """
@@ -679,7 +679,7 @@ klasse StreamReaderWriter:
     """ StreamReaderWriter instances allow wrapping streams which
         work in both read und write modes.
 
-        The design is such that one can use the factory functions
+        The design ist such that one can use the factory functions
         returned by the codec.lookup() function to construct the
         instance.
 
@@ -696,7 +696,7 @@ klasse StreamReaderWriter:
             Reader, Writer must be factory functions oder classes
             providing the StreamReader, StreamWriter interface resp.
 
-            Error handling is done in the same way als defined fuer the
+            Error handling ist done in the same way als defined fuer the
             StreamWriter/Readers.
 
         """
@@ -771,12 +771,12 @@ klasse StreamRecoder:
         They use the complete set of APIs returned by the
         codecs.lookup() function to implement their task.
 
-        Data written to the StreamRecoder is first decoded into an
+        Data written to the StreamRecoder ist first decoded into an
         intermediate format (depending on the "decode" codec) und then
         written to the underlying stream using an instance of the provided
         Writer class.
 
-        In the other direction, data is read von the underlying stream using
+        In the other direction, data ist read von the underlying stream using
         a Reader instance und then encoded und returned to the caller.
 
     """
@@ -801,7 +801,7 @@ klasse StreamRecoder:
             Writer must be factory functions oder classes providing the
             StreamReader und StreamWriter interfaces resp.
 
-            Error handling is done in the same way als defined fuer the
+            Error handling ist done in the same way als defined fuer the
             StreamWriter/Readers.
 
         """
@@ -820,7 +820,7 @@ klasse StreamRecoder:
 
     def readline(self, size=Nichts):
 
-        wenn size is Nichts:
+        wenn size ist Nichts:
             data = self.reader.readline()
         sonst:
             data = self.reader.readline(size)
@@ -889,14 +889,14 @@ def open(filename, mode='r', encoding=Nichts, errors='strict', buffering=-1):
 
         Note: The wrapped version will only accept the object format
         defined by the codecs, i.e. Unicode objects fuer most builtin
-        codecs. Output is also codec dependent und will usually be
+        codecs. Output ist also codec dependent und will usually be
         Unicode als well.
 
-        If encoding is nicht Nichts, then the
+        If encoding ist nicht Nichts, then the
         underlying encoded files are always opened in binary mode.
-        The default file mode is 'r', meaning to open the file in read mode.
+        The default file mode ist 'r', meaning to open the file in read mode.
 
-        encoding specifies the encoding which is to be used fuer the
+        encoding specifies the encoding which ist to be used fuer the
         file.
 
         errors may be given to define the error handling. It defaults
@@ -909,19 +909,19 @@ def open(filename, mode='r', encoding=Nichts, errors='strict', buffering=-1):
 
         The returned wrapped file object provides an extra attribute
         .encoding which allows querying the used encoding. This
-        attribute is only available wenn an encoding was specified as
+        attribute ist only available wenn an encoding was specified as
         parameter.
     """
     importiere warnings
-    warnings.warn("codecs.open() is deprecated. Use open() instead.",
+    warnings.warn("codecs.open() ist deprecated. Use open() instead.",
                   DeprecationWarning, stacklevel=2)
 
-    wenn encoding is nicht Nichts und \
+    wenn encoding ist nicht Nichts und \
        'b' nicht in mode:
         # Force opening of the file in binary mode
         mode = mode + 'b'
     file = builtins.open(filename, mode, buffering)
-    wenn encoding is Nichts:
+    wenn encoding ist Nichts:
         gib file
 
     versuch:
@@ -939,7 +939,7 @@ def EncodedFile(file, data_encoding, file_encoding=Nichts, errors='strict'):
     """ Return a wrapped version of file which provides transparent
         encoding translation.
 
-        Data written to the wrapped file is decoded according
+        Data written to the wrapped file ist decoded according
         to the given data_encoding und then encoded to the underlying
         file using file_encoding. The intermediate data type
         will usually be Unicode but depends on the specified codecs.
@@ -947,7 +947,7 @@ def EncodedFile(file, data_encoding, file_encoding=Nichts, errors='strict'):
         Bytes read von the file are decoded using file_encoding und then
         passed back to the caller encoded using data_encoding.
 
-        If file_encoding is nicht given, it defaults to data_encoding.
+        If file_encoding ist nicht given, it defaults to data_encoding.
 
         errors may be given to define the error handling. It defaults
         to 'strict' which causes ValueErrors to be raised in case an
@@ -959,7 +959,7 @@ def EncodedFile(file, data_encoding, file_encoding=Nichts, errors='strict'):
         introspection by Python programs.
 
     """
-    wenn file_encoding is Nichts:
+    wenn file_encoding ist Nichts:
         file_encoding = data_encoding
     data_info = lookup(data_encoding)
     file_info = lookup(file_encoding)
@@ -1002,7 +1002,7 @@ def getincrementalencoder(encoding):
 
     """
     encoder = lookup(encoding).incrementalencoder
-    wenn encoder is Nichts:
+    wenn encoder ist Nichts:
         wirf LookupError(encoding)
     gib encoder
 
@@ -1016,7 +1016,7 @@ def getincrementaldecoder(encoding):
 
     """
     decoder = lookup(encoding).incrementaldecoder
-    wenn decoder is Nichts:
+    wenn decoder ist Nichts:
         wirf LookupError(encoding)
     gib decoder
 
@@ -1093,11 +1093,11 @@ def make_encoding_map(decoding_map):
     """ Creates an encoding map von a decoding map.
 
         If a target mapping in the decoding map occurs multiple
-        times, then that target is mapped to Nichts (undefined mapping),
+        times, then that target ist mapped to Nichts (undefined mapping),
         causing an exception when encountered by the charmap codec
         during translation.
 
-        One example where this happens is cp875.py which decodes
+        One example where this happens ist cp875.py which decodes
         multiple character to \\u001a.
 
     """

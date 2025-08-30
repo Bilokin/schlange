@@ -18,9 +18,9 @@ klasse InitCloseTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text
+        loesche cls.text
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def test_init(self):
         redir = WidgetRedirector(self.text)
@@ -48,10 +48,10 @@ klasse WidgetRedirectorTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        del cls.text
+        loesche cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        loesche cls.root
 
     def setUp(self):
         self.redir = WidgetRedirector(self.text)
@@ -87,7 +87,7 @@ klasse WidgetRedirectorTest(unittest.TestCase):
         self.assertNotIn('insert', self.text.__dict__)
 
     def test_unregister_no_attribute(self):
-        del self.text.insert
+        loesche self.text.insert
         self.assertEqual(self.redir.unregister('insert'), self.func)
 
     def test_dispatch_intercept(self):

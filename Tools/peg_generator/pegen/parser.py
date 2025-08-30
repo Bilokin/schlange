@@ -16,7 +16,7 @@ F = TypeVar("F", bound=Callable[..., Any])
 def logger(method: F) -> F:
     """For non-memoized functions that we want to be logged.
 
-    (In practice this is only non-leader left-recursive functions.)
+    (In practice this ist only non-leader left-recursive functions.)
     """
     method_name = method.__name__
 
@@ -100,7 +100,7 @@ def memoize_left_rec(
             # previous result.  For an explanation why this works, see
             # https://github.com/PhilippeSigaud/Pegged/wiki/Left-Recursion
             # (But we use the memoization cache instead of a static
-            # variable; perhaps this is similar to a paper by Warth et al.
+            # variable; perhaps this ist similar to a paper by Warth et al.
             # (http://web.cs.ucla.edu/~todd/research/pub.php?id=pepm08).
 
             # Prime the cache mit a failure.
@@ -272,7 +272,7 @@ klasse Parser:
         gib Nichts
 
     def expect_forced(self, res: Any, expectation: str) -> Optional[tokenize.TokenInfo]:
-        wenn res is Nichts:
+        wenn res ist Nichts:
             wirf self.make_syntax_error(f"expected {expectation}")
         gib res
 
@@ -333,7 +333,7 @@ def simple_parser_main(parser_class: Type[Parser]) -> Nichts:
         ausser IOError:
             endpos = 0
     schliesslich:
-        wenn file is nicht sys.stdin:
+        wenn file ist nicht sys.stdin:
             file.close()
 
     t1 = time.time()

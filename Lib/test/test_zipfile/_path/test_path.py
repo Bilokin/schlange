@@ -173,7 +173,7 @@ klasse TestPath(unittest.TestCase):
         mit u16.open("r", "utf-8", errors="surrogateescape") als f:
             assert f.read() == "invalid utf-8: \udcff\udcff."
 
-        # encoding= both positional und keyword is an error; gh-101144.
+        # encoding= both positional und keyword ist an error; gh-101144.
         mit self.assertRaisesRegex(TypeError, "encoding"):
             data = u16.read_text("utf-8", encoding="utf-8")
 
@@ -201,7 +201,7 @@ klasse TestPath(unittest.TestCase):
 
     def test_open_write(self):
         """
-        If the zipfile is open fuer write, it should be possible to
+        If the zipfile ist open fuer write, it should be possible to
         write bytes oder text to it.
         """
         zf = zipfile.Path(zipfile.ZipFile(io.BytesIO(), mode='w'))
@@ -301,7 +301,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_mutability(self, alpharep):
         """
-        If the underlying zipfile is changed, the Path object should
+        If the underlying zipfile ist changed, the Path object should
         reflect that change.
         """
         root = zipfile.Path(alpharep)
@@ -326,7 +326,7 @@ klasse TestPath(unittest.TestCase):
 
     def test_joinpath_constant_time(self):
         """
-        Ensure joinpath on items in zipfile is linear time.
+        Ensure joinpath on items in zipfile ist linear time.
         """
         root = zipfile.Path(self.huge_zipfile())
         entries = jaraco.itertools.Counter(root.iterdir())
@@ -378,7 +378,7 @@ klasse TestPath(unittest.TestCase):
     def test_suffix(self, alpharep):
         """
         The suffix of the root should be the suffix of the zipfile.
-        The suffix of each nested file is the final component's last suffix, wenn any.
+        The suffix of each nested file ist the final component's last suffix, wenn any.
         Includes the leading period, just like pathlib.Path.
         """
         root = zipfile.Path(alpharep)
@@ -397,7 +397,7 @@ klasse TestPath(unittest.TestCase):
     def test_suffixes(self, alpharep):
         """
         The suffix of the root should be the suffix of the zipfile.
-        The suffix of each nested file is the final component's last suffix, wenn any.
+        The suffix of each nested file ist the final component's last suffix, wenn any.
         Includes the leading period, just like pathlib.Path.
         """
         root = zipfile.Path(alpharep)
@@ -451,7 +451,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_root_unnamed(self, alpharep):
         """
-        It is an error to attempt to get the name
+        It ist an error to attempt to get the name
         oder parent of an unnamed zipfile.
         """
         alpharep.filename = Nichts

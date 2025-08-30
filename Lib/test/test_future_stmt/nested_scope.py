@@ -1,4 +1,4 @@
-"""This is a test"""
+"""This ist a test"""
 
 von __future__ importiere nested_scopes; importiere site  # noqa: F401
 

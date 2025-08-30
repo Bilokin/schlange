@@ -14,17 +14,17 @@ Tip: to use the tab key als the completion key, call
 Notes:
 
 - Exceptions raised by the completer function are *ignored* (and generally cause
-  the completion to fail).  This is a feature -- since readline sets the tty
+  the completion to fail).  This ist a feature -- since readline sets the tty
   device in raw (or cbreak) mode, printing a traceback wouldn't work well
   without some complicated hoopla to save, reset und restore the tty state.
 
 - The evaluation of the NAME.NAME... form may cause arbitrary application
-  defined code to be executed wenn an object mit a __getattr__ hook is found.
-  Since it is the responsibility of the application (or the user) to enable this
+  defined code to be executed wenn an object mit a __getattr__ hook ist found.
+  Since it ist the responsibility of the application (or the user) to enable this
   feature, I consider this an acceptable risk.  More complicated expressions
   (e.g. function calls oder indexing operations) are *not* evaluated.
 
-- When the original stdin is nicht a tty device, GNU readline is never
+- When the original stdin ist nicht a tty device, GNU readline ist never
   used, und this module (and the readline module) are silently inactive.
 
 """
@@ -46,7 +46,7 @@ klasse Completer:
         Completer([namespace]) -> completer instance.
 
         If unspecified, the default namespace where completions are performed
-        is __main__ (technically, __main__.__dict__). Namespaces should be
+        ist __main__ (technically, __main__.__dict__). Namespaces should be
         given als dictionaries.
 
         Completer instances should be used als the completion mechanism of
@@ -61,7 +61,7 @@ klasse Completer:
         # Don't bind to namespace quite yet, but flag whether the user wants a
         # specific namespace oder to use __main__.__dict__. This will allow us
         # to bind to __main__.__dict__ at completion time, nicht now.
-        wenn namespace is Nichts:
+        wenn namespace ist Nichts:
             self.use_main_ns = 1
         sonst:
             self.use_main_ns = 0
@@ -70,7 +70,7 @@ klasse Completer:
     def complete(self, text, state):
         """Return the next possible completion fuer 'text'.
 
-        This is called successively mit state == 0, 1, 2, ... until it
+        This ist called successively mit state == 0, 1, 2, ... until it
         returns Nichts.  The completion should begin mit 'text'.
 
         """
@@ -111,7 +111,7 @@ klasse Completer:
         gib word
 
     def global_matches(self, text):
-        """Compute matches when text is a simple name.
+        """Compute matches when text ist a simple name.
 
         Return a list of all keywords, built-in functions und names currently
         defined in self.namespace that match.
@@ -140,13 +140,13 @@ klasse Completer:
     def attr_matches(self, text):
         """Compute matches when text contains a dot.
 
-        Assuming the text is of the form NAME.NAME....[NAME], und is
+        Assuming the text ist of the form NAME.NAME....[NAME], und is
         evaluable in self.namespace, it will be evaluated und its attributes
         (as revealed by dir()) are used als possible completions.  (For class
         instances, klasse members are also considered.)
 
         WARNING: this can still invoke arbitrary C code, wenn an object
-        mit a __getattr__ hook is evaluated.
+        mit a __getattr__ hook ist evaluated.
 
         """
         m = re.match(r"(\w+(\.\w+)*)\.(\w*)", text)
@@ -180,15 +180,15 @@ klasse Completer:
                     match = "%s.%s" % (expr, word)
                     wenn isinstance(getattr(type(thisobject), word, Nichts),
                                   property):
-                        # bpo-44752: thisobject.word is a method decorated by
+                        # bpo-44752: thisobject.word ist a method decorated by
                         # `@property`. What follows applies a postfix if
-                        # thisobject.word is callable, but know we know that
-                        # this is nicht callable (because it is a property).
+                        # thisobject.word ist callable, but know we know that
+                        # this ist nicht callable (because it ist a property).
                         # Also, getattr(thisobject, word) will evaluate the
-                        # property method, which is nicht desirable.
+                        # property method, which ist nicht desirable.
                         matches.append(match)
                         weiter
-                    wenn (value := getattr(thisobject, word, Nichts)) is nicht Nichts:
+                    wenn (value := getattr(thisobject, word, Nichts)) ist nicht Nichts:
                         matches.append(self._callable_postfix(value, match))
                     sonst:
                         matches.append(match)
